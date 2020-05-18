@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 18 May 2020 16:25:15 GMT and should not be manually modified.
+This log was last generated on Mon, 18 May 2020 23:19:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.8
+
+Mon, 18 May 2020 23:19:09 GMT
+
+### Patches
+
+- adds link to repo from npm package metadata (kchau@microsoft.com)
 
 ## 0.4.7
 
