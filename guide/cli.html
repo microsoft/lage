@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>CLI usage | lage</title>
+    <meta name="generator" content="VuePress 1.5.0">
+    
+    <meta name="description" content="Monorepo task runner as beautiful as the Norwegian fjords">
+    <link rel="preload" href="/assets/css/0.styles.9bcdb81a.css" as="style"><link rel="preload" href="/assets/js/app.7ba7b172.js" as="script"><link rel="preload" href="/assets/js/2.8af783fd.js" as="script"><link rel="preload" href="/assets/js/7.ec2945d6.js" as="script"><link rel="prefetch" href="/assets/js/3.5a39a38a.js"><link rel="prefetch" href="/assets/js/4.2b7fc900.js"><link rel="prefetch" href="/assets/js/5.0b5e05ba.js"><link rel="prefetch" href="/assets/js/6.50bf4277.js"><link rel="prefetch" href="/assets/js/8.3b508385.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.9bcdb81a.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">lage</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/guide/" class="nav-link router-link-active">
+  Guide
+</a></div><div class="nav-item"><a href="https://github.com/microsoft/lage" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/guide/" class="nav-link router-link-active">
+  Guide
+</a></div><div class="nav-item"><a href="https://github.com/microsoft/lage" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/" class="sidebar-link">Home</a></li><li><a href="/guide/" class="sidebar-link">Get Started</a></li><li><a href="/guide/config.html" class="sidebar-link">Configuration</a></li><li><a href="/guide/cli.html" class="active sidebar-link">CLI usage</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/guide/cli.html#scoped-builds" class="sidebar-link">Scoped builds</a></li><li class="sidebar-sub-header"><a href="/guide/cli.html#scoped-builds-with-dependencies" class="sidebar-link">Scoped builds with dependencies</a></li><li class="sidebar-sub-header"><a href="/guide/cli.html#caching" class="sidebar-link">Caching</a></li><li class="sidebar-sub-header"><a href="/guide/cli.html#verbose" class="sidebar-link">Verbose</a></li></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><p><code>lage</code> is meant to be run as a CLI. After installing <code>lage</code> inside the repository or globally, you can run the npm scripts from your repository like this:</p> <div class="language- extra-class"><pre class="language-text"><code>$ lage build
+</code></pre></div><h2 id="scoped-builds"><a href="#scoped-builds" class="header-anchor">#</a> Scoped builds</h2> <p>Scoping a task runner can speed up the process especially if there are distinct clusters of packages that are not related to each other within the repository. <code>lage</code> has a <code>scope</code> option that allows the task running to proceed up to the packages found that matches the <code>scope</code> argument. This is a string matcher based on the name of the packages (not the package path).</p> <div class="language- extra-class"><pre class="language-text"><code>$ lage build --scope *build-tools*
+</code></pre></div><p>This will run the tasks needed to satisfy the <code>build</code> script of all the packages that has the <code>build-tools</code> string in their names. Think of this as running tasks up and including the package matched in the scope.</p> <h2 id="scoped-builds-with-dependencies"><a href="#scoped-builds-with-dependencies" class="header-anchor">#</a> Scoped builds with dependencies</h2> <p>Sometimes, it is helpful to be able to run tasks on all affected packages within a scope. Packages that changed will affect downstream consumers. In this case, pass a <code>deps</code> argument along with the <code>scope</code> to build all the dependencies as well.</p> <div class="language- extra-class"><pre class="language-text"><code>$ lage build --scope *build-tools* --deps
+</code></pre></div><h2 id="caching"><a href="#caching" class="header-anchor">#</a> Caching</h2> <p><code>lage</code> by default will skip tasks that it has already done recently. As long as the source file and the command called to <code>lage</code> has not changed, those packages will be skipped. Sometimes, this incremental behavior is not desired. You can override the caching behavior by using the <code>no-cache</code> argument.</p> <div class="language- extra-class"><pre class="language-text"><code>$ lage build --no-cache
+</code></pre></div><h2 id="verbose"><a href="#verbose" class="header-anchor">#</a> Verbose</h2> <p><code>lage</code> by default will hide the output from successful tasks. If you want to see the output as they are being generated, call <code>lage</code> with the <code>verbose</code> argument.</p> <div class="language- extra-class"><pre class="language-text"><code>$ lage build --verbose
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/guide/config.html" class="prev">
+        Configuration
+      </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.7ba7b172.js" defer></script><script src="/assets/js/2.8af783fd.js" defer></script><script src="/assets/js/7.ec2945d6.js" defer></script>
+  </body>
+</html>

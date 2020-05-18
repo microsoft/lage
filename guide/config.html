@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Configuration | lage</title>
+    <meta name="generator" content="VuePress 1.5.0">
+    
+    <meta name="description" content="Monorepo task runner as beautiful as the Norwegian fjords">
+    <link rel="preload" href="/assets/css/0.styles.9bcdb81a.css" as="style"><link rel="preload" href="/assets/js/app.7ba7b172.js" as="script"><link rel="preload" href="/assets/js/2.8af783fd.js" as="script"><link rel="preload" href="/assets/js/8.3b508385.js" as="script"><link rel="prefetch" href="/assets/js/3.5a39a38a.js"><link rel="prefetch" href="/assets/js/4.2b7fc900.js"><link rel="prefetch" href="/assets/js/5.0b5e05ba.js"><link rel="prefetch" href="/assets/js/6.50bf4277.js"><link rel="prefetch" href="/assets/js/7.ec2945d6.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.9bcdb81a.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">lage</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/guide/" class="nav-link router-link-active">
+  Guide
+</a></div><div class="nav-item"><a href="https://github.com/microsoft/lage" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/guide/" class="nav-link router-link-active">
+  Guide
+</a></div><div class="nav-item"><a href="https://github.com/microsoft/lage" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/" class="sidebar-link">Home</a></li><li><a href="/guide/" class="sidebar-link">Get Started</a></li><li><a href="/guide/config.html" class="active sidebar-link">Configuration</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/guide/config.html#options" class="sidebar-link">Options</a></li></ul></li><li><a href="/guide/cli.html" class="sidebar-link">CLI usage</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><p>Configuration is provided by <a href="https://www.npmjs.com/package/cosmiconfig" target="_blank" rel="noopener noreferrer">Cosmiconfig<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>, so <code>lage</code> configuration is very flexible! We recommend the use of a <code>lage.config.js</code> because it is both concise and flexible.</p> <p>Create a <code>lage.config.js</code> file and place all your configurations there:</p> <div class="language-js extra-class"><pre class="language-js"><code>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  pipeline<span class="token operator">:</span> <span class="token punctuation">{</span>
+    build<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;^build&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    test<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;build&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="options"><a href="#options" class="header-anchor">#</a> Options</h2> <p><code>pipeline</code></p> <div class="language-ts extra-class"><pre class="language-ts"><code><span class="token keyword">interface</span> <span class="token class-name">Pipeline</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">[</span>task<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>This is a terse way to specify a dependency graph of npm scripts. To say <code>test</code> script depends on <code>build</code> within the <strong>same package</strong>, you can put this in the pipeline:</p> <div class="language-js extra-class"><pre class="language-js"><code>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  pipeline<span class="token operator">:</span> <span class="token punctuation">{</span>
+    build<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    test<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;build&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>The above says that <code>build</code> does not depend on anything. <code>test</code> script will only be run in the package if <code>build</code> has run. To specify that <code>build</code> depends the <code>build</code> of the package transitive dependencies, you have the use the <code>^</code> symbol like this:</p> <div class="language-js extra-class"><pre class="language-js"><code>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  pipeline<span class="token operator">:</span> <span class="token punctuation">{</span>
+    build<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;^build&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>In this case, when you run the <code>build</code> script, <code>lage</code> will make sure the dependencies' <code>build</code> are run first. A more complex example is this:</p> <div class="language-js extra-class"><pre class="language-js"><code>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  pipeline<span class="token operator">:</span> <span class="token punctuation">{</span>
+    build<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;^build&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    test<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;build&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    bundle<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;build&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    integration<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;bundle&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/guide/" class="prev router-link-active">
+        Get Started
+      </a></span> <span class="next"><a href="/guide/cli.html">
+        CLI usage
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.7ba7b172.js" defer></script><script src="/assets/js/2.8af783fd.js" defer></script><script src="/assets/js/8.3b508385.js" defer></script>
+  </body>
+</html>
