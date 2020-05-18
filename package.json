@@ -3,7 +3,7 @@
   "description": "A monorepo task runner",
   "version": "0.4.7",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "bin": {
     "lage": "bin/lage.js"
   },
