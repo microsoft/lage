@@ -1,6 +1,7 @@
 module.exports = {
   title: "lage",
   description: "Monorepo task runner as beautiful as the Norwegian fjords",
+  base: "/lage/",
   themeConfig: {
     nav: [
       { text: "Home", link: "/" },
