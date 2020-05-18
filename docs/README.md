@@ -2,7 +2,7 @@
 home: true
 # heroImage: /hero.png
 heroText: A Beautiful JS Monorepo Task Runner
-tagline: Run all your npm scripts in the topological order incrementally with cloud caches
+tagline: Run all your npm scripts in topological order incrementally with cloud cache
 actionText: Get Started →
 actionLink: /guide/
 features:
