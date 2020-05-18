@@ -2,6 +2,9 @@
   "name": "lage",
   "version": "0.4.7",
   "description": "A monorepo task runner",
+  "repository": {
+    "url": "https://github.com/microsoft/lage"
+  },
   "license": "MIT",
   "main": "lib/index.js",
   "bin": {
@@ -10,8 +13,8 @@
   "scripts": {
     "build": "tsc",
     "change": "beachball change",
+    "docs": "vuepress dev docs --host localhost",
     "docs:build": "vuepress build docs",
-    "docs:dev": "vuepress dev docs",
     "gh-pages": "gh-pages",
     "release": "yarn build && beachball publish",
     "release:docs": "yarn docs:build && yarn gh-pages",
