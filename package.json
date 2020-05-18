@@ -17,7 +17,7 @@
     "docs:build": "vuepress build docs",
     "gh-pages": "gh-pages",
     "release": "yarn build && beachball publish",
-    "release:docs": "yarn docs:build && yarn gh-pages",
+    "release:docs": "yarn docs:build && yarn gh-pages -d docs/.vuepress/dist",
     "start": "tsc -w --preserveWatchOutput"
   },
   "dependencies": {
