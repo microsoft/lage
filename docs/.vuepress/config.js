@@ -7,6 +7,6 @@ module.exports = {
       { text: "Guide", link: "/guide/" },
       { text: "Github", link: "https://github.com/microsoft/lage" },
     ],
-    sidebar: ["/", "/guide/", "/guide/config"],
+    sidebar: ["/", "/guide/", "/guide/config", "/guide/cli"],
   },
 };
