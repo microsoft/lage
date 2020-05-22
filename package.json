@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@lerna/profiler": "^3.20.0",
-    "backfill": "5.0.0-alpha.0",
+    "backfill": "5.0.0",
     "chalk": "^4.0.0",
     "cosmiconfig": "^6.0.0",
     "git-url-parse": "^11.1.2",
