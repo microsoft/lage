@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 18 May 2020 23:19:09 GMT",
+      "tag": "lage_v0.4.8",
+      "version": "0.4.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "adds link to repo from npm package metadata",
+            "author": "kchau@microsoft.com",
+            "commit": "caa82e9201093b3ef0761329baff338a92be3565",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 18 May 2020 16:25:15 GMT",
       "tag": "lage_v0.4.7",
       "version": "0.4.7",
