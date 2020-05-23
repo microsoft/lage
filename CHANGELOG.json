@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 22 May 2020 20:39:55 GMT",
+      "tag": "lage_v0.4.9",
+      "version": "0.4.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "bumping backfill",
+            "author": "kchau@microsoft.com",
+            "commit": "f736dd206e77c7c6234c9a6fb5fc8d5e7cdc96ea",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 18 May 2020 23:19:09 GMT",
       "tag": "lage_v0.4.8",
       "version": "0.4.8",
