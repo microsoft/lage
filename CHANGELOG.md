@@ -1,8 +1,20 @@
 # Change Log - lage
 
-This log was last generated on Fri, 22 May 2020 20:39:55 GMT and should not be manually modified.
+This log was last generated on Sat, 23 May 2020 23:20:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.0
+
+Sat, 23 May 2020 23:20:06 GMT
+
+### Minor changes
+
+- adding a --since feature (kchau@microsoft.com)
+
+### Patches
+
+- add support for untracked and unstaged files for --since (kchau@microsoft.com)
 
 ## 0.4.9
 
