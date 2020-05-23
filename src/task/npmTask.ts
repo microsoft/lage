@@ -18,7 +18,7 @@ export function npmTask(taskId: TaskId, context: RunContext) {
     os.platform() === "win32" ? "npm.cmd" : "npm"
   );
 
-  const npmArgs = [...context.nodeArgs, "run", task, "--", ...context.args];
+  const npmArgs = [...context.node, "run", task, "--", ...context.args];
 
   return queue.add(() =>
     taskWrapper(
