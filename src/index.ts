@@ -11,7 +11,10 @@ import PQueue from "p-queue/dist";
 import Profiler from "@lerna/profiler";
 import yargsParser from "yargs-parser";
 
-const parsedArgs = yargsParser(process.argv.slice(2));
+const parsedArgs = yargsParser(process.argv.slice(2), {
+  string: ["since"],
+  array: ["scope", "node"],
+});
 
 const root = findGitRoot(process.cwd());
 if (!root) {
@@ -29,15 +32,18 @@ const command = parsedArgs._[0];
 const events = new EventEmitter();
 
 const context: RunContext = {
+  root,
   allPackages: getPackageInfos(root),
   command,
   concurrency,
-  defaultPipeline: configResults?.config.pipeline || {
+  pipeline: configResults?.config.pipeline || {
     build: ["^build"],
     clean: [],
   },
   taskDepsGraph: [],
   tasks: new Map(),
+  since: parsedArgs.since || "",
+  ignoreGlob: [],
   deps: parsedArgs.deps || configResults?.config.deps || false,
   scope: parsedArgs.scope || configResults?.config.scope || [],
   measures: {
@@ -53,7 +59,7 @@ const context: RunContext = {
   taskLogs: new Map(),
   queue: new PQueue({ concurrency }),
   cache: parsedArgs.cache === false ? false : true,
-  nodeArgs: parsedArgs.nodeArgs ? arrifyArgs(parsedArgs.nodeArgs) : [],
+  node: parsedArgs.node ? arrifyArgs(parsedArgs.node) : [],
   args: getPassThroughArgs(parsedArgs),
   events,
   verbose: parsedArgs.verbose,

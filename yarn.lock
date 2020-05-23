@@ -2073,10 +2073,10 @@ backfill-utils-dotenv@^5.0.0:
     dotenv "^8.1.0"
     find-up "^4.0.0"
 
-backfill@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/backfill/-/backfill-5.0.0.tgz#38b59fe67730648cdcd558d9563455e904e78004"
-  integrity sha512-1iVYEOmYPU2MTqFdyc9l6C5iZ5sAk6V/L+xXQSTipiPMZ1OMNu4QjyvVJ+P9DFRGfEFQRzSIosEWC5m5QyeRaQ==
+backfill@5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/backfill/-/backfill-5.1.0.tgz#2028b8e64f7fe7078622aec194bcd8a69fe00603"
+  integrity sha512-zQAC2Q7NgLB3YFBM1k2YHnBbWxgmil9EUQ/UAGBii4y4pwQcAmjjJBW6u7vfA8vrIhooyCKwzmaBpDR0C9/kfA==
   dependencies:
     anymatch "^3.0.3"
     backfill-cache "^5.0.0"

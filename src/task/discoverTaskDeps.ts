@@ -3,6 +3,7 @@ import {
   getTransitiveDependencies,
   PackageInfos,
   getDependentMap,
+  getChangedPackages,
 } from "workspace-tools";
 import { getTaskId, getPackageTaskFromId } from "./taskId";
 import { RunContext } from "../types/RunContext";
@@ -19,7 +20,7 @@ import { cosmiconfigSync } from "cosmiconfig";
 const ConfigModuleName = "lage";
 
 function filterPackages(context: RunContext) {
-  const { allPackages, scope, deps: withDeps } = context;
+  const { allPackages, scope, since, deps, root, ignoreGlob } = context;
 
   let scopes = ([] as string[]).concat(scope);
 
@@ -28,17 +29,25 @@ function filterPackages(context: RunContext) {
       ? getScopedPackages(scopes, allPackages)
       : Object.keys(allPackages);
 
-  if (withDeps) {
+  if (since) {
+    scopedPackages = scopedPackages.concat(
+      getChangedPackages(root, since || "master", ignoreGlob)
+    );
+  }
+
+  if (deps) {
     scopedPackages = scopedPackages.concat(
       getTransitiveDependencies(scopedPackages, allPackages)
     );
   }
 
-  return scopedPackages;
+  const unique = new Set(scopedPackages);
+
+  return [...unique];
 }
 
 function getPipeline(pkg: string, context: RunContext) {
-  const { allPackages, defaultPipeline } = context;
+  const { allPackages, pipeline: defaultPipeline } = context;
 
   const info = allPackages[pkg];
 
