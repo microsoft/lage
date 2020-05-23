@@ -13,7 +13,7 @@ import yargsParser from "yargs-parser";
 
 const parsedArgs = yargsParser(process.argv.slice(2), {
   string: ["since"],
-  array: ["scope", "node"],
+  array: ["scope", "node", "ignore"],
 });
 
 const root = findGitRoot(process.cwd());
@@ -43,7 +43,7 @@ const context: RunContext = {
   taskDepsGraph: [],
   tasks: new Map(),
   since: parsedArgs.since || "",
-  ignoreGlob: [],
+  ignore: parsedArgs.ignore || configResults?.config.ignoreGlob || [],
   deps: parsedArgs.deps || configResults?.config.deps || false,
   scope: parsedArgs.scope || configResults?.config.scope || [],
   measures: {
@@ -122,10 +122,12 @@ function getPassThroughArgs(args: { [key: string]: string | string[] }) {
   result = result.concat(args._.slice(1));
 
   let {
-    nodeArgs: _nodeArgValues,
+    node: _nodeValues,
     scope: _scopeArg,
+    since: _sinceArg,
     deps: _depsArg,
     cache: _cacheArg,
+    ignore: _ignoreArg,
     _: _positionals,
     ...filtered
   } = args;
