@@ -16,6 +16,7 @@ import {
   CacheFetchTask,
 } from "../cache/cacheTasks";
 import { cosmiconfigSync } from "cosmiconfig";
+import logger from "npmlog";
 
 const ConfigModuleName = "lage";
 
@@ -24,24 +25,34 @@ function filterPackages(context: RunContext) {
 
   let scopes = ([] as string[]).concat(scope);
 
-  let scopedPackages =
-    scopes && scopes.length > 0
-      ? getScopedPackages(scopes, allPackages)
-      : Object.keys(allPackages);
+  let filtered: string[] = [];
+
+  // If NOTHING is specified, use all packages
+  if (!scopes && !since) {
+    logger.verbose("filterPackages", "scope: all packages");
+    filtered = Object.keys(allPackages);
+  }
+
+  // If scoped is defined, get scoped packages
+  if (scopes && scopes.length > 0) {
+    const scoped = getScopedPackages(scopes, allPackages);
+    filtered = filtered.concat(scoped);
+    logger.verbose("filterPackages", `scope: ${scoped.join(",")}`);
+  }
 
   if (since) {
-    scopedPackages = scopedPackages.concat(
-      getChangedPackages(root, since || "master", ignoreGlob)
-    );
+    const changed = getChangedPackages(root, since || "master", ignoreGlob);
+    filtered = filtered.concat(changed);
+    logger.verbose("filterPackages", `changed: ${changed.join(",")}`);
   }
 
   if (deps) {
-    scopedPackages = scopedPackages.concat(
-      getTransitiveDependencies(scopedPackages, allPackages)
+    filtered = filtered.concat(
+      getTransitiveDependencies(filtered, allPackages)
     );
   }
 
-  const unique = new Set(scopedPackages);
+  const unique = new Set(filtered);
 
   return [...unique];
 }

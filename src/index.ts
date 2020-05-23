@@ -43,7 +43,7 @@ const context: RunContext = {
   taskDepsGraph: [],
   tasks: new Map(),
   since: parsedArgs.since || "",
-  ignoreGlob: [],
+  ignoreGlob: configResults?.config.ignoreGlob || [],
   deps: parsedArgs.deps || configResults?.config.deps || false,
   scope: parsedArgs.scope || configResults?.config.scope || [],
   measures: {
@@ -122,8 +122,9 @@ function getPassThroughArgs(args: { [key: string]: string | string[] }) {
   result = result.concat(args._.slice(1));
 
   let {
-    nodeArgs: _nodeArgValues,
+    node: _nodeValues,
     scope: _scopeArg,
+    since: _sinceArg,
     deps: _depsArg,
     cache: _cacheArg,
     _: _positionals,
