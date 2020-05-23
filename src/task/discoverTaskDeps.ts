@@ -21,14 +21,14 @@ import logger from "npmlog";
 const ConfigModuleName = "lage";
 
 function filterPackages(context: RunContext) {
-  const { allPackages, scope, since, deps, root, ignoreGlob } = context;
+  const { allPackages, scope, since, deps, root, ignore } = context;
 
   let scopes = ([] as string[]).concat(scope);
 
   let filtered: string[] = [];
 
   // If NOTHING is specified, use all packages
-  if (!scopes && !since) {
+  if (!scopes && typeof since === "undefined") {
     logger.verbose("filterPackages", "scope: all packages");
     filtered = Object.keys(allPackages);
   }
@@ -40,8 +40,8 @@ function filterPackages(context: RunContext) {
     logger.verbose("filterPackages", `scope: ${scoped.join(",")}`);
   }
 
-  if (since) {
-    const changed = getChangedPackages(root, since || "master", ignoreGlob);
+  if (typeof since !== undefined) {
+    const changed = getChangedPackages(root, since || "master", ignore);
     filtered = filtered.concat(changed);
     logger.verbose("filterPackages", `changed: ${changed.join(",")}`);
   }
