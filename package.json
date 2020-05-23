@@ -12,6 +12,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "test": "echo hello",
     "change": "beachball change",
     "docs": "vuepress dev docs --host localhost",
     "docs:build": "vuepress build docs",
