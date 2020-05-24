@@ -17,14 +17,18 @@ export async function computeHash(info: PackageInfo, context: RunContext) {
 
   logger.setName(name);
 
-  const hash = await backfill.computeHash(
-    packagePath,
-    logger,
-    context.command + context.args.join(" "),
-    cacheConfig
-  );
+  try {
+    const hash = await backfill.computeHash(
+      packagePath,
+      logger,
+      context.command + context.args.join(" "),
+      cacheConfig
+    );
 
-  hashes[info.name] = hash;
+    hashes[info.name] = hash;
+  } catch (e) {
+    log.error(`${info.name} computeHash`, e);
+  }
 }
 
 export async function fetchBackfill(info: PackageInfo, context: RunContext) {
@@ -32,8 +36,18 @@ export async function fetchBackfill(info: PackageInfo, context: RunContext) {
   const cacheConfig = getCacheConfig(packagePath, context);
   const logger = backfill.makeLogger("warn", process.stdout, process.stderr);
   const hash = hashes[info.name];
-  const cacheHit = await backfill.fetch(packagePath, hash, logger, cacheConfig);
-  cacheHits[info.name] = cacheHit;
+
+  try {
+    const cacheHit = await backfill.fetch(
+      packagePath,
+      hash,
+      logger,
+      cacheConfig
+    );
+    cacheHits[info.name] = cacheHit;
+  } catch (e) {
+    log.error(`${info.name} fetchBackfill`, e);
+  }
 }
 
 export async function putBackfill(info: PackageInfo, context: RunContext) {
@@ -45,8 +59,7 @@ export async function putBackfill(info: PackageInfo, context: RunContext) {
   try {
     await backfill.put(packagePath, hash, logger, cacheConfig);
   } catch (e) {
-    log.error("", e);
-    // here we swallow put errors because backfill will throw just because the output directories didn't exist
+    log.error(`${info.name} putBackfill`, e);
   }
 }
 
