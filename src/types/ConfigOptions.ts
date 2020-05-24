@@ -2,11 +2,6 @@ import { Config as CacheOptions } from "backfill-config";
 
 export { CacheOptions };
 
-export interface BackillOptions {
-  hashGlob: string[];
-  outputGlob: string[];
-}
-
 export interface ConfigOptions {
   pipeline: { [task: string]: string[] };
   cache: boolean;
