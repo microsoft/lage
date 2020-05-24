@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sun, 24 May 2020 04:36:58 GMT",
+      "tag": "lage_v0.6.0",
+      "version": "0.6.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding cacheOptions to lage.config.js",
+            "author": "kchau@microsoft.com",
+            "commit": "236fdf92fa086f858e3b30c622e584a33f014f01",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 23 May 2020 23:20:06 GMT",
       "tag": "lage_v0.5.0",
       "version": "0.5.0",
