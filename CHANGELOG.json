@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sun, 24 May 2020 22:01:39 GMT",
+      "tag": "lage_v0.6.1",
+      "version": "0.6.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix cache directory",
+            "author": "kchau@microsoft.com",
+            "commit": "fa607abd64033d6cb259c5281156db83d01efb60",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 24 May 2020 04:36:58 GMT",
       "tag": "lage_v0.6.0",
       "version": "0.6.0",

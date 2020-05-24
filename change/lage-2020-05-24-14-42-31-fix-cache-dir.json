@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix cache directory",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch",
-  "date": "2020-05-24T21:42:31.081Z"
-}
