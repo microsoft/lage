@@ -59,7 +59,7 @@ export async function putBackfill(info: PackageInfo, context: RunContext) {
   try {
     await backfill.put(packagePath, hash, logger, cacheConfig);
   } catch (e) {
-    log.error(`${info.name} putBackfill`, e);
+    // sometimes outputGlob don't match any files, so skipping this
   }
 }
 
