@@ -9526,7 +9526,7 @@ workspace-tools@^0.4.0:
     matcher "^3.0.0"
     read-yaml-file "^2.0.0"
 
-workspace-tools@^0.7.3:
+workspace-tools@^0.7.4:
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.7.4.tgz#62a5137362da3de1871da377241a51144bddc695"
   integrity sha512-puiqq9jmytWIHRvLh2PDixyM35tZ+29y+Q19Glkh2SMKMvDzI5aNWwhVbMdMaJEXDvHTQaBKH05PZZ3V/cdntQ==
