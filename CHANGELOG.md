@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Sun, 24 May 2020 22:01:39 GMT and should not be manually modified.
+This log was last generated on Sun, 24 May 2020 23:10:13 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.6.2
+
+Sun, 24 May 2020 23:10:13 GMT
+
+### Patches
+
+- make sure no outputglob match do not crash (kchau@microsoft.com)
 
 ## 0.6.1
 
