@@ -33,6 +33,7 @@ const events = new EventEmitter();
 
 const context: RunContext = {
   root,
+  cacheOptions: configResults?.config.cacheOptions || {},
   allPackages: getPackageInfos(root),
   command,
   concurrency,
