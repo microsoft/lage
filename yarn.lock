@@ -5419,7 +5419,7 @@ javascript-stringify@^2.0.1:
   resolved "https://registry.yarnpkg.com/javascript-stringify/-/javascript-stringify-2.0.1.tgz#6ef358035310e35d667c675ed63d3eb7c1aa19e5"
   integrity sha512-yV+gqbd5vaOYjqlbk16EG89xB5udgjqQF3C5FAORDg4f/IS1Yc5ERCv5e/57yBcfJYw05V5JyIXabhwb75Xxow==
 
-jju@~1.4.0:
+jju@^1.4.0, jju@~1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/jju/-/jju-1.4.0.tgz#a3abe2718af241a2b2904f84a625970f389ae32a"
   integrity sha1-o6vicYryQaKykE+EpiWXDzia4yo=
@@ -9526,12 +9526,11 @@ workspace-tools@^0.4.0:
     matcher "^3.0.0"
     read-yaml-file "^2.0.0"
 
-workspace-tools@^0.7.4:
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.7.4.tgz#62a5137362da3de1871da377241a51144bddc695"
-  integrity sha512-puiqq9jmytWIHRvLh2PDixyM35tZ+29y+Q19Glkh2SMKMvDzI5aNWwhVbMdMaJEXDvHTQaBKH05PZZ3V/cdntQ==
+workspace-tools@^0.7.5:
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.7.5.tgz#a6798d4493abf2f0e85fcdf784f6f79d3b6cf33d"
+  integrity sha512-wv1cllR/zz9mhqTkhB1feombfEJl1Pj2LBc5j0k6kcdy0J6e1ZbwM7L/SEkLhsp2YSCaIIgWf1o00r8QlGpyDQ==
   dependencies:
-    "@microsoft/rush-lib" "^5.23.2"
     "@pnpm/lockfile-file" "^3.0.7"
     "@pnpm/logger" "^3.2.2"
     "@yarnpkg/lockfile" "^1.1.0"
@@ -9540,6 +9539,7 @@ workspace-tools@^0.7.4:
     fs-extra "^9.0.0"
     git-url-parse "^11.1.2"
     globby "^11.0.0"
+    jju "^1.4.0"
     matcher "^3.0.0"
     multimatch "^4.0.0"
     read-yaml-file "^2.0.0"
