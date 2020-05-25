@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 25 May 2020 19:49:21 GMT",
+      "tag": "lage_v0.7.1",
+      "version": "0.7.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixing the correct check for typeof since",
+            "author": "kchau@microsoft.com",
+            "commit": "a30ee71429e4539bb7603c514aa2608cfe2b2377",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 25 May 2020 18:26:19 GMT",
       "tag": "lage_v0.7.0",
       "version": "0.7.0",
