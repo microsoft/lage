@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "change to p-profiler instead of @lerna/profiler",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2020-05-25T21:38:35.612Z"
+}
