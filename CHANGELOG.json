@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 25 May 2020 18:26:19 GMT",
+      "tag": "lage_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding handling for multiple args",
+            "author": "kchau@microsoft.com",
+            "commit": "da2d6f6bb564855c9ac56b3bdfde393b584bc986",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 24 May 2020 23:10:13 GMT",
       "tag": "lage_v0.6.2",
       "version": "0.6.2",
