@@ -11,7 +11,7 @@ export interface ConfigOptions {
 }
 
 export interface CliOptions {
-  command: string;
+  command: string[];
   concurrency: number;
   scope: string[];
   since?: string;

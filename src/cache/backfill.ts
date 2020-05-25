@@ -21,7 +21,7 @@ export async function computeHash(info: PackageInfo, context: RunContext) {
     const hash = await backfill.computeHash(
       packagePath,
       logger,
-      context.command + context.args.join(" "),
+      context.command.join(" ") + context.args.join(" "),
       cacheConfig
     );
 

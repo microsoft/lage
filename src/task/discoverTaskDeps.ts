@@ -81,10 +81,10 @@ function getPipeline(pkg: string, context: RunContext) {
  * @param pipeline
  */
 function generateTaskDepsGraph(
-  targetTask: string,
+  targetTasks: string[],
   pipeline: { [key: string]: string[] }
 ) {
-  const queue = [targetTask];
+  const queue = [...targetTasks];
   const visited = new Set<string>();
   const graph: [string, string][] = [];
   while (queue.length > 0) {
@@ -114,6 +114,8 @@ function generateTaskDepsGraph(
  * This function will traverse the package dependency graph, and will end up traverse the task depenendencies within the same package (2 layered traversal)
  */
 export function discoverTaskDeps(context: RunContext) {
+  logger.verbose("discoverTaskDeps", "Discovering task deps");
+
   const { allPackages, command } = context;
 
   const filteredPackages = filterPackages(context);

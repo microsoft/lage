@@ -10,7 +10,7 @@ function hr() {
 }
 
 export async function reportSummary(context: RunContext) {
-  const { command, measures, taskLogs } = context;
+  const { measures, taskLogs } = context;
 
   const statusColorFn = {
     success: chalk.greenBright,
@@ -39,15 +39,13 @@ export async function reportSummary(context: RunContext) {
       );
     }
   } else {
-    log.warn("", "Nothing has been run. Check the scope or the command name");
+    log.info("", "Nothing has been run.");
   }
 
   hr();
 
   log.info(
     "",
-    `The command "${command}" took a total of ${formatDuration(
-      measures.duration
-    )} to complete`
+    `Took a total of ${formatDuration(measures.duration)} to complete`
   );
 }
