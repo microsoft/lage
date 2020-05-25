@@ -23,14 +23,17 @@ export function createContext(options: {
     cacheOptions: configResults?.config.cacheOptions || {},
     allPackages: getPackageInfos(root),
     command,
-    concurrency,
+    concurrency:
+      parsedArgs.concurrency ||
+      configResults?.config.concurrency ||
+      concurrency,
     pipeline: configResults?.config.pipeline || {
       build: ["^build"],
       clean: [],
     },
     taskDepsGraph: [],
     tasks: new Map(),
-    since: parsedArgs.since || "",
+    since: parsedArgs.since || undefined,
     ignore: parsedArgs.ignore || configResults?.config.ignoreGlob || [],
     deps: parsedArgs.deps || configResults?.config.deps || false,
     scope: parsedArgs.scope || configResults?.config.scope || [],

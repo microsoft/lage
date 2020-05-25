@@ -40,7 +40,7 @@ function filterPackages(context: RunContext) {
     logger.verbose("filterPackages", `scope: ${scoped.join(",")}`);
   }
 
-  if (typeof since !== undefined) {
+  if (typeof since !== "undefined") {
     const changed = getChangedPackages(root, since || "master", ignore);
     filtered = filtered.concat(changed);
     logger.verbose("filterPackages", `changed: ${changed.join(",")}`);
