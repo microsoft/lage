@@ -6,7 +6,7 @@ import chalk from "chalk";
 
 let _context: RunContext;
 
-export function initialize(context: RunContext) {
+export function initLogger(context: RunContext) {
   _context = context;
 }
 
@@ -64,7 +64,12 @@ export class NpmLogWritable extends Writable {
     let curr = 0;
     while (curr < chunk.byteLength) {
       if (chunk[curr] === 13 || (chunk[curr] === 10 && curr - prev > 1)) {
-        this.buffer = this.buffer + chunk.slice(prev, curr).toString().trim();
+        this.buffer =
+          this.buffer +
+          chunk
+            .slice(prev, curr)
+            .toString()
+            .trim();
         addToTaskLog(this.taskId, this.buffer);
         log.verbose(getTaskLogPrefix(this.taskId), this.buffer);
         this.buffer = "";

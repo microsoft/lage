@@ -4,11 +4,9 @@ import { generateCacheTasks } from "../cache/cacheTasks";
 import { reportSummary } from "../logger/reportSummary";
 
 export async function runTasks(context: RunContext) {
-  const { command, profiler } = context;
+  const { profiler } = context;
 
   context.measures.start = process.hrtime();
-
-  console.log(`Executing command "${command}"`);
 
   generateCacheTasks(context);
 
@@ -25,4 +23,8 @@ export async function runTasks(context: RunContext) {
   context.measures.duration = process.hrtime(context.measures.start);
 
   await reportSummary(context);
+
+  if (context.measures.failedTask) {
+    process.exit(1);
+  }
 }
