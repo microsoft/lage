@@ -26,21 +26,23 @@ function filterPackages(context: RunContext) {
   let scopes = ([] as string[]).concat(scope);
 
   let filtered: string[] = [];
+  let hasScopes = scopes && scopes.length > 0;
+  let hasSince = typeof since !== "undefined";
 
   // If NOTHING is specified, use all packages
-  if (!scopes && typeof since === "undefined") {
+  if (!hasScopes && !hasSince) {
     logger.verbose("filterPackages", "scope: all packages");
     filtered = Object.keys(allPackages);
   }
 
   // If scoped is defined, get scoped packages
-  if (scopes && scopes.length > 0) {
+  if (hasScopes) {
     const scoped = getScopedPackages(scopes, allPackages);
     filtered = filtered.concat(scoped);
     logger.verbose("filterPackages", `scope: ${scoped.join(",")}`);
   }
 
-  if (typeof since !== "undefined") {
+  if (hasSince) {
     const changed = getChangedPackages(root, since || "master", ignore);
     filtered = filtered.concat(changed);
     logger.verbose("filterPackages", `changed: ${changed.join(",")}`);
