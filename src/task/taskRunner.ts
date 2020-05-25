@@ -2,6 +2,7 @@ import { RunContext } from "../types/RunContext";
 import pGraph from "p-graph";
 import { generateCacheTasks } from "../cache/cacheTasks";
 import { reportSummary } from "../logger/reportSummary";
+import log from "npmlog";
 
 export async function runTasks(context: RunContext) {
   const { profiler } = context;
@@ -17,7 +18,8 @@ export async function runTasks(context: RunContext) {
   }
 
   if (context.profile) {
-    profiler.output();
+    const profileFile = profiler.output();
+    log.info("runTasks", `Profile saved to ${profileFile}`);
   }
 
   context.measures.duration = process.hrtime(context.measures.start);
