@@ -17,8 +17,6 @@ graph TD
 
 First, let's take a look at the typical workspace runners. `Lerna`, `pnpm recursive`, `rush` and `wsrun` all will run one task at a time. This creates a sort of "build phase" effect where `test` scripts are not allowed to run until `build`.
 
-<div style="width: 960px; position: relative;" markdown>
-
 ```mermaid
 gantt
 	title Level 1: Typical Lerna or Workspace Runners
@@ -67,8 +65,6 @@ section BarPage
     build: bp_build, after bc_build, 25s
     test: bp_test, after lerna_build, 12s
 ```
-
-</div>
 
 ## Level 2: Scoping
 

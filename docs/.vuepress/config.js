@@ -15,8 +15,9 @@ module.exports = {
       "mermaidjs",
       {
         gantt: {
-          barHeight: 36,
-          fontSize: 24,
+          barHeight: 20,
+          fontSize: 12,
+          useWidth: 960,
         },
       },
     ],
