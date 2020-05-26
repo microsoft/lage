@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 26 May 2020 18:54:57 GMT",
+      "tag": "lage_v0.8.0",
+      "version": "0.8.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add support for running command with different npm clients",
+            "author": "kchau@microsoft.com",
+            "commit": "a336a53f938e2f19b952b395414cc5cdd9657466",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 26 May 2020 00:18:08 GMT",
       "tag": "lage_v0.7.2",
       "version": "0.7.2",
