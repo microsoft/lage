@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 25 May 2020 19:49:21 GMT and should not be manually modified.
+This log was last generated on Tue, 26 May 2020 00:18:08 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.7.2
+
+Tue, 26 May 2020 00:18:08 GMT
+
+### Patches
+
+- change to p-profiler instead of @lerna/profiler (kchau@microsoft.com)
 
 ## 0.7.1
 
