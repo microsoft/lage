@@ -11,12 +11,7 @@ import os from "os";
 
 export function npmTask(taskId: TaskId, context: RunContext) {
   const [pkg, task] = getPackageTaskFromId(taskId);
-  const { allPackages, queue } = context;
-
-  const npmCmd = path.join(
-    path.dirname(process.execPath),
-    os.platform() === "win32" ? "npm.cmd" : "npm"
-  );
+  const { allPackages, queue, npmCmd } = context;
 
   const npmArgs = [...context.node, "run", task, "--", ...context.args];
 

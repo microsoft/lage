@@ -30,4 +30,5 @@ export interface RunContext extends CliOptions, ConfigOptions {
   taskLogs: Map<TaskId, string[]>;
   queue: PQueue;
   events: EventEmitter;
+  npmCmd: string;
 }

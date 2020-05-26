@@ -12,7 +12,7 @@ export async function computeHash(info: PackageInfo, context: RunContext) {
   const packagePath = path.dirname(info.packageJsonPath);
   const cacheConfig = getCacheConfig(packagePath, context);
 
-  const logger = backfill.makeLogger("warn", process.stdout, process.stderr);
+  const logger = backfill.makeLogger("error", process.stdout, process.stderr);
   const name = info.name;
 
   logger.setName(name);
@@ -34,7 +34,7 @@ export async function computeHash(info: PackageInfo, context: RunContext) {
 export async function fetchBackfill(info: PackageInfo, context: RunContext) {
   const packagePath = path.dirname(info.packageJsonPath);
   const cacheConfig = getCacheConfig(packagePath, context);
-  const logger = backfill.makeLogger("warn", process.stdout, process.stderr);
+  const logger = backfill.makeLogger("error", process.stdout, process.stderr);
   const hash = hashes[info.name];
 
   try {
