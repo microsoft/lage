@@ -23,47 +23,47 @@ gantt
 	dateFormat  s
   axisFormat  %S
 
-section Lerna
+section Total
 
-prepare: active, lerna_prepare, 0, 30s
-build : active, lerna_build, after lerna_prepare, 50s
-test : active, lerna_test, after lerna_build, 25s
+prepare: active, total_prepare, 0, 30s
+build : active, total_build, after total_prepare, 50s
+test : active, total_test, after total_build, 25s
 
     section BuildTool
 
     prepare: bt_prepare, 0, 10s
-    build  : bt_build, after lerna_prepare, 10s
-    test   : bt_test, after lerna_build, 6s
+    build  : bt_build, after total_prepare, 10s
+    test   : bt_test, after total_build, 6s
 
     section FooCore
 
     prepare: fc_prepare, after bt_prepare, 10s
     build: fc_build, after bt_build, 15s
-    test: fc_test, after lerna_build, 25s
+    test: fc_test, after total_build, 25s
 
 section FooApp1
 
     prepare: fa1_prepare, after fc_prepare, 10s
     build: fa1_build, after fc_build, 25s
-    test: fa1_test, after lerna_build, 15s
+    test: fa1_test, after total_build, 15s
 
 section FooApp2
 
     prepare: fa2_prepare, after fc_prepare, 10s
     build: fa2_build, after fc_build, 12s
-    test: fa2_test, after lerna_build, 8s
+    test: fa2_test, after total_build, 8s
 
 section BarCore
 
     prepare: bc_prepare, after bt_prepare, 10s
     build: bc_build, after bt_build, 10s
-    test: bc_test, after lerna_build, 16s
+    test: bc_test, after total_build, 16s
 
 section BarPage
 
     prepare: bp_prepare, after bc_prepare, 10s
     build: bp_build, after bc_build, 25s
-    test: bp_test, after lerna_build, 12s
+    test: bp_test, after total_build, 12s
 ```
 
 ## Level 2: Scoping
@@ -76,17 +76,17 @@ gantt
 	dateFormat  s
   axisFormat  %S
 
-  section Lerna
+  section Total
 	Level 1: 0, 105s
-  prepare: active, lerna_prepare, 0, 30s
-	build  : active, lerna_build, after lerna_prepare, 45s
-  test  : active, lerna_test, after lerna_build, 16s
+  prepare: active, total_prepare, 0, 30s
+	build  : active, total_build, after total_prepare, 45s
+  test  : active, total_test, after total_build, 16s
 
 
 	section BuildTool
 	prepare: bt_prepare, 0, 10s
-	build  : bt_build, after lerna_prepare, 10s
-	test   : bt_test, after lerna_build, 6s
+	build  : bt_build, after total_prepare, 10s
+	test   : bt_test, after total_build, 6s
 
 	section FooCore
 	skipped: 0
@@ -100,12 +100,12 @@ gantt
   section BarCore *
 	prepare: bc_prepare, after bt_prepare, 10s
 	build: bc_build, after bt_build, 10s
-	test: bc_test, after lerna_build, 16s
+	test: bc_test, after total_build, 16s
 
   section BarPage
 	prepare: bp_prepare, after bc_prepare, 10s
 	build: bp_build, after bc_build, 25s
-	test: bp_test, after lerna_build, 12s
+	test: bp_test, after total_build, 12s
 ```
 
 ## Level 3. Caching
@@ -118,17 +118,17 @@ gantt
 	dateFormat  s
   axisFormat  %S
 
-  section Lerna
+  section Total
 	Level 1: 0, 105s
 	Level 2: 0, 91s
-  prepare: active, lerna_prepare, 0, 30s
-	build  : active, lerna_build, after lerna_prepare, 37s
-  test  : active, lerna_test, after lerna_build, 12s
+  prepare: active, total_prepare, 0, 30s
+	build  : active, total_build, after total_prepare, 37s
+  test  : active, total_test, after total_build, 12s
 
 	section BuildTool
 	prepare: bt_prepare, 0, 10s
-	build  : bt_build, after lerna_prepare, 10s
-	test   : bt_test, after lerna_build, 6s
+	build  : bt_build, after total_prepare, 10s
+	test   : bt_test, after total_build, 6s
 
 	section FooCore
 	skipped: 0
@@ -142,12 +142,12 @@ gantt
   section BarCore
 	prepare: bc_prepare, after bt_prepare, 10s
 	build: crit, bc_build, after bt_build, 2s
-	test: crit, bc_test, after lerna_build, 2s
+	test: crit, bc_test, after total_build, 2s
 
   section BarPage *
 	prepare: bp_prepare, after bc_prepare, 10s
 	build: bp_build, after bc_build, 25s
-	test: bp_test, after lerna_build, 12s
+	test: bp_test, after total_build, 12s
 ```
 
 ## Level 4. Pipelining
@@ -160,13 +160,13 @@ gantt
 	dateFormat  s
   axisFormat  %S
 
-  section Lerna
+  section Total
 	Level 1: 0, 105s
 	Level 2: 0, 91s
 	Level 3: 0, 79s
-  prepare: active, lerna_prepare, 0, 30s
-	build  : active, lerna_build, 10, 45s
-  test  : active, lerna_test, 20, 47s
+  prepare: active, total_prepare, 0, 30s
+	build  : active, total_build, 10, 45s
+  test  : active, total_test, 20, 47s
 
 	section BuildTool
 	prepare: bt_prepare, 0, 10s
