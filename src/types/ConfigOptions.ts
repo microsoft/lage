@@ -8,6 +8,7 @@ export interface ConfigOptions {
   scope: string[];
   cacheOptions: CacheOptions;
   ignore: string[];
+  npmClient: "npm" | "yarn" | "pnpm";
 }
 
 export interface CliOptions {

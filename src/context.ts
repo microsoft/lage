@@ -7,6 +7,7 @@ import Profiler from "p-profiler";
 import PQueue from "p-queue";
 import { arrifyArgs, getPassThroughArgs } from "./args";
 import { EventEmitter } from "events";
+import { findNpmClient } from "./task/findNpmClient";
 
 export function createContext(options: {
   parsedArgs: Arguments;
@@ -17,6 +18,7 @@ export function createContext(options: {
 
   const concurrency = os.cpus().length - 1;
   const command = parsedArgs._;
+  const npmClient = configResults?.config.npmClient || "npm";
 
   return {
     root,
@@ -56,5 +58,7 @@ export function createContext(options: {
     events: new EventEmitter(),
     verbose: parsedArgs.verbose,
     profile: parsedArgs.profile,
+    npmClient,
+    npmCmd: findNpmClient(npmClient),
   };
 }
