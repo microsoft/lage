@@ -9,7 +9,7 @@ import { formatDuration } from "../logger/formatDuration";
 
 export async function taskWrapper(
   taskId: TaskId,
-  fn: (info: PackageInfo, context: RunContext) => void | Promise<void>,
+  fn: (info: PackageInfo, context: RunContext) => Promise<void>,
   context: RunContext
 ) {
   const { allPackages, profiler, measures, queue } = context;

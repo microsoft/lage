@@ -896,16 +896,6 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@lerna/profiler@^3.20.0":
-  version "3.20.0"
-  resolved "https://registry.yarnpkg.com/@lerna/profiler/-/profiler-3.20.0.tgz#0f6dc236f4ea8f9ea5f358c6703305a4f32ad051"
-  integrity sha512-bh8hKxAlm6yu8WEOvbLENm42i2v9SsR4WbrCWSbsmOElx3foRnMlYk7NkGECa+U5c3K4C6GeBbwgqs54PP7Ljg==
-  dependencies:
-    figgy-pudding "^3.5.1"
-    fs-extra "^8.1.0"
-    npmlog "^4.1.2"
-    upath "^1.2.0"
-
 "@microsoft/rush-lib@^5.23.2":
   version "5.23.2"
   resolved "https://registry.yarnpkg.com/@microsoft/rush-lib/-/rush-lib-5.23.2.tgz#19a28dad1b4846aa17f8665e6abb457d810283ba"
@@ -6607,6 +6597,11 @@ p-map@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-map/-/p-map-2.1.0.tgz#310928feef9c9ecc65b68b17693018a665cea175"
   integrity sha512-y3b8Kpd8OAN444hxfBbFfj1FY/RjtTd8tzYwhUqNYXx0fXx2iX4maP4Qr6qhIKbQXI02wTLAda4fYUbDagTUFw==
 
+p-profiler@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/p-profiler/-/p-profiler-0.1.2.tgz#ff737d74eaf429a986da5375fdbacfac4d05b07a"
+  integrity sha512-9aeI5KeYwt7eaxnGR7t+d/8f22cId2yPtPnWWQ2mVrhaFFFedwAuW4A1JbQGaopWaYtRNpv8oQX3HzNalOIixw==
+
 p-queue@*:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-6.3.0.tgz#19bfa4485db7e6a0c135049ff6716375880d9c3a"
@@ -9007,7 +9002,7 @@ unset-value@^1.0.0:
     has-value "^0.3.1"
     isobject "^3.0.0"
 
-upath@^1.1.0, upath@^1.1.1, upath@^1.2.0:
+upath@^1.1.0, upath@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/upath/-/upath-1.2.0.tgz#8f66dbcd55a883acdae4408af8b035a5044c1894"
   integrity sha512-aZwGpamFO61g3OlfT7OQCHqhGnW43ieH9WZeP7QxN/G/jS4jfqUkZxoryvJgVPEcrl5NL/ggHsSmLMHuH64Lhg==

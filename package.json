@@ -12,24 +12,24 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "echo hello",
     "change": "beachball change",
+    "checkchange": "beachball check",
     "docs": "vuepress dev docs --host localhost",
     "docs:build": "vuepress build docs",
     "gh-pages": "gh-pages",
     "release": "beachball publish -y",
     "release:docs": "yarn docs:build && yarn gh-pages -d docs/.vuepress/dist --dotfiles",
-    "checkchange": "beachball check",
-    "start": "tsc -w --preserveWatchOutput"
+    "start": "tsc -w --preserveWatchOutput",
+    "test": "echo hello"
   },
   "dependencies": {
-    "@lerna/profiler": "^3.20.0",
     "backfill": "5.1.0",
     "chalk": "^4.0.0",
     "cosmiconfig": "^6.0.0",
     "git-url-parse": "^11.1.2",
     "npmlog": "^4.1.2",
     "p-graph": "^0.4.0",
+    "p-profiler": "^0.1.2",
     "p-queue": "^6.4.0",
     "workspace-tools": "^0.7.5",
     "yargs-parser": "^18.1.3"

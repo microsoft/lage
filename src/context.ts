@@ -3,7 +3,7 @@ import { CosmiconfigResult } from "cosmiconfig/dist/types";
 import { RunContext } from "./types/RunContext";
 import { getPackageInfos } from "workspace-tools";
 import os from "os";
-import Profiler from "@lerna/profiler";
+import Profiler from "p-profiler";
 import PQueue from "p-queue";
 import { arrifyArgs, getPassThroughArgs } from "./args";
 import { EventEmitter } from "events";
@@ -45,7 +45,8 @@ export function createContext(options: {
     },
     profiler: new Profiler({
       concurrency,
-      outputDirectory: process.cwd(),
+      prefix: "lage",
+      outDir: process.cwd(),
     }),
     taskLogs: new Map(),
     queue: new PQueue({ concurrency }),

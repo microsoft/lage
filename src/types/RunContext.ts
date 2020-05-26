@@ -1,6 +1,6 @@
 import { TaskDepsGraph, Tasks, TaskId } from "./Task";
 import { PackageInfos } from "workspace-tools";
-import Profiler from "@lerna/profiler";
+import Profiler from "p-profiler";
 import PQueue from "p-queue";
 import { EventEmitter } from "events";
 import { ConfigOptions, CliOptions } from "./ConfigOptions";
