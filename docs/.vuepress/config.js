@@ -8,6 +8,17 @@ module.exports = {
       { text: "Guide", link: "/guide/" },
       { text: "Github", link: "https://github.com/microsoft/lage" },
     ],
-    sidebar: ["/", "/guide/", "/guide/config", "/guide/cli"],
+    sidebar: ["/", "/guide/", "/guide/levels", "/guide/config", "/guide/cli"],
   },
+  plugins: [
+    [
+      "mermaidjs",
+      {
+        gantt: {
+          barHeight: 36,
+          fontSize: 24,
+        },
+      },
+    ],
+  ],
 };

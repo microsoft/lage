@@ -47,6 +47,11 @@
     "beachball": "^1.31.0",
     "gh-pages": "^2.2.0",
     "typescript": "^3.8.3",
-    "vuepress": "1.5.0"
+    "vuepress": "1.5.0",
+    "vuepress-plugin-mermaidjs": "1.5.1"
+  },
+  "resolutions": {
+    "watchpack": "1.6.1",
+    "mermaid": "8.5.0"
   }
 }
