@@ -1,80 +1,18 @@
-import {
-  getScopedPackages,
-  getTransitiveDependencies,
-  PackageInfos,
-  getDependentMap,
-  getChangedPackages,
-} from "workspace-tools";
-import { getTaskId, getPackageTaskFromId } from "./taskId";
+import { getDependentMap } from "workspace-tools";
+import { getTaskId } from "./taskId";
 import { RunContext } from "../types/RunContext";
 import { TaskId } from "../types/Task";
 import { generateTask } from "./generateTask";
-import path from "path";
-import {
-  ComputeHashTask,
-  CachePutTask,
-  CacheFetchTask,
-} from "../cache/cacheTasks";
-import { cosmiconfigSync } from "cosmiconfig";
 import logger from "npmlog";
-
-const ConfigModuleName = "lage";
-
-function filterPackages(context: RunContext) {
-  const { allPackages, scope, since, deps, root, ignore } = context;
-
-  let scopes = ([] as string[]).concat(scope);
-
-  let filtered: string[] = [];
-  let hasScopes = scopes && scopes.length > 0;
-  let hasSince = typeof since !== "undefined";
-
-  // If NOTHING is specified, use all packages
-  if (!hasScopes && !hasSince) {
-    logger.verbose("filterPackages", "scope: all packages");
-    filtered = Object.keys(allPackages);
-  }
-
-  // If scoped is defined, get scoped packages
-  if (hasScopes) {
-    const scoped = getScopedPackages(scopes, allPackages);
-    filtered = filtered.concat(scoped);
-    logger.verbose("filterPackages", `scope: ${scoped.join(",")}`);
-  }
-
-  if (hasSince) {
-    const changed = getChangedPackages(root, since || "master", ignore);
-    filtered = filtered.concat(changed);
-    logger.verbose("filterPackages", `changed: ${changed.join(",")}`);
-  }
-
-  if (deps) {
-    filtered = filtered.concat(
-      getTransitiveDependencies(filtered, allPackages)
-    );
-  }
-
-  const unique = new Set(filtered);
-
-  return [...unique];
-}
+import { filterPackages } from "./filterPackages";
+import { isValidTaskId } from "./isValidTaskId";
 
 function getPipeline(pkg: string, context: RunContext) {
-  const { allPackages, pipeline: defaultPipeline } = context;
-
-  const info = allPackages[pkg];
-
-  const results = cosmiconfigSync(ConfigModuleName).search(
-    path.dirname(info.packageJsonPath)
-  );
-
-  let pipeline = defaultPipeline;
-
-  if (results && results.config) {
-    pipeline = results.config.pipeline;
+  if (context.packagePipelines.has(pkg)) {
+    return context.packagePipelines.get(pkg)!;
   }
 
-  return pipeline;
+  return context.defaultPipeline;
 }
 
 /**
@@ -108,6 +46,32 @@ function generateTaskDepsGraph(
   }
 
   return graph;
+}
+
+/**
+ * A functio
+ * @param fromTaskId
+ * @param toTaskId
+ * @param context
+ */
+function createDep(fromTaskId: TaskId, toTaskId: TaskId, context: RunContext) {
+  const { tasks, taskDepsGraph, allPackages } = context;
+
+  if (
+    !isValidTaskId(fromTaskId, allPackages) ||
+    !isValidTaskId(toTaskId, allPackages)
+  ) {
+    return;
+  }
+
+  taskDepsGraph.push([fromTaskId, toTaskId]);
+  if (!tasks.has(fromTaskId)) {
+    tasks.set(fromTaskId, () => generateTask(fromTaskId, context));
+  }
+
+  if (!tasks.has(toTaskId)) {
+    tasks.set(toTaskId, () => generateTask(toTaskId, context));
+  }
 }
 
 /**
@@ -159,35 +123,5 @@ export function discoverTaskDeps(context: RunContext) {
         }
       }
     }
-  }
-}
-
-function isValidTaskId(taskId: string, allPackages: PackageInfos) {
-  const [pkg, task] = getPackageTaskFromId(taskId);
-  return (
-    taskId === "" ||
-    task === "" ||
-    [ComputeHashTask, CachePutTask, CacheFetchTask].includes(task) ||
-    Object.keys(allPackages[pkg].scripts || {}).includes(task)
-  );
-}
-
-function createDep(fromTaskId: TaskId, toTaskId: TaskId, context: RunContext) {
-  const { tasks, taskDepsGraph, allPackages } = context;
-
-  if (
-    !isValidTaskId(fromTaskId, allPackages) ||
-    !isValidTaskId(toTaskId, allPackages)
-  ) {
-    return;
-  }
-
-  taskDepsGraph.push([fromTaskId, toTaskId]);
-  if (!tasks.get(fromTaskId)) {
-    tasks.set(fromTaskId, () => generateTask(fromTaskId, context));
-  }
-
-  if (!tasks.get(toTaskId)) {
-    tasks.set(toTaskId, () => generateTask(toTaskId, context));
   }
 }

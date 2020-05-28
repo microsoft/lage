@@ -19,12 +19,18 @@ interface Measures {
   taskStats: TaskStats[];
 }
 
+export interface Pipeline {
+  [task: string]: string[];
+}
+
 export interface RunContext extends CliOptions, ConfigOptions {
   root: string;
   taskDepsGraph: TaskDepsGraph;
   tasks: Tasks;
   allPackages: PackageInfos;
-  pipeline: { [task: string]: string[] };
+  changedPackages: string[];
+  defaultPipeline: Pipeline;
+  packagePipelines: Map<string, Pipeline>;
   measures: Measures;
   profiler: Profiler;
   taskLogs: Map<TaskId, string[]>;
