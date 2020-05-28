@@ -1,5 +1,5 @@
 import { getDependentMap } from "workspace-tools";
-import { getTaskId } from "./taskId";
+import { getTaskId, getPackageTaskFromId } from "./taskId";
 import { RunContext } from "../types/RunContext";
 import { TaskId } from "../types/Task";
 import { generateTask } from "./generateTask";
@@ -13,39 +13,6 @@ function getPipeline(pkg: string, context: RunContext) {
   }
 
   return context.defaultPipeline;
-}
-
-/**
- * Gather all the task dependencies defined by the "pipeline" setting, generates a list of edges
- * @param targetTask
- * @param pipeline
- */
-function generateTaskDepsGraph(
-  targetTasks: string[],
-  pipeline: { [key: string]: string[] }
-) {
-  const queue = [...targetTasks];
-  const visited = new Set<string>();
-  const graph: [string, string][] = [];
-  while (queue.length > 0) {
-    const task = queue.shift()!;
-    if (!visited.has(task)) {
-      visited.add(task);
-
-      if (Array.isArray(pipeline[task])) {
-        if (pipeline[task].length > 0) {
-          for (const depTask of pipeline[task]) {
-            graph.push([depTask, task]);
-            queue.push(depTask);
-          }
-        } else {
-          graph.push(["", task]);
-        }
-      }
-    }
-  }
-
-  return graph;
 }
 
 /**
@@ -77,7 +44,7 @@ function createDep(fromTaskId: TaskId, toTaskId: TaskId, context: RunContext) {
 /**
  * identify and create a realized task dependency map (discovering)
  *
- * This function will traverse the package dependency graph, and will end up traverse the task depenendencies within the same package (2 layered traversal)
+ * This function will traverse the package-task dependency graph, calling createDeps as appropriate
  */
 export function discoverTaskDeps(context: RunContext) {
   logger.verbose("discoverTaskDeps", "Discovering task deps");
@@ -87,40 +54,54 @@ export function discoverTaskDeps(context: RunContext) {
   const filteredPackages = filterPackages(context);
 
   // initialize a queue for a breadth first approach
-  const traversalQueue = filteredPackages;
-  const visited = new Set<string>();
+  const traversalQueue: TaskId[] = [];
+
+  for (const pkg of filteredPackages) {
+    for (const initialCommand of command) {
+      traversalQueue.push(getTaskId(pkg, initialCommand));
+    }
+  }
+
+  const visited = new Set<TaskId>();
   const dependentMap = getDependentMap(allPackages);
 
   while (traversalQueue.length > 0) {
-    const pkg = traversalQueue.shift()!;
+    const taskId = traversalQueue.shift()!;
+    const [pkg, task] = getPackageTaskFromId(taskId);
 
-    if (!visited.has(pkg)) {
-      visited.add(pkg);
+    if (!visited.has(taskId)) {
+      visited.add(taskId);
 
       // get pipeline
       const pipeline = getPipeline(pkg, context);
 
       // establish task graph; push dependents in the traversal queue
-      const depTaskGraph = generateTaskDepsGraph(command, pipeline);
+      // const depTaskGraph = generateTaskDepsGraph(command, pipeline);
+      if (pipeline[task].length > 0) {
+        for (const from of pipeline[task]) {
+          const to = task;
+          const dependentPkgs = dependentMap.get(pkg);
+          const toTaskId = getTaskId(pkg, to);
 
-      for (const [from, to] of depTaskGraph) {
-        const dependentPkgs = dependentMap.get(pkg);
-        const toTaskId = getTaskId(pkg, to);
-
-        if (from.startsWith("^") && dependentPkgs !== undefined) {
-          // add task dep from all the package deps within repo
-          for (const depPkg of dependentPkgs!) {
-            const fromTaskId = getTaskId(depPkg, from.slice(1));
+          if (from.startsWith("^") && dependentPkgs !== undefined) {
+            // add task dep from all the package deps within repo
+            for (const depPkg of dependentPkgs!) {
+              const fromTaskId = getTaskId(depPkg, from.slice(1));
+              createDep(fromTaskId, toTaskId, context);
+              // now push the dependents in the traversal queue
+              traversalQueue.push(toTaskId);
+            }
+          } else {
+            const fromTaskId = getTaskId(pkg, from);
+            // add task dep from same package
             createDep(fromTaskId, toTaskId, context);
+            traversalQueue.push(toTaskId);
           }
-
-          // now push the dependents in the traversal queue
-          traversalQueue.push(pkg);
-        } else {
-          const fromTaskId = getTaskId(pkg, from);
-          // add task dep from same package
-          createDep(fromTaskId, toTaskId, context);
         }
+      } else {
+        console.log(taskId);
+        const fromTaskId = getTaskId(pkg, "");
+        createDep(fromTaskId, taskId, context);
       }
     }
   }
