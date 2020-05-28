@@ -26,6 +26,14 @@ export function createContext(options: {
   const allPackages = getPackageInfos(root);
   const packagePipelines = getPackagePipelines(allPackages);
 
+  // deps should be default true, unless exclusively turned off with '--no-deps' or from config file with "deps: false"
+  const deps =
+    parsedArgs.deps === false
+      ? false
+      : configResults?.config.deps === false
+      ? false
+      : true;
+
   return {
     root,
     pipeline: {},
@@ -46,7 +54,7 @@ export function createContext(options: {
     since,
     ignore,
     changedPackages,
-    deps: parsedArgs.deps || configResults?.config.deps || false,
+    deps,
     scope: parsedArgs.scope || configResults?.config.scope || [],
     measures: {
       start: [0, 0],
