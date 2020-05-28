@@ -7,7 +7,12 @@ import { RunContext } from "../types/RunContext";
 import logger, { NpmLogWritable } from "../logger";
 import { taskWrapper } from "./taskWrapper";
 import { abort } from "./abortSignal";
-import os from "os";
+
+function wait(time: number): Promise<void> {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, time);
+  });
+}
 
 export function npmTask(taskId: TaskId, context: RunContext) {
   const [pkg, task] = getPackageTaskFromId(taskId);
@@ -58,7 +63,7 @@ export function npmTask(taskId: TaskId, context: RunContext) {
             queue.clear();
             cp.kill("SIGKILL");
           }
-        }),
+        }).then(() => wait(100)),
       context
     )
   );
