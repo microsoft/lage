@@ -89,13 +89,13 @@ export function discoverTaskDeps(context: RunContext) {
               const fromTaskId = getTaskId(depPkg, from.slice(1));
               createDep(fromTaskId, toTaskId, context);
               // now push the dependents in the traversal queue
-              traversalQueue.push(toTaskId);
+              traversalQueue.push(fromTaskId);
             }
           } else {
             const fromTaskId = getTaskId(pkg, from);
             // add task dep from same package
             createDep(fromTaskId, toTaskId, context);
-            traversalQueue.push(toTaskId);
+            traversalQueue.push(fromTaskId);
           }
         }
       } else {
