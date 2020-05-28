@@ -37,8 +37,6 @@ export async function fetchBackfill(info: PackageInfo, context: RunContext) {
   const logger = backfill.makeLogger("error", process.stdout, process.stderr);
   const hash = hashes[info.name];
 
-  log.verbose("fetchBackfill", `fetch started for ${info.name}`);
-
   try {
     const cacheHit = await backfill.fetch(
       packagePath,
@@ -50,8 +48,6 @@ export async function fetchBackfill(info: PackageInfo, context: RunContext) {
   } catch (e) {
     log.error(`${info.name} fetchBackfill`, e);
   }
-
-  log.verbose("fetchBackfill", `fetch done for ${info.name}`);
 }
 
 export async function putBackfill(info: PackageInfo, context: RunContext) {
@@ -60,15 +56,11 @@ export async function putBackfill(info: PackageInfo, context: RunContext) {
   const logger = backfill.makeLogger("warn", process.stdout, process.stderr);
   const hash = hashes[info.name];
 
-  log.verbose("putBackfill", `put started for ${info.name}`);
-
   try {
     await backfill.put(packagePath, hash, logger, cacheConfig);
   } catch (e) {
     // sometimes outputGlob don't match any files, so skipping this
   }
-
-  log.verbose("putBackfill", `put done for ${info.name}`);
 }
 
 export { cacheHits };

@@ -49,7 +49,7 @@ function generateTaskDepsGraph(
 }
 
 /**
- * A functio
+ * A function that creates dependency relationship within the context.tasks and context.taskDepsGraph
  * @param fromTaskId
  * @param toTaskId
  * @param context
