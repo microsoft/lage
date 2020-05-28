@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 28 May 2020 19:07:51 GMT and should not be manually modified.
+This log was last generated on Thu, 28 May 2020 23:14:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.2
+
+Thu, 28 May 2020 23:14:00 GMT
+
+### Patches
+
+- refactor to reduce the scope of what gets run in a scoped run (kchau@microsoft.com)
 
 ## 0.8.1
 

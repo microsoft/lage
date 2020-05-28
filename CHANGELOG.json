@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 28 May 2020 23:14:00 GMT",
+      "tag": "lage_v0.8.2",
+      "version": "0.8.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "refactor to reduce the scope of what gets run in a scoped run",
+            "author": "kchau@microsoft.com",
+            "commit": "a2644e81704259dd8a88b6d2754eaf4e1df4888f",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 28 May 2020 19:07:51 GMT",
       "tag": "lage_v0.8.1",
       "version": "0.8.1",

@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "refactor to reduce the scope of what gets run in a scoped run",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch",
-  "date": "2020-05-28T21:05:09.189Z"
-}
