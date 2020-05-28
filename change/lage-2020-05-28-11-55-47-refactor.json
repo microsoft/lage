@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "internal refactoring for discoverTaskDeps",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2020-05-28T18:55:47.239Z"
+}
