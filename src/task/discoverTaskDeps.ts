@@ -77,7 +77,7 @@ export function discoverTaskDeps(context: RunContext) {
 
       // establish task graph; push dependents in the traversal queue
       // const depTaskGraph = generateTaskDepsGraph(command, pipeline);
-      if (pipeline[task].length > 0) {
+      if (pipeline[task] && pipeline[task].length > 0) {
         for (const from of pipeline[task]) {
           const to = task;
           const dependentPkgs = dependentMap.get(pkg);
