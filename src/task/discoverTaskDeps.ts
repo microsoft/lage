@@ -99,9 +99,9 @@ export function discoverTaskDeps(context: RunContext) {
           }
         }
       } else {
-        console.log(taskId);
         const fromTaskId = getTaskId(pkg, "");
         createDep(fromTaskId, taskId, context);
+        // do not need to traverse farther because "from" is blank
       }
     }
   }
