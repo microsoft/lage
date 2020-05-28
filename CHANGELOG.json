@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 28 May 2020 19:07:51 GMT",
+      "tag": "lage_v0.8.1",
+      "version": "0.8.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "internal refactoring for discoverTaskDeps",
+            "author": "kchau@microsoft.com",
+            "commit": "0b0b28f6f1bfa1d077b0c3399601ee10907c036d",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 26 May 2020 18:54:57 GMT",
       "tag": "lage_v0.8.0",
       "version": "0.8.0",

@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 26 May 2020 18:54:57 GMT and should not be manually modified.
+This log was last generated on Thu, 28 May 2020 19:07:51 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.1
+
+Thu, 28 May 2020 19:07:51 GMT
+
+### Patches
+
+- internal refactoring for discoverTaskDeps (kchau@microsoft.com)
 
 ## 0.8.0
 
