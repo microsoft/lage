@@ -1,5 +1,5 @@
-import path from 'path';
-import fs from 'fs';
+import path from "path";
+import fs from "fs";
 
 /**
  * Starting from `cwd`, searches up the directory hierarchy for `pathName`
@@ -27,22 +27,8 @@ export function searchUp(pathName: string, cwd: string) {
   return null;
 }
 
-export function findGitRoot(cwd: string) {
-  return searchUp('.git', cwd);
-}
-
 export function findPackageRoot(cwd: string) {
-  return searchUp('package.json', cwd);
-}
-
-export function getChangePath(cwd: string) {
-  const gitRoot = findGitRoot(cwd);
-
-  if (gitRoot) {
-    return path.join(gitRoot, 'change');
-  }
-
-  return null;
+  return searchUp("package.json", cwd);
 }
 
 export function isChildOf(child: string, parent: string) {

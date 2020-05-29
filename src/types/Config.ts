@@ -1,11 +1,11 @@
 import { Config as CacheOptions } from "backfill-config";
+import { Pipeline } from "./Pipeline";
 
 export { CacheOptions };
 
 export interface ConfigOptions {
-  pipeline: { [task: string]: string[] };
+  pipeline: Pipeline;
   cache: boolean;
-  scope: string[];
   cacheOptions: CacheOptions;
   ignore: string[];
   npmClient: "npm" | "yarn" | "pnpm";
@@ -24,3 +24,5 @@ export interface CliOptions {
   profile: boolean;
   ignore: string[];
 }
+
+export type Config = ConfigOptions & CliOptions;

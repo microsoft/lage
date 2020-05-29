@@ -1,11 +1,11 @@
+import { filterPackages } from "./filterPackages";
+import { generateTask } from "./generateTask";
 import { getDependentMap } from "workspace-tools";
 import { getTaskId, getPackageTaskFromId } from "./taskId";
+import { isValidTaskId } from "./isValidTaskId";
 import { RunContext } from "../types/RunContext";
 import { TaskId } from "../types/Task";
-import { generateTask } from "./generateTask";
 import logger from "npmlog";
-import { filterPackages } from "./filterPackages";
-import { isValidTaskId } from "./isValidTaskId";
 
 function getPipeline(pkg: string, context: RunContext) {
   if (context.packagePipelines.has(pkg)) {

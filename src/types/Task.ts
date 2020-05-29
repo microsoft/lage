@@ -1,7 +1,11 @@
 export type TaskId = string;
-export type TaskDeps = TaskId[];
 
-/** subject, dependent (e.g. [test, build]) */
-export type TaskDepsGraph = [TaskId, TaskId][];
+/** subject, dependent (e.g. [from, to]) */
+export type TaskDeps = [TaskId, TaskId][];
 
 export type Tasks = Map<TaskId, (TaskId) => Promise<unknown>>;
+
+export interface TaskGraph {
+  taskDeps: TaskDeps;
+  tasks: Tasks;
+}

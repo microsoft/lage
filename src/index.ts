@@ -8,6 +8,8 @@ import log from "npmlog";
 import { parseArgs, validateInput } from "./args";
 import { createContext } from "./context";
 import { setMaxEventListeners } from "./task/abortSignal";
+import { getConfig } from "./config/getConfig";
+import { getWorkspace } from "./workspace/getWorkspace";
 
 console.log(`🧱 Lage task runner 🧱`);
 console.log(``);
@@ -29,11 +31,14 @@ const parsedArgs = parseArgs();
 validateInput(parsedArgs);
 
 // Create context
-const context = createContext({ parsedArgs, root, configResults });
+const cwd = process.cwd();
+const config = getConfig(cwd);
+const context = createContext(config);
+const workspace = getWorkspace(cwd, config);
 
 // Initialize logger
 initLogger(context);
-if (context.verbose) {
+if (config.verbose) {
   log.level = "verbose";
 }
 
