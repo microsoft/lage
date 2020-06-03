@@ -5,7 +5,7 @@ import { npmTask } from "./npmTask";
 import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { filterPackages } from "./filterPackages";
 import { Workspace } from "../types/Workspace";
-import { setMaxLengths, setTaskLogMaxLengths } from "../logger";
+import { setTaskLogMaxLengths } from "../logger";
 
 export async function runTasks(options: {
   graph: TopologicalGraph;
