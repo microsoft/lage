@@ -1,14 +1,10 @@
 import { createContext } from "./context";
 import { getConfig } from "./config/getConfig";
-import { getDependentMap } from "workspace-tools";
 import { getWorkspace } from "./workspace/getWorkspace";
 import { parseArgs, validateInput } from "./args";
 import { reportSummary } from "./logger/reportSummary";
 import { runTasks } from "./task/taskRunner";
-import { TopologicalGraph } from "@microsoft/task-scheduler";
-import log from "npmlog";
-import path from "path";
-import { logLevel } from "./logger";
+import { logLevel, logger } from "./logger";
 import { generateTopologicGraph } from "./workspace/generateTopologicalGraph";
 
 console.log(`🧱 Lage task runner 🧱`);
@@ -40,7 +36,7 @@ const graph = generateTopologicGraph(workspace);
 
   if (config.profile) {
     const profileFile = profiler.output();
-    log.info("runTasks", `Profile saved to ${profileFile}`);
+    logger.info("runTasks", `Profile saved to ${profileFile}`);
   }
 
   context.measures.duration = process.hrtime(context.measures.start);
