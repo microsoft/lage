@@ -1,6 +1,8 @@
 import { RunContext } from "../types/RunContext";
 import { getTaskId, getPackageTaskFromId } from "../task/taskId";
 import { generateTask } from "../task/generateTask";
+import { TaskGraph } from "../types/Task";
+import { Config } from "../types/Config";
 
 export const ComputeHashTask = "??computeHash";
 export const CacheFetchTask = "??fetch";
@@ -12,32 +14,26 @@ export function isCacheTask(task: string) {
   );
 }
 
-export function generateCacheTasks(context: RunContext) {
-  const { tasks, taskDepsGraph, cache } = context;
-  if (context.cache) {
-    for (const taskId of tasks.keys()) {
-      const [pkg, task] = getPackageTaskFromId(taskId);
+export function generateCacheTasks(taskGraph: TaskGraph) {
+  const { tasks, taskDeps } = taskGraph;
 
-      if (
-        task !== CacheFetchTask &&
-        task !== CachePutTask &&
-        task !== ComputeHashTask &&
-        pkg
-      ) {
-        const hashTaskId = getTaskId(pkg, ComputeHashTask);
-        const fetchTaskId = getTaskId(pkg, CacheFetchTask);
-        const putTaskId = getTaskId(pkg, CachePutTask);
+  for (const taskId of tasks.keys()) {
+    const [pkg, task] = getPackageTaskFromId(taskId);
 
-        // set up the graph
-        taskDepsGraph.push([hashTaskId, fetchTaskId]);
-        tasks.set(hashTaskId, () => generateTask(hashTaskId, context));
+    if (
+      task !== CacheFetchTask &&
+      task !== CachePutTask &&
+      task !== ComputeHashTask &&
+      pkg
+    ) {
+      const hashTaskId = getTaskId(pkg, ComputeHashTask);
+      const fetchTaskId = getTaskId(pkg, CacheFetchTask);
+      const putTaskId = getTaskId(pkg, CachePutTask);
 
-        taskDepsGraph.push([fetchTaskId, taskId]);
-        tasks.set(fetchTaskId, () => generateTask(fetchTaskId, context));
-
-        taskDepsGraph.push([taskId, putTaskId]);
-        tasks.set(putTaskId, () => generateTask(putTaskId, context));
-      }
+      // set up the graph
+      taskDeps.push([hashTaskId, fetchTaskId]);
+      taskDeps.push([fetchTaskId, taskId]);
+      taskDeps.push([taskId, putTaskId]);
     }
   }
 }

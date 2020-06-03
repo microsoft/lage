@@ -7,7 +7,10 @@ import {
 import { Config } from "../types/Config";
 import { findNpmClient } from "../task/findNpmClient";
 
-export function getWorkspace(cwd: string, config: Config): Workspace {
+export function getWorkspace(
+  cwd: string,
+  config: Pick<Config, "since" | "ignore" | "npmClient">
+): Workspace {
   const root = findGitRoot(cwd)!;
   if (!root) {
     throw new Error("This must be called inside a git-controlled repo");
@@ -20,7 +23,7 @@ export function getWorkspace(cwd: string, config: Config): Workspace {
   return {
     root,
     allPackages,
-    changePackages: getChangedPackages(root, since, ignore),
+    changedPackages: getChangedPackages(root, since, ignore),
     npmClient,
     npmCmd,
   };

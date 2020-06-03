@@ -5,5 +5,5 @@ export function abort(context: RunContext) {
 }
 
 export function setMaxEventListeners(context: RunContext) {
-  context.events.setMaxListeners(context.tasks.size);
+  // context.events.setMaxListeners(context.tasks.size);
 }

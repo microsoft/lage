@@ -1,12 +1,13 @@
-import { TaskId } from "../types/Task";
-import { getPackageTaskFromId } from "./taskId";
-import { spawn } from "child_process";
-import path from "path";
-
-import { RunContext } from "../types/RunContext";
-import logger, { NpmLogWritable } from "../logger";
-import { taskWrapper } from "./taskWrapper";
 import { abort } from "./abortSignal";
+import { Config } from "../types/Config";
+import { findNpmClient } from "./findNpmClient";
+import { getTaskId } from "./taskId";
+import { RunContext } from "../types/RunContext";
+import { spawn } from "child_process";
+import { taskWrapper } from "./taskWrapper";
+import logger, { NpmLogWritable } from "../logger";
+import path from "path";
+import { PackageInfo } from "workspace-tools";
 
 function wait(time: number): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -14,18 +15,30 @@ function wait(time: number): Promise<void> {
   });
 }
 
-export function npmTask(taskId: TaskId, context: RunContext) {
-  const [pkg, task] = getPackageTaskFromId(taskId);
-  const { allPackages, queue, npmCmd } = context;
+let npmCmd: string;
 
-  const npmArgs = [...context.node, "run", task, "--", ...context.args];
+export function npmTask(
+  task: string,
+  info: PackageInfo,
+  context: RunContext,
+  config: Config
+) {
+  const { queue, events, measures } = context;
+  const { node, args, npmClient } = config;
+
+  const taskId = getTaskId(info.name, task);
+
+  // cached npmCmd
+  npmCmd = npmCmd || findNpmClient(npmClient);
+
+  const npmArgs = [...node, "run", task, "--", ...args];
 
   return queue.add(() =>
     taskWrapper(
       taskId,
       () =>
         new Promise((resolve, reject) => {
-          if (!allPackages[pkg].scripts || !allPackages[pkg].scripts![task]) {
+          if (!info.scripts || !info.scripts![task]) {
             logger.info(taskId, `Empty script detected, skipping`);
             return resolve();
           }
@@ -33,11 +46,11 @@ export function npmTask(taskId: TaskId, context: RunContext) {
           logger.verbose(taskId, `Running ${[npmCmd, ...npmArgs].join(" ")}`);
 
           const cp = spawn(npmCmd, npmArgs, {
-            cwd: path.dirname(allPackages[pkg].packageJsonPath),
+            cwd: path.dirname(info.packageJsonPath),
             stdio: "pipe",
           });
 
-          context.events.once("abort", terminate);
+          events.once("abort", terminate);
 
           const stdoutLogger = new NpmLogWritable(taskId);
           cp.stdout.pipe(stdoutLogger);
@@ -46,13 +59,13 @@ export function npmTask(taskId: TaskId, context: RunContext) {
           cp.stderr.pipe(stderrLogger);
 
           cp.on("exit", (code) => {
-            context.events.off("off", terminate);
+            events.off("off", terminate);
 
             if (code === 0) {
               return resolve();
             }
 
-            context.measures.failedTask = taskId;
+            measures.failedTask = taskId;
 
             abort(context);
             reject();

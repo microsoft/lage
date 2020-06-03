@@ -9,10 +9,10 @@ import { formatDuration } from "../logger/formatDuration";
 
 export async function taskWrapper(
   taskId: TaskId,
-  fn: (info: PackageInfo, context: RunContext) => Promise<void>,
+  fn: () => Promise<void>,
   context: RunContext
 ) {
-  const { allPackages, profiler, measures, queue } = context;
+  const { profiler, measures } = context;
 
   const [pkg, task] = getPackageTaskFromId(taskId);
 
@@ -24,7 +24,7 @@ export async function taskWrapper(
     }
 
     try {
-      await profiler.run(() => fn(allPackages[pkg], context), taskId);
+      await profiler.run(() => fn(), taskId);
       const duration = process.hrtime(start);
       if (!isCacheTask(task)) {
         measures.taskStats.push({ taskId, start, duration, status: "success" });

@@ -1,8 +1,8 @@
 import { getEnvConfig, createDefaultConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
-import { RunContext } from "../types/RunContext";
+import { Config } from "../types/Config";
 
-export function getCacheConfig(cwd: string, context: RunContext) {
+export function getCacheConfig(cwd: string, config: Config) {
   const defaultCacheConfig = createDefaultConfig(cwd);
 
   // in lage, default mode is to SKIP locally
@@ -12,7 +12,7 @@ export function getCacheConfig(cwd: string, context: RunContext) {
   const envConfig = getEnvConfig(logger);
   return {
     ...defaultCacheConfig,
-    ...context.cacheOptions,
+    ...config.cacheOptions,
     ...envConfig,
   };
 }
