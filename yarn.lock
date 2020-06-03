@@ -933,10 +933,10 @@
     wordwrap "~1.0.0"
     z-schema "~3.18.3"
 
-"@microsoft/task-scheduler@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/task-scheduler/-/task-scheduler-2.0.1.tgz#bfbef6c5ed551e3d4c46a72fd6d3e380486ec004"
-  integrity sha512-F2C6IAfWAqS83IAfWyyWlgj0NKgL0JN/V1Kyu98wF/O8LD1I72oqcbp0gvDBxN6Zl4Lfe6k0Fcw4L3DxSLQurA==
+"@microsoft/task-scheduler@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@microsoft/task-scheduler/-/task-scheduler-2.0.2.tgz#020a446c2f559a3b0cbb553c27bf037b3b8e0aea"
+  integrity sha512-aXZ3dus9+cZ0h1XoH9vfasz6bqXdmanWUTvzvvj5zNKIRMG02UVLVf3La20GsQkCr0icZ7BTwVSJJbazLn2wHQ==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

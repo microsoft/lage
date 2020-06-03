@@ -14,7 +14,13 @@ export async function runTasks(options: {
 }) {
   const { graph, workspace, context, config } = options;
 
-  let pipeline = createPipeline(graph);
+  let pipeline = createPipeline(graph, {
+    // dummy logger for task-scheduler because lage already has logger for its tasks
+    logger: {
+      error: (_msg) => {},
+      log: (_msg) => {},
+    },
+  });
 
   const taskNames = Object.keys(config.pipeline);
 
