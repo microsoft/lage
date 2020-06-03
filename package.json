@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@microsoft/task-scheduler": "^2.0.1",
+    "abort-controller": "^3.0.0",
     "backfill": "5.1.0",
     "chalk": "^4.0.0",
     "cosmiconfig": "^6.0.0",

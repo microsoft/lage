@@ -2,13 +2,13 @@ import { createContext } from "./context";
 import { getConfig } from "./config/getConfig";
 import { getDependentMap } from "workspace-tools";
 import { getWorkspace } from "./workspace/getWorkspace";
-import { initLogger } from "./logger";
 import { parseArgs, validateInput } from "./args";
 import { reportSummary } from "./logger/reportSummary";
 import { runTasks } from "./task/taskRunner";
 import { TopologicalGraph } from "@microsoft/task-scheduler";
 import log from "npmlog";
 import path from "path";
+import { logLevel } from "./logger";
 
 console.log(`🧱 Lage task runner 🧱`);
 console.log(``);
@@ -24,9 +24,8 @@ const context = createContext(config);
 const workspace = getWorkspace(cwd, config);
 
 // Initialize logger
-initLogger(context);
 if (config.verbose) {
-  log.level = "verbose";
+  logLevel("verbose");
 }
 
 // generate topological graph
@@ -50,7 +49,7 @@ for (const [pkg, info] of Object.entries(workspace.allPackages)) {
   const { profiler } = context;
   context.measures.start = process.hrtime();
 
-  await runTasks(graph, workspace, context, config);
+  await runTasks({ graph, workspace, context, config });
 
   if (config.profile) {
     const profileFile = profiler.output();

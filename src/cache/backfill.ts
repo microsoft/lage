@@ -8,7 +8,7 @@ import path from "path";
 const hashes: { [key: string]: string } = {};
 const cacheHits: { [key: string]: boolean } = {};
 
-export async function computeHash(info: PackageInfo, config: Config) {
+export async function cacheHash(info: PackageInfo, config: Config) {
   const packagePath = path.dirname(info.packageJsonPath);
   const cacheConfig = getCacheConfig(packagePath, config);
   const logger = backfill.makeLogger("error", process.stdout, process.stderr);
@@ -27,7 +27,7 @@ export async function computeHash(info: PackageInfo, config: Config) {
   }
 }
 
-export async function fetchBackfill(info: PackageInfo, config: Config) {
+export async function cacheFetch(info: PackageInfo, config: Config) {
   const packagePath = path.dirname(info.packageJsonPath);
   const cacheConfig = getCacheConfig(packagePath, config);
   const logger = backfill.makeLogger("error", process.stdout, process.stderr);
@@ -45,7 +45,7 @@ export async function fetchBackfill(info: PackageInfo, config: Config) {
   }
 }
 
-export async function putBackfill(info: PackageInfo, config: Config) {
+export async function cachePut(info: PackageInfo, config: Config) {
   const packagePath = path.dirname(info.packageJsonPath);
   const cacheConfig = getCacheConfig(packagePath, config);
   const logger = backfill.makeLogger("warn", process.stdout, process.stderr);

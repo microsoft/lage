@@ -1,7 +1,5 @@
 import { Config } from "./types/Config";
-import { EventEmitter } from "events";
 import { RunContext } from "./types/RunContext";
-import PQueue from "p-queue";
 import Profiler from "p-profiler";
 
 export function createContext(config: Pick<Config, "concurrency">): RunContext {
@@ -19,8 +17,5 @@ export function createContext(config: Pick<Config, "concurrency">): RunContext {
       prefix: "lage",
       outDir: process.cwd(),
     }),
-    taskLogs: new Map(),
-    queue: new PQueue({ concurrency }),
-    events: new EventEmitter(),
   };
 }

@@ -2,15 +2,18 @@ import { RunContext } from "../types/RunContext";
 import { createPipeline, TopologicalGraph } from "@microsoft/task-scheduler";
 import { Config } from "../types/Config";
 import { npmTask } from "./npmTask";
+import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { filterPackages } from "./filterPackages";
 import { Workspace } from "../types/Workspace";
 
-export async function runTasks(
-  graph: TopologicalGraph,
-  workspace: Workspace,
-  context: RunContext,
-  config: Config
-) {
+export async function runTasks(options: {
+  graph: TopologicalGraph;
+  workspace: Workspace;
+  context: RunContext;
+  config: Config;
+}) {
+  const { graph, workspace, context, config } = options;
+
   let pipeline = createPipeline(graph);
 
   const taskNames = Object.keys(config.pipeline);
@@ -18,18 +21,18 @@ export async function runTasks(
   // After all the npm tasks are added, add the cache put task
   pipeline = pipeline.addTask({
     name: "cacheHash",
-    run: (location, stdout, stderr) => {
-      console.log("hashing");
-      return Promise.resolve(true);
+    run: async (_location, _stdout, _stderr, pkg) => {
+      await cacheHash(workspace.allPackages[pkg], config);
+      return true;
     },
   });
 
   pipeline = pipeline.addTask({
     name: "cacheFetch",
     deps: ["cacheHash"],
-    run: (location, stdout, stderr) => {
-      console.log("fetching");
-      return Promise.resolve(true);
+    run: async (_location, _stdout, _stderr, pkg) => {
+      await cacheFetch(workspace.allPackages[pkg], config);
+      return true;
     },
   });
 
@@ -43,8 +46,8 @@ export async function runTasks(
       name: task,
       deps: [...(deps ? deps : []), "cacheFetch"],
       topoDeps,
-      run: async (location, stdout, stderr, pkg) => {
-        npmTask(task, workspace.allPackages[pkg], context, config);
+      run: async (_location, _stdout, _stderr, pkg) => {
+        await npmTask(task, workspace.allPackages[pkg], config, context);
         return true;
       },
     });
@@ -54,12 +57,13 @@ export async function runTasks(
   pipeline = pipeline.addTask({
     name: "cachePut",
     deps: taskNames,
-    run: (location, stdout, stderr) => {
-      console.log("putting");
+    run: async (_location, _stdout, _stderr, pkg) => {
+      await cachePut(workspace.allPackages[pkg], config);
       return Promise.resolve(true);
     },
   });
 
+  // Filter packages per --scope and command(s)
   const filteredPackages = filterPackages({
     root: workspace.root,
     allPackages: workspace.allPackages,

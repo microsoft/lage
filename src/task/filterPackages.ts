@@ -5,7 +5,7 @@ import {
   PackageInfos,
 } from "workspace-tools";
 
-import logger from "npmlog";
+import { logger } from "../logger";
 
 export function filterPackages(options: {
   root: string;

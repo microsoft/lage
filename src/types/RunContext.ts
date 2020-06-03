@@ -13,14 +13,11 @@ interface TaskStats {
 interface Measures {
   start: [number, number];
   duration: [number, number];
-  failedTask?: string;
+  failedTask?: { pkg: string; task: string };
   taskStats: TaskStats[];
 }
 
 export interface RunContext {
-  taskLogs: Map<TaskId, string[]>;
   measures: Measures;
   profiler: Profiler;
-  queue: PQueue;
-  events: EventEmitter;
 }

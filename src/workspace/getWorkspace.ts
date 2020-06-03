@@ -5,7 +5,7 @@ import {
   getPackageInfos,
 } from "workspace-tools";
 import { Config } from "../types/Config";
-import { findNpmClient } from "../task/findNpmClient";
+import { findNpmClient } from "./findNpmClient";
 
 export function getWorkspace(
   cwd: string,
