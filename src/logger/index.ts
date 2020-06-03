@@ -6,12 +6,35 @@ import { TaskLogs, TaskLogger } from "../types/Task";
 
 const taskLogs: TaskLogs = new Map();
 
+const maxLengths = {
+  pkg: 0,
+  task: 0,
+};
+const colors = {
+  info: chalk.white,
+  verbose: chalk.gray,
+  warn: chalk.yellowBright,
+  error: chalk.redBright,
+  task: chalk.cyan,
+  pkg: chalk.magenta,
+};
+
 export function getTaskLogs() {
   return taskLogs;
 }
 
+export function setTaskLogMaxLengths(
+  maxPkgLength: number,
+  maxTaskLength: number
+) {
+  maxLengths.pkg = maxPkgLength;
+  maxLengths.task = maxTaskLength;
+}
+
 export function getTaskLogPrefix(pkg: string, task: string) {
-  return `${pkg} ${chalk.green(task)}`;
+  return `${colors.pkg(pkg.padStart(maxLengths.pkg))} ${colors.task(
+    task.padStart(maxLengths.task)
+  )}`;
 }
 
 function addToTaskLog(pkg: string, task: string, message: string) {
@@ -37,24 +60,24 @@ function normalize(prefixOrMessage: string, message?: string) {
 
 function info(prefixOrMessage: string, message?: string) {
   const normalizedArgs = normalize(prefixOrMessage, message);
-  return log.info(normalizedArgs.prefix, chalk.cyan(normalizedArgs.message));
+  return log.info(normalizedArgs.prefix, colors.info(normalizedArgs.message));
 }
 
 function warn(prefixOrMessage: string, message?: string) {
   const normalizedArgs = normalize(prefixOrMessage, message);
-  return log.warn(normalizedArgs.prefix, chalk.yellow(normalizedArgs.message));
+  return log.warn(normalizedArgs.prefix, colors.warn(normalizedArgs.message));
 }
 
 function error(prefixOrMessage: string, message?: string) {
   const normalizedArgs = normalize(prefixOrMessage, message);
-  return log.error(normalizedArgs.prefix, chalk.red(normalizedArgs.message));
+  return log.error(normalizedArgs.prefix, colors.error(normalizedArgs.message));
 }
 
 function verbose(prefixOrMessage: string, message?: string, ...args: any) {
   const normalizedArgs = normalize(prefixOrMessage, message);
   return log.verbose(
     normalizedArgs.prefix,
-    chalk.magenta(normalizedArgs.message)
+    colors.verbose(normalizedArgs.message)
   );
 }
 
@@ -107,22 +130,22 @@ export function taskLogger(pkg, task) {
   return {
     info: (message: string) => {
       addToTaskLog(pkg, task, message);
-      return log.info(getTaskLogPrefix(pkg, task), chalk.cyan(message));
+      return log.info(getTaskLogPrefix(pkg, task), colors.info(message));
     },
 
     warn: (message: string) => {
       addToTaskLog(pkg, task, message);
-      return log.warns(getTaskLogPrefix(pkg, task), chalk.yellow(message));
+      return log.warns(getTaskLogPrefix(pkg, task), colors.warn(message));
     },
 
     error: (message: string) => {
       addToTaskLog(pkg, task, message);
-      return log.error(getTaskLogPrefix(pkg, task), chalk.red(message));
+      return log.error(getTaskLogPrefix(pkg, task), colors.error(message));
     },
 
     verbose: (message: string) => {
       addToTaskLog(pkg, task, message);
-      return log.verbose(getTaskLogPrefix(pkg, task), chalk.magenta(message));
+      return log.verbose(getTaskLogPrefix(pkg, task), colors.verbose(message));
     },
   };
 }

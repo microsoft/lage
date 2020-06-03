@@ -5,6 +5,7 @@ import { npmTask } from "./npmTask";
 import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { filterPackages } from "./filterPackages";
 import { Workspace } from "../types/Workspace";
+import { setMaxLengths, setTaskLogMaxLengths } from "../logger";
 
 export async function runTasks(options: {
   graph: TopologicalGraph;
@@ -78,6 +79,15 @@ export async function runTasks(options: {
     since: config.since,
     ignore: config.ignore,
   });
+
+  // Set up the longest names of tasks and scripts for nice logging
+  setTaskLogMaxLengths(
+    Object.keys(workspace.allPackages).reduce(
+      (l, pkg) => (l < pkg.length ? pkg.length : l),
+      0
+    ),
+    taskNames.reduce((l, task) => (l < task.length ? task.length : l), 0)
+  );
 
   await pipeline.go({
     packages: filteredPackages,
