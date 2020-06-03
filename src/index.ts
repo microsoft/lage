@@ -9,6 +9,7 @@ import { TopologicalGraph } from "@microsoft/task-scheduler";
 import log from "npmlog";
 import path from "path";
 import { logLevel } from "./logger";
+import { generateTopologicGraph } from "./workspace/generateTopologicalGraph";
 
 console.log(`🧱 Lage task runner 🧱`);
 console.log(``);
@@ -29,21 +30,7 @@ if (config.verbose) {
 }
 
 // generate topological graph
-const graph: TopologicalGraph = {};
-
-const dependentMap = getDependentMap(workspace.allPackages);
-
-for (const [pkg, info] of Object.entries(workspace.allPackages)) {
-  const deps = dependentMap.get(pkg);
-
-  graph[pkg] = {
-    dependencies: [...(deps ? deps : [])],
-    location: path.relative(workspace.root, path.dirname(info.packageJsonPath)),
-  };
-}
-
-// Hush leaky event listeners (# of tasks = # of abort listeners)
-// setMaxEventListeners(context);
+const graph = generateTopologicGraph(workspace);
 
 (async () => {
   const { profiler } = context;
