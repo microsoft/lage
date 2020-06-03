@@ -4,7 +4,8 @@ import PQueue from "p-queue";
 import { EventEmitter } from "events";
 
 interface TaskStats {
-  taskId: TaskId;
+  pkg: string;
+  task: string;
   start: [number, number];
   duration: [number, number];
   status: "failed" | "skipped" | "success" | "not started";

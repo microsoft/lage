@@ -1,9 +1,9 @@
 import { formatDuration } from "./formatDuration";
-import { info, getTaskLogs } from "./index";
+import { getTaskId } from "../task/taskId";
+import { getTaskLogs } from "./index";
 import { logger } from ".";
 import { RunContext } from "../types/RunContext";
 import chalk from "chalk";
-import { getTaskId } from "../task/taskId";
 
 function hr() {
   logger.info("----------------------------------------------");
@@ -37,8 +37,8 @@ export async function reportSummary(context: RunContext) {
   if (measures.taskStats.length > 0) {
     for (const stats of measures.taskStats) {
       const colorFn = statusColorFn[stats.status];
-      info(
-        stats.taskId,
+      logger.info(
+        `${stats.pkg} ${chalk.cyan(stats.task)}`,
         colorFn(`${stats.status}, took ${formatDuration(stats.duration)}`)
       );
     }

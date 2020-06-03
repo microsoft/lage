@@ -24,54 +24,37 @@ function addToTaskLog(pkg: string, task: string, message: string) {
   taskLogs.get(taskId)!.push(message);
 }
 
-function normalize(prefixOrMessage: string, message?: string, ...args: any) {
-  if (arguments.length > 2) {
+function normalize(prefixOrMessage: string, message?: string) {
+  if (typeof message === "string") {
     const prefix = prefixOrMessage;
-    return { prefix, message, args };
+    return { prefix, message };
   } else {
     const prefix = "";
     const message = prefixOrMessage;
-    return { prefix, message, args };
+    return { prefix, message };
   }
 }
 
-export function info(prefixOrMessage: string, message?: string, ...args: any) {
-  const normalizedArgs = normalize(prefixOrMessage, message, args);
-  return log.info(
-    normalizedArgs.prefix,
-    chalk.cyan(normalizedArgs.message),
-    ...normalizedArgs.args
-  );
+function info(prefixOrMessage: string, message?: string) {
+  const normalizedArgs = normalize(prefixOrMessage, message);
+  return log.info(normalizedArgs.prefix, chalk.cyan(normalizedArgs.message));
 }
 
-export function warn(prefixOrMessage: string, message?: string, ...args: any) {
-  const normalizedArgs = normalize(prefixOrMessage, message, args);
-  return log.warn(
-    normalizedArgs.prefix,
-    chalk.yellow(normalizedArgs.message),
-    ...normalizedArgs.args
-  );
+function warn(prefixOrMessage: string, message?: string) {
+  const normalizedArgs = normalize(prefixOrMessage, message);
+  return log.warn(normalizedArgs.prefix, chalk.yellow(normalizedArgs.message));
 }
 
-export function error(prefixOrMessage: string, message?: string, ...args: any) {
-  const normalizedArgs = normalize(prefixOrMessage, message, args);
-  return log.error(
-    normalizedArgs.prefix,
-    chalk.red(normalizedArgs.message),
-    ...normalizedArgs.args
-  );
+function error(prefixOrMessage: string, message?: string) {
+  const normalizedArgs = normalize(prefixOrMessage, message);
+  return log.error(normalizedArgs.prefix, chalk.red(normalizedArgs.message));
 }
 
-export function verbose(
-  prefixOrMessage: string,
-  message?: string,
-  ...args: any
-) {
-  const normalizedArgs = normalize(prefixOrMessage, message, args);
+function verbose(prefixOrMessage: string, message?: string, ...args: any) {
+  const normalizedArgs = normalize(prefixOrMessage, message);
   return log.verbose(
     normalizedArgs.prefix,
-    chalk.magenta(normalizedArgs.message),
-    ...normalizedArgs.args
+    chalk.magenta(normalizedArgs.message)
   );
 }
 
@@ -122,40 +105,24 @@ export const logger = {
 
 export function taskLogger(pkg, task) {
   return {
-    info: (message: string, ...args: any) => {
+    info: (message: string) => {
       addToTaskLog(pkg, task, message);
-      return log.info(
-        getTaskLogPrefix(pkg, task),
-        chalk.cyan(message),
-        ...args
-      );
+      return log.info(getTaskLogPrefix(pkg, task), chalk.cyan(message));
     },
 
-    warn: (message: string, ...args: any) => {
+    warn: (message: string) => {
       addToTaskLog(pkg, task, message);
-      return log.warns(
-        getTaskLogPrefix(pkg, task),
-        chalk.yellow(message),
-        ...args
-      );
+      return log.warns(getTaskLogPrefix(pkg, task), chalk.yellow(message));
     },
 
-    error: (message: string, ...args: any) => {
+    error: (message: string) => {
       addToTaskLog(pkg, task, message);
-      return log.error(
-        getTaskLogPrefix(pkg, task),
-        chalk.red(message),
-        ...args
-      );
+      return log.error(getTaskLogPrefix(pkg, task), chalk.red(message));
     },
 
-    verbose: (message: string, ...args: any) => {
+    verbose: (message: string) => {
       addToTaskLog(pkg, task, message);
-      return log.verbose(
-        getTaskLogPrefix(pkg, task),
-        chalk.magenta(message),
-        ...args
-      );
+      return log.verbose(getTaskLogPrefix(pkg, task), chalk.magenta(message));
     },
   };
 }
