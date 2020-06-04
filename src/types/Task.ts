@@ -1,7 +1,10 @@
 export type TaskId = string;
-export type TaskDeps = TaskId[];
 
-/** subject, dependent (e.g. [test, build]) */
-export type TaskDepsGraph = [TaskId, TaskId][];
+export type TaskLogs = Map<TaskId, string[]>;
 
-export type Tasks = Map<TaskId, (TaskId) => Promise<unknown>>;
+export type TaskLogger = {
+  info: (message: string, ...args: any) => void;
+  warn: (message: string, ...args: any) => any;
+  error: (message: string, ...args: any) => void;
+  verbose: (message: string, ...args: any) => void;
+};

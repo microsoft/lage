@@ -1,7 +1,7 @@
+import { Pipeline } from "../types/Pipeline";
 import { PackageInfos, PackageInfo } from "workspace-tools";
-import path from "path";
 import { cosmiconfigSync } from "cosmiconfig";
-import { Pipeline } from "./types/RunContext";
+import path from "path";
 
 const ConfigModuleName = "lage";
 
@@ -17,13 +17,18 @@ function getPipeline(info: PackageInfo) {
   return null;
 }
 
-export function getPackagePipelines(allPackages: PackageInfos) {
+export function getPackagePipelines(
+  allPackages: PackageInfos,
+  defaultPipeline: Pipeline
+) {
   const packagePipelines = new Map<string, Pipeline>();
 
   for (const pkg of Object.keys(allPackages)) {
     const pipeline = getPipeline(allPackages[pkg]);
     if (pipeline) {
       packagePipelines.set(pkg, pipeline);
+    } else {
+      packagePipelines.set(pkg, defaultPipeline);
     }
   }
 

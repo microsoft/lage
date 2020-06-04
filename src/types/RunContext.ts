@@ -1,12 +1,11 @@
-import { TaskDepsGraph, Tasks, TaskId } from "./Task";
-import { PackageInfos } from "workspace-tools";
+import { TaskId } from "./Task";
 import Profiler from "p-profiler";
 import PQueue from "p-queue";
 import { EventEmitter } from "events";
-import { ConfigOptions, CliOptions } from "./ConfigOptions";
 
 interface TaskStats {
-  taskId: TaskId;
+  pkg: string;
+  task: string;
   start: [number, number];
   duration: [number, number];
   status: "failed" | "skipped" | "success" | "not started";
@@ -15,26 +14,11 @@ interface TaskStats {
 interface Measures {
   start: [number, number];
   duration: [number, number];
-  failedTask?: string;
+  failedTask?: { pkg: string; task: string };
   taskStats: TaskStats[];
 }
 
-export interface Pipeline {
-  [task: string]: string[];
-}
-
-export interface RunContext extends CliOptions, ConfigOptions {
-  root: string;
-  taskDepsGraph: TaskDepsGraph;
-  tasks: Tasks;
-  allPackages: PackageInfos;
-  changedPackages: string[];
-  defaultPipeline: Pipeline;
-  packagePipelines: Map<string, Pipeline>;
+export interface RunContext {
   measures: Measures;
   profiler: Profiler;
-  taskLogs: Map<TaskId, string[]>;
-  queue: PQueue;
-  events: EventEmitter;
-  npmCmd: string;
 }

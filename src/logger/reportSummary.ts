@@ -1,16 +1,18 @@
-import { RunContext } from "../types/RunContext";
-import { getPackageTaskFromId } from "../task/taskId";
-import log from "npmlog";
-import chalk from "chalk";
 import { formatDuration } from "./formatDuration";
-import { info } from "./index";
+import { getTaskId } from "../task/taskId";
+import { getTaskLogs, getTaskLogPrefix } from "./index";
+import { logger } from ".";
+import { RunContext } from "../types/RunContext";
+import chalk from "chalk";
 
 function hr() {
-  log.info("", "----------------------------------------------");
+  logger.info("----------------------------------------------");
 }
 
 export async function reportSummary(context: RunContext) {
-  const { measures, taskLogs } = context;
+  const { measures } = context;
+
+  const taskLogs = getTaskLogs();
 
   const statusColorFn = {
     success: chalk.greenBright,
@@ -20,12 +22,14 @@ export async function reportSummary(context: RunContext) {
 
   hr();
 
-  log.info("", chalk.cyanBright(`🏗 Summary\n`));
+  logger.info(chalk.cyanBright(`🏗 Summary\n`));
 
   if (measures.failedTask) {
-    const [pkg, task] = getPackageTaskFromId(measures.failedTask);
-    log.error("", `ERROR DETECTED IN ${pkg} ${task}`);
-    log.error("", taskLogs.get(measures.failedTask)!.join("\n"));
+    const { pkg, task } = measures.failedTask;
+    const taskId = getTaskId(pkg, task);
+
+    logger.error(`ERROR DETECTED IN ${pkg} ${task}`);
+    logger.error(taskLogs.get(taskId)!.join("\n"));
 
     hr();
   }
@@ -33,19 +37,18 @@ export async function reportSummary(context: RunContext) {
   if (measures.taskStats.length > 0) {
     for (const stats of measures.taskStats) {
       const colorFn = statusColorFn[stats.status];
-      info(
-        stats.taskId,
+      logger.info(
+        getTaskLogPrefix(stats.pkg, stats.task),
         colorFn(`${stats.status}, took ${formatDuration(stats.duration)}`)
       );
     }
   } else {
-    log.info("", "Nothing has been run.");
+    logger.info("Nothing has been run.");
   }
 
   hr();
 
-  log.info(
-    "",
+  logger.info(
     `Took a total of ${formatDuration(measures.duration)} to complete`
   );
 }

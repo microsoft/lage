@@ -1,63 +1,98 @@
 import log from "npmlog";
-import { getPackageTaskFromId } from "../task/taskId";
-import { RunContext } from "../types/RunContext";
+import { getTaskId } from "../task/taskId";
 import { Writable } from "stream";
 import chalk from "chalk";
+import { TaskLogs, TaskLogger } from "../types/Task";
 
-let _context: RunContext;
+const taskLogs: TaskLogs = new Map();
 
-export function initLogger(context: RunContext) {
-  _context = context;
+const maxLengths = {
+  pkg: 0,
+  task: 0,
+};
+const colors = {
+  info: chalk.white,
+  verbose: chalk.gray,
+  warn: chalk.yellowBright,
+  error: chalk.redBright,
+  task: chalk.cyan,
+  pkg: chalk.magenta,
+};
+
+export function getTaskLogs() {
+  return taskLogs;
 }
 
-export function getTaskLogPrefix(taskId: string) {
-  const [pkg, task] = getPackageTaskFromId(taskId);
-  return `${pkg} ${chalk.green(task)}`;
+export function setTaskLogMaxLengths(
+  maxPkgLength: number,
+  maxTaskLength: number
+) {
+  maxLengths.pkg = maxPkgLength;
+  maxLengths.task = maxTaskLength;
 }
 
-function addToTaskLog(taskId: string, message: string) {
-  const { taskLogs } = _context;
+export function getTaskLogPrefix(pkg: string, task: string) {
+  return `${colors.pkg(pkg.padStart(maxLengths.pkg))} ${colors.task(
+    task.padStart(maxLengths.task)
+  )}`;
+}
+
+function addToTaskLog(pkg: string, task: string, message: string) {
+  const taskId = getTaskId(pkg, task);
+
   if (!taskLogs.has(taskId)) {
     taskLogs.set(taskId, []);
   }
 
-  taskLogs.get(taskId)?.push(message);
+  taskLogs.get(taskId)!.push(message);
 }
 
-export function info(taskId: string, message: string, ...args: any) {
-  addToTaskLog(taskId, message);
-  return log.info(getTaskLogPrefix(taskId), chalk.cyan(message), ...args);
+function normalize(prefixOrMessage: string, message?: string) {
+  if (typeof message === "string") {
+    const prefix = prefixOrMessage;
+    return { prefix, message };
+  } else {
+    const prefix = "";
+    const message = prefixOrMessage;
+    return { prefix, message };
+  }
 }
 
-export function warn(taskId: string, message: string, ...args: any) {
-  addToTaskLog(taskId, message);
-  return log.warns(getTaskLogPrefix(taskId), chalk.yellow(message), ...args);
+function info(prefixOrMessage: string, message?: string) {
+  const normalizedArgs = normalize(prefixOrMessage, message);
+  return log.info(normalizedArgs.prefix, colors.info(normalizedArgs.message));
 }
 
-export function error(taskId: string, message: string, ...args: any) {
-  addToTaskLog(taskId, message);
-  return log.error(getTaskLogPrefix(taskId), chalk.red(message), ...args);
+function warn(prefixOrMessage: string, message?: string) {
+  const normalizedArgs = normalize(prefixOrMessage, message);
+  return log.warn(normalizedArgs.prefix, colors.warn(normalizedArgs.message));
 }
 
-export function verbose(taskId: string, message: string, ...args: any) {
-  addToTaskLog(taskId, message);
+function error(prefixOrMessage: string, message?: string) {
+  const normalizedArgs = normalize(prefixOrMessage, message);
+  return log.error(normalizedArgs.prefix, colors.error(normalizedArgs.message));
+}
+
+function verbose(prefixOrMessage: string, message?: string, ...args: any) {
+  const normalizedArgs = normalize(prefixOrMessage, message);
   return log.verbose(
-    getTaskLogPrefix(taskId),
-    chalk.underline(message),
-    ...args
+    normalizedArgs.prefix,
+    colors.verbose(normalizedArgs.message)
   );
 }
 
 export class NpmLogWritable extends Writable {
   private buffer: string = "";
+  private taskLogger: TaskLogger;
 
-  constructor(private taskId: string) {
+  constructor(pkg: string, task: string) {
     super();
+    this.taskLogger = taskLogger(pkg, task);
   }
 
   _write(
     chunk: Buffer,
-    encoding: string,
+    _encoding: string,
     callback: (error?: Error | null) => void
   ) {
     let prev = 0;
@@ -70,8 +105,7 @@ export class NpmLogWritable extends Writable {
             .slice(prev, curr)
             .toString()
             .trim();
-        addToTaskLog(this.taskId, this.buffer);
-        log.verbose(getTaskLogPrefix(this.taskId), this.buffer);
+        this.taskLogger.verbose(this.buffer);
         this.buffer = "";
         prev = curr;
       }
@@ -81,4 +115,37 @@ export class NpmLogWritable extends Writable {
   }
 }
 
-export default { info, warn, error, verbose };
+export function logLevel(level: "error" | "warn" | "info" | "verbose") {
+  log.level = level;
+}
+
+export const logger = {
+  info,
+  warn,
+  error,
+  verbose,
+};
+
+export function taskLogger(pkg, task) {
+  return {
+    info: (message: string) => {
+      addToTaskLog(pkg, task, message);
+      return log.info(getTaskLogPrefix(pkg, task), colors.info(message));
+    },
+
+    warn: (message: string) => {
+      addToTaskLog(pkg, task, message);
+      return log.warns(getTaskLogPrefix(pkg, task), colors.warn(message));
+    },
+
+    error: (message: string) => {
+      addToTaskLog(pkg, task, message);
+      return log.error(getTaskLogPrefix(pkg, task), colors.error(message));
+    },
+
+    verbose: (message: string) => {
+      addToTaskLog(pkg, task, message);
+      return log.verbose(getTaskLogPrefix(pkg, task), colors.verbose(message));
+    },
+  };
+}

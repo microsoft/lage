@@ -1,14 +1,25 @@
-import logger from "npmlog";
-import { RunContext } from "../types/RunContext";
-import { getScopedPackages, getTransitiveDependencies } from "workspace-tools";
+import {
+  getTransitiveDependencies,
+  getScopedPackages,
+  getChangedPackages,
+  PackageInfos,
+} from "workspace-tools";
 
-export function filterPackages(context: RunContext) {
-  const { allPackages, scope, since, deps, changedPackages } = context;
+import { logger } from "../logger";
 
-  let scopes = ([] as string[]).concat(scope);
+export function filterPackages(options: {
+  root: string;
+  allPackages: PackageInfos;
+  deps: boolean;
+  scope?: string[];
+  since?: string;
+  ignore?: string[];
+}) {
+  const { since, scope, allPackages, deps, root, ignore } = options;
 
   let filtered: string[] = [];
-  let hasScopes = scopes && scopes.length > 0;
+
+  let hasScopes = Array.isArray(scope) && scope.length > 0;
   let hasSince = typeof since !== "undefined";
 
   // If NOTHING is specified, use all packages
@@ -19,12 +30,13 @@ export function filterPackages(context: RunContext) {
 
   // If scoped is defined, get scoped packages
   if (hasScopes) {
-    const scoped = getScopedPackages(scopes, allPackages);
+    const scoped = getScopedPackages(scope!, allPackages);
     filtered = filtered.concat(scoped);
     logger.verbose("filterPackages", `scope: ${scoped.join(",")}`);
   }
 
   if (hasSince) {
+    const changedPackages = getChangedPackages(root, since, ignore);
     filtered = filtered.concat(changedPackages);
     logger.verbose("filterPackages", `changed: ${changedPackages.join(",")}`);
   }

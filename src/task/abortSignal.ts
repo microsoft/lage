@@ -1,9 +1,6 @@
-import { RunContext } from "../types/RunContext";
+import AbortController from "abort-controller";
 
-export function abort(context: RunContext) {
-  context.events.emit("abort");
-}
+const controller = new AbortController();
+const signal = controller.signal;
 
-export function setMaxEventListeners(context: RunContext) {
-  context.events.setMaxListeners(context.tasks.size);
-}
+export { controller, signal };

@@ -1,63 +1,69 @@
-import * as backfill from "backfill/lib/api";
-import { PackageInfo } from "workspace-tools";
-import path from "path";
-import { RunContext } from "../types/RunContext";
+import { Config } from "../types/Config";
 import { getCacheConfig } from "./cacheConfig";
-import log from "npmlog";
+import { logger } from "../logger";
+import { PackageInfo } from "workspace-tools";
+import * as backfill from "backfill/lib/api";
+import path from "path";
 
 const hashes: { [key: string]: string } = {};
 const cacheHits: { [key: string]: boolean } = {};
 
-export async function computeHash(info: PackageInfo, context: RunContext) {
+export async function cacheHash(info: PackageInfo, config: Config) {
   const packagePath = path.dirname(info.packageJsonPath);
-  const cacheConfig = getCacheConfig(packagePath, context);
-
-  const logger = backfill.makeLogger("error", process.stdout, process.stderr);
+  const cacheConfig = getCacheConfig(packagePath, config);
+  const backfillLogger = backfill.makeLogger(
+    "error",
+    process.stdout,
+    process.stderr
+  );
   const name = info.name;
-
-  logger.setName(name);
-
+  backfillLogger.setName(name);
   try {
     const hash = await backfill.computeHash(
       packagePath,
-      logger,
-      context.command.join(" ") + context.args.join(" "),
+      backfillLogger,
+      config.command.join(" ") + config.args.join(" "),
       cacheConfig
     );
-
     hashes[info.name] = hash;
   } catch (e) {
-    log.error(`${info.name} computeHash`, e);
+    logger.error(`${info.name} computeHash`, e);
   }
 }
 
-export async function fetchBackfill(info: PackageInfo, context: RunContext) {
+export async function cacheFetch(info: PackageInfo, config: Config) {
   const packagePath = path.dirname(info.packageJsonPath);
-  const cacheConfig = getCacheConfig(packagePath, context);
-  const logger = backfill.makeLogger("error", process.stdout, process.stderr);
+  const cacheConfig = getCacheConfig(packagePath, config);
+  const backfillLogger = backfill.makeLogger(
+    "error",
+    process.stdout,
+    process.stderr
+  );
   const hash = hashes[info.name];
-
   try {
     const cacheHit = await backfill.fetch(
       packagePath,
       hash,
-      logger,
+      backfillLogger,
       cacheConfig
     );
     cacheHits[info.name] = cacheHit;
   } catch (e) {
-    log.error(`${info.name} fetchBackfill`, e);
+    logger.error(`${info.name} fetchBackfill`, e);
   }
 }
 
-export async function putBackfill(info: PackageInfo, context: RunContext) {
+export async function cachePut(info: PackageInfo, config: Config) {
   const packagePath = path.dirname(info.packageJsonPath);
-  const cacheConfig = getCacheConfig(packagePath, context);
-  const logger = backfill.makeLogger("warn", process.stdout, process.stderr);
+  const cacheConfig = getCacheConfig(packagePath, config);
+  const backfillLogger = backfill.makeLogger(
+    "warn",
+    process.stdout,
+    process.stderr
+  );
   const hash = hashes[info.name];
-
   try {
-    await backfill.put(packagePath, hash, logger, cacheConfig);
+    await backfill.put(packagePath, hash, backfillLogger, cacheConfig);
   } catch (e) {
     // sometimes outputGlob don't match any files, so skipping this
   }

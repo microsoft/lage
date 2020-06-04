@@ -1,47 +1,48 @@
-import { cosmiconfigSync } from "cosmiconfig";
-import { discoverTaskDeps } from "./task/discoverTaskDeps";
-import { findGitRoot } from "workspace-tools";
-import { initLogger } from "./logger";
-import { RunContext } from "./types/RunContext";
-import { runTasks } from "./task/taskRunner";
-import log from "npmlog";
-import { parseArgs, validateInput } from "./args";
 import { createContext } from "./context";
-import { setMaxEventListeners } from "./task/abortSignal";
+import { getConfig } from "./config/getConfig";
+import { getWorkspace } from "./workspace/getWorkspace";
+import { parseArgs, validateInput } from "./args";
+import { reportSummary } from "./logger/reportSummary";
+import { runTasks } from "./task/taskRunner";
+import { logLevel, logger } from "./logger";
+import { generateTopologicGraph } from "./workspace/generateTopologicalGraph";
 
 console.log(`🧱 Lage task runner 🧱`);
 console.log(``);
-
-// Verify presence of git
-const root = findGitRoot(process.cwd());
-if (!root) {
-  throw new Error("This must be called inside a git-controlled repo");
-}
-
-// Search for lage.config.js file
-const ConfigModuleName = "lage";
-const configResults = cosmiconfigSync(ConfigModuleName).search(
-  root || process.cwd()
-);
 
 // Parse CLI args
 const parsedArgs = parseArgs();
 validateInput(parsedArgs);
 
 // Create context
-const context = createContext({ parsedArgs, root, configResults });
+const cwd = process.cwd();
+const config = getConfig(cwd);
+const context = createContext(config);
+const workspace = getWorkspace(cwd, config);
 
 // Initialize logger
-initLogger(context);
-if (context.verbose) {
-  log.level = "verbose";
+if (config.verbose) {
+  logLevel("verbose");
 }
 
-discoverTaskDeps(context);
-
-// Hush leaky event listeners (# of tasks = # of abort listeners)
-setMaxEventListeners(context);
+// generate topological graph
+const graph = generateTopologicGraph(workspace);
 
 (async () => {
-  await runTasks(context);
+  const { profiler } = context;
+  context.measures.start = process.hrtime();
+
+  await runTasks({ graph, workspace, context, config });
+
+  if (config.profile) {
+    const profileFile = profiler.output();
+    logger.info("runTasks", `Profile saved to ${profileFile}`);
+  }
+
+  context.measures.duration = process.hrtime(context.measures.start);
+
+  await reportSummary(context);
+  if (context.measures.failedTask) {
+    process.exit(1);
+  }
 })();
