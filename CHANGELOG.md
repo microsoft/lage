@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 04 Jun 2020 00:21:21 GMT and should not be manually modified.
+This log was last generated on Thu, 04 Jun 2020 17:04:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.1
+
+Thu, 04 Jun 2020 17:04:06 GMT
+
+### Patches
+
+- fixed the ignore param so that it works! (kchau@microsoft.com)
 
 ## 0.9.0
 
