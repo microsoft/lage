@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 28 May 2020 23:14:00 GMT and should not be manually modified.
+This log was last generated on Thu, 04 Jun 2020 00:21:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.0
+
+Thu, 04 Jun 2020 00:21:21 GMT
+
+### Minor changes
+
+- refactored internally to use @microsoft/task-scheduler (kchau@microsoft.com)
 
 ## 0.8.2
 

@@ -1,8 +1,0 @@
-{
-  "type": "minor",
-  "comment": "refactored internally to use @microsoft/task-scheduler",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch",
-  "date": "2020-06-04T00:17:24.276Z"
-}

@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 04 Jun 2020 00:21:21 GMT",
+      "tag": "lage_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "refactored internally to use @microsoft/task-scheduler",
+            "author": "kchau@microsoft.com",
+            "commit": "e6d61ef5dfd9e5a992614129253f7cf0f0de947e",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 28 May 2020 23:14:00 GMT",
       "tag": "lage_v0.8.2",
       "version": "0.8.2",
