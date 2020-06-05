@@ -36,7 +36,7 @@ export function npmTask(
 
   return queue.add(() =>
     taskWrapper(
-      info.name,
+      info,
       task,
       () =>
         new Promise((resolve, reject) => {
@@ -77,6 +77,7 @@ export function npmTask(
             cp.kill("SIGKILL");
           }
         }).then(() => wait(100)),
+      config,
       context
     )
   );
