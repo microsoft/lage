@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 05 Jun 2020 23:31:46 GMT",
+      "tag": "lage_v0.10.0",
+      "version": "0.10.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "per task caching",
+            "author": "kchau@microsoft.com",
+            "commit": "30f09e11d59ef6e290d3e3e64591011e19be6eb0",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 05 Jun 2020 16:33:19 GMT",
       "tag": "lage_v0.9.2",
       "version": "0.9.2",

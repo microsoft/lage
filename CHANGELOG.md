@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 05 Jun 2020 16:33:19 GMT and should not be manually modified.
+This log was last generated on Fri, 05 Jun 2020 23:31:46 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.10.0
+
+Fri, 05 Jun 2020 23:31:46 GMT
+
+### Minor changes
+
+- per task caching (kchau@microsoft.com)
 
 ## 0.9.2
 
