@@ -26,6 +26,7 @@ export async function runTasks(options: {
       error: (_msg) => {},
       log: (_msg) => {},
     },
+    exit: (code) => {},
   });
 
   const taskNames = Object.keys(config.pipeline);
@@ -70,8 +71,15 @@ export async function runTasks(options: {
     name: CachePutTask,
     deps: config.command,
     run: async (_location, _stdout, _stderr, pkg) => {
-      await cachePut(workspace.allPackages[pkg], config);
-      return Promise.resolve(true);
+      const failedStats = context.measures.taskStats.some(
+        (s) => s.pkg === pkg && s.status === "failed"
+      );
+
+      if (!failedStats) {
+        await cachePut(workspace.allPackages[pkg], config);
+      }
+
+      return true;
     },
   });
 

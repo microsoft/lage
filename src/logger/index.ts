@@ -13,8 +13,8 @@ const maxLengths = {
 const colors = {
   info: chalk.white,
   verbose: chalk.gray,
-  warn: chalk.yellowBright,
-  error: chalk.redBright,
+  warn: chalk.white,
+  error: chalk.white,
   task: chalk.cyan,
   pkg: chalk.magenta,
 };

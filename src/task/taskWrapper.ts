@@ -19,7 +19,7 @@ export async function taskWrapper(
 
   if (!cacheHits[pkg]) {
     if (!isCacheTask(task)) {
-      logger.info("started");
+      logger.info("▶️ start");
     }
 
     try {
@@ -33,9 +33,10 @@ export async function taskWrapper(
           duration,
           status: "success",
         });
-        logger.info(`done - took ${formatDuration(duration)}`);
+        logger.info(`✔️ done - took ${formatDuration(duration)}`);
       }
     } catch (e) {
+      logger.info("❌ fail");
       measures.failedTask = { pkg, task };
       const duration = process.hrtime(start);
       measures.taskStats.push({ pkg, task, start, duration, status: "failed" });
@@ -44,6 +45,6 @@ export async function taskWrapper(
   } else if (!isCacheTask(task)) {
     const duration = process.hrtime(start);
     measures.taskStats.push({ pkg, task, start, duration, status: "skipped" });
-    logger.info("skipped");
+    logger.info("⏭️ skip");
   }
 }
