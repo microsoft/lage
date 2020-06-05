@@ -32,11 +32,7 @@ const graph = generateTopologicGraph(workspace);
   const { profiler } = context;
   context.measures.start = process.hrtime();
 
-  try {
-    await runTasks({ graph, workspace, context, config });
-  } catch (e) {
-    console.log(e);
-  }
+  await runTasks({ graph, workspace, context, config });
 
   if (config.profile) {
     const profileFile = profiler.output();
