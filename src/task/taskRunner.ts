@@ -31,23 +31,23 @@ export async function runTasks(options: {
 
   const taskNames = Object.keys(config.pipeline);
 
-  // After all the npm tasks are added, add the cache put task
-  pipeline = pipeline.addTask({
-    name: CacheHashTask,
-    run: async (_location, _stdout, _stderr, pkg) => {
-      await cacheHash(workspace.allPackages[pkg], config);
-      return true;
-    },
-  });
+  // // After all the npm tasks are added, add the cache put task
+  // pipeline = pipeline.addTask({
+  //   name: CacheHashTask,
+  //   run: async (_location, _stdout, _stderr, pkg) => {
+  //     await cacheHash(workspace.allPackages[pkg], config);
+  //     return true;
+  //   },
+  // });
 
-  pipeline = pipeline.addTask({
-    name: CacheFetchTask,
-    deps: [CacheHashTask],
-    run: async (_location, _stdout, _stderr, pkg) => {
-      await cacheFetch(workspace.allPackages[pkg], config);
-      return true;
-    },
-  });
+  // pipeline = pipeline.addTask({
+  //   name: CacheFetchTask,
+  //   deps: [CacheHashTask],
+  //   run: async (_location, _stdout, _stderr, pkg) => {
+  //     await cacheFetch(workspace.allPackages[pkg], config);
+  //     return true;
+  //   },
+  // });
 
   for (const [task, taskDeps] of Object.entries(config.pipeline)) {
     const deps = taskDeps.filter((dep) => !dep.startsWith("^"));
@@ -57,7 +57,7 @@ export async function runTasks(options: {
 
     pipeline = pipeline.addTask({
       name: task,
-      deps: [...(deps ? deps : []), CacheFetchTask],
+      deps,
       topoDeps,
       run: async (_location, _stdout, _stderr, pkg) => {
         await npmTask(task, workspace.allPackages[pkg], config, context);
@@ -67,21 +67,21 @@ export async function runTasks(options: {
   }
 
   // After all the npm tasks are added, add the cache put task
-  pipeline = pipeline.addTask({
-    name: CachePutTask,
-    deps: config.command,
-    run: async (_location, _stdout, _stderr, pkg) => {
-      const failedStats = context.measures.taskStats.some(
-        (s) => s.pkg === pkg && s.status === "failed"
-      );
+  // pipeline = pipeline.addTask({
+  //   name: CachePutTask,
+  //   deps: config.command,
+  //   run: async (_location, _stdout, _stderr, pkg) => {
+  //     const failedStats = context.measures.taskStats.some(
+  //       (s) => s.pkg === pkg && s.status === "failed"
+  //     );
 
-      if (!failedStats) {
-        await cachePut(workspace.allPackages[pkg], config);
-      }
+  //     if (!failedStats) {
+  //       await cachePut(workspace.allPackages[pkg], config);
+  //     }
 
-      return true;
-    },
-  });
+  //     return true;
+  //   },
+  // });
 
   // Filter packages per --scope and command(s)
   const filteredPackages = filterPackages({

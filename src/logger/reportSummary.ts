@@ -9,7 +9,7 @@ function hr() {
   logger.info("----------------------------------------------");
 }
 
-export async function reportSummary(context: RunContext) {
+export function reportSummary(context: RunContext) {
   const { measures } = context;
 
   const taskLogs = getTaskLogs();
