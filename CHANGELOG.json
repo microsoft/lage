@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 05 Jun 2020 16:33:19 GMT",
+      "tag": "lage_v0.9.2",
+      "version": "0.9.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixing hash!",
+            "author": "kchau@microsoft.com",
+            "commit": "3af3bb886d744289c31eb47c6c27609672a11010",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 04 Jun 2020 17:04:06 GMT",
       "tag": "lage_v0.9.1",
       "version": "0.9.1",
