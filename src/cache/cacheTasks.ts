@@ -1,9 +1,9 @@
-export const ComputeHashTask = "backfillHash";
+export const CacheHashTask = "backfillHash";
 export const CacheFetchTask = "backfillFetch";
 export const CachePutTask = "backfillPut";
 
 export function isCacheTask(task: string) {
   return (
-    task === ComputeHashTask || task === CacheFetchTask || task === CachePutTask
+    task === CacheHashTask || task === CacheFetchTask || task === CachePutTask
   );
 }

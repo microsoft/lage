@@ -6,6 +6,11 @@ import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { filterPackages } from "./filterPackages";
 import { Workspace } from "../types/Workspace";
 import { setTaskLogMaxLengths } from "../logger";
+import {
+  CacheHashTask,
+  CachePutTask,
+  CacheFetchTask,
+} from "../cache/cacheTasks";
 
 export async function runTasks(options: {
   graph: TopologicalGraph;
@@ -21,13 +26,14 @@ export async function runTasks(options: {
       error: (_msg) => {},
       log: (_msg) => {},
     },
+    exit: (code) => {},
   });
 
   const taskNames = Object.keys(config.pipeline);
 
   // After all the npm tasks are added, add the cache put task
   pipeline = pipeline.addTask({
-    name: "cacheHash",
+    name: CacheHashTask,
     run: async (_location, _stdout, _stderr, pkg) => {
       await cacheHash(workspace.allPackages[pkg], config);
       return true;
@@ -35,8 +41,8 @@ export async function runTasks(options: {
   });
 
   pipeline = pipeline.addTask({
-    name: "cacheFetch",
-    deps: ["cacheHash"],
+    name: CacheFetchTask,
+    deps: [CacheHashTask],
     run: async (_location, _stdout, _stderr, pkg) => {
       await cacheFetch(workspace.allPackages[pkg], config);
       return true;
@@ -51,7 +57,7 @@ export async function runTasks(options: {
 
     pipeline = pipeline.addTask({
       name: task,
-      deps: [...(deps ? deps : []), "cacheFetch"],
+      deps: [...(deps ? deps : []), CacheFetchTask],
       topoDeps,
       run: async (_location, _stdout, _stderr, pkg) => {
         await npmTask(task, workspace.allPackages[pkg], config, context);
@@ -62,11 +68,18 @@ export async function runTasks(options: {
 
   // After all the npm tasks are added, add the cache put task
   pipeline = pipeline.addTask({
-    name: "cachePut",
-    deps: taskNames,
+    name: CachePutTask,
+    deps: config.command,
     run: async (_location, _stdout, _stderr, pkg) => {
-      await cachePut(workspace.allPackages[pkg], config);
-      return Promise.resolve(true);
+      const failedStats = context.measures.taskStats.some(
+        (s) => s.pkg === pkg && s.status === "failed"
+      );
+
+      if (!failedStats) {
+        await cachePut(workspace.allPackages[pkg], config);
+      }
+
+      return true;
     },
   });
 
@@ -91,6 +104,6 @@ export async function runTasks(options: {
 
   await pipeline.go({
     packages: filteredPackages,
-    tasks: config.command,
+    tasks: config.cache ? [...config.command, CachePutTask] : config.command,
   });
 }

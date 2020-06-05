@@ -42,6 +42,7 @@ const graph = generateTopologicGraph(workspace);
   context.measures.duration = process.hrtime(context.measures.start);
 
   await reportSummary(context);
+
   if (context.measures.failedTask) {
     process.exit(1);
   }
