@@ -42,7 +42,10 @@ export async function runTasks(options: {
       deps,
       topoDeps,
       run: async (_location, _stdout, _stderr, pkg) => {
-        await npmTask(task, workspace.allPackages[pkg], config, context);
+        const scripts = workspace.allPackages[pkg].scripts;
+        if (scripts && scripts[task]) {
+          await npmTask(task, workspace.allPackages[pkg], config, context);
+        }
         return true;
       },
     });

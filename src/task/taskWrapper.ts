@@ -26,6 +26,8 @@ export async function taskWrapper(
     if (hash) {
       cacheHit = await cacheFetch(hash, info, config);
     }
+
+    logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
   }
 
   if (!cacheHit) {
@@ -46,6 +48,7 @@ export async function taskWrapper(
       logger.info(`✔️ done - took ${formatDuration(duration)}`);
 
       if (config.cache && hash) {
+        logger.verbose(`hash put ${hash}`);
         await cachePut(hash, info, config);
       }
     } catch (e) {
