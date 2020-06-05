@@ -899,10 +899,10 @@
   resolved "https://registry.yarnpkg.com/@braintree/sanitize-url/-/sanitize-url-3.1.0.tgz#8ff71d51053cd5ee4981e5a501d80a536244f7fd"
   integrity sha512-GcIY79elgB+azP74j8vqkiXz8xLFfIzbQJdlwOPisgbKT00tviJQuEghOXSMVxJ00HoYJbGswr4kcllUc4xCcg==
 
-"@microsoft/task-scheduler@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/task-scheduler/-/task-scheduler-2.1.0.tgz#0531257b27742ebd434c44aa70c658cf4363bcca"
-  integrity sha512-UI0YbouF4t3/sX/7JuGovdmcMX4hZD+9Iug2p7HRPZBfamHpsIDXk7a6aPGTieqm73l0Yy9CVeHEoV8xfMhwqg==
+"@microsoft/task-scheduler@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@microsoft/task-scheduler/-/task-scheduler-2.1.2.tgz#8a24a33cb4758bc9613bdf01cd09a8e45358accd"
+  integrity sha512-MOVIDp8skkxADHN1wiXLq+j8q7XsKtQR9BaNpMpYISS09uDSJqAlVpK+llMFK4MjEzEWvwWD5XFeKAHuP2Rrog==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

@@ -23,7 +23,7 @@
     "test": "echo hello"
   },
   "dependencies": {
-    "@microsoft/task-scheduler": "^2.1.0",
+    "@microsoft/task-scheduler": "^2.1.2",
     "abort-controller": "^3.0.0",
     "backfill": "^5.1.1",
     "chalk": "^4.0.0",
