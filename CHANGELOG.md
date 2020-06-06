@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 05 Jun 2020 23:31:46 GMT and should not be manually modified.
+This log was last generated on Sat, 06 Jun 2020 19:33:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.10.1
+
+Sat, 06 Jun 2020 19:33:34 GMT
+
+### Patches
+
+- bump backfill (kchau@microsoft.com)
 
 ## 0.10.0
 
