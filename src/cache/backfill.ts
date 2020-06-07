@@ -2,17 +2,14 @@ import { Config } from "../types/Config";
 import { getCacheConfig } from "./cacheConfig";
 import { logger } from "../logger";
 import { PackageInfo } from "workspace-tools";
+import { salt } from "./salt";
 import * as backfill from "backfill/lib/api";
 import path from "path";
-import { getTaskId } from "../task/taskId";
-
-function getHashKey(pkg: string, task: string, args: any) {
-  return getTaskId(pkg, task) + " " + JSON.stringify(args);
-}
 
 export async function cacheHash(
   task: string,
   info: PackageInfo,
+  root: string,
   config: Config
 ) {
   const packagePath = path.dirname(info.packageJsonPath);
@@ -23,7 +20,11 @@ export async function cacheHash(
     process.stderr
   );
   const name = info.name;
-  const hashKey = getHashKey(info.name, task, config.args);
+  const hashKey = salt(
+    config.cacheOptions.environmentGlob || ["lage.config.js"],
+    `${info.name}|${task}|${JSON.stringify(config.args)}`,
+    root
+  );
 
   backfillLogger.setName(name);
   try {

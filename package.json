@@ -29,6 +29,7 @@
     "chalk": "^4.0.0",
     "cosmiconfig": "^6.0.0",
     "git-url-parse": "^11.1.2",
+    "fast-glob": "^3.2.2",
     "npmlog": "^4.1.2",
     "p-profiler": "^0.1.2",
     "p-queue": "^6.4.0",
