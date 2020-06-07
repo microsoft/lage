@@ -2,15 +2,9 @@ import { RunContext } from "../types/RunContext";
 import { createPipeline, TopologicalGraph } from "@microsoft/task-scheduler";
 import { Config } from "../types/Config";
 import { npmTask } from "./npmTask";
-import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { filterPackages } from "./filterPackages";
 import { Workspace } from "../types/Workspace";
 import { setTaskLogMaxLengths } from "../logger";
-import {
-  CacheHashTask,
-  CachePutTask,
-  CacheFetchTask,
-} from "../cache/cacheTasks";
 
 export async function runTasks(options: {
   graph: TopologicalGraph;
@@ -44,7 +38,13 @@ export async function runTasks(options: {
       run: async (_location, _stdout, _stderr, pkg) => {
         const scripts = workspace.allPackages[pkg].scripts;
         if (scripts && scripts[task]) {
-          await npmTask(task, workspace.allPackages[pkg], config, context);
+          await npmTask(
+            task,
+            workspace.allPackages[pkg],
+            config,
+            context,
+            workspace.root
+          );
         }
         return true;
       },
@@ -72,6 +72,6 @@ export async function runTasks(options: {
 
   await pipeline.go({
     packages: filteredPackages,
-    tasks: config.cache ? [...config.command, CachePutTask] : config.command,
+    tasks: config.command,
   });
 }

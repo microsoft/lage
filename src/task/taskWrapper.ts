@@ -10,7 +10,8 @@ export async function taskWrapper(
   task: string,
   fn: () => Promise<void>,
   config: Config,
-  context: RunContext
+  context: RunContext,
+  root: string
 ) {
   const { profiler, measures } = context;
   const pkg = info.name;
@@ -21,7 +22,7 @@ export async function taskWrapper(
   let hash: string | null = null;
 
   if (config.cache) {
-    hash = await cacheHash(task, info, config);
+    hash = await cacheHash(task, info, root, config);
 
     if (hash) {
       cacheHit = await cacheFetch(hash, info, config);

@@ -22,7 +22,8 @@ export function npmTask(
   task: string,
   info: PackageInfo,
   config: Config,
-  context: RunContext
+  context: RunContext,
+  root: string
 ) {
   const { node, args, npmClient, concurrency } = config;
 
@@ -78,7 +79,8 @@ export function npmTask(
           }
         }).then(() => wait(100)),
       config,
-      context
+      context,
+      root
     )
   );
 }
