@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Sat, 06 Jun 2020 19:33:34 GMT and should not be manually modified.
+This log was last generated on Sun, 07 Jun 2020 17:56:33 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.11.0
+
+Sun, 07 Jun 2020 17:56:33 GMT
+
+### Minor changes
+
+- salt with environmentGlob (kchau@microsoft.com)
 
 ## 0.10.1
 

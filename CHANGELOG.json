@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sun, 07 Jun 2020 17:56:33 GMT",
+      "tag": "lage_v0.11.0",
+      "version": "0.11.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "salt with environmentGlob",
+            "author": "kchau@microsoft.com",
+            "commit": "f4695b75fbaa39afd92b0ef1c80fcba3c9897bcb",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 06 Jun 2020 19:33:34 GMT",
       "tag": "lage_v0.10.1",
       "version": "0.10.1",
