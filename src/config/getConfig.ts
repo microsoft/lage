@@ -31,7 +31,9 @@ export function getConfig(cwd: string): Config {
   return {
     args: getPassThroughArgs(parsedArgs),
     cache: parsedArgs.cache === false ? false : true,
-    cacheOptions: configResults?.config.cacheOptions || {},
+    cacheOptions: configResults?.config.cacheOptions || {
+      environmentGlobs: ["lage.config.js"],
+    },
     command,
     concurrency:
       parsedArgs.concurrency ||

@@ -1,7 +1,9 @@
-import { Config as CacheOptions } from "backfill-config";
+import { Config as BackfillCacheOptions } from "backfill-config";
 import { Pipeline } from "./Pipeline";
 
-export { CacheOptions };
+export type CacheOptions = BackfillCacheOptions & {
+  environmentGlobs: string[];
+};
 
 export interface ConfigOptions {
   pipeline: Pipeline;
