@@ -10,25 +10,6 @@ export function salt(
   command: string,
   repoRoot: string
 ): string {
-  const newline = /\r\n|\r|\n/g;
-  const LF = "\n";
-  const files = fg.sync(environmentGlobFiles, {
-    cwd: repoRoot,
-  });
-
-  files.sort((a, b) => a.localeCompare(b));
-
-  const hashes = files.map((file) => {
-    const hasher = crypto.createHash("sha1");
-    hasher.update(file);
-
-    const fileBuffer = fs.readFileSync(path.join(repoRoot, file));
-    const data = fileBuffer.toString().replace(newline, LF);
-    hasher.update(data);
-
-    return hasher.digest("hex");
-  });
-
   return hashStrings([...getEnvHash(environmentGlobFiles, repoRoot), command]);
 }
 
