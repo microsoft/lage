@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "bump backfill",
+  "comment": "bump websocket-extensions",
   "packageName": "lage",
   "email": "kchau@microsoft.com",
   "dependentChangeType": "patch",
