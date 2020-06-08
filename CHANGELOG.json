@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 08 Jun 2020 23:46:49 GMT",
+      "tag": "lage_v0.11.1",
+      "version": "0.11.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "bump websocket-extensions",
+            "author": "kchau@microsoft.com",
+            "commit": "aacd88554d2f1ce6abffffb1b34b95cf1f7c7283",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 07 Jun 2020 17:56:33 GMT",
       "tag": "lage_v0.11.0",
       "version": "0.11.0",
