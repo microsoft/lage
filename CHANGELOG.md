@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 08 Jun 2020 23:46:49 GMT and should not be manually modified.
+This log was last generated on Mon, 08 Jun 2020 23:47:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.11.2
+
+Mon, 08 Jun 2020 23:47:43 GMT
+
+### Patches
+
+- fixed a bug with the since flag so that an empty is defaulted to origin/master (kchau@microsoft.com)
 
 ## 0.11.1
 
