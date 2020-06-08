@@ -1,48 +1,67 @@
-import { cacheHits } from "../cache/backfill";
+import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { formatDuration } from "../logger/formatDuration";
-import { getTaskId } from "./taskId";
 import { taskLogger } from "../logger";
-import { isCacheTask } from "../cache/cacheTasks";
 import { RunContext } from "../types/RunContext";
+import { Config } from "../types/Config";
+import { PackageInfo } from "workspace-tools";
 
 export async function taskWrapper(
-  pkg: string,
+  info: PackageInfo,
   task: string,
   fn: () => Promise<void>,
-  context: RunContext
+  config: Config,
+  context: RunContext,
+  root: string
 ) {
   const { profiler, measures } = context;
-
+  const pkg = info.name;
   const logger = taskLogger(pkg, task);
-
   const start = process.hrtime();
 
-  if (!cacheHits[pkg]) {
-    if (!isCacheTask(task)) {
-      logger.info("▶️ start");
+  let cacheHit = true;
+  let hash: string | null = null;
+
+  if (config.cache) {
+    hash = await cacheHash(task, info, root, config);
+
+    if (hash) {
+      cacheHit = await cacheFetch(hash, info, config);
     }
+
+    logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
+  }
+
+  if (!cacheHit) {
+    logger.info("▶️ start");
 
     try {
       await profiler.run(() => fn(), `${pkg}.${task}`);
       const duration = process.hrtime(start);
-      if (!isCacheTask(task)) {
-        measures.taskStats.push({
-          pkg,
-          task,
-          start,
-          duration,
-          status: "success",
-        });
-        logger.info(`✔️ done - took ${formatDuration(duration)}`);
+
+      measures.taskStats.push({
+        pkg,
+        task,
+        start,
+        duration,
+        status: "success",
+      });
+
+      logger.info(`✔️ done - took ${formatDuration(duration)}`);
+
+      if (config.cache && hash) {
+        logger.verbose(`hash put ${hash}`);
+        await cachePut(hash, info, config);
       }
     } catch (e) {
       logger.info("❌ fail");
-      measures.failedTask = { pkg, task };
+      if (!measures.failedTask) {
+        measures.failedTask = { pkg, task };
+      }
       const duration = process.hrtime(start);
       measures.taskStats.push({ pkg, task, start, duration, status: "failed" });
       throw e;
     }
-  } else if (!isCacheTask(task)) {
+  } else {
     const duration = process.hrtime(start);
     measures.taskStats.push({ pkg, task, start, duration, status: "skipped" });
     logger.info("⏭️ skip");

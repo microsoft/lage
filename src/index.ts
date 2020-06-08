@@ -32,7 +32,11 @@ const graph = generateTopologicGraph(workspace);
   const { profiler } = context;
   context.measures.start = process.hrtime();
 
-  await runTasks({ graph, workspace, context, config });
+  try {
+    await runTasks({ graph, workspace, context, config });
+  } catch (e) {
+    logger.error("runTasks", e);
+  }
 
   if (config.profile) {
     const profileFile = profiler.output();
@@ -41,7 +45,7 @@ const graph = generateTopologicGraph(workspace);
 
   context.measures.duration = process.hrtime(context.measures.start);
 
-  await reportSummary(context);
+  reportSummary(context);
 
   if (context.measures.failedTask) {
     process.exit(1);

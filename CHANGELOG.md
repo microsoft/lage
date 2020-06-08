@@ -1,8 +1,40 @@
 # Change Log - lage
 
-This log was last generated on Thu, 04 Jun 2020 17:04:06 GMT and should not be manually modified.
+This log was last generated on Sun, 07 Jun 2020 17:56:33 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.11.0
+
+Sun, 07 Jun 2020 17:56:33 GMT
+
+### Minor changes
+
+- salt with environmentGlob (kchau@microsoft.com)
+
+## 0.10.1
+
+Sat, 06 Jun 2020 19:33:34 GMT
+
+### Patches
+
+- bump backfill (kchau@microsoft.com)
+
+## 0.10.0
+
+Fri, 05 Jun 2020 23:31:46 GMT
+
+### Minor changes
+
+- per task caching (kchau@microsoft.com)
+
+## 0.9.2
+
+Fri, 05 Jun 2020 16:33:19 GMT
+
+### Patches
+
+- fixing hash! (kchau@microsoft.com)
 
 ## 0.9.1
 

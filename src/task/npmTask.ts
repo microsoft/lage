@@ -22,7 +22,8 @@ export function npmTask(
   task: string,
   info: PackageInfo,
   config: Config,
-  context: RunContext
+  context: RunContext,
+  root: string
 ) {
   const { node, args, npmClient, concurrency } = config;
 
@@ -36,7 +37,7 @@ export function npmTask(
 
   return queue.add(() =>
     taskWrapper(
-      info.name,
+      info,
       task,
       () =>
         new Promise((resolve, reject) => {
@@ -77,7 +78,9 @@ export function npmTask(
             cp.kill("SIGKILL");
           }
         }).then(() => wait(100)),
-      context
+      config,
+      context,
+      root
     )
   );
 }

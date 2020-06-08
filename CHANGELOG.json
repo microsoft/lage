@@ -2,6 +2,66 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sun, 07 Jun 2020 17:56:33 GMT",
+      "tag": "lage_v0.11.0",
+      "version": "0.11.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "salt with environmentGlob",
+            "author": "kchau@microsoft.com",
+            "commit": "f4695b75fbaa39afd92b0ef1c80fcba3c9897bcb",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 06 Jun 2020 19:33:34 GMT",
+      "tag": "lage_v0.10.1",
+      "version": "0.10.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "bump backfill",
+            "author": "kchau@microsoft.com",
+            "commit": "e17bdde5a17c2e7d6441fd2cc748074694538480",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 05 Jun 2020 23:31:46 GMT",
+      "tag": "lage_v0.10.0",
+      "version": "0.10.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "per task caching",
+            "author": "kchau@microsoft.com",
+            "commit": "30f09e11d59ef6e290d3e3e64591011e19be6eb0",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 05 Jun 2020 16:33:19 GMT",
+      "tag": "lage_v0.9.2",
+      "version": "0.9.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixing hash!",
+            "author": "kchau@microsoft.com",
+            "commit": "3af3bb886d744289c31eb47c6c27609672a11010",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 04 Jun 2020 17:04:06 GMT",
       "tag": "lage_v0.9.1",
       "version": "0.9.1",
