@@ -63,7 +63,6 @@ export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
 
 export function parseArgs() {
   return yargsParser(process.argv.slice(2), {
-    string: ["since"],
     array: ["scope", "node", "ignore"],
     configuration: {
       "populate--": true,
