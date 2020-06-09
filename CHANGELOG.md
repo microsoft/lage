@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 09 Jun 2020 04:44:04 GMT and should not be manually modified.
+This log was last generated on Tue, 09 Jun 2020 19:51:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.12.1
+
+Tue, 09 Jun 2020 19:51:48 GMT
+
+### Patches
+
+- get rid of all newline characters in a line (kchau@microsoft.com)
 
 ## 0.12.0
 

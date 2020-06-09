@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 09 Jun 2020 19:51:48 GMT",
+      "tag": "lage_v0.12.1",
+      "version": "0.12.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "get rid of all newline characters in a line",
+            "author": "kchau@microsoft.com",
+            "commit": "fa0d59b9298bc22ee37d1775cb75a5f508de7b40",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 09 Jun 2020 04:44:04 GMT",
       "tag": "lage_v0.12.0",
       "version": "0.12.0",
