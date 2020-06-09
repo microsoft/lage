@@ -4,15 +4,16 @@ import { taskLogger } from "../logger";
 import { RunContext } from "../types/RunContext";
 import { Config } from "../types/Config";
 import { PackageInfo } from "workspace-tools";
+import { controller } from "./abortSignal";
 
 export async function taskWrapper(
   info: PackageInfo,
   task: string,
-  fn: () => Promise<void>,
+  fn: () => Promise<unknown>,
   config: Config,
   context: RunContext,
   root: string
-) {
+): Promise<unknown> {
   const { profiler, measures } = context;
   const pkg = info.name;
   const logger = taskLogger(pkg, task);
@@ -35,7 +36,7 @@ export async function taskWrapper(
     logger.info("▶️ start");
 
     try {
-      await profiler.run(() => fn(), `${pkg}.${task}`);
+      const result = await profiler.run(() => fn(), `${pkg}.${task}`);
       const duration = process.hrtime(start);
 
       measures.taskStats.push({
@@ -52,18 +53,26 @@ export async function taskWrapper(
         logger.verbose(`hash put ${hash}`);
         await cachePut(hash, info, config);
       }
+
+      return true;
     } catch (e) {
-      logger.info("❌ fail");
-      if (!measures.failedTask) {
-        measures.failedTask = { pkg, task };
-      }
-      const duration = process.hrtime(start);
-      measures.taskStats.push({ pkg, task, start, duration, status: "failed" });
-      throw e;
+      handleFailure();
+      return false;
     }
   } else {
     const duration = process.hrtime(start);
     measures.taskStats.push({ pkg, task, start, duration, status: "skipped" });
     logger.info("⏭️ skip");
+    return true;
+  }
+
+  function handleFailure() {
+    logger.info("❌ fail");
+    if (!measures.failedTask) {
+      measures.failedTask = { pkg, task };
+    }
+    const duration = process.hrtime(start);
+    measures.taskStats.push({ pkg, task, start, duration, status: "failed" });
+    controller.abort();
   }
 }
