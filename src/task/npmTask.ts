@@ -61,7 +61,16 @@ export function npmTask(
           const stderrLogger = new NpmLogWritable(info.name, task);
           cp.stderr.pipe(stderrLogger);
 
-          cp.on("exit", (code) => {
+          cp.on("close", handleChildProcessExit);
+          cp.on("exit", handleChildProcessExit);
+
+          function terminate() {
+            queue.pause();
+            queue.clear();
+            cp.kill("SIGKILL");
+          }
+
+          function handleChildProcessExit(code: number) {
             signal.removeEventListener("abort", terminate);
 
             if (code === 0) {
@@ -70,12 +79,6 @@ export function npmTask(
 
             controller.abort();
             reject();
-          });
-
-          function terminate() {
-            queue.pause();
-            queue.clear();
-            cp.kill("SIGKILL");
           }
         }).then(() => wait(100)),
       config,
