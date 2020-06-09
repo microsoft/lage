@@ -104,6 +104,7 @@ export class NpmLogWritable extends Writable {
           chunk
             .slice(prev, curr)
             .toString()
+            .replace(/^(\r\n|\n|\r)|(\r\n|\n|\r)$/g, "")
             .trimRight();
         this.taskLogger.verbose(this.buffer);
         this.buffer = "";
