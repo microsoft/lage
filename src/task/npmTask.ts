@@ -50,6 +50,10 @@ export function npmTask(
           const cp = spawn(npmCmd, npmArgs, {
             cwd: path.dirname(info.packageJsonPath),
             stdio: "pipe",
+            env: {
+              ...process.env,
+              ...(process.stdout.isTTY && { FORCE_COLOR: "1" }),
+            },
           });
 
           activeProcesses.add(cp);

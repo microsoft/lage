@@ -5,8 +5,8 @@ import { Config } from "../types/Config";
 export function getCacheConfig(cwd: string, config: Config) {
   const defaultCacheConfig = createDefaultConfig(cwd);
 
-  // in lage, default mode is to SKIP locally
-  defaultCacheConfig.cacheStorageConfig.provider = "local-skip";
+  // in lage, default mode is to CACHE locally
+  defaultCacheConfig.cacheStorageConfig.provider = "local";
 
   const logger = makeLogger("warn");
   const envConfig = getEnvConfig(logger);
