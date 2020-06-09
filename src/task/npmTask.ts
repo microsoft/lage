@@ -1,22 +1,17 @@
 import { Config } from "../types/Config";
-import { controller, signal } from "./abortSignal";
 import { findNpmClient } from "../workspace/findNpmClient";
 import { PackageInfo } from "workspace-tools";
 import { RunContext } from "../types/RunContext";
-import { spawn } from "child_process";
+import { spawn, ChildProcess } from "child_process";
 import { taskLogger, NpmLogWritable } from "../logger";
 import { taskWrapper } from "./taskWrapper";
 import path from "path";
 import PQueue from "p-queue";
 
-function wait(time: number): Promise<void> {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, time);
-  });
-}
-
 let npmCmd: string;
 let queue: PQueue;
+let bail = false;
+let activeProcesses = new Set<ChildProcess>();
 
 export function npmTask(
   task: string,
@@ -34,6 +29,10 @@ export function npmTask(
   npmCmd = npmCmd || findNpmClient(npmClient);
 
   const npmArgs = [...node, "run", task, "--", ...args];
+
+  if (bail) {
+    return Promise.reject();
+  }
 
   return queue.add(() =>
     taskWrapper(
@@ -53,7 +52,7 @@ export function npmTask(
             stdio: "pipe",
           });
 
-          signal.addEventListener("abort", terminate);
+          activeProcesses.add(cp);
 
           const stdoutLogger = new NpmLogWritable(info.name, task);
           cp.stdout.pipe(stdoutLogger);
@@ -61,26 +60,29 @@ export function npmTask(
           const stderrLogger = new NpmLogWritable(info.name, task);
           cp.stderr.pipe(stderrLogger);
 
-          cp.on("exit", (code) => {
-            signal.removeEventListener("abort", terminate);
+          cp.on("exit", handleChildProcessExit);
 
+          function handleChildProcessExit(code: number) {
             if (code === 0) {
+              activeProcesses.delete(cp);
               return resolve();
             }
 
-            controller.abort();
+            bail = true;
+            cp.stdout.destroy();
+            cp.stdin.destroy();
             reject();
-          });
-
-          function terminate() {
-            queue.pause();
-            queue.clear();
-            cp.kill("SIGKILL");
           }
-        }).then(() => wait(100)),
+        }),
       config,
       context,
       root
     )
   );
+}
+
+export function killAllActiveProcesses() {
+  for (const cp of activeProcesses) {
+    cp.kill("SIGKILL");
+  }
 }

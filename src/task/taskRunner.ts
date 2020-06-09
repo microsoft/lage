@@ -38,13 +38,13 @@ export async function runTasks(options: {
       run: async (_location, _stdout, _stderr, pkg) => {
         const scripts = workspace.allPackages[pkg].scripts;
         if (scripts && scripts[task]) {
-          await npmTask(
+          return (await npmTask(
             task,
             workspace.allPackages[pkg],
             config,
             context,
             workspace.root
-          );
+          )) as boolean;
         }
         return true;
       },

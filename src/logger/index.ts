@@ -104,7 +104,7 @@ export class NpmLogWritable extends Writable {
           chunk
             .slice(prev, curr)
             .toString()
-            .trim();
+            .trimRight();
         this.taskLogger.verbose(this.buffer);
         this.buffer = "";
         prev = curr;

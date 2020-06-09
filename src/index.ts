@@ -6,6 +6,8 @@ import { reportSummary } from "./logger/reportSummary";
 import { runTasks } from "./task/taskRunner";
 import { logLevel, logger } from "./logger";
 import { generateTopologicGraph } from "./workspace/generateTopologicalGraph";
+import { signal } from "./task/abortSignal";
+import { killAllActiveProcesses } from "./task/npmTask";
 
 console.log(`🧱 Lage task runner 🧱`);
 console.log(``);
@@ -32,6 +34,12 @@ const graph = generateTopologicGraph(workspace);
   const { profiler } = context;
   context.measures.start = process.hrtime();
 
+  // die faster if an abort signal is seen
+  signal.addEventListener("abort", () => {
+    killAllActiveProcesses();
+    displayReportAndExit();
+  });
+
   try {
     await runTasks({ graph, workspace, context, config });
   } catch (e) {
@@ -43,11 +51,13 @@ const graph = generateTopologicGraph(workspace);
     logger.info("runTasks", `Profile saved to ${profileFile}`);
   }
 
+  displayReportAndExit();
+})();
+
+function displayReportAndExit() {
   context.measures.duration = process.hrtime(context.measures.start);
-
   reportSummary(context);
-
   if (context.measures.failedTask) {
     process.exit(1);
   }
-})();
+}
