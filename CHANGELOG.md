@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 08 Jun 2020 23:47:43 GMT and should not be manually modified.
+This log was last generated on Tue, 09 Jun 2020 04:44:04 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.12.0
+
+Tue, 09 Jun 2020 04:44:04 GMT
+
+### Minor changes
+
+- need to handle the close signal as well as exit (kchau@microsoft.com)
 
 ## 0.11.2
 

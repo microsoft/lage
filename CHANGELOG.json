@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 09 Jun 2020 04:44:04 GMT",
+      "tag": "lage_v0.12.0",
+      "version": "0.12.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "need to handle the close signal as well as exit",
+            "author": "kchau@microsoft.com",
+            "commit": "8b4fc2da7ded08fcded3cabb5ae15dc2c0b8a48e",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 08 Jun 2020 23:47:43 GMT",
       "tag": "lage_v0.11.2",
       "version": "0.11.2",
