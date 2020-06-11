@@ -2,6 +2,7 @@ import * as path from "path";
 import * as crypto from "crypto";
 import * as fg from "fast-glob";
 import * as fs from "fs";
+import os from "os";
 
 let envHash: string[];
 
@@ -10,7 +11,11 @@ export function salt(
   command: string,
   repoRoot: string
 ): string {
-  return hashStrings([...getEnvHash(environmentGlobFiles, repoRoot), command]);
+  return hashStrings([
+    ...getEnvHash(environmentGlobFiles, repoRoot),
+    os.platform(),
+    command,
+  ]);
 }
 
 function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
