@@ -1872,40 +1872,39 @@ babel-plugin-dynamic-import-node@^2.3.0, babel-plugin-dynamic-import-node@^2.3.3
   dependencies:
     object.assign "^4.1.0"
 
-backfill-cache@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/backfill-cache/-/backfill-cache-5.1.2.tgz#d23b85d03ee67951c46d8d50509ad9b7c8445552"
-  integrity sha512-zTLH2Qes4hiIe/yBvXKUcXSFK29zSgTEXnfTS9W+zuH2kBJmqtMWhHABA1rlIjSir7kBf1SB56VZraY5/dFWlA==
+backfill-cache@^5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/backfill-cache/-/backfill-cache-5.1.3.tgz#4030e80c7ce14d7242ebdafee0c9bae50928f3ba"
+  integrity sha512-HAQTDmOQfpNKSgRCq9/DN8ok+L0aq6Q/L4blAmcAlnxJA/dGP/Oc3GBL52VOmSwCBlYn+H1g9UO8YPqKR9HIfA==
   dependencies:
     "@azure/storage-blob" "12.1.2"
-    backfill-config "^5.1.1"
+    backfill-config "^6.0.0"
     backfill-logger "^5.0.0"
     execa "^4.0.0"
     fs-extra "^8.1.0"
     globby "^11.0.0"
     tar-fs "^2.1.0"
 
-backfill-config@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/backfill-config/-/backfill-config-5.1.1.tgz#9f8bab41fde79c11859c33a2cc41c682981d8d1e"
-  integrity sha512-Hi+6co9CZt8mR47AnciMosVTT9SoE1oVUUbM0+lF03Nz6OvanqWqXNZn3F4ddADRIbAR0anyDEnOr6/r1P7a4g==
+backfill-config@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/backfill-config/-/backfill-config-6.0.0.tgz#cb8e2f06f78acac9dfed661197b30b90c973f0a1"
+  integrity sha512-qXbR8uJSwmJMR2EqdrQxYtQOYp0+UZafEoFLI7gj2Jk725V0ijSn27TYRAGjF2r2N8Fg/yq4bEFVEKgcVEi3RQ==
   dependencies:
     backfill-logger "^5.0.0"
     find-up "^4.0.0"
     fs-extra "^8.1.0"
     pkg-dir "^4.2.0"
 
-backfill-hasher@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/backfill-hasher/-/backfill-hasher-5.1.1.tgz#ddc728782092b8bd8fcc3597d5e7be59d2028e54"
-  integrity sha512-PxQO+pwaJUoxxkwy6FuKCZz8vPC5BYcYJXmwl2T/ConpmGsqgkGAPjT+/CjXAMSVmGhLgIDDLYsILKAJQIn66A==
+backfill-hasher@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/backfill-hasher/-/backfill-hasher-6.0.0.tgz#78c5aae1b0bdc1dfa2a3e410c1982f31b6bd8df6"
+  integrity sha512-5y3l1rS3CcUoAmh2kHEa6ClEPaCX2YCQMSDQq43ZqORX4wLGb3/BpFS7gUaun6Z4bFHy4vGsYNkLlnn/yjMpSA==
   dependencies:
     "@rushstack/package-deps-hash" "^2.4.22"
-    backfill-config "^5.1.1"
+    backfill-config "^6.0.0"
     backfill-logger "^5.0.0"
     find-up "^4.1.0"
     fs-extra "^8.1.0"
-    globby "^11.0.0"
     workspace-tools "^0.7.6"
 
 backfill-logger@^5.0.0:
@@ -1925,15 +1924,15 @@ backfill-utils-dotenv@^5.0.0:
     dotenv "^8.1.0"
     find-up "^4.0.0"
 
-backfill@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/backfill/-/backfill-5.1.2.tgz#533dd66bff4a795927d8fcc1c1a966409f66d9b5"
-  integrity sha512-3jETm23CQv8C4r38YfjardCQePstC99pkRDOJgYSBnZ7icozrpBITTyZx4pSCwuKjBSYML3f8/TqsXZEmm8xKQ==
+backfill@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/backfill/-/backfill-6.0.0.tgz#0f28fd68ace1f21c99183f928b121fd475b3c84a"
+  integrity sha512-BkS0F1Mt0Xw4a+WRFTvIJz9lj1C41hao2QlXe3hVu563fOMkYK/gelo6+SYz69SttOKNrNWbZNNaKUGJcpBdPQ==
   dependencies:
     anymatch "^3.0.3"
-    backfill-cache "^5.1.2"
-    backfill-config "^5.1.1"
-    backfill-hasher "^5.1.1"
+    backfill-cache "^5.1.3"
+    backfill-config "^6.0.0"
+    backfill-hasher "^6.0.0"
     backfill-logger "^5.0.0"
     backfill-utils-dotenv "^5.0.0"
     chokidar "^3.2.1"
@@ -1977,10 +1976,10 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-beachball@^1.31.0:
-  version "1.31.0"
-  resolved "https://registry.yarnpkg.com/beachball/-/beachball-1.31.0.tgz#8909754fa62e4e3bda14a5f799aaacef53627e23"
-  integrity sha512-IQTpnItQPt9O5nZ3nVE4Gqxt4ipJ+zJTkKaAst0aDVAQSSVB90AOIUB/TAXx2CZaYCebt4DfnzPSNu09PTXU6g==
+beachball@^1.31.4:
+  version "1.31.4"
+  resolved "https://registry.yarnpkg.com/beachball/-/beachball-1.31.4.tgz#e58e3f593ce734577d7016960c760dc77397dcac"
+  integrity sha512-x0tBTOeDqirCdjK5KIE3KcXSgsQOAE7vpyki305dC/4Dh0iSgSrWVQUrX1O8O4L2PGTwaCmr1cyLjduAVvsGQA==
   dependencies:
     cosmiconfig "^6.0.0"
     fs-extra "^8.0.1"
