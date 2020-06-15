@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 15 Jun 2020 20:13:31 GMT",
+      "tag": "lage_v0.12.3",
+      "version": "0.12.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "unphantomify backfill",
+            "author": "kchau@microsoft.com",
+            "commit": "e9d526a15063854f7d1ebd64204e3264b3ac62c8",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 11 Jun 2020 00:14:19 GMT",
       "tag": "lage_v0.12.2",
       "version": "0.12.2",
