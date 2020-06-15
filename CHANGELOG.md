@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 09 Jun 2020 19:51:48 GMT and should not be manually modified.
+This log was last generated on Thu, 11 Jun 2020 00:14:19 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.12.2
+
+Thu, 11 Jun 2020 00:14:19 GMT
+
+### Patches
+
+- include os.platform in the hash (kchau@microsoft.com)
 
 ## 0.12.1
 
