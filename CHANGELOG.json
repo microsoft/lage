@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 16 Jun 2020 22:07:08 GMT",
+      "tag": "lage_v0.12.4",
+      "version": "0.12.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "adding a resetCache flag to resave cache if something went awry",
+            "author": "kchau@microsoft.com",
+            "commit": "3f0b69d4cd4887606f302ce4c4165aea82386a42",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 15 Jun 2020 20:13:31 GMT",
       "tag": "lage_v0.12.3",
       "version": "0.12.3",

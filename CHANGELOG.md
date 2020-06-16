@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 15 Jun 2020 20:13:31 GMT and should not be manually modified.
+This log was last generated on Tue, 16 Jun 2020 22:07:08 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.12.4
+
+Tue, 16 Jun 2020 22:07:08 GMT
+
+### Patches
+
+- adding a resetCache flag to resave cache if something went awry (kchau@microsoft.com)
 
 ## 0.12.3
 
