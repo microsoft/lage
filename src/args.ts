@@ -67,6 +67,7 @@ export function parseArgs() {
     array: ["scope", "node", "ignore"],
     configuration: {
       "populate--": true,
+      "strip-dashed": true,
     },
   });
 }
