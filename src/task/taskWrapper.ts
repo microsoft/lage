@@ -25,7 +25,7 @@ export async function taskWrapper(
   if (config.cache) {
     hash = await cacheHash(task, info, root, config);
 
-    if (hash) {
+    if (hash && !config.resetCache) {
       cacheHit = await cacheFetch(hash, info, config);
     }
 

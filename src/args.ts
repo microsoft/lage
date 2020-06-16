@@ -50,6 +50,7 @@ export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
     since: _sinceArg,
     deps: _depsArg,
     cache: _cacheArg,
+    resetCache: _resetCacheArg,
     ignore: _ignoreArg,
     verbose: _verboseArg,
     _: _positionals,
