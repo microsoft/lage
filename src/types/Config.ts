@@ -20,6 +20,7 @@ export interface CliOptions {
   since?: string;
   deps: boolean;
   cache: boolean;
+  resetCache: boolean;
   node: string[];
   args: any;
   verbose: boolean;

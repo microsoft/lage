@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "adding a resetCache flag to resave cache if something went awry",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2020-06-16T21:55:04.216Z"
+}

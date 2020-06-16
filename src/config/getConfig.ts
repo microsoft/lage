@@ -31,6 +31,7 @@ export function getConfig(cwd: string): Config {
   return {
     args: getPassThroughArgs(parsedArgs),
     cache: parsedArgs.cache === false ? false : true,
+    resetCache: parsedArgs.resetCache || false,
     cacheOptions: configResults?.config.cacheOptions || {},
     command,
     concurrency:

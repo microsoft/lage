@@ -19,13 +19,13 @@ export async function taskWrapper(
   const logger = taskLogger(pkg, task);
   const start = process.hrtime();
 
-  let cacheHit = true;
+  let cacheHit = false;
   let hash: string | null = null;
 
   if (config.cache) {
     hash = await cacheHash(task, info, root, config);
 
-    if (hash) {
+    if (hash && !config.resetCache) {
       cacheHit = await cacheFetch(hash, info, config);
     }
 
