@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 17 Jun 2020 19:41:31 GMT",
+      "tag": "lage_v0.12.5",
+      "version": "0.12.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump task-scheduler to make the graph respect tasks with no deps",
+            "author": "kchau@microsoft.com",
+            "commit": "b211a9f80f2b966360ea5334eb36d6950c3cdaaf",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 16 Jun 2020 22:07:08 GMT",
       "tag": "lage_v0.12.4",
       "version": "0.12.4",

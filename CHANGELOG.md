@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 16 Jun 2020 22:07:08 GMT and should not be manually modified.
+This log was last generated on Wed, 17 Jun 2020 19:41:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.12.5
+
+Wed, 17 Jun 2020 19:41:31 GMT
+
+### Patches
+
+- Bump task-scheduler to make the graph respect tasks with no deps (kchau@microsoft.com)
 
 ## 0.12.4
 
