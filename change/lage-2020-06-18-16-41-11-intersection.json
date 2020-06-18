@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "making filterpackage do intersection rather than union. adding tests",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2020-06-18T23:41:11.480Z"
+}
