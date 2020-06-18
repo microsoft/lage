@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 17 Jun 2020 19:41:31 GMT and should not be manually modified.
+This log was last generated on Thu, 18 Jun 2020 19:56:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.13.0
+
+Thu, 18 Jun 2020 19:56:16 GMT
+
+### Minor changes
+
+- adding a environment variable LAGE_PACKAGE_NAME like Lerna (kchau@microsoft.com)
 
 ## 0.12.5
 

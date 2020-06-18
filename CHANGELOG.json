@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 18 Jun 2020 19:56:16 GMT",
+      "tag": "lage_v0.13.0",
+      "version": "0.13.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding a environment variable LAGE_PACKAGE_NAME like Lerna",
+            "author": "kchau@microsoft.com",
+            "commit": "0077ad04f5a4342cb0e7f9e54d02a995b562460d",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 17 Jun 2020 19:41:31 GMT",
       "tag": "lage_v0.12.5",
       "version": "0.12.5",
