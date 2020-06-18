@@ -53,6 +53,7 @@ export function npmTask(
             env: {
               ...process.env,
               ...(process.stdout.isTTY && { FORCE_COLOR: "1" }),
+              LAGE_PACKAGE_NAME: info.name,
             },
           });
 
