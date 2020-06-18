@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 18 Jun 2020 23:47:16 GMT",
+      "tag": "lage_v0.13.1",
+      "version": "0.13.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "making filterpackage do intersection rather than union. adding tests",
+            "author": "kchau@microsoft.com",
+            "commit": "f0df0511789cbe4cdf57d538cb25e69ce48f2fd4",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 18 Jun 2020 19:56:16 GMT",
       "tag": "lage_v0.13.0",
       "version": "0.13.0",

@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 18 Jun 2020 19:56:16 GMT and should not be manually modified.
+This log was last generated on Thu, 18 Jun 2020 23:47:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.13.1
+
+Thu, 18 Jun 2020 23:47:16 GMT
+
+### Patches
+
+- making filterpackage do intersection rather than union. adding tests (kchau@microsoft.com)
 
 ## 0.13.0
 
