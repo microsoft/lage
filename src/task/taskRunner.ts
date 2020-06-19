@@ -64,10 +64,10 @@ export async function runTasks(options: {
   let scopedPackages: string[] | undefined = undefined;
   if (hasScopes) {
     scopedPackages = getScopedPackages(scope!, workspace.allPackages);
-    scopedPackages = getTransitiveProviders(
-      scopedPackages,
-      workspace.allPackages
-    );
+    scopedPackages = [
+      ...scopedPackages,
+      ...getTransitiveProviders(scopedPackages, workspace.allPackages),
+    ];
   }
 
   const hasSince = typeof since !== "undefined";
