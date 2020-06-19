@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 19 Jun 2020 18:08:51 GMT and should not be manually modified.
+This log was last generated on Fri, 19 Jun 2020 18:49:29 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.13.3
+
+Fri, 19 Jun 2020 18:49:29 GMT
+
+### Patches
+
+- adding scoped packages back into the transitive providers (kchau@microsoft.com)
 
 ## 0.13.2
 

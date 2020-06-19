@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 19 Jun 2020 18:49:29 GMT",
+      "tag": "lage_v0.13.3",
+      "version": "0.13.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "adding scoped packages back into the transitive providers",
+            "author": "kchau@microsoft.com",
+            "commit": "8f66d475c0893dbc529cbfe8614ee556acd245fd",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 19 Jun 2020 18:08:51 GMT",
       "tag": "lage_v0.13.2",
       "version": "0.13.2",
