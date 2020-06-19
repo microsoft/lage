@@ -9360,10 +9360,10 @@ worker-farm@^1.7.0:
   dependencies:
     errno "~0.1.7"
 
-workspace-tools@^0.7.5:
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.7.5.tgz#a6798d4493abf2f0e85fcdf784f6f79d3b6cf33d"
-  integrity sha512-wv1cllR/zz9mhqTkhB1feombfEJl1Pj2LBc5j0k6kcdy0J6e1ZbwM7L/SEkLhsp2YSCaIIgWf1o00r8QlGpyDQ==
+workspace-tools@^0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.7.6.tgz#4c3e9880d7f5afd6e650d9e58785f31389f68f74"
+  integrity sha512-iNGCMTr/fnZ7xWNDHro4B5Le7Tx8hywfxfjVZZSIsje5J3hjE76cxHdFRhd0VNJ1dMJ2Zqs3iOqg1scgIwCx+w==
   dependencies:
     "@pnpm/lockfile-file" "^3.0.7"
     "@pnpm/logger" "^3.2.2"
@@ -9378,10 +9378,10 @@ workspace-tools@^0.7.5:
     multimatch "^4.0.0"
     read-yaml-file "^2.0.0"
 
-workspace-tools@^0.7.6:
-  version "0.7.6"
-  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.7.6.tgz#4c3e9880d7f5afd6e650d9e58785f31389f68f74"
-  integrity sha512-iNGCMTr/fnZ7xWNDHro4B5Le7Tx8hywfxfjVZZSIsje5J3hjE76cxHdFRhd0VNJ1dMJ2Zqs3iOqg1scgIwCx+w==
+workspace-tools@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.8.0.tgz#18711cb83391a471cf2e061bb5ea3c127a5d7a88"
+  integrity sha512-y5He+EzOhrLXSqYvsFhAD3IxX9QUgE8GR8pbxdAllkJPSSIy75HpA5NFT7j1FtULjTxsI6iCVA/6OLPyvPqStA==
   dependencies:
     "@pnpm/lockfile-file" "^3.0.7"
     "@pnpm/logger" "^3.2.2"

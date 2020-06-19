@@ -1,6 +1,10 @@
-import { getTransitiveDependencies, PackageInfos } from "workspace-tools";
+import { getTransitiveConsumers, PackageInfos } from "workspace-tools";
 import { logger } from "../logger";
 
+/**
+ * Filters scopedPackages and changedPackages with option to calculate the transitive packages of all
+ * @param options
+ */
 export function filterPackages(options: {
   allPackages: PackageInfos;
   deps: boolean;
@@ -23,9 +27,7 @@ export function filterPackages(options: {
   }
 
   if (deps) {
-    filtered = filtered.concat(
-      getTransitiveDependencies(filtered, allPackages)
-    );
+    filtered = filtered.concat(getTransitiveConsumers(filtered, allPackages));
   }
 
   const unique = new Set(filtered);

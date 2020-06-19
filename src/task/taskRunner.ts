@@ -5,7 +5,11 @@ import { npmTask } from "./npmTask";
 import { filterPackages } from "./filterPackages";
 import { Workspace } from "../types/Workspace";
 import { setTaskLogMaxLengths } from "../logger";
-import { getScopedPackages, getChangedPackages } from "workspace-tools";
+import {
+  getScopedPackages,
+  getChangedPackages,
+  getTransitiveProviders,
+} from "workspace-tools";
 
 export async function runTasks(options: {
   graph: TopologicalGraph;
@@ -60,6 +64,10 @@ export async function runTasks(options: {
   let scopedPackages: string[] | undefined = undefined;
   if (hasScopes) {
     scopedPackages = getScopedPackages(scope!, workspace.allPackages);
+    scopedPackages = getTransitiveProviders(
+      scopedPackages,
+      workspace.allPackages
+    );
   }
 
   const hasSince = typeof since !== "undefined";
