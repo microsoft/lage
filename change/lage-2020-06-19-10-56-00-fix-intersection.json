@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixing the intersection calculate with the differnce between transitive consumers and providers",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch",
-  "date": "2020-06-19T17:56:00.563Z"
-}

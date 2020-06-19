@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 19 Jun 2020 18:08:51 GMT",
+      "tag": "lage_v0.13.2",
+      "version": "0.13.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixing the intersection calculate with the differnce between transitive consumers and providers",
+            "author": "kchau@microsoft.com",
+            "commit": "b1f0537c81d409f2ad9de8d3543a838e42a868d7",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 18 Jun 2020 23:47:16 GMT",
       "tag": "lage_v0.13.1",
       "version": "0.13.1",

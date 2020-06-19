@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 18 Jun 2020 23:47:16 GMT and should not be manually modified.
+This log was last generated on Fri, 19 Jun 2020 18:08:51 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.13.2
+
+Fri, 19 Jun 2020 18:08:51 GMT
+
+### Patches
+
+- fixing the intersection calculate with the differnce between transitive consumers and providers (kchau@microsoft.com)
 
 ## 0.13.1
 
