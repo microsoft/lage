@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 29 Jun 2020 21:04:38 GMT",
+      "tag": "lage_v0.13.4",
+      "version": "0.13.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixed a bug where an exception thrown from getPackageDeps will affect how things are cached",
+            "author": "kchau@microsoft.com",
+            "commit": "a4673ffddad82dc3b2bbbed87d5d6288a75a0e7c",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 19 Jun 2020 18:49:29 GMT",
       "tag": "lage_v0.13.3",
       "version": "0.13.3",

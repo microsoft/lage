@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 19 Jun 2020 18:49:29 GMT and should not be manually modified.
+This log was last generated on Mon, 29 Jun 2020 21:04:38 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.13.4
+
+Mon, 29 Jun 2020 21:04:38 GMT
+
+### Patches
+
+- fixed a bug where an exception thrown from getPackageDeps will affect how things are cached (kchau@microsoft.com)
 
 ## 0.13.3
 
