@@ -34,18 +34,23 @@ export async function cacheHash(
       hashKey,
       cacheConfig
     );
-  } catch (e) {
-    logger.error(`${info.name} computeHash`, e);
+  } catch {
+    // computeHash can throw exception when git is not installed or the repo hashes cannot be calculated with a staged file that is deleted
+    // lage will continue as if this package cannot be cached
   }
 
   return null;
 }
 
 export async function cacheFetch(
-  hash: string,
+  hash: string | null,
   info: PackageInfo,
   config: Config
 ) {
+  if (!hash) {
+    return false;
+  }
+
   const packagePath = path.dirname(info.packageJsonPath);
   const cacheConfig = getCacheConfig(packagePath, config);
   const backfillLogger = backfill.makeLogger(
@@ -64,10 +69,14 @@ export async function cacheFetch(
 }
 
 export async function cachePut(
-  hash: string,
+  hash: string | null,
   info: PackageInfo,
   config: Config
 ) {
+  if (!hash) {
+    return;
+  }
+
   const packagePath = path.dirname(info.packageJsonPath);
   const cacheConfig = getCacheConfig(packagePath, config);
   const backfillLogger = backfill.makeLogger(
