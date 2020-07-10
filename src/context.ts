@@ -1,9 +1,15 @@
 import { Config } from "./types/Config";
 import { RunContext } from "./types/RunContext";
 import Profiler from "p-profiler";
+import { join } from "path";
+import { tmpdir } from "os";
+import { mkdirSync } from "fs";
 
 export function createContext(config: Pick<Config, "concurrency">): RunContext {
   const { concurrency } = config;
+
+  const profilerOutputDir = join(tmpdir(), "lage", "profiles");
+  mkdirSync(profilerOutputDir, { recursive: true });
 
   return {
     measures: {
@@ -15,7 +21,7 @@ export function createContext(config: Pick<Config, "concurrency">): RunContext {
     profiler: new Profiler({
       concurrency,
       prefix: "lage",
-      outDir: process.cwd(),
-    }),
+      outDir: profilerOutputDir,
+    })
   };
 }
