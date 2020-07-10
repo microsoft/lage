@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 29 Jun 2020 21:04:38 GMT and should not be manually modified.
+This log was last generated on Fri, 10 Jul 2020 18:11:23 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.13.5
+
+Fri, 10 Jul 2020 18:11:23 GMT
+
+### Patches
+
+- Move profiler output to the system tmp dir (feescoto@microsoft.com)
 
 ## 0.13.4
 
