@@ -3,7 +3,7 @@ import { RunContext } from "./types/RunContext";
 import Profiler from "p-profiler";
 import { join } from "path";
 import { tmpdir } from "os";
-import { mkdirSync } from 'fs';
+import { mkdirSync } from "fs";
 
 export function createContext(config: Pick<Config, "concurrency">): RunContext {
   const { concurrency } = config;
@@ -16,12 +16,12 @@ export function createContext(config: Pick<Config, "concurrency">): RunContext {
       start: [0, 0],
       duration: [0, 0],
       taskStats: [],
-      failedTask: undefined
+      failedTask: undefined,
     },
     profiler: new Profiler({
       concurrency,
       prefix: "lage",
-      outDir: profilerOutputDir
+      outDir: profilerOutputDir,
     })
   };
 }
