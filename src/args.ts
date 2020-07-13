@@ -53,6 +53,7 @@ export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
     resetCache: _resetCacheArg,
     ignore: _ignoreArg,
     verbose: _verboseArg,
+    only: _onlyArg,
     _: _positionals,
     ...filtered
   } = args;

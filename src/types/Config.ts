@@ -18,6 +18,7 @@ export interface CliOptions {
   concurrency: number;
   scope: string[];
   since?: string;
+  only: boolean;
   deps: boolean;
   cache: boolean;
   resetCache: boolean;

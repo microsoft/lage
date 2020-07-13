@@ -26,6 +26,7 @@ export async function runTasks(options: {
       log: (_msg) => {},
     },
     exit: (code) => {},
+    targetsOnly: config.only,
   });
 
   const taskNames = Object.keys(config.pipeline);
