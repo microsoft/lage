@@ -47,5 +47,6 @@ export function getConfig(cwd: string): Config {
     scope: parsedArgs.scope || configResults?.config.scope || [],
     since: parsedArgs.since || undefined,
     verbose: parsedArgs.verbose,
+    only: false,
   };
 }
