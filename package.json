@@ -1,6 +1,6 @@
 {
   "name": "lage",
-  "version": "0.13.5",
+  "version": "0.14.0",
   "description": "A monorepo task runner",
   "repository": {
     "url": "https://github.com/microsoft/lage"
