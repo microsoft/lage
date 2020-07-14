@@ -1,7 +1,4 @@
-import { TaskId } from "./Task";
 import Profiler from "p-profiler";
-import PQueue from "p-queue";
-import { EventEmitter } from "events";
 
 interface TaskStats {
   pkg: string;
