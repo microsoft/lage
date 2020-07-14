@@ -36,7 +36,7 @@ export async function taskWrapper(
     logger.info("▶️ start");
 
     try {
-      const result = await profiler.run(() => fn(), `${pkg}.${task}`);
+      await profiler.run(() => fn(), `${pkg}.${task}`);
       const duration = process.hrtime(start);
 
       measures.taskStats.push({
