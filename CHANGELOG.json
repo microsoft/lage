@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 15 Jul 2020 19:01:09 GMT",
+      "tag": "lage_v0.15.1",
+      "version": "0.15.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix default case with no priorities set",
+            "author": "kchau@microsoft.com",
+            "commit": "10ce6aa2c604760f9cc9e29d89f053b570d3d175",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Jul 2020 16:36:28 GMT",
       "tag": "lage_v0.15.0",
       "version": "0.15.0",

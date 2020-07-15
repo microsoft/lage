@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix default case with no priorities set",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch",
-  "date": "2020-07-15T18:13:07.141Z"
-}
