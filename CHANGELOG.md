@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 15 Jul 2020 19:01:09 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Jul 2020 19:52:24 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.15.2
+
+Wed, 15 Jul 2020 19:52:24 GMT
+
+### Patches
+
+- Increase default concurrency to os.cpus().length (1581488+christiango@users.noreply.github.com)
 
 ## 0.15.1
 

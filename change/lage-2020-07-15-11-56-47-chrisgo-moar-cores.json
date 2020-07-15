@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Increase default concurrency to os.cpus().length",
-  "packageName": "lage",
-  "email": "1581488+christiango@users.noreply.github.com",
-  "dependentChangeType": "patch",
-  "date": "2020-07-15T18:56:47.390Z"
-}
