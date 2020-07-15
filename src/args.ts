@@ -44,19 +44,27 @@ export function arrifyArgs(args: { [key: string]: string | string[] }) {
 export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
   let result: string[] = [];
 
-  let {
-    node: _nodeValues,
-    scope: _scopeArg,
-    since: _sinceArg,
-    deps: _depsArg,
-    cache: _cacheArg,
-    resetCache: _resetCacheArg,
-    ignore: _ignoreArg,
-    verbose: _verboseArg,
-    only: _onlyArg,
-    _: _positionals,
-    ...filtered
-  } = args;
+  const lageArgs = [
+    "node",
+    "scope",
+    "since",
+    "cache",
+    "deps",
+    "resetCache",
+    "ignore",
+    "verbose",
+    "only",
+    "concurrency",
+    "profile",
+  ];
+
+  const filtered: { [key: string]: string | string[] } = {};
+
+  for (let [key, value] of Object.entries(args)) {
+    if (!lageArgs.includes(key)) {
+      filtered[key] = value;
+    }
+  }
 
   result = result.concat(arrifyArgs(filtered));
 
