@@ -43,7 +43,7 @@ export function getConfig(cwd: string): Config {
     node: parsedArgs.node ? arrifyArgs(parsedArgs.node) : [],
     npmClient: configResults?.config.npmClient || "npm",
     pipeline: configResults?.config.pipeline || {},
-    priorities: configResults?.config.priorities || {},
+    priorities: configResults?.config.priorities || [],
     profile: parsedArgs.profile,
     scope: parsedArgs.scope || configResults?.config.scope || [],
     since: parsedArgs.since || undefined,
