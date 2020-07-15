@@ -27,7 +27,7 @@
     "watchpack": "1.6.1"
   },
   "dependencies": {
-    "@microsoft/task-scheduler": "^2.2.0",
+    "@microsoft/task-scheduler": "^2.4.0",
     "abort-controller": "^3.0.0",
     "backfill": "^6.0.0",
     "backfill-config": "^6.0.0",
@@ -38,7 +38,6 @@
     "git-url-parse": "^11.1.2",
     "npmlog": "^4.1.2",
     "p-profiler": "^0.1.2",
-    "p-queue": "^6.4.0",
     "workspace-tools": "^0.8.0",
     "yargs-parser": "^18.1.3"
   },

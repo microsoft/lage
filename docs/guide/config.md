@@ -58,3 +58,17 @@ module.exports = {
   },
 };
 ```
+
+`priorities`
+
+```typescript
+export type Priority = { package: string; task: string; priority: number };
+```
+
+The configuration enables for tasks to be given priorities. These priorities enable the task runner to schedule tasks with a higher priority sooner than tasks with a lower priority. An example use case would be to give tasks that take a long time to execute a high priority so that these tasks (and the tasks these tasks depend on) can be scheduled earlier to reduce overall execution time.
+
+```js
+module.exports = {
+ priorities: [{ package: "build-tools"; task: "build"; priority: 20 }]
+}
+```

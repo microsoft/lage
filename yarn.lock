@@ -899,10 +899,10 @@
   resolved "https://registry.yarnpkg.com/@braintree/sanitize-url/-/sanitize-url-3.1.0.tgz#8ff71d51053cd5ee4981e5a501d80a536244f7fd"
   integrity sha512-GcIY79elgB+azP74j8vqkiXz8xLFfIzbQJdlwOPisgbKT00tviJQuEghOXSMVxJ00HoYJbGswr4kcllUc4xCcg==
 
-"@microsoft/task-scheduler@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/task-scheduler/-/task-scheduler-2.2.0.tgz#0f568825ccdea0dc2c8d46de1893989a160e05f1"
-  integrity sha512-7XuDRTAyt6TuvnES3FmeZ73Ic+jPl86cVKEbbK4i6kblApxZlImCihUGW16BBkGHqWy9KXmAR6JDW9j4xbDdVA==
+"@microsoft/task-scheduler@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/task-scheduler/-/task-scheduler-2.4.0.tgz#f53ca144036c5089ef1806834b1686ed4b6fc535"
+  integrity sha512-mHEYP45l1CJ6TKNkQqzJPM8UAVQcZkWJybIXIy4QfPAyt77/XvEkrxlYiuvaO4uLkW0a/E3juFYwcbgsZ9Xtww==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -6580,14 +6580,6 @@ p-queue@*:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-6.3.0.tgz#19bfa4485db7e6a0c135049ff6716375880d9c3a"
   integrity sha512-fg5dJlFpd5+3CgG3/0ogpVZUeJbjiyXFg0nu53hrOYsybqSiDyxyOpad0Rm6tAiGjgztAwkyvhlYHC53OiAJOA==
-  dependencies:
-    eventemitter3 "^4.0.0"
-    p-timeout "^3.1.0"
-
-p-queue@^6.4.0:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-6.4.0.tgz#5050b379393ea1814d6f9613a654f687d92c0466"
-  integrity sha512-X7ddxxiQ+bLR/CUt3/BVKrGcJDNxBr0pEEFKHHB6vTPWNUhgDv36GpIH18RmGM3YGPpBT+JWGjDDqsVGuF0ERw==
   dependencies:
     eventemitter3 "^4.0.0"
     p-timeout "^3.1.0"

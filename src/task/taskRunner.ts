@@ -1,5 +1,9 @@
 import { RunContext } from "../types/RunContext";
-import { createPipeline, TopologicalGraph } from "@microsoft/task-scheduler";
+import {
+  createPipeline,
+  TopologicalGraph,
+  Task,
+} from "@microsoft/task-scheduler";
 import { Config } from "../types/Config";
 import { npmTask } from "./npmTask";
 import { filterPackages } from "./filterPackages";
@@ -10,6 +14,20 @@ import {
   getChangedPackages,
   getTransitiveProviders,
 } from "workspace-tools";
+import { Priority } from "../types/Priority";
+
+/** Returns a map that maps task name to the priorities config for that task */
+function getPriorityMap(priorities: Priority[]) {
+  const result = new Map<string, Task["priorities"]>();
+
+  priorities.forEach((entry) => {
+    const taskPriority = result.get(entry.task) || {};
+    taskPriority[entry.package] = entry.priority;
+    result.set(entry.task, taskPriority);
+  });
+
+  return result;
+}
 
 export async function runTasks(options: {
   graph: TopologicalGraph;
@@ -19,6 +37,8 @@ export async function runTasks(options: {
 }) {
   const { graph, workspace, context, config } = options;
 
+  const priorityMap = getPriorityMap(config.priorities);
+
   let pipeline = createPipeline(graph, {
     // dummy logger for task-scheduler because lage already has logger for its tasks
     logger: {
@@ -27,6 +47,7 @@ export async function runTasks(options: {
     },
     exit: (code) => {},
     targetsOnly: config.only,
+    concurrency: config.concurrency,
   });
 
   const taskNames = Object.keys(config.pipeline);
@@ -41,6 +62,7 @@ export async function runTasks(options: {
       name: task,
       deps,
       topoDeps,
+      priorities: priorityMap.get(task),
       run: async (_location, _stdout, _stderr, pkg) => {
         const scripts = workspace.allPackages[pkg].scripts;
         if (scripts && scripts[task]) {
