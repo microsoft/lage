@@ -16,7 +16,7 @@ import {
 } from "workspace-tools";
 import { Priority } from "../types/Priority";
 
-/** Returns a map of task name -> */
+/** Returns a map that maps task name to the priorities config for that task */
 function getPriorityMap(priorities: Priority[]) {
   const result = new Map<string, Task["priorities"]>();
 
