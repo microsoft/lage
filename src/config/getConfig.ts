@@ -37,7 +37,7 @@ export function getConfig(cwd: string): Config {
     concurrency:
       parsedArgs.concurrency ||
       configResults?.config.concurrency ||
-      os.cpus().length - 1,
+      os.cpus().length,
     deps,
     ignore: parsedArgs.ignore || configResults?.config.ignore || [],
     node: parsedArgs.node ? arrifyArgs(parsedArgs.node) : [],
