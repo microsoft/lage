@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 13 Jul 2020 23:09:45 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Jul 2020 16:36:28 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.15.0
+
+Wed, 15 Jul 2020 16:36:28 GMT
+
+### Minor changes
+
+- Add support for task prioritization (1581488+christiango@users.noreply.github.com)
 
 ## 0.14.0
 

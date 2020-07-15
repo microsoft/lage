@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 15 Jul 2020 16:36:28 GMT",
+      "tag": "lage_v0.15.0",
+      "version": "0.15.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add support for task prioritization",
+            "author": "1581488+christiango@users.noreply.github.com",
+            "commit": "1932c31d021b64ad7bfb2a7b43da61d9e24211c9",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Jul 2020 16:59:05 GMT",
       "tag": "lage_v0.14.0",
       "version": "0.14.0",
