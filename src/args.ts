@@ -56,6 +56,7 @@ export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
     "only",
     "concurrency",
     "profile",
+    "_",
   ];
 
   const filtered: { [key: string]: string | string[] } = {};
