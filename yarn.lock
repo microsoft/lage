@@ -9370,10 +9370,10 @@ workspace-tools@^0.7.6:
     multimatch "^4.0.0"
     read-yaml-file "^2.0.0"
 
-workspace-tools@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.8.0.tgz#18711cb83391a471cf2e061bb5ea3c127a5d7a88"
-  integrity sha512-y5He+EzOhrLXSqYvsFhAD3IxX9QUgE8GR8pbxdAllkJPSSIy75HpA5NFT7j1FtULjTxsI6iCVA/6OLPyvPqStA==
+workspace-tools@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.9.0.tgz#5ce0680c9bf38544d1f6261d6b0e2834347e676e"
+  integrity sha512-ji9mOpdxyJ1LBnCzfFzAuLw7x0OuqQso/eJFpeyR/W0nXRK3Uhmn0dAaqrlDlrUEW5nOT5nSz0MpsaCmeSyiUA==
   dependencies:
     "@pnpm/lockfile-file" "^3.0.7"
     "@pnpm/logger" "^3.2.2"
