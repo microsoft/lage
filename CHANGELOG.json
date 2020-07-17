@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 17 Jul 2020 19:31:44 GMT",
+      "tag": "lage_v0.15.3",
+      "version": "0.15.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "bump workspace tools to get new preferred workspace manager",
+            "author": "kchau@microsoft.com",
+            "commit": "1114a2d28dd61623b28aafd4228e8c1345ba5489",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Jul 2020 19:52:24 GMT",
       "tag": "lage_v0.15.2",
       "version": "0.15.2",

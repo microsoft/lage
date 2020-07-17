@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 15 Jul 2020 19:52:24 GMT and should not be manually modified.
+This log was last generated on Fri, 17 Jul 2020 19:31:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.15.3
+
+Fri, 17 Jul 2020 19:31:44 GMT
+
+### Patches
+
+- bump workspace tools to get new preferred workspace manager (kchau@microsoft.com)
 
 ## 0.15.2
 
