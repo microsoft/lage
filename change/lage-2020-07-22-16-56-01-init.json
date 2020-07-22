@@ -1,0 +1,8 @@
+{
+  "type": "minor",
+  "comment": "adding an init interface",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2020-07-22T23:56:01.862Z"
+}
