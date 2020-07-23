@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 17 Jul 2020 20:33:49 GMT and should not be manually modified.
+This log was last generated on Thu, 23 Jul 2020 00:11:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.16.0
+
+Thu, 23 Jul 2020 00:11:11 GMT
+
+### Minor changes
+
+- adding an init interface (kchau@microsoft.com)
 
 ## 0.15.4
 

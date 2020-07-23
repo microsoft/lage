@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 23 Jul 2020 00:11:11 GMT",
+      "tag": "lage_v0.16.0",
+      "version": "0.16.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding an init interface",
+            "author": "kchau@microsoft.com",
+            "commit": "09dad4b529f687b1b83a5e41b2c49bed10f87e06",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 17 Jul 2020 20:33:49 GMT",
       "tag": "lage_v0.15.4",
       "version": "0.15.4",
