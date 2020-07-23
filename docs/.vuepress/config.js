@@ -8,7 +8,14 @@ module.exports = {
       { text: "Guide", link: "/guide/" },
       { text: "Github", link: "https://github.com/microsoft/lage" },
     ],
-    sidebar: ["/", "/guide/", "/guide/levels", "/guide/config", "/guide/cli"],
+    sidebar: [
+      "/",
+      "/guide/",
+      "/guide/getting-started",
+      "/guide/levels",
+      "/guide/config",
+      "/guide/cli",
+    ],
   },
   plugins: [
     [
