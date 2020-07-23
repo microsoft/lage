@@ -1,7 +1,12 @@
 import { Config } from "../types/Config";
 import { cosmiconfigSync } from "cosmiconfig";
 import { findGitRoot } from "workspace-tools";
-import { parseArgs, arrifyArgs, getPassThroughArgs } from "../args";
+import {
+  parseArgs,
+  arrifyArgs,
+  getPassThroughArgs,
+  validateInput,
+} from "../args";
 import os from "os";
 
 export function getConfig(cwd: string): Config {
@@ -17,6 +22,10 @@ export function getConfig(cwd: string): Config {
 
   // Parse CLI args
   const parsedArgs = parseArgs();
+
+  if (!validateInput(parsedArgs)) {
+    throw new Error("Invalid arguments passed in");
+  }
 
   const command = parsedArgs._;
 

@@ -83,8 +83,5 @@ export function parseArgs() {
 }
 
 export function validateInput(parsedArgs: Arguments) {
-  if (parsedArgs._.length < 1) {
-    console.log("Usage: lage [command]");
-    process.exit(0);
-  }
+  return parsedArgs._ && parsedArgs._.length > 0;
 }
