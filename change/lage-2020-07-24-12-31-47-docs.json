@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "Compatible changes to make docs show up better",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2020-07-24T19:31:47.066Z"
+}
