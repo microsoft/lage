@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 23 Jul 2020 00:11:11 GMT and should not be manually modified.
+This log was last generated on Fri, 24 Jul 2020 19:34:33 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.16.1
+
+Fri, 24 Jul 2020 19:34:33 GMT
+
+### Patches
+
+- Compatible changes to make docs show up better (kchau@microsoft.com)
 
 ## 0.16.0
 

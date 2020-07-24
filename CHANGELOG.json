@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 24 Jul 2020 19:34:33 GMT",
+      "tag": "lage_v0.16.1",
+      "version": "0.16.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Compatible changes to make docs show up better",
+            "author": "kchau@microsoft.com",
+            "commit": "f7a39984771ee0e48ddebfff27b3397f88d2f588",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 23 Jul 2020 00:11:11 GMT",
       "tag": "lage_v0.16.0",
       "version": "0.16.0",
