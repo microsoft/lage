@@ -1,5 +1,3 @@
-const apiSideBar = require("./api-sidebar.json");
-
 module.exports = {
   title: "lage",
   description: "Monorepo task runner as beautiful as the Norwegian fjords",
@@ -15,9 +13,13 @@ module.exports = {
       "/guide/",
       "/guide/getting-started",
       "/guide/levels",
+      "/guide/scopes",
+      "/guide/cache",
+      "/guide/pipeline",
+      "/guide/profile",
+      "/guide/priority",
       "/guide/config",
       "/guide/cli",
-      ...apiSideBar,
     ],
   },
   plugins: [

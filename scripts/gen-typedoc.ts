@@ -22,6 +22,7 @@ app.bootstrap({
 });
 
 writeMarkdown("docs/guide/config.md", "ConfigOptions");
+writeMarkdown("docs/guide/cli.md", "CliOptions");
 
 function writeMarkdown(file: string, typeName: string) {
   const project = app.convert(

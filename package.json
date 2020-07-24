@@ -18,7 +18,7 @@
     "docs:build": "vuepress build docs",
     "gh-pages": "gh-pages",
     "release": "beachball publish -y",
-    "release:docs": "yarn docs:build && yarn gh-pages -d docs/.vuepress/dist --dotfiles",
+    "release:docs": "yarn gen-typedoc && yarn docs:build && yarn gh-pages -d docs/.vuepress/dist --dotfiles",
     "start": "tsc -w --preserveWatchOutput",
     "test": "ts-node node_modules/jasmine/bin/jasmine --config=jasmine.json",
     "gen-typedoc": "ts-node --transpile-only scripts/gen-typedoc.ts"
