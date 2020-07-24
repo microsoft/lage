@@ -41,3 +41,5 @@ $ lage build --no-cache
 ```
 $ lage build --verbose
 ```
+
+## Options

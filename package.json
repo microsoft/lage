@@ -20,7 +20,8 @@
     "release": "beachball publish -y",
     "release:docs": "yarn docs:build && yarn gh-pages -d docs/.vuepress/dist --dotfiles",
     "start": "tsc -w --preserveWatchOutput",
-    "test": "ts-node node_modules/jasmine/bin/jasmine --config=jasmine.json"
+    "test": "ts-node node_modules/jasmine/bin/jasmine --config=jasmine.json",
+    "gen-typedoc": "ts-node --transpile-only scripts/gen-typedoc.ts"
   },
   "resolutions": {
     "mermaid": "8.5.0",
@@ -56,6 +57,8 @@
     "gh-pages": "^2.2.0",
     "jasmine": "^3.5.0",
     "ts-node": "^8.10.2",
+    "typedoc": "^0.17.8",
+    "typedoc-plugin-markdown": "^2.3.1",
     "typescript": "^3.8.3",
     "vuepress": "1.5.0",
     "vuepress-plugin-mermaidjs": "1.5.1"
