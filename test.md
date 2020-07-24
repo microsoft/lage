@@ -1,21 +1,3 @@
----
-title: Configuration
----
-
-Configuration is provided by [Cosmiconfig](https://www.npmjs.com/package/cosmiconfig), so `lage` configuration is very flexible! We recommend the use of a `lage.config.js` because it is both concise and flexible.
-
-Create a `lage.config.js` file and place all your configurations there:
-
-```js
-module.exports = {
-  pipeline: {
-    build: ["^build"],
-    test: ["build"],
-  },
-};
-```
-
-
 ## Options
 
 ### CacheOptions
@@ -46,17 +28,6 @@ Which NPM Client to use when running npm lifecycle scripts
 _type: [Pipeline](#Pipeline)_
 
 Defines the task pipeline, prefix with "^" character to denote a topological dependency
-
-Example:
-
-```
-{
-  build: ["^build"],
-  test: ["build"],
-  lint: []
-}
-```
-
   
 #### priorities
 _type: [Priority](#Priority)[]_

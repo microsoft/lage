@@ -1,6 +1,8 @@
 ---
-title: Fast builds with `lage`
+title: How does `lage` work?
 ---
+
+# How does `lage` work?
 
 So how does `lage` make builds faster? To fully appreciate how `lage` gives you the best build performance compared to other monorepo task runners, take a look at this example. Here we have a repo with this dependency graph:
 
