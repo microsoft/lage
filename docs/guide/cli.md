@@ -73,6 +73,14 @@ This has the semantic of running tasks up to what is specified in the command li
 such as with `--scope` or `--since`
 
   
+#### grouped
+_type: boolean_
+
+Specify whether to make the console logger to group the logs per package task
+
+Example: `lage --grouped`
+
+  
 #### ignore
 _type: string[]_
 
@@ -113,6 +121,14 @@ _type: boolean_
 Creates a flamegraph-profile JSON for Chromium-based devtool
 
 Pay attention to the output summary to find the location of the JSON file.
+
+  
+#### reporter
+_type: string_
+
+Specify whether to use the JSON Reporter to create a parsable log output
+
+Example: `lage --reporter json`
 
   
 #### resetCache
