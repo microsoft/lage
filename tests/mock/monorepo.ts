@@ -68,7 +68,7 @@ export class Monorepo {
   }
 
   generateRepoFiles() {
-    return this.commitFiles({
+    this.commitFiles({
       "package.json": {
         name: this.name,
         version: "0.1.0",
@@ -83,7 +83,18 @@ export class Monorepo {
           lage: path.resolve(__dirname, "..", ".."),
         },
       },
-      "node_modules/.bin/lage": `#!/bin/sh
+      "lage.config.js": `module.exports = {
+        pipeline: {
+          build: ['^build'],
+          test: ['build'],
+          lint: []
+        }
+      };`,
+    });
+
+    this.commitFiles(
+      {
+        "node_modules/.bin/lage": `#!/bin/sh
 basedir=$(dirname "$(echo "$0" | sed -e 's,\\\\,/,g')")
 
 case \`uname\` in
@@ -98,21 +109,16 @@ else
   ret=$?
 fi
 exit $ret`,
-      "node_modules/.bin/lage.cmd": `@IF EXIST "%~dp0\node.exe" (
+        "node_modules/.bin/lage.cmd": `@IF EXIST "%~dp0\node.exe" (
   "%~dp0\\node.exe"  "%~dp0\\..\\lage\\bin\\lage.js" %*
 ) ELSE (
   @SETLOCAL
   @SET PATHEXT=%PATHEXT:;.JS;=;%
   node  "%~dp0\\..\\lage\\bin\\lage.js" %*
 )`,
-      "lage.config.js": `module.exports = {
-        pipeline: {
-          build: ['^build'],
-          test: ['build'],
-          lint: []
-        }
-      };`,
-    });
+      },
+      { executable: true }
+    );
   }
 
   addPackage(name: string, internalDeps: string[] = []) {
@@ -146,7 +152,10 @@ exit $ret`,
     return execa.sync("git", ["push", origin, branch], { cwd: this.root });
   }
 
-  commitFiles(files: { [name: string]: string | Object }) {
+  commitFiles(
+    files: { [name: string]: string | Object },
+    options: { executable?: boolean } = {}
+  ) {
     for (const [file, contents] of Object.entries(files)) {
       let out = "";
       if (typeof contents !== "string") {
@@ -162,6 +171,13 @@ exit $ret`,
       }
 
       fs.writeFileSync(fullPath, out);
+
+      if (options.executable) {
+        fs.chmodSync(
+          file,
+          fs.constants.S_IXUSR | fs.constants.S_IRUSR | fs.constants.S_IROTH
+        );
+      }
     }
     return execa.sync("git", ["add", ...Object.keys(files)], {
       cwd: this.root,
