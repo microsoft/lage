@@ -30,11 +30,11 @@ export class Monorepo {
     }
 
     // pretends to perform a npm install of lage
-    fs.symlinkSync(
-      path.join(this.nodeModulesPath, "lage"),
-      path.join(__dirname, "..", ".."),
-      "junction"
-    );
+    const lagePath = path.join(this.nodeModulesPath, "lage");
+
+    if (!fs.existsSync(lagePath)) {
+      fs.symlinkSync(path.join(__dirname, "..", ".."), lagePath, "junction");
+    }
   }
 
   /**
