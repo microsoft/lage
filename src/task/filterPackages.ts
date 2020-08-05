@@ -18,12 +18,12 @@ export function filterPackages(options: {
   // If scoped is defined, get scoped packages
   if (typeof scopedPackages !== "undefined") {
     filtered = filtered.filter((pkg) => scopedPackages.includes(pkg));
-    logger.verbose("filterPackages", `scope: ${scopedPackages.join(",")}`);
+    logger.verbose(`filterPackages scope: ${scopedPackages.join(",")}`);
   }
 
   if (typeof changedPackages !== "undefined") {
     filtered = filtered.filter((pkg) => changedPackages.includes(pkg));
-    logger.verbose("filterPackages", `changed: ${changedPackages.join(",")}`);
+    logger.verbose(`filterPackages changed: ${changedPackages.join(",")}`);
   }
 
   if (deps) {

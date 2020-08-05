@@ -5,16 +5,16 @@ import {
   Task,
 } from "@microsoft/task-scheduler";
 import { Config } from "../types/Config";
-import { npmTask } from "./npmTask";
 import { filterPackages } from "./filterPackages";
 import { Workspace } from "../types/Workspace";
-import { setTaskLogMaxLengths } from "../logger";
 import {
   getScopedPackages,
   getChangedPackages,
   getTransitiveProviders,
 } from "workspace-tools";
 import { Priority } from "../types/Priority";
+import { NpmScriptTask } from "./NpmScriptTask";
+import { getTaskId } from "./taskId";
 
 /** Returns a map that maps task name to the priorities config for that task */
 function getPriorityMap(priorities: Priority[]) {
@@ -50,29 +50,32 @@ export async function runTasks(options: {
     concurrency: config.concurrency,
   });
 
-  const taskNames = Object.keys(config.pipeline);
-
-  for (const [task, taskDeps] of Object.entries(config.pipeline)) {
+  for (const [taskName, taskDeps] of Object.entries(config.pipeline)) {
     const deps = taskDeps.filter((dep) => !dep.startsWith("^"));
     const topoDeps = taskDeps
       .filter((dep) => dep.startsWith("^"))
       .map((dep) => dep.slice(1));
 
     pipeline = pipeline.addTask({
-      name: task,
+      name: taskName,
       deps,
       topoDeps,
-      priorities: priorityMap.get(task),
+      priorities: priorityMap.get(taskName),
       run: async (_location, _stdout, _stderr, pkg) => {
-        const scripts = workspace.allPackages[pkg].scripts;
-        if (scripts && scripts[task]) {
-          return (await npmTask(
-            task,
-            workspace.allPackages[pkg],
+        const info = workspace.allPackages[pkg];
+        const scripts = info.scripts;
+        if (scripts && scripts[taskName]) {
+          const npmTask = new NpmScriptTask(
+            taskName,
+            workspace.root,
+            info,
             config,
-            context,
-            workspace.root
-          )) as boolean;
+            context
+          );
+
+          context.tasks.set(getTaskId(info.name, taskName), npmTask);
+
+          return await npmTask.run();
         }
         return true;
       },
@@ -95,6 +98,7 @@ export async function runTasks(options: {
 
   const hasSince = typeof since !== "undefined";
   let changedPackages: string[] | undefined = undefined;
+
   if (hasSince) {
     changedPackages = getChangedPackages(workspace.root, since, config.ignore);
   }
@@ -105,15 +109,6 @@ export async function runTasks(options: {
     scopedPackages,
     changedPackages,
   });
-
-  // Set up the longest names of tasks and scripts for nice logging
-  setTaskLogMaxLengths(
-    Object.keys(workspace.allPackages).reduce(
-      (l, pkg) => (l < pkg.length ? pkg.length : l),
-      0
-    ),
-    taskNames.reduce((l, task) => (l < task.length ? task.length : l), 0)
-  );
 
   await pipeline.go({
     packages: filteredPackages,

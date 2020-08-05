@@ -1,21 +1,14 @@
 import Profiler from "p-profiler";
+import { NpmScriptTask } from "../task/NpmScriptTask";
 
-interface TaskStats {
-  pkg: string;
-  task: string;
-  start: [number, number];
-  duration: [number, number];
-  status: "failed" | "skipped" | "success" | "not started";
-}
-
-interface Measures {
+export interface Measures {
   start: [number, number];
   duration: [number, number];
   failedTask?: { pkg: string; task: string };
-  taskStats: TaskStats[];
 }
 
 export interface RunContext {
   measures: Measures;
+  tasks: Map<string, NpmScriptTask>;
   profiler: Profiler;
 }
