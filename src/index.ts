@@ -1,5 +1,4 @@
 import { getConfig } from "./config/getConfig";
-// import { logLevel } from "./logger";
 import { init } from "./command/init";
 import { run } from "./command/run";
 import { showHelp } from "./showHelp";
