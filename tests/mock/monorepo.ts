@@ -174,7 +174,7 @@ exit $ret`,
 
       if (options.executable) {
         fs.chmodSync(
-          file,
+          path.join(this.root, file),
           fs.constants.S_IXUSR | fs.constants.S_IRUSR | fs.constants.S_IROTH
         );
       }
