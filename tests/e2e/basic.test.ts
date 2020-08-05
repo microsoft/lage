@@ -5,6 +5,7 @@ describe("basics", () => {
     const repo = new Monorepo("basics");
 
     repo.init();
+    repo.install();
 
     repo.addPackage("a", ["b"]);
     repo.addPackage("b");
