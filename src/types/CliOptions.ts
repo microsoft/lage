@@ -1,5 +1,3 @@
-import { Reporter } from "../logger/reporters/Reporter";
-
 export interface CliOptions {
   /**
    * positional arguments that specify which tasks to run
