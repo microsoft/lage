@@ -1,4 +1,4 @@
-import { filterPackages } from "../task/filterPackages";
+import { filterPackages } from "../../src/task/filterPackages";
 import { PackageInfos, PackageInfo } from "workspace-tools";
 
 describe("filterPackages", () => {
