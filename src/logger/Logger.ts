@@ -2,7 +2,6 @@ import { LogEntry, TaskData } from "./LogEntry";
 import { LogLevel } from "./LogLevel";
 import { Reporter } from "./reporters/Reporter";
 import { NpmLogReporter } from "./reporters/NpmLogReporter";
-import { RunContext } from "../types/RunContext";
 
 export class Logger {
   static reporters: Reporter[] = [

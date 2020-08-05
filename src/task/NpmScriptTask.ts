@@ -9,6 +9,7 @@ import path from "path";
 import { TaskLogWritable } from "../logger/TaskLogWritable";
 import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { RunContext } from "../types/RunContext";
+import { hrToSeconds } from "../logger/reporters/formatDuration";
 
 export class NpmScriptTask {
   static npmCmd: string = "";
@@ -54,20 +55,26 @@ export class NpmScriptTask {
     this.duration = process.hrtime(this.startTime);
     this.logger.info("completed", {
       status: "completed",
-      duration: this.duration,
+      duration: hrToSeconds(this.duration),
     });
   }
 
   onFail() {
     this.status = "failed";
     this.duration = process.hrtime(this.startTime);
-    this.logger.info("failed", { status: "failed", duration: this.duration });
+    this.logger.info("failed", {
+      status: "failed",
+      duration: hrToSeconds(this.duration),
+    });
   }
 
   onSkipped() {
     this.status = "skipped";
     this.duration = process.hrtime(this.startTime);
-    this.logger.info("skipped", { status: "skipped", duration: this.duration });
+    this.logger.info("skipped", {
+      status: "skipped",
+      duration: hrToSeconds(this.duration),
+    });
   }
 
   async getCache() {

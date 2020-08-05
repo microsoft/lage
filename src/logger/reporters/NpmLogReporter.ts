@@ -3,7 +3,7 @@ import chalk from "chalk";
 import { Reporter } from "./Reporter";
 import { LogLevel } from "../LogLevel";
 import { LogEntry } from "../LogEntry";
-import { formatDuration } from "./formatDuration";
+import { formatDuration, hrToSeconds } from "./formatDuration";
 import { getTaskId } from "../../task/taskId";
 import { RunContext } from "../../types/RunContext";
 
@@ -175,7 +175,7 @@ export class NpmLogReporter implements Reporter {
           getTaskLogPrefix(npmScriptTask.info.name, npmScriptTask.task),
           colorFn(
             `${npmScriptTask.status}, took ${formatDuration(
-              npmScriptTask.duration
+              hrToSeconds(npmScriptTask.duration)
             )}`
           )
         );
@@ -188,7 +188,9 @@ export class NpmLogReporter implements Reporter {
 
     log.info(
       "",
-      `Took a total of ${formatDuration(measures.duration)} to complete`
+      `Took a total of ${formatDuration(
+        hrToSeconds(measures.duration)
+      )} to complete`
     );
   }
 }

@@ -38,6 +38,8 @@ export function getConfig(cwd: string): Config {
       : true;
 
   return {
+    reporter: parsedArgs.reporter || "npmLog",
+    grouped: parsedArgs.grouped || false,
     args: getPassThroughArgs(parsedArgs),
     cache: parsedArgs.cache === false ? false : true,
     resetCache: parsedArgs.resetCache || false,

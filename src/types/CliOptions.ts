@@ -1,3 +1,5 @@
+import { Reporter } from "../logger/reporters/Reporter";
+
 export interface CliOptions {
   /**
    * positional arguments that specify which tasks to run
@@ -121,4 +123,18 @@ export interface CliOptions {
    * has changed with the `--since` flag.
    */
   ignore: string[];
+
+  /**
+   * Specify whether to use the JSON Reporter to create a parsable log output
+   *
+   * Example: `lage --reporter json`
+   */
+  reporter: string;
+
+  /**
+   * Specify whether to make the console logger to group the logs per package task
+   *
+   * Example: `lage --grouped`
+   */
+  grouped: boolean;
 }
