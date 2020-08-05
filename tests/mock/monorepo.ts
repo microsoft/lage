@@ -83,6 +83,28 @@ export class Monorepo {
           lage: path.resolve(__dirname, "..", ".."),
         },
       },
+      "node_modules/.bin/lage": `#!/bin/sh
+basedir=$(dirname "$(echo "$0" | sed -e 's,\\\\,/,g')")
+
+case \`uname\` in
+    *CYGWIN*) basedir=\`cygpath -w "$basedir"\`;;
+esac
+
+if [ -x "$basedir/node" ]; then
+  "$basedir/node"  "$basedir/../lage/bin/lage.js" "$@"
+  ret=$?
+else
+  node  "$basedir/../lage/bin/lage.js" "$@"
+  ret=$?
+fi
+exit $ret`,
+      "node_modules/.bin/lage.cmd": `@IF EXIST "%~dp0\node.exe" (
+  "%~dp0\\node.exe"  "%~dp0\\..\\lage\\bin\\lage.js" %*
+) ELSE (
+  @SETLOCAL
+  @SET PATHEXT=%PATHEXT:;.JS;=;%
+  node  "%~dp0\\..\\lage\\bin\\lage.js" %*
+)`,
       "lage.config.js": `module.exports = {
         pipeline: {
           build: ['^build'],
