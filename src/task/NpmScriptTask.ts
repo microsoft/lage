@@ -11,6 +11,13 @@ import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { RunContext } from "../types/RunContext";
 import { hrToSeconds } from "../logger/reporters/formatDuration";
 
+export type NpmScriptTaskStatus =
+  | "completed"
+  | "failed"
+  | "pending"
+  | "started"
+  | "skipped";
+
 export class NpmScriptTask {
   static npmCmd: string = "";
   static bail = false;
@@ -19,7 +26,7 @@ export class NpmScriptTask {
   npmArgs: string[] = [];
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
-  status: "completed" | "failed" | "pending" | "started" | "skipped";
+  status: NpmScriptTaskStatus;
   logger: TaskLogger;
 
   static killAllActiveProcesses() {
@@ -114,7 +121,8 @@ export class NpmScriptTask {
         stdio: "pipe",
         env: {
           ...process.env,
-          ...(process.stdout.isTTY && { FORCE_COLOR: "1" }),
+          ...(process.stdout.isTTY &&
+            this.config.reporter !== "json" && { FORCE_COLOR: "1" }),
           LAGE_PACKAGE_NAME: info.name,
         },
       });
@@ -146,8 +154,6 @@ export class NpmScriptTask {
   async run() {
     const { info, task, context, config } = this;
 
-    this.onStart();
-
     try {
       const { hash, cacheHit } = await this.getCache();
 
@@ -156,6 +162,8 @@ export class NpmScriptTask {
         this.onSkipped();
         return true;
       }
+
+      this.onStart();
 
       await context.profiler.run(
         () => this.runScript(),

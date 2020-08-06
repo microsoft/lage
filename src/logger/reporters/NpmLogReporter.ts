@@ -6,6 +6,7 @@ import { LogEntry } from "../LogEntry";
 import { formatDuration, hrToSeconds } from "./formatDuration";
 import { getTaskId } from "../../task/taskId";
 import { RunContext } from "../../types/RunContext";
+import { NpmScriptTaskStatus } from "../../task/NpmScriptTask";
 
 const maxLengths = {
   pkg: 0,
@@ -128,11 +129,14 @@ export class NpmLogReporter implements Reporter {
         logEntry.data.status === "skipped")
     ) {
       const entries = this.groupedEntries.get(taskId)!;
+
       for (const entry of entries) {
         this.logTaskEntry(entry.data?.package!, entry.data?.task!, entry);
       }
 
-      this.hr();
+      if (entries.length > 2) {
+        this.hr();
+      }
     }
   }
 
@@ -144,10 +148,14 @@ export class NpmLogReporter implements Reporter {
     const { measures, tasks } = context;
     const { hr } = this;
 
-    const statusColorFn = {
+    const statusColorFn: {
+      [status in NpmScriptTaskStatus]: chalk.Chalk;
+    } = {
       completed: chalk.greenBright,
       failed: chalk.redBright,
       skipped: chalk.gray,
+      started: chalk.gray,
+      pending: chalk.gray,
     };
 
     log.info("", chalk.cyanBright(`🏗 Summary\n`));

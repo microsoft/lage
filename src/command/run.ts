@@ -18,10 +18,14 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   const graph = generateTopologicGraph(workspace);
 
   const { profiler } = context;
+
+  let aborted = false;
+
   context.measures.start = process.hrtime();
 
   // die faster if an abort signal is seen
   signal.addEventListener("abort", () => {
+    aborted = true;
     NpmScriptTask.killAllActiveProcesses();
     displayReportAndExit(reporters, context);
   });
@@ -37,5 +41,7 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
     logger.info(`runTasks: Profile saved to ${profileFile}`);
   }
 
-  displayReportAndExit(reporters, context);
+  if (!aborted) {
+    displayReportAndExit(reporters, context);
+  }
 }
