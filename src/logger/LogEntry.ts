@@ -12,4 +12,5 @@ export interface TaskData {
   package?: string;
   task?: string;
   duration?: string;
+  hash?: string | null;
 }

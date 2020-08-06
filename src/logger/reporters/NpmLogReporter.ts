@@ -106,7 +106,10 @@ export class NpmLogReporter implements Reporter {
           return logFn(normalizedArgs.prefix, colorFn(`❌ fail ${pkgTask}`));
 
         case "skipped":
-          return logFn(normalizedArgs.prefix, colorFn(`⏭️ skip ${pkgTask}`));
+          return logFn(
+            normalizedArgs.prefix,
+            colorFn(`⏭️ skip ${pkgTask} - ${entry.data.hash!}`)
+          );
       }
     } else {
       return logFn(
