@@ -15,13 +15,13 @@ export function createContext(config: Pick<Config, "concurrency">): RunContext {
     measures: {
       start: [0, 0],
       duration: [0, 0],
-      taskStats: [],
       failedTask: undefined,
     },
+    tasks: new Map(),
     profiler: new Profiler({
       concurrency,
       prefix: "lage",
       outDir: profilerOutputDir,
-    })
+    }),
   };
 }

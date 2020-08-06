@@ -1,10 +1,4 @@
 {
   "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "lage/src/*": ["../src/*"]
-    }
-  },
   "include": [".", "../src"]
 }

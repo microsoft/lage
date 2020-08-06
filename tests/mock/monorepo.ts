@@ -78,6 +78,8 @@ export class Monorepo {
   }
 
   generateRepoFiles() {
+    const lagePath = path.join(this.nodeModulesPath, "lage/lib/index");
+
     this.commitFiles({
       "package.json": {
         name: this.name,
@@ -85,9 +87,9 @@ export class Monorepo {
         private: true,
         workspaces: ["packages/*"],
         scripts: {
-          build: "lage build",
-          test: "lage test",
-          lint: "lage lint",
+          build: `node "${lagePath}" build --reporter json`,
+          test: `node "${lagePath}" test --reporter json`,
+          lint: `node "${lagePath}" lint --reporter json`,
         },
         devDependencies: {
           lage: path.resolve(__dirname, "..", ".."),
@@ -101,34 +103,6 @@ export class Monorepo {
         }
       };`,
     });
-
-    this.commitFiles(
-      {
-        "node_modules/.bin/lage": `#!/bin/sh
-basedir=$(dirname "$(echo "$0" | sed -e 's,\\\\,/,g')")
-
-case \`uname\` in
-    *CYGWIN*) basedir=\`cygpath -w "$basedir"\`;;
-esac
-
-if [ -x "$basedir/node" ]; then
-  "$basedir/node"  "$basedir/../lage/bin/lage.js" "$@"
-  ret=$?
-else
-  node  "$basedir/../lage/bin/lage.js" "$@"
-  ret=$?
-fi
-exit $ret`,
-        "node_modules/.bin/lage.cmd": `@IF EXIST "%~dp0\node.exe" (
-  "%~dp0\\node.exe"  "%~dp0\\..\\lage\\bin\\lage.js" %*
-) ELSE (
-  @SETLOCAL
-  @SET PATHEXT=%PATHEXT:;.JS;=;%
-  node  "%~dp0\\..\\lage\\bin\\lage.js" %*
-)`,
-      },
-      { executable: true }
-    );
   }
 
   addPackage(name: string, internalDeps: string[] = []) {
