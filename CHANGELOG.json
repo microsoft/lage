@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 06 Aug 2020 20:03:11 GMT",
+      "tag": "lage_v0.17.3",
+      "version": "0.17.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixing up the logs for cache hashes",
+            "author": "kchau@microsoft.com",
+            "commit": "c540b35c033d60f11d92c5aa98d2ebf5b628535b",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Aug 2020 18:22:32 GMT",
       "tag": "lage_v0.17.2",
       "version": "0.17.2",
