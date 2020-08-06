@@ -75,12 +75,13 @@ export class NpmScriptTask {
     });
   }
 
-  onSkipped() {
+  onSkipped(hash: string | null) {
     this.status = "skipped";
     this.duration = process.hrtime(this.startTime);
-    this.logger.info("skipped", {
+    this.logger.info(`skipped`, {
       status: "skipped",
       duration: hrToSeconds(this.duration),
+      hash,
     });
   }
 
@@ -88,7 +89,7 @@ export class NpmScriptTask {
     let hash: string | null = null;
     let cacheHit = false;
 
-    const { task, info, root, config, logger } = this;
+    const { task, info, root, config } = this;
 
     if (config.cache) {
       hash = await cacheHash(task, info, root, config);
@@ -96,14 +97,12 @@ export class NpmScriptTask {
       if (hash && !config.resetCache) {
         cacheHit = await cacheFetch(hash, info, config);
       }
-
-      logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
     }
 
     return { hash, cacheHit };
   }
 
-  async saveCache(hash: string) {
+  async saveCache(hash: string | null) {
     const { logger, info, config } = this;
     logger.verbose(`hash put ${hash}`);
     await cachePut(hash, info, config);
@@ -152,25 +151,31 @@ export class NpmScriptTask {
   }
 
   async run() {
-    const { info, task, context, config } = this;
+    const { info, task, context, config, logger } = this;
 
     try {
       const { hash, cacheHit } = await this.getCache();
 
+      const cacheEnabled = config.cache && hash;
+
       // skip if cache hit!
       if (cacheHit) {
-        this.onSkipped();
+        this.onSkipped(hash);
         return true;
       }
 
       this.onStart();
+
+      if (cacheEnabled) {
+        logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
+      }
 
       await context.profiler.run(
         () => this.runScript(),
         `${info.name}.${task}`
       );
 
-      if (config.cache && hash) {
+      if (cacheEnabled) {
         await this.saveCache(hash);
       }
 
