@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 24 Jul 2020 19:34:33 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Aug 2020 00:03:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.17.0
+
+Thu, 06 Aug 2020 00:03:45 GMT
+
+### Minor changes
+
+- Changing the logger to allow json mode and adding real e2e tests for orders (kchau@microsoft.com)
 
 ## 0.16.1
 
