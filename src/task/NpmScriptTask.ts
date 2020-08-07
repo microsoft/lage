@@ -80,7 +80,7 @@ export class NpmScriptTask {
     this.duration = process.hrtime(this.startTime);
     this.logger.info(`skipped`, {
       status: "skipped",
-      duration: "0",
+      duration: hrToSeconds(this.duration),
       hash,
     });
   }
@@ -158,13 +158,13 @@ export class NpmScriptTask {
 
       const cacheEnabled = config.cache && hash;
 
+      this.onStart();
+
       // skip if cache hit!
       if (cacheHit) {
         this.onSkipped(hash);
         return true;
       }
-
-      this.onStart();
 
       if (cacheEnabled) {
         logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);

@@ -185,9 +185,13 @@ export class NpmLogReporter implements Reporter {
           "",
           getTaskLogPrefix(npmScriptTask.info.name, npmScriptTask.task),
           colorFn(
-            `${npmScriptTask.status}, took ${formatDuration(
-              hrToSeconds(npmScriptTask.duration)
-            )}`
+            `${npmScriptTask.status}${
+              npmScriptTask.duration
+                ? `, took ${formatDuration(
+                    hrToSeconds(npmScriptTask.duration)
+                  )}`
+                : ""
+            }`
           )
         );
       }
