@@ -80,7 +80,7 @@ export class NpmScriptTask {
     this.duration = process.hrtime(this.startTime);
     this.logger.info(`skipped`, {
       status: "skipped",
-      duration: hrToSeconds(this.duration),
+      duration: "0",
       hash,
     });
   }
