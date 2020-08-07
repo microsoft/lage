@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 07 Aug 2020 02:03:25 GMT",
+      "tag": "lage_v0.17.4",
+      "version": "0.17.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "making the logging of skipped tasks to report correct times",
+            "author": "kchau@microsoft.com",
+            "commit": "0e7333aad7e3fc19a4c2c66ade1cdce378defc30",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Aug 2020 20:03:11 GMT",
       "tag": "lage_v0.17.3",
       "version": "0.17.3",

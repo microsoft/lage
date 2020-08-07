@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 06 Aug 2020 20:03:11 GMT and should not be manually modified.
+This log was last generated on Fri, 07 Aug 2020 02:03:25 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.17.4
+
+Fri, 07 Aug 2020 02:03:25 GMT
+
+### Patches
+
+- making the logging of skipped tasks to report correct times (kchau@microsoft.com)
 
 ## 0.17.3
 
