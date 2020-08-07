@@ -158,13 +158,13 @@ export class NpmScriptTask {
 
       const cacheEnabled = config.cache && hash;
 
+      this.onStart();
+
       // skip if cache hit!
       if (cacheHit) {
         this.onSkipped(hash);
         return true;
       }
-
-      this.onStart();
 
       if (cacheEnabled) {
         logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
