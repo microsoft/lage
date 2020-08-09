@@ -9508,6 +9508,24 @@ workspace-tools@^0.9.0:
     multimatch "^4.0.0"
     read-yaml-file "^2.0.0"
 
+workspace-tools@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.9.1.tgz#86d8d9affbb29ee0ded94a1eed2165c5bb206dbb"
+  integrity sha512-yVYslHnDGr1b13ldBUly23W+FUxt4f7s/ovWZThw3YNPW3tcvJ9jDC5UYEWAqRXRbLXOMYFHRgQ1S1Iom/Ze6Q==
+  dependencies:
+    "@pnpm/lockfile-file" "^3.0.7"
+    "@pnpm/logger" "^3.2.2"
+    "@yarnpkg/lockfile" "^1.1.0"
+    find-up "^4.1.0"
+    find-yarn-workspace-root "^1.2.1"
+    fs-extra "^9.0.0"
+    git-url-parse "^11.1.2"
+    globby "^11.0.0"
+    jju "^1.4.0"
+    matcher "^3.0.0"
+    multimatch "^4.0.0"
+    read-yaml-file "^2.0.0"
+
 wrap-ansi@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-5.1.0.tgz#1fd1f67235d5b6d0fee781056001bfb694c03b09"
