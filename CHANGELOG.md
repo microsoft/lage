@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 07 Aug 2020 02:03:25 GMT and should not be manually modified.
+This log was last generated on Sun, 09 Aug 2020 03:51:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.17.5
+
+Sun, 09 Aug 2020 03:51:50 GMT
+
+### Patches
+
+- bump workspace-tools (kchau@microsoft.com)
 
 ## 0.17.4
 
