@@ -14,17 +14,18 @@
     "build": "tsc",
     "change": "beachball change",
     "checkchange": "beachball check",
+    "decks:build": "marp decks/lage-deck.md -o decks/lage-deck.pdf",
     "docs": "vuepress dev docs --host localhost",
     "docs:build": "vuepress build docs",
+    "gen-typedoc": "ts-node --transpile-only scripts/gen-typedoc.ts",
     "gh-pages": "gh-pages",
     "release": "beachball publish -y",
     "release:docs": "yarn gen-typedoc && yarn docs:build && yarn gh-pages -d docs/.vuepress/dist --dotfiles",
     "start": "tsc -w --preserveWatchOutput",
-    "test": "ts-node --project tests/tsconfig.json node_modules/jasmine/bin/jasmine --config=jasmine.json",
-    "gen-typedoc": "ts-node --transpile-only scripts/gen-typedoc.ts"
+    "test": "ts-node --project tests/tsconfig.json node_modules/jasmine/bin/jasmine --config=jasmine.json"
   },
   "resolutions": {
-    "mermaid": "8.5.0",
+    "mermaid": "8.6.4",
     "watchpack": "1.6.1"
   },
   "dependencies": {
@@ -44,6 +45,7 @@
     "yargs-parser": "^18.1.3"
   },
   "devDependencies": {
+    "@marp-team/marp-cli": "^0.20.0",
     "@types/chalk": "^2.2.0",
     "@types/cosmiconfig": "^6.0.0",
     "@types/execa": "^2.0.0",
@@ -62,7 +64,7 @@
     "typedoc": "^0.17.8",
     "typedoc-plugin-markdown": "^2.3.1",
     "typescript": "^3.8.3",
-    "vuepress": "1.5.0",
-    "vuepress-plugin-mermaidjs": "1.5.1"
+    "vuepress": "^1.5.3",
+    "vuepress-plugin-mermaidjs": "^1.6.0"
   }
 }
