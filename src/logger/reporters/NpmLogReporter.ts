@@ -173,7 +173,7 @@ export class NpmLogReporter implements Reporter {
       completed: chalk.greenBright,
       failed: chalk.redBright,
       skipped: chalk.gray,
-      started: chalk.redBright,
+      started: chalk.yellow,
       pending: chalk.gray,
     };
 

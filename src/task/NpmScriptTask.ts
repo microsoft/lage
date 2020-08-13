@@ -182,8 +182,8 @@ export class NpmScriptTask {
       this.onComplete();
     } catch (e) {
       context.measures.failedTask = { pkg: info.name, task };
-      controller.abort();
       this.onFail();
+      controller.abort();
       return false;
     }
 
