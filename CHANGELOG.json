@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 13 Aug 2020 19:16:47 GMT",
+      "tag": "lage_v0.18.0",
+      "version": "0.18.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adds an info command that lists out the package task dep graph",
+            "author": "kchau@microsoft.com",
+            "commit": "0f907163bd8199894276dedb8e5dc95ec8cbac5f",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 09 Aug 2020 03:51:50 GMT",
       "tag": "lage_v0.17.5",
       "version": "0.17.5",

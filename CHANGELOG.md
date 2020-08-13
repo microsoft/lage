@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Sun, 09 Aug 2020 03:51:50 GMT and should not be manually modified.
+This log was last generated on Thu, 13 Aug 2020 19:16:47 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.18.0
+
+Thu, 13 Aug 2020 19:16:47 GMT
+
+### Minor changes
+
+- adds an info command that lists out the package task dep graph (kchau@microsoft.com)
 
 ## 0.17.5
 
