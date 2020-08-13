@@ -120,7 +120,7 @@ function createPackageTaskInfo(
   if (scripts && scripts[task.task]) {
     return {
       id: taskId,
-      command: getNpmCommand(config, task.task),
+      command: [config.npmClient, ...getNpmCommand(config, task.task)],
       dependencies: [],
       workingDirectory: path
         .relative(
