@@ -3,38 +3,34 @@ import { init } from "./command/init";
 import { run } from "./command/run";
 import { showHelp } from "./showHelp";
 import { logger } from "./logger";
-import { Logger } from "./logger/Logger";
-import { NpmLogReporter } from "./logger/reporters/NpmLogReporter";
-import { LogLevel } from "./logger/LogLevel";
-import { JsonReporter } from "./logger/reporters/JsonReporter";
+import { info } from "./command/info";
+import { initReporters } from "./logger/initReporters";
+import { version } from "./command/version";
 
 // Parse CLI args
 const cwd = process.cwd();
 try {
   const config = getConfig(cwd);
+  const reporters = initReporters(config)
 
-  // Initialize logger
-  const logLevel = config.verbose ? LogLevel.verbose : LogLevel.info;
+  switch(config.command[0]) {
+    case 'init':
+      init(cwd);
+      break;
 
-  const reporters = [
-    config.reporter === "json"
-      ? new JsonReporter({ logLevel })
-      : new NpmLogReporter({
-          logLevel,
-          grouped: config.grouped,
-        }),
-  ];
+    case 'info':
+      info(cwd, config);
+      break;
 
-  Logger.reporters = reporters;
-
-  logger.info(`Lage task runner - let's make it`);
-
-  if (config.command[0] === "init") {
-    init(cwd);
-  } else {
-    run(cwd, config, reporters);
+    case 'version':
+      version();
+      break;
+    
+    default:
+      logger.info(`Lage task runner - let's make it`);
+      run(cwd, config, reporters);
+      break;
   }
 } catch (e) {
-  console.error(e);
   showHelp(e.message);
 }
