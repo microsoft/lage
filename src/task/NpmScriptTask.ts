@@ -10,6 +10,7 @@ import { TaskLogWritable } from "../logger/TaskLogWritable";
 import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { RunContext } from "../types/RunContext";
 import { hrToSeconds } from "../logger/reporters/formatDuration";
+import { getNpmCommand } from "./getNpmCommand";
 
 export type NpmScriptTaskStatus =
   | "completed"
@@ -47,8 +48,7 @@ export class NpmScriptTask {
     this.status = "pending";
     this.logger = new TaskLogger(info.name, task);
 
-    const { node, args } = config;
-    this.npmArgs = [...node, "run", task, "--", ...args];
+    this.npmArgs = getNpmCommand(config, task);
   }
 
   onStart() {
@@ -182,8 +182,8 @@ export class NpmScriptTask {
       this.onComplete();
     } catch (e) {
       context.measures.failedTask = { pkg: info.name, task };
-      controller.abort();
       this.onFail();
+      controller.abort();
       return false;
     }
 

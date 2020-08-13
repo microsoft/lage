@@ -5,16 +5,12 @@ import {
   Task,
 } from "@microsoft/task-scheduler";
 import { Config } from "../types/Config";
-import { filterPackages } from "./filterPackages";
 import { Workspace } from "../types/Workspace";
-import {
-  getScopedPackages,
-  getChangedPackages,
-  getTransitiveProviders,
-} from "workspace-tools";
 import { Priority } from "../types/Priority";
 import { NpmScriptTask } from "./NpmScriptTask";
 import { getTaskId } from "./taskId";
+import { getPipelinePackages } from "./getPipelinePackages";
+import { parseDepsAndTopoDeps } from "./parseDepsAndTopoDeps";
 
 /** Returns a map that maps task name to the priorities config for that task */
 function getPriorityMap(priorities: Priority[]) {
@@ -51,10 +47,7 @@ export async function runTasks(options: {
   });
 
   for (const [taskName, taskDeps] of Object.entries(config.pipeline)) {
-    const deps = taskDeps.filter((dep) => !dep.startsWith("^"));
-    const topoDeps = taskDeps
-      .filter((dep) => dep.startsWith("^"))
-      .map((dep) => dep.slice(1));
+    const { deps, topoDeps } = parseDepsAndTopoDeps(taskDeps);
 
     pipeline = pipeline.addTask({
       name: taskName,
@@ -82,36 +75,8 @@ export async function runTasks(options: {
     });
   }
 
-  // Filter packages per --scope and command(s)
-  const { scope, since } = config;
-
-  // If scoped is defined, get scoped packages
-  const hasScopes = Array.isArray(scope) && scope.length > 0;
-  let scopedPackages: string[] | undefined = undefined;
-  if (hasScopes) {
-    scopedPackages = getScopedPackages(scope!, workspace.allPackages);
-    scopedPackages = [
-      ...scopedPackages,
-      ...getTransitiveProviders(scopedPackages, workspace.allPackages),
-    ];
-  }
-
-  const hasSince = typeof since !== "undefined";
-  let changedPackages: string[] | undefined = undefined;
-
-  if (hasSince) {
-    changedPackages = getChangedPackages(workspace.root, since, config.ignore);
-  }
-
-  const filteredPackages = filterPackages({
-    allPackages: workspace.allPackages,
-    deps: config.deps,
-    scopedPackages,
-    changedPackages,
-  });
-
   await pipeline.go({
-    packages: filteredPackages,
+    packages: getPipelinePackages(workspace, config),
     tasks: config.command,
   });
 }
