@@ -4,8 +4,8 @@ import { Reporter } from "./Reporter";
 import { LogLevel } from "../LogLevel";
 import { LogEntry, LogStructuredData, TaskData, InfoData } from "../LogEntry";
 import { formatDuration, hrToSeconds } from "./formatDuration";
-import { getTaskId } from "../../task/taskId";
 import { RunContext } from "../../types/RunContext";
+import { getTaskId } from "@microsoft/task-scheduler";
 import { NpmScriptTaskStatus } from "../../task/NpmScriptTask";
 
 const maxLengths = {
