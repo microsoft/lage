@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 14 Aug 2020 18:52:50 GMT",
+      "tag": "lage_v0.19.0",
+      "version": "0.19.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Adds a way to specify individual package task dependency",
+            "author": "kchau@microsoft.com",
+            "commit": "00ca6e99c4506aafe708e5b9e8deb7bb75ad715e",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 13 Aug 2020 19:16:47 GMT",
       "tag": "lage_v0.18.0",
       "version": "0.18.0",
