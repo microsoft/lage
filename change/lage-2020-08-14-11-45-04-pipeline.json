@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "minor",
   "comment": "Adds a way to specify individual package task dependency",
   "packageName": "lage",
   "email": "kchau@microsoft.com",
