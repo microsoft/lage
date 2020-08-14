@@ -43,3 +43,22 @@ Sometimes tasks declared in the `pipeline` are not present in all packages' `pac
 ### Pipeline tasks are the only ones that `lage` knows about
 
 `lage` will only account for tasks declared in the `pipeline` configuration. If it's not listed there, `lage` will not know how to run them.
+
+### Specific package tasks
+
+Sometimes it becomes necessary to manually place a package-task dependency on another package-task. This can occur especially in repos that are just coming off of a lerna or rush repository where the tasks are traditionally run in separate phases. Sometimes assumptions were made those repositories that are not expressable in the simple task pipeline configuration as seen above. For thoes cases, simply place those alongside with the rest of the pipeline configuration like this:
+
+```js
+module.exports = {
+  pipeline: {
+    build: ["^build"],
+    test: ["build"],
+    lint: [],
+    "foo:build": ["bar:test"],
+  },
+};
+```
+
+In this example, we illustrate a `build` script of `foo` package depends on the `test` script of `bar`. The syntax is `[package].[task]`.
+
+This seems like it goes against the `test: ["build"]`, but it does not. Since `test` scripts does not have a topological dependency, it theoretically can get triggered anytime its own package's `build` script has finished! The general guidance is to get rid of these specific package-task to package-task dependency in the pipeline as quickly as possible so the builds can be optimized better.

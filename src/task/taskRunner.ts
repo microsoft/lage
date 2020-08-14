@@ -3,14 +3,15 @@ import {
   createPipeline,
   TopologicalGraph,
   Task,
+  getPackageTaskFromId,
+  getTaskId,
 } from "@microsoft/task-scheduler";
 import { Config } from "../types/Config";
 import { Workspace } from "../types/Workspace";
 import { Priority } from "../types/Priority";
 import { NpmScriptTask } from "./NpmScriptTask";
-import { getTaskId } from "./taskId";
 import { getPipelinePackages } from "./getPipelinePackages";
-import { parseDepsAndTopoDeps } from "./parseDepsAndTopoDeps";
+import { parsePipelineConfig } from "./parsePipelineConfig";
 
 /** Returns a map that maps task name to the priorities config for that task */
 function getPriorityMap(priorities: Priority[]) {
@@ -46,8 +47,11 @@ export async function runTasks(options: {
     concurrency: config.concurrency,
   });
 
-  for (const [taskName, taskDeps] of Object.entries(config.pipeline)) {
-    const { deps, topoDeps } = parseDepsAndTopoDeps(taskDeps);
+  const pipelineConfig = parsePipelineConfig(config.pipeline);
+
+  // Add in the task deps based on package graph
+  for (const [taskName, taskDeps] of Object.entries(pipelineConfig.taskDeps)) {
+    const { deps, topoDeps } = taskDeps;
 
     pipeline = pipeline.addTask({
       name: taskName,
@@ -73,6 +77,16 @@ export async function runTasks(options: {
         return true;
       },
     });
+  }
+
+  // adding specific package task dependencies
+  for (const packageTaskDep of pipelineConfig.packageTaskDeps) {
+    const from = getPackageTaskFromId(packageTaskDep[0]);
+    const to = getPackageTaskFromId(packageTaskDep[1]);
+    pipeline.addDep(
+      { package: from[0], task: from[1] },
+      { package: to[0], task: to[1] }
+    );
   }
 
   await pipeline.go({

@@ -1,5 +1,5 @@
 import { Monorepo } from "../mock/monorepo";
-import { getTaskId } from "../../src/task/taskId";
+import { getTaskId } from "@microsoft/task-scheduler";
 import { parseNdJson } from "./parseNdJson";
 
 describe("bigapp test", () => {

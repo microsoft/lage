@@ -2,12 +2,14 @@ import { logger } from "../logger";
 import { Config } from "../types/Config";
 import { getWorkspace } from "../workspace/getWorkspace";
 import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
-import { generateTaskGraph } from "@microsoft/task-scheduler";
+import {
+  generateTaskGraph,
+  getPackageTaskFromId,
+} from "@microsoft/task-scheduler";
 import { getPipelinePackages } from "../task/getPipelinePackages";
 import { Tasks } from "@microsoft/task-scheduler/lib/types";
-import { parseDepsAndTopoDeps } from "../task/parseDepsAndTopoDeps";
+import { parsePipelineConfig } from "../task/parsePipelineConfig";
 import { PackageTaskInfo } from "../logger/LogEntry";
-import { getPackageAndTask } from "../task/taskId";
 import path from "path";
 import { Workspace } from "../types/Workspace";
 import { getNpmCommand } from "../task/getNpmCommand";
@@ -52,10 +54,10 @@ import { getNpmCommand } from "../task/getNpmCommand";
 export async function info(cwd: string, config: Config) {
   const workspace = getWorkspace(cwd, config);
   const tasks: Tasks = new Map();
+  const pipelineConfig = parsePipelineConfig(config.pipeline);
 
-  for (const [taskName, taskDeps] of Object.entries(config.pipeline)) {
-    const { deps, topoDeps } = parseDepsAndTopoDeps(taskDeps);
-
+  for (const [taskName, taskDeps] of Object.entries(pipelineConfig.taskDeps)) {
+    const { deps, topoDeps } = taskDeps;
     tasks.set(taskName, {
       name: taskName,
       run: () => Promise.resolve(true),
@@ -71,6 +73,7 @@ export async function info(cwd: string, config: Config) {
     config.command.slice(1),
     tasks,
     graph,
+    pipelineConfig.packageTaskDeps,
     false
   );
 
@@ -113,23 +116,23 @@ function createPackageTaskInfo(
   config: Config,
   workspace: Workspace
 ) {
-  const task = getPackageAndTask(taskId)!;
+  const [pkg, taskName] = getPackageTaskFromId(taskId)!;
 
-  const scripts = workspace.allPackages[task.package].scripts;
+  const scripts = workspace.allPackages[pkg].scripts;
 
-  if (scripts && scripts[task.task]) {
+  if (scripts && scripts[taskName]) {
     return {
       id: taskId,
-      command: [config.npmClient, ...getNpmCommand(config, task.task)],
+      command: [config.npmClient, ...getNpmCommand(config, taskName)],
       dependencies: [],
       workingDirectory: path
         .relative(
           workspace.root,
-          path.dirname(workspace.allPackages[task.package].packageJsonPath)
+          path.dirname(workspace.allPackages[pkg].packageJsonPath)
         )
         .replace(/\\/g, "/"),
-      package: task.package,
-      task: task.task,
+      package: pkg,
+      task: taskName,
     };
   }
 }
