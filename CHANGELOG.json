@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sun, 16 Aug 2020 16:35:11 GMT",
+      "tag": "lage_v0.19.2",
+      "version": "0.19.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixed the delimiter to use something uncommon",
+            "author": "kchau@microsoft.com",
+            "commit": "2e435e1dba7f6fda957ca54431e95d4391cf7512",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 16 Aug 2020 16:24:19 GMT",
       "tag": "lage_v0.19.1",
       "version": "0.19.1",

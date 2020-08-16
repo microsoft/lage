@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Sun, 16 Aug 2020 16:24:19 GMT and should not be manually modified.
+This log was last generated on Sun, 16 Aug 2020 16:35:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.19.2
+
+Sun, 16 Aug 2020 16:35:11 GMT
+
+### Patches
+
+- fixed the delimiter to use something uncommon (kchau@microsoft.com)
 
 ## 0.19.1
 

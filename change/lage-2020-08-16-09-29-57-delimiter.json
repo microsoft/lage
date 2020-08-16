@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixed the delimiter to use something uncommon",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch",
-  "date": "2020-08-16T16:29:57.585Z"
-}
