@@ -4,7 +4,7 @@ import { Workspace } from "../types/Workspace";
 import {
   getScopedPackages,
   getChangedPackages,
-  getTransitiveProviders,
+  //getTransitiveProviders,
 } from "workspace-tools";
 export function getPipelinePackages(workspace: Workspace, config: Config) {
   // Filter packages per --scope and command(s)
@@ -15,10 +15,6 @@ export function getPipelinePackages(workspace: Workspace, config: Config) {
   let scopedPackages: string[] | undefined = undefined;
   if (hasScopes) {
     scopedPackages = getScopedPackages(scope!, workspace.allPackages);
-    scopedPackages = [
-      ...scopedPackages,
-      ...getTransitiveProviders(scopedPackages, workspace.allPackages),
-    ];
   }
 
   const hasSince = typeof since !== "undefined";
