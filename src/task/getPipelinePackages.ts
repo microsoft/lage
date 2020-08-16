@@ -1,11 +1,7 @@
 import { Config } from "../types/Config";
 import { filterPackages } from "./filterPackages";
 import { Workspace } from "../types/Workspace";
-import {
-  getScopedPackages,
-  getChangedPackages,
-  //getTransitiveProviders,
-} from "workspace-tools";
+import { getScopedPackages, getChangedPackages } from "workspace-tools";
 export function getPipelinePackages(workspace: Workspace, config: Config) {
   // Filter packages per --scope and command(s)
   const { scope, since } = config;
