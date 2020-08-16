@@ -54,11 +54,11 @@ module.exports = {
     build: ["^build"],
     test: ["build"],
     lint: [],
-    "foo:build": ["bar:test"],
+    "foo#build": ["bar#test"],
   },
 };
 ```
 
-In this example, we illustrate a `build` script of `foo` package depends on the `test` script of `bar`. The syntax is `[package].[task]`.
+In this example, we illustrate a `build` script of `foo` package depends on the `test` script of `bar`. The syntax is `[package]#[task]`.
 
 This seems like it goes against the `test: ["build"]`, but it does not. Since `test` scripts does not have a topological dependency, it theoretically can get triggered anytime its own package's `build` script has finished! The general guidance is to get rid of these specific package-task to package-task dependency in the pipeline as quickly as possible so the builds can be optimized better.

@@ -1,5 +1,7 @@
 import { Pipeline } from "../types/Pipeline";
 
+const DELIMITER = "#";
+
 interface PipelineConfig {
   taskDeps: {
     [taskName: string]: {
@@ -16,11 +18,11 @@ export function parsePipelineConfig(pipeline: Pipeline) {
     packageTaskDeps: [],
   };
   for (const [taskName, taskDeps] of Object.entries(pipeline)) {
-    if (taskName.includes(":")) {
+    if (taskName.includes(DELIMITER)) {
       const to = taskName;
 
       for (const from of taskDeps) {
-        if (!from.includes(":")) {
+        if (!from.includes(DELIMITER)) {
           throw new Error(
             "Pipeline config error: single package task dependencies must be other individual package tasks, currently"
           );
