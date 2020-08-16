@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sun, 16 Aug 2020 16:24:19 GMT",
+      "tag": "lage_v0.19.1",
+      "version": "0.19.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixed the case to not over build",
+            "author": "kchau@microsoft.com",
+            "commit": "a07e1584afad55c6d20b185d5bd15a59b797af66",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 14 Aug 2020 18:52:50 GMT",
       "tag": "lage_v0.19.0",
       "version": "0.19.0",

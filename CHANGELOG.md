@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 14 Aug 2020 18:52:50 GMT and should not be manually modified.
+This log was last generated on Sun, 16 Aug 2020 16:24:19 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.19.1
+
+Sun, 16 Aug 2020 16:24:19 GMT
+
+### Patches
+
+- fixed the case to not over build (kchau@microsoft.com)
 
 ## 0.19.0
 
