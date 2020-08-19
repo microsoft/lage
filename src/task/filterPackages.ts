@@ -13,20 +13,38 @@ export function filterPackages(options: {
 }) {
   const { scopedPackages, changedPackages, allPackages, deps } = options;
 
-  let filtered = Object.keys(allPackages);
+  let filtered: string[] = [];
 
-  // If scoped is defined, get scoped packages
-  if (typeof scopedPackages !== "undefined") {
-    filtered = filtered.filter((pkg) => scopedPackages.includes(pkg));
-    logger.verbose(`filterPackages scope: ${scopedPackages.join(",")}`);
-  }
+  // If scope is defined, use the transitive providers of the since packages up to the scope
+  if (
+    typeof scopedPackages !== "undefined" &&
+    typeof changedPackages !== "undefined"
+  ) {
+    // If both scoped and since are specified, we have to merge two lists:
+    // 1. changed packages that ARE themselves the scoped packages
+    // 2. changed package consumers (package dependents) that are within the scoped subgraph
+    filtered = changedPackages
+      .filter((pkg) => scopedPackages.includes(pkg))
+      .concat(
+        getTransitiveConsumers(changedPackages, allPackages, scopedPackages)
+      );
 
-  if (typeof changedPackages !== "undefined") {
-    filtered = filtered.filter((pkg) => changedPackages.includes(pkg));
+    logger.verbose(
+      `filterPackages changed within scope: ${filtered.join(",")}`
+    );
+  } else if (typeof changedPackages !== "undefined") {
+    filtered = [...changedPackages];
     logger.verbose(`filterPackages changed: ${changedPackages.join(",")}`);
+  } else if (typeof scopedPackages !== "undefined") {
+    filtered = [...scopedPackages];
+    logger.verbose(`filterPackages scope: ${scopedPackages.join(",")}`);
+  } else {
+    filtered = Object.keys(allPackages);
   }
 
+  // adds dependents (consumers) of all filtered package thus far
   if (deps) {
+    logger.verbose(`filterPackages running with dependents`);
     filtered = filtered.concat(getTransitiveConsumers(filtered, allPackages));
   }
 
