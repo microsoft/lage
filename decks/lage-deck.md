@@ -69,7 +69,7 @@ Create a task runner that optimizes package tasks in a monorepo for a single mac
 - JS monorepos in the wild run with **all kinds of workspaces**
 - The state-of-the-art monorepo task runners are **not optimized**
 - **CPU cores sit idle** for topological scripts
-- Lage monorepos generally have **clustered graph** of related packages
+- Large monorepos generally have **clustered graph** of related packages
 
 ---
 
