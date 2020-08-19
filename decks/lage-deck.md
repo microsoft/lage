@@ -186,9 +186,12 @@ https://microsoft.github.io/lage/guide/getting-started.html
 # Future
 
 - `lage` is a great solution for a **single machine**, not distributed builds
-- For MSFT is [buildxl](https://github.com/microsoft/buildxl)
-  - lage needs to spit out [dscript](https://github.com/microsoft/BuildXL/blob/master/Documentation/Wiki/DScript/Introduction.md) or json config for buildxl
-- Alternative: also investigate bazel
+- Microsoft solution is [buildxl](https://github.com/microsoft/buildxl)
+  - lage spits out info for `buildxl` now!
+    ```
+    lage info build --reporter json
+    ```
+- Another popular distributed build solution: bazel
   - lage can potentially spit out WORKSPACE & BUILD
 
 ---
