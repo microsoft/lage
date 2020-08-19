@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Sun, 16 Aug 2020 16:35:11 GMT and should not be manually modified.
+This log was last generated on Wed, 19 Aug 2020 23:35:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.19.3
+
+Wed, 19 Aug 2020 23:35:01 GMT
+
+### Patches
+
+- Fixing the issue with scope & since getting incorrect filtered package results (#66) (kchau@microsoft.com)
 
 ## 0.19.2
 

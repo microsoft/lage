@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fixing the issue with scope & since getting incorrect filtered package results (#66)",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch",
-  "date": "2020-08-19T23:32:56.812Z"
-}
