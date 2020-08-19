@@ -169,7 +169,7 @@ https://microsoft.github.io/lage/guide/levels.html
 
 ---
 
-## How try it at home?
+## How to try it at home?
 
 https://microsoft.github.io/lage/guide/getting-started.html
 
