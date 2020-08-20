@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 20 Aug 2020 00:31:59 GMT and should not be manually modified.
+This log was last generated on Thu, 20 Aug 2020 00:46:19 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.19.5
+
+Thu, 20 Aug 2020 00:46:19 GMT
+
+### Patches
+
+- Make sure repowidechanges setting is separate from cache hash calculation (kchau@microsoft.com)
 
 ## 0.19.4
 

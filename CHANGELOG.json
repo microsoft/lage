@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 20 Aug 2020 00:46:19 GMT",
+      "tag": "lage_v0.19.5",
+      "version": "0.19.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Make sure repowidechanges setting is separate from cache hash calculation",
+            "author": "kchau@microsoft.com",
+            "commit": "71569351b30c4e4728725c188df663d3bb51c0c7",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 Aug 2020 00:31:59 GMT",
       "tag": "lage_v0.19.4",
       "version": "0.19.4",
