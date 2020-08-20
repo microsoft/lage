@@ -60,5 +60,13 @@ export function getConfig(cwd: string): Config {
     since: parsedArgs.since || undefined,
     verbose: parsedArgs.verbose,
     only: false,
+    environmentGlob: configResults?.config.environmentGlob || [
+      "lage.config.js",
+      "package-lock.json",
+      "yarn.lock",
+      "pnpm-lock.yaml",
+      "lerna.json",
+      "rush.json",
+    ],
   };
 }

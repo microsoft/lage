@@ -21,7 +21,8 @@ export async function cacheHash(
   );
   const name = info.name;
   const hashKey = salt(
-    config.cacheOptions.environmentGlob || ["lage.config.js"],
+    config.environmentGlob ||
+      config.cacheOptions.environmentGlob || ["lage.config.js"],
     `${info.name}|${task}|${JSON.stringify(config.args)}`,
     root
   );
