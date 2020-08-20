@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 20 Aug 2020 00:31:59 GMT",
+      "tag": "lage_v0.19.4",
+      "version": "0.19.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "make sure repo wide changes are respected for build scoping",
+            "author": "kchau@microsoft.com",
+            "commit": "5426a6f11985f78556b4287bce565c562ddecc19",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 19 Aug 2020 23:35:01 GMT",
       "tag": "lage_v0.19.3",
       "version": "0.19.3",

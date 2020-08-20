@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 19 Aug 2020 23:35:01 GMT and should not be manually modified.
+This log was last generated on Thu, 20 Aug 2020 00:31:59 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.19.4
+
+Thu, 20 Aug 2020 00:31:59 GMT
+
+### Patches
+
+- make sure repo wide changes are respected for build scoping (kchau@microsoft.com)
 
 ## 0.19.3
 
