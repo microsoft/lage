@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "Make sure repowidechanges setting is separate from cache hash calculation",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2020-08-20T00:38:28.058Z"
+}
