@@ -60,7 +60,7 @@ export function getConfig(cwd: string): Config {
     since: parsedArgs.since || undefined,
     verbose: parsedArgs.verbose,
     only: false,
-    environmentGlob: configResults?.config.environmentGlob || [
+    repoWideChanges: configResults?.config.repoWideChanges || [
       "lage.config.js",
       "package-lock.json",
       "yarn.lock",
