@@ -32,4 +32,7 @@ export interface ConfigOptions {
 
   /** Optional priority to set on tasks in a package to make the scheduler give priority to tasks on the critical path for high priority tasks */
   priorities: Priority[];
+
+  /** A list of files that if changed will have a repo wide impact, forces the scope to be everything */
+  environmentGlob: string[];
 }

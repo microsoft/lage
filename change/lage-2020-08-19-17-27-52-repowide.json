@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "make sure repo wide changes are respected for build scoping",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2020-08-20T00:27:52.883Z"
+}
