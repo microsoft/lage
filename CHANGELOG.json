@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 26 Aug 2020 20:50:03 GMT",
+      "tag": "lage_v0.19.6",
+      "version": "0.19.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "bump task-scheduler to handle no-deps case",
+            "author": "kchau@microsoft.com",
+            "commit": "ef0d7739f6cfa609355018c8dc50c45b15b2da5b",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 Aug 2020 00:46:19 GMT",
       "tag": "lage_v0.19.5",
       "version": "0.19.5",
