@@ -76,5 +76,6 @@ export function getConfig(cwd: string): Config {
       "lerna.json",
       "rush.json",
     ],
+    to: parsedArgs.to || [],
   };
 }
