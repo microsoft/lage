@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "adding cli options",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch",
-  "date": "2020-09-15T01:20:28.436Z"
-}

@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 15 Sep 2020 01:37:39 GMT",
+      "tag": "lage_v0.19.7",
+      "version": "0.19.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "adding cli options",
+            "author": "kchau@microsoft.com",
+            "commit": "e7ee08b63782abe145c047829ed80ab51985eb77",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 Aug 2020 20:50:03 GMT",
       "tag": "lage_v0.19.6",
       "version": "0.19.6",
