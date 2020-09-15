@@ -168,6 +168,19 @@ have changed. There is an assumption of all the input files for a package exist
 inside their respective package folders.
 
   
+#### to
+_type: string[]_
+
+Scopes a list of packages, and not built their dependents (consuming packages).
+This implies `--scope` and `--no-deps`.
+
+Just like the `--scope` argument, you can specify multiple packages like this:
+
+```
+lage build --to foo --to bar
+```
+
+  
 #### verbose
 _type: boolean_
 

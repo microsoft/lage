@@ -58,6 +58,7 @@ export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
     "profile",
     "grouped",
     "reporter",
+    "to",
     "_",
   ];
 
@@ -76,7 +77,7 @@ export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
 
 export function parseArgs() {
   return yargsParser(process.argv.slice(2), {
-    array: ["scope", "node", "ignore"],
+    array: ["scope", "node", "ignore", "to"],
     configuration: {
       "populate--": true,
       "strip-dashed": true,

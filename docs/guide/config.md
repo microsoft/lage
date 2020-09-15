@@ -35,7 +35,7 @@ Backfill cache options
 #### ignore
 _type: string[]_
 
-Which files to ignore when calculating scopes
+Which files to ignore when calculating scopes with --since
   
 #### npmClient
 _type: "npm" | "yarn" | "pnpm"_
@@ -62,6 +62,11 @@ Example:
 _type: [Priority](#Priority)[]_
 
 Optional priority to set on tasks in a package to make the scheduler give priority to tasks on the critical path for high priority tasks
+  
+#### repoWideChanges
+_type: string[]_
+
+disables --since flag when any of this list of files changed
   
 ### Pipeline
 

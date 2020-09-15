@@ -30,12 +30,20 @@ export function getConfig(cwd: string): Config {
   const command = parsedArgs._;
 
   // deps should be default true, unless exclusively turned off with '--no-deps' or from config file with "deps: false"
-  const deps =
+  let deps =
     parsedArgs.deps === false
       ? false
       : configResults?.config.deps === false
       ? false
       : true;
+
+  let scope = parsedArgs.scope || configResults?.config.scope || [];
+
+  // the --to arg means that we will not build any of the dependents and limit the scope
+  if (parsedArgs.to) {
+    scope = scope.concat(parsedArgs.to);
+    deps = false;
+  }
 
   return {
     reporter: parsedArgs.reporter || "npmLog",
@@ -56,7 +64,7 @@ export function getConfig(cwd: string): Config {
     pipeline: configResults?.config.pipeline || {},
     priorities: configResults?.config.priorities || [],
     profile: parsedArgs.profile,
-    scope: parsedArgs.scope || configResults?.config.scope || [],
+    scope,
     since: parsedArgs.since || undefined,
     verbose: parsedArgs.verbose,
     only: false,
@@ -68,5 +76,6 @@ export function getConfig(cwd: string): Config {
       "lerna.json",
       "rush.json",
     ],
+    to: parsedArgs.to || [],
   };
 }
