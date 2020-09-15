@@ -35,6 +35,18 @@ export interface CliOptions {
   scope: string[];
 
   /**
+   * Scopes a list of packages, and not built their dependents (consuming packages).
+   * This implies `--scope` and `--no-deps`.
+   *
+   * Just like the `--scope` argument, you can specify multiple packages like this:
+   *
+   * ```
+   * lage build --to foo --to bar
+   * ```
+   */
+  to: string[];
+
+  /**
    * calculate which packages are in scope based on changed packages since a mergebase
    *
    * This uses the `git diff ${target_branch}...` mechanism to identify which packages
