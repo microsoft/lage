@@ -7,7 +7,7 @@
     <meta name="generator" content="VuePress 1.5.3">
     
     <meta name="description" content="Monorepo task runner as beautiful as the Norwegian fjords">
-    <link rel="preload" href="/lage/assets/css/0.styles.7fb708bc.css" as="style"><link rel="preload" href="/lage/assets/js/app.2ac71631.js" as="script"><link rel="preload" href="/lage/assets/js/2.77b8b6ef.js" as="script"><link rel="preload" href="/lage/assets/js/9.b47267af.js" as="script"><link rel="prefetch" href="/lage/assets/js/10.877c7c40.js"><link rel="prefetch" href="/lage/assets/js/11.3a491502.js"><link rel="prefetch" href="/lage/assets/js/12.deebb803.js"><link rel="prefetch" href="/lage/assets/js/13.d98e58e0.js"><link rel="prefetch" href="/lage/assets/js/14.851daef1.js"><link rel="prefetch" href="/lage/assets/js/15.126485f4.js"><link rel="prefetch" href="/lage/assets/js/16.31b8345a.js"><link rel="prefetch" href="/lage/assets/js/3.cf255bad.js"><link rel="prefetch" href="/lage/assets/js/4.1f2c394a.js"><link rel="prefetch" href="/lage/assets/js/5.8d23d3c9.js"><link rel="prefetch" href="/lage/assets/js/6.c7a6d383.js"><link rel="prefetch" href="/lage/assets/js/7.5c2357d3.js"><link rel="prefetch" href="/lage/assets/js/8.362d78cd.js">
+    <link rel="preload" href="/lage/assets/css/0.styles.7fb708bc.css" as="style"><link rel="preload" href="/lage/assets/js/app.1d0c94fd.js" as="script"><link rel="preload" href="/lage/assets/js/2.77b8b6ef.js" as="script"><link rel="preload" href="/lage/assets/js/9.cc12872d.js" as="script"><link rel="prefetch" href="/lage/assets/js/10.927c0074.js"><link rel="prefetch" href="/lage/assets/js/11.a9060dc2.js"><link rel="prefetch" href="/lage/assets/js/12.deebb803.js"><link rel="prefetch" href="/lage/assets/js/13.28761acd.js"><link rel="prefetch" href="/lage/assets/js/14.7dad872e.js"><link rel="prefetch" href="/lage/assets/js/15.695a9d55.js"><link rel="prefetch" href="/lage/assets/js/16.31b8345a.js"><link rel="prefetch" href="/lage/assets/js/3.cf255bad.js"><link rel="prefetch" href="/lage/assets/js/4.a16b3dc3.js"><link rel="prefetch" href="/lage/assets/js/5.8d23d3c9.js"><link rel="prefetch" href="/lage/assets/js/6.bde3a1ba.js"><link rel="prefetch" href="/lage/assets/js/7.5c2357d3.js"><link rel="prefetch" href="/lage/assets/js/8.824425f5.js">
     <link rel="stylesheet" href="/lage/assets/css/0.styles.7fb708bc.css">
   </head>
   <body>
@@ -39,13 +39,15 @@ like what is the default of <code>lerna</code> or <code>rush</code>.</p> <h4 id=
 running tasks for dependent package, use the <code>--no-deps</code> flag in combination.</p> <p>You can specify multiple scoped packages like this:</p> <div class="language- extra-class"><pre class="language-text"><code>lage build --scope foo --scope bar --scope baz
 </code></pre></div><h4 id="since"><a href="#since" class="header-anchor">#</a> since</h4> <p><em>type: string</em></p> <p>calculate which packages are in scope based on changed packages since a mergebase</p> <p>This uses the <code>git diff ${target_branch}...</code> mechanism to identify which packages
 have changed. There is an assumption of all the input files for a package exist
-inside their respective package folders.</p> <h4 id="verbose-2"><a href="#verbose-2" class="header-anchor">#</a> verbose</h4> <p><em>type: boolean</em></p> <p>Verbose mode, turns on all logging</p> <p><code>lage</code> by default will hide the output from successful tasks. If you want to see the
+inside their respective package folders.</p> <h4 id="to"><a href="#to" class="header-anchor">#</a> to</h4> <p><em>type: string[]</em></p> <p>Scopes a list of packages, and not built their dependents (consuming packages).
+This implies <code>--scope</code> and <code>--no-deps</code>.</p> <p>Just like the <code>--scope</code> argument, you can specify multiple packages like this:</p> <div class="language- extra-class"><pre class="language-text"><code>lage build --to foo --to bar
+</code></pre></div><h4 id="verbose-2"><a href="#verbose-2" class="header-anchor">#</a> verbose</h4> <p><em>type: boolean</em></p> <p>Verbose mode, turns on all logging</p> <p><code>lage</code> by default will hide the output from successful tasks. If you want to see the
 output as they are being generated, call <code>lage</code> with the <code>verbose</code> argument.</p> <div class="language- extra-class"><pre class="language-text"><code>$ lage build --verbose
 </code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
       ←
       <a href="/lage/guide/config.html" class="prev">
         Configuration
       </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
-    <script src="/lage/assets/js/app.2ac71631.js" defer></script><script src="/lage/assets/js/2.77b8b6ef.js" defer></script><script src="/lage/assets/js/9.b47267af.js" defer></script>
+    <script src="/lage/assets/js/app.1d0c94fd.js" defer></script><script src="/lage/assets/js/2.77b8b6ef.js" defer></script><script src="/lage/assets/js/9.cc12872d.js" defer></script>
   </body>
 </html>
