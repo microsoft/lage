@@ -14,7 +14,7 @@
     "build": "tsc",
     "change": "beachball change",
     "checkchange": "beachball check",
-    "decks:build": "marp decks/lage-deck.md -o docs/.vuepress/dist/decks/lage-deck.pdf",
+    "decks:build": "marp -I decks --pdf -o docs/.vuepress/dist/decks",
     "docs": "vuepress dev docs --host localhost",
     "docs:build": "vuepress build docs",
     "gen-typedoc": "ts-node --transpile-only scripts/gen-typedoc.ts",
