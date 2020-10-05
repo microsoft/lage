@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 05 Oct 2020 20:09:57 GMT",
+      "tag": "lage_v0.19.9",
+      "version": "0.19.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "bumps task-scheduler",
+            "author": "kchau@microsoft.com",
+            "commit": "397c668910f3f8d639e76b33c7839547da2c3ac1",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 15 Sep 2020 17:54:15 GMT",
       "tag": "lage_v0.19.8",
       "version": "0.19.8",

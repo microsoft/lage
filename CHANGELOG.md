@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 15 Sep 2020 17:54:15 GMT and should not be manually modified.
+This log was last generated on Mon, 05 Oct 2020 20:09:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.19.9
+
+Mon, 05 Oct 2020 20:09:57 GMT
+
+### Patches
+
+- bumps task-scheduler (kchau@microsoft.com)
 
 ## 0.19.8
 
