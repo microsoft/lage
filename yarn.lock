@@ -956,10 +956,10 @@
     markdown-it-front-matter "^0.2.1"
     postcss "^7.0.32"
 
-"@microsoft/task-scheduler@^2.6.2":
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/@microsoft/task-scheduler/-/task-scheduler-2.6.2.tgz#03bd53251424267375803e9c3c868dc31825b34e"
-  integrity sha512-0T0TkxjxTeC6u8whkMMxxV16bvC9TzCRJqF3uyJ5EZ8SOOese2wPkfT7n4EzI4zSsjMwEbbWFLAb5CpdIdu09Q==
+"@microsoft/task-scheduler@^2.6.4":
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/@microsoft/task-scheduler/-/task-scheduler-2.6.4.tgz#ba684e26380f6b5d660656858a5f417a9c42487a"
+  integrity sha512-4RXr5Q0/CfRHAjJ6J+8V/if0LGoScTc4iFVnSHiLnJEEJRNWviLeBNgiDb/fI4H9vbdM+KF71agzKsji1C4jtQ==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
