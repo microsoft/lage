@@ -1,0 +1,19 @@
+name: Do things every 2 hours
+on:
+  schedule:
+    - cron: "* */2 * * *"
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          - run: yarn renovate --token $REPO_PAT
+          env:
+            REPO_PAT: ${{ secrets.repo_pat }}

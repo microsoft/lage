@@ -1,0 +1,7 @@
+{
+  "postUpgradeTasks": {
+    "commands": ["beachball --type patch --message \"renovate bump\""],
+    "fileFilters": ["change/*.json"]
+  },
+  "assignees": ["kenotron"]
+}
