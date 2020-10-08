@@ -60,6 +60,7 @@
     "fs-extra": "^9.0.1",
     "gh-pages": "^2.2.0",
     "jasmine": "^3.5.0",
+    "renovate": "^23.42.2",
     "ts-node": "^8.10.2",
     "typedoc": "^0.17.8",
     "typedoc-plugin-markdown": "^2.3.1",
