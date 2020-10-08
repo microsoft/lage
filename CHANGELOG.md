@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 05 Oct 2020 20:09:57 GMT and should not be manually modified.
+This log was last generated on Thu, 08 Oct 2020 00:13:55 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.19.10
+
+Thu, 08 Oct 2020 00:13:55 GMT
+
+### Patches
+
+- adding renovate (kchau@microsoft.com)
 
 ## 0.19.9
 
