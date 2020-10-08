@@ -1,5 +1,6 @@
 name: Do things every 2 hours
 on:
+  workflow_dispatch:
   schedule:
     - cron: "* */2 * * *"
 
@@ -14,6 +15,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-          - run: yarn renovate --token $REPO_PAT
+          - run: yarn renovate --token $REPO_PAT microsoft/lage
           env:
             REPO_PAT: ${{ secrets.repo_pat }}
