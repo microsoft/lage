@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 12 Oct 2020 18:50:15 GMT",
+      "tag": "lage_v0.19.11",
+      "version": "0.19.11",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Include full stacks with error messages",
+            "author": "elcraig@microsoft.com",
+            "commit": "78eb53a89d0e95e63b002db6d370198d65331484",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 08 Oct 2020 00:13:55 GMT",
       "tag": "lage_v0.19.10",
       "version": "0.19.10",
