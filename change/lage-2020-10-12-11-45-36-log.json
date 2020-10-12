@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "Include full stacks with error messages",
+  "packageName": "lage",
+  "email": "elcraig@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2020-10-12T18:45:36.449Z"
+}
