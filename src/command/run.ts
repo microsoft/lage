@@ -33,7 +33,7 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   try {
     await runTasks({ graph, workspace, context, config });
   } catch (e) {
-    logger.error("runTasks: " + e);
+    logger.error("runTasks: " + (e.stack || e.message || e));
   }
 
   if (config.profile) {
