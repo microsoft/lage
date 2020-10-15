@@ -34,7 +34,7 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
     await runTasks({ graph, workspace, context, config });
   } catch (e) {
     logger.error("runTasks: " + (e.stack || e.message || e));
-    throw new Error(e);
+    process.exitCode = 1;
   }
 
   if (config.profile) {
