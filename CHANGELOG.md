@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 12 Oct 2020 18:50:15 GMT and should not be manually modified.
+This log was last generated on Thu, 15 Oct 2020 00:45:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.19.12
+
+Thu, 15 Oct 2020 00:45:11 GMT
+
+### Patches
+
+- make sure the exit code is 1 if a cycle is detected (kchau@microsoft.com)
 
 ## 0.19.11
 

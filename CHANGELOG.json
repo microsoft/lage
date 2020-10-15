@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 15 Oct 2020 00:45:11 GMT",
+      "tag": "lage_v0.19.12",
+      "version": "0.19.12",
+      "comments": {
+        "patch": [
+          {
+            "comment": "make sure the exit code is 1 if a cycle is detected",
+            "author": "kchau@microsoft.com",
+            "commit": "45de129914e791ca4d0557251024524729b66063",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 12 Oct 2020 18:50:15 GMT",
       "tag": "lage_v0.19.11",
       "version": "0.19.11",
