@@ -201,6 +201,22 @@ export class NpmLogReporter implements Reporter {
           )
         );
       }
+
+      const successfulTasks = [...tasks.values()].filter(
+        (t) => t.status === "completed"
+      );
+      const skippedTasks = [...tasks.values()].filter(
+        (t) => t.status === "skipped"
+      );
+
+      log.info(
+        "",
+        `[Tasks Count] success: ${successfulTasks.length}, skipped: ${
+          skippedTasks.length
+        }, incomplete: ${tasks.size -
+          successfulTasks.length -
+          skippedTasks.length}`
+      );
     } else {
       log.info("", "Nothing has been run.");
     }
