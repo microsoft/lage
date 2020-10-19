@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 15 Oct 2020 00:45:11 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Oct 2020 16:39:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.20.0
+
+Mon, 19 Oct 2020 16:39:05 GMT
+
+### Minor changes
+
+- Use getWorkspaceRoot to determine where the root of the Lage project is. (dannyvv@microsoft.com)
 
 ## 0.19.12
 

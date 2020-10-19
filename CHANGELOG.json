@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 19 Oct 2020 16:39:05 GMT",
+      "tag": "lage_v0.20.0",
+      "version": "0.20.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Use getWorkspaceRoot to determine where the root of the Lage project is.",
+            "author": "dannyvv@microsoft.com",
+            "commit": "12f6efa3ebfb59bd60aa87872247dd4b9e7bbdd1",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 15 Oct 2020 00:45:11 GMT",
       "tag": "lage_v0.19.12",
       "version": "0.19.12",
