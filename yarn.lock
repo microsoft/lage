@@ -2427,16 +2427,7 @@ binjumper@^0.1.0:
   resolved "https://registry.yarnpkg.com/binjumper/-/binjumper-0.1.2.tgz#a82beb255c51ee631330f69897bc191169905023"
   integrity sha512-zZrQaKsC0h5HflYWM9G9Jisx+XNPs9WU3yMizdcYL91Aw1NNaLze3tKjyNRZPorQLBNDvkavZjB/wxXUZe/8gA==
 
-bl@^4.0.1:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/bl/-/bl-4.0.3.tgz#12d6287adc29080e22a705e5764b2a9522cdc489"
-  integrity sha512-fs4G6/Hu4/EE+F75J8DuN/0IpQqNjAdC7aEQv7Qt8MHGUH7Ckv2MwTEEeN9QehD0pfIDkMI1bkHYkKy7xHyKIg==
-  dependencies:
-    buffer "^5.5.0"
-    inherits "^2.0.4"
-    readable-stream "^3.4.0"
-
-bl@^4.0.3:
+bl@^4.0.1, bl@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/bl/-/bl-4.0.3.tgz#12d6287adc29080e22a705e5764b2a9522cdc489"
   integrity sha512-fs4G6/Hu4/EE+F75J8DuN/0IpQqNjAdC7aEQv7Qt8MHGUH7Ckv2MwTEEeN9QehD0pfIDkMI1bkHYkKy7xHyKIg==
@@ -12094,10 +12085,10 @@ worker-farm@^1.7.0:
   dependencies:
     errno "~0.1.7"
 
-workspace-tools@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.9.0.tgz#5ce0680c9bf38544d1f6261d6b0e2834347e676e"
-  integrity sha512-ji9mOpdxyJ1LBnCzfFzAuLw7x0OuqQso/eJFpeyR/W0nXRK3Uhmn0dAaqrlDlrUEW5nOT5nSz0MpsaCmeSyiUA==
+workspace-tools@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.10.0.tgz#82b4a0ec17350cb27df51c3f8b0c2d1e394b3d26"
+  integrity sha512-6rwbc4H6bSn74RfSwzSButqx602rzTTtxA9m+9RSzMpuXrFmNHfJGppn0Pi5J+LgP56ZA5VwfP7/nHN1fS8frg==
   dependencies:
     "@pnpm/lockfile-file" "^3.0.7"
     "@pnpm/logger" "^3.2.2"
@@ -12112,10 +12103,10 @@ workspace-tools@^0.9.0:
     multimatch "^4.0.0"
     read-yaml-file "^2.0.0"
 
-workspace-tools@^0.9.8:
-  version "0.9.8"
-  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.9.8.tgz#fe53254bf56da289a8e9a6d9e8a0647f69bd964e"
-  integrity sha512-Vbyuc8fRLnbkE/n7Qb8wKEwexGEujTQamEGNFd/1RmgANCFk1u4FBI2PVoF/Tf32JbbtAlw/JkWtxmemRG4b8g==
+workspace-tools@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.9.0.tgz#5ce0680c9bf38544d1f6261d6b0e2834347e676e"
+  integrity sha512-ji9mOpdxyJ1LBnCzfFzAuLw7x0OuqQso/eJFpeyR/W0nXRK3Uhmn0dAaqrlDlrUEW5nOT5nSz0MpsaCmeSyiUA==
   dependencies:
     "@pnpm/lockfile-file" "^3.0.7"
     "@pnpm/logger" "^3.2.2"

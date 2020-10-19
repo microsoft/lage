@@ -1,7 +1,7 @@
 import { Workspace } from "../types/Workspace";
 import {
   getChangedPackages,
-  findGitRoot,
+  getWorkspaceRoot,
   getPackageInfos,
 } from "workspace-tools";
 import { Config } from "../types/Config";
@@ -11,9 +11,9 @@ export function getWorkspace(
   cwd: string,
   config: Pick<Config, "since" | "ignore" | "npmClient">
 ): Workspace {
-  const root = findGitRoot(cwd)!;
+  const root = getWorkspaceRoot(cwd);
   if (!root) {
-    throw new Error("This must be called inside a git-controlled repo");
+    throw new Error("This must be called inside a codebase that is part of a JavaScript workspace.");
   }
 
   const { since, ignore, npmClient } = config;

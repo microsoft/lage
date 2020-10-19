@@ -1,6 +1,6 @@
 import { Config } from "../types/Config";
 import { cosmiconfigSync } from "cosmiconfig";
-import { findGitRoot } from "workspace-tools";
+import { getWorkspaceRoot } from "workspace-tools";
 import {
   parseArgs,
   arrifyArgs,
@@ -11,9 +11,9 @@ import os from "os";
 
 export function getConfig(cwd: string): Config {
   // Verify presence of git
-  const root = findGitRoot(cwd);
+  const root = getWorkspaceRoot(cwd);
   if (!root) {
-    throw new Error("This must be called inside a git-controlled repo");
+    throw new Error("This must be called inside a codebase that is part of a JavaScript workspace.");
   }
 
   // Search for lage.config.js file
