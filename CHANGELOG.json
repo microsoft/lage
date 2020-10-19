@@ -2,6 +2,36 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 19 Oct 2020 22:01:22 GMT",
+      "tag": "lage_v0.22.1",
+      "version": "0.22.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "have the errors appear more prominently",
+            "author": "kchau@microsoft.com",
+            "commit": "9a18dc41177bb97b6db10c6d16a4cd2cba0924b4",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 19 Oct 2020 21:25:12 GMT",
+      "tag": "lage_v0.22.0",
+      "version": "0.22.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "provide a way to write out profile data to custom path",
+            "author": "kchau@microsoft.com",
+            "commit": "6694976dedf90a9c6869529bf6ae95d66f5d8ba2",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 19 Oct 2020 20:42:00 GMT",
       "tag": "lage_v0.21.1",
       "version": "0.21.1",

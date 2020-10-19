@@ -1,8 +1,24 @@
 # Change Log - lage
 
-This log was last generated on Mon, 19 Oct 2020 20:42:00 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Oct 2020 22:01:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.22.1
+
+Mon, 19 Oct 2020 22:01:22 GMT
+
+### Patches
+
+- have the errors appear more prominently (kchau@microsoft.com)
+
+## 0.22.0
+
+Mon, 19 Oct 2020 21:25:12 GMT
+
+### Minor changes
+
+- provide a way to write out profile data to custom path (kchau@microsoft.com)
 
 ## 0.21.1
 
