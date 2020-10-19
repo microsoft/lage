@@ -40,7 +40,7 @@
     "fast-glob": "^3.2.2",
     "git-url-parse": "^11.1.2",
     "npmlog": "^4.1.2",
-    "p-profiler": "^0.1.2",
+    "p-profiler": "^0.2.1",
     "workspace-tools": "^0.10.1",
     "yargs-parser": "^18.1.3"
   },

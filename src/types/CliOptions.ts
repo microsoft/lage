@@ -123,7 +123,7 @@ export interface CliOptions {
    *
    * Pay attention to the output summary to find the location of the JSON file.
    */
-  profile: boolean;
+  profile: boolean | string;
 
   /**
    * Ignores certain files when calculating the scope with `--since`

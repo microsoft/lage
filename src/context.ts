@@ -1,15 +1,35 @@
 import { Config } from "./types/Config";
 import { RunContext } from "./types/RunContext";
 import Profiler from "p-profiler";
-import { join } from "path";
+import { join, dirname } from "path";
 import { tmpdir } from "os";
 import { mkdirSync } from "fs";
 
-export function createContext(config: Pick<Config, "concurrency">): RunContext {
-  const { concurrency } = config;
+export function createContext(
+  config: Pick<Config, "concurrency" | "profile">
+): RunContext {
+  const { concurrency, profile } = config;
 
-  const profilerOutputDir = join(tmpdir(), "lage", "profiles");
+  const useCustomProfilePath = typeof profile === "string";
+
+  const profilerOutputDir = useCustomProfilePath
+    ? dirname(profile as string)
+    : join(tmpdir(), "lage", "profiles");
+
   mkdirSync(profilerOutputDir, { recursive: true });
+
+  const profiler = new Profiler(
+    useCustomProfilePath
+      ? {
+          concurrency,
+          customOutputPath: profile as string,
+        }
+      : {
+          concurrency,
+          prefix: "lage",
+          outDir: profilerOutputDir,
+        }
+  );
 
   return {
     measures: {
@@ -18,10 +38,6 @@ export function createContext(config: Pick<Config, "concurrency">): RunContext {
       failedTask: undefined,
     },
     tasks: new Map(),
-    profiler: new Profiler({
-      concurrency,
-      prefix: "lage",
-      outDir: profilerOutputDir,
-    }),
+    profiler,
   };
 }
