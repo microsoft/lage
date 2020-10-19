@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 19 Oct 2020 19:52:06 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Oct 2020 20:42:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.21.1
+
+Mon, 19 Oct 2020 20:42:00 GMT
+
+### Patches
+
+- bumps workspace-tools and cleaned up deps a bit (kchau@microsoft.com)
 
 ## 0.21.0
 

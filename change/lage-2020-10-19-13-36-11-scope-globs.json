@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "bumps workspace-tools and cleaned up deps a bit",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch",
-  "date": "2020-10-19T20:36:11.492Z"
-}
