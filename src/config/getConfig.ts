@@ -13,7 +13,9 @@ export function getConfig(cwd: string): Config {
   // Verify presence of git
   const root = getWorkspaceRoot(cwd);
   if (!root) {
-    throw new Error("This must be called inside a codebase that is part of a JavaScript workspace.");
+    throw new Error(
+      "This must be called inside a codebase that is part of a JavaScript workspace."
+    );
   }
 
   // Search for lage.config.js file
@@ -67,6 +69,7 @@ export function getConfig(cwd: string): Config {
     scope,
     since: parsedArgs.since || undefined,
     verbose: parsedArgs.verbose,
+    parallel: parsedArgs.parallel,
     only: false,
     repoWideChanges: configResults?.config.repoWideChanges || [
       "lage.config.js",

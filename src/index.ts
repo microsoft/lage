@@ -11,21 +11,21 @@ import { version } from "./command/version";
 const cwd = process.cwd();
 try {
   const config = getConfig(cwd);
-  const reporters = initReporters(config)
+  const reporters = initReporters(config);
 
-  switch(config.command[0]) {
-    case 'init':
+  switch (config.command[0]) {
+    case "init":
       init(cwd);
       break;
 
-    case 'info':
+    case "info":
       info(cwd, config);
       break;
 
-    case 'version':
+    case "version":
       version();
       break;
-    
+
     default:
       logger.info(`Lage task runner - let's make it`);
       run(cwd, config, reporters);
