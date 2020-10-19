@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 19 Oct 2020 19:52:06 GMT",
+      "tag": "lage_v0.21.0",
+      "version": "0.21.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding a sigterm -> sigkill strategy for killing active processes",
+            "author": "kchau@microsoft.com",
+            "commit": "02351318e3d8e4ee508c41346cfb4a772e26074e",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 19 Oct 2020 16:39:05 GMT",
       "tag": "lage_v0.20.0",
       "version": "0.20.0",
