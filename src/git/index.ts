@@ -1,7 +1,7 @@
 import { spawnSync } from "child_process";
 import fs from "fs";
 import path from "path";
-import { findGitRoot } from "workspace-tools";
+import { getWorkspaceRoot } from "workspace-tools";
 import gitUrlParse from "git-url-parse";
 
 /**
@@ -350,7 +350,7 @@ export function getDefaultRemote(cwd: string) {
 
   try {
     packageJson = JSON.parse(
-      fs.readFileSync(path.join(findGitRoot(cwd)!, "package.json")).toString()
+      fs.readFileSync(path.join(getWorkspaceRoot(cwd)!, "package.json")).toString()
     );
   } catch (e) {
     console.log("failed to read package.json");
