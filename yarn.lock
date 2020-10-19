@@ -1187,13 +1187,6 @@
   dependencies:
     execa "*"
 
-"@types/fs-extra@^9.0.1":
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-9.0.1.tgz#91c8fc4c51f6d5dbe44c2ca9ab09310bd00c7918"
-  integrity sha512-B42Sxuaz09MhC3DDeW5kubRcQ5by4iuVQ0cRRWM2lggLzAa/KVom0Aft/208NgMvNQQZ86s5rVcqDdn/SH0/mg==
-  dependencies:
-    "@types/node" "*"
-
 "@types/git-url-parse@^9.0.0":
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/@types/git-url-parse/-/git-url-parse-9.0.0.tgz#aac1315a44fa4ed5a52c3820f6c3c2fb79cbd12d"
@@ -5153,7 +5146,7 @@ fs-constants@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs-constants/-/fs-constants-1.0.0.tgz#6be0de9be998ce16af8afc24497b9ee9b7ccd9ad"
   integrity sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==
 
-fs-extra@9.0.1, fs-extra@^9.0.1:
+fs-extra@9.0.1:
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-9.0.1.tgz#910da0062437ba4c39fedd863f1675ccfefcb9fc"
   integrity sha512-h2iAoN838FqAFJY2/qVpzFXy+EBxfVE220PalAqQLDVsFOHLJrZvut5puAbCdNv6WJk+B8ihI+k0c7JK5erwqQ==
@@ -12085,10 +12078,10 @@ worker-farm@^1.7.0:
   dependencies:
     errno "~0.1.7"
 
-workspace-tools@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.10.0.tgz#82b4a0ec17350cb27df51c3f8b0c2d1e394b3d26"
-  integrity sha512-6rwbc4H6bSn74RfSwzSButqx602rzTTtxA9m+9RSzMpuXrFmNHfJGppn0Pi5J+LgP56ZA5VwfP7/nHN1fS8frg==
+workspace-tools@^0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.10.1.tgz#326e92a4247d9f909e8a4017d56dbe4bb4361497"
+  integrity sha512-4qLbcBJuULUBkRK5aS4O4q3DEMmtKMyGGVftCMGUvS0TGeb9ni1HnuxUzGGaQyhds4RFr83aX3foJA3+RB2Uag==
   dependencies:
     "@pnpm/lockfile-file" "^3.0.7"
     "@pnpm/logger" "^3.2.2"
@@ -12099,7 +12092,6 @@ workspace-tools@^0.10.0:
     git-url-parse "^11.1.2"
     globby "^11.0.0"
     jju "^1.4.0"
-    matcher "^3.0.0"
     multimatch "^4.0.0"
     read-yaml-file "^2.0.0"
 

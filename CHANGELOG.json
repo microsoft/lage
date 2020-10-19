@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 19 Oct 2020 20:42:00 GMT",
+      "tag": "lage_v0.21.1",
+      "version": "0.21.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "bumps workspace-tools and cleaned up deps a bit",
+            "author": "kchau@microsoft.com",
+            "commit": "59f651aa7f111458fdb3c9799305a909ec926def",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 19 Oct 2020 19:52:06 GMT",
       "tag": "lage_v0.21.0",
       "version": "0.21.0",
