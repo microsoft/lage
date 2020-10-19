@@ -179,25 +179,11 @@ export class NpmLogReporter implements Reporter {
 
     log.info("", chalk.cyanBright(`🏗 Summary\n`));
 
-    if (measures.failedTask) {
-      const { pkg, task } = measures.failedTask;
-      const taskId = getTaskId(pkg, task);
-      const taskLogs = tasks.get(taskId)?.logger.getLogs();
-
-      log.error("", `ERROR DETECTED IN ${pkg} ${task}`);
-
-      if (taskLogs) {
-        log.error("", taskLogs?.map((entry) => entry.msg).join("\n"));
-      }
-
-      hr();
-    }
-
     if (tasks.size > 0) {
       for (const npmScriptTask of tasks.values()) {
         const colorFn = statusColorFn[npmScriptTask.status];
 
-        log.info(
+        log.verbose(
           "",
           getTaskLogPrefix(npmScriptTask.info.name, npmScriptTask.task),
           colorFn(
@@ -220,6 +206,20 @@ export class NpmLogReporter implements Reporter {
     }
 
     hr();
+
+    if (measures.failedTask) {
+      const { pkg, task } = measures.failedTask;
+      const taskId = getTaskId(pkg, task);
+      const taskLogs = tasks.get(taskId)?.logger.getLogs();
+
+      log.error("", `ERROR DETECTED IN ${pkg} ${task}`);
+
+      if (taskLogs) {
+        log.error("", taskLogs?.map((entry) => entry.msg).join("\n"));
+      }
+
+      hr();
+    }
 
     log.info(
       "",
