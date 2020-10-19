@@ -23,6 +23,7 @@ export class NpmScriptTask {
   static npmCmd: string = "";
   static bail = false;
   static activeProcesses = new Set<ChildProcess>();
+  static gracefulKillTimeout = 2500;
 
   npmArgs: string[] = [];
   startTime: [number, number] = [0, 0];
@@ -31,9 +32,19 @@ export class NpmScriptTask {
   logger: TaskLogger;
 
   static killAllActiveProcesses() {
+    // first, send SIGTERM everywhere
     for (const cp of NpmScriptTask.activeProcesses) {
-      cp.kill("SIGKILL");
+      cp.kill("SIGTERM");
     }
+
+    // wait for "gracefulKillTimeout" to make sure everything is terminated via SIGKILL
+    setTimeout(() => {
+      for (const cp of NpmScriptTask.activeProcesses) {
+        if (!cp.killed) {
+          cp.kill("SIGKILL");
+        }
+      }
+    }, NpmScriptTask.gracefulKillTimeout);
   }
 
   constructor(
