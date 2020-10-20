@@ -59,6 +59,7 @@ export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
     "grouped",
     "reporter",
     "to",
+    "parallel",
     "_",
   ];
 

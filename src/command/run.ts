@@ -9,7 +9,7 @@ import { runTasks } from "../task/taskRunner";
 import { NpmScriptTask } from "../task/NpmScriptTask";
 import { Reporter } from "../logger/reporters/Reporter";
 
-// Create context
+// Run multiple
 export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   const context = createContext(config);
   const workspace = getWorkspace(cwd, config);

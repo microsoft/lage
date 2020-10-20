@@ -147,4 +147,9 @@ export interface CliOptions {
    * Example: `lage --grouped`
    */
   grouped: boolean;
+
+  /**
+   * Run a single command in parallel
+   */
+  parallel: boolean;
 }
