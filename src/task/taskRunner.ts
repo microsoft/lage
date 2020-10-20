@@ -84,9 +84,11 @@ export async function runTasks(options: {
   }
 
   // Collect unknown commands
-  for (const unknown of config.command.filter(
+  const unknownCommands = config.command.filter(
     (command) => !knownTasks.includes(command)
-  )) {
+  );
+
+  for (const unknown of unknownCommands) {
     unknownTasks.add(unknown);
   }
 
