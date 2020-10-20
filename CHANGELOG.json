@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 20 Oct 2020 00:08:10 GMT",
+      "tag": "lage_v0.23.0",
+      "version": "0.23.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding an ability to deal with unknown commands",
+            "author": "kchau@microsoft.com",
+            "commit": "7f039c828f3fd430c6b3fcf09ad8da9f7fd06292",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 19 Oct 2020 22:01:22 GMT",
       "tag": "lage_v0.22.1",
       "version": "0.22.1",

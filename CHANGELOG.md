@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 19 Oct 2020 22:01:22 GMT and should not be manually modified.
+This log was last generated on Tue, 20 Oct 2020 00:08:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.23.0
+
+Tue, 20 Oct 2020 00:08:10 GMT
+
+### Minor changes
+
+- adding an ability to deal with unknown commands (kchau@microsoft.com)
 
 ## 0.22.1
 
