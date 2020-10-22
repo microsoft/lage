@@ -21,7 +21,6 @@ export type NpmScriptTaskStatus =
 
 export class NpmScriptTask {
   static npmCmd: string = "";
-  static bail = false;
   static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
 
@@ -153,7 +152,6 @@ export class NpmScriptTask {
           return resolve();
         }
 
-        NpmScriptTask.bail = true;
         cp.stdout.destroy();
         cp.stdin.destroy();
         reject();
@@ -194,8 +192,13 @@ export class NpmScriptTask {
     } catch (e) {
       context.measures.failedTask = { pkg: info.name, task };
       this.onFail();
-      controller.abort();
-      return false;
+
+      if (!config.continue) {
+        controller.abort();
+        return false;
+      } else {
+        return true;
+      }
     }
 
     return true;
