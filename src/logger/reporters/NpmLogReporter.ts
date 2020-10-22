@@ -223,18 +223,25 @@ export class NpmLogReporter implements Reporter {
 
     hr();
 
-    if (measures.failedTask) {
-      const { pkg, task } = measures.failedTask;
-      const taskId = getTaskId(pkg, task);
-      const taskLogs = tasks.get(taskId)?.logger.getLogs();
+    if (measures.failedTasks && measures.failedTasks.length > 0) {
+      for (const failedTask of measures.failedTasks) {
+        const { pkg, task } = failedTask;
+        const taskId = getTaskId(pkg, task);
+        const taskLogs = tasks.get(taskId)?.logger.getLogs();
 
-      log.error("", `ERROR DETECTED IN ${pkg} ${task}`);
+        log.error(
+          "",
+          `[${chalk.magenta(pkg)} ${chalk.cyan(task)}] ${chalk.redBright(
+            "ERROR DETECTED"
+          )}`
+        );
 
-      if (taskLogs) {
-        log.error("", taskLogs?.map((entry) => entry.msg).join("\n"));
+        if (taskLogs) {
+          log.error("", taskLogs?.map((entry) => entry.msg).join("\n"));
+        }
+
+        hr();
       }
-
-      hr();
     }
 
     log.info(

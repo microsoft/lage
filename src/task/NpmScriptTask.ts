@@ -190,7 +190,8 @@ export class NpmScriptTask {
 
       this.onComplete();
     } catch (e) {
-      context.measures.failedTask = { pkg: info.name, task };
+      context.measures.failedTasks = context.measures.failedTasks || [];
+      context.measures.failedTasks.push({ pkg: info.name, task });
       this.onFail();
 
       if (!config.continue) {
