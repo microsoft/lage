@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 22 Oct 2020 22:44:30 GMT",
+      "tag": "lage_v0.24.0",
+      "version": "0.24.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding a feature to let the job to run as far as it can before failing",
+            "author": "kchau@microsoft.com",
+            "commit": "f3fe3082170ddbf563e52dcff28e5d4fcce510c1",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 20 Oct 2020 00:08:10 GMT",
       "tag": "lage_v0.23.0",
       "version": "0.23.0",

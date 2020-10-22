@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 20 Oct 2020 00:08:10 GMT and should not be manually modified.
+This log was last generated on Thu, 22 Oct 2020 22:44:30 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.24.0
+
+Thu, 22 Oct 2020 22:44:30 GMT
+
+### Minor changes
+
+- adding a feature to let the job to run as far as it can before failing (kchau@microsoft.com)
 
 ## 0.23.0
 
