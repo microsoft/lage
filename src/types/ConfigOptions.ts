@@ -35,4 +35,9 @@ export interface ConfigOptions {
 
   /** Optional priority to set on tasks in a package to make the scheduler give priority to tasks on the critical path for high priority tasks */
   priorities: Priority[];
+
+  /**
+   * Should we try to run the task graph as much as we can even though one task has failed
+   */
+  continue: boolean;
 }

@@ -11,7 +11,7 @@ export function displayReportAndExit(
     reporter.summarize(context);
   }
 
-  if (context.measures.failedTask) {
+  if (context.measures.failedTasks && context.measures.failedTasks.length > 0) {
     process.exit(1);
   }
 }

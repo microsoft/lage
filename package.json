@@ -29,7 +29,7 @@
     "watchpack": "1.6.1"
   },
   "dependencies": {
-    "@microsoft/task-scheduler": "^2.6.4",
+    "@microsoft/task-scheduler": "^2.7.0",
     "abort-controller": "^3.0.0",
     "backfill": "^6.0.1",
     "backfill-config": "^6.0.0",

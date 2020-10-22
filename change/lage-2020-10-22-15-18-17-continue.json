@@ -1,0 +1,8 @@
+{
+  "type": "minor",
+  "comment": "adding a feature to let the job to run as far as it can before failing",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2020-10-22T22:18:17.474Z"
+}

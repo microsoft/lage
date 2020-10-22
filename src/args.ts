@@ -60,6 +60,7 @@ export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
     "reporter",
     "to",
     "parallel",
+    "continue",
     "_",
   ];
 
@@ -82,7 +83,7 @@ export function parseArgs() {
     configuration: {
       "populate--": true,
       "strip-dashed": true,
-    },
+    }
   });
 }
 

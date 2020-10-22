@@ -47,6 +47,7 @@ export async function runTasks(options: {
     exit: (code) => {},
     targetsOnly: config.only,
     concurrency: config.concurrency,
+    continue: config.continue,
   });
 
   const pipelineConfig = parsePipelineConfig(config.pipeline);

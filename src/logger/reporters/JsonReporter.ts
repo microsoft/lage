@@ -28,8 +28,8 @@ export class JsonReporter implements Reporter {
       });
     }
 
-    if (measures.failedTask) {
-      summary.failedTask = measures.failedTask;
+    if (measures.failedTasks && measures.failedTasks.length > 0) {
+      summary.failedTasks = measures.failedTasks;
     }
 
     summary.duration = hrToSeconds(measures.duration);

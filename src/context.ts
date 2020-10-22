@@ -35,7 +35,7 @@ export function createContext(
     measures: {
       start: [0, 0],
       duration: [0, 0],
-      failedTask: undefined,
+      failedTasks: [],
     },
     tasks: new Map(),
     profiler,
