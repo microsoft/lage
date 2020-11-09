@@ -1,8 +1,8 @@
 import { getEnvConfig, createDefaultConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
-import { Config } from "../types/Config";
+import { CacheOptions } from "../types/CacheOptions";
 
-export function getCacheConfig(cwd: string, config: Config) {
+export function getCacheConfig(cwd: string, cacheOptions: CacheOptions) {
   const defaultCacheConfig = createDefaultConfig(cwd);
 
   // in lage, default mode is to CACHE locally
@@ -12,7 +12,7 @@ export function getCacheConfig(cwd: string, config: Config) {
   const envConfig = getEnvConfig(logger);
   return {
     ...defaultCacheConfig,
-    ...config.cacheOptions,
+    ...cacheOptions,
     ...envConfig,
   };
 }

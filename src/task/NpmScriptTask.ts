@@ -102,10 +102,16 @@ export class NpmScriptTask {
     const { task, info, root, config } = this;
 
     if (config.cache) {
-      hash = await cacheHash(task, info, root, config);
+      hash = await cacheHash(
+        task,
+        info,
+        root,
+        config.cacheOptions,
+        config.args
+      );
 
       if (hash && !config.resetCache) {
-        cacheHit = await cacheFetch(hash, info, config);
+        cacheHit = await cacheFetch(hash, info, config.cacheOptions);
       }
     }
 
@@ -115,7 +121,7 @@ export class NpmScriptTask {
   async saveCache(hash: string | null) {
     const { logger, info, config } = this;
     logger.verbose(`hash put ${hash}`);
-    await cachePut(hash, info, config);
+    await cachePut(hash, info, config.cacheOptions);
   }
 
   runScript() {
