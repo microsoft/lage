@@ -2,6 +2,8 @@ import { CacheOptions } from "./CacheOptions";
 import { Priority } from "./Priority";
 import { Pipeline } from "./Pipeline";
 
+export type NpmClient = "npm" | "yarn" | "pnpm";
+
 export interface ConfigOptions {
   /**
    * Defines the task pipeline, prefix with "^" character to denote a topological dependency
@@ -31,7 +33,7 @@ export interface ConfigOptions {
   repoWideChanges: string[];
 
   /** Which NPM Client to use when running npm lifecycle scripts */
-  npmClient: "npm" | "yarn" | "pnpm";
+  npmClient: NpmClient;
 
   /** Optional priority to set on tasks in a package to make the scheduler give priority to tasks on the critical path for high priority tasks */
   priorities: Priority[];
