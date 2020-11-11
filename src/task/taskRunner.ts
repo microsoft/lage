@@ -9,7 +9,7 @@ import {
 import { Config } from "../types/Config";
 import { Workspace } from "../types/Workspace";
 import { Priority } from "../types/Priority";
-import { NpmScriptTask } from "./NpmScriptTask";
+import { NpmScriptTask, NpmScriptTaskConfig } from "./NpmScriptTask";
 import { getPipelinePackages } from "./getPipelinePackages";
 import { parsePipelineConfig } from "./parsePipelineConfig";
 
@@ -62,7 +62,7 @@ export async function runTasks(options: {
       deps,
       topoDeps,
       priorities: priorityMap.get(taskName),
-      run: runHandler(workspace, taskName, config, context),
+      run: runHandler(workspace, taskName, generateTaskConfig(config), context),
     });
 
     // take note of any tasks deps that are not defined
@@ -103,7 +103,7 @@ export async function runTasks(options: {
       ...depConfig,
       name: taskName,
       priorities: priorityMap.get(taskName),
-      run: runHandler(workspace, taskName, config, context),
+      run: runHandler(workspace, taskName, generateTaskConfig(config), context),
     });
   }
 
@@ -116,7 +116,7 @@ export async function runTasks(options: {
 function runHandler(
   workspace: Workspace,
   taskName: string,
-  config: Config,
+  config: NpmScriptTaskConfig,
   context: RunContext
 ) {
   return async function(_location, _stdout, _stderr, pkg) {
@@ -138,3 +138,15 @@ function runHandler(
     return true;
   };
 }
+
+const generateTaskConfig = (config: Config): NpmScriptTaskConfig => ({
+  cache: config.cache,
+  continueOnError: config.continue,
+  safeExit: config.safeExit,
+  npmClient: config.npmClient,
+  cacheOptions: config.cacheOptions,
+  reporter: config.reporter,
+  resetCache: config.resetCache,
+  nodeArgs: config.node,
+  passThroughArgs: config.args,
+});

@@ -1,7 +1,6 @@
 import { TaskLogger } from "../logger/TaskLogger";
 import { ChildProcess } from "child_process";
 import { PackageInfo } from "workspace-tools";
-import { Config } from "../types/Config";
 import { findNpmClient } from "../workspace/findNpmClient";
 import { spawn } from "child_process";
 import { controller } from "./abortSignal";
@@ -11,6 +10,8 @@ import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { RunContext } from "../types/RunContext";
 import { hrToSeconds } from "../logger/reporters/formatDuration";
 import { getNpmCommand } from "./getNpmCommand";
+import { NpmClient } from "../types/ConfigOptions";
+import { CacheOptions } from "../types/CacheOptions";
 
 export type NpmScriptTaskStatus =
   | "completed"
@@ -18,6 +19,18 @@ export type NpmScriptTaskStatus =
   | "pending"
   | "started"
   | "skipped";
+
+export interface NpmScriptTaskConfig {
+  npmClient: NpmClient;
+  reporter: string;
+  cacheOptions: CacheOptions;
+  cache: boolean;
+  resetCache: boolean;
+  continueOnError: boolean;
+  safeExit: boolean;
+  nodeArgs: string[];
+  passThroughArgs: string[];
+}
 
 export class NpmScriptTask {
   static npmCmd: string = "";
@@ -50,7 +63,7 @@ export class NpmScriptTask {
     public task: string,
     private root: string,
     public info: PackageInfo,
-    private config: Config,
+    private config: NpmScriptTaskConfig,
     private context: RunContext
   ) {
     NpmScriptTask.npmCmd =
@@ -58,7 +71,7 @@ export class NpmScriptTask {
     this.status = "pending";
     this.logger = new TaskLogger(info.name, task);
 
-    this.npmArgs = getNpmCommand(config.node, config.args, task);
+    this.npmArgs = getNpmCommand(config.nodeArgs, config.passThroughArgs, task);
   }
 
   onStart() {
@@ -107,7 +120,7 @@ export class NpmScriptTask {
         info,
         root,
         config.cacheOptions,
-        config.args
+        config.passThroughArgs
       );
 
       if (hash && !config.resetCache) {
@@ -200,7 +213,7 @@ export class NpmScriptTask {
       context.measures.failedTasks.push({ pkg: info.name, task });
       this.onFail();
 
-      if (config.continue) {
+      if (config.continueOnError) {
         return true;
       }
 
