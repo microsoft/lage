@@ -1,7 +1,9 @@
-import { Config } from "../types/Config";
-
-export function getNpmCommand(config: Config, task: string) {
-  const { node, args } = config;
-  const extraArgs = args.length > 0 ? ["--", ...args] : [];
-  return [...node, "run", task, ...extraArgs];
+export function getNpmCommand(
+  nodeArgs: string[],
+  passThroughArgs: string[],
+  task: string
+) {
+  const extraArgs =
+    passThroughArgs.length > 0 ? ["--", ...passThroughArgs] : [];
+  return [...nodeArgs, "run", task, ...extraArgs];
 }

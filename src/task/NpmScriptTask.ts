@@ -58,7 +58,7 @@ export class NpmScriptTask {
     this.status = "pending";
     this.logger = new TaskLogger(info.name, task);
 
-    this.npmArgs = getNpmCommand(config, task);
+    this.npmArgs = getNpmCommand(config.node, config.args, task);
   }
 
   onStart() {
