@@ -93,7 +93,13 @@ has changed with the `--since` flag.
 #### include-dependencies
 _type: boolean_
 
-Include all transitive dependencies when running a command regardless of --scope, or --since.
+Include all transitive dependencies when running a command(s).
+This is useful for situations where you want to "set up" a package that relies on other packages being set up.
+
+```
+lage setup --scope my-package --include-dependencies
+# my-package and all of its dependencies will be setup
+```
 
 #### node
 _type: string[]_
