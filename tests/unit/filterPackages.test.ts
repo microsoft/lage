@@ -81,11 +81,37 @@ describe("filterPackages", () => {
       deps: true,
       changedPackages,
       scopedPackages,
+      includeDependencies: false,
     });
 
     expect(filtered).toContain("foo1");
     expect(filtered).not.toContain("foo2");
     expect(filtered).toContain("bar");
+  });
+
+  it("scoped will include transitive dependencies when includeDependencies is enabled", () => {
+    const allPackages: PackageInfos = {
+      foo1: stubPackage("foo1", ["bar"]),
+      foo2: stubPackage("foo2"),
+      bar: stubPackage("bar", ["baz"]),
+      baz: stubPackage("baz"),
+    };
+
+    const scopedPackages = ["foo1"];
+    const changedPackages = undefined;
+
+    const filtered = filterPackages({
+      allPackages,
+      deps: true,
+      changedPackages,
+      scopedPackages,
+      includeDependencies: true,
+    });
+
+    expect(filtered).toContain("foo1");
+    expect(filtered).not.toContain("foo2");
+    expect(filtered).toContain("bar");
+    expect(filtered).toContain("baz");
   });
 });
 
