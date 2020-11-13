@@ -16,6 +16,7 @@ describe("filterPackages", () => {
       deps: false,
       changedPackages,
       scopedPackages,
+      includeDependencies: false,
     });
 
     expect(filtered.length).toBe(0);
@@ -35,6 +36,7 @@ describe("filterPackages", () => {
       deps: false,
       changedPackages,
       scopedPackages,
+      includeDependencies: false,
     });
 
     expect(filtered).toContain("foo1");
@@ -56,6 +58,7 @@ describe("filterPackages", () => {
       deps: false,
       changedPackages,
       scopedPackages,
+      includeDependencies: false,
     });
 
     expect(filtered).not.toContain("foo1");
