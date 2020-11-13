@@ -90,7 +90,11 @@ Certain files might need to be changed during the preparation of a build
 job. In that situation, `lage` can ignore those files when calculating what
 has changed with the `--since` flag.
 
-  
+#### include-dependencies
+_type: boolean_
+
+Include all transitive dependencies when running a command regardless of --scope, or --since.
+
 #### node
 _type: string[]_
 
