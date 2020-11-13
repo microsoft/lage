@@ -6,7 +6,7 @@ import { getChanges } from "../git";
 import * as fg from "fast-glob";
 
 export function getPipelinePackages(workspace: Workspace, config: Config) {
-  const { scope, since, repoWideChanges } = config;
+  const { scope, since, repoWideChanges, includeDependencies } = config;
 
   // If scoped is defined, get scoped packages
   const hasScopes = Array.isArray(scope) && scope.length > 0;
@@ -28,6 +28,7 @@ export function getPipelinePackages(workspace: Workspace, config: Config) {
     deps: config.deps,
     scopedPackages,
     changedPackages,
+    includeDependencies,
   });
 }
 

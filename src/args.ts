@@ -62,6 +62,7 @@ export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
     "parallel",
     "continue",
     "safeExit",
+    "includeDependencies",
     "_",
   ];
 

@@ -1,4 +1,8 @@
-import { getTransitiveConsumers, PackageInfos } from "workspace-tools";
+import {
+  getTransitiveConsumers,
+  getTransitiveDependencies,
+  PackageInfos,
+} from "workspace-tools";
 import { logger } from "../logger";
 
 /**
@@ -8,10 +12,17 @@ import { logger } from "../logger";
 export function filterPackages(options: {
   allPackages: PackageInfos;
   deps: boolean;
+  includeDependencies: boolean;
   scopedPackages: string[] | undefined;
   changedPackages: string[] | undefined;
 }) {
-  const { scopedPackages, changedPackages, allPackages, deps } = options;
+  const {
+    scopedPackages,
+    changedPackages,
+    allPackages,
+    deps,
+    includeDependencies,
+  } = options;
 
   let filtered: string[] = [];
 
@@ -46,6 +57,13 @@ export function filterPackages(options: {
   if (deps) {
     logger.verbose(`filterPackages running with dependents`);
     filtered = filtered.concat(getTransitiveConsumers(filtered, allPackages));
+  }
+
+  // adds dependencies of all filtered package thus far
+  if (includeDependencies) {
+    filtered = filtered.concat(
+      getTransitiveDependencies(filtered, allPackages)
+    );
   }
 
   const unique = new Set(filtered);
