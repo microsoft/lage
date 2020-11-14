@@ -80,6 +80,7 @@ export function getConfig(cwd: string): Config {
       "rush.json",
     ],
     to: parsedArgs.to || [],
-    continue: parsedArgs.continue || configResults?.config.continue
+    continue: parsedArgs.continue || configResults?.config.continue,
+    safeExit: parsedArgs.safeExit,
   };
 }

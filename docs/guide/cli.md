@@ -189,8 +189,14 @@ Verbose mode, turns on all logging
 `lage` by default will hide the output from successful tasks. If you want to see the
 output as they are being generated, call `lage` with the `verbose` argument.
 
- ```
- $ lage build --verbose
- ```
+```
+$ lage build --verbose
+```
 
-  
+#### safe-exit
+
+_type: boolean_
+
+Runs currently executing tasks to completion before exiting.
+This prevents the risk of having orphaned child processes running after
+`lage` has exited.

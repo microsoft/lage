@@ -61,6 +61,7 @@ export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
     "to",
     "parallel",
     "continue",
+    "safeExit",
     "_",
   ];
 
@@ -83,7 +84,7 @@ export function parseArgs() {
     configuration: {
       "populate--": true,
       "strip-dashed": true,
-    }
+    },
   });
 }
 

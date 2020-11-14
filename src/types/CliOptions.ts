@@ -157,4 +157,9 @@ export interface CliOptions {
    * Should we try to run the task graph as much as we can even though one task has failed
    */
   continue: boolean;
+
+  /**
+   * Runs currently executing tasks to completion before exiting
+   */
+  safeExit: boolean;
 }
