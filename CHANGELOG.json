@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 16 Nov 2020 12:28:34 GMT",
+      "tag": "lage_v0.25.0",
+      "version": "0.25.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "feat: Add --safe-exit option",
+            "author": "oliver.kuruma@gmail.com",
+            "commit": "b339e368313b7aabff62b6b03cdc6616eb9a72de",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 22 Oct 2020 22:44:30 GMT",
       "tag": "lage_v0.24.0",
       "version": "0.24.0",

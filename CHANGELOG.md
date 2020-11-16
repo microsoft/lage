@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 22 Oct 2020 22:44:30 GMT and should not be manually modified.
+This log was last generated on Mon, 16 Nov 2020 12:28:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.25.0
+
+Mon, 16 Nov 2020 12:28:34 GMT
+
+### Minor changes
+
+- feat: Add --safe-exit option (oliver.kuruma@gmail.com)
 
 ## 0.24.0
 
