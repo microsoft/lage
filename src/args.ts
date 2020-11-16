@@ -84,7 +84,7 @@ export function parseArgs() {
     configuration: {
       "populate--": true,
       "strip-dashed": true,
-    },
+    }
   });
 }
 
