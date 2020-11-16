@@ -1,19 +1,20 @@
-import { Config } from "../types/Config";
 import { getCacheConfig } from "./cacheConfig";
 import { logger } from "../logger";
 import { PackageInfo } from "workspace-tools";
 import { salt } from "./salt";
 import * as backfill from "backfill/lib/api";
 import path from "path";
+import { CacheOptions } from "../types/CacheOptions";
 
 export async function cacheHash(
   task: string,
   info: PackageInfo,
   root: string,
-  config: Config
+  cacheOptions: CacheOptions,
+  args: any
 ) {
   const packagePath = path.dirname(info.packageJsonPath);
-  const cacheConfig = getCacheConfig(packagePath, config);
+  const cacheConfig = getCacheConfig(packagePath, cacheOptions);
   const backfillLogger = backfill.makeLogger(
     "error",
     process.stdout,
@@ -21,8 +22,8 @@ export async function cacheHash(
   );
   const name = info.name;
   const hashKey = salt(
-    config.cacheOptions.environmentGlob || ["lage.config.js"],
-    `${info.name}|${task}|${JSON.stringify(config.args)}`,
+    cacheOptions.environmentGlob || ["lage.config.js"],
+    `${info.name}|${task}|${JSON.stringify(args)}`,
     root
   );
 
@@ -45,14 +46,14 @@ export async function cacheHash(
 export async function cacheFetch(
   hash: string | null,
   info: PackageInfo,
-  config: Config
+  cacheOptions: CacheOptions
 ) {
   if (!hash) {
     return false;
   }
 
   const packagePath = path.dirname(info.packageJsonPath);
-  const cacheConfig = getCacheConfig(packagePath, config);
+  const cacheConfig = getCacheConfig(packagePath, cacheOptions);
   const backfillLogger = backfill.makeLogger(
     "error",
     process.stdout,
@@ -71,14 +72,14 @@ export async function cacheFetch(
 export async function cachePut(
   hash: string | null,
   info: PackageInfo,
-  config: Config
+  cacheOptions: CacheOptions
 ) {
   if (!hash) {
     return;
   }
 
   const packagePath = path.dirname(info.packageJsonPath);
-  const cacheConfig = getCacheConfig(packagePath, config);
+  const cacheConfig = getCacheConfig(packagePath, cacheOptions);
   const backfillLogger = backfill.makeLogger(
     "warn",
     process.stdout,
