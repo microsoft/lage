@@ -82,5 +82,6 @@ export function getConfig(cwd: string): Config {
     to: parsedArgs.to || [],
     continue: parsedArgs.continue || configResults?.config.continue,
     safeExit: parsedArgs.safeExit,
+    includeDependencies: parsedArgs.includeDependencies,
   };
 }

@@ -40,4 +40,9 @@ export interface ConfigOptions {
    * Should we try to run the task graph as much as we can even though one task has failed
    */
   continue: boolean;
+
+  /**
+   * Run the tasks for the dependencies of scoped tasks
+   */
+  includeDependencies: boolean;
 }

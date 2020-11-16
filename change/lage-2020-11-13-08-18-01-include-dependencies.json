@@ -1,0 +1,8 @@
+{
+  "type": "minor",
+  "comment": "feat: Add --include-dependencies option",
+  "packageName": "lage",
+  "email": "oliver.kuruma@gmail.com",
+  "dependentChangeType": "patch",
+  "date": "2020-11-13T07:18:01.581Z"
+}
