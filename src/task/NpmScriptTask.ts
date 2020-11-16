@@ -194,12 +194,14 @@ export class NpmScriptTask {
       context.measures.failedTasks.push({ pkg: info.name, task });
       this.onFail();
 
-      if (!config.continue) {
-        controller.abort();
-        return false;
-      } else {
+      if (config.continue) {
         return true;
       }
+
+      if (!config.safeExit) {
+        controller.abort();
+      }
+      return false;
     }
 
     return true;

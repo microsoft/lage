@@ -61,6 +61,7 @@ export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
     "to",
     "parallel",
     "continue",
+    "safeExit",
     "_",
   ];
 

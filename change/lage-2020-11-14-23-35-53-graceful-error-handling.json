@@ -1,0 +1,8 @@
+{
+  "type": "minor",
+  "comment": "feat: Add --safe-exit option",
+  "packageName": "lage",
+  "email": "oliver.kuruma@gmail.com",
+  "dependentChangeType": "patch",
+  "date": "2020-11-14T22:35:53.433Z"
+}
