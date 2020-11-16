@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 16 Nov 2020 23:03:30 GMT and should not be manually modified.
+This log was last generated on Mon, 16 Nov 2020 23:08:23 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.26.1
+
+Mon, 16 Nov 2020 23:08:23 GMT
+
+### Patches
+
+- refactor: Create npm script task config (oliver.kuruma@gmail.com)
 
 ## 0.26.0
 

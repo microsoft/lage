@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "refactor: Create npm script task config",
-  "packageName": "lage",
-  "email": "oliver.kuruma@gmail.com",
-  "dependentChangeType": "patch",
-  "date": "2020-11-11T17:51:42.175Z"
-}

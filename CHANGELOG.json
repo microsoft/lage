@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 16 Nov 2020 23:08:23 GMT",
+      "tag": "lage_v0.26.1",
+      "version": "0.26.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "refactor: Create npm script task config",
+            "author": "oliver.kuruma@gmail.com",
+            "commit": "304e12233efc79e149836cb9b95dad01243accb3",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 16 Nov 2020 23:03:30 GMT",
       "tag": "lage_v0.26.0",
       "version": "0.26.0",
