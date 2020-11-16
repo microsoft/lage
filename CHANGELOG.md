@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 16 Nov 2020 12:28:34 GMT and should not be manually modified.
+This log was last generated on Mon, 16 Nov 2020 23:03:30 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.26.0
+
+Mon, 16 Nov 2020 23:03:30 GMT
+
+### Minor changes
+
+- feat: Add --include-dependencies option (oliver.kuruma@gmail.com)
 
 ## 0.25.0
 

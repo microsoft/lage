@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 16 Nov 2020 23:03:30 GMT",
+      "tag": "lage_v0.26.0",
+      "version": "0.26.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "feat: Add --include-dependencies option",
+            "author": "oliver.kuruma@gmail.com",
+            "commit": "6e97202a5323c5b473a2ccd07b089826e3141380",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 16 Nov 2020 12:28:34 GMT",
       "tag": "lage_v0.25.0",
       "version": "0.25.0",
