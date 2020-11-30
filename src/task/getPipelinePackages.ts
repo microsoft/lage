@@ -1,9 +1,9 @@
 import { Config } from "../types/Config";
 import { filterPackages } from "./filterPackages";
 import { Workspace } from "../types/Workspace";
-import { getScopedPackages, getChangedPackages } from "workspace-tools";
-import { getChanges } from "../git";
+import { getScopedPackages, getChangedPackages, getBranchChanges } from "workspace-tools";
 import * as fg from "fast-glob";
+import { logger } from "../logger";
 
 export function getPipelinePackages(workspace: Workspace, config: Config) {
   const { scope, since, repoWideChanges, includeDependencies } = config;
@@ -20,7 +20,12 @@ export function getPipelinePackages(workspace: Workspace, config: Config) {
 
   // Be specific with the changed packages only if no repo-wide changes occurred
   if (hasSince && !hasRepoChanged(since, workspace.root, repoWideChanges)) {
-    changedPackages = getChangedPackages(workspace.root, since, config.ignore);
+    try {
+      changedPackages = getChangedPackages(workspace.root, since, config.ignore);
+    } catch(e) {
+      logger.warn(`An error in the git command has caused this scope run to include every package\n${e}`);
+      // if getChangedPackages throws, we will assume all have changed (using changedPackage = undefined)
+    }
   }
 
   return filterPackages({
@@ -37,18 +42,24 @@ function hasRepoChanged(
   root: string,
   environmentGlob: string[]
 ) {
-  const changedFiles = getChanges(since, root);
-  const envFiles = fg.sync(environmentGlob, { cwd: root });
-  let repoWideChanged = false;
+  try {
+    const changedFiles = getBranchChanges(since, root);
+    const envFiles = fg.sync(environmentGlob, { cwd: root });
+    let repoWideChanged = false;
 
-  if (changedFiles) {
-    for (const change of changedFiles) {
-      if (envFiles.includes(change)) {
-        repoWideChanged = true;
-        break;
+    if (changedFiles) {
+      for (const change of changedFiles) {
+        if (envFiles.includes(change)) {
+          repoWideChanged = true;
+          break;
+        }
       }
     }
-  }
 
-  return repoWideChanged;
+    return repoWideChanged;
+  } catch(e) {
+    // if this fails, let's assume repo has changed
+    logger.warn(`An error in the git command has caused this to consider the repo has changed\n${e}`);
+    return true;
+  }
 }

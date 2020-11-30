@@ -1,6 +1,5 @@
 import { Workspace } from "../types/Workspace";
 import {
-  getChangedPackages,
   getWorkspaceRoot,
   getPackageInfos,
 } from "workspace-tools";
@@ -16,14 +15,13 @@ export function getWorkspace(
     throw new Error("This must be called inside a codebase that is part of a JavaScript workspace.");
   }
 
-  const { since, ignore, npmClient } = config;
+  const { npmClient } = config;
   const allPackages = getPackageInfos(root);
   const npmCmd = findNpmClient(npmClient);
 
   return {
     root,
     allPackages,
-    changedPackages: getChangedPackages(root, since, ignore),
     npmClient,
     npmCmd,
   };
