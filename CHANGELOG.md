@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 16 Nov 2020 23:08:23 GMT and should not be manually modified.
+This log was last generated on Mon, 30 Nov 2020 19:57:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.26.2
+
+Mon, 30 Nov 2020 19:57:05 GMT
+
+### Patches
+
+- increase max buffer to 500MB and fail-fast on other git issues in workspace-tools (kchau@microsoft.com)
 
 ## 0.26.1
 
