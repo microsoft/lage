@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "fix: Use Node version for the hash salt",
+  "packageName": "lage",
+  "email": "oliver.kuruma@gmail.com",
+  "dependentChangeType": "patch",
+  "date": "2021-01-05T10:35:41.447Z"
+}
