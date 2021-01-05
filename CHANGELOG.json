@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 05 Jan 2021 10:41:22 GMT",
+      "tag": "lage_v0.26.3",
+      "version": "0.26.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: Use Node version for the hash salt",
+            "author": "oliver.kuruma@gmail.com",
+            "commit": "78a2ea2bff1e8e7e136705c094233711fc493128",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 30 Nov 2020 19:57:05 GMT",
       "tag": "lage_v0.26.2",
       "version": "0.26.2",

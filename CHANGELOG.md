@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 30 Nov 2020 19:57:05 GMT and should not be manually modified.
+This log was last generated on Tue, 05 Jan 2021 10:41:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.26.3
+
+Tue, 05 Jan 2021 10:41:22 GMT
+
+### Patches
+
+- fix: Use Node version for the hash salt (oliver.kuruma@gmail.com)
 
 ## 0.26.2
 
