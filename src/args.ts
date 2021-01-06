@@ -41,10 +41,13 @@ export function arrifyArgs(args: { [key: string]: string | string[] }) {
   }
 }
 
-export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
+export function getPassThroughArgs(
+  command: string[],
+  args: { [key: string]: string | string[] }
+) {
   let result: string[] = [];
 
-  const lageArgs = [
+  let lageArgs = [
     "node",
     "scope",
     "since",
@@ -66,6 +69,10 @@ export function getPassThroughArgs(args: { [key: string]: string | string[] }) {
     "_",
   ];
 
+  if (command[0] === "cache") {
+    lageArgs = [...lageArgs, "clear", "prune"];
+  }
+
   const filtered: { [key: string]: string | string[] } = {};
 
   for (let [key, value] of Object.entries(args)) {
@@ -85,7 +92,7 @@ export function parseArgs() {
     configuration: {
       "populate--": true,
       "strip-dashed": true,
-    }
+    },
   });
 }
 
