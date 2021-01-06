@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 05 Jan 2021 10:41:22 GMT and should not be manually modified.
+This log was last generated on Wed, 06 Jan 2021 19:15:51 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.27.0
+
+Wed, 06 Jan 2021 19:15:51 GMT
+
+### Minor changes
+
+- adding a cache clear and prune feature (kchau@microsoft.com)
 
 ## 0.26.3
 

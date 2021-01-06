@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 06 Jan 2021 19:15:51 GMT",
+      "tag": "lage_v0.27.0",
+      "version": "0.27.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding a cache clear and prune feature",
+            "author": "kchau@microsoft.com",
+            "commit": "d5ddcd16917bb08775641bfd895935027ee80252",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 05 Jan 2021 10:41:22 GMT",
       "tag": "lage_v0.26.3",
       "version": "0.26.3",
