@@ -1,0 +1,8 @@
+{
+  "type": "minor",
+  "comment": "adding a cache clear and prune feature",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2021-01-06T19:04:46.073Z"
+}

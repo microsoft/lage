@@ -50,7 +50,7 @@ export function getConfig(cwd: string): Config {
   return {
     reporter: parsedArgs.reporter || "npmLog",
     grouped: parsedArgs.grouped || false,
-    args: getPassThroughArgs(parsedArgs),
+    args: getPassThroughArgs(command, parsedArgs),
     cache: parsedArgs.cache === false ? false : true,
     resetCache: parsedArgs.resetCache || false,
     cacheOptions: configResults?.config.cacheOptions || {},
@@ -83,5 +83,7 @@ export function getConfig(cwd: string): Config {
     continue: parsedArgs.continue || configResults?.config.continue,
     safeExit: parsedArgs.safeExit,
     includeDependencies: parsedArgs.includeDependencies,
+    clear: parsedArgs.clear || false,
+    prune: parsedArgs.prune,
   };
 }

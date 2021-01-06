@@ -6,6 +6,7 @@ import { logger } from "./logger";
 import { info } from "./command/info";
 import { initReporters } from "./logger/initReporters";
 import { version } from "./command/version";
+import { cache } from "./command/cache";
 
 // Parse CLI args
 const cwd = process.cwd();
@@ -14,6 +15,10 @@ try {
   const reporters = initReporters(config);
 
   switch (config.command[0]) {
+    case "cache":
+      cache(cwd, config);
+      break;
+
     case "init":
       init(cwd);
       break;

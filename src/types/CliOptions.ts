@@ -162,4 +162,14 @@ export interface CliOptions {
    * Runs currently executing tasks to completion before exiting
    */
   safeExit: boolean;
+
+  /**
+   * A flag for the cache command only: clears all the cache in all the package folders
+   */
+  clear: boolean;
+
+  /**
+   * A flag for the cache command only: prunes the cache older than 30 days by default, or specify a number of days
+   */
+  prune: string;
 }
