@@ -85,5 +85,7 @@ export function getConfig(cwd: string): Config {
     includeDependencies: parsedArgs.includeDependencies,
     clear: parsedArgs.clear || false,
     prune: parsedArgs.prune,
+    logLevel: parsedArgs.logLevel,
+    loggerOptions: configResults?.config.loggerOptions || {}
   };
 }

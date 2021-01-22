@@ -7,6 +7,7 @@ import { formatDuration, hrToSeconds } from "./formatDuration";
 import { RunContext } from "../../types/RunContext";
 import { getTaskId } from "@microsoft/task-scheduler";
 import { NpmScriptTaskStatus } from "../../task/NpmScriptTask";
+import { LoggerOptions } from "../../types/LoggerOptions";
 
 const maxLengths = {
   pkg: 0,
@@ -49,9 +50,12 @@ function isInfoData(data?: LogStructuredData): data is InfoData {
 export class NpmLogReporter implements Reporter {
   readonly groupedEntries = new Map<string, LogEntry[]>();
 
-  constructor(private options: { logLevel?: LogLevel; grouped?: boolean }) {
+  constructor(private options: { logLevel?: LogLevel; grouped?: boolean, npmLoggerOptions?: LoggerOptions }) {
     options.logLevel = options.logLevel || LogLevel.info;
     log.level = LogLevel[options.logLevel];
+    log.disp = { ...log.disp, ...options.npmLoggerOptions?.disp };
+    log.style = { ...log.style, ...options.npmLoggerOptions?.style };
+    log.levels = { ...log.levels, ...options.npmLoggerOptions?.levels };
   }
 
   log(entry: LogEntry) {
