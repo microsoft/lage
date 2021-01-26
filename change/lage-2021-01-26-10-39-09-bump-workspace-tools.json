@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "chore: Bump workspace-tools to ^0.10.3",
+  "packageName": "lage",
+  "email": "oliver.kuruma@gmail.com",
+  "dependentChangeType": "patch",
+  "date": "2021-01-26T09:39:09.944Z"
+}
