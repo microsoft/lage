@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 06 Jan 2021 19:15:51 GMT and should not be manually modified.
+This log was last generated on Tue, 26 Jan 2021 09:52:23 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.27.1
+
+Tue, 26 Jan 2021 09:52:23 GMT
+
+### Patches
+
+- chore: Bump workspace-tools to ^0.10.3 (oliver.kuruma@gmail.com)
 
 ## 0.27.0
 

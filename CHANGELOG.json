@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 26 Jan 2021 09:52:23 GMT",
+      "tag": "lage_v0.27.1",
+      "version": "0.27.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore: Bump workspace-tools to ^0.10.3",
+            "author": "oliver.kuruma@gmail.com",
+            "commit": "b72cefc1d0b793c0095509004643c28280d86b28",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 06 Jan 2021 19:15:51 GMT",
       "tag": "lage_v0.27.0",
       "version": "0.27.0",
