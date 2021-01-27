@@ -172,4 +172,11 @@ export interface CliOptions {
    * A flag for the cache command only: prunes the cache older than 30 days by default, or specify a number of days
    */
   prune: string;
+
+  /**
+   * The highest log level to report. All logs up to "info" are reported by default.
+   *
+   * Specifying "verbose" is equivalent to running with the `--verbose` argument.
+   */
+  logLevel: string;
 }

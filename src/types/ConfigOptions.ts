@@ -1,6 +1,7 @@
 import { CacheOptions } from "./CacheOptions";
 import { Priority } from "./Priority";
 import { Pipeline } from "./Pipeline";
+import { LoggerOptions } from "./LoggerOptions";
 
 export type NpmClient = "npm" | "yarn" | "pnpm";
 
@@ -47,4 +48,9 @@ export interface ConfigOptions {
    * Run the tasks for the dependencies of scoped tasks
    */
   includeDependencies: boolean;
+
+  /**
+   * Options that will be sent to all log reporters.
+   */
+  loggerOptions: LoggerOptions;
 }

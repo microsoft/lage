@@ -1,0 +1,8 @@
+{
+  "type": "minor",
+  "comment": "Adding new logger options",
+  "packageName": "lage",
+  "email": "fecamina@microsoft.com",
+  "dependentChangeType": "patch",
+  "date": "2021-01-22T21:51:38.014Z"
+}
