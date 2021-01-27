@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 26 Jan 2021 09:52:23 GMT and should not be manually modified.
+This log was last generated on Wed, 27 Jan 2021 21:02:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.28.0
+
+Wed, 27 Jan 2021 21:02:32 GMT
+
+### Minor changes
+
+- Adding new logger options (fecamina@microsoft.com)
 
 ## 0.27.1
 

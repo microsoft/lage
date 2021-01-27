@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 27 Jan 2021 21:02:32 GMT",
+      "tag": "lage_v0.28.0",
+      "version": "0.28.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Adding new logger options",
+            "author": "fecamina@microsoft.com",
+            "commit": "8cce330353e850b70979cc76d9b61a02fba5390d",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 26 Jan 2021 09:52:23 GMT",
       "tag": "lage_v0.27.1",
       "version": "0.27.1",
