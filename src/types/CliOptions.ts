@@ -179,4 +179,11 @@ export interface CliOptions {
    * Specifying "verbose" is equivalent to running with the `--verbose` argument.
    */
   logLevel: string;
+
+  /**
+   * Specify a custom cache key salt with this option: --cache-key xyz_build_environemnt
+   */
+  cacheOptions: {
+    cacheKey: string;
+  };
 }
