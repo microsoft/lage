@@ -24,7 +24,8 @@ export async function cacheHash(
   const hashKey = salt(
     cacheOptions.environmentGlob || ["lage.config.js"],
     `${info.name}|${task}|${JSON.stringify(args)}`,
-    root
+    root,
+    cacheOptions.cacheKey
   );
 
   backfillLogger.setName(name);

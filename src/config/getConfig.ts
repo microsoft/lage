@@ -53,7 +53,11 @@ export function getConfig(cwd: string): Config {
     args: getPassThroughArgs(command, parsedArgs),
     cache: parsedArgs.cache === false ? false : true,
     resetCache: parsedArgs.resetCache || false,
-    cacheOptions: configResults?.config.cacheOptions || {},
+    cacheOptions:
+      {
+        ...configResults?.config.cacheOptions,
+        ...(parsedArgs.cacheKey && { cacheKey: parsedArgs.cacheKey }),
+      } || {},
     command,
     concurrency:
       parsedArgs.concurrency ||
@@ -86,6 +90,6 @@ export function getConfig(cwd: string): Config {
     clear: parsedArgs.clear || false,
     prune: parsedArgs.prune,
     logLevel: parsedArgs.logLevel,
-    loggerOptions: configResults?.config.loggerOptions || {}
+    loggerOptions: configResults?.config.loggerOptions || {},
   };
 }

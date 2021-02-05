@@ -10,13 +10,15 @@ let envHash: string[];
 export function salt(
   environmentGlobFiles: string[],
   command: string,
-  repoRoot: string
+  repoRoot: string,
+  customKey: string = ""
 ): string {
   return hashStrings([
     ...getEnvHash(environmentGlobFiles, repoRoot),
     os.platform(),
     process.version,
     command,
+    customKey,
   ]);
 }
 

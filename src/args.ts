@@ -67,6 +67,7 @@ export function getPassThroughArgs(
     "safeExit",
     "includeDependencies",
     "logLevel",
+    "cacheKey",
     "_",
   ];
 
@@ -94,6 +95,7 @@ export function parseArgs() {
       "populate--": true,
       "strip-dashed": true,
     },
+    string: ["cacheKey"],
   });
 }
 
