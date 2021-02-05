@@ -1,8 +1,0 @@
-{
-  "type": "minor",
-  "comment": "adding a cache-key option to allow different custom build env affect cache hash manually",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch",
-  "date": "2021-02-05T20:08:45.016Z"
-}

@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 05 Feb 2021 20:20:01 GMT",
+      "tag": "lage_v0.29.0",
+      "version": "0.29.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding a cache-key option to allow different custom build env affect cache hash manually",
+            "author": "kchau@microsoft.com",
+            "commit": "9026374f4960b1c3837e125c75c1874840f61ea6",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 27 Jan 2021 21:02:32 GMT",
       "tag": "lage_v0.28.0",
       "version": "0.28.0",

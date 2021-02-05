@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 27 Jan 2021 21:02:32 GMT and should not be manually modified.
+This log was last generated on Fri, 05 Feb 2021 20:20:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.29.0
+
+Fri, 05 Feb 2021 20:20:01 GMT
+
+### Minor changes
+
+- adding a cache-key option to allow different custom build env affect cache hash manually (kchau@microsoft.com)
 
 ## 0.28.0
 
