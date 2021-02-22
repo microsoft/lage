@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "Update GitHub to proper casing",
+  "packageName": "lage",
+  "email": "samrose3@gmail.com",
+  "dependentChangeType": "patch",
+  "date": "2021-02-22T04:21:18.503Z"
+}
