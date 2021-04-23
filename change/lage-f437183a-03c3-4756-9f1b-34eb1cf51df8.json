@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "bumps a bunch of deps",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

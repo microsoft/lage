@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 05 Feb 2021 20:20:01 GMT and should not be manually modified.
+This log was last generated on Fri, 23 Apr 2021 23:56:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.29.1
+
+Fri, 23 Apr 2021 23:56:05 GMT
+
+### Patches
+
+- bumps a bunch of deps (kchau@microsoft.com)
 
 ## 0.29.0
 
