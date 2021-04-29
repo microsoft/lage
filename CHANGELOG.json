@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 29 Apr 2021 05:28:49 GMT",
+      "tag": "lage_v0.29.2",
+      "version": "0.29.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump backfill to ^6.1.5",
+            "author": "ronald.ndirangu@gmail.com",
+            "commit": "349ca5f39c016b69b26c4930a8330958b35e7179",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 23 Apr 2021 23:56:05 GMT",
       "tag": "lage_v0.29.1",
       "version": "0.29.1",

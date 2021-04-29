@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 23 Apr 2021 23:56:05 GMT and should not be manually modified.
+This log was last generated on Thu, 29 Apr 2021 05:28:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.29.2
+
+Thu, 29 Apr 2021 05:28:49 GMT
+
+### Patches
+
+- Bump backfill to ^6.1.5 (ronald.ndirangu@gmail.com)
 
 ## 0.29.1
 
