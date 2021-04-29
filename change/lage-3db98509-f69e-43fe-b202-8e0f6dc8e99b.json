@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Bump backfill to ^6.1.5",
+  "packageName": "lage",
+  "email": "ronald.ndirangu@gmail.com",
+  "dependentChangeType": "patch"
+}
