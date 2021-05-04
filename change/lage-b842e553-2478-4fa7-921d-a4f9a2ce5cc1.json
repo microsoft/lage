@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "chore(upgrade): update task-scheduler package",
-  "packageName": "lage",
-  "email": "cheruiyotbryan@gmail.com",
-  "dependentChangeType": "patch"
-}

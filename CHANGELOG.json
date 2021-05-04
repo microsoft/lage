@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 04 May 2021 07:38:15 GMT",
+      "tag": "lage_v0.29.3",
+      "version": "0.29.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "chore(upgrade): update task-scheduler package",
+            "author": "cheruiyotbryan@gmail.com",
+            "commit": "f6822a9ec7dc779a423271d43c07001554c9fe1c",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 29 Apr 2021 05:28:49 GMT",
       "tag": "lage_v0.29.2",
       "version": "0.29.2",
