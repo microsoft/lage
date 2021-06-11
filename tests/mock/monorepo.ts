@@ -78,6 +78,8 @@ export class Monorepo {
   }
 
   generateRepoFiles() {
+    const lagePath = path.join(this.nodeModulesPath, "lage/lib/cli");
+
     this.commitFiles({
       "package.json": {
         name: this.name,
@@ -85,9 +87,9 @@ export class Monorepo {
         private: true,
         workspaces: ["packages/*"],
         scripts: {
-          build: `lage build --reporter json`,
-          test: `lage test --reporter json`,
-          lint: `lage lint --reporter json`,
+          build: `node "${lagePath}" build --reporter json`,
+          test: `node "${lagePath}" test --reporter json`,
+          lint: `node "${lagePath}" lint --reporter json`,
         },
         devDependencies: {
           lage: path.resolve(__dirname, "..", ".."),
