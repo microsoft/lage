@@ -78,7 +78,7 @@ export class Monorepo {
   }
 
   generateRepoFiles() {
-    const lagePath = path.join(this.nodeModulesPath, "lage/lib/index");
+    const lagePath = path.join(this.nodeModulesPath, "lage/lib/cli");
 
     this.commitFiles({
       "package.json": {

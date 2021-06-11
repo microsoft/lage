@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "bump deps and add types as output",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
