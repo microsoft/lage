@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 04 May 2021 07:38:15 GMT and should not be manually modified.
+This log was last generated on Fri, 11 Jun 2021 22:59:59 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.30.0
+
+Fri, 11 Jun 2021 22:59:59 GMT
+
+### Minor changes
+
+- bump deps and add types as output (kchau@microsoft.com)
 
 ## 0.29.3
 

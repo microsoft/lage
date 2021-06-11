@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 11 Jun 2021 22:59:59 GMT",
+      "tag": "lage_v0.30.0",
+      "version": "0.30.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "bump deps and add types as output",
+            "author": "kchau@microsoft.com",
+            "commit": "c8eded225575178bc66914cd12b764f42efe03ef",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 04 May 2021 07:38:15 GMT",
       "tag": "lage_v0.29.3",
       "version": "0.29.3",
