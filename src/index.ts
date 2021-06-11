@@ -8,6 +8,8 @@ import { initReporters } from "./logger/initReporters";
 import { version } from "./command/version";
 import { cache } from "./command/cache";
 
+export type { ConfigOptions } from "./types/ConfigOptions";
+
 // Parse CLI args
 const cwd = process.cwd();
 try {
