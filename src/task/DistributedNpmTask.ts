@@ -32,7 +32,7 @@ export interface NpmScriptTaskConfig {
   passThroughArgs: string[];
 }
 
-export class NpmScriptTask {
+export class DistributedNpmScriptTask {
   static npmCmd: string = "";
   static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
@@ -45,18 +45,18 @@ export class NpmScriptTask {
 
   static killAllActiveProcesses() {
     // first, send SIGTERM everywhere
-    for (const cp of NpmScriptTask.activeProcesses) {
+    for (const cp of DistributedNpmScriptTask.activeProcesses) {
       cp.kill("SIGTERM");
     }
 
     // wait for "gracefulKillTimeout" to make sure everything is terminated via SIGKILL
     setTimeout(() => {
-      for (const cp of NpmScriptTask.activeProcesses) {
+      for (const cp of DistributedNpmScriptTask.activeProcesses) {
         if (!cp.killed) {
           cp.kill("SIGKILL");
         }
       }
-    }, NpmScriptTask.gracefulKillTimeout);
+    }, DistributedNpmScriptTask.gracefulKillTimeout);
   }
 
   constructor(
@@ -66,8 +66,8 @@ export class NpmScriptTask {
     private config: NpmScriptTaskConfig,
     private context: RunContext
   ) {
-    NpmScriptTask.npmCmd =
-      NpmScriptTask.npmCmd || findNpmClient(config.npmClient);
+    DistributedNpmScriptTask.npmCmd =
+    DistributedNpmScriptTask.npmCmd || findNpmClient(config.npmClient);
     this.status = "pending";
     this.logger = new TaskLogger(info.name, task);
 
@@ -139,7 +139,7 @@ export class NpmScriptTask {
 
   runScript() {
     const { info, logger, npmArgs } = this;
-    const { npmCmd } = NpmScriptTask;
+    const { npmCmd } = DistributedNpmScriptTask;
 
     return new Promise<void>((resolve, reject) => {
       logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}`);
@@ -155,7 +155,7 @@ export class NpmScriptTask {
         },
       });
 
-      NpmScriptTask.activeProcesses.add(cp);
+      DistributedNpmScriptTask.activeProcesses.add(cp);
 
       const stdoutLogger = new TaskLogWritable(this.logger);
       cp.stdout.pipe(stdoutLogger);
@@ -167,7 +167,7 @@ export class NpmScriptTask {
 
       function handleChildProcessExit(code: number) {
         if (code === 0) {
-          NpmScriptTask.activeProcesses.delete(cp);
+          DistributedNpmScriptTask.activeProcesses.delete(cp);
           return resolve();
         }
 

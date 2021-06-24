@@ -1,17 +1,12 @@
 import { RunContext } from "../types/RunContext";
-import {
-  createPipeline,
-  TopologicalGraph,
-  Task,
-  getPackageTaskFromId,
-  getTaskId,
-} from "@microsoft/task-scheduler";
+import { createPipeline, TopologicalGraph, Task, getPackageTaskFromId, getTaskId } from "@microsoft/task-scheduler";
 import { Config } from "../types/Config";
 import { Workspace } from "../types/Workspace";
 import { Priority } from "../types/Priority";
 import { NpmScriptTask, NpmScriptTaskConfig } from "./NpmScriptTask";
 import { getPipelinePackages } from "./getPipelinePackages";
 import { parsePipelineConfig } from "./parsePipelineConfig";
+import { DistributedNpmScriptTask } from "./DistributedNpmTask";
 
 type PriorityMap = Map<string, Task["priorities"]>;
 
@@ -78,16 +73,11 @@ export async function runTasks(options: {
   for (const packageTaskDep of pipelineConfig.packageTaskDeps) {
     const from = getPackageTaskFromId(packageTaskDep[0]);
     const to = getPackageTaskFromId(packageTaskDep[1]);
-    pipeline = pipeline.addDep(
-      { package: from[0], task: from[1] },
-      { package: to[0], task: to[1] }
-    );
+    pipeline = pipeline.addDep({ package: from[0], task: from[1] }, { package: to[0], task: to[1] });
   }
 
   // Collect unknown commands
-  const unknownCommands = config.command.filter(
-    (command) => !knownTasks.includes(command)
-  );
+  const unknownCommands = config.command.filter((command) => !knownTasks.includes(command));
 
   for (const unknown of unknownCommands) {
     unknownTasks.add(unknown);
@@ -95,15 +85,13 @@ export async function runTasks(options: {
 
   // Add all unknown commands to be topoDeps
   for (const taskName of unknownTasks) {
-    const depConfig = config.parallel
-      ? { deps: [], topoDeps: [] }
-      : { topoDeps: [taskName], deps: [] };
+    const depConfig = config.parallel ? { deps: [], topoDeps: [] } : { topoDeps: [taskName], deps: [] };
 
     pipeline = pipeline.addTask({
       ...depConfig,
       name: taskName,
       priorities: priorityMap.get(taskName),
-      run: runHandler(workspace, taskName, generateTaskConfig(config), context),
+      run: runHandler(workspace, taskName, generateTaskConfig(config), context, config.dist),
     });
   }
 
@@ -117,19 +105,16 @@ function runHandler(
   workspace: Workspace,
   taskName: string,
   config: NpmScriptTaskConfig,
-  context: RunContext
+  context: RunContext,
+  distributed: boolean
 ) {
   return async function(_location, _stdout, _stderr, pkg) {
     const info = workspace.allPackages[pkg];
     const scripts = info.scripts;
     if (scripts && scripts[taskName]) {
-      const npmTask = new NpmScriptTask(
-        taskName,
-        workspace.root,
-        info,
-        config,
-        context
-      );
+      const npmTask = distributed
+        ? new DistributedNpmScriptTask(taskName, workspace.root, info, config, context)
+        : new NpmScriptTask(taskName, workspace.root, info, config, context);
 
       context.tasks.set(getTaskId(info.name, taskName), npmTask);
 

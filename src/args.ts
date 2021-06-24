@@ -68,6 +68,7 @@ export function getPassThroughArgs(
     "includeDependencies",
     "logLevel",
     "cacheKey",
+    "dist",
     "_",
   ];
 
