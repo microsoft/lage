@@ -7,6 +7,7 @@ import { info } from "./command/info";
 import { initReporters } from "./logger/initReporters";
 import { version } from "./command/version";
 import { cache } from "./command/cache";
+import { worker } from "./command/worker";
 
 // Parse CLI args
 const cwd = process.cwd();
@@ -29,6 +30,11 @@ try {
 
     case "version":
       version();
+      break;
+
+    case "worker":
+      logger.info(`Lage worker - let's make it`);
+      worker(cwd, config, reporters);
       break;
 
     default:

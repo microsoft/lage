@@ -7,6 +7,7 @@ import { NpmScriptTask, NpmScriptTaskConfig } from "./NpmScriptTask";
 import { getPipelinePackages } from "./getPipelinePackages";
 import { parsePipelineConfig } from "./parsePipelineConfig";
 import { DistributedNpmScriptTask } from "./DistributedNpmTask";
+import { PackageTaskDeps } from "@microsoft/task-scheduler/lib/types";
 
 type PriorityMap = Map<string, Task["priorities"]>;
 
@@ -28,8 +29,9 @@ export async function runTasks(options: {
   workspace: Workspace;
   context: RunContext;
   config: Config;
+  packageTaskDeps: PackageTaskDeps
 }) {
-  const { graph, workspace, context, config } = options;
+  const { graph, workspace, context, config, packageTaskDeps } = options;
 
   const priorityMap = getPriorityMap(config.priorities);
 
@@ -57,7 +59,7 @@ export async function runTasks(options: {
       deps,
       topoDeps,
       priorities: priorityMap.get(taskName),
-      run: runHandler(workspace, taskName, generateTaskConfig(config), context),
+      run: runHandler(workspace, taskName, generateTaskConfig(config), context, config.dist, packageTaskDeps),
     });
 
     // take note of any tasks deps that are not defined
@@ -91,7 +93,7 @@ export async function runTasks(options: {
       ...depConfig,
       name: taskName,
       priorities: priorityMap.get(taskName),
-      run: runHandler(workspace, taskName, generateTaskConfig(config), context, config.dist),
+      run: runHandler(workspace, taskName, generateTaskConfig(config), context, config.dist, packageTaskDeps),
     });
   }
 
@@ -106,14 +108,16 @@ function runHandler(
   taskName: string,
   config: NpmScriptTaskConfig,
   context: RunContext,
-  distributed: boolean
+  distributed: boolean,
+  taskDeps: PackageTaskDeps
 ) {
   return async function(_location, _stdout, _stderr, pkg) {
     const info = workspace.allPackages[pkg];
+
     const scripts = info.scripts;
     if (scripts && scripts[taskName]) {
       const npmTask = distributed
-        ? new DistributedNpmScriptTask(taskName, workspace.root, info, config, context)
+        ? new DistributedNpmScriptTask(taskName, workspace.root, info, config, context, taskDeps)
         : new NpmScriptTask(taskName, workspace.root, info, config, context);
 
       context.tasks.set(getTaskId(info.name, taskName), npmTask);

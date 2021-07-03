@@ -2,16 +2,18 @@ import { TaskLogger } from "../logger/TaskLogger";
 import { ChildProcess } from "child_process";
 import { PackageInfo } from "workspace-tools";
 import { findNpmClient } from "../workspace/findNpmClient";
-import { spawn } from "child_process";
+// import { spawn } from "child_process";
 import { controller } from "./abortSignal";
 import path from "path";
-import { TaskLogWritable } from "../logger/TaskLogWritable";
+// import { TaskLogWritable } from "../logger/TaskLogWritable";
 import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { RunContext } from "../types/RunContext";
 import { hrToSeconds } from "../logger/reporters/formatDuration";
 import { getNpmCommand } from "./getNpmCommand";
 import { NpmClient } from "../types/ConfigOptions";
 import { CacheOptions } from "../types/CacheOptions";
+import { workerQueue } from "./workerQueue";
+import { PackageTaskDeps } from "@microsoft/task-scheduler/lib/types";
 
 export type NpmScriptTaskStatus =
   | "completed"
@@ -64,7 +66,8 @@ export class DistributedNpmScriptTask {
     private root: string,
     public info: PackageInfo,
     private config: NpmScriptTaskConfig,
-    private context: RunContext
+    private context: RunContext,
+    private taskDeps: PackageTaskDeps
   ) {
     DistributedNpmScriptTask.npmCmd =
     DistributedNpmScriptTask.npmCmd || findNpmClient(config.npmClient);
@@ -140,41 +143,67 @@ export class DistributedNpmScriptTask {
   runScript() {
     const { info, logger, npmArgs } = this;
     const { npmCmd } = DistributedNpmScriptTask;
-
+    
     return new Promise<void>((resolve, reject) => {
       logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}`);
 
-      const cp = spawn(npmCmd, npmArgs, {
-        cwd: path.dirname(info.packageJsonPath),
-        stdio: "pipe",
-        env: {
-          ...process.env,
-          ...(process.stdout.isTTY &&
-            this.config.reporter !== "json" && { FORCE_COLOR: "1" }),
-          LAGE_PACKAGE_NAME: info.name,
-        },
-      });
+      const job = workerQueue.createJob({
+        npmCmd,
+        npmArgs,
+        packageName: info.name,
+        task: this.task,
+        packagePath: path.relative(this.root, path.dirname(info.packageJsonPath)),
+        taskDeps: getTaskDepsForPackageTask(`${info.name}#${this.task}`, this.taskDeps),
+        spawnOptions: {
+            stdio: "pipe",
+            env: {
+              ...process.env,
+              ...(process.stdout.isTTY &&
+                this.config.reporter !== "json" && { FORCE_COLOR: "1" }),
+              LAGE_PACKAGE_NAME: info.name,
+            },
+          }
+      })
 
-      DistributedNpmScriptTask.activeProcesses.add(cp);
+     
+      job.on('succeeded', (result) => {
+        resolve();
+      })
 
-      const stdoutLogger = new TaskLogWritable(this.logger);
-      cp.stdout.pipe(stdoutLogger);
+      // times out at 1 hour
+      job.timeout(1000 * 60 * 60).save();
 
-      const stderrLogger = new TaskLogWritable(this.logger);
-      cp.stderr.pipe(stderrLogger);
+      // const cp = spawn(npmCmd, npmArgs, {
+      //   cwd: path.dirname(info.packageJsonPath),
+      //   stdio: "pipe",
+      //   env: {
+      //     ...process.env,
+      //     ...(process.stdout.isTTY &&
+      //       this.config.reporter !== "json" && { FORCE_COLOR: "1" }),
+      //     LAGE_PACKAGE_NAME: info.name,
+      //   },
+      // });
 
-      cp.on("exit", handleChildProcessExit);
+      // DistributedNpmScriptTask.activeProcesses.add(cp);
 
-      function handleChildProcessExit(code: number) {
-        if (code === 0) {
-          DistributedNpmScriptTask.activeProcesses.delete(cp);
-          return resolve();
-        }
+      // const stdoutLogger = new TaskLogWritable(this.logger);
+      // cp.stdout.pipe(stdoutLogger);
 
-        cp.stdout.destroy();
-        cp.stdin.destroy();
-        reject();
-      }
+      // const stderrLogger = new TaskLogWritable(this.logger);
+      // cp.stderr.pipe(stderrLogger);
+
+      // cp.on("exit", handleChildProcessExit);
+
+      // function handleChildProcessExit(code: number) {
+      //   if (code === 0) {
+      //     DistributedNpmScriptTask.activeProcesses.delete(cp);
+      //     return resolve();
+      //   }
+
+      //   cp.stdout.destroy();
+      //   cp.stdin.destroy();
+      //   reject();
+      // }
     });
   }
 
@@ -188,24 +217,24 @@ export class DistributedNpmScriptTask {
 
       this.onStart();
 
-      // skip if cache hit!
-      if (cacheHit) {
-        this.onSkipped(hash);
-        return true;
-      }
+      // // skip if cache hit!
+      // if (cacheHit) {
+      //   this.onSkipped(hash);
+      //   return true;
+      // }
 
-      if (cacheEnabled) {
-        logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
-      }
+      // if (cacheEnabled) {
+      //   logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
+      // }
 
       await context.profiler.run(
         () => this.runScript(),
         `${info.name}.${task}`
       );
 
-      if (cacheEnabled) {
-        await this.saveCache(hash);
-      }
+      // if (cacheEnabled) {
+      //   await this.saveCache(hash);
+      // }
 
       this.onComplete();
     } catch (e) {
@@ -225,4 +254,33 @@ export class DistributedNpmScriptTask {
 
     return true;
   }
+}
+
+
+function getTaskDepsForPackageTask(packageTask: string, taskDeps: PackageTaskDeps) {
+  const stack = [packageTask];
+  const deps = new Set<string>();
+  const visited = new Set<string>();
+
+  while (stack.length > 0) {
+    const current = stack.pop()!;
+
+    if (visited.has(current)) {
+      continue;
+    }
+
+    visited.add(current);
+
+    if (current !== packageTask) {
+      deps.add(current);
+    }
+
+    taskDeps.forEach(([from, to]) => {
+      if (to === current) {
+        stack.push(from);
+      }
+    })
+  }
+
+  return [...deps];
 }
