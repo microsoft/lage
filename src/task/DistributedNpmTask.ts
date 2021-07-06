@@ -111,35 +111,6 @@ export class DistributedNpmScriptTask {
     });
   }
 
-  async getCache() {
-    let hash: string | null = null;
-    let cacheHit = false;
-
-    const { task, info, root, config } = this;
-
-    if (config.cache) {
-      hash = await cacheHash(
-        task,
-        info,
-        root,
-        config.cacheOptions,
-        config.passThroughArgs
-      );
-
-      if (hash && !config.resetCache) {
-        cacheHit = await cacheFetch(hash, info, config.cacheOptions);
-      }
-    }
-
-    return { hash, cacheHit };
-  }
-
-  async saveCache(hash: string | null) {
-    const { logger, info, config } = this;
-    logger.verbose(`hash put ${hash}`);
-    await cachePut(hash, info, config.cacheOptions);
-  }
-
   runScript() {
     const { info, logger, npmArgs } = this;
     const { npmCmd } = DistributedNpmScriptTask;
@@ -150,7 +121,7 @@ export class DistributedNpmScriptTask {
       const job = workerQueue.createJob({
         npmCmd,
         npmArgs,
-        packageName: info.name,
+        name: info.name,
         task: this.task,
         packagePath: path.relative(this.root, path.dirname(info.packageJsonPath)),
         taskDeps: getTaskDepsForPackageTask(`${info.name}#${this.task}`, this.taskDeps),
@@ -172,38 +143,6 @@ export class DistributedNpmScriptTask {
 
       // times out at 1 hour
       job.timeout(1000 * 60 * 60).save();
-
-      // const cp = spawn(npmCmd, npmArgs, {
-      //   cwd: path.dirname(info.packageJsonPath),
-      //   stdio: "pipe",
-      //   env: {
-      //     ...process.env,
-      //     ...(process.stdout.isTTY &&
-      //       this.config.reporter !== "json" && { FORCE_COLOR: "1" }),
-      //     LAGE_PACKAGE_NAME: info.name,
-      //   },
-      // });
-
-      // DistributedNpmScriptTask.activeProcesses.add(cp);
-
-      // const stdoutLogger = new TaskLogWritable(this.logger);
-      // cp.stdout.pipe(stdoutLogger);
-
-      // const stderrLogger = new TaskLogWritable(this.logger);
-      // cp.stderr.pipe(stderrLogger);
-
-      // cp.on("exit", handleChildProcessExit);
-
-      // function handleChildProcessExit(code: number) {
-      //   if (code === 0) {
-      //     DistributedNpmScriptTask.activeProcesses.delete(cp);
-      //     return resolve();
-      //   }
-
-      //   cp.stdout.destroy();
-      //   cp.stdin.destroy();
-      //   reject();
-      // }
     });
   }
 
@@ -211,30 +150,12 @@ export class DistributedNpmScriptTask {
     const { info, task, context, config, logger } = this;
 
     try {
-      const { hash, cacheHit } = await this.getCache();
-
-      const cacheEnabled = config.cache && hash;
-
       this.onStart();
-
-      // // skip if cache hit!
-      // if (cacheHit) {
-      //   this.onSkipped(hash);
-      //   return true;
-      // }
-
-      // if (cacheEnabled) {
-      //   logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
-      // }
 
       await context.profiler.run(
         () => this.runScript(),
         `${info.name}.${task}`
       );
-
-      // if (cacheEnabled) {
-      //   await this.saveCache(hash);
-      // }
 
       this.onComplete();
     } catch (e) {

@@ -5,10 +5,11 @@ import { createContext } from "../context";
 import { Reporter } from "../logger/reporters/Reporter";
 import { workerQueue } from "../task/workerQueue";
 import { spawn } from "child_process";
-import * as path from 'path';
+import * as path from "path";
 import { findNpmClient } from "../workspace/findNpmClient";
 import { TaskLogWritable } from "../logger/TaskLogWritable";
 import { TaskLogger } from "../logger/TaskLogger";
+import { cacheFetch, cacheHash, cachePut } from "../cache/backfill";
 
 // Run multiple
 export async function worker(cwd: string, config: Config, reporters: Reporter[]) {
@@ -18,19 +19,51 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
   // generate topological graph
   const graph = generateTopologicGraph(workspace);
 
-  workerQueue.process(1, (job, done) => {
+  workerQueue.process(1, async (job, done) => {
     console.log(`processing job ${job.id}`);
 
-    const {npmArgs, spawnOptions, packagePath} = job.data;
-    const npmCmd = findNpmClient(config.npmClient);
+    await Promise.all(
+      job.data.taskDeps.map((taskDep: string) => {
+        const [name, task] = taskDep.split("#");
 
+        if (task) {
+          const info = workspace.allPackages[name];
+          const packagePath = path.dirname(info.packageJsonPath);
+
+          console.log(`retrieving cache for ${taskDep}`);
+
+          return getCache({
+            task,
+            name,
+            root: cwd,
+            packagePath,
+            config,
+          });
+        }
+      })
+    );
+
+    const cacheResult = await getCache({
+      task: job.data.task,
+      name: job.data.name,
+      root: cwd,
+      packagePath: path.join(cwd, job.data.packagePath),
+      config,
+    });
+
+    if (cacheResult.cacheHit) {
+      return done();
+    }
+
+    const { npmArgs, spawnOptions, packagePath } = job.data;
+    const npmCmd = findNpmClient(config.npmClient);
 
     const cp = spawn(npmCmd, npmArgs, {
       cwd: path.join(cwd, packagePath),
-      ...spawnOptions
+      ...spawnOptions,
     });
 
-    const logger = new TaskLogger(job.data.packageName, job.data.task);
+    const logger = new TaskLogger(job.data.name, job.data.task);
 
     const stdoutLogger = new TaskLogWritable(logger);
     cp.stdout.pipe(stdoutLogger);
@@ -38,25 +71,37 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
     const stderrLogger = new TaskLogWritable(logger);
     cp.stderr.pipe(stderrLogger);
 
-    cp.on("exit", done);
-    
-    // const stdoutLogger = new TaskLogWritable(this.logger);
-    // cp.stdout.pipe(stdoutLogger);
+    cp.on("exit", async () => {
+      await saveCache(cacheResult.hash, {
+        task: job.data.task,
+        name: job.data.name,
+        root: cwd,
+        packagePath: job.data.packagePath,
+        config,
+      });
 
-    // const stderrLogger = new TaskLogWritable(this.logger);
-    // cp.stderr.pipe(stderrLogger);
+      done();
+    });
+  });
+}
 
-    // cp.on("exit", handleChildProcessExit);
+async function getCache(options: any) {
+  let hash: string | null = null;
+  let cacheHit = false;
 
-    // function handleChildProcessExit(code: number) {
-    //   if (code === 0) {
-    //     NpmScriptTask.activeProcesses.delete(cp);
-    //     return resolve();
-    //   }
+  const { task, name, root, packagePath, config } = options;
 
-    //   cp.stdout.destroy();
-    //   cp.stdin.destroy();
-    //   reject();
-    // }
-  })
+  if (config.cache) {
+    hash = await cacheHash(task, name, root, packagePath, config.cacheOptions, config.passThroughArgs);
+    if (hash && !config.resetCache) {
+      cacheHit = await cacheFetch(hash, task, name, packagePath, config.cacheOptions);
+    }
+  }
+
+  return { hash, cacheHit };
+}
+
+async function saveCache(hash: string | null, options: any) {
+  const { logger, packagePath, config } = options;
+  await cachePut(hash, packagePath, config.cacheOptions);
 }

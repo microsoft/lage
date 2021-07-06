@@ -8,22 +8,21 @@ import { CacheOptions } from "../types/CacheOptions";
 
 export async function cacheHash(
   task: string,
-  info: PackageInfo,
+  name: string,
   root: string,
+  packagePath: string,
   cacheOptions: CacheOptions,
   args: any
 ) {
-  const packagePath = path.dirname(info.packageJsonPath);
   const cacheConfig = getCacheConfig(packagePath, cacheOptions);
   const backfillLogger = backfill.makeLogger(
     "error",
     process.stdout,
     process.stderr
   );
-  const name = info.name;
   const hashKey = salt(
     cacheOptions.environmentGlob || ["lage.config.js"],
-    `${info.name}|${task}|${JSON.stringify(args)}`,
+    `${name}|${task}|${JSON.stringify(args)}`,
     root,
     cacheOptions.cacheKey
   );
@@ -46,14 +45,15 @@ export async function cacheHash(
 
 export async function cacheFetch(
   hash: string | null,
-  info: PackageInfo,
+  task: string,
+  name: string,
+  packagePath: string,
   cacheOptions: CacheOptions
 ) {
   if (!hash) {
     return false;
   }
 
-  const packagePath = path.dirname(info.packageJsonPath);
   const cacheConfig = getCacheConfig(packagePath, cacheOptions);
   const backfillLogger = backfill.makeLogger(
     "error",
@@ -64,7 +64,7 @@ export async function cacheFetch(
   try {
     return await backfill.fetch(packagePath, hash, backfillLogger, cacheConfig);
   } catch (e) {
-    logger.error(`${info.name} fetchBackfill`, e);
+    logger.error(`${name} fetchBackfill`, e);
   }
 
   return false;
@@ -72,14 +72,13 @@ export async function cacheFetch(
 
 export async function cachePut(
   hash: string | null,
-  info: PackageInfo,
+  packagePath: string,
   cacheOptions: CacheOptions
 ) {
   if (!hash) {
     return;
   }
 
-  const packagePath = path.dirname(info.packageJsonPath);
   const cacheConfig = getCacheConfig(packagePath, cacheOptions);
   const backfillLogger = backfill.makeLogger(
     "warn",
