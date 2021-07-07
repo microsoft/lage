@@ -79,7 +79,7 @@ export class DistributedNpmScriptTask {
 
     this.npmArgs = getNpmCommand(config.nodeArgs, config.passThroughArgs, task);
 
-    DistributedNpmScriptTask.workerQueue = getWorkerQueue(config.workerQueueOptions);
+    DistributedNpmScriptTask.workerQueue = getWorkerQueue(config.workerQueueOptions, false);
   }
 
   onStart() {
