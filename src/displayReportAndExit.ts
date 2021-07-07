@@ -1,13 +1,13 @@
 import { RunContext } from "./types/RunContext";
 import { Reporter } from "./logger/reporters/Reporter";
-import { DistributedNpmScriptTask } from "./task/DistributedNpmTask";
+import { workerQueue } from "./task/workerQueue";
 
 export function displayReportAndExit(
   reporters: Reporter[],
   context: RunContext
 ) {
-  if (DistributedNpmScriptTask.workerQueue) {
-    DistributedNpmScriptTask.workerQueue.close();
+  if (workerQueue) {
+    workerQueue.close();
   }
 
   context.measures.duration = process.hrtime(context.measures.start);

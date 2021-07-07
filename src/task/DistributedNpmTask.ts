@@ -2,19 +2,16 @@ import { TaskLogger } from "../logger/TaskLogger";
 import { ChildProcess } from "child_process";
 import { PackageInfo } from "workspace-tools";
 import { findNpmClient } from "../workspace/findNpmClient";
-// import { spawn } from "child_process";
 import { controller } from "./abortSignal";
 import path from "path";
-// import { TaskLogWritable } from "../logger/TaskLogWritable";
-import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { RunContext } from "../types/RunContext";
 import { hrToSeconds } from "../logger/reporters/formatDuration";
 import { getNpmCommand } from "./getNpmCommand";
 import { NpmClient } from "../types/ConfigOptions";
 import { CacheOptions } from "../types/CacheOptions";
-import { getWorkerQueue } from "./workerQueue";
+import { workerQueue } from "./workerQueue";
 import { PackageTaskDeps } from "@microsoft/task-scheduler/lib/types";
-import BeeQueue, { QueueSettings } from "bee-queue";
+import { QueueSettings } from "bee-queue";
 
 export type NpmScriptTaskStatus =
   | "completed"
@@ -40,7 +37,6 @@ export class DistributedNpmScriptTask {
   static npmCmd: string = "";
   static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
-  static workerQueue: BeeQueue;
 
   npmArgs: string[] = [];
   startTime: [number, number] = [0, 0];
@@ -78,8 +74,6 @@ export class DistributedNpmScriptTask {
     this.logger = new TaskLogger(info.name, task);
 
     this.npmArgs = getNpmCommand(config.nodeArgs, config.passThroughArgs, task);
-
-    DistributedNpmScriptTask.workerQueue = getWorkerQueue(config.workerQueueOptions, false);
   }
 
   onStart() {
@@ -123,7 +117,8 @@ export class DistributedNpmScriptTask {
     return new Promise<void>((resolve, reject) => {
       logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}`);
 
-      const job = DistributedNpmScriptTask.workerQueue.createJob({
+      
+      const job = workerQueue.createJob({
         npmCmd,
         npmArgs,
         name: info.name,

@@ -8,6 +8,7 @@ import { getPipelinePackages } from "./getPipelinePackages";
 import { parsePipelineConfig } from "./parsePipelineConfig";
 import { DistributedNpmScriptTask } from "./DistributedNpmTask";
 import { PackageTaskDeps } from "@microsoft/task-scheduler/lib/types";
+import { initWorkerQueue } from "./workerQueue";
 
 type PriorityMap = Map<string, Task["priorities"]>;
 
@@ -32,6 +33,10 @@ export async function runTasks(options: {
   packageTaskDeps: PackageTaskDeps
 }) {
   const { graph, workspace, context, config, packageTaskDeps } = options;
+
+  if (config.dist) {
+    initWorkerQueue(config.workerQueueOptions, false);
+  }
 
   const priorityMap = getPriorityMap(config.priorities);
 
