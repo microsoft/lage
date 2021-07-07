@@ -57,7 +57,7 @@
     "@types/npmlog": "^4.1.2",
     "@types/p-queue": "^3.2.1",
     "@types/yargs-parser": "^15.0.0",
-    "beachball": "^2.6.1",
+    "beachball": "^2.6.2",
     "gh-pages": "^2.2.0",
     "jasmine": "^3.5.0",
     "renovate": "^23.42.2",
