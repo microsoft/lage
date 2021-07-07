@@ -2,6 +2,7 @@ import { CacheOptions } from "./CacheOptions";
 import { Priority } from "./Priority";
 import { Pipeline } from "./Pipeline";
 import { LoggerOptions } from "./LoggerOptions";
+import { QueueSettings } from "bee-queue";
 
 export type NpmClient = "npm" | "yarn" | "pnpm";
 
@@ -53,4 +54,6 @@ export interface ConfigOptions {
    * Options that will be sent to all log reporters.
    */
   loggerOptions: LoggerOptions;
+
+  workerQueueOptions: QueueSettings; 
 }

@@ -138,4 +138,5 @@ const generateTaskConfig = (config: Config): NpmScriptTaskConfig => ({
   resetCache: config.resetCache,
   nodeArgs: config.node,
   passThroughArgs: config.args,
+  workerQueueOptions: config.workerQueueOptions
 });

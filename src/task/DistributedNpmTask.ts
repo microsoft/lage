@@ -12,8 +12,9 @@ import { hrToSeconds } from "../logger/reporters/formatDuration";
 import { getNpmCommand } from "./getNpmCommand";
 import { NpmClient } from "../types/ConfigOptions";
 import { CacheOptions } from "../types/CacheOptions";
-import { workerQueue } from "./workerQueue";
+import { getWorkerQueue } from "./workerQueue";
 import { PackageTaskDeps } from "@microsoft/task-scheduler/lib/types";
+import BeeQueue, { QueueSettings } from "bee-queue";
 
 export type NpmScriptTaskStatus =
   | "completed"
@@ -32,12 +33,14 @@ export interface NpmScriptTaskConfig {
   safeExit: boolean;
   nodeArgs: string[];
   passThroughArgs: string[];
+  workerQueueOptions: QueueSettings;
 }
 
 export class DistributedNpmScriptTask {
   static npmCmd: string = "";
   static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
+  static workerQueue: BeeQueue;
 
   npmArgs: string[] = [];
   startTime: [number, number] = [0, 0];
@@ -75,6 +78,8 @@ export class DistributedNpmScriptTask {
     this.logger = new TaskLogger(info.name, task);
 
     this.npmArgs = getNpmCommand(config.nodeArgs, config.passThroughArgs, task);
+
+    DistributedNpmScriptTask.workerQueue = getWorkerQueue(config.workerQueueOptions);
   }
 
   onStart() {
@@ -118,7 +123,7 @@ export class DistributedNpmScriptTask {
     return new Promise<void>((resolve, reject) => {
       logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}`);
 
-      const job = workerQueue.createJob({
+      const job = DistributedNpmScriptTask.workerQueue.createJob({
         npmCmd,
         npmArgs,
         name: info.name,

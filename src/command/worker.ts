@@ -1,9 +1,7 @@
 import { getWorkspace } from "../workspace/getWorkspace";
 import { Config } from "../types/Config";
-import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
-import { createContext } from "../context";
 import { Reporter } from "../logger/reporters/Reporter";
-import { workerQueue } from "../task/workerQueue";
+import { getWorkerQueue } from "../task/workerQueue";
 import { spawn } from "child_process";
 import * as path from "path";
 import { findNpmClient } from "../workspace/findNpmClient";
@@ -13,11 +11,8 @@ import { cacheFetch, cacheHash, cachePut } from "../cache/backfill";
 
 // Run multiple
 export async function worker(cwd: string, config: Config, reporters: Reporter[]) {
-  const context = createContext(config);
   const workspace = getWorkspace(cwd, config);
-
-  // generate topological graph
-  const graph = generateTopologicGraph(workspace);
+  const workerQueue = getWorkerQueue(config.workerQueueOptions);
 
   workerQueue.process(1, async (job, done) => {
     console.log(`processing job ${job.id}`);

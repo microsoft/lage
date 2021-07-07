@@ -12,6 +12,7 @@ import { hrToSeconds } from "../logger/reporters/formatDuration";
 import { getNpmCommand } from "./getNpmCommand";
 import { NpmClient } from "../types/ConfigOptions";
 import { CacheOptions } from "../types/CacheOptions";
+import { QueueSettings } from "bee-queue";
 
 export type NpmScriptTaskStatus =
   | "completed"
@@ -30,6 +31,7 @@ export interface NpmScriptTaskConfig {
   safeExit: boolean;
   nodeArgs: string[];
   passThroughArgs: string[];
+  workerQueueOptions: QueueSettings;
 }
 
 export class NpmScriptTask {
