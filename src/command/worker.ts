@@ -8,13 +8,14 @@ import { findNpmClient } from "../workspace/findNpmClient";
 import { TaskLogWritable } from "../logger/TaskLogWritable";
 import { TaskLogger } from "../logger/TaskLogger";
 import { cacheFetch, cacheHash, cachePut } from "../cache/backfill";
+import os from 'os';
 
 // Run multiple
 export async function worker(cwd: string, config: Config, reporters: Reporter[]) {
   const workspace = getWorkspace(cwd, config);
   const workerQueue = getWorkerQueue(config.workerQueueOptions);
 
-  workerQueue.process(1, async (job, done) => {
+  workerQueue.process(config.concurrency, async (job, done) => {
     console.log(`processing job ${job.id}`);
 
     await Promise.all(
