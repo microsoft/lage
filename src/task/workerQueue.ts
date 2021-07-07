@@ -1,2 +1,4 @@
 import Queue from 'bee-queue';
-export const workerQueue = new Queue('lage:npm-task');
+
+const queueId = `lage:npm-task:${process.env.LAGE_WORKER_QUEUE_ID || 'default'}`;
+export const workerQueue = new Queue(queueId);
