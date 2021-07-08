@@ -35,7 +35,7 @@ export async function runTasks(options: {
   const { graph, workspace, context, config, packageTaskDeps } = options;
 
   if (config.dist) {
-    initWorkerQueue(config.workerQueueOptions, false);
+    await initWorkerQueue(config.workerQueueOptions, false);
   }
 
   const priorityMap = getPriorityMap(config.priorities);

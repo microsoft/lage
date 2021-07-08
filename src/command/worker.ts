@@ -14,14 +14,15 @@ import { getTaskId } from "@microsoft/task-scheduler";
 // Run multiple
 export async function worker(cwd: string, config: Config, reporters: Reporter[]) {
   const workspace = getWorkspace(cwd, config);
-  const workerQueue = initWorkerQueue(config.workerQueueOptions);
+  const workerQueue = await initWorkerQueue(config.workerQueueOptions);
 
-  workerQueue.on("job succeeded", () => {
-    if (!workerQueue.isRunning()) {
+  workerQueue.on('job succeeded', async() => {
+    const jobs = await workerQueue.getJobs('waiting', {size: 1})
+    if (jobs.length === 0) {
       workerQueue.close();
     }
-  })
-
+  });
+  
   workerQueue.process(config.concurrency, async (job, done) => {
     console.log(`processing job ${job.id}: ${job.data.name} ${job.data.task}`);
 
