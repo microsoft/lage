@@ -1,9 +1,7 @@
 import { getCacheConfig } from "./cacheConfig";
 import { logger } from "../logger";
-import { PackageInfo } from "workspace-tools";
 import { salt } from "./salt";
 import * as backfill from "backfill/lib/api";
-import path from "path";
 import { CacheOptions } from "../types/CacheOptions";
 
 export async function cacheHash(

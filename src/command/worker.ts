@@ -8,15 +8,22 @@ import { findNpmClient } from "../workspace/findNpmClient";
 import { TaskLogWritable } from "../logger/TaskLogWritable";
 import { TaskLogger } from "../logger/TaskLogger";
 import { cacheFetch, cacheHash, cachePut } from "../cache/backfill";
-import os from 'os';
+import { getTaskId } from "@microsoft/task-scheduler";
+
 
 // Run multiple
 export async function worker(cwd: string, config: Config, reporters: Reporter[]) {
   const workspace = getWorkspace(cwd, config);
   const workerQueue = initWorkerQueue(config.workerQueueOptions);
 
+  workerQueue.on("job succeeded", () => {
+    if (!workerQueue.isRunning()) {
+      workerQueue.close();
+    }
+  })
+
   workerQueue.process(config.concurrency, async (job, done) => {
-    console.log(`processing job ${job.id}`);
+    console.log(`processing job ${job.id}: ${job.data.name} ${job.data.task}`);
 
     await Promise.all(
       job.data.taskDeps.map((taskDep: string) => {
@@ -25,9 +32,6 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
         if (task) {
           const info = workspace.allPackages[name];
           const packagePath = path.dirname(info.packageJsonPath);
-
-          console.log(`retrieving cache for ${taskDep}`);
-
           return getCache({
             task,
             name,
@@ -81,16 +85,29 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
   });
 }
 
+// speeding up to reduce network costs for a worker
+const localHashCache: {[packageTask: string]: string} = {};
+
 async function getCache(options: any) {
   let hash: string | null = null;
   let cacheHit = false;
-
+  
   const { task, name, root, packagePath, config } = options;
+
+  const localCacheKey = getTaskId(name, task);
+
+  if (localHashCache[localCacheKey]) {
+    return { hash: localHashCache[localCacheKey], cacheHit: true };
+  }
 
   if (config.cache) {
     hash = await cacheHash(task, name, root, packagePath, config.cacheOptions, config.passThroughArgs);
     if (hash && !config.resetCache) {
       cacheHit = await cacheFetch(hash, task, name, packagePath, config.cacheOptions);
+
+      if (cacheHit) {
+        localHashCache[localCacheKey] = hash;
+      }
     }
   }
 
