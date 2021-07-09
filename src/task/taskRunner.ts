@@ -8,7 +8,7 @@ import { getPipelinePackages } from "./getPipelinePackages";
 import { parsePipelineConfig } from "./parsePipelineConfig";
 import { DistributedNpmScriptTask } from "./DistributedNpmTask";
 import { PackageTaskDeps } from "@microsoft/task-scheduler/lib/types";
-import { initWorkerQueue } from "./workerQueue";
+import { initWorkerQueue, workerPubSubChannel } from "./workerQueue";
 
 type PriorityMap = Map<string, Task["priorities"]>;
 
@@ -30,12 +30,17 @@ export async function runTasks(options: {
   workspace: Workspace;
   context: RunContext;
   config: Config;
-  packageTaskDeps: PackageTaskDeps
+  packageTaskDeps: PackageTaskDeps;
 }) {
   const { graph, workspace, context, config, packageTaskDeps } = options;
 
+  let redisClient;
+  let workerQueue;
+
   if (config.dist) {
-    await initWorkerQueue(config.workerQueueOptions, false);
+    const results = await initWorkerQueue(config.workerQueueOptions, false);
+    redisClient = results.redisClient;
+    workerQueue = results.workerQueue;
   }
 
   const priorityMap = getPriorityMap(config.priorities);
@@ -106,6 +111,15 @@ export async function runTasks(options: {
     packages: getPipelinePackages(workspace, config),
     tasks: config.command,
   });
+
+  if (redisClient) {
+    redisClient.publish(workerPubSubChannel, "done");
+    redisClient.quit();
+  }
+
+  if (workerQueue) {
+    workerQueue.close();
+  }
 }
 
 function runHandler(
@@ -143,5 +157,5 @@ const generateTaskConfig = (config: Config): NpmScriptTaskConfig => ({
   resetCache: config.resetCache,
   nodeArgs: config.node,
   passThroughArgs: config.args,
-  workerQueueOptions: config.workerQueueOptions
+  workerQueueOptions: config.workerQueueOptions,
 });

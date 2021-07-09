@@ -6,10 +6,6 @@ export function displayReportAndExit(
   reporters: Reporter[],
   context: RunContext
 ) {
-  if (workerQueue) {
-    workerQueue.close();
-  }
-
   context.measures.duration = process.hrtime(context.measures.start);
 
   for (const reporter of reporters) {

@@ -1,7 +1,7 @@
 import { getWorkspace } from "../workspace/getWorkspace";
 import { Config } from "../types/Config";
 import { Reporter } from "../logger/reporters/Reporter";
-import { initWorkerQueue } from "../task/workerQueue";
+import { initWorkerQueue, workerPubSubChannel } from "../task/workerQueue";
 import { spawn } from "child_process";
 import * as path from "path";
 import { findNpmClient } from "../workspace/findNpmClient";
@@ -13,23 +13,27 @@ import { getTaskId } from "@microsoft/task-scheduler";
 // Run multiple
 export async function worker(cwd: string, config: Config, reporters: Reporter[]) {
   const workspace = getWorkspace(cwd, config);
-  const workerQueue = await initWorkerQueue(config.workerQueueOptions);
+  const { workerQueue, redisClient } = await initWorkerQueue(config.workerQueueOptions);
 
   workerQueue.ready(() => {
-    async function checkActive() {
-      const counts = await workerQueue.checkHealth();
-      const isRunning = (counts.active + counts.delayed + counts.waiting) > 0;
-      if (!isRunning) {
-        workerQueue.close();
-      } else {
-        setTimeout(checkActive, 2000);
+    const pubSubListener = (channel, message) => {
+      if (workerPubSubChannel === channel) {
+        if (message === "done") {
+          workerQueue.close();
+          redisClient.off("message", pubSubListener);
+          redisClient.unsubscribe(workerPubSubChannel);
+          redisClient.quit();
+        }
       }
-    }
+    };
 
-    checkActive();
+    redisClient.on("message", pubSubListener);
+    redisClient.subscribe(workerPubSubChannel);
 
     workerQueue.process(config.concurrency, async (job, done) => {
-      console.log(`processing job ${job.id}: ${job.data.name} ${job.data.task}`);
+      const logger = new TaskLogger(job.data.name, job.data.task);
+
+      logger.info(`processing job ${job.id}`);
 
       await Promise.all(
         job.data.taskDeps.map((taskDep: string) => {
@@ -58,6 +62,7 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
       });
 
       if (cacheResult.cacheHit) {
+        logger.info(`skipped ${job.data.name}.${job.data.task}`);
         return done();
       }
 
@@ -68,8 +73,6 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
         cwd: path.join(cwd, packagePath),
         ...spawnOptions,
       });
-
-      const logger = new TaskLogger(job.data.name, job.data.task);
 
       const stdoutLogger = new TaskLogWritable(logger);
       cp.stdout.pipe(stdoutLogger);
@@ -86,6 +89,8 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
           config,
         });
 
+        logger.info(`success`)
+
         done();
       });
     });
@@ -93,7 +98,7 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
 }
 
 // speeding up to reduce network costs for a worker
-const localHashCache: { [packageTask: string]: string } = {};
+const localHashCache: { [packageTask: string]: string | null } = {};
 
 async function getCache(options: any) {
   let hash: string | null = null;
@@ -122,6 +127,11 @@ async function getCache(options: any) {
 }
 
 async function saveCache(hash: string | null, options: any) {
-  const { logger, packagePath, config } = options;
+  const { task, name, logger, packagePath, config } = options;
+  const localCacheKey = getTaskId(name, task);
+
+  localHashCache[localCacheKey] = hash;
+
+  logger.info(`put ${hash}`)
   await cachePut(hash, packagePath, config.cacheOptions);
 }

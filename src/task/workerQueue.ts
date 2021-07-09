@@ -1,15 +1,19 @@
 import Queue from "bee-queue";
+import redis, { ClientOpts } from 'redis';
 import { Config } from "../types/Config";
 
-const queueId = `lage:npm-task:${process.env.LAGE_WORKER_QUEUE_ID || "default"}`;
+export const workerQueueId = `lage:npm-task:${process.env.LAGE_WORKER_QUEUE_ID || "default"}`;
 
 export let workerQueue: Queue;
 
 export const initWorkerQueue = async(config: Config["workerQueueOptions"], isWorker: boolean = true) => {
-  workerQueue = new Queue(queueId, { ...config, isWorker });
+  const redisClient = redis.createClient(config.redis as ClientOpts);
+  workerQueue = new Queue(workerQueueId, { ...config, isWorker });
   if (!isWorker) {
     await workerQueue.destroy();
   }
 
-  return workerQueue;
+  return {workerQueue, redisClient};
 };
+
+export const workerPubSubChannel = `lage:pubsub:${process.env.LAGE_WORKER_QUEUE_ID || "default"}`

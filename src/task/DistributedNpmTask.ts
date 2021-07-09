@@ -13,12 +13,7 @@ import { workerQueue } from "./workerQueue";
 import { PackageTaskDeps } from "@microsoft/task-scheduler/lib/types";
 import { QueueSettings } from "bee-queue";
 
-export type NpmScriptTaskStatus =
-  | "completed"
-  | "failed"
-  | "pending"
-  | "started"
-  | "skipped";
+export type NpmScriptTaskStatus = "completed" | "failed" | "pending" | "started" | "skipped";
 
 export interface NpmScriptTaskConfig {
   npmClient: NpmClient;
@@ -68,8 +63,7 @@ export class DistributedNpmScriptTask {
     private context: RunContext,
     private taskDeps: PackageTaskDeps
   ) {
-    DistributedNpmScriptTask.npmCmd =
-    DistributedNpmScriptTask.npmCmd || findNpmClient(config.npmClient);
+    DistributedNpmScriptTask.npmCmd = DistributedNpmScriptTask.npmCmd || findNpmClient(config.npmClient);
     this.status = "pending";
     this.logger = new TaskLogger(info.name, task);
 
@@ -113,11 +107,8 @@ export class DistributedNpmScriptTask {
   runScript() {
     const { info, logger, npmArgs } = this;
     const { npmCmd } = DistributedNpmScriptTask;
-    
-    return new Promise<void>((resolve, reject) => {
-      logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}`);
 
-      
+    return new Promise<void>((resolve, reject) => {
       const job = workerQueue.createJob({
         npmCmd,
         npmArgs,
@@ -126,23 +117,23 @@ export class DistributedNpmScriptTask {
         packagePath: path.relative(this.root, path.dirname(info.packageJsonPath)),
         taskDeps: getTaskDepsForPackageTask(`${info.name}#${this.task}`, this.taskDeps),
         spawnOptions: {
-            stdio: "pipe",
-            env: {
-              ...process.env,
-              ...(process.stdout.isTTY &&
-                this.config.reporter !== "json" && { FORCE_COLOR: "1" }),
-              LAGE_PACKAGE_NAME: info.name,
-            },
-          }
-      })
+          stdio: "pipe",
+          env: {
+            ...process.env,
+            ...(process.stdout.isTTY && this.config.reporter !== "json" && { FORCE_COLOR: "1" }),
+            LAGE_PACKAGE_NAME: info.name,
+          },
+        },
+      });
 
-     
-      job.on('succeeded', (result) => {
+      job.on("succeeded", (result) => {
         resolve();
-      })
+      });
 
       // times out at 1 hour
       job.timeout(1000 * 60 * 60).save();
+
+      logger.info(`job id: ${job.id}`);
     });
   }
 
@@ -152,10 +143,7 @@ export class DistributedNpmScriptTask {
     try {
       this.onStart();
 
-      await context.profiler.run(
-        () => this.runScript(),
-        `${info.name}.${task}`
-      );
+      await context.profiler.run(() => this.runScript(), `${info.name}.${task}`);
 
       this.onComplete();
     } catch (e) {
@@ -176,7 +164,6 @@ export class DistributedNpmScriptTask {
     return true;
   }
 }
-
 
 function getTaskDepsForPackageTask(packageTask: string, taskDeps: PackageTaskDeps) {
   const stack = [packageTask];
@@ -200,7 +187,7 @@ function getTaskDepsForPackageTask(packageTask: string, taskDeps: PackageTaskDep
       if (to === current) {
         stack.push(from);
       }
-    })
+    });
   }
 
   return [...deps];
