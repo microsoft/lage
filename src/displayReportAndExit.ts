@@ -1,6 +1,5 @@
 import { RunContext } from "./types/RunContext";
 import { Reporter } from "./logger/reporters/Reporter";
-import { workerQueue } from "./task/workerQueue";
 
 export function displayReportAndExit(
   reporters: Reporter[],

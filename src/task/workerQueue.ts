@@ -8,6 +8,7 @@ export let workerQueue: Queue;
 
 export const initWorkerQueue = async(config: Config["workerQueueOptions"], isWorker: boolean = true) => {
   const redisClient = redis.createClient(config.redis as ClientOpts);
+
   workerQueue = new Queue(workerQueueId, { ...config, isWorker });
   if (!isWorker) {
     await workerQueue.destroy();
@@ -16,4 +17,4 @@ export const initWorkerQueue = async(config: Config["workerQueueOptions"], isWor
   return {workerQueue, redisClient};
 };
 
-export const workerPubSubChannel = `lage:pubsub:${process.env.LAGE_WORKER_QUEUE_ID || "default"}`
+export const workerPubSubChannel = `lage_pubsub_${process.env.LAGE_WORKER_QUEUE_ID || "default"}`

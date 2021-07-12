@@ -91,7 +91,7 @@ export function getConfig(cwd: string): Config {
     prune: parsedArgs.prune,
     logLevel: parsedArgs.logLevel,
     loggerOptions: configResults?.config.loggerOptions || {},
-    dist: parsedArgs.dist !== false,
+    dist: parsedArgs.dist || false,
     workerQueueOptions: configResults?.config.workerQueueOptions || {}
   };
 }

@@ -127,13 +127,19 @@ export class DistributedNpmScriptTask {
       });
 
       job.on("succeeded", (result) => {
+        logger.info('succeeded')
         resolve();
       });
 
-      // times out at 1 hour
-      job.timeout(1000 * 60 * 60).save();
+      job.on("failed", (result) => {
+        logger.info('failed')
+        reject();
+      })
 
-      logger.info(`job id: ${job.id}`);
+      // times out at 1 hour
+      job.timeout(1000 * 60 * 60).save().then((newJob) => {
+        logger.info(`job id: ${newJob.id}`);
+      });
     });
   }
 
