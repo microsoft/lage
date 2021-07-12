@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 12 Jul 2021 23:42:06 GMT",
+      "tag": "lage_v0.31.0",
+      "version": "0.31.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "fixing publish",
+            "author": "kchau@microsoft.com",
+            "commit": "dccaf39ee10dce4d08f05a82da8630cc4d0b636d",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 11 Jun 2021 22:59:59 GMT",
       "tag": "lage_v0.30.0",
       "version": "0.30.0",
