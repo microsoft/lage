@@ -1,7 +1,7 @@
 import { getWorkspace } from "../workspace/getWorkspace";
 import { logger } from "../logger";
 import { Config } from "../types/Config";
-import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
+//import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
 import { signal } from "../task/abortSignal";
 import { displayReportAndExit } from "../displayReportAndExit";
 import { createContext } from "../context";
@@ -14,8 +14,8 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   const context = createContext(config);
   const workspace = getWorkspace(cwd, config);
 
-  // generate topological graph
-  const graph = generateTopologicGraph(workspace);
+  // // generate topological graph
+  // const graph = generateTopologicGraph(workspace);
 
   const { profiler } = context;
 
@@ -31,7 +31,7 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   });
 
   try {
-    await runTasks({ graph, workspace, context, config });
+    await runTasks({ workspace, context, config });
   } catch (e) {
     logger.error("runTasks: " + (e.stack || e.message || e));
     process.exitCode = 1;

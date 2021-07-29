@@ -3,7 +3,7 @@ import { init } from "./command/init";
 import { run } from "./command/run";
 import { showHelp } from "./showHelp";
 import { logger } from "./logger";
-import { info } from "./command/info";
+//import { info } from "./command/info";
 import { initReporters } from "./logger/initReporters";
 import { version } from "./command/version";
 import { cache } from "./command/cache";
@@ -23,9 +23,9 @@ try {
       init(cwd);
       break;
 
-    case "info":
-      info(cwd, config);
-      break;
+    // case "info":
+    //   info(cwd, config);
+    //   break;
 
     case "version":
       version();
