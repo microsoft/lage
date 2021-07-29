@@ -7,6 +7,7 @@ import { logger } from "./logger";
 import { initReporters } from "./logger/initReporters";
 import { version } from "./command/version";
 import { cache } from "./command/cache";
+import { info } from "./command/info";
 
 // Parse CLI args
 const cwd = process.cwd();
@@ -23,9 +24,9 @@ try {
       init(cwd);
       break;
 
-    // case "info":
-    //   info(cwd, config);
-    //   break;
+    case "info":
+      info(cwd, config);
+      break;
 
     case "version":
       version();

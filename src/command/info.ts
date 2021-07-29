@@ -1,18 +1,13 @@
 import { logger } from "../logger";
 import { Config } from "../types/Config";
 import { getWorkspace } from "../workspace/getWorkspace";
-import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
-import {
-  generateTaskGraph,
-  getPackageTaskFromId,
-} from "@microsoft/task-scheduler";
 import { getPipelinePackages } from "../task/getPipelinePackages";
-import { Tasks } from "@microsoft/task-scheduler/lib/types";
-import { parsePipelineConfig } from "../task/parsePipelineConfig";
 import { PackageTaskInfo } from "../logger/LogEntry";
 import path from "path";
 import { Workspace } from "../types/Workspace";
 import { getNpmCommand } from "../task/getNpmCommand";
+import { Pipeline } from "../task/Pipeline";
+import { getPackageAndTask } from "../task/taskId";
 
 /**
  * Generates a graph and spit it out in stdout
@@ -53,58 +48,21 @@ import { getNpmCommand } from "../task/getNpmCommand";
 
 export async function info(cwd: string, config: Config) {
   const workspace = getWorkspace(cwd, config);
-  const tasks: Tasks = new Map();
-
-
-  
-  const pipelineConfig = parsePipelineConfig(config.pipeline);
-
-  for (const [taskName, taskDeps] of Object.entries(pipelineConfig.taskDeps)) {
-    const { deps, topoDeps } = taskDeps;
-    tasks.set(taskName, {
-      name: taskName,
-      run: () => Promise.resolve(true),
-      deps,
-      topoDeps,
-    });
-  }
-
-  const graph = generateTopologicGraph(workspace);
   const packages = getPipelinePackages(workspace, config);
-  const taskDeps = generateTaskGraph(
-    packages,
-    config.command.slice(1),
-    tasks,
-    graph,
-    pipelineConfig.packageTaskDeps,
-    false
-  );
+  const pipeline = new Pipeline(workspace, config);
+  const targetGraph = pipeline.generateTargetGraph();
 
   const packageTasks = new Map<string, PackageTaskInfo>();
 
-  for (const [fromId, toId] of taskDeps) {
-    let fromPackageTask = packageTasks.get(fromId);
-    let toPackageTask = packageTasks.get(toId);
-
-    // Try creating missing package task info
-    if (!fromPackageTask) {
-      fromPackageTask = createPackageTaskInfo(fromId, config, workspace);
-      if (fromPackageTask) {
-        packageTasks.set(fromId, fromPackageTask);
+  for (const [from, to] of targetGraph) {
+    for (const id of [from, to]) {
+      if (!packageTasks.has(id)) {
+        const packageTaskInfo = createPackageTaskInfo(id, config, workspace);
+        packageTasks.set(id, packageTaskInfo);
       }
     }
 
-    if (!toPackageTask) {
-      toPackageTask = createPackageTaskInfo(toId, config, workspace);
-      if (toPackageTask) {
-        packageTasks.set(toId, toPackageTask);
-      }
-    }
-
-    // If "from" AND "to" package tasks are valid, then connect them
-    if (fromPackageTask && toPackageTask) {
-      toPackageTask.dependencies.push(fromId);
-    }
+    packageTasks.get(to)!.dependencies.push(from);
   }
 
   logger.info(`info`, {
@@ -114,31 +72,28 @@ export async function info(cwd: string, config: Config) {
   });
 }
 
-function createPackageTaskInfo(
-  taskId: string,
-  config: Config,
-  workspace: Workspace
-) {
-  const [pkg, taskName] = getPackageTaskFromId(taskId)!;
+function createPackageTaskInfo(id: string, config: Config, workspace: Workspace): PackageTaskInfo {
+  const { packageName, task } = getPackageAndTask(id)!;
 
-  const scripts = workspace.allPackages[pkg].scripts;
-
-  if (scripts && scripts[taskName]) {
+  if (packageName) {
     return {
-      id: taskId,
-      command: [
-        config.npmClient,
-        ...getNpmCommand(config.node, config.args, taskName),
-      ],
+      id,
+      command: [config.npmClient, ...getNpmCommand(config.node, config.args, task)],
       dependencies: [],
       workingDirectory: path
-        .relative(
-          workspace.root,
-          path.dirname(workspace.allPackages[pkg].packageJsonPath)
-        )
+        .relative(workspace.root, path.dirname(workspace.allPackages[packageName].packageJsonPath))
         .replace(/\\/g, "/"),
-      package: pkg,
-      task: taskName,
+      package: packageName,
+      task,
+    };
+  } else {
+    return {
+      id,
+      command: ["echo", `"global script ${id}"`],
+      dependencies: [],
+      workingDirectory: ".",
+      package: undefined,
+      task,
     };
   }
 }

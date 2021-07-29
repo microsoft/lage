@@ -1,21 +1,19 @@
 import { getWorkspace } from "../workspace/getWorkspace";
 import { logger } from "../logger";
 import { Config } from "../types/Config";
-//import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
 import { signal } from "../task/abortSignal";
 import { displayReportAndExit } from "../displayReportAndExit";
 import { createContext } from "../context";
-import { runTasks } from "../task/taskRunner";
 import { NpmScriptTask } from "../task/NpmScriptTask";
 import { Reporter } from "../logger/reporters/Reporter";
+import { Workspace } from "../types/Workspace";
+import { RunContext } from "../types/RunContext";
+import { Pipeline } from "../task/Pipeline";
 
 // Run multiple
 export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   const context = createContext(config);
   const workspace = getWorkspace(cwd, config);
-
-  // // generate topological graph
-  // const graph = generateTopologicGraph(workspace);
 
   const { profiler } = context;
 
@@ -45,4 +43,13 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   if (!aborted) {
     displayReportAndExit(reporters, context);
   }
+}
+
+
+async function runTasks(options: { workspace: Workspace; context: RunContext; config: Config }) {
+  const { workspace, context, config } = options;
+
+  const pipeline = new Pipeline(workspace, config);
+
+  return await pipeline.run(context);
 }

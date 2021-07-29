@@ -28,35 +28,36 @@ export interface TargetConfigFactory {
   (args: FactoryArgs): TargetConfig | TargetConfig[];
 }
 
-/* Example
-
-const p: Pipeline = {
-  // sharded jest
-  jest: () => { 
-    const tasks: Target[] = [];
-    
-    for (let i = 0; i < 100; i++) {
-      tasks.push({
-        type: "global",
-        task: (args) => {
-          // run jest for a shard
-        },
-      });
-    }
-
-    return tasks;
-  },
-  
-  build: {
-    deps: ['^build']
-  },
-
-  validate: {
-    deps: []
-  }
-};
-
-*/
+/** Pipline Definition
+ * 
+ * Example
+ * 
+ * const p: Pipeline = {
+ *   // sharded jest
+ *   jest: () => { 
+ *     const tasks: Target[] = [];
+ *     
+ *     for (let i = 0; i < 100; i++) {
+ *       tasks.push({
+ *         type: "global",
+ *         task: (args) => {
+ *           // run jest for a shard
+ *         },
+ *       });
+ *     }
+ * 
+ *     return tasks;
+ *   },
+ *   
+ *   build: {
+ *     deps: ['^build']
+ *   },
+ * 
+ *   validate: {
+ *     deps: []
+ *   }
+ * };
+ */
 export interface PipelineDefinition {
   [task: string]: string[] | TargetConfig | TargetConfigFactory;
 }

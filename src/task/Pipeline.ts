@@ -42,17 +42,12 @@ export class Pipeline {
   ]);
   dependencies: [string, string][] = [];
   packageInfos: PackageInfos;
-  config: Config;
-  runContext: RunContext;
-  workspace: Workspace;
   graph: TopologicalGraph;
 
-  constructor(workspace: Workspace, config: Config, runContext: RunContext) {
-    this.workspace = workspace;
+  constructor(private workspace: Workspace, private config: Config) {
     this.packageInfos = workspace.allPackages;
-    this.config = config;
-    this.runContext = runContext;
     this.graph = generateTopologicGraph(workspace);
+    this.loadConfig(config);
   }
 
   private generatePackageTarget(packageName: string, task: string, deps: string[]): PipelineTarget {
@@ -68,8 +63,6 @@ export class Pipeline {
         const npmTask = new NpmScriptTask(task, info, this.config);
         return npmTask.run();
       },
-      priority: 0, // TODO: restore priority setting here
-      options: {},
       deps,
     };
   }
@@ -225,7 +218,7 @@ export class Pipeline {
     }
   }
 
-  private generateTargetGraph() {
+  generateTargetGraph() {
     const scope = getPipelinePackages(this.workspace, this.config);
     const tasks = this.config.command;
 
@@ -281,10 +274,9 @@ export class Pipeline {
         for (const [from, to] of this.dependencies) {
           if (to === id) {
             targetGraph.push([from, to]);
-          }
-
-          if (from) {
-            queue.push(from);
+            if (from) {
+              queue.push(from);
+            }
           }
         }
       }
@@ -293,7 +285,37 @@ export class Pipeline {
     return targetGraph;
   }
 
-  async run() {
+  loadConfig(config: Config) {
+    this.config = config;
+
+    for (const [id, targetDefinition] of Object.entries(this.config.pipeline)) {
+      this.addTargetDefinition(id, targetDefinition);
+    }
+
+    // add target definitions for unknown tasks
+    const knownTasks = new Set<string>();
+    for (const target of this.targets.values()) {
+      knownTasks.add(target.task);
+    }
+
+    const unknownCommands = this.config.command.filter((cmd) => !knownTasks.has(cmd));
+
+    for (const command of unknownCommands) {
+      this.addTargetDefinition(command, [`^${command}`]);
+    }
+
+    this.addDependencies();
+  }
+
+  private getTargetPriority(target: PipelineTarget) {
+    return target.priority !== undefined
+      ? target.priority
+      : this.config.priorities?.find(
+          (priority) => priority.package === target.packageName && priority.task === target.task
+        )?.priority;
+  }
+
+  async run(context: RunContext) {
     const nodeMap: PGraphNodeMap = new Map();
     const targetGraph = this.generateTargetGraph();
 
@@ -308,13 +330,15 @@ export class Pipeline {
               return Promise.resolve();
             }
 
-            const wrappedTask = new WrappedTarget(target, this.workspace.root, this.config, this.runContext);
+            const wrappedTask = new WrappedTarget(target, this.workspace.root, this.config, context);
             return wrappedTask.run();
           },
-          priority: target.priority,
+          priority: this.getTargetPriority(target),
         });
       }
     }
+
+    //    console.log(targetGraph.filter((edge) => edge[0].includes("build") || edge[1].includes("build")));
 
     await pGraph(nodeMap, targetGraph).run({
       concurrency: this.config.concurrency,
