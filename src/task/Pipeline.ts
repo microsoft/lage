@@ -196,17 +196,12 @@ export class Pipeline {
           for (const dependencyId of dependencyIds) {
             this.dependencies.push([dependencyId, id]);
           }
-        } else if (packageName) {
-          if (this.targets.has(getTargetId(packageName, dep))) {
+        } else if (packageName && this.targets.has(getTargetId(packageName, dep))) {
             this.dependencies.push([getTargetId(packageName, dep), target.id]);
-          }
         } else if (!dep.startsWith("^")) {
           const dependencyIds = targets
-            .filter((needle) => {
-              const { task } = needle;
-              return task === dep;
-            })
-            .map((needle) => needle.id);
+            .filter(needle => needle.task === dep)
+            .map(needle => needle.id);
 
           for (const dependencyId of dependencyIds) {
             this.dependencies.push([dependencyId, id]);
@@ -231,13 +226,15 @@ export class Pipeline {
       for (const pkg of scope) {
         if (this.targets.has(getTargetId(pkg, task))) {
           queue.push(getTargetId(pkg, task));
+          targetGraph.push([START_TARGET_ID, getTargetId(pkg, task)]);
         }
       }
 
       // if we have globals, send those into the queue
       for (const target of this.targets.values()) {
         if (target.task === task && !target.packageName) {
-          queue.push(task);
+          queue.push(target.id);
+          targetGraph.push([START_TARGET_ID, target.id]);
         }
       }
     }
@@ -274,6 +271,7 @@ export class Pipeline {
         for (const [from, to] of this.dependencies) {
           if (to === id) {
             targetGraph.push([from, to]);
+
             if (from) {
               queue.push(from);
             }
@@ -297,6 +295,8 @@ export class Pipeline {
     for (const target of this.targets.values()) {
       knownTasks.add(target.task);
     }
+
+    knownTasks.add(START_TARGET_ID);
 
     const unknownCommands = this.config.command.filter((cmd) => !knownTasks.has(cmd));
 

@@ -58,11 +58,16 @@ export async function info(cwd: string, config: Config) {
     for (const id of [from, to]) {
       if (!packageTasks.has(id)) {
         const packageTaskInfo = createPackageTaskInfo(id, config, workspace);
-        packageTasks.set(id, packageTaskInfo);
+
+        if (packageTaskInfo) {
+          packageTasks.set(id, packageTaskInfo);
+        }
       }
     }
 
-    packageTasks.get(to)!.dependencies.push(from);
+    if (packageTasks.has(to)) {
+      packageTasks.get(to)!.dependencies.push(from);
+    }
   }
 
   logger.info(`info`, {
@@ -72,20 +77,24 @@ export async function info(cwd: string, config: Config) {
   });
 }
 
-function createPackageTaskInfo(id: string, config: Config, workspace: Workspace): PackageTaskInfo {
+function createPackageTaskInfo(id: string, config: Config, workspace: Workspace): PackageTaskInfo | undefined {
   const { packageName, task } = getPackageAndTask(id)!;
 
   if (packageName) {
-    return {
-      id,
-      command: [config.npmClient, ...getNpmCommand(config.node, config.args, task)],
-      dependencies: [],
-      workingDirectory: path
-        .relative(workspace.root, path.dirname(workspace.allPackages[packageName].packageJsonPath))
-        .replace(/\\/g, "/"),
-      package: packageName,
-      task,
-    };
+    const info = workspace.allPackages[packageName];
+
+    if (!!info.scripts?.[task]) {
+      return {
+        id,
+        command: [config.npmClient, ...getNpmCommand(config.node, config.args, task)],
+        dependencies: [],
+        workingDirectory: path
+          .relative(workspace.root, path.dirname(workspace.allPackages[packageName].packageJsonPath))
+          .replace(/\\/g, "/"),
+        package: packageName,
+        task,
+      };
+    }
   } else {
     return {
       id,
