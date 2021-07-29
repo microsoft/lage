@@ -36,14 +36,16 @@ interface PipelineTarget {
   options?: any;
 }
 
+const START_TARGET_ID = "__start";
+
 export class Pipeline {
   targets: Map<string, PipelineTarget> = new Map([
     [
-      "__start",
+      START_TARGET_ID,
       {
-        id: "__start",
+        id: START_TARGET_ID,
         run: () => {},
-        task: "__start",
+        task: START_TARGET_ID,
       },
     ],
   ]);
@@ -180,7 +182,7 @@ export class Pipeline {
       const { deps, packageName, id } = target;
 
       if (!deps || deps.length === 0) {
-        this.dependencies.push(["__start", id]);
+        this.dependencies.push([START_TARGET_ID, id]);
         continue;
       }
 
