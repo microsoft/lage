@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix: handle 'fs' errors while saving profile: forcing lage to fail",
-  "packageName": "lage",
-  "email": "nickykalu@microsoft.com",
-  "dependentChangeType": "patch"
-}

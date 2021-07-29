@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 12 Jul 2021 23:42:06 GMT and should not be manually modified.
+This log was last generated on Thu, 29 Jul 2021 16:47:03 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.31.1
+
+Thu, 29 Jul 2021 16:47:03 GMT
+
+### Patches
+
+- Fix: handle 'fs' errors while saving profile: forcing lage to fail (nickykalu@microsoft.com)
 
 ## 0.31.0
 
