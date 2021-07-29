@@ -40,8 +40,8 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
       const profileFile = profiler.output();
       logger.info(`runTasks: Profile saved to ${profileFile}`);
     } catch (e) {
-        logger.error(`An error occured while trying to write profile: ${e.message}`);
-        process.exitCode = 1;
+      logger.error(`An error occured while trying to write profile: ${e.message}`);
+      process.exitCode = 1;
     }
   }
 
@@ -49,7 +49,6 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
     displayReportAndExit(reporters, context);
   }
 }
-
 
 async function runTasks(options: { workspace: Workspace; context: RunContext; config: Config }) {
   const { workspace, context, config } = options;
