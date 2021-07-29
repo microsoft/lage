@@ -10,13 +10,15 @@ import pGraph, { PGraphNodeMap } from "p-graph";
 import path from "path";
 import { getPipelinePackages } from "./getPipelinePackages";
 import { getPackageAndTask, getTargetId } from "./taskId";
+import { WrappedTask } from "./WrappedTask";
 
 /** individual targets to be kept track inside pipeline */
-interface PipelineTarget {
+export interface PipelineTarget {
   id: string;
   packageName?: string;
   task: string;
-  run: (args: TaskArgs) => Promise<boolean> | void;
+  cwd: string;
+  run: (args: TaskArgs) => Promise<unknown> | void;
   deps?: string[];
   outputs?: string[];
   priority?: number;
@@ -32,6 +34,7 @@ export class Pipeline {
       START_TARGET_ID,
       {
         id: START_TARGET_ID,
+        cwd: "",
         run: () => {},
         task: START_TARGET_ID,
       },
@@ -77,6 +80,7 @@ export class Pipeline {
         cache: true,
         outputs: this.config.cacheOptions.outputGlob,
         packageName: packageWithScript,
+        cwd: path.dirname(this.packageInfos[packageWithScript].packageJsonPath),
         run: () => {
           const npmTask = new NpmScriptTask(
             task,
@@ -121,6 +125,7 @@ export class Pipeline {
         {
           ...target,
           id: `${id}.${index}`,
+          cwd: this.workspace.root,
           task: id,
           run: target.run || (() => {}),
         },
@@ -131,6 +136,7 @@ export class Pipeline {
         id: getTargetId(pkg, id),
         ...target,
         task: id,
+        cwd: path.dirname(this.packageInfos[pkg].packageJsonPath),
         packageName: pkg,
         run: target.run || (() => {}),
       }));
@@ -185,10 +191,9 @@ export class Pipeline {
           const dependencyIds = targets
             .filter((needle) => {
               const { task, packageName: needlePackageName } = needle;
-             
+
               return (
-                task === depTask &&
-                this.graph[packageName].dependencies.some((depPkg) => depPkg === needlePackageName)
+                task === depTask && this.graph[packageName].dependencies.some((depPkg) => depPkg === needlePackageName)
               );
             })
             .map((needle) => needle.id);
@@ -296,22 +301,13 @@ export class Pipeline {
 
       for (const target of [fromTarget, toTarget]) {
         nodeMap.set(target.id, {
-          run: async () => {
-            if (target.packageName) {
-              await target.run({
-                packageName: target.packageName,
-                config: this.config,
-                cwd: path.dirname(this.packageInfos[target.packageName].packageJsonPath),
-                options: target.options,
-                taskName: getPackageAndTask(target.id).task,
-              });
-            } else {
-              await target.run({
-                config: this.config,
-                cwd: this.workspace.root,
-                options: target.options,
-              });
+          run: () => {
+            if (target.id === START_TARGET_ID) {
+              return Promise.resolve();
             }
+
+            const wrappedTask = new WrappedTask(target, this.workspace.root, this.config, this.runContext);
+            return wrappedTask.run();
           },
           priority: target.priority,
         });
