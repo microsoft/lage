@@ -14,22 +14,22 @@ export class JsonReporter implements Reporter {
   }
 
   summarize(context: RunContext) {
-    const { measures, tasks } = context;
+    const { measures, targets } = context;
     const summary: any = {};
     const taskStats: any[] = [];
 
-    for (const task of tasks.values()) {
+    for (const wrappedTarget of targets.values()) {
       taskStats.push({
-        package: task.info.name,
-        task: task.task,
-        duration: hrToSeconds(task.duration),
-        status: task.status,
-        npmArgs: task.npmArgs,
+        package: wrappedTarget.target.packageName,
+        task: wrappedTarget.target.task,
+        duration: hrToSeconds(wrappedTarget.duration),
+        status: wrappedTarget.status,
+        npmArgs: wrappedTarget.npmArgs,
       });
     }
 
-    if (measures.failedTasks && measures.failedTasks.length > 0) {
-      summary.failedTasks = measures.failedTasks;
+    if (measures.failedTargets && measures.failedTargets.length > 0) {
+      summary.failedTargets = measures.failedTargets;
     }
 
     summary.duration = hrToSeconds(measures.duration);

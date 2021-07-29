@@ -1,3 +1,4 @@
+import { TaskLogger } from "../logger/TaskLogger";
 import { Config } from "./Config";
 
 export interface TaskArgs {
@@ -6,6 +7,7 @@ export interface TaskArgs {
   options?: any;
   cwd: string;
   config: Config;
+  logger: TaskLogger;
 }
 
 /** target configuration */

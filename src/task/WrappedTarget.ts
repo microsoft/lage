@@ -9,7 +9,7 @@ import { Config } from "../types/Config";
 import { getPackageAndTask } from "./taskId";
 import { CacheOptions } from "../types/CacheOptions";
 
-export type TaskStatus = "completed" | "failed" | "pending" | "started" | "skipped";
+export type TargetStatus = "completed" | "failed" | "pending" | "started" | "skipped";
 
 export class WrappedTarget {
   static npmCmd: string = "";
@@ -19,12 +19,12 @@ export class WrappedTarget {
   npmArgs: string[] = [];
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
-  status: TaskStatus;
+  status: TargetStatus;
   logger: TaskLogger;
   cacheOptions: CacheOptions;
 
   constructor(
-    private target: PipelineTarget,
+    public target: PipelineTarget,
     private root: string,
     private config: Config,
     private context: RunContext
@@ -36,6 +36,8 @@ export class WrappedTarget {
       ...config.cacheOptions,
       outputGlob: [...(config.cacheOptions.outputGlob || []), ...(target.outputGlob || [])],
     };
+
+    this.context.targets.set(target.id, this);
   }
 
   onStart() {
@@ -126,12 +128,14 @@ export class WrappedTarget {
             cwd: target.cwd,
             options: target.options,
             taskName: getPackageAndTask(target.id).task,
+            logger
           });
         } else {
           result = target.run({
             config: this.config,
             cwd: target.cwd,
             options: target.options,
+            logger
           });
         }
 
@@ -148,13 +152,8 @@ export class WrappedTarget {
 
       this.onComplete();
     } catch (e) {
-      context.measures.failedTasks = context.measures.failedTasks || [];
-
-      if (target.packageName) {
-        context.measures.failedTasks.push({ pkg: target.packageName, task: target.task });
-      } else {
-        context.measures.failedTasks.push({ pkg: "[GLOBAL]", task: `${target.task} (${target.id})` });
-      }
+      context.measures.failedTargets = context.measures.failedTargets || [];
+      context.measures.failedTargets.push(target.id);
 
       this.onFail();
 

@@ -59,8 +59,8 @@ export class Pipeline {
       outputGlob: this.config.cacheOptions.outputGlob,
       packageName: packageName,
       cwd: path.dirname(this.packageInfos[packageName].packageJsonPath),
-      run: () => {
-        const npmTask = new NpmScriptTask(task, info, this.config);
+      run: (args) => {
+        const npmTask = new NpmScriptTask(task, info, this.config, args.logger);
         return npmTask.run();
       },
       deps,
@@ -131,7 +131,7 @@ export class Pipeline {
         task: id,
         cwd: path.dirname(this.packageInfos[pkg].packageJsonPath),
         packageName: pkg,
-        run: target.run || (() => new NpmScriptTask(id, this.packageInfos[pkg], this.config).run()),
+        run: target.run || ((args) => new NpmScriptTask(id, this.packageInfos[pkg], this.config, args.logger).run()),
       }));
     }
   }
@@ -337,8 +337,6 @@ export class Pipeline {
         });
       }
     }
-
-    //    console.log(targetGraph.filter((edge) => edge[0].includes("build") || edge[1].includes("build")));
 
     await pGraph(nodeMap, targetGraph).run({
       concurrency: this.config.concurrency,

@@ -35,9 +35,9 @@ export function createContext(
     measures: {
       start: [0, 0],
       duration: [0, 0],
-      failedTasks: [],
+      failedTargets: [],
     },
-    tasks: new Map(),
+    targets: new Map(),
     profiler,
   };
 }

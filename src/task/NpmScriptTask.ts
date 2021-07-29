@@ -20,7 +20,6 @@ export class NpmScriptTask {
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
   status: NpmScriptTaskStatus;
-  logger: TaskLogger;
 
   static killAllActiveProcesses() {
     // first, send SIGTERM everywhere
@@ -38,11 +37,9 @@ export class NpmScriptTask {
     }, NpmScriptTask.gracefulKillTimeout);
   }
 
-  constructor(public task: string, public info: PackageInfo, private config: Config) {
+  constructor(public task: string, public info: PackageInfo, private config: Config, private logger: TaskLogger) {
     NpmScriptTask.npmCmd = NpmScriptTask.npmCmd || findNpmClient(config.npmClient);
     this.status = "pending";
-    this.logger = new TaskLogger(info.name, task);
-
     this.npmArgs = getNpmCommand(config.node, config.args, task);
   }
 
