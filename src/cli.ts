@@ -3,11 +3,10 @@ import { init } from "./command/init";
 import { run } from "./command/run";
 import { showHelp } from "./showHelp";
 import { logger } from "./logger";
-//import { info } from "./command/info";
+import { info } from "./command/info";
 import { initReporters } from "./logger/initReporters";
 import { version } from "./command/version";
 import { cache } from "./command/cache";
-import { info } from "./command/info";
 
 // Parse CLI args
 const cwd = process.cwd();
