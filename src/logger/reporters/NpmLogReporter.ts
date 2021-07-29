@@ -5,7 +5,7 @@ import { LogLevel } from "../LogLevel";
 import { LogEntry, LogStructuredData, TaskData, InfoData } from "../LogEntry";
 import { formatDuration, hrToSeconds } from "./formatDuration";
 import { RunContext } from "../../types/RunContext";
-import { getTaskId } from "@microsoft/task-scheduler";
+import { getTargetId } from "../../task/taskId";
 import { NpmScriptTaskStatus } from "../../task/NpmScriptTask";
 import { LoggerOptions } from "../../types/LoggerOptions";
 
@@ -138,7 +138,7 @@ export class NpmLogReporter implements Reporter {
   }
 
   private logTaskEntryInGroup(pkg: string, task: string, logEntry: LogEntry) {
-    const taskId = getTaskId(pkg, task);
+    const taskId = getTargetId(pkg, task);
 
     this.groupedEntries.set(taskId, this.groupedEntries.get(taskId) || []);
     this.groupedEntries.get(taskId)?.push(logEntry);
@@ -230,7 +230,7 @@ export class NpmLogReporter implements Reporter {
     if (measures.failedTasks && measures.failedTasks.length > 0) {
       for (const failedTask of measures.failedTasks) {
         const { pkg, task } = failedTask;
-        const taskId = getTaskId(pkg, task);
+        const taskId = getTargetId(pkg, task);
         const taskLogs = tasks.get(taskId)?.logger.getLogs();
 
         log.error(

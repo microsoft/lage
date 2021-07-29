@@ -181,16 +181,14 @@ export class Pipeline {
         } else if (dep.startsWith("^") && packageName) {
           // topo dep -> build: ['^build']
           const depTask = dep.substr(1);
-          const targetPackageInfo = this.packageInfos[packageName];
 
           const dependencyIds = targets
             .filter((needle) => {
-              const { task } = needle;
+              const { task, packageName: needlePackageName } = needle;
+             
               return (
                 task === depTask &&
-                this.graph[packageName].dependencies.some((depPkg) => {
-                  depPkg === targetPackageInfo.name;
-                })
+                this.graph[packageName].dependencies.some((depPkg) => depPkg === needlePackageName)
               );
             })
             .map((needle) => needle.id);
