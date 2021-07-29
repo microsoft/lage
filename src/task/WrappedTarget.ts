@@ -7,10 +7,11 @@ import { hrToSeconds } from "../logger/reporters/formatDuration";
 import { PipelineTarget } from "./Pipeline";
 import { Config } from "../types/Config";
 import { getPackageAndTask } from "./taskId";
+import { CacheOptions } from "../types/CacheOptions";
 
 export type TaskStatus = "completed" | "failed" | "pending" | "started" | "skipped";
 
-export class WrappedTask {
+export class WrappedTarget {
   static npmCmd: string = "";
   static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
@@ -20,6 +21,7 @@ export class WrappedTask {
   duration: [number, number] = [0, 0];
   status: TaskStatus;
   logger: TaskLogger;
+  cacheOptions: CacheOptions;
 
   constructor(
     private target: PipelineTarget,
@@ -29,6 +31,11 @@ export class WrappedTask {
   ) {
     this.status = "pending";
     this.logger = new TaskLogger(target.packageName || "[GLOBAL]", target.packageName ? target.task : target.id);
+
+    this.cacheOptions = {
+      ...config.cacheOptions,
+      outputGlob: [...(config.cacheOptions.outputGlob || []), ...(target.outputGlob || [])],
+    };
   }
 
   onStart() {
@@ -69,13 +76,13 @@ export class WrappedTask {
     let hash: string | null = null;
     let cacheHit = false;
 
-    const { target, root, config } = this;
+    const { target, root, config, cacheOptions } = this;
 
     if (config.cache) {
-      hash = await cacheHash(target.id, target.cwd, root, config.cacheOptions, config.args);
+      hash = await cacheHash(target.id, target.cwd, root, cacheOptions, config.args);
 
       if (hash && !config.resetCache) {
-        cacheHit = await cacheFetch(hash, target.id, target.cwd, config.cacheOptions);
+        cacheHit = await cacheFetch(hash, target.id, target.cwd, cacheOptions);
       }
     }
 
@@ -83,9 +90,9 @@ export class WrappedTask {
   }
 
   async saveCache(hash: string | null) {
-    const { logger, config, target } = this;
+    const { logger, target, cacheOptions } = this;
     logger.verbose(`hash put ${hash}`);
-    await cachePut(hash, target.cwd, config.cacheOptions);
+    await cachePut(hash, target.cwd, cacheOptions);
   }
 
   async run() {

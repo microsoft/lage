@@ -49,7 +49,6 @@ export class NpmScriptTask {
   run() {
     const { info, logger, npmArgs } = this;
     const { npmCmd } = NpmScriptTask;
-
     return new Promise<void>((resolve, reject) => {
       logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}`);
 

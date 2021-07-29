@@ -10,7 +10,7 @@ import pGraph, { PGraphNodeMap } from "p-graph";
 import path from "path";
 import { getPipelinePackages } from "./getPipelinePackages";
 import { getPackageAndTask, getTargetId } from "./taskId";
-import { WrappedTask } from "./WrappedTask";
+import { WrappedTarget } from "./WrappedTarget";
 
 /** individual targets to be kept track inside pipeline */
 export interface PipelineTarget {
@@ -20,7 +20,7 @@ export interface PipelineTarget {
   cwd: string;
   run: (args: TaskArgs) => Promise<unknown> | void;
   deps?: string[];
-  outputs?: string[];
+  outputGlob?: string[];
   priority?: number;
   cache?: boolean;
   options?: any;
@@ -55,6 +55,25 @@ export class Pipeline {
     this.graph = generateTopologicGraph(workspace);
   }
 
+  private generatePackageTarget(packageName: string, task: string, deps: string[]): PipelineTarget {
+    const info = this.packageInfos[packageName];
+    return {
+      id: getTargetId(packageName, task),
+      task,
+      cache: this.config.cache,
+      outputGlob: this.config.cacheOptions.outputGlob,
+      packageName: packageName,
+      cwd: path.dirname(this.packageInfos[packageName].packageJsonPath),
+      run: () => {
+        const npmTask = new NpmScriptTask(task, info, this.config);
+        return npmTask.run();
+      },
+      priority: 0, // TODO: restore priority setting here
+      options: {},
+      deps,
+    };
+  }
+
   /**
    * Expands the shorthand notation to pipeline targets (executable units)
    */
@@ -73,22 +92,7 @@ export class Pipeline {
     }
 
     for (const packageWithScript of packagesWithScript) {
-      const info = this.packageInfos[packageWithScript];
-      results.push({
-        id: getTargetId(packageWithScript, task),
-        task,
-        cache: true,
-        outputs: this.config.cacheOptions.outputGlob,
-        packageName: packageWithScript,
-        cwd: path.dirname(this.packageInfos[packageWithScript].packageJsonPath),
-        run: () => {
-          const npmTask = new NpmScriptTask(task, info, this.config);
-          return npmTask.run();
-        },
-        priority: 0, // TODO: restore priority setting here
-        options: {},
-        deps,
-      });
+      results.push(this.generatePackageTarget(packageWithScript, task, deps));
     }
 
     return results;
@@ -119,6 +123,7 @@ export class Pipeline {
         {
           ...target,
           id: `${id}.${index}`,
+          cache: target.cache !== false,
           cwd: this.workspace.root,
           task: id,
           run: target.run || (() => {}),
@@ -127,12 +132,13 @@ export class Pipeline {
     } else {
       const packages = Object.keys(this.packageInfos);
       return packages.map((pkg) => ({
-        id: getTargetId(pkg, id),
         ...target,
+        id: getTargetId(pkg, id),
+        cache: target.cache !== false,
         task: id,
         cwd: path.dirname(this.packageInfos[pkg].packageJsonPath),
         packageName: pkg,
-        run: target.run || (() => {}),
+        run: target.run || (() => new NpmScriptTask(id, this.packageInfos[pkg], this.config).run()),
       }));
     }
   }
@@ -143,6 +149,7 @@ export class Pipeline {
    * @param targetDefinition
    */
   addTargetDefinition(id: string, targetDefinition: string[] | TargetConfig | TargetConfigFactory) {
+    // e.g. build: ["^build", "prepare"]
     if (Array.isArray(targetDefinition)) {
       const targets = this.expandShorthandTargets(id, targetDefinition);
 
@@ -150,6 +157,7 @@ export class Pipeline {
         this.targets.set(target.id!, target);
       }
     } else {
+      // e.g. build: { /* target config */ }
       const targets =
         typeof targetDefinition === "function" ? this.generateFactoryTargets(targetDefinition) : [targetDefinition];
 
@@ -300,7 +308,7 @@ export class Pipeline {
               return Promise.resolve();
             }
 
-            const wrappedTask = new WrappedTask(target, this.workspace.root, this.config, this.runContext);
+            const wrappedTask = new WrappedTarget(target, this.workspace.root, this.config, this.runContext);
             return wrappedTask.run();
           },
           priority: target.priority,
