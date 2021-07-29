@@ -36,8 +36,13 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   }
 
   if (config.profile) {
-    const profileFile = profiler.output();
-    logger.info(`runTasks: Profile saved to ${profileFile}`);
+    try {
+      const profileFile = profiler.output();
+      logger.info(`runTasks: Profile saved to ${profileFile}`);
+    } catch (e) {
+        logger.error(`An error occured while trying to write profile: ${e.message}`);
+        process.exitCode = 1;
+    }
   }
 
   if (!aborted) {

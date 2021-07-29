@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 29 Jul 2021 16:47:03 GMT",
+      "tag": "lage_v0.31.1",
+      "version": "0.31.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix: handle 'fs' errors while saving profile: forcing lage to fail",
+            "author": "nickykalu@microsoft.com",
+            "commit": "d3f33d4c027baf81f2bb498f648e2d51f26186ca",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 12 Jul 2021 23:42:06 GMT",
       "tag": "lage_v0.31.0",
       "version": "0.31.0",
