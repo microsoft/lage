@@ -9,19 +9,7 @@ import { Workspace } from "../types/Workspace";
 import pGraph, { PGraphNodeMap } from "p-graph";
 import path from "path";
 import { getPipelinePackages } from "./getPipelinePackages";
-
-export function getTargetId(pkgName: string, task: string) {
-  return `${pkgName}#${task}`;
-}
-
-export function getPackageAndTask(targetId: string) {
-  if (targetId.includes("#")) {
-    const parts = targetId.split("#");
-    return { packageName: parts[0], task: parts[1] };
-  } else {
-    return { packageName: undefined, task: targetId };
-  }
-}
+import { getPackageAndTask, getTargetId } from "./taskId";
 
 /** individual targets to be kept track inside pipeline */
 interface PipelineTarget {
