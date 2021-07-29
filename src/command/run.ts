@@ -6,11 +6,14 @@ import { displayReportAndExit } from "../displayReportAndExit";
 import { createContext } from "../context";
 import { NpmScriptTask } from "../task/NpmScriptTask";
 import { Reporter } from "../logger/reporters/Reporter";
-import { Workspace } from "../types/Workspace";
-import { RunContext } from "../types/RunContext";
 import { Pipeline } from "../task/Pipeline";
 
-// Run multiple
+/**
+ * Prepares and runs a pipeline
+ * @param cwd 
+ * @param config 
+ * @param reporters 
+ */
 export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   const context = createContext(config);
   const workspace = getWorkspace(cwd, config);
@@ -29,7 +32,8 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   });
 
   try {
-    await runTasks({ workspace, context, config });
+    const pipeline = new Pipeline(workspace, config);
+    await pipeline.run(context);
   } catch (e) {
     logger.error("runTasks: " + (e.stack || e.message || e));
     process.exitCode = 1;
@@ -48,12 +52,4 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   if (!aborted) {
     displayReportAndExit(reporters, context);
   }
-}
-
-async function runTasks(options: { workspace: Workspace; context: RunContext; config: Config }) {
-  const { workspace, context, config } = options;
-
-  const pipeline = new Pipeline(workspace, config);
-
-  return await pipeline.run(context);
 }
