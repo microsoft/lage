@@ -4,8 +4,6 @@ import { controller } from "./abortSignal";
 import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { RunContext } from "../types/RunContext";
 import { hrToSeconds } from "../logger/reporters/formatDuration";
-import { NpmClient } from "../types/ConfigOptions";
-import { CacheOptions } from "../types/CacheOptions";
 import { PipelineTarget } from "./Pipeline";
 import { Config } from "../types/Config";
 import { getPackageAndTask } from "./taskId";

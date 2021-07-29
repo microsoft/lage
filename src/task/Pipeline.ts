@@ -82,13 +82,7 @@ export class Pipeline {
         packageName: packageWithScript,
         cwd: path.dirname(this.packageInfos[packageWithScript].packageJsonPath),
         run: () => {
-          const npmTask = new NpmScriptTask(
-            task,
-            path.dirname(info.packageJsonPath),
-            info,
-            generateTaskConfig(this.config),
-            this.runContext
-          );
+          const npmTask = new NpmScriptTask(task, info, this.config);
           return npmTask.run();
         },
         priority: 0, // TODO: restore priority setting here
@@ -320,15 +314,3 @@ export class Pipeline {
     });
   }
 }
-
-const generateTaskConfig = (config: Config): any => ({
-  cache: config.cache,
-  continueOnError: config.continue,
-  safeExit: config.safeExit,
-  npmClient: config.npmClient,
-  cacheOptions: config.cacheOptions,
-  reporter: config.reporter,
-  resetCache: config.resetCache,
-  nodeArgs: config.node,
-  passThroughArgs: config.args,
-});
