@@ -1,5 +1,5 @@
 import { Monorepo } from "../mock/monorepo";
-import { getTaskId } from "@microsoft/task-scheduler";
+import { getTargetId } from '../../src/task/taskId';
 import { parseNdJson } from "./parseNdJson";
 
 describe("bigapp test", () => {
@@ -34,50 +34,50 @@ describe("bigapp test", () => {
       "BuildTool",
     ]) {
       for (const task of ["build", "test"]) {
-        indices[getTaskId(pkg, task)] = jsonOutput.findIndex((e) =>
+        indices[getTargetId(pkg, task)] = jsonOutput.findIndex((e) =>
           filterEntry(e.data, pkg, task, "completed")
         );
       }
     }
 
-    expect(indices[getTaskId("BuildTool", "build")]).toBeLessThan(
-      indices[getTaskId("BuildTool", "test")]
+    expect(indices[getTargetId("BuildTool", "build")]).toBeLessThan(
+      indices[getTargetId("BuildTool", "test")]
     );
 
-    expect(indices[getTaskId("BuildTool", "build")]).toBeLessThan(
-      indices[getTaskId("FooCore", "build")]
+    expect(indices[getTargetId("BuildTool", "build")]).toBeLessThan(
+      indices[getTargetId("FooCore", "build")]
     );
 
-    expect(indices[getTaskId("BuildTool", "build")]).toBeLessThan(
-      indices[getTaskId("FooApp1", "build")]
+    expect(indices[getTargetId("BuildTool", "build")]).toBeLessThan(
+      indices[getTargetId("FooApp1", "build")]
     );
 
-    expect(indices[getTaskId("BuildTool", "build")]).toBeLessThan(
-      indices[getTaskId("FooApp2", "build")]
+    expect(indices[getTargetId("BuildTool", "build")]).toBeLessThan(
+      indices[getTargetId("FooApp2", "build")]
     );
 
-    expect(indices[getTaskId("BuildTool", "build")]).toBeLessThan(
-      indices[getTaskId("BarPage", "build")]
+    expect(indices[getTargetId("BuildTool", "build")]).toBeLessThan(
+      indices[getTargetId("BarPage", "build")]
     );
 
-    expect(indices[getTaskId("BuildTool", "build")]).toBeLessThan(
-      indices[getTaskId("BarCore", "build")]
+    expect(indices[getTargetId("BuildTool", "build")]).toBeLessThan(
+      indices[getTargetId("BarCore", "build")]
     );
 
-    expect(indices[getTaskId("BarCore", "build")]).toBeLessThan(
-      indices[getTaskId("BarPage", "build")]
+    expect(indices[getTargetId("BarCore", "build")]).toBeLessThan(
+      indices[getTargetId("BarPage", "build")]
     );
 
-    expect(indices[getTaskId("FooCore", "build")]).toBeLessThan(
-      indices[getTaskId("FooApp2", "build")]
+    expect(indices[getTargetId("FooCore", "build")]).toBeLessThan(
+      indices[getTargetId("FooApp2", "build")]
     );
 
-    expect(indices[getTaskId("FooCore", "build")]).toBeLessThan(
-      indices[getTaskId("FooCore", "test")]
+    expect(indices[getTargetId("FooCore", "build")]).toBeLessThan(
+      indices[getTargetId("FooCore", "test")]
     );
 
-    expect(indices[getTaskId("BarPage", "build")]).toBeLessThan(
-      indices[getTaskId("BarPage", "test")]
+    expect(indices[getTargetId("BarPage", "build")]).toBeLessThan(
+      indices[getTargetId("BarPage", "test")]
     );
 
     repo.cleanup();
