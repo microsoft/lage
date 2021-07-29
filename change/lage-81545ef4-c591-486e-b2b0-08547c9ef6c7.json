@@ -1,0 +1,6 @@
+{
+  "type": "major",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
