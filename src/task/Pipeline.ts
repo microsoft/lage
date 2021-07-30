@@ -11,6 +11,9 @@ import path from "path";
 import { getPipelinePackages } from "./getPipelinePackages";
 import { getPackageAndTask, getTargetId } from "./taskId";
 import { WrappedTarget } from "./WrappedTarget";
+import { DistributedTarget } from "./DistributedTarget";
+import Queue from "bee-queue";
+import { initWorkerQueue, workerPubSubChannel } from "./workerQueue";
 
 /** individual targets to be kept track inside pipeline */
 export interface PipelineTarget {
@@ -28,6 +31,23 @@ export interface PipelineTarget {
 
 export const START_TARGET_ID = "__start";
 
+/**
+ * The Pipeline class is the heart of lage's ability to parse a set of target (shorthand, full target config, or even a factory of configs)
+ *
+ * Some notes:
+ * - given a workspace (package infos) and config (merged CLI and config from file), it'll then parse the config.pipeline
+ * - the pipeline configuration is defined in the types/PipelineDefinition.ts file
+ * - loading config means that for each of the config.pipeline key-value, it'll try to convert them into a set of PipelineTarget
+ * - PipelineTargets are objects that hold enough info for an execution engine to run the target function (provides info about priority, cache output globs, etc.)
+ * - for the shorthand (e.g. {build: ['^build']}), it'll assume to the PipelineTarget is of "package" type & that the run functions are npm scripts
+ * - for a target config, it'll default to "package" and create a PipelineTarget
+ * - for a target config factory function, it'll run that function and expect a list of target configs as a result. Those will be converted to a list of PipelineTarget's
+ * - after creating the pipeline targets, it'll determine the dependencies (the edges) from one target to another
+ * - a pipeline "run(context)" call will provide some "entry targets", and then a subgraph will be generated to be submitted to the execution engine (p-graph)
+ *
+ * Distributed notes:
+ * - for doing distributed work, the WrapperTask will instead place the PipelineTarget info into a worker queue
+ */
 export class Pipeline {
   targets: Map<string, PipelineTarget> = new Map([
     [
@@ -327,6 +347,15 @@ export class Pipeline {
     const nodeMap: PGraphNodeMap = new Map();
     const targetGraph = this.generateTargetGraph();
 
+    let redisClient;
+    let workerQueue;
+
+    if (this.config.dist) {
+      const results = await initWorkerQueue(this.config.workerQueueOptions, false);
+      redisClient = results.redisClient;
+      workerQueue = results.workerQueue;
+    }
+
     for (const [from, to] of targetGraph) {
       const fromTarget = this.targets.get(from)!;
       const toTarget = this.targets.get(to)!;
@@ -338,8 +367,13 @@ export class Pipeline {
               return Promise.resolve();
             }
 
-            const wrappedTask = new WrappedTarget(target, this.workspace.root, this.config, context);
-            return wrappedTask.run();
+            if (!this.config.dist) {
+              const wrappedTask = new WrappedTarget(target, this.workspace.root, this.config, context);
+              return wrappedTask.run();
+            } else {
+              const distributedTask = new DistributedTarget(target, this.config, context, workerQueue);
+              return distributedTask.run();
+            }
           },
           priority: this.getTargetPriority(target),
         });
@@ -350,5 +384,14 @@ export class Pipeline {
       concurrency: this.config.concurrency,
       continue: this.config.continue,
     });
+
+    if (redisClient) {
+      redisClient.publish(workerPubSubChannel, "done");
+      redisClient.quit();
+    }
+  
+    if (workerQueue) {
+      workerQueue.close();
+    }
   }
 }

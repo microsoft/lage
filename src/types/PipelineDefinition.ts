@@ -1,5 +1,6 @@
 import { TaskLogger } from "../logger/TaskLogger";
 import { Config } from "./Config";
+import { TargetStatus } from "./TargetStatus";
 
 export interface TaskArgs {
   packageName?: string;
@@ -11,7 +12,7 @@ export interface TaskArgs {
 }
 
 /** target configuration */
-export interface TargetConfig { 
+export interface TargetConfig {
   type?: "package" | "global";
   run?: (args: TaskArgs) => Promise<boolean> | void;
   deps?: string[];
@@ -31,14 +32,14 @@ export interface TargetConfigFactory {
 }
 
 /** Pipline Definition
- * 
+ *
  * Example
- * 
+ *
  * const p: Pipeline = {
  *   // sharded jest
- *   jest: () => { 
+ *   jest: () => {
  *     const tasks: Target[] = [];
- *     
+ *
  *     for (let i = 0; i < 100; i++) {
  *       tasks.push({
  *         type: "global",
@@ -47,14 +48,14 @@ export interface TargetConfigFactory {
  *         },
  *       });
  *     }
- * 
+ *
  *     return tasks;
  *   },
- *   
+ *
  *   build: {
  *     deps: ['^build']
  *   },
- * 
+ *
  *   validate: {
  *     deps: []
  *   }
@@ -62,4 +63,9 @@ export interface TargetConfigFactory {
  */
 export interface PipelineDefinition {
   [task: string]: string[] | TargetConfig | TargetConfigFactory;
+}
+
+export interface LoggableTarget {
+  status: TargetStatus;
+  logger: TaskLogger;
 }

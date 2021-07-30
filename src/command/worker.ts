@@ -2,17 +2,17 @@ import { getWorkspace } from "../workspace/getWorkspace";
 import { Config } from "../types/Config";
 import { Reporter } from "../logger/reporters/Reporter";
 import { initWorkerQueue, workerPubSubChannel } from "../task/workerQueue";
-import { spawn } from "child_process";
-import * as path from "path";
-import { findNpmClient } from "../workspace/findNpmClient";
-import { TaskLogWritable } from "../logger/TaskLogWritable";
 import { TaskLogger } from "../logger/TaskLogger";
 import { cacheFetch, cacheHash, cachePut } from "../cache/backfill";
-import { getTaskId } from "@microsoft/task-scheduler";
+import { Pipeline, PipelineTarget } from "../task/Pipeline";
+import { getPackageAndTask } from "../task/taskId";
 
 // Run multiple
 export async function worker(cwd: string, config: Config, reporters: Reporter[]) {
   const workspace = getWorkspace(cwd, config);
+
+  const pipeline = new Pipeline(workspace, config);
+
   const { workerQueue, redisClient } = await initWorkerQueue(config.workerQueueOptions);
 
   const pubSubListener = (channel, message) => {
@@ -33,75 +33,57 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
     workerQueue.process(config.concurrency, (job, done) => {
       // Async-IIFE here because we don't want the actual return of the processor handler to return a promise.
       (async () => {
+        const id = job.data.id;
+
+        if (pipeline.targets!.has(id)) {
+          return;
+        }
+
+        const target = pipeline.targets.get(id)!;
+        const deps = getDepsForTarget(id, pipeline.dependencies);
+
         const logger = new TaskLogger(job.data.name, job.data.task);
 
         logger.info(`processing job ${job.id}`);
 
         await Promise.all(
-          job.data.taskDeps.map((taskDep: string) => {
-            const [name, task] = taskDep.split("#");
-
-            if (task) {
-              const info = workspace.allPackages[name];
-              const packagePath = path.dirname(info.packageJsonPath);
-              return getCache({
-                task,
-                name,
-                root: cwd,
-                packagePath,
-                config,
-              });
-            }
+          deps.map((depTargetId: string) => {
+            return getCache(pipeline.targets.get(depTargetId)!, workspace.root, config);
           })
         );
 
-        let cacheResult: { hash: string; cacheHit: boolean };
+        const cacheResult = await getCache(target, workspace.root, config);
 
-        if (config.cache) {
-          const cacheResult = await getCache({
-            task: job.data.task,
-            name: job.data.name,
-            root: cwd,
-            packagePath: path.join(cwd, job.data.packagePath),
-            config,
-          });
-
-          if (cacheResult.cacheHit) {
-            logger.info(`skipped ${job.data.name}.${job.data.task}`);
-            return done();
-          }
+        if (cacheResult.cacheHit) {
+          logger.info(`skipped ${id}`);
+          return done();
         }
 
-        const { npmArgs, spawnOptions, packagePath } = job.data;
-        const npmCmd = findNpmClient(config.npmClient);
+        let result: Promise<unknown> | void;
 
-        const cp = spawn(npmCmd, npmArgs, {
-          cwd: path.join(cwd, packagePath),
-          ...spawnOptions,
-        });
+        if (target.packageName) {
+          result = target.run({
+            packageName: target.packageName,
+            config,
+            cwd: target.cwd,
+            options: target.options,
+            taskName: getPackageAndTask(target.id).task,
+            logger,
+          });
+        } else {
+          result = target.run({
+            config,
+            cwd: target.cwd,
+            options: target.options,
+            logger,
+          });
+        }
 
-        const stdoutLogger = new TaskLogWritable(logger);
-        cp.stdout.pipe(stdoutLogger);
+        if (result && typeof result["then"] === "function") {
+          await result;
+        }
 
-        const stderrLogger = new TaskLogWritable(logger);
-        cp.stderr.pipe(stderrLogger);
-
-        cp.on("exit", async (code) => {
-          if (config.cache && cacheResult) {
-            await saveCache(cacheResult.hash, {
-              task: job.data.task,
-              name: job.data.name,
-              root: cwd,
-              packagePath: job.data.packagePath,
-              config,
-              logger,
-            });
-          }
-
-          logger.info(`exiting with code: ${code}`);
-
-          done();
-        });
+        await saveCache(cacheResult.hash, target, config);
       })();
     });
   });
@@ -110,36 +92,59 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
 // speeding up to reduce network costs for a worker
 const localHashCache: { [packageTask: string]: string | null } = {};
 
-async function getCache(options: any) {
+async function getCache(target: PipelineTarget, root: string, config: Config) {
   let hash: string | null = null;
   let cacheHit = false;
 
-  const { task, name, root, packagePath, config } = options;
+  const { id, cwd } = target;
 
-  const localCacheKey = getTaskId(name, task);
-
-  if (localHashCache[localCacheKey]) {
-    return { hash: localHashCache[localCacheKey], cacheHit: true };
+  if (localHashCache[id]) {
+    return { hash: localHashCache[id], cacheHit: true };
   }
 
-  hash = await cacheHash(task, name, root, packagePath, config.cacheOptions, config.passThroughArgs);
+  hash = await cacheHash(id, root, cwd, config.cacheOptions, config.args);
+
   if (hash && !config.resetCache) {
-    cacheHit = await cacheFetch(hash, task, name, packagePath, config.cacheOptions);
+    cacheHit = await cacheFetch(hash, id, cwd, config.cacheOptions);
 
     if (cacheHit) {
-      localHashCache[localCacheKey] = hash;
+      localHashCache[id] = hash;
     }
   }
 
   return { hash, cacheHit };
 }
 
-async function saveCache(hash: string | null, options: any) {
-  const { task, name, logger, packagePath, config } = options;
-  const localCacheKey = getTaskId(name, task);
-
+async function saveCache(hash: string | null, target: PipelineTarget, config: Config) {
+  const localCacheKey = target.id;
   localHashCache[localCacheKey] = hash;
+  await cachePut(hash, target.cwd, config.cacheOptions);
+}
 
-  logger.info(`put ${hash}`);
-  await cachePut(hash, packagePath, config.cacheOptions);
+function getDepsForTarget(id: string, dependencies: [string, string][]) {
+  const stack = [id];
+  const deps = new Set<string>();
+  const visited = new Set<string>();
+
+  while (stack.length > 0) {
+    const current = stack.pop()!;
+
+    if (visited.has(current)) {
+      continue;
+    }
+
+    visited.add(current);
+
+    if (current !== id) {
+      deps.add(current);
+    }
+
+    dependencies.forEach(([from, to]) => {
+      if (to === current) {
+        stack.push(from);
+      }
+    });
+  }
+
+  return [...deps];
 }

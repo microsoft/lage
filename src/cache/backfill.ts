@@ -8,7 +8,6 @@ export async function cacheHash(
   id: string,
   cwd: string,
   root: string,
-  packagePath: string,
   cacheOptions: CacheOptions,
   args: any
 ) {

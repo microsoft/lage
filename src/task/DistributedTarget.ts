@@ -1,17 +1,17 @@
 import { TaskLogger } from "../logger/TaskLogger";
 import { ChildProcess } from "child_process";
 import { controller } from "./abortSignal";
-import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
+
 import { RunContext } from "../types/RunContext";
 import { hrToSeconds } from "../logger/reporters/formatDuration";
-import { PipelineTarget } from "./Pipeline";
-import { Config } from "../types/Config";
-import { getPackageAndTask } from "./taskId";
 import { CacheOptions } from "../types/CacheOptions";
 import { TargetStatus } from "../types/TargetStatus";
 import { LoggableTarget } from "../types/PipelineDefinition";
+import { PipelineTarget } from "./Pipeline";
+import { Config } from "../types/Config";
+import Queue from "bee-queue";
 
-export class WrappedTarget implements LoggableTarget {
+export class DistributedTarget implements LoggableTarget {
   static npmCmd: string = "";
   static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
@@ -25,9 +25,9 @@ export class WrappedTarget implements LoggableTarget {
 
   constructor(
     public target: PipelineTarget,
-    private root: string,
     private config: Config,
-    private context: RunContext
+    private context: RunContext,
+    private workerQueue: Queue
   ) {
     this.status = "pending";
     this.logger = new TaskLogger(target.packageName || "[GLOBAL]", target.packageName ? target.task : target.id);
@@ -74,81 +74,38 @@ export class WrappedTarget implements LoggableTarget {
     });
   }
 
-  async getCache() {
-    let hash: string | null = null;
-    let cacheHit = false;
-
-    const { target, root, config, cacheOptions } = this;
-
-    if (config.cache) {
-      hash = await cacheHash(target.id, target.cwd, root, cacheOptions, config.args);
-
-      if (hash && !config.resetCache) {
-        cacheHit = await cacheFetch(hash, target.id, target.cwd, cacheOptions);
-      }
-    }
-
-    return { hash, cacheHit };
-  }
-
-  async saveCache(hash: string | null) {
-    const { logger, target, cacheOptions } = this;
-    logger.verbose(`hash put ${hash}`);
-    await cachePut(hash, target.cwd, cacheOptions);
-  }
-
   async run() {
     const { target, context, config, logger } = this;
 
     try {
-      const { hash, cacheHit } = await this.getCache();
-
-      const cacheEnabled = target.cache && config.cache && hash && !config.dist;
-
       this.onStart();
-
-      // skip if cache hit!
-      if (cacheHit) {
-        this.onSkipped(hash);
-        return true;
-      }
-
-      if (cacheEnabled) {
-        logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
-      }
 
       // Wraps with profiler as well as task args
       await context.profiler.run(() => {
-        let result: Promise<unknown> | void;
-
-        if (target.packageName) {
-          result = target.run({
-            packageName: target.packageName,
-            config: this.config,
-            cwd: target.cwd,
-            options: target.options,
-            taskName: getPackageAndTask(target.id).task,
-            logger
+        return new Promise<void>((resolve, reject) => {
+          const job = this.workerQueue.createJob({
+            id: target.id,
           });
-        } else {
-          result = target.run({
-            config: this.config,
-            cwd: target.cwd,
-            options: target.options,
-            logger
+
+          job.on("succeeded", (result) => {
+            logger.info("succeeded");
+            resolve();
           });
-        }
 
-        if (!result || typeof result["then"] !== "function") {
-          return Promise.resolve(result);
-        }
+          job.on("failed", (result) => {
+            logger.info("failed");
+            reject();
+          });
 
-        return result as Promise<unknown>;
+          // times out at 1 hour
+          job
+            .timeout(1000 * 60 * 60)
+            .save()
+            .then((newJob) => {
+              logger.info(`job id: ${newJob.id}`);
+            });
+        });
       }, target.id);
-
-      if (cacheEnabled) {
-        await this.saveCache(hash);
-      }
 
       this.onComplete();
     } catch (e) {

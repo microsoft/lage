@@ -1,5 +1,5 @@
 import Profiler from "p-profiler";
-import { WrappedTarget } from "../task/WrappedTarget";
+import { LoggableTarget } from "./PipelineDefinition";
 
 export interface Measures {
   start: [number, number];
@@ -11,6 +11,6 @@ export interface Measures {
 
 export interface RunContext {
   measures: Measures;
-  targets: Map<string, WrappedTarget>;
+  targets: Map<string, LoggableTarget>;
   profiler: Profiler;
 }
