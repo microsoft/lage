@@ -5,30 +5,33 @@ import * as backfill from "backfill/lib/api";
 import { CacheOptions } from "../types/CacheOptions";
 
 export async function cacheHash(
-  task: string,
-  name: string,
+  id: string,
+  cwd: string,
   root: string,
   packagePath: string,
   cacheOptions: CacheOptions,
   args: any
 ) {
-  const cacheConfig = getCacheConfig(packagePath, cacheOptions);
+  const cacheConfig = getCacheConfig(cwd, cacheOptions);
+  
   const backfillLogger = backfill.makeLogger(
     "error",
     process.stdout,
     process.stderr
   );
+
   const hashKey = salt(
     cacheOptions.environmentGlob || ["lage.config.js"],
-    `${name}|${task}|${JSON.stringify(args)}`,
+    `${id}|${JSON.stringify(args)}`,
     root,
     cacheOptions.cacheKey
   );
 
-  backfillLogger.setName(name);
+  backfillLogger.setName(id);
+
   try {
     return await backfill.computeHash(
-      packagePath,
+      cwd,
       backfillLogger,
       hashKey,
       cacheConfig
@@ -43,16 +46,15 @@ export async function cacheHash(
 
 export async function cacheFetch(
   hash: string | null,
-  task: string,
-  name: string,
-  packagePath: string,
+  id: string,
+  cwd: string,
   cacheOptions: CacheOptions
 ) {
   if (!hash) {
     return false;
   }
 
-  const cacheConfig = getCacheConfig(packagePath, cacheOptions);
+  const cacheConfig = getCacheConfig(cwd, cacheOptions);
   const backfillLogger = backfill.makeLogger(
     "error",
     process.stdout,
@@ -60,9 +62,9 @@ export async function cacheFetch(
   );
 
   try {
-    return await backfill.fetch(packagePath, hash, backfillLogger, cacheConfig);
+    return await backfill.fetch(cwd, hash, backfillLogger, cacheConfig);
   } catch (e) {
-    logger.error(`${name} fetchBackfill`, e);
+    logger.error(`${id} fetchBackfill`, e);
   }
 
   return false;
@@ -70,14 +72,14 @@ export async function cacheFetch(
 
 export async function cachePut(
   hash: string | null,
-  packagePath: string,
+  cwd: string,
   cacheOptions: CacheOptions
 ) {
   if (!hash) {
     return;
   }
 
-  const cacheConfig = getCacheConfig(packagePath, cacheOptions);
+  const cacheConfig = getCacheConfig(cwd, cacheOptions);
   const backfillLogger = backfill.makeLogger(
     "warn",
     process.stdout,
@@ -85,7 +87,7 @@ export async function cachePut(
   );
 
   try {
-    await backfill.put(packagePath, hash, backfillLogger, cacheConfig);
+    await backfill.put(cwd, hash, backfillLogger, cacheConfig);
   } catch (e) {
     // sometimes outputGlob don't match any files, so skipping this
   }

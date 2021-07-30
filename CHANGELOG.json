@@ -2,6 +2,51 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 30 Jul 2021 00:15:54 GMT",
+      "tag": "lage_v0.32.0",
+      "version": "0.32.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Internal changes to support for more config.pipeline types",
+            "author": "kchau@microsoft.com",
+            "commit": "6d6c6be3180ab10938b08a941fb4ed0e9ffa0394",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 29 Jul 2021 16:47:03 GMT",
+      "tag": "lage_v0.31.1",
+      "version": "0.31.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix: handle 'fs' errors while saving profile: forcing lage to fail",
+            "author": "nickykalu@microsoft.com",
+            "commit": "d3f33d4c027baf81f2bb498f648e2d51f26186ca",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 12 Jul 2021 23:42:06 GMT",
+      "tag": "lage_v0.31.0",
+      "version": "0.31.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "fixing publish",
+            "author": "kchau@microsoft.com",
+            "commit": "dccaf39ee10dce4d08f05a82da8630cc4d0b636d",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 11 Jun 2021 22:59:59 GMT",
       "tag": "lage_v0.30.0",
       "version": "0.30.0",

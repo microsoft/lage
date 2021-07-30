@@ -1,15 +1,16 @@
 import Profiler from "p-profiler";
-import { DistributedNpmScriptTask } from "../task/DistributedNpmTask";
-import { NpmScriptTask } from "../task/NpmScriptTask";
+import { WrappedTarget } from "../task/WrappedTarget";
 
 export interface Measures {
   start: [number, number];
   duration: [number, number];
-  failedTasks?: { pkg: string; task: string }[];
+
+  /** list of failed targets */
+  failedTargets?: string[]; 
 }
 
 export interface RunContext {
   measures: Measures;
-  tasks: Map<string, NpmScriptTask | DistributedNpmScriptTask>;
+  targets: Map<string, WrappedTarget>;
   profiler: Profiler;
 }

@@ -1,8 +1,32 @@
 # Change Log - lage
 
-This log was last generated on Fri, 11 Jun 2021 22:59:59 GMT and should not be manually modified.
+This log was last generated on Fri, 30 Jul 2021 00:15:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.32.0
+
+Fri, 30 Jul 2021 00:15:54 GMT
+
+### Minor changes
+
+- Internal changes to support for more config.pipeline types (kchau@microsoft.com)
+
+## 0.31.1
+
+Thu, 29 Jul 2021 16:47:03 GMT
+
+### Patches
+
+- Fix: handle 'fs' errors while saving profile: forcing lage to fail (nickykalu@microsoft.com)
+
+## 0.31.0
+
+Mon, 12 Jul 2021 23:42:06 GMT
+
+### Minor changes
+
+- fixing publish (kchau@microsoft.com)
 
 ## 0.30.0
 

@@ -1,6 +1,6 @@
 export interface Priority {
   /** package name, as in package.json */
-  package: string;
+  package?: string;
 
   /** task name, as listed in the `scripts` section of package.json */
   task: string;

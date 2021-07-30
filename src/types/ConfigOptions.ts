@@ -1,6 +1,6 @@
 import { CacheOptions } from "./CacheOptions";
 import { Priority } from "./Priority";
-import { Pipeline } from "./Pipeline";
+import { PipelineDefinition } from "./PipelineDefinition";
 import { LoggerOptions } from "./LoggerOptions";
 import { QueueSettings } from "bee-queue";
 
@@ -20,7 +20,7 @@ export interface ConfigOptions {
    * }
    * ```
    */
-  pipeline: Pipeline;
+  pipeline: PipelineDefinition;
 
   /** Should cache be enabled */
   cache: boolean;

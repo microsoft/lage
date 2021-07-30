@@ -1,6 +1,6 @@
 {
   "name": "lage",
-  "version": "0.30.1-canary.16",
+  "version": "0.32.0",
   "description": "A monorepo task runner",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -30,7 +30,7 @@
     "watchpack": "1.6.1"
   },
   "dependencies": {
-    "@microsoft/task-scheduler": "^2.7.1",
+    "p-graph": "^1.1.1",
     "abort-controller": "^3.0.0",
     "backfill": "^6.1.6",
     "backfill-config": "^6.1.3",
