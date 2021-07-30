@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 29 Jul 2021 16:47:03 GMT and should not be manually modified.
+This log was last generated on Fri, 30 Jul 2021 00:15:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.32.0
+
+Fri, 30 Jul 2021 00:15:54 GMT
+
+### Minor changes
+
+- Internal changes to support for more config.pipeline types (kchau@microsoft.com)
 
 ## 0.31.1
 
