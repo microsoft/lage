@@ -26,7 +26,7 @@ export interface PipelineTarget {
   options?: any;
 }
 
-const START_TARGET_ID = "__start";
+export const START_TARGET_ID = "__start";
 
 export class Pipeline {
   targets: Map<string, PipelineTarget> = new Map([
@@ -52,8 +52,10 @@ export class Pipeline {
 
   private generatePackageTarget(packageName: string, task: string, deps: string[]): PipelineTarget {
     const info = this.packageInfos[packageName];
+    const id = getTargetId(packageName, task);
+
     return {
-      id: getTargetId(packageName, task),
+      id,
       task,
       cache: this.config.cache,
       outputGlob: this.config.cacheOptions.outputGlob,
@@ -63,7 +65,9 @@ export class Pipeline {
         const npmTask = new NpmScriptTask(task, info, this.config, args.logger);
         return npmTask.run();
       },
-      deps,
+
+      // TODO: do we need to really merge this? Is this desired? (this is the OLD behavior)
+      deps: this.targets.has(id) ? [...(this.targets.get(id)!.deps || []), ...deps] : deps,
     };
   }
 
@@ -77,8 +81,15 @@ export class Pipeline {
     let packagesWithScript: string[] = [];
 
     if (packageName) {
+      // specific case in definition (e.g. 'package-name#test': ['build'])
       packagesWithScript.push(packageName);
     } else {
+      // generic case in definition (e.g. 'test': ['build'])
+
+      if (id === "test") {
+        console.log(Object.keys(this.workspace.allPackages).filter(p => p.includes('nx')));
+      }
+
       packagesWithScript = Object.entries(this.packageInfos)
         .filter(([_pkg, info]) => !!info.scripts?.[task])
         .map(([pkg, _info]) => pkg);
@@ -170,8 +181,9 @@ export class Pipeline {
     for (const target of targets) {
       const { deps, packageName, id } = target;
 
+      this.dependencies.push([START_TARGET_ID, id]);
+
       if (!deps || deps.length === 0) {
-        this.dependencies.push([START_TARGET_ID, id]);
         continue;
       }
 
@@ -196,12 +208,13 @@ export class Pipeline {
           for (const dependencyId of dependencyIds) {
             this.dependencies.push([dependencyId, id]);
           }
-        } else if (packageName && this.targets.has(getTargetId(packageName, dep))) {
+        } else if (packageName) {
+          // Intra package task dependency - only add the target dependency if it exists in the pipeline targets list
+          if (this.targets.has(getTargetId(packageName, dep))) {
             this.dependencies.push([getTargetId(packageName, dep), target.id]);
+          }
         } else if (!dep.startsWith("^")) {
-          const dependencyIds = targets
-            .filter(needle => needle.task === dep)
-            .map(needle => needle.id);
+          const dependencyIds = targets.filter((needle) => needle.task === dep).map((needle) => needle.id);
 
           for (const dependencyId of dependencyIds) {
             this.dependencies.push([dependencyId, id]);

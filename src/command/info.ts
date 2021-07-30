@@ -6,7 +6,7 @@ import { PackageTaskInfo } from "../logger/LogEntry";
 import path from "path";
 import { Workspace } from "../types/Workspace";
 import { getNpmCommand } from "../task/getNpmCommand";
-import { Pipeline } from "../task/Pipeline";
+import { Pipeline, START_TARGET_ID } from "../task/Pipeline";
 import { getPackageAndTask } from "../task/taskId";
 
 /**
@@ -59,13 +59,13 @@ export async function info(cwd: string, config: Config) {
       if (!packageTasks.has(id)) {
         const packageTaskInfo = createPackageTaskInfo(id, config, workspace);
 
-        if (packageTaskInfo) {
+        if (packageTaskInfo && id !== START_TARGET_ID) {
           packageTasks.set(id, packageTaskInfo);
         }
       }
     }
 
-    if (packageTasks.has(to)) {
+    if (packageTasks.has(to) && from !== START_TARGET_ID) {
       packageTasks.get(to)!.dependencies.push(from);
     }
   }
