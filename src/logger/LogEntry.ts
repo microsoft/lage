@@ -32,7 +32,7 @@ export interface InfoData {
  */
 export interface PackageTaskInfo {
   id: string;
-  package: string;
+  package?: string;
   task: string;
   command: string[];
   workingDirectory: string;

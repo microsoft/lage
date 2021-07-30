@@ -1,6 +1,6 @@
 import { CacheOptions } from "./CacheOptions";
 import { Priority } from "./Priority";
-import { Pipeline } from "./Pipeline";
+import { PipelineDefinition } from "./PipelineDefinition";
 import { LoggerOptions } from "./LoggerOptions";
 
 export type NpmClient = "npm" | "yarn" | "pnpm";
@@ -19,7 +19,7 @@ export interface ConfigOptions {
    * }
    * ```
    */
-  pipeline: Pipeline;
+  pipeline: PipelineDefinition;
 
   /** Should cache be enabled */
   cache: boolean;

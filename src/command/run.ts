@@ -1,21 +1,22 @@
 import { getWorkspace } from "../workspace/getWorkspace";
 import { logger } from "../logger";
 import { Config } from "../types/Config";
-import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
 import { signal } from "../task/abortSignal";
 import { displayReportAndExit } from "../displayReportAndExit";
 import { createContext } from "../context";
-import { runTasks } from "../task/taskRunner";
 import { NpmScriptTask } from "../task/NpmScriptTask";
 import { Reporter } from "../logger/reporters/Reporter";
+import { Pipeline } from "../task/Pipeline";
 
-// Run multiple
+/**
+ * Prepares and runs a pipeline
+ * @param cwd 
+ * @param config 
+ * @param reporters 
+ */
 export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   const context = createContext(config);
   const workspace = getWorkspace(cwd, config);
-
-  // generate topological graph
-  const graph = generateTopologicGraph(workspace);
 
   const { profiler } = context;
 
@@ -31,7 +32,8 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   });
 
   try {
-    await runTasks({ graph, workspace, context, config });
+    const pipeline = new Pipeline(workspace, config);
+    await pipeline.run(context);
   } catch (e) {
     logger.error("runTasks: " + (e.stack || e.message || e));
     process.exitCode = 1;
@@ -42,8 +44,8 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
       const profileFile = profiler.output();
       logger.info(`runTasks: Profile saved to ${profileFile}`);
     } catch (e) {
-        logger.error(`An error occured while trying to write profile: ${e.message}`);
-        process.exitCode = 1;
+      logger.error(`An error occured while trying to write profile: ${e.message}`);
+      process.exitCode = 1;
     }
   }
 

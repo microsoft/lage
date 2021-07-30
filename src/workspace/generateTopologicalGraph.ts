@@ -1,4 +1,4 @@
-import { TopologicalGraph } from "@microsoft/task-scheduler";
+import { TopologicalGraph } from "../types/TopologicalGraph";
 import { getDependentMap } from "workspace-tools";
 import { Workspace } from "../types/Workspace";
 import path from "path";

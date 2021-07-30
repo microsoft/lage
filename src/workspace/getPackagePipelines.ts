@@ -1,4 +1,4 @@
-import { Pipeline } from "../types/Pipeline";
+import { PipelineDefinition } from "../types/PipelineDefinition";
 import { PackageInfos, PackageInfo } from "workspace-tools";
 import { cosmiconfigSync } from "cosmiconfig";
 import path from "path";
@@ -19,9 +19,9 @@ function getPipeline(info: PackageInfo) {
 
 export function getPackagePipelines(
   allPackages: PackageInfos,
-  defaultPipeline: Pipeline
+  defaultPipeline: PipelineDefinition
 ) {
-  const packagePipelines = new Map<string, Pipeline>();
+  const packagePipelines = new Map<string, PipelineDefinition>();
 
   for (const pkg of Object.keys(allPackages)) {
     const pipeline = getPipeline(allPackages[pkg]);

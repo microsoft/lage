@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Internal changes to support for more config.pipeline types",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
