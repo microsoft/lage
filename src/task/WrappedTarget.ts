@@ -4,12 +4,11 @@ import { controller } from "./abortSignal";
 import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { RunContext } from "../types/RunContext";
 import { hrToSeconds } from "../logger/reporters/formatDuration";
-import { PipelineTarget } from "./Pipeline";
 import { Config } from "../types/Config";
 import { getPackageAndTask } from "./taskId";
 import { CacheOptions } from "../types/CacheOptions";
 import { TargetStatus } from "../types/TargetStatus";
-import { LoggableTarget } from "../types/PipelineDefinition";
+import { LoggableTarget, PipelineTarget } from "../types/PipelineDefinition";
 
 export class WrappedTarget implements LoggableTarget {
   static npmCmd: string = "";

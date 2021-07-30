@@ -4,8 +4,9 @@ import { Reporter } from "../logger/reporters/Reporter";
 import { initWorkerQueue, workerPubSubChannel } from "../task/workerQueue";
 import { TaskLogger } from "../logger/TaskLogger";
 import { cacheFetch, cacheHash, cachePut } from "../cache/backfill";
-import { Pipeline, PipelineTarget } from "../task/Pipeline";
+import { Pipeline} from "../task/Pipeline";
 import { getPackageAndTask } from "../task/taskId";
+import { PipelineTarget } from "../types/PipelineDefinition";
 
 // Run multiple
 export async function worker(cwd: string, config: Config, reporters: Reporter[]) {
@@ -92,6 +93,14 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
 // speeding up to reduce network costs for a worker
 const localHashCache: { [packageTask: string]: string | null } = {};
 
+
+function getCacheOptions(target: PipelineTarget, config: Config) {
+  return {
+    ...config.cacheOptions,
+    outputGlob: [...(config.cacheOptions.outputGlob || []), ...(target.outputGlob || [])],
+  };
+}
+
 async function getCache(target: PipelineTarget, root: string, config: Config) {
   let hash: string | null = null;
   let cacheHit = false;
@@ -102,7 +111,9 @@ async function getCache(target: PipelineTarget, root: string, config: Config) {
     return { hash: localHashCache[id], cacheHit: true };
   }
 
-  hash = await cacheHash(id, root, cwd, config.cacheOptions, config.args);
+  const cacheOptions = getCacheOptions(target, config);
+
+  hash = await cacheHash(id, root, cwd, cacheOptions, config.args);
 
   if (hash && !config.resetCache) {
     cacheHit = await cacheFetch(hash, id, cwd, config.cacheOptions);
@@ -118,7 +129,10 @@ async function getCache(target: PipelineTarget, root: string, config: Config) {
 async function saveCache(hash: string | null, target: PipelineTarget, config: Config) {
   const localCacheKey = target.id;
   localHashCache[localCacheKey] = hash;
-  await cachePut(hash, target.cwd, config.cacheOptions);
+
+  const cacheOptions = getCacheOptions(target, config);
+
+  await cachePut(hash, target.cwd, cacheOptions);
 }
 
 function getDepsForTarget(id: string, dependencies: [string, string][]) {

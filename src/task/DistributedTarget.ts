@@ -6,17 +6,11 @@ import { RunContext } from "../types/RunContext";
 import { hrToSeconds } from "../logger/reporters/formatDuration";
 import { CacheOptions } from "../types/CacheOptions";
 import { TargetStatus } from "../types/TargetStatus";
-import { LoggableTarget } from "../types/PipelineDefinition";
-import { PipelineTarget } from "./Pipeline";
+import { LoggableTarget, PipelineTarget } from "../types/PipelineDefinition";
 import { Config } from "../types/Config";
 import Queue from "bee-queue";
 
 export class DistributedTarget implements LoggableTarget {
-  static npmCmd: string = "";
-  static activeProcesses = new Set<ChildProcess>();
-  static gracefulKillTimeout = 2500;
-
-  npmArgs: string[] = [];
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
   status: TargetStatus;

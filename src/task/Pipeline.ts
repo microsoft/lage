@@ -3,7 +3,7 @@ import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
 import { NpmScriptTask } from "./NpmScriptTask";
 import { PackageInfos } from "workspace-tools";
 import { RunContext } from "../types/RunContext";
-import { TargetConfig, TargetConfigFactory, TaskArgs } from "../types/PipelineDefinition";
+import { PipelineTarget, TargetConfig, TargetConfigFactory, TaskArgs } from "../types/PipelineDefinition";
 import { TopologicalGraph } from "../types/TopologicalGraph";
 import { Workspace } from "../types/Workspace";
 import pGraph, { PGraphNodeMap } from "p-graph";
@@ -12,22 +12,7 @@ import { getPipelinePackages } from "./getPipelinePackages";
 import { getPackageAndTask, getTargetId } from "./taskId";
 import { WrappedTarget } from "./WrappedTarget";
 import { DistributedTarget } from "./DistributedTarget";
-import Queue from "bee-queue";
 import { initWorkerQueue, workerPubSubChannel } from "./workerQueue";
-
-/** individual targets to be kept track inside pipeline */
-export interface PipelineTarget {
-  id: string;
-  packageName?: string;
-  task: string;
-  cwd: string;
-  run: (args: TaskArgs) => Promise<unknown> | void;
-  deps?: string[];
-  outputGlob?: string[];
-  priority?: number;
-  cache?: boolean;
-  options?: any;
-}
 
 export const START_TARGET_ID = "__start";
 

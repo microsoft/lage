@@ -23,8 +23,7 @@ export class JsonReporter implements Reporter {
         package: wrappedTarget.target.packageName,
         task: wrappedTarget.target.task,
         duration: hrToSeconds(wrappedTarget.duration),
-        status: wrappedTarget.status,
-        npmArgs: wrappedTarget.npmArgs,
+        status: wrappedTarget.status
       });
     }
 

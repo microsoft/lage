@@ -65,7 +65,25 @@ export interface PipelineDefinition {
   [task: string]: string[] | TargetConfig | TargetConfigFactory;
 }
 
+/** individual targets to be kept track inside pipeline */
+export interface PipelineTarget {
+  id: string;
+  packageName?: string;
+  task: string;
+  cwd: string;
+  run: (args: TaskArgs) => Promise<unknown> | void;
+  deps?: string[];
+  outputGlob?: string[];
+  priority?: number;
+  cache?: boolean;
+  options?: any;
+}
+
+
 export interface LoggableTarget {
   status: TargetStatus;
   logger: TaskLogger;
+  target: PipelineTarget;
+  startTime: [number, number];
+  duration: [number, number];
 }

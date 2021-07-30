@@ -7,7 +7,7 @@ import { formatDuration, hrToSeconds } from "./formatDuration";
 import { RunContext } from "../../types/RunContext";
 import { getPackageAndTask, getTargetId } from "../../task/taskId";
 import { LoggerOptions } from "../../types/LoggerOptions";
-import { TargetStatus } from "../../task/WrappedTarget";
+import { TargetStatus } from "../../types/TargetStatus";
 
 const maxLengths = {
   pkg: 0,
