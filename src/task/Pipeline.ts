@@ -85,11 +85,6 @@ export class Pipeline {
       packagesWithScript.push(packageName);
     } else {
       // generic case in definition (e.g. 'test': ['build'])
-
-      if (id === "test") {
-        console.log(Object.keys(this.workspace.allPackages).filter(p => p.includes('nx')));
-      }
-
       packagesWithScript = Object.entries(this.packageInfos)
         .filter(([_pkg, info]) => !!info.scripts?.[task])
         .map(([pkg, _info]) => pkg);
