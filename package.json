@@ -1,6 +1,6 @@
 {
   "name": "lage",
-  "version": "0.33.1-canary.3",
+  "version": "0.32.0",
   "description": "A monorepo task runner",
   "repository": {
     "url": "https://github.com/microsoft/lage"
