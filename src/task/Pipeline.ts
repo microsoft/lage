@@ -365,6 +365,9 @@ export class Pipeline {
       }
     }
 
+
+    console.log(nodeMap);
+
     await pGraph(nodeMap, targetGraph).run({
       concurrency: this.config.concurrency,
       continue: this.config.continue,

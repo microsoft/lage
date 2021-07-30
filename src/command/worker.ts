@@ -31,16 +31,19 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
   redisClient.on("message", pubSubListener);
 
   workerQueue.ready(() => {
+
     workerQueue.process(config.concurrency, (job, done) => {
       // Async-IIFE here because we don't want the actual return of the processor handler to return a promise.
       (async () => {
         const id = job.data.id;
 
-        if (pipeline.targets!.has(id)) {
+        if (!pipeline.targets!.has(id)) {
           return;
         }
 
         const target = pipeline.targets.get(id)!;
+
+        console.log('get deps')
         const deps = getDepsForTarget(id, pipeline.dependencies);
 
         const logger = new TaskLogger(job.data.name, job.data.task);
