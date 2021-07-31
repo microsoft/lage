@@ -70,9 +70,7 @@ export class Pipeline {
         const npmTask = new NpmScriptTask(task, info, this.config, args.logger);
         return npmTask.run();
       },
-
-      // TODO: do we need to really merge this? Is this desired? (this is the OLD behavior)
-      deps: this.targets.has(id) ? [...(this.targets.get(id)!.deps || []), ...deps] : deps,
+      deps: this.targets.has(id) ? this.targets.get(id)!.deps || [] : deps,
     };
   }
 
@@ -364,9 +362,6 @@ export class Pipeline {
         });
       }
     }
-
-
-    console.log(nodeMap);
 
     await pGraph(nodeMap, targetGraph).run({
       concurrency: this.config.concurrency,

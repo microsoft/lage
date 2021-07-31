@@ -33,7 +33,7 @@ export class WrappedTarget implements LoggableTarget {
 
     this.cacheOptions = {
       ...config.cacheOptions,
-      outputGlob: [...(config.cacheOptions.outputGlob || []), ...(target.outputGlob || [])],
+      outputGlob: target.outputGlob || config.cacheOptions.outputGlob,
     };
 
     this.context.targets.set(target.id, this);

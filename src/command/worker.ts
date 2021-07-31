@@ -4,7 +4,7 @@ import { Reporter } from "../logger/reporters/Reporter";
 import { initWorkerQueue, workerPubSubChannel } from "../task/workerQueue";
 import { TaskLogger } from "../logger/TaskLogger";
 import { cacheFetch, cacheHash, cachePut } from "../cache/backfill";
-import { Pipeline} from "../task/Pipeline";
+import { Pipeline, START_TARGET_ID } from "../task/Pipeline";
 import { getPackageAndTask } from "../task/taskId";
 import { PipelineTarget } from "../types/PipelineDefinition";
 
@@ -31,10 +31,7 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
   redisClient.on("message", pubSubListener);
 
   workerQueue.ready(() => {
-
-    workerQueue.process(config.concurrency, (job, done) => {
-      // Async-IIFE here because we don't want the actual return of the processor handler to return a promise.
-      (async () => {
+    workerQueue.process(config.concurrency, async(job) => {
         const id = job.data.id;
 
         if (!pipeline.targets!.has(id)) {
@@ -43,7 +40,6 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
 
         const target = pipeline.targets.get(id)!;
 
-        console.log('get deps')
         const deps = getDepsForTarget(id, pipeline.dependencies);
 
         const logger = new TaskLogger(job.data.name, job.data.task);
@@ -51,7 +47,7 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
         logger.info(`processing job ${job.id}`);
 
         await Promise.all(
-          deps.map((depTargetId: string) => {
+          deps.filter(d => d !== START_TARGET_ID).map((depTargetId: string) => {
             return getCache(pipeline.targets.get(depTargetId)!, workspace.root, config);
           })
         );
@@ -60,7 +56,7 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
 
         if (cacheResult.cacheHit) {
           logger.info(`skipped ${id}`);
-          return done();
+          return;
         }
 
         let result: Promise<unknown> | void;
@@ -88,7 +84,6 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
         }
 
         await saveCache(cacheResult.hash, target, config);
-      })();
     });
   });
 }
@@ -96,11 +91,10 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
 // speeding up to reduce network costs for a worker
 const localHashCache: { [packageTask: string]: string | null } = {};
 
-
 function getCacheOptions(target: PipelineTarget, config: Config) {
   return {
     ...config.cacheOptions,
-    outputGlob: [...(config.cacheOptions.outputGlob || []), ...(target.outputGlob || [])],
+    outputGlob: target.outputGlob || config.cacheOptions.outputGlob,
   };
 }
 
@@ -115,7 +109,6 @@ async function getCache(target: PipelineTarget, root: string, config: Config) {
   }
 
   const cacheOptions = getCacheOptions(target, config);
-
   hash = await cacheHash(id, root, cwd, cacheOptions, config.args);
 
   if (hash && !config.resetCache) {
