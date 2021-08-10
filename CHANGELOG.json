@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 10 Aug 2021 16:48:42 GMT",
+      "tag": "lage_v0.32.1",
+      "version": "0.32.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "make sure to filter out targets that do not exist for packages",
+            "author": "kchau@microsoft.com",
+            "commit": "3056366b7acf84c26578886caa0d69c410721268",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 30 Jul 2021 00:15:54 GMT",
       "tag": "lage_v0.32.0",
       "version": "0.32.0",

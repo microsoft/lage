@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 30 Jul 2021 00:15:54 GMT and should not be manually modified.
+This log was last generated on Tue, 10 Aug 2021 16:48:42 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.32.1
+
+Tue, 10 Aug 2021 16:48:42 GMT
+
+### Patches
+
+- make sure to filter out targets that do not exist for packages (kchau@microsoft.com)
 
 ## 0.32.0
 
