@@ -129,16 +129,18 @@ export class Pipeline {
         },
       ];
     } else {
-      const packages = Object.keys(this.packageInfos);
-      return packages.map((pkg) => ({
-        ...target,
-        id: getTargetId(pkg, id),
-        cache: target.cache !== false,
-        task: id,
-        cwd: path.dirname(this.packageInfos[pkg].packageJsonPath),
-        packageName: pkg,
-        run: target.run || ((args) => new NpmScriptTask(id, this.packageInfos[pkg], this.config, args.logger).run()),
-      }));
+      const packages = Object.entries(this.packageInfos);
+      return packages
+        .filter(([_pkg, info]) => !!info.scripts?.[id])
+        .map(([pkg, _info]) => ({
+          ...target,
+          id: getTargetId(pkg, id),
+          cache: target.cache !== false,
+          task: id,
+          cwd: path.dirname(this.packageInfos[pkg].packageJsonPath),
+          packageName: pkg,
+          run: target.run || ((args) => new NpmScriptTask(id, this.packageInfos[pkg], this.config, args.logger).run()),
+        }));
     }
   }
 
