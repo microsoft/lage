@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 10 Aug 2021 16:48:42 GMT and should not be manually modified.
+This log was last generated on Sat, 04 Sep 2021 03:08:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.32.2
+
+Sat, 04 Sep 2021 03:08:09 GMT
+
+### Patches
+
+- make sure to allow loose mode for task deps (kchau@microsoft.com)
 
 ## 0.32.1
 

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "make sure to allow loose mode for task deps",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
