@@ -119,6 +119,10 @@ export class WrappedTarget {
 
       // Wraps with profiler as well as task args
       await context.profiler.run(() => {
+        if (!target.run) {
+          return Promise.resolve();
+        }
+
         let result: Promise<unknown> | void;
 
         if (target.packageName) {
@@ -128,14 +132,14 @@ export class WrappedTarget {
             cwd: target.cwd,
             options: target.options,
             taskName: getPackageAndTask(target.id).task,
-            logger
+            logger,
           });
         } else {
           result = target.run({
             config: this.config,
             cwd: target.cwd,
             options: target.options,
-            logger
+            logger,
           });
         }
 
