@@ -161,14 +161,11 @@ export class WrappedTarget {
 
       this.onFail();
 
-      if (config.continue) {
-        return true;
-      }
-
-      if (!config.safeExit) {
+      if (!config.safeExit && !config.continue) {
         controller.abort();
       }
-      return false;
+
+      throw e;
     }
 
     return true;
