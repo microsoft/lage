@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Sat, 04 Sep 2021 03:08:09 GMT and should not be manually modified.
+This log was last generated on Tue, 14 Sep 2021 20:24:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.32.3
+
+Tue, 14 Sep 2021 20:24:31 GMT
+
+### Patches
+
+- swap to jest to get watch mode for test, getting wrapped target to actually fail (kchau@microsoft.com)
 
 ## 0.32.2
 

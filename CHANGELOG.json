@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 14 Sep 2021 20:24:31 GMT",
+      "tag": "lage_v0.32.3",
+      "version": "0.32.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "swap to jest to get watch mode for test, getting wrapped target to actually fail",
+            "author": "kchau@microsoft.com",
+            "commit": "3419ad046898f4d223682246c0995a2048975114",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 04 Sep 2021 03:08:09 GMT",
       "tag": "lage_v0.32.2",
       "version": "0.32.2",

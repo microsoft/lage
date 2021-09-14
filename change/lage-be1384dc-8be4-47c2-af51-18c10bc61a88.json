@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "swap to jest to get watch mode for test, getting wrapped target to actually fail",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
