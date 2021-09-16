@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 16 Sep 2021 19:43:57 GMT",
+      "tag": "lage_v0.32.4",
+      "version": "0.32.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixes the process.exitCode = 1 to happen before any other errors",
+            "author": "kchau@microsoft.com",
+            "commit": "ffe273c8bd00cb316724b086ca2822569958c58a",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Sep 2021 20:24:31 GMT",
       "tag": "lage_v0.32.3",
       "version": "0.32.3",

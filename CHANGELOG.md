@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 14 Sep 2021 20:24:31 GMT and should not be manually modified.
+This log was last generated on Thu, 16 Sep 2021 19:43:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.32.4
+
+Thu, 16 Sep 2021 19:43:57 GMT
+
+### Patches
+
+- fixes the process.exitCode = 1 to happen before any other errors (kchau@microsoft.com)
 
 ## 0.32.3
 
