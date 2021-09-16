@@ -10,7 +10,7 @@ describe("basic failure case where a dependent target has failed", () => {
 
     repo.addPackage("a", ["b"]);
     repo.addPackage("b", [], {
-      build: "node -e 'process.exit(1)'",
+      build: 'node -e "process.exit(1);"',
     });
     repo.addPackage("c");
     repo.linkPackages();
@@ -24,9 +24,9 @@ describe("basic failure case where a dependent target has failed", () => {
       results = e;
     }
     const output = results.stdout + results.stderr;
-    
+
     jsonOutput = parseNdJson(output);
-    
+
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "build", "failed"))).toBeTruthy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "test", "completed"))).toBeFalsy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "completed"))).toBeFalsy();
@@ -45,7 +45,7 @@ describe("basic failure case where a dependent target has failed", () => {
 
     repo.addPackage("a", ["b"]);
     repo.addPackage("b", [], {
-      build: "node -e 'process.exit(1)'",
+      build: 'node -e "process.exit(1);"',
     });
     repo.addPackage("c");
     repo.linkPackages();
@@ -59,15 +59,69 @@ describe("basic failure case where a dependent target has failed", () => {
       results = e;
     }
     const output = results.stdout + results.stderr;
-    
+
     jsonOutput = parseNdJson(output);
-    
+
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "build", "failed"))).toBeTruthy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "test", "completed"))).toBeFalsy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "completed"))).toBeFalsy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "test", "completed"))).toBeFalsy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "lint", "completed"))).toBeFalsy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "c", "test", "completed"))).toBeTruthy();
+
+    repo.cleanup();
+  });
+
+  it("when a failure happens be sure to have exit code of !== 0", () => {
+    expect.hasAssertions();
+    const repo = new Monorepo("basics");
+
+    repo.init();
+    repo.install();
+
+    repo.addPackage("a", ["b"]);
+    repo.addPackage("b", [], {
+      build: 'node -e "process.exit(1);"',
+    });
+    repo.addPackage("c");
+    repo.addPackage("d");
+    repo.addPackage("e");
+    repo.linkPackages();
+
+    try {
+      repo.run("test");
+    } catch (e) {
+      const results = e as any;
+      expect(results.exitCode).not.toBe(0);
+    }
+
+    repo.cleanup();
+  });
+
+  it("when a failure happens in `--safe-exit`, be sure to have exit code of !== 0", () => {
+    expect.hasAssertions();
+    const repo = new Monorepo("basics");
+
+    repo.init();
+    repo.install();
+
+    repo.addPackage("a", ["b"]);
+    repo.addPackage("b", [], {
+      build: 'node -e "process.exit(1);"',
+    });
+    repo.addPackage("c");
+    repo.addPackage("d");
+    repo.addPackage("e");
+    repo.linkPackages();
+
+    try {
+      repo.run("test", ["--safe-exit"]);
+    } catch (e) {
+      const results = e as any;
+
+      expect(results.exitCode).not.toBe(0);
+      expect(results.stderr).not.toContain("Cannot read property 'stack' of undefined");
+    }
 
     repo.cleanup();
   });
