@@ -41,7 +41,7 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
       logger.error("runTasks: " + e.stack);
     } else if (e && e.message) {
       logger.error("runTasks: " + e.message);
-    } else if (e) {
+    } else {
       logger.error("runTasks: " + e);
     }
   }

@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Improve logging of cache fetch errors",
+  "packageName": "lage",
+  "email": "elcraig@microsoft.com",
+  "dependentChangeType": "patch"
+}
