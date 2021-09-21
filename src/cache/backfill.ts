@@ -12,7 +12,7 @@ export async function cacheHash(
   args: any
 ) {
   const cacheConfig = getCacheConfig(cwd, cacheOptions);
-  
+
   const backfillLogger = backfill.makeLogger(
     "error",
     process.stdout,
@@ -63,7 +63,7 @@ export async function cacheFetch(
   try {
     return await backfill.fetch(cwd, hash, backfillLogger, cacheConfig);
   } catch (e) {
-    logger.error(`${id} fetchBackfill`, e);
+    logger.error(`${id} fetchBackfill ${e && e.stack || e && e.message || e}`);
   }
 
   return false;
