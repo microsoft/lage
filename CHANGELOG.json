@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 21 Sep 2021 23:20:14 GMT",
+      "tag": "lage_v0.32.5",
+      "version": "0.32.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Improve logging of cache fetch errors",
+            "author": "elcraig@microsoft.com",
+            "commit": "0aab60f20abc258d978e25d13d18c62ccdea4457",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 16 Sep 2021 19:43:57 GMT",
       "tag": "lage_v0.32.4",
       "version": "0.32.4",

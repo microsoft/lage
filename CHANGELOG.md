@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 16 Sep 2021 19:43:57 GMT and should not be manually modified.
+This log was last generated on Tue, 21 Sep 2021 23:20:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.32.5
+
+Tue, 21 Sep 2021 23:20:14 GMT
+
+### Patches
+
+- Improve logging of cache fetch errors (elcraig@microsoft.com)
 
 ## 0.32.4
 
