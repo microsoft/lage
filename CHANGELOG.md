@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 21 Sep 2021 23:20:14 GMT and should not be manually modified.
+This log was last generated on Thu, 23 Sep 2021 17:32:03 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.33.0
+
+Thu, 23 Sep 2021 17:32:03 GMT
+
+### Minor changes
+
+- add ado reporter (cheruiyotbryan@gmail.com)
 
 ## 0.32.5
 

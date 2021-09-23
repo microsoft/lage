@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 23 Sep 2021 17:32:03 GMT",
+      "tag": "lage_v0.33.0",
+      "version": "0.33.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add ado reporter",
+            "author": "cheruiyotbryan@gmail.com",
+            "commit": "cfb5e5aca31b2cb2719e8110eed434939ff156bd",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 21 Sep 2021 23:20:14 GMT",
       "tag": "lage_v0.32.5",
       "version": "0.32.5",
