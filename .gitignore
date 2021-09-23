@@ -6,3 +6,4 @@ lib
 .DS_Store
 *.pdf
 coverage
+.idea/
