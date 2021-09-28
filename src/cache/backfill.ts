@@ -1,4 +1,4 @@
-import { getCacheConfig } from "./cacheConfig";
+import { getCacheConfig, getLocalFallbackCacheConfig } from "./cacheConfig";
 import { logger } from "../logger";
 import { salt } from "./salt";
 import * as backfill from "backfill/lib/api";
@@ -43,6 +43,25 @@ export async function cacheHash(
   return null;
 }
 
+export async function cacheFetchWithLocalFallback(
+  hash: string | null,
+  id: string,
+  cwd: string,
+  cacheOptions: CacheOptions
+) {
+  if (!hash) {
+    return false;
+  }
+
+  const remoteCacheOptions =  getCacheConfig(cwd, cacheOptions);
+  if (!await doBackfillFetch(hash, id, cwd, remoteCacheOptions)) {
+    const localCacheOptions = getLocalFallbackCacheConfig(cwd, cacheOptions);
+    return await doBackfillFetch(hash, id, cwd, localCacheOptions);
+  }
+
+  return true;
+}
+
 export async function cacheFetch(
   hash: string | null,
   id: string,
@@ -54,6 +73,10 @@ export async function cacheFetch(
   }
 
   const cacheConfig = getCacheConfig(cwd, cacheOptions);
+  return doBackfillFetch(hash, id, cwd, cacheConfig);
+}
+
+async function doBackfillFetch(cwd: string, id: string, hash: string, cacheConfig: CacheOptions) {
   const backfillLogger = backfill.makeLogger(
     "error",
     process.stdout,
