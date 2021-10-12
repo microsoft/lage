@@ -3,11 +3,16 @@ import { getCacheStorageProvider, isCustomProvider } from "backfill-cache";
 import { Logger } from "backfill-logger";
 import { CacheOptions } from "../types/CacheOptions";
 
+export type RemoteFallbackCacheProviderOptions = Pick<
+  CacheOptions,
+  "internalCacheFolder" | "cacheStorageConfig" | "writeRemoteCache"
+>;
+
 export class RemoteFallbackCacheProvider implements ICacheStorage {
   private localCacheStorageProvider: ICacheStorage;
   private remoteCacheStorageProvider?: ICacheStorage;
 
-  constructor(private cacheOptions: CacheOptions, logger: Logger, cwd: string) {
+  constructor(private cacheOptions: RemoteFallbackCacheProviderOptions, logger: Logger, cwd: string) {
     this.localCacheStorageProvider = getCacheStorageProvider(
       {
         provider: "local",
