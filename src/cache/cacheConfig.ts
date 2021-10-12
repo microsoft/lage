@@ -1,8 +1,9 @@
 import { getEnvConfig, createDefaultConfig } from "backfill-config";
-import { makeLogger } from "backfill-logger";
+import { Logger, makeLogger } from "backfill-logger";
 import { CacheOptions } from "../types/CacheOptions";
+import { RemoteFallbackCacheProvider } from "./RemoteFallbackCacheProvider";
 
-export function getCacheConfig(cwd: string, cacheOptions: CacheOptions): CacheOptions {
+export function getCacheConfig(cwd: string, cacheOptions: CacheOptions) {
   const defaultCacheConfig = createDefaultConfig(cwd);
 
   // in lage, default mode is to CACHE locally
@@ -10,28 +11,21 @@ export function getCacheConfig(cwd: string, cacheOptions: CacheOptions): CacheOp
 
   const logger = makeLogger("warn");
   const envConfig = getEnvConfig(logger);
-  return {
-    ...defaultCacheConfig,
-    ...cacheOptions,
-    ...envConfig,
-  };
-}
 
-export function getLocalFallbackCacheConfig(cwd: string, cacheOptions: CacheOptions): CacheOptions {
-  const defaultCacheConfig = createDefaultConfig(cwd);
-  const logger = makeLogger("warn");
-  const envConfig = getEnvConfig(logger);
-  return {
+  const configWithEnvOverrides: CacheOptions = {
     ...defaultCacheConfig,
     ...cacheOptions,
     ...envConfig,
+    writeRemoteCache: cacheOptions.writeRemoteCache || !!process.env.LAGE_WRITE_REMOTE_CACHE
+  };
+
+  const configWithFallback: CacheOptions = {
+    ...configWithEnvOverrides,
     cacheStorageConfig: {
-      provider: "local",
+      ...configWithEnvOverrides.cacheStorageConfig,
+      provider: (logger: Logger, cwd: string) => new RemoteFallbackCacheProvider(configWithEnvOverrides, logger, cwd),
     },
   };
-}
 
-export function isRemoteCache(cwd: string, cacheOptions: CacheOptions) {
-  const configWithEnv = getCacheConfig(cwd, cacheOptions);
-  return !configWithEnv?.cacheStorageConfig?.provider?.includes("local");
+  return configWithFallback;
 }

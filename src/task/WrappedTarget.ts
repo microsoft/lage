@@ -1,14 +1,13 @@
 import { TaskLogger } from "../logger/TaskLogger";
 import { ChildProcess } from "child_process";
 import { controller } from "./abortSignal";
-import { cacheHash, cacheFetch, cachePut, cacheFetchWithLocalFallback } from "../cache/backfill";
+import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { RunContext } from "../types/RunContext";
 import { hrToSeconds } from "../logger/reporters/formatDuration";
 import { PipelineTarget } from "./Pipeline";
 import { Config } from "../types/Config";
 import { getPackageAndTask } from "./taskId";
 import { CacheOptions } from "../types/CacheOptions";
-import { isRemoteCache } from "../cache/cacheConfig";
 
 export type TargetStatus = "completed" | "failed" | "pending" | "started" | "skipped";
 
@@ -85,11 +84,7 @@ export class WrappedTarget {
       hash = await cacheHash(target.id, target.cwd, root, cacheOptions, config.args);
 
       if (hash && !config.resetCache) {
-        if (cacheOptions.fallbackToLocal && isRemoteCache(target.cwd, cacheOptions)) {
-          cacheHit = await cacheFetchWithLocalFallback(hash, target.id, target.cwd, cacheOptions);
-        } else {
-          cacheHit = await cacheFetch(hash, target.id, target.cwd, cacheOptions);
-        }
+        cacheHit = await cacheFetch(hash, target.id, target.cwd, cacheOptions);
       }
     }
 
