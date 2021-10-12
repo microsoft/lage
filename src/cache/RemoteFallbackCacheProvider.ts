@@ -17,11 +17,14 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
       cwd
     );
 
-    if (
+    // Remote providers should have a provider name of something other than "local" OR it is
+    // a custom provider (currently S3 would be a custom provider)
+    const isRemoteProvider =
       isCustomProvider(cacheOptions.cacheStorageConfig) ||
       (typeof cacheOptions.cacheStorageConfig.provider === "string" &&
-        !cacheOptions.cacheStorageConfig.provider.includes("local"))
-    ) {
+        !cacheOptions.cacheStorageConfig.provider.includes("local"));
+
+    if (isRemoteProvider) {
       this.remoteCacheStorageProvider = getCacheStorageProvider(
         cacheOptions.cacheStorageConfig,
         cacheOptions.internalCacheFolder,
