@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "New feature: adds a local fallback mechanism for accessing remote cache",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

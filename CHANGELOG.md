@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 23 Sep 2021 17:32:03 GMT and should not be manually modified.
+This log was last generated on Wed, 13 Oct 2021 20:33:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0
+
+Wed, 13 Oct 2021 20:33:09 GMT
+
+### Major changes
+
+- New feature: adds a local fallback mechanism for accessing remote cache (kchau@microsoft.com)
 
 ## 0.33.0
 
