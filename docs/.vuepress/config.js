@@ -15,11 +15,13 @@ module.exports = {
       "/guide/levels",
       "/guide/scopes",
       "/guide/cache",
+      "/guide/remote-cache",
       "/guide/pipeline",
       "/guide/profile",
       "/guide/priority",
       "/guide/config",
       "/guide/cli",
+      "/guide/migration"
     ],
   },
   plugins: [
