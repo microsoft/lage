@@ -1,5 +1,7 @@
 export function parseNdJson(ndjson: string) {
-  return ndjson.split("\n").map((line) => {
+  const entries = ndjson.substr(ndjson.indexOf("{"));
+
+  return entries.split("\n").map((line) => {
     try {
       return JSON.parse(line);
     } catch (e) {

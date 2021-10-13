@@ -20,6 +20,7 @@ const colors = {
   error: chalk.white,
   task: chalk.cyan,
   pkg: chalk.magenta,
+  silly: chalk.green
 };
 
 function getTaskLogPrefix(pkg: string, task: string) {

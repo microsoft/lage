@@ -19,6 +19,8 @@ export class Monorepo {
 
   init() {
     execa.sync("git", ["init"], { cwd: this.root });
+    execa.sync("git", ["config", "user.email", "you@example.com"], { cwd: this.root });
+    execa.sync("git", ["config", "user.name", "test user"], { cwd: this.root });
     this.generateRepoFiles();
   }
 
@@ -76,9 +78,9 @@ export class Monorepo {
         private: true,
         workspaces: ["packages/*"],
         scripts: {
-          build: `node "${lagePath}" build --reporter json`,
-          test: `node "${lagePath}" test --reporter json`,
-          lint: `node "${lagePath}" lint --reporter json`,
+          build: `node "${lagePath}" build --reporter json --log-level silly`,
+          test: `node "${lagePath}" test --reporter json --log-level silly`,
+          lint: `node "${lagePath}" lint --reporter json --log-level silly`,
         },
         devDependencies: {
           lage: path.resolve(__dirname, "..", ".."),
@@ -91,6 +93,7 @@ export class Monorepo {
           lint: []
         }
       };`,
+      ".gitignore": "node_modules",
     });
   }
 
@@ -152,9 +155,12 @@ export class Monorepo {
         fs.chmodSync(path.join(this.root, file), fs.constants.S_IXUSR | fs.constants.S_IRUSR | fs.constants.S_IROTH);
       }
     }
-    return execa.sync("git", ["add", ...Object.keys(files)], {
+
+    execa.sync("git", ["add", ...Object.keys(files)], {
       cwd: this.root,
     });
+
+    execa.sync("git", ["commit", "-m", "commit files"], { cwd: this.root });
   }
 
   run(command: string, args?: string[]) {
