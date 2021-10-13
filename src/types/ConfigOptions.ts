@@ -55,5 +55,10 @@ export interface ConfigOptions {
    */
   loggerOptions: LoggerOptions;
 
-  workerQueueOptions: QueueSettings; 
+  /**
+   * Worker queue settings
+   */
+  workerQueueOptions: QueueSettings & {
+    timeoutSeconds: number
+  }; 
 }

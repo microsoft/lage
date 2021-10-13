@@ -1,0 +1,920 @@
+diff --git a/CHANGELOG.json b/CHANGELOG.json
+index f9f9c54..4db3ccb 100644
+--- a/CHANGELOG.json
++++ b/CHANGELOG.json
+@@ -1,21 +1,6 @@
+ {
+   "name": "lage",
+   "entries": [
+-    {
+-      "date": "Wed, 13 Oct 2021 20:33:09 GMT",
+-      "tag": "lage_v1.0.0",
+-      "version": "1.0.0",
+-      "comments": {
+-        "major": [
+-          {
+-            "author": "kchau@microsoft.com",
+-            "package": "lage",
+-            "comment": "New feature: adds a local fallback mechanism for accessing remote cache",
+-            "commit": "bd4c49bb9e29fa3b22d2b0611a068f2981dd80a4"
+-          }
+-        ]
+-      }
+-    },
+     {
+       "date": "Thu, 23 Sep 2021 17:32:03 GMT",
+       "tag": "lage_v0.33.0",
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 1f5a895..b00b7ee 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,17 +1,9 @@
+ # Change Log - lage
+ 
+-This log was last generated on Wed, 13 Oct 2021 20:33:09 GMT and should not be manually modified.
++This log was last generated on Thu, 23 Sep 2021 17:32:03 GMT and should not be manually modified.
+ 
+ <!-- Start content -->
+ 
+-## 1.0.0
+-
+-Wed, 13 Oct 2021 20:33:09 GMT
+-
+-### Major changes
+-
+-- New feature: adds a local fallback mechanism for accessing remote cache (kchau@microsoft.com)
+-
+ ## 0.33.0
+ 
+ Thu, 23 Sep 2021 17:32:03 GMT
+diff --git a/change/lage-a296652a-c712-401e-93a6-60e6fd062a49.json b/change/lage-a296652a-c712-401e-93a6-60e6fd062a49.json
+new file mode 100644
+index 0000000..26d83bc
+--- /dev/null
++++ b/change/lage-a296652a-c712-401e-93a6-60e6fd062a49.json
+@@ -0,0 +1,7 @@
++{
++  "type": "minor",
++  "comment": "distributed lage",
++  "packageName": "lage",
++  "email": "kchau@microsoft.com",
++  "dependentChangeType": "patch"
++}
+diff --git a/change/lage-e43b9e56-2448-48e9-8fdc-10076258322e.json b/change/lage-e43b9e56-2448-48e9-8fdc-10076258322e.json
+new file mode 100644
+index 0000000..eb0eb83
+--- /dev/null
++++ b/change/lage-e43b9e56-2448-48e9-8fdc-10076258322e.json
+@@ -0,0 +1,7 @@
++{
++  "type": "major",
++  "comment": "New feature: adds a local fallback mechanism for accessing remote cache",
++  "packageName": "lage",
++  "email": "kchau@microsoft.com",
++  "dependentChangeType": "patch"
++}
+diff --git a/package.json b/package.json
+index 7d5d078..ad4f9c5 100644
+--- a/package.json
++++ b/package.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "lage",
+-  "version": "1.0.0",
++  "version": "0.33.0",
+   "description": "A monorepo task runner",
+   "repository": {
+     "url": "https://github.com/microsoft/lage"
+@@ -35,6 +35,7 @@
+     "backfill-cache": "^5.3.0",
+     "backfill-config": "^6.2.0",
+     "backfill-logger": "^5.1.3",
++    "bee-queue": "^1.4.0",
+     "chalk": "^4.0.0",
+     "cosmiconfig": "^6.0.0",
+     "execa": "^4.0.3",
+@@ -42,7 +43,9 @@
+     "git-url-parse": "^11.1.2",
+     "npmlog": "^4.1.2",
+     "p-graph": "^1.1.1",
++    "p-limit": "^3.1.0",
+     "p-profiler": "^0.2.1",
++    "redis": "^3.1.2",
+     "workspace-tools": "^0.16.2",
+     "yargs-parser": "^18.1.3"
+   },
+diff --git a/src/args.ts b/src/args.ts
+index 39e4f7a..26259c6 100644
+--- a/src/args.ts
++++ b/src/args.ts
+@@ -68,6 +68,7 @@ export function getPassThroughArgs(
+     "includeDependencies",
+     "logLevel",
+     "cacheKey",
++    "dist",
+     "_",
+   ];
+ 
+diff --git a/src/cache/salt.ts b/src/cache/salt.ts
+index 67eb9fb..636b24d 100644
+--- a/src/cache/salt.ts
++++ b/src/cache/salt.ts
+@@ -49,7 +49,6 @@ function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
+ 
+ function hashStrings(strings: string | string[]): string {
+   const hasher = crypto.createHash("sha1");
+-
+   const anArray = typeof strings === "string" ? [strings] : strings;
+   const elements = [...anArray];
+   elements.sort((a, b) => a.localeCompare(b));
+diff --git a/src/cli.ts b/src/cli.ts
+index 30fa15b..22ee744 100644
+--- a/src/cli.ts
++++ b/src/cli.ts
+@@ -7,6 +7,7 @@ import { info } from "./command/info";
+ import { initReporters } from "./logger/initReporters";
+ import { version } from "./command/version";
+ import { cache } from "./command/cache";
++import { worker } from "./command/worker";
+ 
+ // Parse CLI args
+ const cwd = process.cwd();
+@@ -31,6 +32,11 @@ try {
+       version();
+       break;
+ 
++    case "worker":
++      logger.info(`Lage worker - let's make it`);
++      worker(cwd, config, reporters);
++      break;
++
+     default:
+       logger.info(`Lage task runner - let's make it`);
+       run(cwd, config, reporters);
+diff --git a/src/command/worker.ts b/src/command/worker.ts
+new file mode 100644
+index 0000000..fe3c2c5
+--- /dev/null
++++ b/src/command/worker.ts
+@@ -0,0 +1,160 @@
++import { getWorkspace } from "../workspace/getWorkspace";
++import { Config } from "../types/Config";
++import { Reporter } from "../logger/reporters/Reporter";
++import { initWorkerQueue, workerPubSubChannel } from "../task/workerQueue";
++import { TaskLogger } from "../logger/TaskLogger";
++import { cacheFetch, cacheHash, cachePut } from "../cache/backfill";
++import { Pipeline, START_TARGET_ID } from "../task/Pipeline";
++import { getPackageAndTask } from "../task/taskId";
++import { PipelineTarget } from "../types/PipelineDefinition";
++
++// Run multiple
++export async function worker(cwd: string, config: Config, reporters: Reporter[]) {
++  const workspace = getWorkspace(cwd, config);
++
++  const pipeline = new Pipeline(workspace, config);
++
++  const { workerQueue, redisClient } = await initWorkerQueue(config.workerQueueOptions);
++
++  const pubSubListener = (channel, message) => {
++    if (workerPubSubChannel === channel) {
++      if (message === "done") {
++        workerQueue.close();
++        redisClient.off("message", pubSubListener);
++        redisClient.unsubscribe(workerPubSubChannel);
++        redisClient.quit();
++      }
++    }
++  };
++
++  redisClient.subscribe(workerPubSubChannel);
++  redisClient.on("message", pubSubListener);
++
++  workerQueue.ready(() => {
++    workerQueue.process(config.concurrency, async(job) => {
++        const id = job.data.id;
++
++        if (!pipeline.targets!.has(id)) {
++          return;
++        }
++
++        const target = pipeline.targets.get(id)!;
++
++        const deps = getDepsForTarget(id, pipeline.dependencies);
++
++        const logger = new TaskLogger(job.data.name, job.data.task);
++
++        logger.info(`processing job ${job.id}`);
++
++        await Promise.all(
++          deps.filter(d => d !== START_TARGET_ID).map((depTargetId: string) => {
++            return getCache(pipeline.targets.get(depTargetId)!, workspace.root, config);
++          })
++        );
++
++        const cacheResult = await getCache(target, workspace.root, config);
++
++        if (cacheResult.cacheHit) {
++          logger.info(`skipped ${id}`);
++          return;
++        }
++
++        let result: Promise<unknown> | void;
++
++        if (target.packageName) {
++          result = target.run({
++            packageName: target.packageName,
++            config,
++            cwd: target.cwd,
++            options: target.options,
++            taskName: getPackageAndTask(target.id).task,
++            logger,
++          });
++        } else {
++          result = target.run({
++            config,
++            cwd: target.cwd,
++            options: target.options,
++            logger,
++          });
++        }
++
++        if (result && typeof result["then"] === "function") {
++          await result;
++        }
++
++        await saveCache(cacheResult.hash, target, config);
++    });
++  });
++}
++
++// speeding up to reduce network costs for a worker
++const localHashCache: { [packageTask: string]: string | null } = {};
++
++function getCacheOptions(target: PipelineTarget, config: Config) {
++  return {
++    ...config.cacheOptions,
++    outputGlob: target.outputGlob || config.cacheOptions.outputGlob,
++  };
++}
++
++async function getCache(target: PipelineTarget, root: string, config: Config) {
++  let hash: string | null = null;
++  let cacheHit = false;
++
++  const { id, cwd } = target;
++
++  if (localHashCache[id]) {
++    return { hash: localHashCache[id], cacheHit: true };
++  }
++
++  const cacheOptions = getCacheOptions(target, config);
++  hash = await cacheHash(id, root, cwd, cacheOptions, config.args);
++
++  if (hash && !config.resetCache) {
++    cacheHit = await cacheFetch(hash, id, cwd, config.cacheOptions);
++
++    if (cacheHit) {
++      localHashCache[id] = hash;
++    }
++  }
++
++  return { hash, cacheHit };
++}
++
++async function saveCache(hash: string | null, target: PipelineTarget, config: Config) {
++  const localCacheKey = target.id;
++  localHashCache[localCacheKey] = hash;
++
++  const cacheOptions = getCacheOptions(target, config);
++
++  await cachePut(hash, target.cwd, cacheOptions);
++}
++
++function getDepsForTarget(id: string, dependencies: [string, string][]) {
++  const stack = [id];
++  const deps = new Set<string>();
++  const visited = new Set<string>();
++
++  while (stack.length > 0) {
++    const current = stack.pop()!;
++
++    if (visited.has(current)) {
++      continue;
++    }
++
++    visited.add(current);
++
++    if (current !== id) {
++      deps.add(current);
++    }
++
++    dependencies.forEach(([from, to]) => {
++      if (to === current) {
++        stack.push(from);
++      }
++    });
++  }
++
++  return [...deps];
++}
+diff --git a/src/config/getConfig.ts b/src/config/getConfig.ts
+index 1b88290..db70692 100644
+--- a/src/config/getConfig.ts
++++ b/src/config/getConfig.ts
+@@ -91,5 +91,7 @@ export function getConfig(cwd: string): Config {
+     prune: parsedArgs.prune,
+     logLevel: parsedArgs.logLevel,
+     loggerOptions: configResults?.config.loggerOptions || {},
++    dist: parsedArgs.dist || false,
++    workerQueueOptions: configResults?.config.workerQueueOptions || {}
+   };
+ }
+diff --git a/src/logger/reporters/JsonReporter.ts b/src/logger/reporters/JsonReporter.ts
+index a01ba3e..6b28eca 100644
+--- a/src/logger/reporters/JsonReporter.ts
++++ b/src/logger/reporters/JsonReporter.ts
+@@ -23,8 +23,7 @@ export class JsonReporter implements Reporter {
+         package: wrappedTarget.target.packageName,
+         task: wrappedTarget.target.task,
+         duration: hrToSeconds(wrappedTarget.duration),
+-        status: wrappedTarget.status,
+-        npmArgs: wrappedTarget.npmArgs,
++        status: wrappedTarget.status
+       });
+     }
+ 
+diff --git a/src/logger/reporters/NpmLogReporter.ts b/src/logger/reporters/NpmLogReporter.ts
+index e681f9f..6f05bf2 100644
+--- a/src/logger/reporters/NpmLogReporter.ts
++++ b/src/logger/reporters/NpmLogReporter.ts
+@@ -7,7 +7,7 @@ import { formatDuration, hrToSeconds } from "./formatDuration";
+ import { RunContext } from "../../types/RunContext";
+ import { getPackageAndTask, getTargetId } from "../../task/taskId";
+ import { LoggerOptions } from "../../types/LoggerOptions";
+-import { TargetStatus } from "../../task/WrappedTarget";
++import { TargetStatus } from "../../types/TargetStatus";
+ 
+ const maxLengths = {
+   pkg: 0,
+diff --git a/src/task/DistributedTarget.ts b/src/task/DistributedTarget.ts
+new file mode 100644
+index 0000000..0a4783f
+--- /dev/null
++++ b/src/task/DistributedTarget.ts
+@@ -0,0 +1,41 @@
++import { TaskLogger } from "../logger/TaskLogger";
++import { PipelineTarget } from "../types/PipelineDefinition";
++import Queue from "bee-queue";
++import { ConfigOptions } from "..";
++
++export class DistributedTarget {
++  logger: TaskLogger;
++
++  constructor(public target: PipelineTarget, private config: ConfigOptions, private workerQueue: Queue) {
++    this.logger = new TaskLogger(target.packageName || "[GLOBAL]", target.packageName ? target.task : target.id);
++  }
++
++  async run() {
++    const { target, logger } = this;
++
++    return new Promise<void>((resolve, reject) => {
++      const job = this.workerQueue.createJob({
++        id: target.id,
++      });
++
++      job.on("succeeded", (result) => {
++        logger.info("succeeded");
++        resolve();
++      });
++
++      job.on("failed", (result) => {
++        logger.info("failed");
++        reject();
++      });
++
++      // time out defaults to 1 hour
++      const timeout = !!this.config?.workerQueueOptions?.timeoutSeconds ? this.config.workerQueueOptions.timeoutSeconds * 1000 : 1000 * 60 * 60;
++      job
++        .timeout(timeout)
++        .save()
++        .then((newJob) => {
++          logger.info(`job id: ${newJob.id}`);
++        });
++    });
++  }
++}
+diff --git a/src/task/NpmScriptTask.ts b/src/task/NpmScriptTask.ts
+index e595a1d..d853d45 100644
+--- a/src/task/NpmScriptTask.ts
++++ b/src/task/NpmScriptTask.ts
+@@ -9,8 +9,6 @@ import { TaskLogWritable } from "../logger/TaskLogWritable";
+ import { getNpmCommand } from "./getNpmCommand";
+ import { Config } from "../types/Config";
+ 
+-export type NpmScriptTaskStatus = "completed" | "failed" | "pending" | "started" | "skipped";
+-
+ export class NpmScriptTask {
+   static npmCmd: string = "";
+   static activeProcesses = new Set<ChildProcess>();
+@@ -19,7 +17,6 @@ export class NpmScriptTask {
+   npmArgs: string[] = [];
+   startTime: [number, number] = [0, 0];
+   duration: [number, number] = [0, 0];
+-  status: NpmScriptTaskStatus;
+ 
+   static killAllActiveProcesses() {
+     // first, send SIGTERM everywhere
+@@ -39,7 +36,6 @@ export class NpmScriptTask {
+ 
+   constructor(public task: string, public info: PackageInfo, private config: Config, private logger: TaskLogger) {
+     NpmScriptTask.npmCmd = NpmScriptTask.npmCmd || findNpmClient(config.npmClient);
+-    this.status = "pending";
+     this.npmArgs = getNpmCommand(config.node, config.args, task);
+   }
+ 
+diff --git a/src/task/Pipeline.ts b/src/task/Pipeline.ts
+index 370d6ad..7e7cb2c 100644
+--- a/src/task/Pipeline.ts
++++ b/src/task/Pipeline.ts
+@@ -3,7 +3,7 @@ import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
+ import { NpmScriptTask } from "./NpmScriptTask";
+ import { PackageInfo, PackageInfos } from "workspace-tools";
+ import { RunContext } from "../types/RunContext";
+-import { TargetConfig, TargetConfigFactory, TaskArgs } from "../types/PipelineDefinition";
++import { PipelineTarget, TargetConfig, TargetConfigFactory } from "../types/PipelineDefinition";
+ import { TopologicalGraph } from "../types/TopologicalGraph";
+ import { Workspace } from "../types/Workspace";
+ import pGraph, { PGraphNodeMap } from "p-graph";
+@@ -11,25 +11,16 @@ import path from "path";
+ import { getPipelinePackages } from "./getPipelinePackages";
+ import { getPackageAndTask, getTargetId } from "./taskId";
+ import { WrappedTarget } from "./WrappedTarget";
+-
+-/** individual targets to be kept track inside pipeline */
+-export interface PipelineTarget {
+-  id: string;
+-  packageName?: string;
+-  task: string;
+-  cwd: string;
+-  run?: (args: TaskArgs) => Promise<unknown> | void;
+-  deps?: string[];
+-  outputGlob?: string[];
+-  priority?: number;
+-  cache?: boolean;
+-  options?: any;
+-}
++import { DistributedTarget } from "./DistributedTarget";
++import { initWorkerQueue, workerPubSubChannel } from "./workerQueue";
+ 
+ export const START_TARGET_ID = "__start";
+ 
+ /**
+  * Pipeline class represents lage's understanding of the dependency graphs and wraps the promise graph implementations to execute tasks in order
++ *
++ * Distributed notes:
++ * - for doing distributed work, the WrapperTask will instead place the PipelineTarget info into a worker queue
+  */
+ export class Pipeline {
+   /** Target represent a unit of work and the configuration of how to run it */
+@@ -86,10 +77,11 @@ export class Pipeline {
+       outputGlob: this.config.cacheOptions.outputGlob,
+       packageName: packageName,
+       cwd: path.dirname(this.packageInfos[packageName].packageJsonPath),
+-      run: this.maybeRunNpmTask(task, info),
+-
+-      // TODO: do we need to really merge this? Is this desired? (this is the OLD behavior)
+-      deps: this.targets.has(id) ? [...(this.targets.get(id)!.deps || []), ...deps] : deps,
++      run: (args) => {
++        const npmTask = new NpmScriptTask(task, info, this.config, args.logger);
++        return npmTask.run();
++      },
++      deps: this.targets.has(id) ? this.targets.get(id)!.deps || [] : deps,
+     };
+   }
+ 
+@@ -363,6 +355,15 @@ export class Pipeline {
+     const nodeMap: PGraphNodeMap = new Map();
+     const targetGraph = this.generateTargetGraph();
+ 
++    let redisClient;
++    let workerQueue;
++
++    if (this.config.dist) {
++      const results = await initWorkerQueue(this.config.workerQueueOptions, false);
++      redisClient = results.redisClient;
++      workerQueue = results.workerQueue;
++    }
++
+     for (const [from, to] of targetGraph) {
+       const fromTarget = this.targets.get(from)!;
+       const toTarget = this.targets.get(to)!;
+@@ -374,8 +375,13 @@ export class Pipeline {
+               return Promise.resolve();
+             }
+ 
+-            const wrappedTask = new WrappedTarget(target, this.workspace.root, this.config, context);
+-            return wrappedTask.run();
++            if (!this.config.dist) {
++              const wrappedTask = new WrappedTarget(target, this.workspace.root, this.config, context);
++              return wrappedTask.run();
++            } else {
++              const distributedTask = new DistributedTarget(target, this.config, context, workerQueue);
++              return distributedTask.run();
++            }
+           },
+           priority: this.getTargetPriority(target),
+         });
+@@ -386,5 +392,14 @@ export class Pipeline {
+       concurrency: this.config.concurrency,
+       continue: this.config.continue,
+     });
++
++    if (redisClient) {
++      redisClient.publish(workerPubSubChannel, "done");
++      redisClient.quit();
++    }
++  
++    if (workerQueue) {
++      workerQueue.close();
++    }
+   }
+ }
+diff --git a/src/task/WrappedTarget.ts b/src/task/WrappedTarget.ts
+index 9cdf30d..9445fd2 100644
+--- a/src/task/WrappedTarget.ts
++++ b/src/task/WrappedTarget.ts
+@@ -4,14 +4,13 @@ import { controller } from "./abortSignal";
+ import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
+ import { RunContext } from "../types/RunContext";
+ import { hrToSeconds } from "../logger/reporters/formatDuration";
+-import { PipelineTarget } from "./Pipeline";
+ import { Config } from "../types/Config";
+ import { getPackageAndTask } from "./taskId";
+ import { CacheOptions } from "../types/CacheOptions";
++import { TargetStatus } from "../types/TargetStatus";
++import { LoggableTarget, PipelineTarget } from "../types/PipelineDefinition";
+ 
+-export type TargetStatus = "completed" | "failed" | "pending" | "started" | "skipped";
+-
+-export class WrappedTarget {
++export class WrappedTarget implements LoggableTarget {
+   static npmCmd: string = "";
+   static activeProcesses = new Set<ChildProcess>();
+   static gracefulKillTimeout = 2500;
+@@ -34,7 +33,7 @@ export class WrappedTarget {
+ 
+     this.cacheOptions = {
+       ...config.cacheOptions,
+-      outputGlob: [...(config.cacheOptions.outputGlob || []), ...(target.outputGlob || [])],
++      outputGlob: target.outputGlob || config.cacheOptions.outputGlob,
+     };
+ 
+     this.context.targets.set(target.id, this);
+@@ -103,7 +102,7 @@ export class WrappedTarget {
+     try {
+       const { hash, cacheHit } = await this.getCache();
+ 
+-      const cacheEnabled = target.cache && config.cache && hash;
++      const cacheEnabled = target.cache && config.cache && hash && !config.dist;
+ 
+       this.onStart();
+ 
+diff --git a/src/task/workerQueue.ts b/src/task/workerQueue.ts
+new file mode 100644
+index 0000000..c2fb7ed
+--- /dev/null
++++ b/src/task/workerQueue.ts
+@@ -0,0 +1,18 @@
++import Queue from "bee-queue";
++import redis, { ClientOpts } from 'redis';
++import { Config } from "../types/Config";
++
++export const workerQueueId = `lage:npm-task:${process.env.LAGE_WORKER_QUEUE_ID || "default"}`;
++
++export const initWorkerQueue = async(config: Config["workerQueueOptions"], isWorker: boolean = true) => {
++  const redisClient = redis.createClient(config.redis as ClientOpts);
++  const workerQueue = new Queue(workerQueueId, { ...config, isWorker });
++  
++  if (!isWorker) {
++    await workerQueue.destroy();
++  }
++
++  return {workerQueue, redisClient};
++};
++
++export const workerPubSubChannel = `lage_pubsub_${process.env.LAGE_WORKER_QUEUE_ID || "default"}`
+\ No newline at end of file
+diff --git a/src/types/CliOptions.ts b/src/types/CliOptions.ts
+index c77c67e..23812cc 100644
+--- a/src/types/CliOptions.ts
++++ b/src/types/CliOptions.ts
+@@ -186,4 +186,9 @@ export interface CliOptions {
+   cacheOptions: {
+     cacheKey: string;
+   };
++
++  /**
++   * Turns on distributed-run mode - the master node will do no work, but expect workers to join
++   */
++  dist: boolean;
+ }
+diff --git a/src/types/ConfigOptions.ts b/src/types/ConfigOptions.ts
+index 85b1abb..e03ab57 100644
+--- a/src/types/ConfigOptions.ts
++++ b/src/types/ConfigOptions.ts
+@@ -2,6 +2,7 @@ import { CacheOptions } from "./CacheOptions";
+ import { Priority } from "./Priority";
+ import { PipelineDefinition } from "./PipelineDefinition";
+ import { LoggerOptions } from "./LoggerOptions";
++import { QueueSettings } from "bee-queue";
+ 
+ export type NpmClient = "npm" | "yarn" | "pnpm";
+ 
+@@ -53,4 +54,11 @@ export interface ConfigOptions {
+    * Options that will be sent to all log reporters.
+    */
+   loggerOptions: LoggerOptions;
++
++  /**
++   * Worker queue settings
++   */
++  workerQueueOptions: QueueSettings & {
++    timeoutSeconds: number
++  }; 
+ }
+diff --git a/src/types/PipelineDefinition.ts b/src/types/PipelineDefinition.ts
+index 3c8ca03..97f077b 100644
+--- a/src/types/PipelineDefinition.ts
++++ b/src/types/PipelineDefinition.ts
+@@ -1,5 +1,6 @@
+ import { TaskLogger } from "../logger/TaskLogger";
+ import { Config } from "./Config";
++import { TargetStatus } from "./TargetStatus";
+ 
+ export interface TaskArgs {
+   packageName?: string;
+@@ -11,7 +12,7 @@ export interface TaskArgs {
+ }
+ 
+ /** target configuration */
+-export interface TargetConfig { 
++export interface TargetConfig {
+   type?: "package" | "global";
+   run?: (args: TaskArgs) => Promise<boolean> | void;
+   deps?: string[];
+@@ -31,14 +32,14 @@ export interface TargetConfigFactory {
+ }
+ 
+ /** Pipline Definition
+- * 
++ *
+  * Example
+- * 
++ *
+  * const p: Pipeline = {
+  *   // sharded jest
+- *   jest: () => { 
++ *   jest: () => {
+  *     const tasks: Target[] = [];
+- *     
++ *
+  *     for (let i = 0; i < 100; i++) {
+  *       tasks.push({
+  *         type: "global",
+@@ -47,14 +48,14 @@ export interface TargetConfigFactory {
+  *         },
+  *       });
+  *     }
+- * 
++ *
+  *     return tasks;
+  *   },
+- *   
++ *
+  *   build: {
+  *     deps: ['^build']
+  *   },
+- * 
++ *
+  *   validate: {
+  *     deps: []
+  *   }
+@@ -63,3 +64,26 @@ export interface TargetConfigFactory {
+ export interface PipelineDefinition {
+   [task: string]: string[] | TargetConfig | TargetConfigFactory;
+ }
++
++/** individual targets to be kept track inside pipeline */
++export interface PipelineTarget {
++  id: string;
++  packageName?: string;
++  task: string;
++  cwd: string;
++  run: (args: TaskArgs) => Promise<unknown> | void;
++  deps?: string[];
++  outputGlob?: string[];
++  priority?: number;
++  cache?: boolean;
++  options?: any;
++}
++
++
++export interface LoggableTarget {
++  status: TargetStatus;
++  logger: TaskLogger;
++  target: PipelineTarget;
++  startTime: [number, number];
++  duration: [number, number];
++}
+\ No newline at end of file
+diff --git a/src/types/RunContext.ts b/src/types/RunContext.ts
+index 9f42289..f8422e7 100644
+--- a/src/types/RunContext.ts
++++ b/src/types/RunContext.ts
+@@ -1,6 +1,5 @@
+ import Profiler from "p-profiler";
+-import { WrappedTarget } from "../task/WrappedTarget";
+-
++import { LoggableTarget } from "./PipelineDefinition";
+ 
+ export interface Measures {
+   start: [number, number];
+@@ -12,6 +11,6 @@ export interface Measures {
+ 
+ export interface RunContext {
+   measures: Measures;
+-  targets: Map<string, WrappedTarget>;
++  targets: Map<string, LoggableTarget>;
+   profiler: Profiler;
+ }
+diff --git a/src/types/TargetStatus.ts b/src/types/TargetStatus.ts
+new file mode 100644
+index 0000000..ee9b2bb
+--- /dev/null
++++ b/src/types/TargetStatus.ts
+@@ -0,0 +1 @@
++export type TargetStatus = "completed" | "failed" | "pending" | "started" | "skipped";
+diff --git a/tsconfig.json b/tsconfig.json
+index 90a4c45..88a3469 100644
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -16,7 +16,7 @@
+     "esModuleInterop": true,
+     "forceConsistentCasingInFileNames": true,
+     "skipLibCheck": true,
+-    "noUnusedLocals": true
++    "noUnusedLocals": false,
+   },
+   "include": ["src"]
+ }
+diff --git a/yarn.lock b/yarn.lock
+index 4375b63..680295f 100644
+--- a/yarn.lock
++++ b/yarn.lock
+@@ -3009,6 +3009,15 @@ beachball@^2.16.0:
+     workspace-tools "^0.16.2"
+     yargs-parser "^20.2.4"
+ 
++bee-queue@^1.4.0:
++  version "1.4.0"
++  resolved "https://registry.yarnpkg.com/bee-queue/-/bee-queue-1.4.0.tgz#c36ab185fee58995c51944c31c3d11f5a5d2591f"
++  integrity sha512-sAXVUcXe4LIKkVrMN18CrudWbq5atC9VLeBjy1BkODAupXf/MVGfGfxdiv8Uit8JIkztnLU0jQFRQtB1uKuHow==
++  dependencies:
++    p-finally "^1.0.0"
++    promise-callbacks "^3.8.1"
++    redis "^2.7.1"
++
+ big.js@^3.1.3:
+   version "3.2.0"
+   resolved "https://registry.yarnpkg.com/big.js/-/big.js-3.2.0.tgz#a5fc298b81b9e0dca2e458824784b65c52ba588e"
+@@ -4927,6 +4936,11 @@ denque@^1.4.1:
+   resolved "https://registry.yarnpkg.com/denque/-/denque-1.4.1.tgz#6744ff7641c148c3f8a69c307e51235c1f4a37cf"
+   integrity sha512-OfzPuSZKGcgr96rf1oODnfjqBFmr1DVoc/TrItj3Ohe0Ah1C5WX5Baquw/9U9KovnQ88EqmJbD66rKYUQYN1tQ==
+ 
++denque@^1.5.0:
++  version "1.5.1"
++  resolved "https://registry.yarnpkg.com/denque/-/denque-1.5.1.tgz#07f670e29c9a78f8faecb2566a1e2c11929c5cbf"
++  integrity sha512-XwE+iZ4D6ZUB7mfYRMb5wByE8L74HCn30FBN7sWnXksWc1LO1bPDl67pBR9o/kC4z/xSNAwkMYcGgqDV3BE3Hw==
++
+ depd@~1.1.2:
+   version "1.1.2"
+   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
+@@ -5113,6 +5127,11 @@ dotenv@^8.1.0:
+   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+   integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
+ 
++double-ended-queue@^2.1.0-0:
++  version "2.1.0-0"
++  resolved "https://registry.yarnpkg.com/double-ended-queue/-/double-ended-queue-2.1.0-0.tgz#103d3527fd31528f40188130c841efdd78264e5c"
++  integrity sha1-ED01J/0xUo9AGIEwyEHv3XgmTlw=
++
+ dtrace-provider@~0.8:
+   version "0.8.8"
+   resolved "https://registry.yarnpkg.com/dtrace-provider/-/dtrace-provider-0.8.8.tgz#2996d5490c37e1347be263b423ed7b297fb0d97e"
+@@ -9499,7 +9518,7 @@ object.assign@^4.1.0:
+     has-symbols "^1.0.0"
+     object-keys "^1.0.11"
+ 
+-object.getownpropertydescriptors@^2.0.3, object.getownpropertydescriptors@^2.1.0:
++object.getownpropertydescriptors@2.1.0, object.getownpropertydescriptors@^2.0.3, object.getownpropertydescriptors@^2.1.0:
+   version "2.1.0"
+   resolved "https://registry.yarnpkg.com/object.getownpropertydescriptors/-/object.getownpropertydescriptors-2.1.0.tgz#369bf1f9592d8ab89d712dced5cb81c7c5352649"
+   integrity sha512-Z53Oah9A3TdLoblT7VKJaTDdXdT+lQO+cNpKVnya5JDe9uLvzu1YyY1yFDFrcxrlRgWrEFH0jJtD/IbuwjcEVg==
+@@ -9684,6 +9703,13 @@ p-limit@^3.0.2:
+   dependencies:
+     p-try "^2.0.0"
+ 
++p-limit@^3.1.0:
++  version "3.1.0"
++  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-3.1.0.tgz#e1daccbe78d0d1388ca18c64fea38e3e57e3706b"
++  integrity sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==
++  dependencies:
++    yocto-queue "^0.1.0"
++
+ p-locate@^2.0.0:
+   version "2.0.0"
+   resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-2.0.0.tgz#20a0103b222a70c8fd39cc2e580680f3dde5ec43"
+@@ -10498,6 +10524,14 @@ progress@^2.0.1, progress@^2.0.3:
+   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
+   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
+ 
++promise-callbacks@^3.8.1:
++  version "3.8.2"
++  resolved "https://registry.yarnpkg.com/promise-callbacks/-/promise-callbacks-3.8.2.tgz#00babc159508f2afd86db742f1be8a6031d37001"
++  integrity sha512-g+SziwZr9eLwF+Tejuz0nirmzrYm1Ou4dExaRap1+wG/Bip1FAjMwE+oOqwv6C+CxDCQJ9l0jMSE8ui1oRC/tQ==
++  dependencies:
++    "@babel/runtime" "^7.9.2"
++    object.getownpropertydescriptors "2.1.0"
++
+ promise-deferred@^2.0.3:
+   version "2.0.3"
+   resolved "https://registry.yarnpkg.com/promise-deferred/-/promise-deferred-2.0.3.tgz#b99c9588820798501862a593d49cece51d06fd7f"
+@@ -10899,6 +10933,11 @@ redent@^3.0.0:
+     indent-string "^4.0.0"
+     strip-indent "^3.0.0"
+ 
++redis-commands@^1.2.0, redis-commands@^1.7.0:
++  version "1.7.0"
++  resolved "https://registry.yarnpkg.com/redis-commands/-/redis-commands-1.7.0.tgz#15a6fea2d58281e27b1cd1acfb4b293e278c3a89"
++  integrity sha512-nJWqw3bTFy21hX/CPKHth6sfhZbdiHP6bTawSgQBlKOVRG7EZkfHbbHwQJnrE4vsQf0CMNE+3gJ4Fmm16vdVlQ==
++
+ redis-commands@^1.5.0:
+   version "1.6.0"
+   resolved "https://registry.yarnpkg.com/redis-commands/-/redis-commands-1.6.0.tgz#36d4ca42ae9ed29815cdb30ad9f97982eba1ce23"
+@@ -10909,6 +10948,11 @@ redis-errors@^1.0.0, redis-errors@^1.2.0:
+   resolved "https://registry.yarnpkg.com/redis-errors/-/redis-errors-1.2.0.tgz#eb62d2adb15e4eaf4610c04afe1529384250abad"
+   integrity sha1-62LSrbFeTq9GEMBK/hUpOEJQq60=
+ 
++redis-parser@^2.6.0:
++  version "2.6.0"
++  resolved "https://registry.yarnpkg.com/redis-parser/-/redis-parser-2.6.0.tgz#52ed09dacac108f1a631c07e9b69941e7a19504b"
++  integrity sha1-Uu0J2srBCPGmMcB+m2mUHnoZUEs=
++
+ redis-parser@^3.0.0:
+   version "3.0.0"
+   resolved "https://registry.yarnpkg.com/redis-parser/-/redis-parser-3.0.0.tgz#b66d828cdcafe6b4b8a428a7def4c6bcac31c8b4"
+@@ -10916,6 +10960,15 @@ redis-parser@^3.0.0:
+   dependencies:
+     redis-errors "^1.0.0"
+ 
++redis@^2.7.1:
++  version "2.8.0"
++  resolved "https://registry.yarnpkg.com/redis/-/redis-2.8.0.tgz#202288e3f58c49f6079d97af7a10e1303ae14b02"
++  integrity sha512-M1OkonEQwtRmZv4tEWF2VgpG0JWJ8Fv1PhlgT5+B+uNq2cA3Rt1Yt/ryoR+vQNOQcIEgdCdfH0jr3bDpihAw1A==
++  dependencies:
++    double-ended-queue "^2.1.0-0"
++    redis-commands "^1.2.0"
++    redis-parser "^2.6.0"
++
+ redis@^3.0.2:
+   version "3.0.2"
+   resolved "https://registry.yarnpkg.com/redis/-/redis-3.0.2.tgz#bd47067b8a4a3e6a2e556e57f71cc82c7360150a"
+@@ -10926,6 +10979,16 @@ redis@^3.0.2:
+     redis-errors "^1.2.0"
+     redis-parser "^3.0.0"
+ 
++redis@^3.1.2:
++  version "3.1.2"
++  resolved "https://registry.yarnpkg.com/redis/-/redis-3.1.2.tgz#766851117e80653d23e0ed536254677ab647638c"
++  integrity sha512-grn5KoZLr/qrRQVwoSkmzdbw6pwF+/rwODtrOr6vuBRiR/f3rjSTGupbF90Zpqm2oenix8Do6RV7pYEkGwlKkw==
++  dependencies:
++    denque "^1.5.0"
++    redis-commands "^1.7.0"
++    redis-errors "^1.2.0"
++    redis-parser "^3.0.0"
++
+ reduce@^1.0.1:
+   version "1.0.2"
+   resolved "https://registry.yarnpkg.com/reduce/-/reduce-1.0.2.tgz#0cd680ad3ffe0b060e57a5c68bdfce37168d361b"
+@@ -14027,6 +14090,11 @@ yn@3.1.1:
+   resolved "https://registry.yarnpkg.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
+   integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
+ 
++yocto-queue@^0.1.0:
++  version "0.1.0"
++  resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
++  integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
++
+ z-schema@~3.18.3:
+   version "3.18.4"
+   resolved "https://registry.yarnpkg.com/z-schema/-/z-schema-3.18.4.tgz#ea8132b279533ee60be2485a02f7e3e42541a9a2"

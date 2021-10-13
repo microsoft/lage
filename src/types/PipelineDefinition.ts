@@ -71,14 +71,13 @@ export interface PipelineTarget {
   packageName?: string;
   task: string;
   cwd: string;
-  run: (args: TaskArgs) => Promise<unknown> | void;
+  run?: (args: TaskArgs) => Promise<unknown> | void;
   deps?: string[];
   outputGlob?: string[];
   priority?: number;
   cache?: boolean;
   options?: any;
 }
-
 
 export interface LoggableTarget {
   status: TargetStatus;

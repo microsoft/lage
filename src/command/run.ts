@@ -37,10 +37,10 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   } catch (e) {
     process.exitCode = 1;
 
-    if (e && e.stack) {
-      logger.error("runTasks: " + e.stack);
-    } else if (e && e.message) {
-      logger.error("runTasks: " + e.message);
+    if (e && (e as any).stack) {
+      logger.error("runTasks: " + (e as any).stack);
+    } else if (e && (e as any).message) {
+      logger.error("runTasks: " + (e as any).message);
     } else {
       logger.error("runTasks: " + e);
     }
@@ -52,8 +52,8 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
       logger.info(`runTasks: Profile saved to ${profileFile}`);
     } catch (e) {
       process.exitCode = 1;
-      if (e && e.message) {
-        logger.error(`An error occured while trying to write profile: ${e.message}`);
+      if (e && (e as any).message) {
+        logger.error(`An error occured while trying to write profile: ${(e as any).message}`);
       }
     }
   }

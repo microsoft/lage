@@ -11,24 +11,14 @@ import path from "path";
 import { getPipelinePackages } from "./getPipelinePackages";
 import { getPackageAndTask, getTargetId } from "./taskId";
 import { WrappedTarget } from "./WrappedTarget";
-import { DistributedTarget } from "./DistributedTarget";
-import { initWorkerQueue, workerPubSubChannel } from "./workerQueue";
+import { DistributedNpmTask } from "./DistributedNpmTask";
+import { closeWorkerQueue, initWorkerQueue } from "./workerQueue";
+import Queue from "bee-queue";
 
 export const START_TARGET_ID = "__start";
 
 /**
- * The Pipeline class is the heart of lage's ability to parse a set of target (shorthand, full target config, or even a factory of configs)
- *
- * Some notes:
- * - given a workspace (package infos) and config (merged CLI and config from file), it'll then parse the config.pipeline
- * - the pipeline configuration is defined in the types/PipelineDefinition.ts file
- * - loading config means that for each of the config.pipeline key-value, it'll try to convert them into a set of PipelineTarget
- * - PipelineTargets are objects that hold enough info for an execution engine to run the target function (provides info about priority, cache output globs, etc.)
- * - for the shorthand (e.g. {build: ['^build']}), it'll assume to the PipelineTarget is of "package" type & that the run functions are npm scripts
- * - for a target config, it'll default to "package" and create a PipelineTarget
- * - for a target config factory function, it'll run that function and expect a list of target configs as a result. Those will be converted to a list of PipelineTarget's
- * - after creating the pipeline targets, it'll determine the dependencies (the edges) from one target to another
- * - a pipeline "run(context)" call will provide some "entry targets", and then a subgraph will be generated to be submitted to the execution engine (p-graph)
+ * Pipeline class represents lage's understanding of the dependency graphs and wraps the promise graph implementations to execute tasks in order
  *
  * Distributed notes:
  * - for doing distributed work, the WrapperTask will instead place the PipelineTarget info into a worker queue
@@ -57,6 +47,9 @@ export class Pipeline {
   /** Internal generated cache of the topological package graph */
   graph: TopologicalGraph;
 
+  /** Internal cache of the worker queue */
+  workerQueue?: Queue;
+
   constructor(private workspace: Workspace, private config: Config) {
     this.packageInfos = workspace.allPackages;
     this.graph = generateTopologicGraph(workspace);
@@ -69,8 +62,13 @@ export class Pipeline {
     }
 
     return (args) => {
-      const npmTask = new NpmScriptTask(task, info, this.config, args.logger);
-      return npmTask.run();
+      if (this.config.dist && this.workerQueue) {
+        const distributedTask = new DistributedNpmTask(task, info, this.config, this.workerQueue, args.logger);
+        return distributedTask.run();
+      } else {
+        const npmTask = new NpmScriptTask(task, info, this.config, args.logger);
+        return npmTask.run();
+      }
     };
   }
 
@@ -88,11 +86,9 @@ export class Pipeline {
       outputGlob: this.config.cacheOptions.outputGlob,
       packageName: packageName,
       cwd: path.dirname(this.packageInfos[packageName].packageJsonPath),
-      run: (args) => {
-        const npmTask = new NpmScriptTask(task, info, this.config, args.logger);
-        return npmTask.run();
-      },
-      deps: this.targets.has(id) ? this.targets.get(id)!.deps || [] : deps,
+      run: this.maybeRunNpmTask(task, info),
+      // TODO: do we need to really merge this? Is this desired? (this is the OLD behavior)
+      deps: this.targets.has(id) ? [...(this.targets.get(id)!.deps || []), ...deps] : deps,
     };
   }
 
@@ -363,17 +359,17 @@ export class Pipeline {
   }
 
   async run(context: RunContext) {
+    // Initialize the worker queue if in distributed mode
+    if (this.config.dist) {
+      this.workerQueue = await initWorkerQueue(this.config, false);
+    }
+    await this.runPipeline(context);
+    closeWorkerQueue();
+  }
+
+  async runPipeline(context: RunContext) {
     const nodeMap: PGraphNodeMap = new Map();
     const targetGraph = this.generateTargetGraph();
-
-    let redisClient;
-    let workerQueue;
-
-    if (this.config.dist) {
-      const results = await initWorkerQueue(this.config.workerQueueOptions, false);
-      redisClient = results.redisClient;
-      workerQueue = results.workerQueue;
-    }
 
     for (const [from, to] of targetGraph) {
       const fromTarget = this.targets.get(from)!;
@@ -386,13 +382,8 @@ export class Pipeline {
               return Promise.resolve();
             }
 
-            if (!this.config.dist) {
-              const wrappedTask = new WrappedTarget(target, this.workspace.root, this.config, context);
-              return wrappedTask.run();
-            } else {
-              const distributedTask = new DistributedTarget(target, this.config, context, workerQueue);
-              return distributedTask.run();
-            }
+            const wrappedTask = new WrappedTarget(target, this.workspace.root, this.config, context);
+            return wrappedTask.run();
           },
           priority: this.getTargetPriority(target),
         });
@@ -403,14 +394,5 @@ export class Pipeline {
       concurrency: this.config.concurrency,
       continue: this.config.continue,
     });
-
-    if (redisClient) {
-      redisClient.publish(workerPubSubChannel, "done");
-      redisClient.quit();
-    }
-  
-    if (workerQueue) {
-      workerQueue.close();
-    }
   }
 }
