@@ -2988,16 +2988,17 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-beachball@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/beachball/-/beachball-2.6.1.tgz#0f48a08fbeb965a643c3b5c3c224d08c6d67ce84"
-  integrity sha512-+vUTrIPGpSUVHCl2WbNP9+cOG6UAFlm15Nbvu1onuob0DqqLvCF4nzPTR3ZFFsq+mkbS3NG4iIk8YiYSo+wiIQ==
+beachball@^2.16.0:
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/beachball/-/beachball-2.16.0.tgz#cd8d511782177f55b0b5f9b11071a537b7974346"
+  integrity sha512-8qMuH/ZtusIS9HgSYQ4hrJnpfdIFzxGWpPfCemSrVm/fKMRcjZ6YCNPt6YTnaSDaO0y3tNsOQ+ekMZt3c1fuOw==
   dependencies:
     cosmiconfig "^6.0.0"
     execa "^4.0.3"
     fs-extra "^8.0.1"
     git-url-parse "^11.1.2"
     glob "^7.1.4"
+    human-id "^2.0.1"
     lodash "^4.17.15"
     minimatch "^3.0.4"
     p-limit "^3.0.2"
@@ -6772,6 +6773,11 @@ https@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/https/-/https-1.0.0.tgz#3c37c7ae1a8eeb966904a2ad1e975a194b7ed3a4"
   integrity sha1-PDfHrhqO65ZpBKKtHpdaGUt+06Q=
+
+human-id@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/human-id/-/human-id-2.0.1.tgz#71aadd0f46d577fd982358133cfd43f2a46f1477"
+  integrity sha512-XWoYbGsEfBB0mtUHiyihsefgf+s1tNQHj7sX1kgDxUM0IEKk8rcZIPTwUpqDdFIQbkViOLejbc0t8jBzz5jL3w==
 
 human-signals@^1.1.1:
   version "1.1.1"

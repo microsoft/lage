@@ -3,6 +3,7 @@ import { logger } from "../logger";
 import { salt } from "./salt";
 import * as backfill from "backfill/lib/api";
 import { CacheOptions } from "../types/CacheOptions";
+import path from 'path';
 
 export async function cacheHash(
   id: string,
@@ -22,7 +23,7 @@ export async function cacheHash(
   const hashKey = salt(
     cacheOptions.environmentGlob || ["lage.config.js"],
     `${id}|${JSON.stringify(args)}`,
-    root,
+    path.relative(root, cwd),
     cacheOptions.cacheKey
   );
 
