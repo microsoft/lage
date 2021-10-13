@@ -2,6 +2,96 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 23 Sep 2021 17:32:03 GMT",
+      "tag": "lage_v0.33.0",
+      "version": "0.33.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add ado reporter",
+            "author": "cheruiyotbryan@gmail.com",
+            "commit": "cfb5e5aca31b2cb2719e8110eed434939ff156bd",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 21 Sep 2021 23:20:14 GMT",
+      "tag": "lage_v0.32.5",
+      "version": "0.32.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Improve logging of cache fetch errors",
+            "author": "elcraig@microsoft.com",
+            "commit": "0aab60f20abc258d978e25d13d18c62ccdea4457",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 16 Sep 2021 19:43:57 GMT",
+      "tag": "lage_v0.32.4",
+      "version": "0.32.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixes the process.exitCode = 1 to happen before any other errors",
+            "author": "kchau@microsoft.com",
+            "commit": "ffe273c8bd00cb316724b086ca2822569958c58a",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Sep 2021 20:24:31 GMT",
+      "tag": "lage_v0.32.3",
+      "version": "0.32.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "swap to jest to get watch mode for test, getting wrapped target to actually fail",
+            "author": "kchau@microsoft.com",
+            "commit": "3419ad046898f4d223682246c0995a2048975114",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 04 Sep 2021 03:08:09 GMT",
+      "tag": "lage_v0.32.2",
+      "version": "0.32.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "make sure to allow loose mode for task deps",
+            "author": "kchau@microsoft.com",
+            "commit": "54edb78c695537d3d8d9fe788b741cd450ac8cdf",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 10 Aug 2021 16:48:42 GMT",
+      "tag": "lage_v0.32.1",
+      "version": "0.32.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "make sure to filter out targets that do not exist for packages",
+            "author": "kchau@microsoft.com",
+            "commit": "3056366b7acf84c26578886caa0d69c410721268",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 30 Jul 2021 00:15:54 GMT",
       "tag": "lage_v0.32.0",
       "version": "0.32.0",

@@ -1,9 +1,9 @@
 import { Config } from "../types/Config";
 import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
 import { NpmScriptTask } from "./NpmScriptTask";
-import { PackageInfos } from "workspace-tools";
+import { PackageInfo, PackageInfos } from "workspace-tools";
 import { RunContext } from "../types/RunContext";
-import { PipelineTarget, TargetConfig, TargetConfigFactory, TaskArgs } from "../types/PipelineDefinition";
+import { PipelineTarget, TargetConfig, TargetConfigFactory } from "../types/PipelineDefinition";
 import { TopologicalGraph } from "../types/TopologicalGraph";
 import { Workspace } from "../types/Workspace";
 import pGraph, { PGraphNodeMap } from "p-graph";
@@ -34,6 +34,7 @@ export const START_TARGET_ID = "__start";
  * - for doing distributed work, the WrapperTask will instead place the PipelineTarget info into a worker queue
  */
 export class Pipeline {
+  /** Target represent a unit of work and the configuration of how to run it */
   targets: Map<string, PipelineTarget> = new Map([
     [
       START_TARGET_ID,
@@ -42,11 +43,18 @@ export class Pipeline {
         cwd: "",
         run: () => {},
         task: START_TARGET_ID,
+        hidden: true,
       },
     ],
   ]);
+
+  /** Target dependencies determine the run order of the targets  */
   dependencies: [string, string][] = [];
+
+  /** Internal cache of the package.json information */
   packageInfos: PackageInfos;
+
+  /** Internal generated cache of the topological package graph */
   graph: TopologicalGraph;
 
   constructor(private workspace: Workspace, private config: Config) {
@@ -55,6 +63,20 @@ export class Pipeline {
     this.loadConfig(config);
   }
 
+  private maybeRunNpmTask(task: string, info: PackageInfo) {
+    if (!info.scripts?.[task]) {
+      return;
+    }
+
+    return (args) => {
+      const npmTask = new NpmScriptTask(task, info, this.config, args.logger);
+      return npmTask.run();
+    };
+  }
+
+  /**
+   * Generates a package target during the expansion of the shortcut syntax
+   */
   private generatePackageTarget(packageName: string, task: string, deps: string[]): PipelineTarget {
     const info = this.packageInfos[packageName];
     const id = getTargetId(packageName, task);
@@ -81,19 +103,17 @@ export class Pipeline {
     // shorthand gets converted to npm tasks
     const { packageName, task } = getPackageAndTask(id);
     const results: PipelineTarget[] = [];
-    let packagesWithScript: string[] = [];
+    let packages: string[] = [];
 
     if (packageName) {
       // specific case in definition (e.g. 'package-name#test': ['build'])
-      packagesWithScript.push(packageName);
+      packages.push(packageName);
     } else {
       // generic case in definition (e.g. 'test': ['build'])
-      packagesWithScript = Object.entries(this.packageInfos)
-        .filter(([_pkg, info]) => !!info.scripts?.[task])
-        .map(([pkg, _info]) => pkg);
+      packages = Object.entries(this.packageInfos).map(([pkg, _info]) => pkg);
     }
 
-    for (const packageWithScript of packagesWithScript) {
+    for (const packageWithScript of packages) {
       results.push(this.generatePackageTarget(packageWithScript, task, deps));
     }
 
@@ -132,15 +152,15 @@ export class Pipeline {
         },
       ];
     } else {
-      const packages = Object.keys(this.packageInfos);
-      return packages.map((pkg) => ({
+      const packages = Object.entries(this.packageInfos);
+      return packages.map(([pkg, _info]) => ({
         ...target,
         id: getTargetId(pkg, id),
         cache: target.cache !== false,
         task: id,
         cwd: path.dirname(this.packageInfos[pkg].packageJsonPath),
         packageName: pkg,
-        run: target.run || ((args) => new NpmScriptTask(id, this.packageInfos[pkg], this.config, args.logger).run()),
+        run: target.run || this.maybeRunNpmTask(id, this.packageInfos[pkg]),
       }));
     }
   }
@@ -173,18 +193,34 @@ export class Pipeline {
     }
   }
 
+  /**
+   * Adds all the target dependencies to the graph
+   */
   addDependencies() {
     const targets = [...this.targets.values()];
 
     for (const target of targets) {
       const { deps, packageName, id } = target;
 
+      // Always start with a root node with a special "START_TARGET_ID"
       this.dependencies.push([START_TARGET_ID, id]);
 
+      // Skip any targets that have no "deps" specified
       if (!deps || deps.length === 0) {
         continue;
       }
 
+      /**
+       * Now for every deps defined, we need to "interpret" it based on the syntax:
+       * - for any deps like package#task, we simply add the singular dependency (source could be a single package or all packages)
+       * - for anything that starts with a "^", we add the package-tasks according to the topological package graph
+       *    NOTE: in a non-strict mode (TODO), the dependencies can come from transitive task dependencies
+       * - for {"pkgA#task": ["dep"]}, we interpret to add "pkgA#dep"
+       * - for anything that is a string without a "^", we treat that string as the name of a task, adding all targets that way
+       *    NOTE: in a non-strict mode (TODO), the dependencies can come from transitive task dependencies
+       *
+       * We interpret anything outside of these conditions as invalid
+       */
       for (const dep of deps) {
         if (dep.includes("#")) {
           // package and task as deps
@@ -207,7 +243,7 @@ export class Pipeline {
             this.dependencies.push([dependencyId, id]);
           }
         } else if (packageName) {
-          // Intra package task dependency - only add the target dependency if it exists in the pipeline targets list
+          // Intra package task dependency - only add the target dependency if it exists in the pipeline targets lists
           if (this.targets.has(getTargetId(packageName, dep))) {
             this.dependencies.push([getTargetId(packageName, dep), target.id]);
           }
@@ -346,7 +382,7 @@ export class Pipeline {
       for (const target of [fromTarget, toTarget]) {
         nodeMap.set(target.id, {
           run: () => {
-            if (target.id === START_TARGET_ID) {
+            if (target.id === START_TARGET_ID || !target.run) {
               return Promise.resolve();
             }
 

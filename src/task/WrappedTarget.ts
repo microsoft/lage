@@ -108,6 +108,11 @@ export class WrappedTarget implements LoggableTarget {
 
       // skip if cache hit!
       if (cacheHit) {
+        // save the cache anyway - this will cause remote cache to be saved locally
+        if (cacheEnabled) {
+          await this.saveCache(hash);
+        }
+
         this.onSkipped(hash);
         return true;
       }
@@ -118,6 +123,10 @@ export class WrappedTarget implements LoggableTarget {
 
       // Wraps with profiler as well as task args
       await context.profiler.run(() => {
+        if (!target.run) {
+          return Promise.resolve();
+        }
+
         let result: Promise<unknown> | void;
 
         if (target.packageName) {
@@ -127,14 +136,14 @@ export class WrappedTarget implements LoggableTarget {
             cwd: target.cwd,
             options: target.options,
             taskName: getPackageAndTask(target.id).task,
-            logger
+            logger,
           });
         } else {
           result = target.run({
             config: this.config,
             cwd: target.cwd,
             options: target.options,
-            logger
+            logger,
           });
         }
 
@@ -156,14 +165,11 @@ export class WrappedTarget implements LoggableTarget {
 
       this.onFail();
 
-      if (config.continue) {
-        return true;
-      }
-
-      if (!config.safeExit) {
+      if (!config.safeExit && !config.continue) {
         controller.abort();
       }
-      return false;
+
+      throw e;
     }
 
     return true;

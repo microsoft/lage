@@ -1,8 +1,56 @@
 # Change Log - lage
 
-This log was last generated on Fri, 30 Jul 2021 00:15:54 GMT and should not be manually modified.
+This log was last generated on Thu, 23 Sep 2021 17:32:03 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.33.0
+
+Thu, 23 Sep 2021 17:32:03 GMT
+
+### Minor changes
+
+- add ado reporter (cheruiyotbryan@gmail.com)
+
+## 0.32.5
+
+Tue, 21 Sep 2021 23:20:14 GMT
+
+### Patches
+
+- Improve logging of cache fetch errors (elcraig@microsoft.com)
+
+## 0.32.4
+
+Thu, 16 Sep 2021 19:43:57 GMT
+
+### Patches
+
+- fixes the process.exitCode = 1 to happen before any other errors (kchau@microsoft.com)
+
+## 0.32.3
+
+Tue, 14 Sep 2021 20:24:31 GMT
+
+### Patches
+
+- swap to jest to get watch mode for test, getting wrapped target to actually fail (kchau@microsoft.com)
+
+## 0.32.2
+
+Sat, 04 Sep 2021 03:08:09 GMT
+
+### Patches
+
+- make sure to allow loose mode for task deps (kchau@microsoft.com)
+
+## 0.32.1
+
+Tue, 10 Aug 2021 16:48:42 GMT
+
+### Patches
+
+- make sure to filter out targets that do not exist for packages (kchau@microsoft.com)
 
 ## 0.32.0
 

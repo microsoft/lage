@@ -5,3 +5,5 @@ lib
 *.log
 .DS_Store
 *.pdf
+coverage
+.idea/

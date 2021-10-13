@@ -10,9 +10,9 @@ import { Pipeline } from "../task/Pipeline";
 
 /**
  * Prepares and runs a pipeline
- * @param cwd 
- * @param config 
- * @param reporters 
+ * @param cwd
+ * @param config
+ * @param reporters
  */
 export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   const context = createContext(config);
@@ -35,8 +35,15 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
     const pipeline = new Pipeline(workspace, config);
     await pipeline.run(context);
   } catch (e) {
-    logger.error("runTasks: " + (e.stack || e.message || e));
     process.exitCode = 1;
+
+    if (e && e.stack) {
+      logger.error("runTasks: " + e.stack);
+    } else if (e && e.message) {
+      logger.error("runTasks: " + e.message);
+    } else {
+      logger.error("runTasks: " + e);
+    }
   }
 
   if (config.profile) {
@@ -44,8 +51,10 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
       const profileFile = profiler.output();
       logger.info(`runTasks: Profile saved to ${profileFile}`);
     } catch (e) {
-      logger.error(`An error occured while trying to write profile: ${e.message}`);
       process.exitCode = 1;
+      if (e && e.message) {
+        logger.error(`An error occured while trying to write profile: ${e.message}`);
+      }
     }
   }
 

@@ -1,6 +1,7 @@
 import { getEnvConfig, createDefaultConfig } from "backfill-config";
-import { makeLogger } from "backfill-logger";
+import { Logger, makeLogger } from "backfill-logger";
 import { CacheOptions } from "../types/CacheOptions";
+import { RemoteFallbackCacheProvider } from "./RemoteFallbackCacheProvider";
 
 export function getCacheConfig(cwd: string, cacheOptions: CacheOptions) {
   const defaultCacheConfig = createDefaultConfig(cwd);
@@ -10,9 +11,22 @@ export function getCacheConfig(cwd: string, cacheOptions: CacheOptions) {
 
   const logger = makeLogger("warn");
   const envConfig = getEnvConfig(logger);
-  return {
+
+  const configWithEnvOverrides: CacheOptions = {
     ...defaultCacheConfig,
     ...cacheOptions,
     ...envConfig,
+    writeRemoteCache: cacheOptions.writeRemoteCache || !!process.env.LAGE_WRITE_REMOTE_CACHE
   };
+
+  const configWithFallback: CacheOptions = {
+    ...configWithEnvOverrides,
+    cacheStorageConfig: {
+      ...configWithEnvOverrides.cacheStorageConfig,
+      provider: (logger: Logger, cwd: string) => new RemoteFallbackCacheProvider(configWithEnvOverrides, logger, cwd),
+      name: "remote-fallback-provider"
+    },
+  };
+
+  return configWithFallback;
 }
