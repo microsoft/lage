@@ -24,6 +24,7 @@ export function getCacheConfig(cwd: string, cacheOptions: CacheOptions) {
     cacheStorageConfig: {
       ...configWithEnvOverrides.cacheStorageConfig,
       provider: (logger: Logger, cwd: string) => new RemoteFallbackCacheProvider(configWithEnvOverrides, logger, cwd),
+      name: "remote-fallback-provider"
     },
   };
 

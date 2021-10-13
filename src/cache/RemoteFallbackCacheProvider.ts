@@ -2,6 +2,7 @@ import { ICacheStorage } from "backfill-config";
 import { getCacheStorageProvider, isCustomProvider } from "backfill-cache";
 import { Logger } from "backfill-logger";
 import { CacheOptions } from "../types/CacheOptions";
+import { logger } from "../logger";
 
 export type RemoteFallbackCacheProviderOptions = Pick<
   CacheOptions,
@@ -12,7 +13,11 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
   private localCacheStorageProvider: ICacheStorage;
   private remoteCacheStorageProvider?: ICacheStorage;
 
-  constructor(private cacheOptions: RemoteFallbackCacheProviderOptions, logger: Logger, cwd: string) {
+  constructor(
+    private cacheOptions: RemoteFallbackCacheProviderOptions,
+    logger: Logger,
+    cwd: string
+  ) {
     this.localCacheStorageProvider = getCacheStorageProvider(
       {
         provider: "local",
@@ -30,6 +35,8 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
         !cacheOptions.cacheStorageConfig.provider.includes("local"));
 
     if (isRemoteProvider) {
+      logger.silly("remote provider enabled");
+
       this.remoteCacheStorageProvider = getCacheStorageProvider(
         cacheOptions.cacheStorageConfig,
         cacheOptions.internalCacheFolder,
@@ -40,9 +47,11 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
   }
 
   async fetch(hash: string) {
+    logger.silly(`local cache fetch: ${hash}`);
     const hit = await this.localCacheStorageProvider.fetch(hash);
 
     if (!hit && this.remoteCacheStorageProvider) {
+      logger.silly(`remote fallback fetch: ${hash}`);
       return await this.remoteCacheStorageProvider.fetch(hash);
     }
 
@@ -50,11 +59,17 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
   }
 
   async put(hash: string, filesToCache: string[]) {
+    logger.silly(`local cache put: ${hash}`);
     const localPut = this.localCacheStorageProvider.put(hash, filesToCache);
-    const shouldWriteRemoteCache = this.remoteCacheStorageProvider && this.cacheOptions.writeRemoteCache;
-
+    const shouldWriteRemoteCache =
+      !!this.remoteCacheStorageProvider && this.cacheOptions.writeRemoteCache;
+      
     if (shouldWriteRemoteCache) {
-      const remotePut = this.remoteCacheStorageProvider!.put(hash, filesToCache);
+      logger.silly(`remote fallback put: ${hash}`);
+      const remotePut = this.remoteCacheStorageProvider!.put(
+        hash,
+        filesToCache
+      );
       await Promise.all([localPut, remotePut]);
     } else {
       await localPut;
