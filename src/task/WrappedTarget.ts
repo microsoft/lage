@@ -109,6 +109,11 @@ export class WrappedTarget {
 
       // skip if cache hit!
       if (cacheHit) {
+        // save the cache anyway - this will cause remote cache to be saved locally
+        if (cacheEnabled) {
+          await this.saveCache(hash);
+        }
+
         this.onSkipped(hash);
         return true;
       }

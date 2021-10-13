@@ -64,7 +64,7 @@ export async function cacheFetch(
   try {
     return await backfill.fetch(cwd, hash, backfillLogger, cacheConfig);
   } catch (e) {
-    logger.error(`${id} fetchBackfill ${e && e.stack || e && e.message || e}`);
+    logger.error(`${id} fetchBackfill ${e && (e as any).stack || e && (e as any).message || e}`);
   }
 
   return false;

@@ -13,11 +13,10 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
   private localCacheStorageProvider: ICacheStorage;
   private remoteCacheStorageProvider?: ICacheStorage;
 
-  constructor(
-    private cacheOptions: RemoteFallbackCacheProviderOptions,
-    logger: Logger,
-    cwd: string
-  ) {
+  private static localHits: { [hash: string]: boolean } = {};
+  private static remoteHits: { [hash: string]: boolean } = {};
+
+  constructor(private cacheOptions: RemoteFallbackCacheProviderOptions, logger: Logger, cwd: string) {
     this.localCacheStorageProvider = getCacheStorageProvider(
       {
         provider: "local",
@@ -47,32 +46,47 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
   }
 
   async fetch(hash: string) {
-    logger.silly(`local cache fetch: ${hash}`);
-    const hit = await this.localCacheStorageProvider.fetch(hash);
+    RemoteFallbackCacheProvider.localHits[hash] = await this.localCacheStorageProvider.fetch(hash);
+    logger.silly(`local cache fetch: ${hash} ${RemoteFallbackCacheProvider.localHits[hash]}`);
 
-    if (!hit && this.remoteCacheStorageProvider) {
-      logger.silly(`remote fallback fetch: ${hash}`);
-      return await this.remoteCacheStorageProvider.fetch(hash);
+    if (!RemoteFallbackCacheProvider.localHits[hash] && this.remoteCacheStorageProvider) {
+      RemoteFallbackCacheProvider.remoteHits[hash] = await this.remoteCacheStorageProvider.fetch(hash);
+      logger.silly(`remote fallback fetch: ${hash} ${RemoteFallbackCacheProvider.remoteHits[hash]}`);
+      return RemoteFallbackCacheProvider.remoteHits[hash];
     }
 
-    return hit;
+    return RemoteFallbackCacheProvider.localHits[hash];
   }
 
   async put(hash: string, filesToCache: string[]) {
-    logger.silly(`local cache put: ${hash}`);
-    const localPut = this.localCacheStorageProvider.put(hash, filesToCache);
+    const putPromises: Promise<void>[] = [];
+
+    // Write local cache if it doesn't already exist, or if the the hash isn't in the localHits
+    const shouldWriteLocalCache = !this.isLocalHit(hash);
+
+    if (shouldWriteLocalCache) {
+      logger.silly(`local cache put: ${hash}`);
+      putPromises.push(this.localCacheStorageProvider.put(hash, filesToCache));
+    }
+
+    // Write to remote if there is a no hit in the remote cache, and remote cache storage provider, and that the "writeRemoteCache" config flag is set to true
     const shouldWriteRemoteCache =
-      !!this.remoteCacheStorageProvider && this.cacheOptions.writeRemoteCache;
-      
+      !this.isRemoteHit(hash) && !!this.remoteCacheStorageProvider && this.cacheOptions.writeRemoteCache;
+
     if (shouldWriteRemoteCache) {
       logger.silly(`remote fallback put: ${hash}`);
-      const remotePut = this.remoteCacheStorageProvider!.put(
-        hash,
-        filesToCache
-      );
-      await Promise.all([localPut, remotePut]);
-    } else {
-      await localPut;
+      const remotePut = this.remoteCacheStorageProvider!.put(hash, filesToCache);
+      putPromises.push(remotePut);
     }
+
+    await Promise.all(putPromises);
+  }
+
+  private isRemoteHit(hash) {
+    return hash in RemoteFallbackCacheProvider.remoteHits && RemoteFallbackCacheProvider.remoteHits[hash];
+  }
+
+  private isLocalHit(hash) {
+    return hash in RemoteFallbackCacheProvider.localHits && RemoteFallbackCacheProvider.localHits[hash];
   }
 }
