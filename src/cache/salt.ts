@@ -15,8 +15,6 @@ export function salt(
 ): string {
   return hashStrings([
     ...getEnvHash(environmentGlobFiles, repoRoot),
-    // os.platform(),
-    // process.version,
     command,
     customKey,
   ]);
