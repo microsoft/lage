@@ -32,7 +32,7 @@ try {
       version();
       break;
 
-    case "worker":
+    case "experiment-worker":
       logger.info(`Lage worker - let's make it`);
       worker(cwd, config, reporters);
       break;
@@ -43,5 +43,5 @@ try {
       break;
   }
 } catch (e) {
-  showHelp(e.message);
+  showHelp(e && (e as any).message);
 }

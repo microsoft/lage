@@ -8,14 +8,34 @@ export const workerPubSubChannel = `lage_pubsub_${process.env.LAGE_WORKER_QUEUE_
 let redisClient: redis.RedisClient;
 let workerQueue: Queue;
 
-export async function initWorkerQueue(config: Config, isWorker: boolean = true) {
+export async function initWorkerQueueAsWorker(config: Config) {
   if (!workerQueue) {
     redisClient = redis.createClient(config.workerQueueOptions.redis as ClientOpts);
-    workerQueue = new Queue(workerQueueId, { ...config, isWorker });
+    workerQueue = new Queue(workerQueueId, { ...config, isWorker: true });
 
-    if (!isWorker) {
-      await workerQueue.destroy();
-    }
+    const pubSubListener = (channel, message) => {
+      if (workerPubSubChannel === channel) {
+        if (message === "done") {
+          workerQueue.close();
+          redisClient.off("message", pubSubListener);
+          redisClient.unsubscribe(workerPubSubChannel);
+          redisClient.quit();
+        }
+      }
+    };
+
+    redisClient.subscribe(workerPubSubChannel);
+    redisClient.on("message", pubSubListener);
+  }
+
+  return workerQueue;
+}
+
+export async function initWorkerQueueAsMaster(config: Config) {
+  if (!workerQueue) {
+    redisClient = redis.createClient(config.workerQueueOptions.redis as ClientOpts);
+    workerQueue = new Queue(workerQueueId, { ...config, isWorker: false });
+    await workerQueue.destroy();
   }
 
   return workerQueue;

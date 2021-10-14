@@ -3,7 +3,7 @@ import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
 import { NpmScriptTask } from "./NpmScriptTask";
 import { PackageInfo, PackageInfos } from "workspace-tools";
 import { RunContext } from "../types/RunContext";
-import { PipelineTarget, TargetConfig, TargetConfigFactory } from "../types/PipelineDefinition";
+import { PipelineTarget, TargetConfig, TargetConfigFactory, TaskArgs } from "../types/PipelineDefinition";
 import { TopologicalGraph } from "../types/TopologicalGraph";
 import { Workspace } from "../types/Workspace";
 import pGraph, { PGraphNodeMap } from "p-graph";
@@ -12,7 +12,7 @@ import { getPipelinePackages } from "./getPipelinePackages";
 import { getPackageAndTask, getTargetId } from "./taskId";
 import { WrappedTarget } from "./WrappedTarget";
 import { DistributedTask } from "./DistributedTask";
-import { closeWorkerQueue, initWorkerQueue } from "./workerQueue";
+import { closeWorkerQueue, initWorkerQueueAsMaster } from "./workerQueue";
 import Queue from "bee-queue";
 
 export const START_TARGET_ID = "__start";
@@ -58,7 +58,7 @@ export class Pipeline {
 
   private runTask(id: string, run?: PipelineTarget["run"]) {
     if (this.config.dist) {
-      return (args) => {
+      return (args: TaskArgs) => {
         const task = new DistributedTask(id, this.config, this.workerQueue!, args.logger);
         task.run();
       };
@@ -78,7 +78,7 @@ export class Pipeline {
       return;
     }
 
-    return (args) => {
+    return (args: TaskArgs) => {
       if (this.config.dist && this.workerQueue) {
         const distributedTask = new DistributedTask(
           getTargetId(task, info.name),
@@ -384,9 +384,9 @@ export class Pipeline {
         )?.priority;
   }
 
-  /** 
-   * Runs the pipeline with the p-graph library 
-   * 
+  /**
+   * Runs the pipeline with the p-graph library
+   *
    * Note: this is the abstraction layer on top of the external p-graph library to insulate
    *       any incoming changes to the library.
    */
@@ -419,13 +419,13 @@ export class Pipeline {
     });
   }
 
-  /** 
-   * The "run" public API, accounts for setting distributed mode for the primary lage node 
+  /**
+   * The "run" public API, accounts for setting distributed mode for the primary lage node
    */
   async run(context: RunContext) {
     // Initialize the worker queue if in distributed mode
     if (this.config.dist) {
-      this.workerQueue = await initWorkerQueue(this.config, false);
+      this.workerQueue = await initWorkerQueueAsMaster(this.config);
     }
     await this.runPipelineAsGraph(context);
     closeWorkerQueue();

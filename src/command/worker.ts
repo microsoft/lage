@@ -1,7 +1,7 @@
 import { getWorkspace } from "../workspace/getWorkspace";
 import { Config } from "../types/Config";
 import { Reporter } from "../logger/reporters/Reporter";
-import { initWorkerQueue, workerPubSubChannel } from "../task/workerQueue";
+import { initWorkerQueueAsWorker } from "../task/workerQueue";
 import { TaskLogger } from "../logger/TaskLogger";
 import { cacheFetch, cacheHash, cachePut } from "../cache/backfill";
 import { Pipeline, START_TARGET_ID } from "../task/Pipeline";
@@ -14,53 +14,42 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
 
   const pipeline = new Pipeline(workspace, config);
 
-  const { workerQueue, redisClient } = await initWorkerQueue(config.workerQueueOptions);
-
-  const pubSubListener = (channel, message) => {
-    if (workerPubSubChannel === channel) {
-      if (message === "done") {
-        workerQueue.close();
-        redisClient.off("message", pubSubListener);
-        redisClient.unsubscribe(workerPubSubChannel);
-        redisClient.quit();
-      }
-    }
-  };
-
-  redisClient.subscribe(workerPubSubChannel);
-  redisClient.on("message", pubSubListener);
+  const workerQueue = await initWorkerQueueAsWorker(config);
 
   workerQueue.ready(() => {
-    workerQueue.process(config.concurrency, async(job) => {
-        const id = job.data.id;
+    workerQueue.process(config.concurrency, async (job) => {
+      const id = job.data.id;
 
-        if (!pipeline.targets!.has(id)) {
-          return;
-        }
+      if (!pipeline.targets!.has(id)) {
+        return;
+      }
 
-        const target = pipeline.targets.get(id)!;
+      const target = pipeline.targets.get(id)!;
 
-        const deps = getDepsForTarget(id, pipeline.dependencies);
+      const deps = getDepsForTarget(id, pipeline.dependencies);
 
-        const logger = new TaskLogger(job.data.name, job.data.task);
+      const logger = new TaskLogger(job.data.name, job.data.task);
 
-        logger.info(`processing job ${job.id}`);
+      logger.info(`processing job ${job.id}`);
 
-        await Promise.all(
-          deps.filter(d => d !== START_TARGET_ID).map((depTargetId: string) => {
+      await Promise.all(
+        deps
+          .filter((d) => d !== START_TARGET_ID)
+          .map((depTargetId: string) => {
             return getCache(pipeline.targets.get(depTargetId)!, workspace.root, config);
           })
-        );
+      );
 
-        const cacheResult = await getCache(target, workspace.root, config);
+      const cacheResult = await getCache(target, workspace.root, config);
 
-        if (cacheResult.cacheHit) {
-          logger.info(`skipped ${id}`);
-          return;
-        }
+      if (cacheResult.cacheHit) {
+        logger.info(`skipped ${id}`);
+        return;
+      }
 
-        let result: Promise<unknown> | void;
+      let result: Promise<unknown> | void;
 
+      if (target.run) {
         if (target.packageName) {
           result = target.run({
             packageName: target.packageName,
@@ -78,12 +67,15 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
             logger,
           });
         }
+      }
 
-        if (result && typeof result["then"] === "function") {
-          await result;
-        }
+      if (result && typeof result["then"] === "function") {
+        await result;
+      }
 
-        await saveCache(cacheResult.hash, target, config);
+      await saveCache(cacheResult.hash, target, config);
+
+      return { hash: cacheResult.hash, id: target.id, cwd: target.cwd, outputGlob: target.outputGlob };
     });
   });
 }

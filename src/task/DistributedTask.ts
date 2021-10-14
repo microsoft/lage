@@ -1,11 +1,29 @@
 import { TaskLogger } from "../logger/TaskLogger";
 import Queue from "bee-queue";
-import { PackageInfo } from "workspace-tools";
 import { Config } from "../types/Config";
-import { getTargetId } from "./taskId";
+import { cacheFetch, cacheHash } from "../cache/backfill";
+
+interface JobResults {
+  hash: string;
+  id: string;
+  cwd: string;
+  outputGlob: string[];
+}
 
 export class DistributedTask {
   constructor(public id: string, private config: Config, private workerQueue: Queue, private logger: TaskLogger) {}
+
+  async getRemoteCache(remoteJobResults: JobResults) {
+    const {hash, id, cwd, outputGlob} = remoteJobResults;
+
+    if (hash && id && cwd) {
+      const cacheOptions = {
+        ...this.config.cacheOptions,
+        outputGlob: outputGlob || this.config.cacheOptions.outputGlob,
+      };
+      await cacheFetch(hash, id, cwd, cacheOptions);
+    }
+  }
 
   async run() {
     const { id, logger } = this;
@@ -15,14 +33,20 @@ export class DistributedTask {
         id,
       });
 
-      job.on("succeeded", (result) => {
+      job.on("succeeded", async(results: JobResults) => {
         logger.info("succeeded");
+        try {
+          await this.getRemoteCache(results)
+        } catch(e) {
+          reject(e);
+        }
+
         resolve();
       });
 
-      job.on("failed", (result) => {
-        logger.info("failed");
-        reject();
+      job.on("failed", (e: Error) => {
+        logger.error(e.message);
+        reject(e);
       });
 
       // time out defaults to 1 hour
