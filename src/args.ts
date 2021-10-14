@@ -69,6 +69,7 @@ export function getPassThroughArgs(
     "logLevel",
     "cacheKey",
     "dist",
+    "experimentDist",
     "_",
   ];
 
