@@ -11,7 +11,7 @@ let workerQueue: Queue;
 export async function initWorkerQueueAsWorker(config: Config) {
   if (!workerQueue) {
     redisClient = redis.createClient(config.workerQueueOptions.redis as ClientOpts);
-    workerQueue = new Queue(workerQueueId, { ...config, isWorker: true });
+    workerQueue = new Queue(workerQueueId, { ...config.workerQueueOptions, isWorker: true });
 
     const pubSubListener = (channel, message) => {
       if (workerPubSubChannel === channel) {
@@ -33,8 +33,11 @@ export async function initWorkerQueueAsWorker(config: Config) {
 
 export async function initWorkerQueueAsMaster(config: Config) {
   if (!workerQueue) {
+
+
     redisClient = redis.createClient(config.workerQueueOptions.redis as ClientOpts);
-    workerQueue = new Queue(workerQueueId, { ...config, isWorker: false });
+
+    workerQueue = new Queue(workerQueueId, { ...config.workerQueueOptions, isWorker: false });
     await workerQueue.destroy();
   }
 

@@ -36,8 +36,8 @@ export function getConfig(cwd: string): Config {
   }
 
   const dist = parsedArgs.experimentDist || false;
-  const concurrency = dist ? 10000 : parsedArgs.concurrency || configResults?.config.concurrency || os.cpus().length;
-
+  const concurrency = parsedArgs.concurrency || configResults?.config.concurrency || os.cpus().length;
+  
   return {
     reporter: parsedArgs.reporter || "npmLog",
     grouped: parsedArgs.grouped || false,

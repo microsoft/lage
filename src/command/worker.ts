@@ -7,20 +7,28 @@ import { cacheFetch, cacheHash, cachePut } from "../cache/backfill";
 import { Pipeline, START_TARGET_ID } from "../task/Pipeline";
 import { getPackageAndTask } from "../task/taskId";
 import { PipelineTarget } from "../types/PipelineDefinition";
+import { logger } from "../logger";
 
 // Run multiple
 export async function worker(cwd: string, config: Config, reporters: Reporter[]) {
+  logger.verbose("worker started");
+
   const workspace = getWorkspace(cwd, config);
 
   const pipeline = new Pipeline(workspace, config);
+  logger.verbose("pipeline created");
 
   const workerQueue = await initWorkerQueueAsWorker(config);
+  logger.verbose("worker queue initialized");
 
   workerQueue.ready(() => {
+    logger.verbose("worker queue ready");
     workerQueue.process(config.concurrency, async (job) => {
       const id = job.data.id;
+      const { packageName, task } = getPackageAndTask(id);
 
       if (!pipeline.targets!.has(id)) {
+        logger.info(`pipeline doesn't have  ${id}`);
         return;
       }
 
@@ -28,9 +36,9 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
 
       const deps = getDepsForTarget(id, pipeline.dependencies);
 
-      const logger = new TaskLogger(job.data.name, job.data.task);
+      const taskLogger = new TaskLogger(packageName || "[GLOBAL]", task);
 
-      logger.info(`processing job ${job.id}`);
+      taskLogger.info(`started ${job.id}`);
 
       await Promise.all(
         deps
@@ -43,7 +51,7 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
       const cacheResult = await getCache(target, workspace.root, config);
 
       if (cacheResult.cacheHit) {
-        logger.info(`skipped ${id}`);
+        taskLogger.info(`cache hit! skipped ${id}`);
         return;
       }
 
@@ -57,14 +65,14 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
             cwd: target.cwd,
             options: target.options,
             taskName: getPackageAndTask(target.id).task,
-            logger,
+            logger: taskLogger,
           });
         } else {
           result = target.run({
             config,
             cwd: target.cwd,
             options: target.options,
-            logger,
+            logger: taskLogger,
           });
         }
       }
@@ -75,13 +83,12 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
 
       await saveCache(cacheResult.hash, target, config);
 
+      taskLogger.info(`done ${job.id}`);
+
       return { hash: cacheResult.hash, id: target.id, cwd: target.cwd, outputGlob: target.outputGlob };
     });
   });
 }
-
-// speeding up to reduce network costs for a worker
-const localHashCache: { [packageTask: string]: string | null } = {};
 
 function getCacheOptions(target: PipelineTarget, config: Config) {
   return {
@@ -95,31 +102,18 @@ async function getCache(target: PipelineTarget, root: string, config: Config) {
   let cacheHit = false;
 
   const { id, cwd } = target;
-
-  if (localHashCache[id]) {
-    return { hash: localHashCache[id], cacheHit: true };
-  }
-
   const cacheOptions = getCacheOptions(target, config);
   hash = await cacheHash(id, root, cwd, cacheOptions, config.args);
 
   if (hash && !config.resetCache) {
     cacheHit = await cacheFetch(hash, id, cwd, config.cacheOptions);
-
-    if (cacheHit) {
-      localHashCache[id] = hash;
-    }
   }
 
   return { hash, cacheHit };
 }
 
 async function saveCache(hash: string | null, target: PipelineTarget, config: Config) {
-  const localCacheKey = target.id;
-  localHashCache[localCacheKey] = hash;
-
   const cacheOptions = getCacheOptions(target, config);
-
   await cachePut(hash, target.cwd, cacheOptions);
 }
 

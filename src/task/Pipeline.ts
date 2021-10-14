@@ -81,7 +81,7 @@ export class Pipeline {
     return (args: TaskArgs) => {
       if (this.config.dist && this.workerQueue) {
         const distributedTask = new DistributedTask(
-          getTargetId(task, info.name),
+          getTargetId(info.name, task),
           this.config,
           this.workerQueue,
           args.logger
@@ -414,7 +414,7 @@ export class Pipeline {
     }
 
     await pGraph(nodeMap, targetGraph).run({
-      concurrency: this.config.concurrency,
+      concurrency: this.config.dist ? targetGraph.length : this.config.concurrency,
       continue: this.config.continue,
     });
   }

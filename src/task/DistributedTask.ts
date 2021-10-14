@@ -14,7 +14,7 @@ export class DistributedTask {
   constructor(public id: string, private config: Config, private workerQueue: Queue, private logger: TaskLogger) {}
 
   async getRemoteCache(remoteJobResults: JobResults) {
-    const {hash, id, cwd, outputGlob} = remoteJobResults;
+    const { hash, id, cwd, outputGlob } = remoteJobResults;
 
     if (hash && id && cwd) {
       const cacheOptions = {
@@ -33,12 +33,14 @@ export class DistributedTask {
         id,
       });
 
-      job.on("succeeded", async(results: JobResults) => {
-        logger.info("succeeded");
-        try {
-          await this.getRemoteCache(results)
-        } catch(e) {
-          reject(e);
+      job.on("succeeded", async (results: JobResults) => {
+        if (results && results.hash) {
+          try {
+            await this.getRemoteCache(results);
+          } catch (e) {
+            logger.error(e as any);
+            reject(e);
+          }
         }
 
         resolve();
