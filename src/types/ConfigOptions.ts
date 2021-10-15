@@ -2,7 +2,8 @@ import { CacheOptions } from "./CacheOptions";
 import { Priority } from "./Priority";
 import { PipelineDefinition } from "./PipelineDefinition";
 import { LoggerOptions } from "./LoggerOptions";
-import { QueueSettings } from "bee-queue";
+
+import { QueueOptions } from "bullmq";
 
 export type NpmClient = "npm" | "yarn" | "pnpm";
 
@@ -58,7 +59,7 @@ export interface ConfigOptions {
   /**
    * Worker queue settings
    */
-  workerQueueOptions: QueueSettings & {
+  workerQueueOptions: QueueOptions & {
     timeoutSeconds: number
   }; 
 }

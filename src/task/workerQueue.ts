@@ -1,56 +1,88 @@
-import Queue from "bee-queue";
-import redis, { ClientOpts } from "redis";
+import { Queue, Worker, QueueOptions, QueueEvents, Processor } from "bullmq";
+import IORedis, { Redis, RedisOptions } from "ioredis";
+import { logger } from "../logger";
 import { Config } from "../types/Config";
 
-export const workerQueueId = `lage:npm-task:${process.env.LAGE_WORKER_QUEUE_ID || "default"}`;
+export const workerQueueId = `lage:${process.env.LAGE_WORKER_QUEUE_ID || "default"}`;
 export const workerPubSubChannel = `lage_pubsub_${process.env.LAGE_WORKER_QUEUE_ID || "default"}`;
 
-let redisClient: redis.RedisClient;
+let coordinatorRedis: Redis;
 let workerQueue: Queue;
 
-export async function initWorkerQueueAsWorker(config: Config) {
-  if (!workerQueue) {
-    redisClient = redis.createClient(config.workerQueueOptions.redis as ClientOpts);
-    workerQueue = new Queue(workerQueueId, { ...config.workerQueueOptions, isWorker: true });
+export async function initWorkerQueueAsWorker(processor: Processor, config: Config) {
+  const redisOptions = config.workerQueueOptions.connection as RedisOptions;
+  coordinatorRedis = new IORedis(redisOptions);
 
-    const pubSubListener = (channel, message) => {
-      if (workerPubSubChannel === channel) {
-        if (message === "done") {
-          workerQueue.close();
-          redisClient.off("message", pubSubListener);
-          redisClient.unsubscribe(workerPubSubChannel);
-          redisClient.quit();
-        }
+  const worker = new Worker(workerQueueId, processor, {
+    connection: config.workerQueueOptions.connection,
+    sharedConnection: true,
+    concurrency: config.concurrency,
+  });
+
+  const pubSubListener = async (channel, message) => {
+    if (workerPubSubChannel === channel) {
+      if (message === "done") {
+        await worker.close(true);
+        await worker.disconnect();
+
+        coordinatorRedis.off("message", pubSubListener);
+        
+        await coordinatorRedis.unsubscribe(workerPubSubChannel);
+        await coordinatorRedis.quit();
+        await coordinatorRedis.disconnect();
       }
-    };
+    }
+  };
 
-    redisClient.subscribe(workerPubSubChannel);
-    redisClient.on("message", pubSubListener);
-  }
+  await coordinatorRedis.subscribe(workerPubSubChannel);
+  coordinatorRedis.on("message", pubSubListener);
 
-  return workerQueue;
+  await worker.waitUntilReady();
+
+  return worker;
 }
 
 export async function initWorkerQueueAsMaster(config: Config) {
   if (!workerQueue) {
+    logger.verbose("[dist] worker queue");
+    const redisOptions = config.workerQueueOptions.connection as RedisOptions;
+    coordinatorRedis = new IORedis(redisOptions);
 
+    workerQueue = new Queue(workerQueueId, { ...config.workerQueueOptions } as QueueOptions);
 
-    redisClient = redis.createClient(config.workerQueueOptions.redis as ClientOpts);
+    logger.verbose("[dist] clearing work queue");
+    await workerQueue.drain(false);
 
-    workerQueue = new Queue(workerQueueId, { ...config.workerQueueOptions, isWorker: false });
-    await workerQueue.destroy();
+    await workerQueue.waitUntilReady();
+
+    logger.verbose("[dist] work queue ready");
   }
 
   return workerQueue;
 }
 
-export function closeWorkerQueue() {
-  if (redisClient) {
-    redisClient.publish(workerPubSubChannel, "done");
-    redisClient.quit();
-  }
-
+export async function closeWorkerQueue() {
   if (workerQueue) {
-    workerQueue.close();
+    await coordinatorRedis.publish(workerPubSubChannel, "done");
+    await coordinatorRedis.quit();
+    await coordinatorRedis.disconnect();
+
+    await workerQueue.drain(false);
+    await workerQueue.close();
+    await workerQueue.disconnect();
+    await getQueueEvents().close();
+
+    logger.verbose("[dist] closed work queue");
   }
 }
+
+let queueEvents: QueueEvents;
+export function getQueueEvents() {
+  if (!queueEvents) {
+    queueEvents = new QueueEvents(workerQueueId);
+  }
+
+  return queueEvents;
+}
+
+export { Queue };

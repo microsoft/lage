@@ -12,8 +12,8 @@ import { getPipelinePackages } from "./getPipelinePackages";
 import { getPackageAndTask, getTargetId } from "./taskId";
 import { WrappedTarget } from "./WrappedTarget";
 import { DistributedTask } from "./DistributedTask";
-import { closeWorkerQueue, initWorkerQueueAsMaster } from "./workerQueue";
-import Queue from "bee-queue";
+import { closeWorkerQueue, getQueueEvents, initWorkerQueueAsMaster, Queue } from "./workerQueue";
+import { logger } from "../logger";
 
 export const START_TARGET_ID = "__start";
 
@@ -56,10 +56,10 @@ export class Pipeline {
     this.loadConfig(config);
   }
 
-  private runTask(id: string, run?: PipelineTarget["run"]) {
+  private runTask(id: string, cwd: string, run?: PipelineTarget["run"]) {
     if (this.config.dist) {
       return (args: TaskArgs) => {
-        const task = new DistributedTask(id, this.config, this.workerQueue!, args.logger);
+        const task = new DistributedTask(id, cwd, this.config, this.workerQueue!, args.logger);
         task.run();
       };
     }
@@ -82,6 +82,7 @@ export class Pipeline {
       if (this.config.dist && this.workerQueue) {
         const distributedTask = new DistributedTask(
           getTargetId(info.name, task),
+          path.dirname(info.packageJsonPath),
           this.config,
           this.workerQueue,
           args.logger
@@ -167,7 +168,7 @@ export class Pipeline {
           cache: target.cache !== false,
           cwd: this.workspace.root,
           task: id,
-          run: this.runTask(targetId, target.run) || (() => {}),
+          run: this.runTask(targetId, this.workspace.root, target.run) || (() => {}),
         },
       ];
     } else {
@@ -181,7 +182,9 @@ export class Pipeline {
           task: id,
           cwd: path.dirname(this.packageInfos[pkg].packageJsonPath),
           packageName: pkg,
-          run: this.runTask(targetId, target.run) || this.maybeRunNpmTask(id, this.packageInfos[pkg]),
+          run:
+            this.runTask(targetId, path.dirname(this.packageInfos[pkg].packageJsonPath), target.run) ||
+            this.maybeRunNpmTask(id, this.packageInfos[pkg]),
         };
       });
     }
@@ -385,12 +388,14 @@ export class Pipeline {
   }
 
   /**
-   * Runs the pipeline with the p-graph library
+   * The "run" public API, accounts for setting distributed mode for the master lage node
+   *
+   * Runs the pipeline with the p-graph library and optionally bullmq
    *
    * Note: this is the abstraction layer on top of the external p-graph library to insulate
    *       any incoming changes to the library.
    */
-  private async runPipelineAsGraph(context: RunContext) {
+  async run(context: RunContext) {
     const nodeMap: PGraphNodeMap = new Map();
     const targetGraph = this.generateTargetGraph();
 
@@ -413,21 +418,15 @@ export class Pipeline {
       }
     }
 
+    // Initialize the worker queue if in distributed mode
+    if (this.config.dist) {
+      getQueueEvents().setMaxListeners(targetGraph.length * 2);
+      this.workerQueue = await initWorkerQueueAsMaster(this.config);
+    }
+
     await pGraph(nodeMap, targetGraph).run({
       concurrency: this.config.dist ? targetGraph.length : this.config.concurrency,
       continue: this.config.continue,
     });
-  }
-
-  /**
-   * The "run" public API, accounts for setting distributed mode for the primary lage node
-   */
-  async run(context: RunContext) {
-    // Initialize the worker queue if in distributed mode
-    if (this.config.dist) {
-      this.workerQueue = await initWorkerQueueAsMaster(this.config);
-    }
-    await this.runPipelineAsGraph(context);
-    closeWorkerQueue();
   }
 }

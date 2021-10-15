@@ -7,6 +7,7 @@ import { createContext } from "../context";
 import { NpmScriptTask } from "../task/NpmScriptTask";
 import { Reporter } from "../logger/reporters/Reporter";
 import { Pipeline } from "../task/Pipeline";
+import { closeWorkerQueue } from "../task/workerQueue";
 
 /**
  * Prepares and runs a pipeline
@@ -25,9 +26,12 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   context.measures.start = process.hrtime();
 
   // die faster if an abort signal is seen
-  signal.addEventListener("abort", () => {
+  signal.addEventListener("abort", async() => {
     aborted = true;
     NpmScriptTask.killAllActiveProcesses();
+    if (config.dist) {
+      await closeWorkerQueue();
+    }
     displayReportAndExit(reporters, context);
   });
 
@@ -59,6 +63,9 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   }
 
   if (!aborted) {
+    if (config.dist) {
+      await closeWorkerQueue();
+    }
     displayReportAndExit(reporters, context);
   }
 }

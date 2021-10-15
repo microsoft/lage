@@ -8,53 +8,54 @@ import { Pipeline, START_TARGET_ID } from "../task/Pipeline";
 import { getPackageAndTask } from "../task/taskId";
 import { PipelineTarget } from "../types/PipelineDefinition";
 import { logger } from "../logger";
+import pLimit from "p-limit";
+import { Job } from "bullmq";
 
 // Run multiple
 export async function worker(cwd: string, config: Config, reporters: Reporter[]) {
   logger.verbose("worker started");
 
   const workspace = getWorkspace(cwd, config);
-
   const pipeline = new Pipeline(workspace, config);
-  logger.verbose("pipeline created");
+  const networkLimit = pLimit(15);
 
-  const workerQueue = await initWorkerQueueAsWorker(config);
-  logger.verbose("worker queue initialized");
+  /** the bullmq worker processor */
+  const processor = async (job: Job) => {
+    const id = job.name;
 
-  workerQueue.ready(() => {
-    logger.verbose("worker queue ready");
-    workerQueue.process(config.concurrency, async (job) => {
-      const id = job.data.id;
-      const { packageName, task } = getPackageAndTask(id);
+    const { packageName, task } = getPackageAndTask(id);
 
-      if (!pipeline.targets!.has(id)) {
-        logger.info(`pipeline doesn't have  ${id}`);
-        return;
-      }
+    if (!pipeline.targets!.has(id)) {
+      logger.info(`pipeline doesn't have  ${id}`);
+      return;
+    }
 
-      const target = pipeline.targets.get(id)!;
+    const target = pipeline.targets.get(id)!;
 
-      const deps = getDepsForTarget(id, pipeline.dependencies);
+    const deps = getDepsForTarget(id, pipeline.dependencies);
 
-      const taskLogger = new TaskLogger(packageName || "[GLOBAL]", task);
+    const taskLogger = new TaskLogger(packageName || "[GLOBAL]", task);
 
-      taskLogger.info(`started ${job.id}`);
+    taskLogger.info(`[${job.id}] started`);
 
-      await Promise.all(
-        deps
-          .filter((d) => d !== START_TARGET_ID)
-          .map((depTargetId: string) => {
-            return getCache(pipeline.targets.get(depTargetId)!, workspace.root, config);
-          })
-      );
+    await Promise.all(
+      deps
+        .filter((d) => d !== START_TARGET_ID)
+        .map((depTargetId: string) => {
+          return networkLimit(() => getCache(pipeline.targets.get(depTargetId)!, workspace.root, config));
+        })
+    );
 
-      const cacheResult = await getCache(target, workspace.root, config);
+    taskLogger.info(`[${job.id}] restored all dependent cache`);
 
-      if (cacheResult.cacheHit) {
-        taskLogger.info(`cache hit! skipped ${id}`);
-        return;
-      }
+    const cacheResult = await getCache(target, workspace.root, config);
 
+    if (cacheResult.cacheHit) {
+      taskLogger.info(`[${job.id}] skipped`);
+      return { hash: cacheResult.hash, id: target.id, cwd: target.cwd, outputGlob: target.outputGlob };
+    }
+
+    try {
       let result: Promise<unknown> | void;
 
       if (target.run) {
@@ -83,11 +84,23 @@ export async function worker(cwd: string, config: Config, reporters: Reporter[])
 
       await saveCache(cacheResult.hash, target, config);
 
-      taskLogger.info(`done ${job.id}`);
+      taskLogger.info(`[${job.id}] done`);
 
       return { hash: cacheResult.hash, id: target.id, cwd: target.cwd, outputGlob: target.outputGlob };
-    });
-  });
+    } catch (e) {
+      taskLogger.error(`[${job.id}] failed`);
+      throw new Error(
+        taskLogger
+          .getLogs()
+          .map((e) => e.msg)
+          .join("\n")
+      );
+    }
+  };
+
+  await initWorkerQueueAsWorker(processor, config);
+
+  logger.verbose("worker queue initialized");
 }
 
 function getCacheOptions(target: PipelineTarget, config: Config) {

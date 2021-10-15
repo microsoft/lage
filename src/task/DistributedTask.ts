@@ -1,7 +1,7 @@
 import { TaskLogger } from "../logger/TaskLogger";
-import Queue from "bee-queue";
 import { Config } from "../types/Config";
-import { cacheFetch, cacheHash } from "../cache/backfill";
+import { cacheFetch } from "../cache/backfill";
+import { getQueueEvents, Queue } from "./workerQueue";
 
 interface JobResults {
   hash: string;
@@ -11,9 +11,19 @@ interface JobResults {
 }
 
 export class DistributedTask {
-  constructor(public id: string, private config: Config, private workerQueue: Queue, private logger: TaskLogger) {}
+  constructor(
+    public id: string,
+    private cwd: string,
+    private config: Config,
+    private workerQueue: Queue,
+    private logger: TaskLogger
+  ) {}
 
   async getRemoteCache(remoteJobResults: JobResults) {
+    if (!remoteJobResults) {
+      return;
+    }
+
     const { hash, id, cwd, outputGlob } = remoteJobResults;
 
     if (hash && id && cwd) {
@@ -28,40 +38,34 @@ export class DistributedTask {
   async run() {
     const { id, logger } = this;
 
-    return new Promise<void>((resolve, reject) => {
-      const job = this.workerQueue.createJob({
-        id,
-      });
+    return new Promise<void>(async (resolve, reject) => {
+      const queueEvents = getQueueEvents();
 
-      job.on("succeeded", async (results: JobResults) => {
-        if (results && results.hash) {
-          try {
-            await this.getRemoteCache(results);
-          } catch (e) {
-            logger.error(e as any);
-            reject(e);
-          }
+      if (!!this.workerQueue.closing) {
+        return;
+      }
+      const job = await this.workerQueue.add(id, {});
+
+      const completeHandler = async ({ jobId, returnvalue }: { jobId: string; returnvalue: JobResults }) => {
+        if (job.id === jobId) {
+          queueEvents.off("completed", completeHandler);
+          queueEvents.off("failed", failedHandler);
+          await this.getRemoteCache({ ...returnvalue, cwd: this.cwd });
+          resolve();
         }
+      };
 
-        resolve();
-      });
+      const failedHandler: (args: { jobId: string; failedReason: string }) => void = ({ jobId, failedReason }) => {
+        if (job.id === jobId) {
+          queueEvents.off("completed", completeHandler);
+          queueEvents.off("failed", failedHandler);
+          logger.error(failedReason);
+          reject();
+        }
+      };
 
-      job.on("failed", (e: Error) => {
-        logger.error(e.message);
-        reject(e);
-      });
-
-      // time out defaults to 1 hour
-      const timeout = !!this.config?.workerQueueOptions?.timeoutSeconds
-        ? this.config.workerQueueOptions.timeoutSeconds * 1000
-        : 1000 * 60 * 60;
-
-      job
-        .timeout(timeout)
-        .save()
-        .then((newJob) => {
-          logger.info(`job id: ${newJob.id}`);
-        });
+      queueEvents.on("completed", completeHandler);
+      queueEvents.on("failed", failedHandler);
     });
   }
 }
