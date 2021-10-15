@@ -29,7 +29,7 @@ export async function initWorkerQueueAsWorker(processor: Processor, config: Conf
         
         await coordinatorRedis.unsubscribe(workerPubSubChannel);
         await coordinatorRedis.quit();
-        await coordinatorRedis.disconnect();
+        coordinatorRedis.disconnect();
       }
     }
   };
@@ -65,7 +65,7 @@ export async function closeWorkerQueue() {
   if (workerQueue) {
     await coordinatorRedis.publish(workerPubSubChannel, "done");
     await coordinatorRedis.quit();
-    await coordinatorRedis.disconnect();
+    coordinatorRedis.disconnect();
 
     await workerQueue.drain(false);
     await workerQueue.close();
