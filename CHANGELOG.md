@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 13 Oct 2021 20:33:09 GMT and should not be manually modified.
+This log was last generated on Mon, 18 Oct 2021 22:55:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.0
+
+Mon, 18 Oct 2021 22:55:57 GMT
+
+### Minor changes
+
+- distributed lage (kchau@microsoft.com)
 
 ## 1.0.0
 
