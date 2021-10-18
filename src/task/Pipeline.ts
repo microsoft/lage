@@ -3,7 +3,7 @@ import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
 import { NpmScriptTask } from "./NpmScriptTask";
 import { PackageInfo, PackageInfos } from "workspace-tools";
 import { RunContext } from "../types/RunContext";
-import { TargetConfig, TargetConfigFactory, TaskArgs } from "../types/PipelineDefinition";
+import { PipelineTarget, TargetConfig, TargetConfigFactory, TaskArgs } from "../types/PipelineDefinition";
 import { TopologicalGraph } from "../types/TopologicalGraph";
 import { Workspace } from "../types/Workspace";
 import pGraph, { PGraphNodeMap } from "p-graph";
@@ -11,25 +11,16 @@ import path from "path";
 import { getPipelinePackages } from "./getPipelinePackages";
 import { getPackageAndTask, getTargetId } from "./taskId";
 import { WrappedTarget } from "./WrappedTarget";
-
-/** individual targets to be kept track inside pipeline */
-export interface PipelineTarget {
-  id: string;
-  packageName?: string;
-  task: string;
-  cwd: string;
-  run?: (args: TaskArgs) => Promise<unknown> | void;
-  deps?: string[];
-  outputGlob?: string[];
-  priority?: number;
-  cache?: boolean;
-  options?: any;
-}
+import { DistributedTask } from "./DistributedTask";
+import { logger } from "../logger";
 
 export const START_TARGET_ID = "__start";
 
 /**
  * Pipeline class represents lage's understanding of the dependency graphs and wraps the promise graph implementations to execute tasks in order
+ *
+ * Distributed notes:
+ * - for doing distributed work, the WrapperTask will instead place the PipelineTarget info into a worker queue
  */
 export class Pipeline {
   /** Target represent a unit of work and the configuration of how to run it */
@@ -55,20 +46,51 @@ export class Pipeline {
   /** Internal generated cache of the topological package graph */
   graph: TopologicalGraph;
 
+  /** Internal cache of context */
+  context: RunContext | undefined;
+
   constructor(private workspace: Workspace, private config: Config) {
     this.packageInfos = workspace.allPackages;
     this.graph = generateTopologicGraph(workspace);
     this.loadConfig(config);
   }
 
+  private runTask(id: string, cwd: string, run?: PipelineTarget["run"]) {
+    if (this.config.dist) {
+      return (args: TaskArgs) => {
+        const task = new DistributedTask(id, cwd, this.config, this.context?.workerQueue!, args.logger);
+        task.run();
+      };
+    }
+
+    return run;
+  }
+
+  /**
+   * NPM Tasks are blindly placed in the task dependency graph, but we skip doing work if the package does not contain the specific npm task
+   * @param task
+   * @param info
+   * @returns
+   */
   private maybeRunNpmTask(task: string, info: PackageInfo) {
     if (!info.scripts?.[task]) {
       return;
     }
 
-    return (args) => {
-      const npmTask = new NpmScriptTask(task, info, this.config, args.logger);
-      return npmTask.run();
+    return (args: TaskArgs) => {
+      if (this.config.dist && this.context?.workerQueue!) {
+        const distributedTask = new DistributedTask(
+          getTargetId(info.name, task),
+          path.dirname(info.packageJsonPath),
+          this.config,
+          this.context?.workerQueue!,
+          args.logger
+        );
+        return distributedTask.run();
+      } else {
+        const npmTask = new NpmScriptTask(task, info, this.config, args.logger);
+        return npmTask.run();
+      }
     };
   }
 
@@ -87,7 +109,6 @@ export class Pipeline {
       packageName: packageName,
       cwd: path.dirname(this.packageInfos[packageName].packageJsonPath),
       run: this.maybeRunNpmTask(task, info),
-
       // TODO: do we need to really merge this? Is this desired? (this is the OLD behavior)
       deps: this.targets.has(id) ? [...(this.targets.get(id)!.deps || []), ...deps] : deps,
     };
@@ -138,27 +159,33 @@ export class Pipeline {
    */
   private convertToPipelineTarget(id: string, index: number, target: TargetConfig): PipelineTarget[] {
     if (target.type === "global") {
+      const targetId = `${id}.${index}`;
       return [
         {
           ...target,
-          id: `${id}.${index}`,
+          id: targetId,
           cache: target.cache !== false,
           cwd: this.workspace.root,
           task: id,
-          run: target.run || (() => {}),
+          run: this.runTask(targetId, this.workspace.root, target.run) || (() => {}),
         },
       ];
     } else {
       const packages = Object.entries(this.packageInfos);
-      return packages.map(([pkg, _info]) => ({
-        ...target,
-        id: getTargetId(pkg, id),
-        cache: target.cache !== false,
-        task: id,
-        cwd: path.dirname(this.packageInfos[pkg].packageJsonPath),
-        packageName: pkg,
-        run: target.run || this.maybeRunNpmTask(id, this.packageInfos[pkg]),
-      }));
+      return packages.map(([pkg, _info]) => {
+        const targetId = getTargetId(pkg, id);
+        return {
+          ...target,
+          id: targetId,
+          cache: target.cache !== false,
+          task: id,
+          cwd: path.dirname(this.packageInfos[pkg].packageJsonPath),
+          packageName: pkg,
+          run:
+            this.runTask(targetId, path.dirname(this.packageInfos[pkg].packageJsonPath), target.run) ||
+            this.maybeRunNpmTask(id, this.packageInfos[pkg]),
+        };
+      });
     }
   }
 
@@ -359,7 +386,17 @@ export class Pipeline {
         )?.priority;
   }
 
+  /**
+   * The "run" public API, accounts for setting distributed mode for the master lage node
+   *
+   * Runs the pipeline with the p-graph library
+   *
+   * Note: this is the abstraction layer on top of the external p-graph library to insulate
+   *       any incoming changes to the library.
+   */
   async run(context: RunContext) {
+    this.context = context;
+
     const nodeMap: PGraphNodeMap = new Map();
     const targetGraph = this.generateTargetGraph();
 
@@ -382,8 +419,13 @@ export class Pipeline {
       }
     }
 
+    // Initialize the worker queue if in distributed mode
+    if (this.config.dist) {
+      await context.workerQueue?.initializeAsMaster(targetGraph.length * 2);
+    }
+
     await pGraph(nodeMap, targetGraph).run({
-      concurrency: this.config.concurrency,
+      concurrency: this.config.dist ? targetGraph.length : this.config.concurrency,
       continue: this.config.continue,
     });
   }

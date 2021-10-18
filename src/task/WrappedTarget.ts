@@ -4,14 +4,13 @@ import { controller } from "./abortSignal";
 import { cacheHash, cacheFetch, cachePut } from "../cache/backfill";
 import { RunContext } from "../types/RunContext";
 import { hrToSeconds } from "../logger/reporters/formatDuration";
-import { PipelineTarget } from "./Pipeline";
 import { Config } from "../types/Config";
 import { getPackageAndTask } from "./taskId";
 import { CacheOptions } from "../types/CacheOptions";
+import { TargetStatus } from "../types/TargetStatus";
+import { LoggableTarget, PipelineTarget } from "../types/PipelineDefinition";
 
-export type TargetStatus = "completed" | "failed" | "pending" | "started" | "skipped";
-
-export class WrappedTarget {
+export class WrappedTarget implements LoggableTarget {
   static npmCmd: string = "";
   static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
@@ -34,7 +33,7 @@ export class WrappedTarget {
 
     this.cacheOptions = {
       ...config.cacheOptions,
-      outputGlob: [...(config.cacheOptions.outputGlob || []), ...(target.outputGlob || [])],
+      outputGlob: target.outputGlob || config.cacheOptions.outputGlob,
     };
 
     this.context.targets.set(target.id, this);
@@ -103,7 +102,7 @@ export class WrappedTarget {
     try {
       const { hash, cacheHit } = await this.getCache();
 
-      const cacheEnabled = target.cache && config.cache && hash;
+      const cacheEnabled = target.cache && config.cache && hash && !config.dist;
 
       this.onStart();
 

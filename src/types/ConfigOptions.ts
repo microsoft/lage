@@ -3,6 +3,8 @@ import { Priority } from "./Priority";
 import { PipelineDefinition } from "./PipelineDefinition";
 import { LoggerOptions } from "./LoggerOptions";
 
+import { QueueOptions } from "bullmq";
+
 export type NpmClient = "npm" | "yarn" | "pnpm";
 
 export interface ConfigOptions {
@@ -53,4 +55,11 @@ export interface ConfigOptions {
    * Options that will be sent to all log reporters.
    */
   loggerOptions: LoggerOptions;
+
+  /**
+   * Worker queue settings
+   */
+  workerQueueOptions: QueueOptions & {
+    timeoutSeconds: number
+  }; 
 }

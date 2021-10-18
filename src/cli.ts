@@ -7,6 +7,7 @@ import { info } from "./command/info";
 import { initReporters } from "./logger/initReporters";
 import { version } from "./command/version";
 import { cache } from "./command/cache";
+import { worker } from "./command/worker";
 
 // Parse CLI args
 const cwd = process.cwd();
@@ -31,11 +32,16 @@ try {
       version();
       break;
 
+    case "experiment-worker":
+      logger.info(`Lage worker - let's make it`);
+      worker(cwd, config);
+      break;
+
     default:
       logger.info(`Lage task runner - let's make it`);
       run(cwd, config, reporters);
       break;
   }
 } catch (e) {
-  showHelp(e.message);
+  showHelp(e && (e as any).message);
 }

@@ -49,7 +49,6 @@ function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
 
 function hashStrings(strings: string | string[]): string {
   const hasher = crypto.createHash("sha1");
-
   const anArray = typeof strings === "string" ? [strings] : strings;
   const elements = [...anArray];
   elements.sort((a, b) => a.localeCompare(b));

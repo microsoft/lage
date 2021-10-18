@@ -9,8 +9,6 @@ import { TaskLogWritable } from "../logger/TaskLogWritable";
 import { getNpmCommand } from "./getNpmCommand";
 import { Config } from "../types/Config";
 
-export type NpmScriptTaskStatus = "completed" | "failed" | "pending" | "started" | "skipped";
-
 export class NpmScriptTask {
   static npmCmd: string = "";
   static activeProcesses = new Set<ChildProcess>();
@@ -19,7 +17,6 @@ export class NpmScriptTask {
   npmArgs: string[] = [];
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
-  status: NpmScriptTaskStatus;
 
   static killAllActiveProcesses() {
     // first, send SIGTERM everywhere
@@ -39,7 +36,6 @@ export class NpmScriptTask {
 
   constructor(public task: string, public info: PackageInfo, private config: Config, private logger: TaskLogger) {
     NpmScriptTask.npmCmd = NpmScriptTask.npmCmd || findNpmClient(config.npmClient);
-    this.status = "pending";
     this.npmArgs = getNpmCommand(config.node, config.args, task);
   }
 
