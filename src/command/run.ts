@@ -7,7 +7,6 @@ import { createContext } from "../context";
 import { NpmScriptTask } from "../task/NpmScriptTask";
 import { Reporter } from "../logger/reporters/Reporter";
 import { Pipeline } from "../task/Pipeline";
-import { closeWorkerQueue } from "../task/workerQueue";
 
 /**
  * Prepares and runs a pipeline
@@ -30,7 +29,7 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
     aborted = true;
     NpmScriptTask.killAllActiveProcesses();
     if (config.dist) {
-      await closeWorkerQueue();
+      await context?.workerQueue?.close();
     }
     displayReportAndExit(reporters, context);
   });
@@ -64,7 +63,7 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
 
   if (!aborted) {
     if (config.dist) {
-      await closeWorkerQueue();
+      await context?.workerQueue?.close();
     }
     displayReportAndExit(reporters, context);
   }

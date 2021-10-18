@@ -1,7 +1,7 @@
 import { TaskLogger } from "../logger/TaskLogger";
 import { Config } from "../types/Config";
 import { cacheFetch } from "../cache/backfill";
-import { getQueueEvents, Queue } from "./workerQueue";
+import { WorkerQueue } from "./WorkerQueue";
 
 interface JobResults {
   hash: string;
@@ -15,7 +15,7 @@ export class DistributedTask {
     public id: string,
     private cwd: string,
     private config: Config,
-    private workerQueue: Queue,
+    private workerQueue: WorkerQueue,
     private logger: TaskLogger
   ) {}
 
@@ -39,33 +39,30 @@ export class DistributedTask {
     const { id, logger } = this;
 
     return new Promise<void>(async (resolve, reject) => {
-      const queueEvents = getQueueEvents();
-
-      if (!!this.workerQueue.closing) {
+      if (await this.workerQueue.closing()) {
         return;
       }
-      const job = await this.workerQueue.add(id, {});
 
-      const completeHandler = async ({ jobId, returnvalue }: { jobId: string; returnvalue: JobResults }) => {
-        if (job.id === jobId) {
-          queueEvents.off("completed", completeHandler);
-          queueEvents.off("failed", failedHandler);
+      const job = await this.workerQueue.addJob(id);
+
+      if (job) {
+        const completeHandler = async ({ jobId, returnvalue }: { jobId: string; returnvalue: JobResults }) => {
+          job.off("completed", completeHandler);
+          job.off("failed", failedHandler);
           await this.getRemoteCache({ ...returnvalue, cwd: this.cwd });
           resolve();
-        }
-      };
+        };
 
-      const failedHandler: (args: { jobId: string; failedReason: string }) => void = ({ jobId, failedReason }) => {
-        if (job.id === jobId) {
-          queueEvents.off("completed", completeHandler);
-          queueEvents.off("failed", failedHandler);
+        const failedHandler: (args: { jobId: string; failedReason: string }) => void = ({ jobId, failedReason }) => {
+          job.off("completed", completeHandler);
+          job.off("failed", failedHandler);
           logger.error(failedReason);
           reject();
-        }
-      };
+        };
 
-      queueEvents.on("completed", completeHandler);
-      queueEvents.on("failed", failedHandler);
+        job.on("completed", completeHandler);
+        job.on("failed", failedHandler);
+      }
     });
   }
 }

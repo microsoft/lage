@@ -12,7 +12,6 @@ import { getPipelinePackages } from "./getPipelinePackages";
 import { getPackageAndTask, getTargetId } from "./taskId";
 import { WrappedTarget } from "./WrappedTarget";
 import { DistributedTask } from "./DistributedTask";
-import { closeWorkerQueue, getQueueEvents, initWorkerQueueAsMaster, Queue } from "./workerQueue";
 import { logger } from "../logger";
 
 export const START_TARGET_ID = "__start";
@@ -47,8 +46,8 @@ export class Pipeline {
   /** Internal generated cache of the topological package graph */
   graph: TopologicalGraph;
 
-  /** Internal cache of the worker queue */
-  workerQueue?: Queue;
+  /** Internal cache of context */
+  context: RunContext | undefined;
 
   constructor(private workspace: Workspace, private config: Config) {
     this.packageInfos = workspace.allPackages;
@@ -59,7 +58,7 @@ export class Pipeline {
   private runTask(id: string, cwd: string, run?: PipelineTarget["run"]) {
     if (this.config.dist) {
       return (args: TaskArgs) => {
-        const task = new DistributedTask(id, cwd, this.config, this.workerQueue!, args.logger);
+        const task = new DistributedTask(id, cwd, this.config, this.context?.workerQueue!, args.logger);
         task.run();
       };
     }
@@ -79,12 +78,12 @@ export class Pipeline {
     }
 
     return (args: TaskArgs) => {
-      if (this.config.dist && this.workerQueue) {
+      if (this.config.dist && this.context?.workerQueue!) {
         const distributedTask = new DistributedTask(
           getTargetId(info.name, task),
           path.dirname(info.packageJsonPath),
           this.config,
-          this.workerQueue,
+          this.context?.workerQueue!,
           args.logger
         );
         return distributedTask.run();
@@ -390,12 +389,14 @@ export class Pipeline {
   /**
    * The "run" public API, accounts for setting distributed mode for the master lage node
    *
-   * Runs the pipeline with the p-graph library and optionally bullmq
+   * Runs the pipeline with the p-graph library
    *
    * Note: this is the abstraction layer on top of the external p-graph library to insulate
    *       any incoming changes to the library.
    */
   async run(context: RunContext) {
+    this.context = context;
+
     const nodeMap: PGraphNodeMap = new Map();
     const targetGraph = this.generateTargetGraph();
 
@@ -420,8 +421,7 @@ export class Pipeline {
 
     // Initialize the worker queue if in distributed mode
     if (this.config.dist) {
-      getQueueEvents().setMaxListeners(targetGraph.length * 2);
-      this.workerQueue = await initWorkerQueueAsMaster(this.config);
+      await context.workerQueue?.initializeAsMaster(targetGraph.length * 2);
     }
 
     await pGraph(nodeMap, targetGraph).run({

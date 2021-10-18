@@ -34,7 +34,7 @@ try {
 
     case "experiment-worker":
       logger.info(`Lage worker - let's make it`);
-      worker(cwd, config, reporters);
+      worker(cwd, config);
       break;
 
     default:
