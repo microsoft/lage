@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Updating to TypeScript 4.4.",
-  "packageName": "lage",
-  "email": "dzearing@microsoft.com",
-  "dependentChangeType": "patch"
-}

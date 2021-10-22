@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 18 Oct 2021 22:55:57 GMT and should not be manually modified.
+This log was last generated on Fri, 22 Oct 2021 17:48:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.1
+
+Fri, 22 Oct 2021 17:48:34 GMT
+
+### Patches
+
+- Updating to TypeScript 4.4. (dzearing@microsoft.com)
 
 ## 1.1.0
 

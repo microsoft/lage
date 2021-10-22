@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 22 Oct 2021 17:48:34 GMT",
+      "tag": "lage_v1.1.1",
+      "version": "1.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "dzearing@microsoft.com",
+            "package": "lage",
+            "comment": "Updating to TypeScript 4.4.",
+            "commit": "3d07bd27715358c590f17a5d897a1221f2094109"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 18 Oct 2021 22:55:57 GMT",
       "tag": "lage_v1.1.0",
       "version": "1.1.0",
