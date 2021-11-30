@@ -18,9 +18,11 @@ export class Monorepo {
   }
 
   init() {
-    execa.sync("git", ["init"], { cwd: this.root });
-    execa.sync("git", ["config", "user.email", "you@example.com"], { cwd: this.root });
-    execa.sync("git", ["config", "user.name", "test user"], { cwd: this.root });
+    const options = { cwd: this.root };
+    execa.sync("git", ["init"], options);
+    execa.sync("git", ["config", "user.email", "you@example.com"], options);
+    execa.sync("git", ["config", "user.name", "test user"], options);
+    execa.sync("git", ["config", "commit.gpgsign", "false"], options);
     this.generateRepoFiles();
   }
 
