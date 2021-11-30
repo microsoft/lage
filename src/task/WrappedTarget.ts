@@ -31,9 +31,10 @@ export class WrappedTarget implements LoggableTarget {
     this.status = "pending";
     this.logger = new TaskLogger(target.packageName || "[GLOBAL]", target.packageName ? target.task : target.id);
 
+    const outputGlob = target.outputGlob || config.cacheOptions.outputGlob;
     this.cacheOptions = {
       ...config.cacheOptions,
-      outputGlob: target.outputGlob || config.cacheOptions.outputGlob,
+      ...(outputGlob && { outputGlob }),
     };
 
     this.context.targets.set(target.id, this);
