@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 22 Oct 2021 17:48:34 GMT and should not be manually modified.
+This log was last generated on Wed, 01 Dec 2021 19:18:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.2
+
+Wed, 01 Dec 2021 19:18:41 GMT
+
+### Patches
+
+- Fix Lage overwriting Backfill defaults when no options are set (4123478+tido64@users.noreply.github.com)
 
 ## 1.1.1
 
