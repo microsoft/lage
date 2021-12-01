@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix Lage overwriting Backfill defaults when no options are set",
+  "packageName": "lage",
+  "email": "4123478+tido64@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
