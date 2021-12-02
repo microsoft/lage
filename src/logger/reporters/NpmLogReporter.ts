@@ -197,7 +197,10 @@ export class NpmLogReporter implements Reporter {
         log.error("", `[${chalk.magenta(packageName)} ${chalk.cyan(task)}] ${chalk.redBright("ERROR DETECTED")}`);
 
         if (taskLogs) {
-          log.error("", taskLogs?.map((entry) => entry.msg).join("\n"));
+          for (const entry of taskLogs) {
+            // Log each entry separately to prevent truncation
+            log.error("", entry.msg);
+          }
         }
 
         hr();
