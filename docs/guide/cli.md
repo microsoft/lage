@@ -63,6 +63,16 @@ number of parallel tasks that can be run at a time
 By default, this is the number of CPU cores detected by `os.cpus().length`,
 change to any number to achieve desired concurrency.
 
+#### continue
+_type: boolean_
+
+default: false
+
+Setting this allows lage to keep running even if a task has failed. 
+When a failure happens in `--continue` mode, it halts all other dependent targets 
+but continue to build as much as possible
+
+Example: `lage build --continue`
   
 #### deps
 _type: boolean_
