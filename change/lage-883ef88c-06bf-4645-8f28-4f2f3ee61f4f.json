@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Prevent truncation of error summary logs",
+  "packageName": "lage",
+  "email": "elcraig@microsoft.com",
+  "dependentChangeType": "patch"
+}
