@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Disable GPG signing in tests to ensure it won't fail",
+  "packageName": "lage",
+  "email": "4123478+tido64@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
