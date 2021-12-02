@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 02 Dec 2021 20:21:01 GMT",
+      "tag": "lage_v1.1.3",
+      "version": "1.1.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "comment": "Prevent truncation of error summary logs",
+            "commit": "defd554aa2e4a330f865b41b78792a35a831ea64"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Dec 2021 19:18:41 GMT",
       "tag": "lage_v1.1.2",
       "version": "1.1.2",

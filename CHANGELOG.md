@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 01 Dec 2021 19:18:41 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Dec 2021 20:21:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.3
+
+Thu, 02 Dec 2021 20:21:01 GMT
+
+### Patches
+
+- Prevent truncation of error summary logs (elcraig@microsoft.com)
 
 ## 1.1.2
 
