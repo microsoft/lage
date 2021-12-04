@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixes the tasks that have the package in its id",
-  "packageName": "lage",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

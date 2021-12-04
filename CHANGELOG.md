@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 02 Dec 2021 20:21:01 GMT and should not be manually modified.
+This log was last generated on Sat, 04 Dec 2021 00:24:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.4
+
+Sat, 04 Dec 2021 00:24:11 GMT
+
+### Patches
+
+- fixes the tasks that have the package in its id (ken@gizzar.com)
 
 ## 1.1.3
 

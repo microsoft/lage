@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sat, 04 Dec 2021 00:24:11 GMT",
+      "tag": "lage_v1.1.4",
+      "version": "1.1.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "lage",
+            "comment": "fixes the tasks that have the package in its id",
+            "commit": "95affe7fc481d92940dd7b9f11a40051fc320865"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 02 Dec 2021 22:25:07 GMT",
       "tag": "lage_v1.1.3",
       "version": "1.1.3",
