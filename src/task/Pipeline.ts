@@ -12,7 +12,6 @@ import { getPipelinePackages } from "./getPipelinePackages";
 import { getPackageAndTask, getTargetId } from "./taskId";
 import { WrappedTarget } from "./WrappedTarget";
 import { DistributedTask } from "./DistributedTask";
-import { logger } from "../logger";
 
 export const START_TARGET_ID = "__start";
 
@@ -33,6 +32,7 @@ export class Pipeline {
         run: () => {},
         task: START_TARGET_ID,
         hidden: true,
+        cache: false,
       },
     ],
   ]);
@@ -153,7 +153,7 @@ export class Pipeline {
   }
 
   /**
-   * Converts target configuration to pipeline target
+   * Converts target configuration to pipeline targets
    * @param id
    * @param target
    */
@@ -170,12 +170,29 @@ export class Pipeline {
           run: this.runTask(targetId, this.workspace.root, target.run) || (() => {}),
         },
       ];
+    } else if (id.includes("#")) {
+      const { packageName: pkg, task } = getPackageAndTask(id);
+      return [
+        {
+          ...target,
+
+          id,
+          cache: target.cache !== false,
+          task: id,
+          cwd: path.dirname(this.packageInfos[pkg!].packageJsonPath),
+          packageName: pkg,
+          run:
+            this.runTask(id, path.dirname(this.packageInfos[pkg!].packageJsonPath), target.run) ||
+            this.maybeRunNpmTask(task, this.packageInfos[pkg!]),
+        },
+      ];
     } else {
       const packages = Object.entries(this.packageInfos);
       return packages.map(([pkg, _info]) => {
         const targetId = getTargetId(pkg, id);
         return {
           ...target,
+
           id: targetId,
           cache: target.cache !== false,
           task: id,

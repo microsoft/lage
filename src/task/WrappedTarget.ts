@@ -80,7 +80,7 @@ export class WrappedTarget implements LoggableTarget {
 
     const { target, root, config, cacheOptions } = this;
 
-    if (config.cache) {
+    if (config.cache && target.cache) {
       hash = await cacheHash(target.id, target.cwd, root, cacheOptions, config.args);
 
       if (hash && !config.resetCache) {
