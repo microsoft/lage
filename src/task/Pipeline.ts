@@ -256,6 +256,8 @@ export class Pipeline {
        * - for any deps like package#task, we simply add the singular dependency (source could be a single package or all packages)
        * - for anything that starts with a "^", we add the package-tasks according to the topological package graph
        *    NOTE: in a non-strict mode (TODO), the dependencies can come from transitive task dependencies
+       * - for anything that starts with a "^^", we add the package-tasks from the transitive dependencies in the topological
+       *    package graph.
        * - for {"pkgA#task": ["dep"]}, we interpret to add "pkgA#dep"
        * - for anything that is a string without a "^", we treat that string as the name of a task, adding all targets that way
        *    NOTE: in a non-strict mode (TODO), the dependencies can come from transitive task dependencies
@@ -268,14 +270,16 @@ export class Pipeline {
           this.dependencies.push([dep, id]);
         } else if (dep.startsWith("^") && packageName) {
           // topo dep -> build: ['^build']
-          const depTask = dep.substr(1);
-
+          const [depTask, dependencySet] = dep.startsWith("^^") ?
+            [dep.substr(2), this.getTransitiveGraphDependencies(packageName)]
+            : [dep.substr(1), this.graph[packageName].dependencies]
+          
           const dependencyIds = targets
             .filter((needle) => {
               const { task, packageName: needlePackageName } = needle;
 
               return (
-                task === depTask && this.graph[packageName].dependencies.some((depPkg) => depPkg === needlePackageName)
+                task === depTask && dependencySet.some((depPkg) => depPkg === needlePackageName)
               );
             })
             .map((needle) => needle.id);
@@ -299,6 +303,29 @@ export class Pipeline {
         }
       }
     }
+  }
+
+  /**
+   * Gets a list of package names that are direct or indirect dependencies of rootPackageName in this.graph
+   * @param rootPackageName the root package to begin walking from
+   */
+  getTransitiveGraphDependencies(rootPackageName: string): string[] {
+    const frontier = [rootPackageName];
+    const visited = new Set([rootPackageName])
+    while (frontier.length) {
+      const currentPackageName = frontier.pop();
+      if (currentPackageName) {
+        const graphEntry = this.graph[currentPackageName];
+        if(graphEntry) {
+          visited.add(currentPackageName)
+          frontier.push(...graphEntry.dependencies)
+        }
+      }
+    }
+    // set of transitive dependencies will be the same as the visited set of traversing dependencies,
+    // excluding the root package.
+    visited.delete(rootPackageName);
+    return [...visited]
   }
 
   generateTargetGraph() {

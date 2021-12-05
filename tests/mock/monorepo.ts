@@ -81,6 +81,8 @@ export class Monorepo {
         workspaces: ["packages/*"],
         scripts: {
           build: `node "${lagePath}" build --reporter json --log-level silly`,
+          transpile: `node "${lagePath}" transpile --reporter json --log-level silly`,
+          bundle: `node "${lagePath}" bundle --reporter json --log-level silly`,
           test: `node "${lagePath}" test --reporter json --log-level silly`,
           lint: `node "${lagePath}" lint --reporter json --log-level silly`,
         },
@@ -92,6 +94,8 @@ export class Monorepo {
         pipeline: {
           build: ['^build'],
           test: ['build'],
+          bundle: ['^^transpile']
+          transpile: []
           lint: []
         }
       };`,
@@ -110,6 +114,8 @@ export class Monorepo {
       [`packages/${name}/build.js`]: `console.log('building ${name}');`,
       [`packages/${name}/test.js`]: `console.log('building ${name}');`,
       [`packages/${name}/lint.js`]: `console.log('linting ${name}');`,
+      [`packages/${name}/transpile.js`]: `console.log('transpiling ${name}');`,
+      [`packages/${name}/bundle.js`]: `console.log('bundling ${name}');`,
       [`packages/${name}/package.json`]: {
         name,
         version: "0.1.0",
@@ -117,6 +123,8 @@ export class Monorepo {
           build: "node ./build.js",
           test: "node ./test.js",
           lint: "node ./lint.js",
+          transpile: "node ./transpile.js",
+          bundle: "node ./bundle.js",
         },
         dependencies: {
           ...(internalDeps &&

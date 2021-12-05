@@ -49,6 +49,121 @@ describe("transitive task deps test", () => {
 
     repo.cleanup();
   });
+
+  it("only runs direct dependencies for ^ prefix dependencies", () => {
+    const repo = new Monorepo("transitiveDeps");
+
+    repo.init();
+    repo.setLageConfig(`module.exports = {
+      pipeline: {
+        bundle: ["^transpile"],
+        transpile: []
+      },
+    }`);
+    repo.install();
+
+    repo.addPackage("a", ["b"], {
+      bundle: "echo a:bundle",
+      transpile: "echo a:transpile",
+    });
+    repo.addPackage("b", ["c"], {
+      transpile: "echo b:transpile",
+    });
+    repo.addPackage("c", [], {
+      transpile: "echo c:transpile",
+    });
+    repo.linkPackages();
+
+    const results = repo.run("bundle", ["--scope", "a"]);
+
+    const output = results.stdout + results.stderr;
+    const jsonOutput = parseNdJson(output);
+
+    const indices: { [taskId: string]: number } = {};
+
+    for (const pkg of ["a", "b", "c"]) {
+      for (const task of ["transpile", "bundle"]) {
+        const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "completed"));
+        if (index > -1) {
+          indices[getTargetId(pkg, task)] = index;  
+        }
+      }
+    }
+
+    expect(indices[getTargetId("b", "transpile")]).toBeLessThan(indices[getTargetId("a", "bundle")]);
+    // own package transpilation should not be run, since we only want to to consider dependencies
+    // with a ^ dependency.
+    expect(indices[getTargetId("a", "transpile")]).toBeUndefined();
+    // c#transpile should not be queued, since transpile only takes a direct topological dependency,
+    // and transpile has no dependency on itself
+    expect(indices[getTargetId("c", "transpile")]).toBeUndefined();
+
+    repo.cleanup();
+  });
+
+  it("Runs transitive dependencies for ^^ prefix dependencies", () => {
+    const repo = new Monorepo("transitiveDeps-indirect");
+
+    repo.init();
+    repo.setLageConfig(`module.exports = {
+      pipeline: {
+        bundle: ["^^transpile"],
+        transpile: []
+      },
+      priorities: [
+        {
+          package: "b",
+          task: "transpile",
+          priority: 100
+        }
+      ],
+    }`);
+    repo.install();
+
+    repo.addPackage("a", ["b"], {
+      bundle: "echo a:bundle",
+      transpile: "echo a:transpile",
+    });
+    repo.addPackage("b", ["c"], {
+      transpile: "echo b:transpile",
+    });
+    repo.addPackage("c", [], {
+      transpile: "echo c:transpile",
+    });
+    repo.linkPackages();
+
+    const results = repo.run("bundle", ["--scope", "a"]);
+
+    const output = results.stdout + results.stderr;
+    const jsonOutput = parseNdJson(output);
+
+    const indices: { [taskId: string]: number } = {};
+
+
+    for (const pkg of ["a", "b", "c"]) {
+      for (const task of ["transpile", "bundle"]) {
+        const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "completed"));
+        if (index > -1) {
+          indices[getTargetId(pkg, task)] = index;  
+        }
+      }
+    }
+
+    // Dependency transpilation should run before bundling
+    expect(indices[getTargetId("c", "transpile")]).toBeLessThan(indices[getTargetId("a", "bundle")]);
+    expect(indices[getTargetId("b", "transpile")]).toBeLessThan(indices[getTargetId("a", "bundle")]);
+    // own package transpilation should not be run, since we only want to to consider transitive
+    // dependencies with a ^^ dependency.
+    expect(indices[getTargetId("a", "transpile")]).toBeUndefined();
+    // despite b depending on c, there is no dependency between transpile tasks, so they should
+    // be runnable in either order.
+    //
+    // In this test we use priority to ensure that b#transpile it will always run before
+    // c#transpile if they do not have an explicit transpile -> transpile dependency.
+    expect(indices[getTargetId("b", "transpile")]).toBeLessThan(indices[getTargetId("c", "transpile")]);
+
+    repo.cleanup();
+  });
 });
 
 function filterEntry(taskData, pkg, task, status) {
