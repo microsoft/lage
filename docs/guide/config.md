@@ -48,7 +48,7 @@ _type: [Pipeline](#Pipeline)_
 Defines the task pipeline.
 
 - Use a tasks's name with no prefix to denote a package-local dependency.
-- Prefix with "^" character to denote a direct topological dependency.
+- Prefix with `^` character to denote a direct topological dependency.
 - Prefix with `^^` to denote a transitive topological dependency (This includes tasks from dependencies of dependencies).
 
 Example:
