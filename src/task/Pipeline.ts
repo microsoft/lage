@@ -318,7 +318,13 @@ export class Pipeline {
         const graphEntry = this.graph[currentPackageName];
         if(graphEntry) {
           visited.add(currentPackageName)
-          frontier.push(...graphEntry.dependencies)
+          // paranoid check against getting stuck in a loop
+          // in case this somehow runs on a workspace
+          // with circular dependencies
+          let newDependencies = graphEntry.dependencies.filter(
+            candidate => !visited.has(candidate) && !frontier.includes(candidate)
+          )
+          frontier.push(...newDependencies)
         }
       }
     }
