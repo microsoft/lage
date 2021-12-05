@@ -45,7 +45,11 @@ Which NPM Client to use when running npm lifecycle scripts
 #### pipeline
 _type: [Pipeline](#Pipeline)_
 
-Defines the task pipeline, prefix with "^" character to denote a topological dependency
+Defines the task pipeline.
+
+- Use a tasks's name with no prefix to denote a package-local dependency.
+- Prefix with "^" character to denote a direct topological dependency.
+- Prefix with `^^` to denote a transitive topological dependency (This includes tasks from dependencies of dependencies).
 
 Example:
 
@@ -54,6 +58,9 @@ Example:
   build: ["^build"],
   test: ["build"],
   lint: []
+
+  bundle: ["^^transpile"],
+  transpile: []
 }
 ```
 
