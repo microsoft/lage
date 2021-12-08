@@ -90,8 +90,6 @@ describe("transitive task deps test", () => {
       }
     }
 
-    console.log(indices)
-
     // own package transpilation should be run
     expect(indices[getTargetId("a", "transpile")]).toBeLessThan(indices[getTargetId("a", "bundle")]);
     // b & c#transpile should not be queued, since we only take a local dependency
