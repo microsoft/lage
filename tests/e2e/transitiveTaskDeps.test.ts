@@ -50,7 +50,58 @@ describe("transitive task deps test", () => {
     repo.cleanup();
   });
 
-  it("only runs direct dependencies for ^ prefix dependencies", () => {
+  it("only runs package local dependencies for no-prefix dependencies", () => {
+    const repo = new Monorepo("transitiveDeps");
+
+    repo.init();
+    repo.setLageConfig(`module.exports = {
+      pipeline: {
+        bundle: ["transpile"],
+        transpile: []
+      },
+    }`);
+    repo.install();
+
+    repo.addPackage("a", ["b"], {
+      bundle: "echo a:bundle",
+      transpile: "echo a:transpile",
+    });
+    repo.addPackage("b", ["c"], {
+      transpile: "echo b:transpile",
+    });
+    repo.addPackage("c", [], {
+      transpile: "echo c:transpile",
+    });
+    repo.linkPackages();
+
+    const results = repo.run("bundle", ["--scope", "a"]);
+
+    const output = results.stdout + results.stderr;
+    const jsonOutput = parseNdJson(output);
+
+    const indices: { [taskId: string]: number } = {};
+
+    for (const pkg of ["a", "b", "c"]) {
+      for (const task of ["transpile", "bundle"]) {
+        const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "completed"));
+        if (index > -1) {
+          indices[getTargetId(pkg, task)] = index;  
+        }
+      }
+    }
+
+    console.log(indices)
+
+    // own package transpilation should be run
+    expect(indices[getTargetId("a", "transpile")]).toBeLessThan(indices[getTargetId("a", "bundle")]);
+    // b & c#transpile should not be queued, since we only take a local dependency
+    expect(indices[getTargetId("b", "transpile")]).toBeUndefined();
+    expect(indices[getTargetId("c", "transpile")]).toBeUndefined();
+
+    repo.cleanup();
+  });
+  
+  it("only runs direct dependencies for ^ prefix dependencies -- ", () => {
     const repo = new Monorepo("transitiveDeps");
 
     repo.init();
