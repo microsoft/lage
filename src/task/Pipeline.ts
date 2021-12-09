@@ -22,6 +22,8 @@ export const START_TARGET_ID = "__start";
  * - for doing distributed work, the WrapperTask will instead place the PipelineTarget info into a worker queue
  */
 export class Pipeline {
+  private cachedTransitiveTaskDependencies: Map<string, "walk-in-progress" | Set<string>> = new Map()
+
   /** Target represent a unit of work and the configuration of how to run it */
   targets: Map<string, PipelineTarget> = new Map([
     [
@@ -271,7 +273,7 @@ export class Pipeline {
         } else if (dep.startsWith("^") && packageName) {
           // topo dep -> build: ['^build']
           const [depTask, dependencySet] = dep.startsWith("^^") ?
-            [dep.substr(2), this.getTransitiveGraphDependencies(packageName)]
+            [dep.substr(2), [...this.getTransitiveGraphDependencies(packageName)]]
             : [dep.substr(1), this.graph[packageName].dependencies]
           
           const dependencyIds = targets
@@ -306,32 +308,44 @@ export class Pipeline {
   }
 
   /**
-   * Gets a list of package names that are direct or indirect dependencies of rootPackageName in this.graph
-   * @param rootPackageName the root package to begin walking from
+   * Gets a list of package names that are direct or indirect dependencies of rootPackageName in this.graph,
+   * and caches them on the Pipeline.
+   * @param packageName the root package to begin walking from
    */
-  getTransitiveGraphDependencies(rootPackageName: string): string[] {
-    const frontier = [rootPackageName];
-    const visited = new Set([rootPackageName])
-    while (frontier.length) {
-      const currentPackageName = frontier.pop();
-      if (currentPackageName) {
-        const graphEntry = this.graph[currentPackageName];
-        if(graphEntry) {
-          visited.add(currentPackageName)
-          // paranoid check against getting stuck in a loop
-          // in case this somehow runs on a workspace
-          // with circular dependencies
-          let newDependencies = graphEntry.dependencies.filter(
-            candidate => !visited.has(candidate) && !frontier.includes(candidate)
-          )
-          frontier.push(...newDependencies)
+  getTransitiveGraphDependencies(packageName: string): Set<string> {
+    const cachedResult = this.cachedTransitiveTaskDependencies.get(packageName);
+    if (cachedResult) {
+      return (cachedResult ==="walk-in-progress")
+        // There is a recursive walk over this set of dependencies in progress.
+        // If we hit this case, that means that a dependency of this package depends on it.
+        //
+        // In this case we return an empty set to omit this package and it's downstream from its
+        // dependency
+        ? new Set()
+        // we already computed this for this package, return the cached result.
+        : cachedResult;
+    } else {
+      // No cached result. Compute now with a recursive walk
+
+      // mark that we are traversing this package to prevent infinite recursion
+      // in cases of circular dependencies
+      this.cachedTransitiveTaskDependencies.set(packageName, 'walk-in-progress');
+
+      let immediateDependencies = this.graph[packageName]?.dependencies ?? [];
+
+      // build the set of transitive dependencies by recursively walking the
+      // immediate dependencies' dependencies.
+      let transitiveDepSet = new Set<string>(immediateDependencies);
+      for (let immediateDependency of immediateDependencies) {
+        for (let transitiveSubDependency of this.getTransitiveGraphDependencies(immediateDependency)) {
+          transitiveDepSet.add(transitiveSubDependency)
         }
       }
+
+      // Cache the result and return
+      this.cachedTransitiveTaskDependencies.set(packageName, transitiveDepSet);
+      return transitiveDepSet
     }
-    // set of transitive dependencies will be the same as the visited set of traversing dependencies,
-    // excluding the root package.
-    visited.delete(rootPackageName);
-    return [...visited]
   }
 
   generateTargetGraph() {
