@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "chore: Upgrades workspace-tools to ^0.17.0",
+  "packageName": "lage",
+  "email": "riacarmin@microsoft.com",
+  "dependentChangeType": "patch"
+}
