@@ -4,6 +4,7 @@ import { NpmLogReporter } from "./reporters/NpmLogReporter";
 import { LogLevel } from "./LogLevel";
 import { JsonReporter } from "./reporters/JsonReporter";
 import { AdoReporter } from "./reporters/AdoReporter";
+import { DgmlReporter } from "./reporters/DgmlReporter";
 
 export function initReporters(config: Config) {
   // Initialize logger
@@ -16,11 +17,13 @@ export function initReporters(config: Config) {
   const reporters: Array<AdoReporter | JsonReporter | NpmLogReporter> = [
     config.reporter === "json"
       ? new JsonReporter({ logLevel })
-      : new NpmLogReporter({
-        logLevel,
-        grouped: config.grouped,
-        npmLoggerOptions: config.loggerOptions
-      }),
+      : config.reporter === "dgml"
+        ? new DgmlReporter()
+        : new NpmLogReporter({
+          logLevel,
+          grouped: config.grouped,
+          npmLoggerOptions: config.loggerOptions
+        }),
   ];
 
   if (config.reporter === "adoLog") { // Will always include NpmLogReporter and add AdoReporter

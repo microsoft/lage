@@ -140,6 +140,10 @@ Specify whether to use the JSON Reporter to create a parsable log output
 
 Example: `lage --reporter json`
 
+Lage also supports emitting a [dgml](https://docs.microsoft.com/en-us/visualstudio/modeling/directed-graph-markup-language-dgml-reference?view=vs-2022) file by using the `info` command followed by the targets you want to generate the graph for and specifying the dgml reporter.
+
+Example: `lage info build test --reporter dgml`
+
   
 #### resetCache
 _type: boolean_

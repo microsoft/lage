@@ -30,6 +30,7 @@
     "watchpack": "1.6.1"
   },
   "dependencies": {
+    "@xmldom/xmldom": "^0.8.0",
     "abort-controller": "^3.0.0",
     "backfill": "^6.1.10",
     "backfill-cache": "^5.3.0",
@@ -55,8 +56,8 @@
     "@types/cosmiconfig": "^6.0.0",
     "@types/execa": "^2.0.0",
     "@types/git-url-parse": "^9.0.0",
-    "@types/jest": "^27.0.1",
     "@types/ioredis": "^4.27.7",
+    "@types/jest": "^27.0.1",
     "@types/node": "^13.13.2",
     "@types/npmlog": "^4.1.2",
     "@types/p-queue": "^3.2.1",
