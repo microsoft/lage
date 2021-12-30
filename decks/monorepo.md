@@ -117,7 +117,7 @@ import { Button } from "ui-components";
 
 ---
 
-## Problem 1.1: Dopplegangers
+## Problem 1.1: Doppelgangers
 
 Dealing with transitive deps of different versions
 
