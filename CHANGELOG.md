@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Sat, 04 Dec 2021 00:24:11 GMT and should not be manually modified.
+This log was last generated on Mon, 03 Jan 2022 23:13:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.0
+
+Mon, 03 Jan 2022 23:13:44 GMT
+
+### Minor changes
+
+- Allow explicit parralel scheduling of transitive dependencies with ^^ prefix (mhuan13@gmail.com)
 
 ## 1.1.4
 
