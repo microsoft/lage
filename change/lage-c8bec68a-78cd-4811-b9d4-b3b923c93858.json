@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Allow explicit parralel scheduling of transitive dependencies with ^^ prefix",
+  "packageName": "lage",
+  "email": "mhuan13@gmail.com",
+  "dependentChangeType": "patch"
+}

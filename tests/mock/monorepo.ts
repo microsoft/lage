@@ -80,6 +80,8 @@ export class Monorepo {
         private: true,
         workspaces: ["packages/*"],
         scripts: {
+          bundle: `node "${lagePath}" bundle --reporter json --log-level silly`,
+          transpile: `node "${lagePath}" transpile --reporter json --log-level silly`,
           build: `node "${lagePath}" build --reporter json --log-level silly`,
           test: `node "${lagePath}" test --reporter json --log-level silly`,
           lint: `node "${lagePath}" lint --reporter json --log-level silly`,
