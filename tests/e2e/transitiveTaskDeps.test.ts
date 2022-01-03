@@ -51,7 +51,7 @@ describe("transitive task deps test", () => {
   });
 
   it("only runs package local dependencies for no-prefix dependencies", () => {
-    const repo = new Monorepo("transitiveDeps");
+    const repo = new Monorepo("transitiveDeps-no-prefix");
 
     repo.init();
     repo.setLageConfig(`module.exports = {
@@ -100,7 +100,7 @@ describe("transitive task deps test", () => {
   });
   
   it("only runs direct dependencies for ^ prefix dependencies -- ", () => {
-    const repo = new Monorepo("transitiveDeps");
+    const repo = new Monorepo("transitiveDeps-carat-prefix");
 
     repo.init();
     repo.setLageConfig(`module.exports = {
@@ -164,6 +164,11 @@ describe("transitive task deps test", () => {
           package: "b",
           task: "transpile",
           priority: 100
+        },
+        {
+          package: "c",
+          task: "transpile",
+          priority: 1
         }
       ],
     }`);
