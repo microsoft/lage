@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "speeding up by bumping backfill & workspace-tools. now supports npm 7",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

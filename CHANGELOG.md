@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 03 Jan 2022 23:13:44 GMT and should not be manually modified.
+This log was last generated on Fri, 07 Jan 2022 21:55:18 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.0
+
+Fri, 07 Jan 2022 21:55:18 GMT
+
+### Minor changes
+
+- speeding up by bumping backfill & workspace-tools. now supports npm 7 (kchau@microsoft.com)
 
 ## 1.2.0
 
