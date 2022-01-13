@@ -135,9 +135,10 @@ export interface CliOptions {
   ignore: string[];
 
   /**
-   * Specify whether to use the JSON Reporter to create a parsable log output
+   * Specify which Reporter to use to create a parsable log output
    *
    * Example: `lage --reporter json`
+   * Example: `lage info build --reporter dgml`
    */
   reporter: string;
 

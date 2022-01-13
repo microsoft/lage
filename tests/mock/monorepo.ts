@@ -83,6 +83,7 @@ export class Monorepo {
           bundle: `node "${lagePath}" bundle --reporter json --log-level silly`,
           transpile: `node "${lagePath}" transpile --reporter json --log-level silly`,
           build: `node "${lagePath}" build --reporter json --log-level silly`,
+          writeInfo: `node "${lagePath}" info`,
           test: `node "${lagePath}" test --reporter json --log-level silly`,
           lint: `node "${lagePath}" lint --reporter json --log-level silly`,
         },
@@ -167,8 +168,8 @@ export class Monorepo {
     execa.sync("git", ["commit", "-m", "commit files"], { cwd: this.root });
   }
 
-  run(command: string, args?: string[]) {
-    return execa.sync("yarn", [command, ...(args || [])], {
+  run(command: string, args?: string[], silent?: boolean) {
+    return execa.sync("yarn", [...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
     });
   }
