@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 13 Jan 2022 20:05:57 GMT and should not be manually modified.
+This log was last generated on Thu, 13 Jan 2022 22:54:47 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.4.0
+
+Thu, 13 Jan 2022 22:54:47 GMT
+
+### Minor changes
+
+- Add dgml reporter (dannyvv@microsoft.com)
 
 ## 1.3.1
 
