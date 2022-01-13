@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 07 Jan 2022 21:55:18 GMT and should not be manually modified.
+This log was last generated on Thu, 13 Jan 2022 20:05:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.1
+
+Thu, 13 Jan 2022 20:05:57 GMT
+
+### Patches
+
+- bump backfill (kchau@microsoft.com)
 
 ## 1.3.0
 

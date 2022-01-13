@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "bump backfill",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
