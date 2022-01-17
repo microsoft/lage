@@ -8,13 +8,13 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Lage',
   tagline: 'A Beautiful JS Monorepo Task Runner',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://microsoft.github.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'microsoft', // Usually your GitHub org/user name.
+  projectName: 'lage', // Usually your repo name.
 
   presets: [
     [
