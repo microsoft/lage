@@ -9,7 +9,7 @@ const config = {
   title: 'Lage',
   tagline: 'A Beautiful JS Monorepo Task Runner',
   url: 'https://microsoft.github.io',
-  baseUrl: '/',
+  baseUrl: '/docs-new',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',

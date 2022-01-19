@@ -27,6 +27,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          destination_dir: docs-new
           # Build output to publish to the `gh-pages` branch:
           publish_dir: ./docs-new/build
           # Assign commit authorship to the official GH-Actions bot for deploys to `gh-pages` branch:
