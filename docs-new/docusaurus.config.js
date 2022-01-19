@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Lage',
   tagline: 'A Beautiful JS Monorepo Task Runner',
-  url: 'https://microsoft.github.io',
+  url: 'https://microsoft.github.io/lage',
   baseUrl: '/docs-new',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
