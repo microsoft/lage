@@ -1,0 +1,44 @@
+name: Demo
+on: [issue_comment]
+
+jobs:
+  chatops:
+    runs-on: ubuntu-latest
+    steps:
+      - name: listen for PR Comments
+        uses: machine-learning-apps/actions-chatops@master
+        with:
+          TRIGGER_PHRASE: "/bot"
+        env: # you must supply GITHUB_TOKEN
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: prcomm
+        # This step clones the branch of the PR associated with the triggering phrase, but only if it is triggered.
+      - name: clone branch of PR
+        if: steps.prcomm.outputs.BOOL_TRIGGERED == 'true'
+        uses: actions/checkout@master
+        with:
+          ref: ${{ steps.prcomm.outputs.SHA }}
+
+      - name: yarn install and build
+        if: steps.prcomm.outputs.BOOL_TRIGGERED == 'true'
+        run: |
+          yarn
+          yarn build
+
+      - name: release canary
+        uses: mathiasvr/command-output@v1
+        id: release
+        if: steps.prcomm.outputs.BOOL_TRIGGERED == 'true' && steps.prcomm.outputs.TRAILING_TOKEN == 'canary'
+        with:
+          run: |
+            yarn beachball canary --canary-name ${{ steps.prcomm.outputs.PULL_REQUEST_NUMBER }}
+
+      - name: steps.prcomm.outputs.BOOL_TRIGGERED == 'true' && steps.prcomm.outputs.TRAILING_TOKEN == 'canary'
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            **BEEP BOOP**
+            ${{ steps.release.outputs.stdout }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]'
+          allow-repeats: false # This is the default
