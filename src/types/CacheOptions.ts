@@ -4,4 +4,5 @@ export type CacheOptions = BackfillCacheOptions & {
   environmentGlob: string[];
   cacheKey: string;
   writeRemoteCache: boolean;
+  skipLocalCache: boolean;
 };

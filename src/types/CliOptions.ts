@@ -181,11 +181,16 @@ export interface CliOptions {
    */
   logLevel: string;
 
-  /**
-   * Specify a custom cache key salt with this option: --cache-key xyz_build_environemnt
-   */
   cacheOptions: {
+    /**
+     * Specify a custom cache key salt with this option: --cache-key xyz_build_environemnt
+     */
     cacheKey: string;
+
+    /**
+     * whether to populate or skip local cache: --skip-local-cache
+     */
+    skipLocalCache: boolean;
   };
 
   /**

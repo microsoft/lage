@@ -6,9 +6,15 @@ import { logger } from "../logger";
 
 export type RemoteFallbackCacheProviderOptions = Pick<
   CacheOptions,
-  "internalCacheFolder" | "cacheStorageConfig" | "writeRemoteCache"
+  "internalCacheFolder" | "cacheStorageConfig" | "writeRemoteCache" | "skipLocalCache"
 >;
 
+/**
+ * Remote Fallback Cache Provider
+ *
+ * This backfill cache provider will fallback to a remote cache provider if the local cache does not contain the item.
+ * It will also automatically populate the local cache with the remote cache.
+ */
 export class RemoteFallbackCacheProvider implements ICacheStorage {
   private localCacheStorageProvider: ICacheStorage;
   private remoteCacheStorageProvider?: ICacheStorage;
@@ -46,8 +52,10 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
   }
 
   async fetch(hash: string) {
-    RemoteFallbackCacheProvider.localHits[hash] = await this.localCacheStorageProvider.fetch(hash);
-    logger.silly(`local cache fetch: ${hash} ${RemoteFallbackCacheProvider.localHits[hash]}`);
+    if (!this.cacheOptions.skipLocalCache) {
+      RemoteFallbackCacheProvider.localHits[hash] = await this.localCacheStorageProvider.fetch(hash);
+      logger.silly(`local cache fetch: ${hash} ${RemoteFallbackCacheProvider.localHits[hash]}`);
+    }
 
     if (!RemoteFallbackCacheProvider.localHits[hash] && this.remoteCacheStorageProvider) {
       RemoteFallbackCacheProvider.remoteHits[hash] = await this.remoteCacheStorageProvider.fetch(hash);
@@ -62,7 +70,7 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
     const putPromises: Promise<void>[] = [];
 
     // Write local cache if it doesn't already exist, or if the the hash isn't in the localHits
-    const shouldWriteLocalCache = !this.isLocalHit(hash);
+    const shouldWriteLocalCache = !this.isLocalHit(hash) && !this.cacheOptions.skipLocalCache;
 
     if (shouldWriteLocalCache) {
       logger.silly(`local cache put: ${hash}`);

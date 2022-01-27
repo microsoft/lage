@@ -70,6 +70,7 @@ export function getPassThroughArgs(
     "cacheKey",
     "dist",
     "experimentDist",
+    "skipLocalCache",
     "_",
   ];
 
