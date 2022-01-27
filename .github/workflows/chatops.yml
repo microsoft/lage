@@ -31,7 +31,9 @@ jobs:
         if: steps.prcomm.outputs.BOOL_TRIGGERED == 'true' && steps.prcomm.outputs.TRAILING_TOKEN == 'canary'
         with:
           run: |
-            yarn beachball canary --canary-name pr${{ steps.prcomm.outputs.PULL_REQUEST_NUMBER }}
+            yarn beachball canary --canary-name pr${{ steps.prcomm.outputs.PULL_REQUEST_NUMBER }} -n $NPM_AUTHTOKEN
+        env:
+          NPM_AUTHTOKEN: ${{ secrets.npm_authtoken }}
 
       - name: comments
         if: steps.prcomm.outputs.BOOL_TRIGGERED == 'true' && steps.prcomm.outputs.TRAILING_TOKEN == 'canary'
