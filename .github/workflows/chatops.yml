@@ -19,6 +19,16 @@ jobs:
         with:
           ref: ${{ steps.prcomm.outputs.SHA }}
 
+      - name: Create comment
+        if: steps.prcomm.outputs.BOOL_TRIGGERED == 'true' && steps.prcomm.outputs.TRAILING_TOKEN == 'canary'
+        uses: jungwinter/comment@v1
+        id: create_comment
+        with:
+          type: create
+          body: You requested to create a canary release. Watch this comment for info
+          issue_number: ${{ steps.prcomm.outputs.PULL_REQUEST_NUMBER }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: yarn install and build
         if: steps.prcomm.outputs.BOOL_TRIGGERED == 'true'
         run: |
@@ -35,15 +45,16 @@ jobs:
         env:
           NPM_AUTHTOKEN: ${{ secrets.npm_authtoken }}
 
-      - name: comments
+      - name: Update comment
         if: steps.prcomm.outputs.BOOL_TRIGGERED == 'true' && steps.prcomm.outputs.TRAILING_TOKEN == 'canary'
-        uses: mshick/add-pr-comment@v1
+        uses: jungwinter/comment@v1
+        id: update_comment
         with:
-          message: |
-            **BEEP BOOP**
+          type: edit
+          body: |
+            **BEEP BOOP** Here's the canary build info
             ```
             ${{ steps.release.outputs.stdout }}
             ```
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          repo-token-user-login: 'github-actions[bot]'
-          allow-repeats: false # This is the default
+          comment_id: ${{ steps.create_comment.outputs.id }}
+          token: ${{ secrets.GITHUB_TOKEN }}
