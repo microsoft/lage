@@ -1,4 +1,4 @@
-name: Demo
+name: ChatOps
 on: [issue_comment]
 
 jobs:
@@ -33,7 +33,8 @@ jobs:
           run: |
             yarn beachball canary --canary-name ${{ steps.prcomm.outputs.PULL_REQUEST_NUMBER }}
 
-      - name: steps.prcomm.outputs.BOOL_TRIGGERED == 'true' && steps.prcomm.outputs.TRAILING_TOKEN == 'canary'
+      - name: comments
+        if: steps.prcomm.outputs.BOOL_TRIGGERED == 'true' && steps.prcomm.outputs.TRAILING_TOKEN == 'canary'
         uses: mshick/add-pr-comment@v1
         with:
           message: |
