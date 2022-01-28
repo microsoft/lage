@@ -133,7 +133,7 @@ async function getCache(target: PipelineTarget, root: string, config: Config) {
 
   const { id, cwd } = target;
   const cacheOptions = getCacheOptions(target, config);
-  hash = await cacheHash(id, root, cwd, cacheOptions, config.args);
+  hash = await cacheHash(id, cwd, root, cacheOptions, config.args);
 
   if (hash && !config.resetCache) {
     cacheHit = await cacheFetch(hash, id, cwd, config.cacheOptions);
