@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 13 Jan 2022 22:54:47 GMT and should not be manually modified.
+This log was last generated on Sat, 29 Jan 2022 00:08:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.5.0
+
+Sat, 29 Jan 2022 00:08:10 GMT
+
+### Minor changes
+
+- adding a flag to turn off local cache population (kchau@microsoft.com)
 
 ## 1.4.0
 

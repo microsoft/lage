@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sat, 29 Jan 2022 00:08:10 GMT",
+      "tag": "lage_v1.5.0",
+      "version": "1.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "comment": "adding a flag to turn off local cache population",
+            "commit": "fff2953a947309f81f56a5ba5fa5cc7e3005cb95"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 13 Jan 2022 22:54:47 GMT",
       "tag": "lage_v1.4.0",
       "version": "1.4.0",
