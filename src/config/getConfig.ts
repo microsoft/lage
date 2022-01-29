@@ -37,7 +37,7 @@ export function getConfig(cwd: string): Config {
 
   const dist = parsedArgs.experimentDist || false;
   const concurrency = parsedArgs.concurrency || configResults?.config.concurrency || os.cpus().length;
-  
+
   return {
     reporter: parsedArgs.reporter || "npmLog",
     grouped: parsedArgs.grouped || false,
@@ -48,6 +48,7 @@ export function getConfig(cwd: string): Config {
       {
         ...configResults?.config.cacheOptions,
         ...(parsedArgs.cacheKey && { cacheKey: parsedArgs.cacheKey }),
+        ...(parsedArgs.skipLocalCache && { skipLocalCache: true }),
       } || {},
     command,
     concurrency,

@@ -8,6 +8,7 @@ export function getCacheConfig(cwd: string, cacheOptions: CacheOptions) {
 
   // in lage, default mode is to CACHE locally
   defaultCacheConfig.cacheStorageConfig.provider = "local";
+  
 
   const logger = makeLogger("warn");
   const envConfig = getEnvConfig(logger);
@@ -18,7 +19,7 @@ export function getCacheConfig(cwd: string, cacheOptions: CacheOptions) {
     ...envConfig,
     writeRemoteCache: cacheOptions.writeRemoteCache || !!process.env.LAGE_WRITE_REMOTE_CACHE
   };
-
+  
   const configWithFallback: CacheOptions = {
     ...configWithEnvOverrides,
     cacheStorageConfig: {

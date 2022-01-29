@@ -2,8 +2,6 @@ import * as path from "path";
 import * as crypto from "crypto";
 import * as fg from "fast-glob";
 import * as fs from "fs";
-// import os from "os";
-// import process from "process";
 
 let envHash: string[];
 
@@ -13,11 +11,7 @@ export function salt(
   repoRoot: string,
   customKey: string = ""
 ): string {
-  return hashStrings([
-    ...getEnvHash(environmentGlobFiles, repoRoot),
-    command,
-    customKey,
-  ]);
+  return hashStrings([...getEnvHash(environmentGlobFiles, repoRoot), command, customKey]);
 }
 
 function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
