@@ -2,7 +2,7 @@
 
 `lage` by default will cache tasks that it has already done recently locally on disk. As long as the source file and the command arguments have not changed, those cached results will be restored.
 
-See (Remote Cache)[./remote-cache] for details about speeding up local dev environment even further with a remote cache from Continuous Integration jobs.
+See [Remote Cache](./remote-cache) for details about speeding up local dev environment even further with a remote cache from Continuous Integration jobs.
 
 ## Turn off cache
 
