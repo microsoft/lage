@@ -5,7 +5,7 @@ import styles from './HomepageFeatures.module.css';
 const FeatureList = [
   {
     title: 'Works with all workspace implementations',
-    Svg: require('../../static/img/undraw_docusaurus_mountain.svg').default,
+    Svg: require('../../static/img/icon-business-automation.svg').default,
     description: (
       <>
         The workspace-agnostic task runner will run npm scripts for all workspace implementations out there: lerna, yarn, pnpm, and rush
@@ -14,7 +14,7 @@ const FeatureList = [
   },
   {
     title: 'Simple pipeline definition',
-    Svg: require('../../static/img/undraw_docusaurus_tree.svg').default,
+    Svg: require('../../static/img/icon-clock-time.svg').default,
     description: (
       <>
         With a terse definition language, get going with builds within a few seconds
@@ -23,7 +23,7 @@ const FeatureList = [
   },
   {
     title: 'Speedy local incremental builds',
-    Svg: require('../../static/img/undraw_docusaurus_react.svg').default,
+    Svg: require('../../static/img/icon-up.svg').default,
     description: (
       <>
         Because building once is painful enough, lage will remember what you've built before and skip steps that it has already performed before
@@ -32,7 +32,7 @@ const FeatureList = [
   },
   {
     title: 'Speedy CI build caches',
-    Svg: require('../../static/img/undraw_docusaurus_react.svg').default,
+    Svg: require('../../static/img/icon-monitor-graph-growth.svg').default,
     description: (
       <>
         Based on the `backfill` utility, build output can be cached into the cloud for speedy CI builds as well
@@ -41,7 +41,7 @@ const FeatureList = [
   },
   {
     title: 'Scoped task runs',
-    Svg: require('../../static/img/undraw_docusaurus_mountain.svg').default,
+    Svg: require('../../static/img/icon-hierarchy.svg').default,
     description: (
       <>
         Easily run npm tasks by specifying a scope of packages
@@ -50,7 +50,7 @@ const FeatureList = [
   },
   {
     title: 'Profile the task runners',
-    Svg: require('../../static/img/undraw_docusaurus_tree.svg').default,
+    Svg: require('../../static/img/icon-business-chart.svg').default,
     description: (
       <>
         Generate a profile of tasks run by lage - import it inside Chrome or Edge to understand which tasks took the longest time

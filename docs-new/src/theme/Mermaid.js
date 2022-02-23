@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import mermaid from "mermaid";
+import '../css/custom-mermaid.css';
 
 mermaid.initialize({
 	startOnLoad: true

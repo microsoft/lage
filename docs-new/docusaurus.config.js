@@ -38,10 +38,6 @@ const config = {
     ({
       navbar: {
         title: 'Lage',
-        logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
-        },
         items: [
           {
             type: 'doc',
