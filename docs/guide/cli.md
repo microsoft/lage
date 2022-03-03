@@ -70,7 +70,7 @@ default: false
 
 Setting this allows lage to keep running even if a task has failed. 
 When a failure happens in `--continue` mode, it halts all other dependent targets 
-but continue to build as much as possible
+but continues to build as much as possible.
 
 Example: `lage build --continue`
   
