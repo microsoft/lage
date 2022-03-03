@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 29 Jul 2021 16:47:03 GMT and should not be manually modified.
+This log was last generated on Thu, 03 Mar 2022 22:52:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.31.2
+
+Thu, 03 Mar 2022 22:52:17 GMT
+
+### Patches
+
+- update README.md / package.json to reference correct stable branch (kchau@microsoft.com)
 
 ## 0.31.1
 
