@@ -154,7 +154,7 @@ gantt
 
 ## Level 4. Pipelining
 
-Finally, the last thing we can to speed things up is to break down the wall between build phases from the task runner. In `lage`, we define the relationship between scripts in the `pipeline` configuration.
+Finally, the last thing we can do to speed things up is to break down the wall between build phases from the task runner. In `lage`, we define the relationship between scripts in the `pipeline` configuration.
 
 ```mermaid
 gantt
