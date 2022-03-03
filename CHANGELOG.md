@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Sat, 29 Jan 2022 00:08:10 GMT and should not be manually modified.
+This log was last generated on Thu, 03 Mar 2022 22:42:29 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.5.1
+
+Thu, 03 Mar 2022 22:42:29 GMT
+
+### Patches
+
+- Adding new note about unstable branch (kchau@microsoft.com)
 
 ## 1.5.0
 

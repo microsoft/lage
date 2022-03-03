@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 03 Mar 2022 22:42:29 GMT",
+      "tag": "lage_v1.5.1",
+      "version": "1.5.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "comment": "Adding new note about unstable branch",
+            "commit": "5125b1cf98d36768eee6f1072311a6081cf1922c"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 29 Jan 2022 00:08:10 GMT",
       "tag": "lage_v1.5.0",
       "version": "1.5.0",
