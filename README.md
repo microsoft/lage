@@ -1,5 +1,7 @@
 # lage
 
+This is the *stable* release branch. It is what will appear in the "latest" tag for npm registry.
+
 Documentation is here: https://microsoft.github.io/lage/
 
 ## Overview

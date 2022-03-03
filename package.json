@@ -3,7 +3,7 @@
   "version": "0.31.1",
   "description": "A monorepo task runner",
   "repository": {
-    "url": "https://github.com/microsoft/lage"
+    "url": "https://github.com/microsoft/lage#stable"
   },
   "license": "MIT",
   "main": "lib/index.js",
@@ -13,15 +13,14 @@
   },
   "scripts": {
     "build": "tsc",
-    "change": "beachball change",
-    "checkchange": "beachball check",
+    "change": "beachball change -b origin/stable",
+    "checkchange": "beachball check -b origin/stable",
     "decks:build": "marp -I decks --pdf -o docs/.vuepress/dist/decks",
     "docs": "vuepress dev docs --host localhost",
     "docs:build": "vuepress build docs",
     "gen-typedoc": "ts-node --transpile-only scripts/gen-typedoc.ts",
     "gh-pages": "gh-pages",
-    "release": "beachball publish -y",
-    "release:docs": "yarn gen-typedoc && yarn docs:build && yarn decks:build && yarn gh-pages -d docs/.vuepress/dist --dotfiles",
+    "release": "beachball publish -y -b origin/stable --tag latest",
     "start": "tsc -w --preserveWatchOutput",
     "test": "ts-node --project tests/tsconfig.json node_modules/jasmine/bin/jasmine --config=jasmine.json"
   },
