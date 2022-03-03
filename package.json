@@ -20,7 +20,7 @@
     "docs:build": "vuepress build docs",
     "gen-typedoc": "ts-node --transpile-only scripts/gen-typedoc.ts",
     "gh-pages": "gh-pages",
-    "release": "beachball publish -y",
+    "release": "beachball publish -y --tag unstable",
     "release:docs": "yarn gen-typedoc && yarn docs:build && yarn decks:build && yarn gh-pages -d docs/.vuepress/dist --dotfiles",
     "start": "tsc -w --preserveWatchOutput",
     "test": "jest"
