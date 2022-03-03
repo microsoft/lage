@@ -1,5 +1,7 @@
 # lage
 
+This is the UNSTABLE branch. All package published from this branch will be tagged as `lage@unstable`. When we have confirmed stability for v1.x branch, then we'll promote it to be stable.
+
 Documentation is here: https://microsoft.github.io/lage/
 
 ## Overview
