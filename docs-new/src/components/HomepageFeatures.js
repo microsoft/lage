@@ -4,11 +4,11 @@ import styles from './HomepageFeatures.module.css';
 
 const FeatureList = [
   {
-    title: 'Works with all workspace implementations',
+    title: 'Workspace Agnostic',
     Svg: require('../../static/img/icon-business-automation.svg').default,
     description: (
       <>
-        The workspace-agnostic task runner will run npm scripts for all workspace implementations out there: lerna, yarn, pnpm, and rush
+        This task runner will run npm scripts for all workspace implementations out there: lerna, yarn, pnpm, and rush
       </>
     ),
   },
