@@ -12,9 +12,12 @@ const config = {
   baseUrl: '/lage/docs-new/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/lage-logo.svg',
   organizationName: 'microsoft', // Usually your GitHub org/user name.
   projectName: 'lage', // Usually your repo name.
+  customFields:{
+    image: 'img/lage-logo.svg'
+  },
 
   presets: [
     [
@@ -38,6 +41,10 @@ const config = {
     ({
       navbar: {
         title: 'Lage',
+        logo: {
+          alt: 'Lage Logo',
+          src: 'img/lage-logo.svg',
+        },
         items: [
           {
             type: 'doc',
