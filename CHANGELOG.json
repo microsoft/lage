@@ -2,6 +2,27 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 14 Mar 2022 22:04:24 GMT",
+      "tag": "lage_v1.5.1",
+      "version": "1.5.1",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "comment": "Dedupe yarn.lock and switch to stable node types version",
+            "commit": "6181444865fa052b6d196d56d65fa32a2771de38"
+          },
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "comment": "adding changes in github action workflows to accommodate the rename",
+            "commit": "6181444865fa052b6d196d56d65fa32a2771de38"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 03 Mar 2022 22:42:29 GMT",
       "tag": "lage_v1.5.1",
       "version": "1.5.1",

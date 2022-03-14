@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "adding changes in github action workflows to accommodate the rename",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "none"
-}

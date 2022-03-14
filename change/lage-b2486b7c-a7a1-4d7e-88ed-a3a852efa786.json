@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Dedupe yarn.lock and switch to stable node types version",
-  "packageName": "lage",
-  "email": "elcraig@microsoft.com",
-  "dependentChangeType": "none"
-}
