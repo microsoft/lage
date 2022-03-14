@@ -1,23 +1,41 @@
----
-home: true
-# heroImage: /hero.png
-heroText: A Beautiful JS Monorepo Task Runner
-tagline: Run all your npm scripts in topological order incrementally with cloud cache
-actionText: Get Started →
-actionLink: /guide/
-features:
-  - title: Works with all workspace implementations
-    details: "The workspace-agnostic task runner will run npm scripts for all workspace implementations out there: lerna, yarn, pnpm, rush"
-  - title: Simple pipeline definition
-    details: With a terse definition language, get going with builds within a few seconds
-  - title: Speedy local incremental builds
-    details: Because building once is painful enough, lage will remember what you've built before and skip steps that it has already performed before
-  - title: Speedy CI build caches
-    details: Based on the `backfill` utility, build output can be cached into the cloud for speedy CI builds as well
-  - title: Scoped task runs
-    details: Easily run npm tasks by specifying a scope of packages
-  - title: Profile the task runners
-    details: Generate a profile of tasks run by lage - import it inside Chrome or Edge to understand which tasks took the longest time
+# Website
 
-footer: MIT Licensed | Copyright © 2019-present Microsoft
----
+This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+
+### Installation
+
+```
+$ yarn
+```
+
+### Local Development
+
+```
+$ yarn start
+```
+
+This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+
+### Build
+
+```
+$ yarn build
+```
+
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
+
+### Deployment
+
+Using SSH:
+
+```
+$ USE_SSH=true yarn deploy
+```
+
+Not using SSH:
+
+```
+$ GIT_USER=<Your GitHub username> yarn deploy
+```
+
+If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.

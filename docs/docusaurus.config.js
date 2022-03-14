@@ -9,7 +9,7 @@ const config = {
   title: 'Lage',
   tagline: 'A Beautiful JS Monorepo Task Runner',
   url: 'https://microsoft.github.io',
-  baseUrl: '/lage/docs-new/',
+  baseUrl: '/lage/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/lage-logo.svg',
@@ -27,7 +27,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/microsoft/lage/docs-new',
+          editUrl: 'https://github.com/microsoft/lage/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
