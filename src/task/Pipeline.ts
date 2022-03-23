@@ -12,6 +12,7 @@ import { getPipelinePackages } from "./getPipelinePackages";
 import { getPackageAndTask, getTargetId } from "./taskId";
 import { WrappedTarget } from "./WrappedTarget";
 import { DistributedTask } from "./DistributedTask";
+import { logger } from "../logger";
 
 export const START_TARGET_ID = "__start";
 
@@ -463,6 +464,7 @@ export class Pipeline {
 
     const nodeMap: PGraphNodeMap = new Map();
     const targetGraph = this.generateTargetGraph();
+    this.context.profiler.setOtherData("targetGraph", targetGraph);
 
     for (const [from, to] of targetGraph) {
       const fromTarget = this.targets.get(from)!;
