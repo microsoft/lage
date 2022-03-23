@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add taskGraph to profileData",
+  "packageName": "lage",
+  "email": "\"ronakjain@microsoft.com\"",
+  "dependentChangeType": "patch"
+}
