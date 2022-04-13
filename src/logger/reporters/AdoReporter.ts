@@ -5,12 +5,13 @@ import { getTaskId } from '@microsoft/task-scheduler';
 
 export class AdoReporter implements Reporter {
 
-  log(entry: LogEntry) {}
+  // not being used since the npm logger is used in its place
+  log(entry: LogEntry) { }
 
   summarize(context: RunContext) {
     const { measures, tasks } = context;
+    const removeColorCodes = new RegExp('\\x1B\[[0-9;]*[A-Za-z]', 'g');
 
-    let packageLogs = '';
     if (measures.failedTasks && measures.failedTasks.length > 0) {
       const failedPackages: { pkg?: string; taskLogs?: string; task: string; }[] = [];
 
@@ -18,11 +19,13 @@ export class AdoReporter implements Reporter {
         const { pkg, task } = failedTask;
         const taskId = getTaskId(pkg, task);
         const taskLogs = tasks.get(taskId)?.logger.getLogs();
+        let packageLogs = '';
 
         if (taskLogs) {
-          packageLogs += `[${pkg} ${task}]`;
+          packageLogs += `[${pkg} ${task}] `;
           for (let i = 0; i < taskLogs.length; i += 1) {
-            packageLogs += taskLogs[i].msg.replace('\n', '');
+            const _logLine = taskLogs[i].msg.replace(removeColorCodes, '').replace('\n', '');
+            packageLogs += `${_logLine} `;
           }
         }
 
@@ -31,6 +34,7 @@ export class AdoReporter implements Reporter {
 
       const logGroup: string[] = [];
       let packagesMessage = `##vso[task.logissue type=error]Your build failed on the following packages => `;
+
       failedPackages.forEach(({ pkg, task, taskLogs }) => {
         packagesMessage += `[${pkg} ${task}], `;
         if (taskLogs) {
