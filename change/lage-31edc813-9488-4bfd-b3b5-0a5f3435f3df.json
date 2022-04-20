@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "0.39.0 -> 0.40.0",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
