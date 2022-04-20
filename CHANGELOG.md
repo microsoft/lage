@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 03 Mar 2022 22:52:17 GMT and should not be manually modified.
+This log was last generated on Wed, 20 Apr 2022 20:26:07 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.40.0
+
+Wed, 20 Apr 2022 20:26:07 GMT
+
+### Minor changes
+
+- 0.39.0 -> 0.40.0 (kchau@microsoft.com)
 
 ## 0.31.2
 
