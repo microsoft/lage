@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 22 Apr 2022 16:41:30 GMT",
+      "tag": "lage_v0.41.0",
+      "version": "0.41.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add ado logger",
+            "author": "cheruiyotbryan@gmail.com",
+            "commit": "54bd1d03b7cb1fc58a4308244b9541609eedafd7",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Apr 2022 20:26:07 GMT",
       "tag": "lage_v0.40.0",
       "version": "0.40.0",

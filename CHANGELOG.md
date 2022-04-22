@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 20 Apr 2022 20:26:07 GMT and should not be manually modified.
+This log was last generated on Fri, 22 Apr 2022 16:41:30 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.41.0
+
+Fri, 22 Apr 2022 16:41:30 GMT
+
+### Minor changes
+
+- add ado logger (cheruiyotbryan@gmail.com)
 
 ## 0.40.0
 

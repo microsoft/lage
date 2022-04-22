@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add ado logger",
-  "packageName": "lage",
-  "email": "cheruiyotbryan@gmail.com",
-  "dependentChangeType": "patch"
-}
