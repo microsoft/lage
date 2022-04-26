@@ -24,13 +24,7 @@ See [migration guide](./migration)
 $ yarn upgrade lage
 ```
 
-## 2. Add `dotenv` as a dependency (for convenience, locally)
-
-```
-$ yarn add -D dotenv
-```
-
-## 3. Add `.env` in your `.gitignore` to make sure not to check those environment variables in
+## 2. Add `.env` in your `.gitignore` to make sure not to check those environment variables in
 
 ```
 $ touch .env
@@ -45,7 +39,7 @@ lib
 dist
 ```
 
-## 4. Generate auth tokens from Azure storage account:
+## 3. Generate auth tokens from Azure storage account:
 
 Prerequisite is to have a working Storage Account with Blob Storage Container created. Note that container name, it'll be needed for Step 5.
 
@@ -57,7 +51,7 @@ Prerequisite is to have a working Storage Account with Blob Storage Container cr
 6. Click "show keys"
 7. Save the "connection string" - this is your **read-write** connection string (alternatively, you can create a read-write SAS connection string)
 
-## 5. Modify the `.env` file with the remote cache connection information
+## 4. Modify the `.env` file with the remote cache connection information
 
 ```
 # .env file contents
@@ -69,7 +63,7 @@ BACKFILL_CACHE_PROVIDER="azure-blob"
 BACKFILL_CACHE_PROVIDER_OPTIONS={"connectionString":"the **read-only** connection string","container":"CONTAINER NAME"}
 ```
 
-## 6. Create a "secret" in the CI system for a Read/Write token
+## 5. Create a "secret" in the CI system for a Read/Write token
 
 Here's an example snippet of Github Action with the correct environment variable set:
 
@@ -87,4 +81,12 @@ Create a secret named "BACKFILL_CACHE_PROVIDER_OPTIONS":
 {"connectionString":"the **read-write** connection string","container":"CONTAINER NAME"}
 ```
 
-> Please note that without that `LAGE_WRITE_REMOTE_CACHE` environment variable, `lage` no longer uploads build caches to the remote server.
+## Notes
+
+### Uploading cache to a remote is *not* the default
+Without the `LAGE_WRITE_REMOTE_CACHE` environment variable, `lage` no longer uploads build caches to the remote server.
+
+### Accessing environment variables
+Lage picks up your `.env` file contents using [`dotenv`](https://www.npmjs.com/package/dotenv) utility under the hood (see [backfill-utils-dotenv implementation](https://github.com/microsoft/backfill/blob/03b0e808d978faebf7be922a3f87d764ad0efce2/packages/utils-dotenv/README.md)).
+
+Need to access environment variables from the `.env` file in your application? You would need to setup a mechanism to inject them. Try using utilities like `dotenv` (for Node.js) or [`env-cmd`](https://www.npmjs.com/package/env-cmd) (for executing commands).
