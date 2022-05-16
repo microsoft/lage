@@ -8,7 +8,7 @@ title: Scoped builds
 
 Scoping a task runner can speed up the process especially if there are distinct clusters of packages that are not related to each other within the repository. `lage` has a `scope` option that allows the task running to proceed up to the packages found that matches the `scope` argument. This is a string matcher based on the name of the packages (not the package path).
 
-> It is important to note that depedendents and dependencies refer to the package & task.
+> It is important to note that dependents and dependencies refer to the package & task.
 
 ## Scoped builds with all its dependents
 

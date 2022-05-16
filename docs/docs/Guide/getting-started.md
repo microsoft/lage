@@ -6,7 +6,7 @@ title: Getting Started
 
 # Getting started
 
-Getting started with `lage` is quite easy! There are 2 ways to do this: automated or manual
+Getting started with `lage` is quite easy! There are 2 ways to do this: automated or manual.
 
 ## Automated
 
