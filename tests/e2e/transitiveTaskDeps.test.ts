@@ -132,7 +132,7 @@ describe("transitive task deps test", () => {
 
     for (const pkg of ["a", "b", "c"]) {
       for (const task of ["transpile", "bundle"]) {
-        const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "completed"));
+        const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "started"));
         if (index > -1) {
           indices[getTargetId(pkg, task)] = index;  
         }
@@ -193,10 +193,9 @@ describe("transitive task deps test", () => {
 
     const indices: { [taskId: string]: number } = {};
 
-
     for (const pkg of ["a", "b", "c"]) {
       for (const task of ["transpile", "bundle"]) {
-        const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "completed"));
+        const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "started"));
         if (index > -1) {
           indices[getTargetId(pkg, task)] = index;  
         }
