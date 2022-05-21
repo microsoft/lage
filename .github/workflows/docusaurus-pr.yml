@@ -19,4 +19,4 @@ jobs:
         working-directory: docs
         run: |
           yarn install --frozen-lockfile
-          yarn docs:build
+          yarn build
