@@ -1,9 +1,6 @@
 name: Dependabot Workflow
 on:
-  pull_request_target
-  
-permissions:
-  # down scope as necessary via https://docs.github.com/en/actions/reference/authentication-in-a-workflow#modifying-the-permissions-for-the-github_token
+  pull_request_target:
 
 jobs:
   create-change-file:
