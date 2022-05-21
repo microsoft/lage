@@ -1,8 +1,0 @@
-{
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "postUpgradeTasks": {
-    "commands": ["beachball --type patch --message \"renovate bump\""],
-    "fileFilters": ["change/*.json"]
-  },
-  "assignees": ["kenotron"]
-}
