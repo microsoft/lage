@@ -6,11 +6,11 @@ permissions:
   # down scope as necessary via https://docs.github.com/en/actions/reference/authentication-in-a-workflow#modifying-the-permissions-for-the-github_token
 
 jobs:
-  do-stuff:
+  create-change-file:
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
