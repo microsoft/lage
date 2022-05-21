@@ -1,6 +1,6 @@
 name: Dependabot Workflow
 on:
-  pull_request_target:
+  pull_request_target
 
 jobs:
   create-change-file:
