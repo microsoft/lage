@@ -20,3 +20,7 @@ jobs:
         run: |
           yarn install --frozen-lockfile
           yarn build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: docs
+          path: docs/build/**
