@@ -21,6 +21,7 @@ jobs:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
       - name: create change file
         run: |
+          yarn
           yarn change --type patch --message "Dependabot bumps dependencies: ${{steps.metadata.outputs.dependency-names}}"
       - name: push changes back into PR
         run: git push
