@@ -8,6 +8,25 @@ on:
     branches: [master, stable]
 
 jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.repo_pat }}
+      - run: |
+          git config user.email "nobody@users.noreply.github.com"
+          git config user.name "Dependabot"
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v1.1.1
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: create change file
+        run: yarn change --type "patch" --message "Dependabot bumps dependencies: ${{steps.metadata.outputs.dependency-names}}"
+      - name: push changes back into PR
+        run: git push
   build:
     runs-on: ubuntu-latest
 
