@@ -8,9 +8,8 @@ module.exports = {
     'decks/**',
     'docs/**',
     'jasmine.json',
-    'jest.config.js',
-    'renovate.json',
-    'tests/**',
+    'packages/*/jest.config.js',
+    'packages/*/tests/**',
     // This one is especially important (otherwise dependabot would be blocked by change file requirements)
     'yarn.lock',
   ],
