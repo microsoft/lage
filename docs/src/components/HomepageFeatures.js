@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import styles from './HomepageFeatures.module.css';
+import "../css/tail.css";
 
 const FeatureList = [
   {
@@ -62,12 +62,12 @@ const FeatureList = [
 function Feature({Svg, title, description}) {
   return (
     <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} alt={title} />
+      <div class="items-center">
+        <Svg class="fill-blue-300 h-20 w-20 flex justify-center mx-auto pt-3" alt={title} />
       </div>
       <div className="text--center padding-horiz--md">
-        <h3>{title}</h3>
-        <p>{description}</p>
+        <h3 class="font-bold text-black text-2xl py-2">{title}</h3>
+        <p class="text-black">{description}</p>
       </div>
     </div>
   );
@@ -75,7 +75,7 @@ function Feature({Svg, title, description}) {
 
 export default function HomepageFeatures() {
   return (
-    <section className={styles.features}>
+    <section>
       <div className="container">
         <div className="row">
           {FeatureList.map((props, idx) => (
