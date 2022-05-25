@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 25 May 2022 20:06:36 GMT",
+      "tag": "lage_v1.5.2",
+      "version": "1.5.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "lage",
+            "comment": "Moving to a monorepo. This will be a test publish",
+            "commit": "c0d69c29e1ac1f315e1f91139ec1c4bde15561dd"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 14 Mar 2022 22:04:24 GMT",
       "tag": "lage_v1.5.1",
       "version": "1.5.1",

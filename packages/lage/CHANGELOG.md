@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 03 Mar 2022 22:42:29 GMT and should not be manually modified.
+This log was last generated on Wed, 25 May 2022 20:06:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.5.2
+
+Wed, 25 May 2022 20:06:36 GMT
+
+### Patches
+
+- Moving to a monorepo. This will be a test publish (ken@gizzar.com)
 
 ## 1.5.1
 

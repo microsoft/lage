@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Moving to a monorepo. This will be a test publish",
-  "packageName": "lage",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
