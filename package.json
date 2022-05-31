@@ -3,7 +3,8 @@
   "workspaces": {
     "packages": [
       "packages/*",
-      "docs"
+      "docs",
+      "docs-beta"
     ]
   },
   "scripts": {
@@ -15,7 +16,9 @@
     "test": "lage test --scope !@lage/docs --scope lage --verbose",
     "docs": "yarn workspace @lage/docs start",
     "docs:build": "yarn workspace @lage/docs build",
-    "gh-pages": "gh-pages"
+    "gh-pages": "gh-pages",
+    "docs-beta": "yarn workspace @lage/docs start",
+    "docs-beta:build": "yarn workspace @lage/docs build"
   },
   "devDependencies": {
     "beachball": "^2.16.0",
