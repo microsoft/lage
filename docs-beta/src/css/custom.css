@@ -1,28 +1,36 @@
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* You can override the default Infima variables here. */
-:root {
-  --ifm-color-primary: #a7cff7;
-  --ifm-color-primary-dark: #85c0f4;
-  --ifm-color-primary-darker: #5cb1f0;
-  --ifm-color-primary-darkest: #00a2ed;
-  --ifm-color-primary-light: #c6dffa;
-  --ifm-color-primary-lighter: #e3effc;
-  --ifm-color-primary-lightest: #ffffff;
-  --ifm-code-font-size: 95%;
-}
-
-.docusaurus-highlight-code-line {
-  background-color: rgba(0, 0, 0, 0.1);
-  display: block;
-  margin: 0 calc(-1 * var(--ifm-pre-padding));
-  padding: 0 var(--ifm-pre-padding);
-}
-
-html[data-theme='dark'] .docusaurus-highlight-code-line {
-  background-color: rgba(0, 0, 0, 0.3);
+@layer components {
+    .bodyBGColor {
+        @apply bg-primary;
+    }
+    .headerTitle {
+        @apply text-secondary text-6xl px-12 pb-4 pt-12;
+    }
+    .headerSubtitle {
+        @apply text-secondary text-3xl px-12 mb-4;
+    }
+    .button {
+        @apply border-transparent inline-block bg-secondary hover:bg-accent hover:text-secondary hover:no-underline text-primary text-lg font-bold py-2 px-4 rounded;
+    }
+    .point {
+        @apply font-bold text-secondary text-4xl pt-12 px-12;
+    }
+    .featureText {
+        @apply text-secondary text-lg py-2;
+    }
+    .para {
+        @apply text-secondary whitespace-pre-wrap pt-4 text-lg px-12;
+    }
+    .fullLengthPara {
+        @apply text-secondary whitespace-pre-wrap py-4 px-12;
+    }
+    .footerTitle {
+        @apply font-bold text-secondary text-4xl px-12 py-8;
+    }
+    .customerLogo {
+        @apply inline-block;
+    }
 }

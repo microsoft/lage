@@ -59,20 +59,6 @@ const config = {
           },
         ],
       },
-      footer: {
-        style: 'dark',
-        links: [
-          {
-            title: 'Contributing',
-            items: [
-              {
-                label: 'Contributing to Lage',
-                to: '/docs/Contributing/contribution-guide',
-              },
-            ],
-          }
-        ]
-      },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
