@@ -1,5 +1,4 @@
 import React from 'react';
-import "../css/tailwind-styles.css"; 
 
 export const TestimonialList=[
   {
