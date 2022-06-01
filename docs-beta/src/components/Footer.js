@@ -1,6 +1,4 @@
-import React from 'react';
 import Link from '@docusaurus/Link';
-import "../css/tailwind-styles.css"; 
 import SideBySide from './SideBySide';
 import TwoColumns from './TwoColumns';
 import Tools from './Tools';
