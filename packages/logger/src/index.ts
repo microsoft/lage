@@ -1,14 +1,8 @@
 import { Logger } from "./Logger";
 import { TaskLogger } from "./TaskLogger";
 
-let logger: Logger;
-
-export function getGlobalLogger() {
-  if (!logger) {
-    logger = new Logger();
-  }
-
-  return logger;
+export default function createLogger() {
+  return new Logger();
 }
 
 export function createTaskLogger(pkg: string, task: string) {

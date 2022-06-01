@@ -4,8 +4,7 @@ import { LogLevel } from "./interfaces/LogLevel";
 import { Reporter } from "./interfaces/Reporter";
 
 export class Logger {
-  static reporters: Reporter[] = [];
-
+  reporters: Reporter[] = [];
   logs: LogEntry[] = [];
 
   log(level: LogLevel, msg: string, data?: LogStructuredData) {
@@ -18,7 +17,7 @@ export class Logger {
 
     this.logs.push(entry);
 
-    for (const reporter of Logger.reporters) {
+    for (const reporter of this.reporters) {
       reporter.log(entry);
     }
   }
@@ -41,5 +40,9 @@ export class Logger {
 
   silly(msg: string, data?: LogStructuredData) {
     this.log(LogLevel.silly, msg, data);
+  }
+
+  addReporter(reporter: Reporter) {
+    this.reporters.push(reporter);
   }
 }
