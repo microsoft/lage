@@ -8,9 +8,6 @@
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "bin": {
-    "lage": "bin/lage.js"
-  },
   "scripts": {
     "build": "tsc",
     "start": "tsc -w --preserveWatchOutput",
