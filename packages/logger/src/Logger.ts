@@ -1,12 +1,10 @@
-import { LogEntry, LogStructuredData } from "./LogEntry";
-import { LogLevel } from "./LogLevel";
-import { Reporter } from "./reporters/Reporter";
-import { NpmLogReporter } from "./reporters/NpmLogReporter";
+import { LogStructuredData } from "./interfaces/LogStructuredData";
+import { LogEntry } from "./interfaces/LogEntry";
+import { LogLevel } from "./interfaces/LogLevel";
+import { Reporter } from "./interfaces/Reporter";
 
 export class Logger {
-  static reporters: Reporter[] = [
-    new NpmLogReporter({ logLevel: LogLevel.info }),
-  ];
+  static reporters: Reporter[] = [];
 
   logs: LogEntry[] = [];
 

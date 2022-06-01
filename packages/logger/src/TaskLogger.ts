@@ -1,5 +1,5 @@
 import { Logger } from "./Logger";
-import { TaskData } from "./LogEntry";
+import { TaskData } from "./interfaces/TaskData";
 
 export class TaskLogger {
   logger: Logger;

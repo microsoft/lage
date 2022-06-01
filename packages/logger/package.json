@@ -16,20 +16,9 @@
     "start": "tsc -w --preserveWatchOutput",
     "test": "jest"
   },
-  "dependencies": {
-    "@xmldom/xmldom": "^0.8.0",
-    "chalk": "^4.0.0",
-    "cosmiconfig": "^6.0.0",
-    "execa": "^4.0.3",
-    "npmlog": "^4.1.2",
-    "workspace-tools": "^0.18.2"
-  },
   "devDependencies": {
-    "@types/chalk": "^2.2.0",
-    "@types/cosmiconfig": "^6.0.0",
     "@types/jest": "^27.0.1",
     "@types/node": "^12.0.0",
-    "@types/npmlog": "^4.1.2",
     "jest": "^27.2.0",
     "ts-jest": "^27.0.5",
     "typescript": "^4.4.4"
