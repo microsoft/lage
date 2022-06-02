@@ -1,5 +1,5 @@
 {
-  "name": "test-website",
+  "name": "@lage-run/docs-beta",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -37,7 +37,4 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "docusaurus": "^1.14.7"
-  }
 }
