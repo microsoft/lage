@@ -1,13 +1,21 @@
+function withOpacityValue(variable) {
+  return ({ opacityValue }) => {
+    if (opacityValue === undefined) {
+      return `rgb(var(${variable}))`
+    }
+    return `rgb(var(${variable}) / ${opacityValue})`
+  }
+}
 module.exports = {
     content: ["./src/pages/*.js","./src/components/*.js"],
     theme: {
       extend: {
         colors: {
-          primary: "#000000", 
-          secondary: "#ffffff",
-          tertiary: "#d4d4d8",
-          brand: "#00897b",
-          accent: "#ea580c",
+          'primary': withOpacityValue('--color-primary'),
+          'secondary': withOpacityValue('--color-secondary'),
+          'tertiary': withOpacityValue('--color-tertiary'),
+          'brand': withOpacityValue('--color-brand'),
+          'accent': withOpacityValue('--color-accent'),
         }
       }, 
     },

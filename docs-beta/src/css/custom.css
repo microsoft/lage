@@ -2,35 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-    .bodyBGColor {
-        @apply bg-primary;
-    }
-    .headerTitle {
-        @apply text-secondary text-6xl px-12 pb-4 pt-12;
-    }
-    .headerSubtitle {
-        @apply text-secondary text-3xl px-12 mb-4;
-    }
-    .button {
-        @apply border-transparent inline-block bg-secondary hover:bg-accent hover:text-secondary hover:no-underline text-primary text-lg font-bold py-2 px-4 rounded;
-    }
-    .point {
-        @apply font-bold text-secondary text-4xl pt-12 px-12;
-    }
-    .featureText {
-        @apply text-secondary text-lg py-2;
-    }
-    .para {
-        @apply text-secondary whitespace-pre-wrap pt-4 text-lg px-12;
-    }
-    .fullLengthPara {
-        @apply text-secondary whitespace-pre-wrap py-4 px-12;
-    }
-    .footerTitle {
-        @apply font-bold text-secondary text-4xl px-12 py-8;
-    }
-    .customerLogo {
-        @apply inline-block;
-    }
+.theme-dark {
+    --color-primary: 0 0 0;
+    --color-secondary: 255 255 255;
+    --color-tertiary: 212 212 216;
+    --color-brand: 13 148 136;
+    --color-accent: 234 88 12;
 }

@@ -1,26 +1,28 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
+import "../css/tailwind-styles.css"; 
 import SideBySide from './SideBySide';
 import TwoColumns from './TwoColumns';
+import { styles } from "./shared-styles.js"
 
 export default function Header() {
     return (
-        <header className="bg-brand flex h-screen justify-center items-center">
+        <header className="theme-dark bg-brand flex h-screen justify-center items-center">
             <TwoColumns>
                 <div>
-                    <p className="headerTitle">Never rebuild your code again.</p>
-                    <p className="headerSubtitle">Lage is a beautiful JS monorepo task runner.</p>
+                    <p className={styles.headerTitle}>Never rebuild your code again.</p>
+                    <p className={styles.headerSubtitle}>Lage is a beautiful JS monorepo task runner.</p>
                     <SideBySide>
-                        <Link className="button" to="/docs/Introducing Lage/Overview">Get Started</Link>
-                        <Link className="button" to="/docs/Introducing Lage/Overview">Try the Demo</Link>
+                        <Link className={styles.button} to="/docs/Introducing Lage/Overview">Get Started</Link>
+                        <Link className={styles.button} to="/docs/Introducing Lage/Overview">Try the Demo</Link>
                     </SideBySide>
 
-                    <p className="fullLengthPara mt-12"> Be one of the cool kids using Lage.</p>
+                    <p className={styles.fullLengthPara}> Be one of the cool kids using Lage.</p>
 
                     <SideBySide>
-                        <img className="customerLogo" src="http://placekitten.com/75/75"/>
-                        <img className="customerLogo" src="http://placekitten.com/75/75"/>
-                        <img className="customerLogo" src="http://placekitten.com/75/75"/>
+                        <img className={styles.customerLogo} src="http://placekitten.com/75/75"/>
+                        <img className={styles.customerLogo} src="http://placekitten.com/75/75"/>
+                        <img className={styles.customerLogo} src="http://placekitten.com/75/75"/>
                     </SideBySide>
                 </div>
                 <div>

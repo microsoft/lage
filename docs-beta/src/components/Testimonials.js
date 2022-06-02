@@ -1,19 +1,6 @@
 import React from 'react';
-
-export const TestimonialList=[
-  {
-    testimonial: "This is my testimonial. Lage is awesome awesome awesome awesome awesome awesome awesome awesome awesome awesome awesome awesome AWESOME",
-    link: "docs/docs/Introducing Lage/Overview.md"
-  },
-  {
-    testimonial: "This is my testimonial. Lage is awesome awesome awesome awesome awesome awesome awesome awesome awesome awesome awesome awesome AWESOME",
-    link: "docs/docs/Introducing Lage/Overview.md"
-  },
-  {
-    testimonial: "This is my testimonial. Lage is awesome awesome awesome awesome awesome awesome awesome awesome awesome awesome awesome awesome AWESOME",
-    link: "docs/docs/Introducing Lage/Overview.md"
-  },
-];
+import "../css/tailwind-styles.css"; 
+import { TestimonialList } from './data/TestimonialList';
 
 function Testimonial({testimonial, link}) {
   return (

@@ -1,19 +1,7 @@
 import React from 'react';
-
-export const FeatureList=[
-  {
-    title: 'Simple pipeline definition',
-    Svg: require('../../static/img/icon-clock-time.svg').default,
-  },
-  {
-    title: 'Speedy local incremental builds',
-    Svg: require('../../static/img/icon-up.svg').default,
-  },
-  {
-    title: 'Scoped task runs',
-    Svg: require('../../static/img/icon-hierarchy.svg').default,
-  },
-];
+import "../css/tailwind-styles.css"; 
+import { styles } from "./shared-styles.js"
+import { FeatureList } from './data/FeatureList';
 
 function Feature({Svg, title}) {
   return (
@@ -22,7 +10,7 @@ function Feature({Svg, title}) {
         <Svg className="fill-blue-300 h-16 w-16 flex justify-center mx-auto pt-3" alt={title} />
       </div>
       <div className="text--center padding-horiz--md">
-        <p className="featureText">{title}</p>
+        <p className={styles.featureText}>{title}</p>
       </div>
     </div>
   );
