@@ -1,10 +1,10 @@
 import { Writable } from "stream";
-import { TaskLogger } from "./TaskLogger";
+import { Logger } from "./Logger";
 
-export class TaskLogWritable extends Writable {
+export class LogWritable extends Writable {
   private buffer: string = "";
 
-  constructor(private taskLogger: TaskLogger) {
+  constructor(private logger: Logger) {
     super();
   }
 
@@ -24,7 +24,7 @@ export class TaskLogWritable extends Writable {
             .toString()
             .replace(/^(\r\n|\n|\r)|(\r\n|\n|\r)$/g, "")
             .trimRight();
-        this.taskLogger.verbose(this.buffer);
+        this.logger.verbose(this.buffer);
         this.buffer = "";
         prev = curr;
       }

@@ -1,13 +1,14 @@
-import { LogStructuredData } from "./interfaces/LogStructuredData";
-import { LogEntry } from "./interfaces/LogEntry";
-import { LogLevel } from "./interfaces/LogLevel";
-import { Reporter } from "./interfaces/Reporter";
+import type { LogStructuredData } from "./interfaces/LogStructuredData";
+import type { LogEntry } from "./interfaces/LogEntry";
+import type { Reporter } from "./interfaces/Reporter";
 
-export class Logger {
+import { LogLevel } from "./interfaces/LogLevel";
+
+export class Logger<TLogStructuredData extends LogStructuredData = LogStructuredData> {
   reporters: Reporter[] = [];
   logs: LogEntry[] = [];
 
-  log(level: LogLevel, msg: string, data?: LogStructuredData) {
+  log(level: LogLevel, msg: string, data?: TLogStructuredData) {
     const entry = {
       timestamp: Date.now(),
       level,
@@ -22,23 +23,23 @@ export class Logger {
     }
   }
 
-  info(msg: string, data?: LogStructuredData) {
+  info(msg: string, data?: TLogStructuredData) {
     this.log(LogLevel.info, msg, data);
   }
 
-  warn(msg: string, data?: LogStructuredData) {
+  warn(msg: string, data?: TLogStructuredData) {
     this.log(LogLevel.warn, msg, data);
   }
 
-  error(msg: string, data?: LogStructuredData) {
+  error(msg: string, data?: TLogStructuredData) {
     this.log(LogLevel.error, msg, data);
   }
 
-  verbose(msg: string, data?: LogStructuredData) {
+  verbose(msg: string, data?: TLogStructuredData) {
     this.log(LogLevel.verbose, msg, data);
   }
 
-  silly(msg: string, data?: LogStructuredData) {
+  silly(msg: string, data?: TLogStructuredData) {
     this.log(LogLevel.silly, msg, data);
   }
 

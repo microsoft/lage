@@ -1,9 +1,9 @@
-import createLogger, { LogEntry, LogLevel, Reporter } from "../src/index";
+import createLogger, { LogEntry, LogLevel, LogStructuredData, Reporter } from "../src/index";
 
 describe("logger", () => {
-  class TestReporter implements Reporter {
+  class TestReporter<T extends LogStructuredData = LogStructuredData> implements Reporter {
     logLevel = LogLevel.warn;
-    entries: LogEntry[] = [];
+    entries: LogEntry<T>[] = [];
 
     log(entry) {
       this.entries.push(entry);
@@ -40,5 +40,33 @@ describe("logger", () => {
     expect(reporter2.entries[0].level).toBe(LogLevel.info);
     expect(reporter2.entries[0].data).toBeUndefined();
     expect(reporter2.entries[0].msg).toBe("info");
+  });
+
+  it("should be able to report on structured data", () => {
+    const logger = createLogger();
+    
+    const reporter = new TestReporter();
+    
+    logger.addReporter(reporter);
+    logger.info("info", { foo: "bar"});
+    
+    expect(reporter.entries[0].level).toBe(LogLevel.info);
+    expect(reporter.entries[0].data).not.toBeUndefined();
+    expect(reporter.entries[0].data.foo).toBe("bar");
+    expect(reporter.entries[0].msg).toBe("info");
+  });
+
+  it("should allow creation of a logger with specific structured data shape", () => {
+    type MyStructuredData = { somedata: { foo: string } };
+    const specificLogger = createLogger<MyStructuredData>();
+    const reporter = new TestReporter<MyStructuredData>();
+
+    specificLogger.addReporter(reporter);
+    specificLogger.info("info", { somedata: { foo: "bar" } });
+
+    expect(reporter.entries[0].level).toBe(LogLevel.info);
+    expect(reporter.entries[0].data).not.toBeUndefined();
+    expect(reporter.entries[0].data.somedata.foo).toBe("bar");
+    expect(reporter.entries[0].msg).toBe("info");
   });
 });
