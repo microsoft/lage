@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "lage v2: adds a logger package",
+  "packageName": "@lage-run/logger",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
