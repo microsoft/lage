@@ -1,5 +1,4 @@
 import React from 'react';
-import "../css/tailwind-styles.css"; 
 import { TestimonialList } from '../pages/data/TestimonialList';
 
 function Testimonial({testimonial, link}) {

@@ -1,9 +1,8 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
-import "../css/tailwind-styles.css"; 
 import SideBySide from './SideBySide';
 import TwoColumns from './TwoColumns';
-import { styles } from "./shared-styles.js"
+import { styles } from "./shared-styles"
 
 export default function Header() {
     return (
@@ -13,8 +12,8 @@ export default function Header() {
                     <p className={styles.headerTitle}>Never rebuild your code again.</p>
                     <p className={styles.headerSubtitle}>Lage is a beautiful JS monorepo task runner.</p>
                     <SideBySide>
-                        <Link as="button" className={styles.button} to="/docs/Introducing Lage/Overview">Get Started</Link>
-                        <Link as="button" className={styles.button} to="/docs/Introducing Lage/Overview">Try the Demo</Link>
+                        <Link className={styles.button} to="/docs/Introducing Lage/Overview">Get Started</Link>
+                        <Link className={styles.button} to="/docs/Introducing Lage/Overview">Try the Demo</Link>
                     </SideBySide>
 
                     <p className={styles.fullLengthPara}> Be one of the cool kids using Lage.</p>

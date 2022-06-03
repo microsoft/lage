@@ -1,10 +1,9 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
-import "../css/tailwind-styles.css"; 
 import SideBySide from './SideBySide';
 import TwoColumns from './TwoColumns';
 import Tools from './Tools';
-import { styles } from "./shared-styles.js"
+import { styles } from "./shared-styles"
 
 export default function Footer() {
   return (
