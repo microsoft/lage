@@ -1,7 +1,7 @@
 import React from 'react';
 import "../css/tailwind-styles.css"; 
 import { styles } from "./shared-styles.js"
-import { FeatureList } from './data/FeatureList';
+import { FeatureList } from '../pages/data/FeatureList';
 
 function Feature({Svg, title}) {
   return (

@@ -10,6 +10,7 @@ import '../css/tailwind-styles.css';
 import Testimonials from '../components/Testimonials';
 import Table from '../components/Table';
 import { styles } from "../components/shared-styles.js"
+import { tableContents } from "./data/TableContents";
 
 export default function Home() {
   const {siteConfig}=useDocusaurusContext();  
@@ -47,7 +48,7 @@ export default function Home() {
         <p className={styles.point}>What's a monorepo?</p>
         <p className ={styles.para}>Monorepos are beautiful. That's all we need to know. Could I BE loving monorepos more? Monorepos are beautiful. That's all we need to know. Could I BE loving monorepos more?  Monorepos are beautiful. That's all we need to know. Could I BE loving monorepos more?  Monorepos are beautiful. That's all we need to know. Could I BE loving monorepos more? Monorepos are beautiful. That's all we need to know. Could I BE loving monorepos more?  </p>
         <div className="flex pt-12 justify-center">
-          <Table/>
+          <Table tableContents={tableContents}/>
         </div>
 
         <p className={styles.point}>Precious time saved by Lage since 2019</p>

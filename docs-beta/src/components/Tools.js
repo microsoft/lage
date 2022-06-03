@@ -1,6 +1,6 @@
 import React from 'react';
 import "../css/tailwind-styles.css"; 
-import { ToolList } from './data/ToolList';
+import { ToolList } from '../pages/data/ToolList';
 
 function Tool({Svg, title, description}) {
   return (
