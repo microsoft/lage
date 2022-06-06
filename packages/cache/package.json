@@ -1,0 +1,28 @@
+{
+  "name": "@lage-run/cache",
+  "version": "0.1.0",
+  "description": "Caching for Lage",
+  "repository": {
+    "url": "https://github.com/microsoft/lage"
+  },
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc -w --preserveWatchOutput",
+    "test": "jest"
+  },
+  "dependencies": {
+    "backfill": "^6.1.18",
+    "workspace-tools": "^0.18.2",
+    "@lage-run/logger": ">=0.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "@types/node": "^12.0.0",
+    "jest": "^27.2.0",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.4"
+  }
+}

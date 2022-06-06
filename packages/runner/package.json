@@ -1,0 +1,32 @@
+{
+  "name": "@lage-run/runner",
+  "version": "0.1.0",
+  "description": "Graph runner for Lage",
+  "repository": {
+    "url": "https://github.com/microsoft/lage"
+  },
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc -w --preserveWatchOutput",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@xmldom/xmldom": "^0.8.0",
+    "abort-controller": "^3.0.0",
+    "chalk": "^4.0.0",
+    "npmlog": "^4.1.2",
+    "p-profiler": "^0.2.1",
+    "workspace-tools": "^0.18.2",
+    "@lage-run/logger": ">=0.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "@types/node": "^12.0.0",
+    "jest": "^27.2.0",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.4"
+  }
+}
