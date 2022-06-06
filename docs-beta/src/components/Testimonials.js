@@ -18,7 +18,7 @@ function Testimonial({testimonial, link}) {
 
 export default function Testimonials() {
   return (
-    <div className="mx-12 mb-12 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gaps-12">
+    <div className="mx-12 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gaps-12">
       {TestimonialList.map((props, idx) => (
         <Testimonial key={idx} {...props} />
       ))}

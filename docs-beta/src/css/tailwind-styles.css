@@ -520,10 +520,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: -0.25rem;
 }
 
-.mb-12 {
-  margin-bottom: 3rem;
-}
-
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -691,11 +687,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(var(--color-secondary) / var(--tw-bg-opacity));
 }
 
-.bg-accent {
-  --tw-bg-opacity: 1;
-  background-color: rgb(var(--color-accent) / var(--tw-bg-opacity));
-}
-
 .fill-blue-300 {
   fill: #93c5fd;
 }
@@ -817,11 +808,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-gray-700 {
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity));
-}
-
-.no-underline {
-  -webkit-text-decoration-line: none;
-          text-decoration-line: none;
 }
 
 .shadow-md {
