@@ -1,0 +1,20 @@
+{
+  "name": "@lage-run/logger",
+  "entries": [
+    {
+      "date": "Mon, 06 Jun 2022 22:25:42 GMT",
+      "tag": "@lage-run/logger_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "major": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/logger",
+            "comment": "lage v2: adds a logger package",
+            "commit": "ff2bf4cf555dcd1671823f7e1a207edb2457bdd7"
+          }
+        ]
+      }
+    }
+  ]
+}
