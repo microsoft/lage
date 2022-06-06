@@ -8,12 +8,12 @@
     ]
   },
   "scripts": {
-    "build": "lage build --scope=!@lage/docs --scope lage --verbose",
+    "build": "lage build --scope=!@lage/docs --scope=lage --scope=@lage-run/* --scope=!@lage-run/docs-beta --verbose",
     "change": "beachball change",
     "checkchange": "beachball check",
     "release": "beachball publish -y --tag unstable",
-    "start": "lage start --scope=!@lage/docs --scope lage --verbose",
-    "test": "lage test --scope !@lage/docs --scope lage --verbose",
+    "start": "lage start --scope=!@lage/docs --scope=lage --scope=@lage-run/* --scope=!@lage-run/docs-beta --verbose",
+    "test": "lage test --scope !@lage/docs --scope=lage --scope=@lage-run/* --scope=!@lage-run/docs-beta --verbose",
     "docs": "yarn workspace @lage/docs start",
     "docs:build": "yarn workspace @lage/docs build",
     "gh-pages": "gh-pages",
