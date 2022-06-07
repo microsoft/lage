@@ -8,7 +8,8 @@ function withOpacityValue(variable) {
 }
 module.exports = {
     darkMode: 'class',
-    content: ["./src/pages/*.js","./src/components/*.js", "./src/css/*.js"],
+    content: ["./src/pages/*.tsx","./src/components/*.tsx", "./src/css/*.tsx",
+              "./src/pages/*.ts","./src/components/*.ts", "./src/css/*.ts",],
     theme: {
       extend: {
         fontFamily: {

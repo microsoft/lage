@@ -1,7 +1,7 @@
 export const styles = {
   bodyBGColor: "bg-primary",
   headerTitle:
-    "font-londrina font-extrabold text-transparent text-6xl px-12 pb-4 pt-12 bg-clip-text bg-gradient-to-b from-blue-400 to-point",
+    "font-londrina font-extrabold text-6xl px-12 pb-4 pt-12 bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-point",
   headerSubtitle: "font-bahnschrift text-primary text-3xl px-12 mb-4",
   button:
     "font-bahnschrift text-white hover:text-button border-white bg-transparent inline-block py-2 px-4 rounded hover:no-underline font-bold border-2 text-lg",
