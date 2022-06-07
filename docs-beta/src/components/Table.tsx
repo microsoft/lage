@@ -1,5 +1,4 @@
 import React from 'react';
-import { styles } from "../css/shared-styles";
 
 export default function Table(props) {
     const tableContents = props.tableContents;
