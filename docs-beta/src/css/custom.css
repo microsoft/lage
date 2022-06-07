@@ -5,11 +5,11 @@
 @layer base {
     @font-face {
         font-family: "Londrina Solid";
-        src: "./fonts/LondrinaSolid.ttf";
+        src: url(./fonts/LondrinaSolid.ttf) format('truetype');
     },
     @font-face {
         font-family: "Bahnschrift";
-        src: "./fonts/Bahnschrift.ttf";
+        src: url(./fonts/Bahnschrift.ttf) format('truetype');
     }
 }
  

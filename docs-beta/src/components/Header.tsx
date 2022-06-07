@@ -23,14 +23,6 @@ export default function Header() {
               Try the Demo
             </Link>
           </SideBySide>
-
-          <p className={styles.fullLengthPara}> Build fast like these teams:</p>
-
-          <SideBySide>
-            <img className={styles.customerLogo} src="img/Teams.jpg" />
-            <img className={styles.customerLogo} src="img/Loop.png" />
-            <img className={styles.customerLogo} src="img/Office.jpg" />
-          </SideBySide>
         </div>
         <div>
           <img className="mx-auto w-3/4 h-3/4 px-3 md:w-full lg:w-full md:h-full lg:h-full" src="img/placeholder.png" />
