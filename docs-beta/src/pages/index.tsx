@@ -4,7 +4,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import TwoColumns from "../components/TwoColumns";
-import "../css/tailwind-styles.css";
+import "../../static/tailwind/tailwind-styles.css";
 import { Highlight } from "../components/Highlight";
 
 export default function Home() {

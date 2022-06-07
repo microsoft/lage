@@ -12,7 +12,7 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "build-css": "tailwindcss -i src/css/custom.css -o src/css/tailwind-styles.css",
+    "build-css": "tailwindcss -i src/css/custom.css -o static/tailwind/tailwind-styles.css",
     "test": "jest"
   },
   "dependencies": {
