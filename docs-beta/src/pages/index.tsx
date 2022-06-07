@@ -5,7 +5,6 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import TwoColumns from "../components/TwoColumns";
 import "../css/tailwind-styles.css";
-import { styles } from "../css/shared-styles";
 import { Highlight } from "../components/Highlight";
 
 export default function Home() {
@@ -19,8 +18,8 @@ export default function Home() {
             <img className="mx-auto mt-3 px-12" src="img/placeholder.png" />
           </div>
           <div className="text-right justify-end">
-            <h1 className={styles.point}>Speeding up your repo takes no time</h1>
-            <p className={styles.para}>
+            <h1 className="font-londrina text-point font-bold text-6xl pt-12 px-12">Speeding up your repo takes no time</h1>
+            <p className="font-bahnschrift text-primary whitespace-pre-wrap pt-4 text-lg px-12">
               Lage is simple to setup and works everywhere. It just takes a minute, seriously!
             </p>
             <Highlight toLeft={false} content="Use one of our clouds, or bring your own!" />
@@ -29,8 +28,8 @@ export default function Home() {
 
         <TwoColumns>
            <div className="text-left">
-            <h1 className={styles.point}>Seriously, never build more than once</h1>
-            <p className={styles.para}>
+            <h1 className="font-londrina text-point font-bold text-6xl pt-12 px-12">Seriously, never build more than once</h1>
+            <p className="font-bahnschrift text-primary whitespace-pre-wrap pt-4 text-lg px-12">
               Building once is painful enough! Lage will remember what is done before and skip any work that is not
               needed. Lage even skips the work based on your changes… really!
             </p>
@@ -46,8 +45,8 @@ export default function Home() {
             <img className="mx-auto mt-3 px-12" src="img/placeholder.png" />
           </div>
           <div className="text-right justify-end">
-            <h1 className={styles.point}>Discover what is slowing you down</h1>
-            <p className={styles.para}>
+            <h1 className="font-londrina text-point font-bold text-6xl pt-12 px-12">Discover what is slowing you down</h1>
+            <p className="font-bahnschrift text-primary whitespace-pre-wrap pt-4 text-lg px-12">
               With the built-in profiler, Lage will let you see exactly where the bottlenecks are. Yes, you can be the
               hero of your team.
             </p>

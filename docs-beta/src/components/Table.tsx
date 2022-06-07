@@ -7,17 +7,17 @@ export default function Table(props) {
         <table className="table-fixed">
             <thead className="sticky top-0">
                 <tr>
-                    <th className={styles.table}/>
+                    <th className="bg-primary font-bahnschrift text-black whitespace-pre-wrap pt-4 text-base px-12"/>
                     {tableContents.map((item) =>
-                        <th className={styles.table}>{item.name}</th>
+                        <th className="bg-primary font-bahnschrift text-black whitespace-pre-wrap pt-4 text-base px-12">{item.name}</th>
                     )}
                 </tr>
             </thead>
             <tbody>
                  {Object.keys(tableContents[0].capabilities).map((capability) =>
-                    <tr><td className={styles.table}>{capability}</td>
+                    <tr><td className="bg-primary font-bahnschrift text-black whitespace-pre-wrap pt-4 text-base px-12">{capability}</td>
                     {tableContents.map((item) =>
-                        <th className={styles.table}>{item.capabilities[capability]}</th>
+                        <th className="bg-primary font-bahnschrift text-black whitespace-pre-wrap pt-4 text-base px-12">{item.capabilities[capability]}</th>
                     )}</tr>
                 )}
             </tbody>
