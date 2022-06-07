@@ -1,5 +1,4 @@
 import React from 'react';
-import "../css/tailwind-styles.css"; 
 
 export const Highlight=(props) => {
     const highlightStyle=`flex items-center w-full h-20 bg-gray-300 my-36 ${props.toLeft ? 'rounded-r-full justify-end' : 'rounded-l-full justify-start'}`;

@@ -1,6 +1,5 @@
 import React from 'react';
-import "../css/tailwind-styles.css"; 
-import { styles } from "../css/shared-styles.js";
+import { styles } from "../css/shared-styles";
 
 export default function Table(props) {
     const tableContents = props.tableContents;

@@ -1,5 +1,4 @@
 import React from 'react';
-import "../css/tailwind-styles.css"; 
 import { ToolList } from '../pages/data/ToolList';
 
 function Tool({Svg, title, description}) {

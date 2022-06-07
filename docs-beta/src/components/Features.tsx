@@ -1,9 +1,8 @@
-import React from 'react';
-import "../css/tailwind-styles.css"; 
-import { styles } from "../css/shared-styles.js"
-import { FeatureList } from '../pages/data/FeatureList';
+import React from "react";
+import { styles } from "../css/shared-styles";
+import { FeatureList } from "../pages/data/FeatureList";
 
-function Feature({Svg, title}) {
+function Feature({ Svg, title }) {
   return (
     <div className="text--center padding-horiz--md">
       <div className="items-center">
@@ -18,10 +17,10 @@ function Feature({Svg, title}) {
 
 export default function Features() {
   return (
-      <div className="grid grid-cols-3 my-4">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
-          ))}
-      </div>
+    <div className="grid grid-cols-3 my-4">
+      {FeatureList.map((props, idx) => (
+        <Feature key={idx} {...props} />
+      ))}
+    </div>
   );
 }
