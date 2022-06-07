@@ -1,4 +1,5 @@
 import React from 'react';
+import "../css/tailwind-styles.css"; 
 import { ToolList } from '../pages/data/ToolList';
 
 function Tool({Svg, title, description}) {
@@ -8,8 +9,8 @@ function Tool({Svg, title, description}) {
         <div className="items-center">
           <Svg className="fill-blue-300 h-16 w-16 flex justify-center mx-auto pt-3" alt={title}/>
         </div>
-        <div className="text-primary font-bold mt-2 mb-4">{title}</div>
-        <p className="mb-3 font-normal text-gray-700 dark:text-primary">{description}</p>
+        <div className="font-bahnschrift text-black font-bold mt-2 mb-4">{title}</div>
+        <p className="font-bahnschrift mb-3 font-normal text-black dark:text-primary">{description}</p>
       </div>
     </div>
   );

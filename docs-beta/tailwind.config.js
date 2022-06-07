@@ -1,30 +1,30 @@
 function withOpacityValue(variable) {
   return ({ opacityValue }) => {
     if (opacityValue === undefined) {
-      return `rgb(var(${variable}))`;
+      return `rgb(var(${variable}))`
     }
-    return `rgb(var(${variable}) / ${opacityValue})`;
-  };
+    return `rgb(var(${variable}) / ${opacityValue})`
+  }
 }
 module.exports = {
-  content: [
-    "./src/pages/*.js",
-    "./src/components/*.js",
-    "./src/pages/*.tsx",
-    "./src/pages/*.ts",
-    "./src/components/*.tsx",
-    "./src/components/*.ts",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        primary: withOpacityValue("--color-primary"),
-        secondary: withOpacityValue("--color-secondary"),
-        tertiary: withOpacityValue("--color-tertiary"),
-        brand: withOpacityValue("--color-brand"),
-        accent: withOpacityValue("--color-accent"),
-      },
+    darkMode: 'class',
+    content: ["./src/pages/*.js","./src/components/*.js", "./src/css/*.js"],
+    theme: {
+      extend: {
+        fontFamily: {
+          londrina: ["Londrina Solid"],
+          bahnschrift: ["Bahnschrift"],
+        },
+        colors: {
+          'primary': withOpacityValue('--color-primary'),
+          'secondary': withOpacityValue('--color-secondary'),
+          'tertiary': withOpacityValue('--color-tertiary'),
+          'body': withOpacityValue('--color-body'),
+          'body-2': withOpacityValue('--color-body-2'),
+          'button': withOpacityValue('--color-button'),
+          'point': withOpacityValue('--color-point'),
+        }
+      }, 
     },
-  },
-  plugins: [],
-};
+    plugins: [],
+  }

@@ -2,10 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-.theme-dark {
-    --color-primary: 0 0 0;
-    --color-secondary: 255 255 255;
-    --color-tertiary: 212 212 216;
-    --color-brand: 13 148 136;
-    --color-accent: 234 88 12;
+@layer base {
+    @font-face {
+        font-family: "Londrina Solid";
+        src: "./fonts/LondrinaSolid.ttf";
+    },
+    @font-face {
+        font-family: "Bahnschrift";
+        src: "./fonts/Bahnschrift.ttf";
+    }
+}
+ 
+.theme-color {
+    --color-button: 134 0 156;
+    --color-point: 255 214 107;
+    --color-body: 33 153 190;
+    --color-body-2: 57 147 115;
+    --color-primary: 255 255 255;
+    --color-secondary: 33 153 190;
+    --color-tertiary: 255 0 0;
 }
