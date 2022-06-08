@@ -459,16 +459,50 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-backdrop-sepia:  ;
 }
 
+.container {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
 @font-face {
   font-family: "Londrina Solid";
 
-  src: url(../../static/fonts/londrinaSolid.ttf) format('truetype');
+  src: url(../../static/fonts/LondrinaSolid.ttf) format('truetype');
 }
 
 @font-face {
   font-family: "Bahnschrift";
 
-  src: url(../../static/fonts/bahnschrift.ttf) format('truetype');
+  src: url(../../static/fonts/Bahnschrift.ttf) format('truetype');
 }
 
 .absolute {
@@ -488,6 +522,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   float: left;
 }
 
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .mx-12 {
   margin-left: 3rem;
   margin-right: 3rem;
@@ -501,11 +540,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .my-36 {
   margin-top: 9rem;
   margin-bottom: 9rem;
-}
-
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .my-3 {
@@ -575,6 +609,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .h-3\/4 {
   height: 75%;
+}
+
+.h-full {
+  height: 100%;
 }
 
 .w-36 {
@@ -884,15 +922,13 @@ Ensure the default browser behavior of the `hidden` attribute.
           text-decoration-line: none;
 }
 
+@media (min-width: 640px) {
+  .sm\:hidden {
+    display: none;
+  }
+}
+
 @media (min-width: 768px) {
-  .md\:h-full {
-    height: 100%;
-  }
-
-  .md\:w-full {
-    width: 100%;
-  }
-
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -904,14 +940,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 
 @media (min-width: 1024px) {
-  .lg\:h-full {
-    height: 100%;
-  }
-
-  .lg\:w-full {
-    width: 100%;
-  }
-
   .lg\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }

@@ -14,7 +14,7 @@ import { Quote } from "../components/Quote";
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout>
+    <div className="container mx-auto">
       <main className="theme-color bg-gradient-to-b from-body via-body-gradient to-body">
         <Header/>
         <TwoColumns>
@@ -50,6 +50,6 @@ export default function Home() {
           </Quote>
       <Footer />
       </main>
-    </Layout>
+    </div>
   );
 }
