@@ -14,7 +14,7 @@ export default function Footer() {
       <TwoColumns>
         <Placeholder/>
         <div>
-          <Point inFooter = {true}>Seeing is believing -- Give Lage a spin</Point>
+          <Point inFooter = {true}>Seeing is believing — Give Lage a spin</Point>
           <Description>There’s no better time than now to save yourself time. Get started within a minute with a single command!</Description>
           <Command>npx lage init</Command>
           <SideBySide>
