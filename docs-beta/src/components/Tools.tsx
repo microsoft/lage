@@ -15,7 +15,7 @@ function Tool({Svg, title, description}) {
   );
 }
 
-export default function Tools() {
+export const Tools = () => { 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gaps-12 md:grid-cols-2 px-12">
       {ToolList.map((props, idx) => (

@@ -1,10 +1,10 @@
 import React from "react";
-import SideBySide from "./SideBySide";
-import TwoColumns from "./TwoColumns";
-import HeaderTitle from "./HeaderTitle";
-import ProductDescription from "./ProductDescription";
-import Button from "./Button";
-import Placeholder from "./Placeholder";
+import { SideBySide } from "./SideBySide";
+import { TwoColumns } from "./TwoColumns";
+import { HeaderTitle }  from "./HeaderTitle";
+import { ProductDescription } from "./ProductDescription";
+import { Button } from "./Button";
+import { Placeholder } from "./Placeholder";
 
 export default function Header() {
   return (

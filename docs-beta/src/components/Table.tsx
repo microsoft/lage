@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Table(props) {
+export const Table = (props) => { 
     const tableContents = props.tableContents;
     return(
         <table className="table-fixed">

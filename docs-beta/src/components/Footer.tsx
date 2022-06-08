@@ -1,12 +1,12 @@
 import React from "react";
-import SideBySide from "./SideBySide";
-import TwoColumns from "./TwoColumns";
-import Tools from "./Tools";
-import Point from "./Point";
-import Placeholder from "./Placeholder";
-import Description from "./Description";
-import Button from "./Button";
-import Command from "./Command";
+import { SideBySide } from "./SideBySide";
+import { TwoColumns } from "./TwoColumns";
+import { Tools } from "./Tools";
+import { Point } from "./Point";
+import { Placeholder } from "./Placeholder";
+import { Description } from "./Description";
+import { Button } from "./Button";
+import { Command } from "./Command";
 
 export default function Footer() {
   return (

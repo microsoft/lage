@@ -1,15 +1,15 @@
 import React from "react";
 import Layout from "@theme/Layout";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import "../../static/tailwind/tailwind-styles.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import TwoColumns from "../components/TwoColumns";
+import { TwoColumns } from "../components/TwoColumns";
 import { Highlight } from "../components/Highlight";
-import Placeholder from "../components/Placeholder";
-import Point from "../components/Point";
-import Description from "../components/Description";
-import Quote from "../components/Quote";
-import "../../static/tailwind/tailwind-styles.css";
+import { Placeholder } from "../components/Placeholder";
+import { Point } from "../components/Point";
+import { Description } from "../components/Description";
+import { Quote } from "../components/Quote";
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
