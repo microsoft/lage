@@ -21,7 +21,7 @@ module.exports = {
           'secondary': withOpacityValue('--color-secondary'),
           'tertiary': withOpacityValue('--color-tertiary'),
           'body': withOpacityValue('--color-body'),
-          'body-2': withOpacityValue('--color-body-2'),
+          'body-gradient': withOpacityValue('--color-body-gradient'),
           'button': withOpacityValue('--color-button'),
           'point': withOpacityValue('--color-point'),
         }
