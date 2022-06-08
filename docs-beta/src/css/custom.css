@@ -1,18 +1,18 @@
 @tailwind base;
 @tailwind components;
+
+@font-face {
+     font-family: "Londrina Solid";
+     src: url(../../static/fonts/londrinaSolid.ttf) format('truetype');
+};
+
+@font-face {
+     font-family: "Bahnschrift";
+     src: url(../../static/fonts/bahnschrift.ttf) format('truetype');
+};
+
 @tailwind utilities;
 
-@layer base {
-    @font-face {
-        font-family: "Londrina Solid";
-        src: url(../../static/fonts/LondrinaSolid.ttf) format('truetype');
-    },
-    @font-face {
-        font-family: "Bahnschrift";
-        src: url(../../static/fonts/Bahnschrift.ttf) format('truetype');
-    }
-}
- 
 .theme-color {
     --color-button: 134 0 156;
     --color-point: 255 214 107;

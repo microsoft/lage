@@ -414,18 +414,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   display: none;
 }
 
-@font-face {
-  font-family: "Londrina Solid";
-
-  src: url(../../static/fonts/LondrinaSolid.ttf) format('truetype');
-}
-
-,
-    @font-face {
-  font-family: "Bahnschrift";
-  src: url(../../static/fonts/Bahnschrift.ttf) format('truetype');
-}
-
 *, ::before, ::after {
   --tw-translate-x: 0;
   --tw-translate-y: 0;
@@ -469,6 +457,18 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-backdrop-opacity:  ;
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
+}
+
+@font-face {
+  font-family: "Londrina Solid";
+
+  src: url(../../static/fonts/londrinaSolid.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: "Bahnschrift";
+
+  src: url(../../static/fonts/bahnschrift.ttf) format('truetype');
 }
 
 .absolute {
@@ -673,11 +673,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-body-gradient {
   --tw-bg-opacity: 1;
   background-color: rgb(var(--color-body-gradient) / var(--tw-bg-opacity));
-}
-
-.bg-black {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
 .bg-gray-300 {

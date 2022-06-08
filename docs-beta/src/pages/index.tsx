@@ -48,8 +48,8 @@ export default function Home() {
         <Quote author="Jason Gore" organization="Microsoft Loop"> 
           Lage upends the notion that monorepo builds have to be linear and sequential, [it] leverages <span className="text-point">modern processing power</span> and is incredibly powerful and configurable.
           </Quote>
-      </main>
       <Footer />
+      </main>
     </Layout>
   );
 }

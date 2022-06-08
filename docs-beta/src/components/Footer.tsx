@@ -10,7 +10,7 @@ import { Command } from "./Command";
 
 export default function Footer() {
   return (
-    <div className="theme-color bg-black py-8">
+    <div className="theme-color py-8">
 
       <div className="mt-28"/>
 
