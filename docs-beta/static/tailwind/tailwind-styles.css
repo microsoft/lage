@@ -695,10 +695,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(var(--color-primary) / var(--tw-bg-opacity));
 }
 
-.bg-gradient-to-r {
-  background-image: linear-gradient(to right, var(--tw-gradient-stops));
-}
-
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
 }
@@ -713,12 +709,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgb(255 255 255 / 0));
 }
 
+.via-body-gradient {
+  --tw-gradient-stops: var(--tw-gradient-from), rgb(var(--color-body-gradient)), var(--tw-gradient-to, rgb(var(--color-body-gradient) / 0));
+}
+
 .via-white {
   --tw-gradient-stops: var(--tw-gradient-from), #fff, var(--tw-gradient-to, rgb(255 255 255 / 0));
 }
 
-.to-body-gradient {
-  --tw-gradient-to: rgb(var(--color-body-gradient));
+.to-body {
+  --tw-gradient-to: rgb(var(--color-body));
 }
 
 .to-point {

@@ -15,7 +15,7 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout>
-      <main className="theme-color bg-gradient-to-r from-body to-body-gradient">
+      <main className="theme-color bg-gradient-to-b from-body via-body-gradient to-body">
         <Header/>
         <TwoColumns>
           <Placeholder/>
