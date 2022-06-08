@@ -11,7 +11,7 @@ export default function Header() {
     <header className="theme-color flex h-screen justify-center items-center pb-36">
       <TwoColumns>
         <div>
-          <HeaderTitle>Never build the <br/> same code twice</HeaderTitle>
+          <HeaderTitle>Never build the same code twice</HeaderTitle>
           <ProductDescription>Give your monorepo the smarts to <i>actually</i> save you time</ProductDescription>
           <SideBySide>
             <Button isEmphasized={true} to="/docs/Introducing Lage/Overview">Get Started</Button>

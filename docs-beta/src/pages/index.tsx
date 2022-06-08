@@ -19,7 +19,7 @@ export default function Home() {
         <Header/>
         <TwoColumns>
           <Placeholder/>
-          <div className="text-right justify-end">
+          <div>
             <Point>Speeding up your repo takes no time</Point>
             <Description>Lage is simple to setup and works everywhere. It just takes a minute, seriously!</Description>
             <Highlight toLeft={false} content="Use one of our clouds, or bring your own!"/>
@@ -27,7 +27,7 @@ export default function Home() {
         </TwoColumns>
 
         <TwoColumns>
-           <div className="text-left">
+           <div>
             <Point>Seriously, never build more than once</Point>
             <Description>Building once is painful enough! Lage will remember what is done before and skip any work that is not
               needed. Lage even skips the work based on your changes… really!</Description>
@@ -38,7 +38,7 @@ export default function Home() {
 
         <TwoColumns>
           <Placeholder/>
-          <div className="text-right justify-end">
+          <div>
             <Point>Discover what is slowing you down</Point>
             <Description>With the built-in profiler, Lage will let you see exactly where the bottlenecks are. Yes, you can be the
               hero of your team.</Description>
