@@ -11,6 +11,9 @@ import { Command } from "./Command";
 export default function Footer() {
   return (
     <div className="theme-color bg-black py-8">
+
+      <div className="mt-28"/>
+
       <TwoColumns>
         <Placeholder/>
         <div>
@@ -23,6 +26,8 @@ export default function Footer() {
           </SideBySide>
         </div>
       </TwoColumns>
+
+      <div className="mt-28"/>
 
       <Point inFooter={true}> Better Together</Point>
       <Description>This is about the other tools that Lage work with. This is about the other tools that Lage work with. This is
