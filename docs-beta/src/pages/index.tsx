@@ -19,7 +19,7 @@ export default function Home() {
         <NavBar/>
         <Header/>
         <TwoColumns>
-          <Placeholder/>
+          <Placeholder src="img/placeholder.png" inHeader={true}/>
           <div>
             <Point>Speeding up your repo takes no time</Point>
             <Description>Lage is simple to setup and works everywhere. It just takes a minute, seriously!</Description>
@@ -34,11 +34,11 @@ export default function Home() {
               needed. Lage even skips the work based on your changes… really!</Description>
             <Highlight toLeft={true} content="It's not just you. Lage will skip work if others already did it too!" />
           </div>
-          <Placeholder/>
+          <Placeholder src="img/placeholder.png"/>
         </TwoColumns>
 
         <TwoColumns>
-          <Placeholder/>
+          <Placeholder src="img/placeholder.png"/>
           <div>
             <Point>Discover what is slowing you down</Point>
             <Description>With the built-in profiler, Lage will let you see exactly where the bottlenecks are. Yes, you can be the

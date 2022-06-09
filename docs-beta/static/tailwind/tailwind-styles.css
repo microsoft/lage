@@ -459,40 +459,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-backdrop-sepia:  ;
 }
 
-.container {
-  width: 100%;
-}
-
-@media (min-width: 640px) {
-  .container {
-    max-width: 640px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 768px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1024px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    max-width: 1280px;
-  }
-}
-
-@media (min-width: 1536px) {
-  .container {
-    max-width: 1536px;
-  }
-}
-
 @font-face {
   font-family: "Londrina Solid";
 
@@ -503,6 +469,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   font-family: "Bahnschrift";
 
   src: url(../../static/fonts/Bahnschrift.ttf) format('truetype');
+}
+
+.visible {
+  visibility: visible;
 }
 
 .invisible {
@@ -534,11 +504,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   float: left;
 }
 
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .mx-12 {
   margin-left: 3rem;
   margin-right: 3rem;
@@ -552,6 +517,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .my-36 {
   margin-top: 9rem;
   margin-bottom: 9rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .my-3 {
@@ -581,10 +551,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .mb-8 {
   margin-bottom: 2rem;
-}
-
-.mt-4 {
-  margin-top: 1rem;
 }
 
 .mb-4 {
@@ -647,16 +613,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 4rem;
 }
 
-.h-10 {
-  height: 2.5rem;
-}
-
 .h-3\/4 {
   height: 75%;
-}
-
-.h-full {
-  height: 100%;
 }
 
 .w-36 {
@@ -677,10 +635,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-1\/2 {
   width: 50%;
-}
-
-.w-10 {
-  width: 2.5rem;
 }
 
 .w-3\/4 {
@@ -862,14 +816,19 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-bottom: 2rem;
 }
 
-.px-8 {
-  padding-left: 2rem;
-  padding-right: 2rem;
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 .py-24 {
@@ -896,6 +855,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .pt-12 {
   padding-top: 3rem;
+}
+
+.pl-4 {
+  padding-left: 1rem;
+}
+
+.pr-20 {
+  padding-right: 5rem;
 }
 
 .text-center {
@@ -946,10 +913,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .font-bold {
   font-weight: 700;
-}
-
-.font-extrabold {
-  font-weight: 800;
 }
 
 .text-point {
@@ -1032,9 +995,7 @@ Ensure the default browser behavior of the `hidden` attribute.
   .md\:w-full {
     width: 100%;
   }
-}
 
-@media (min-width: 768px) {
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

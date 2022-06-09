@@ -15,7 +15,7 @@ export default function Footer() {
       <div className="mt-28"/>
 
       <TwoColumns>
-        <Placeholder/>
+        <Placeholder src="img/placeholder.png"/>
         <div>
           <Point inFooter = {true}>Seeing is believing — Give Lage a spin</Point>
           <Description>There’s no better time than now to save yourself time. Get started within a minute with a single command!</Description>

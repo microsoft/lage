@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Cross() {
+export const Cross = () => {
     return (
         <svg
             className="h-8 w-8 text-black"

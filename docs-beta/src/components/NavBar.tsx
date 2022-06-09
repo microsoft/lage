@@ -1,16 +1,15 @@
 import React from "react";
 import { useState } from "react";
-import Link from "@docusaurus/Link";
 import { NavButton } from "./NavButton";
-import Cross from "./Cross";
-import Hamburger from "./Hamburger";
+import { Cross } from "./Cross";
+import { Hamburger } from "./Hamburger";
 import { HamburgerButton } from "./HamburgerButton";
 
 export default function NavBar() {
     const [isNavOpen, setIsNavOpen] = useState(false);
     return (
-        <div className="px-8 mb-8">
-            <div className="flex items-center py-4">
+        <div className="pl-4 pr-20 mb-8">
+            <div className="flex items-center py-1">
                 <nav>
                     <section className="flex py-4 md:hidden lg:hidden">
                         {/*Creating the hamburger menu lines*/}
@@ -39,7 +38,8 @@ export default function NavBar() {
             <div className="flex justify-between invisible md:visible lg:visible">
                 {/*Aligned to left*/}
                 <div className="flex items-center">
-                    <img className="w-10 h-10 mt-4" src="img/lage-logo.svg" alt="logo" />
+                    <img className="w-8 h-8" src="img/lage-logo.svg" alt="Logo"/>
+                    <NavButton to="/docs/Introducing Lage/Overview">Lage</NavButton>
                     <NavButton to="/docs/Introducing Lage/Overview">Concepts</NavButton>
                     <NavButton to="/docs/Introducing Lage/Overview">Guide</NavButton>
                     <NavButton to="/docs/Introducing Lage/Overview">Releases</NavButton>
@@ -48,7 +48,7 @@ export default function NavBar() {
                 <div className="flex items-center">
                     <NavButton to="/docs/Introducing Lage/Overview">Community</NavButton>
                     <a href="https://github.com/microsoft/lage">
-                        <img className="w-8 h-8" src="img/Github.png" alt="GitHub" />
+                        <img className="w-8 h-8" src="img/Github.png" alt="GitHub"/>
                     </a>
                 </div>
             </div>
