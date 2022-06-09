@@ -1,5 +1,4 @@
 import React from "react";
-import Layout from "@theme/Layout";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import "../../static/tailwind/tailwind-styles.css";
 import Header from "../components/Header";
@@ -10,12 +9,14 @@ import { Placeholder } from "../components/Placeholder";
 import { Point } from "../components/Point";
 import { Description } from "../components/Description";
 import { Quote } from "../components/Quote";
-
+import NavBar
+ from "../components/NavBar";
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout>
+    <div>
       <main className="theme-color bg-gradient-to-b from-body via-body-gradient to-body">
+        <NavBar/>
         <Header/>
         <TwoColumns>
           <Placeholder/>
@@ -48,8 +49,8 @@ export default function Home() {
         <Quote author="Jason Gore" organization="Microsoft Loop"> 
           Lage upends the notion that monorepo builds have to be linear and sequential, [it] leverages <span className="text-point">modern processing power</span> and is incredibly powerful and configurable.
           </Quote>
-      <Footer />
+        <Footer/>
       </main>
-    </Layout>
+    </div>
   );
 }
