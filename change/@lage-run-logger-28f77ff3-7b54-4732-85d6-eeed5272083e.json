@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix handling of stdio chunks that don't end in a new line",
+  "packageName": "@lage-run/logger",
+  "email": "4015993+KyleDavidE@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
