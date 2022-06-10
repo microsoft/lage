@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 10 Jun 2022 18:43:25 GMT and should not be manually modified.
+This log was last generated on Fri, 10 Jun 2022 19:39:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.1
+
+Fri, 10 Jun 2022 19:39:32 GMT
+
+### Patches
+
+- Fast path on hash calculations for Windows as well (kchau@microsoft.com)
 
 ## 1.6.0
 
