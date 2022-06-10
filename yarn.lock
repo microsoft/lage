@@ -4039,10 +4039,10 @@ backfill-hasher@^6.2.9:
     fs-extra "^8.1.0"
     workspace-tools "^0.18.2"
 
-backfill-hasher@^6.4.0:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/backfill-hasher/-/backfill-hasher-6.4.0.tgz#49a2216c2c690a5015cd6406d741fd81cc1e49dd"
-  integrity sha512-ZgSjJFC1ko0RNaWaaE9//Kn+ObCM6zkf5aQw8E61rZ+ZkbV0qbLFKN8VRucRLCLzMEe1yFwMRYnMzlpkBEMrpQ==
+backfill-hasher@^6.4.1:
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/backfill-hasher/-/backfill-hasher-6.4.1.tgz#bb10a8a0688ce75a502aa3c6f0461e7b70f52479"
+  integrity sha512-ZiIo77UCBgTnojK9+4DQVEn9yeJQn2+KW9gh22coS45I3pNqAHflxALIyfIosQwz7Fos/peGj8iuWHw2Ieuurg==
   dependencies:
     "@rushstack/package-deps-hash" "^3.2.4"
     backfill-config "^6.3.0"
@@ -4085,15 +4085,15 @@ backfill@^6.1.13:
     globby "^11.0.0"
     yargs "^16.1.1"
 
-backfill@^6.1.19:
-  version "6.1.19"
-  resolved "https://registry.yarnpkg.com/backfill/-/backfill-6.1.19.tgz#7a1aa7a0a0ff2a3b1305005f0ff74523c16a82c8"
-  integrity sha512-K1i3wla59Tgvu/slpKlVJh2PzMQ4hzZfiOnKbdQR6Y0kge+gbHaptXVqh4QOUHxWBLC5TxAOjmrn1TCLSTHyuQ==
+backfill@^6.1.20:
+  version "6.1.20"
+  resolved "https://registry.yarnpkg.com/backfill/-/backfill-6.1.20.tgz#7e7e5a41024d72d5cf26d479faa0c20557b53f32"
+  integrity sha512-sD4DPugvZodbgNTfDc6so3VXIjpyY4e+5S/+wDXsjc6I/tEtT+pu7U/WxLGajMXsvusU3wM7wqgtGHZhxvSrIw==
   dependencies:
     anymatch "^3.0.3"
     backfill-cache "^5.6.1"
     backfill-config "^6.3.0"
-    backfill-hasher "^6.4.0"
+    backfill-hasher "^6.4.1"
     backfill-logger "^5.1.3"
     backfill-utils-dotenv "^5.1.1"
     chokidar "^3.2.1"

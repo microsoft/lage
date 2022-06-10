@@ -32,7 +32,7 @@
   "dependencies": {
     "@xmldom/xmldom": "^0.8.0",
     "abort-controller": "^3.0.0",
-    "backfill": "^6.1.19",
+    "backfill": "^6.1.20",
     "backfill-cache": "^5.6.1",
     "backfill-config": "^6.3.0",
     "backfill-logger": "^5.1.3",
