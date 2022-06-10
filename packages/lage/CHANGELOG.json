@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 10 Jun 2022 18:43:25 GMT",
+      "tag": "lage_v1.6.0",
+      "version": "1.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "comment": "Bumping backfill - minor lage bump because it is significant in its dep change behavior",
+            "commit": "6e4672a9a4e2f4aa6246792ef11ea99445ee1c62"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 25 May 2022 20:06:36 GMT",
       "tag": "lage_v1.5.2",
       "version": "1.5.2",

@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 25 May 2022 20:06:36 GMT and should not be manually modified.
+This log was last generated on Fri, 10 Jun 2022 18:43:25 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.0
+
+Fri, 10 Jun 2022 18:43:25 GMT
+
+### Minor changes
+
+- Bumping backfill - minor lage bump because it is significant in its dep change behavior (kchau@microsoft.com)
 
 ## 1.5.2
 
