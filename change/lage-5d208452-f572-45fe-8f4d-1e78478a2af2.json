@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Bumping backfill - minor lage bump because it is significant in its dep change behavior",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
