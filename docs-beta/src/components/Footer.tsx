@@ -12,9 +12,9 @@ export default function Footer() {
   return (
     <div className="theme-color py-8">
 
-      <div className="mt-28"/>
+      <div className="mt-16 md:mt-28"/>
 
-      <TwoColumns>
+      <TwoColumns imageFirst={true}>
         <Placeholder src="img/placeholder.png"/>
         <div>
           <Point inFooter = {true}>Seeing is believing — Give Lage a spin</Point>
@@ -27,7 +27,7 @@ export default function Footer() {
         </div>
       </TwoColumns>
 
-      <div className="mt-28"/>
+      <div className="mt-16 md:mt-28"/>
 
       <Point inFooter={true}> Better Together</Point>
       <Description>This is about the other tools that Lage work with. This is about the other tools that Lage work with. This is

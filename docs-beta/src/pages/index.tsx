@@ -18,8 +18,8 @@ export default function Home() {
       <main className="theme-color bg-gradient-to-b from-body via-body-gradient to-body">
         <NavBar/>
         <Header/>
-        <TwoColumns>
-          <Placeholder src="img/placeholder.png" inHeader={true}/>
+        <TwoColumns imageFirst={true}>
+          <Placeholder src="img/placeholder.png"/>
           <div>
             <Point>Speeding up your repo takes no time</Point>
             <Description>Lage is simple to setup and works everywhere. It just takes a minute, seriously!</Description>
@@ -37,7 +37,7 @@ export default function Home() {
           <Placeholder src="img/placeholder.png"/>
         </TwoColumns>
 
-        <TwoColumns>
+        <TwoColumns imageFirst={true}>
           <Placeholder src="img/placeholder.png"/>
           <div>
             <Point>Discover what is slowing you down</Point>

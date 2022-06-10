@@ -8,7 +8,7 @@ import { Placeholder } from "./Placeholder";
 
 export default function Header() {
   return (
-    <header className="theme-color flex h-screen justify-center items-center pb-36">
+    <header className="theme-color lg:flex lg:justify-center lg:items-center lg:pb-36">
       <TwoColumns>
         <div>
           <HeaderTitle>Never build the same code twice</HeaderTitle>
@@ -18,7 +18,7 @@ export default function Header() {
             <Button isEmphasized={false} to="/docs/Introducing Lage/Overview">Try the Demo</Button>
           </SideBySide>
         </div>
-        <Placeholder/>
+        <Placeholder src="img/placeholder.png" inHeader={true}/>
       </TwoColumns>
     </header>
   );

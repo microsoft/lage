@@ -24,10 +24,7 @@ export default function NavBar() {
                             </div>
                             {/*Contents of the hamburger menu*/}
                             <div className="flex flex-col space-y-2 px-4 py-24">
-                                <HamburgerButton to="/docs/Introducing Lage/Overview">Concepts</HamburgerButton>
                                 <HamburgerButton to="/docs/Introducing Lage/Overview">Guide</HamburgerButton>
-                                <HamburgerButton to="/docs/Introducing Lage/Overview">Releases</HamburgerButton>
-                                <HamburgerButton to="/docs/Introducing Lage/Overview">Community</HamburgerButton>
                                 <HamburgerButton to="https://github.com/microsoft/lage">GitHub</HamburgerButton>
                             </div>
                         </div>
@@ -39,14 +36,11 @@ export default function NavBar() {
                 {/*Aligned to left*/}
                 <div className="flex items-center">
                     <img className="w-8 h-8" src="img/lage-logo.svg" alt="Logo"/>
-                    <NavButton to="/docs/Introducing Lage/Overview">Lage</NavButton>
-                    <NavButton to="/docs/Introducing Lage/Overview">Concepts</NavButton>
+                    <NavButton to=".">Lage</NavButton>
                     <NavButton to="/docs/Introducing Lage/Overview">Guide</NavButton>
-                    <NavButton to="/docs/Introducing Lage/Overview">Releases</NavButton>
                 </div>
                 {/*Aligned to right*/}
                 <div className="flex items-center">
-                    <NavButton to="/docs/Introducing Lage/Overview">Community</NavButton>
                     <a href="https://github.com/microsoft/lage">
                         <img className="w-8 h-8" src="img/Github.png" alt="GitHub"/>
                     </a>
