@@ -77,7 +77,11 @@ export async function info(cwd: string, config: Config) {
   });
 }
 
-function createPackageTaskInfo(id: string, config: Config, workspace: Workspace): PackageTaskInfo | undefined {
+function createPackageTaskInfo(
+  id: string,
+  config: Config,
+  workspace: Workspace
+): PackageTaskInfo | undefined {
   const { packageName, task } = getPackageAndTask(id)!;
 
   if (packageName) {
@@ -86,10 +90,16 @@ function createPackageTaskInfo(id: string, config: Config, workspace: Workspace)
     if (!!info.scripts?.[task]) {
       return {
         id,
-        command: [config.npmClient, ...getNpmCommand(config.node, config.args, task)],
+        command: [
+          config.npmClient,
+          ...getNpmCommand(config.node, config.args, task),
+        ],
         dependencies: [],
         workingDirectory: path
-          .relative(workspace.root, path.dirname(workspace.allPackages[packageName].packageJsonPath))
+          .relative(
+            workspace.root,
+            path.dirname(workspace.allPackages[packageName].packageJsonPath)
+          )
           .replace(/\\/g, "/"),
         package: packageName,
         task,

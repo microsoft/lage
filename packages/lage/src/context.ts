@@ -7,13 +7,18 @@ import { mkdirSync } from "fs";
 import { WorkerQueue } from "./task/WorkerQueue";
 
 export function createContext(
-  config: Pick<Config, "concurrency" | "profile" | "dist" | "workerQueueOptions">
+  config: Pick<
+    Config,
+    "concurrency" | "profile" | "dist" | "workerQueueOptions"
+  >
 ): RunContext {
   const { concurrency, profile } = config;
 
   const useCustomProfilePath = typeof profile === "string";
 
-  const profilerOutputDir = useCustomProfilePath ? dirname(profile as string) : join(tmpdir(), "lage", "profiles");
+  const profilerOutputDir = useCustomProfilePath
+    ? dirname(profile as string)
+    : join(tmpdir(), "lage", "profiles");
 
   mkdirSync(profilerOutputDir, { recursive: true });
 

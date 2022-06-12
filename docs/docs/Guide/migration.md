@@ -12,4 +12,3 @@ Lage is graduating to 1.0.0! We have a breaking change. Namely, the remote cache
 
 1. `lage` only write to a remote cache if the environment variable `LAGE_WRITE_REMOTE_CACHE` is set to true
 2. remote cache now works as a fallback; always reading & writing to the local cache first
-

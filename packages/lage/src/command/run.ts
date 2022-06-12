@@ -25,7 +25,7 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   context.measures.start = process.hrtime();
 
   // die faster if an abort signal is seen
-  signal.addEventListener("abort", async() => {
+  signal.addEventListener("abort", async () => {
     aborted = true;
     NpmScriptTask.killAllActiveProcesses();
     if (config.dist) {
@@ -56,7 +56,11 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
     } catch (e) {
       process.exitCode = 1;
       if (e && (e as any).message) {
-        logger.error(`An error occured while trying to write profile: ${(e as any).message}`);
+        logger.error(
+          `An error occured while trying to write profile: ${
+            (e as any).message
+          }`
+        );
       }
     }
   }

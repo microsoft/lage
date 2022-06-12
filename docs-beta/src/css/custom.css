@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 .theme-dark {
-    --color-primary: 0 0 0;
-    --color-secondary: 255 255 255;
-    --color-tertiary: 212 212 216;
-    --color-brand: 13 148 136;
-    --color-accent: 234 88 12;
+  --color-primary: 0 0 0;
+  --color-secondary: 255 255 255;
+  --color-tertiary: 212 212 216;
+  --color-brand: 13 148 136;
+  --color-accent: 234 88 12;
 }

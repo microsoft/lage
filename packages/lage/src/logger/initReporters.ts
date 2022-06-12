@@ -18,16 +18,17 @@ export function initReporters(config: Config) {
     config.reporter === "json"
       ? new JsonReporter({ logLevel })
       : config.reporter === "dgml"
-        ? new DgmlReporter()
-        : new NpmLogReporter({
+      ? new DgmlReporter()
+      : new NpmLogReporter({
           logLevel,
           grouped: config.grouped,
-          npmLoggerOptions: config.loggerOptions
+          npmLoggerOptions: config.loggerOptions,
         }),
   ];
 
-  if (config.reporter === "adoLog") { // Will always include NpmLogReporter and add AdoReporter
-    reporters.push(new AdoReporter())
+  if (config.reporter === "adoLog") {
+    // Will always include NpmLogReporter and add AdoReporter
+    reporters.push(new AdoReporter());
   }
 
   Logger.reporters = reporters;

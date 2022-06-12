@@ -1,14 +1,21 @@
 import { Config } from "../types/Config";
 import { cosmiconfigSync } from "cosmiconfig";
 import { getWorkspaceRoot } from "workspace-tools";
-import { parseArgs, arrifyArgs, getPassThroughArgs, validateInput } from "../args";
+import {
+  parseArgs,
+  arrifyArgs,
+  getPassThroughArgs,
+  validateInput,
+} from "../args";
 import os from "os";
 
 export function getConfig(cwd: string): Config {
   // Verify presence of git
   const root = getWorkspaceRoot(cwd);
   if (!root) {
-    throw new Error("This must be called inside a codebase that is part of a JavaScript workspace.");
+    throw new Error(
+      "This must be called inside a codebase that is part of a JavaScript workspace."
+    );
   }
 
   // Search for lage.config.js file
@@ -25,7 +32,12 @@ export function getConfig(cwd: string): Config {
   const command = parsedArgs._;
 
   // deps should be default true, unless exclusively turned off with '--no-deps' or from config file with "deps: false"
-  let deps = parsedArgs.deps === false ? false : configResults?.config.deps === false ? false : true;
+  let deps =
+    parsedArgs.deps === false
+      ? false
+      : configResults?.config.deps === false
+      ? false
+      : true;
 
   let scope = parsedArgs.scope || configResults?.config.scope || [];
 
@@ -36,7 +48,10 @@ export function getConfig(cwd: string): Config {
   }
 
   const dist = parsedArgs.experimentDist || false;
-  const concurrency = parsedArgs.concurrency || configResults?.config.concurrency || os.cpus().length;
+  const concurrency =
+    parsedArgs.concurrency ||
+    configResults?.config.concurrency ||
+    os.cpus().length;
 
   return {
     reporter: parsedArgs.reporter || "npmLog",

@@ -1,7 +1,11 @@
 module.exports = {
   clearMocks: true,
   collectCoverage: false,
-  collectCoverageFrom: ["src/**/*.ts", "!src/types/*.ts", "!**/node_modules/**"],
+  collectCoverageFrom: [
+    "src/**/*.ts",
+    "!src/types/*.ts",
+    "!**/node_modules/**",
+  ],
   coverageDirectory: "coverage",
   coverageProvider: "v8",
   globals: {

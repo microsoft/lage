@@ -5,7 +5,9 @@ import { logger } from "../logger";
 import { Config } from "../types/Config";
 
 const workerQueueId = `lage:${process.env.LAGE_WORKER_QUEUE_ID || "default"}`;
-const workerPubSubChannel = `lage_pubsub_${process.env.LAGE_WORKER_QUEUE_ID || "default"}`;
+const workerPubSubChannel = `lage_pubsub_${
+  process.env.LAGE_WORKER_QUEUE_ID || "default"
+}`;
 
 export type WorkerQueueProcessor = (job: WorkerQueueJob) => Promise<any>;
 
@@ -21,12 +23,16 @@ export class WorkerQueue {
   private queueEvents: QueueEvents | undefined;
   private mode: "worker" | "master" | undefined;
 
-  constructor(private config: Pick<Config, "workerQueueOptions" | "concurrency">) {
+  constructor(
+    private config: Pick<Config, "workerQueueOptions" | "concurrency">
+  ) {
     const redisOptions = config.workerQueueOptions.connection as RedisOptions;
     this.coordinatorRedis = new IORedis(redisOptions);
   }
 
-  async initializeAsWorker(workerQueueProcessor: WorkerQueueProcessor): Promise<Worker> {
+  async initializeAsWorker(
+    workerQueueProcessor: WorkerQueueProcessor
+  ): Promise<Worker> {
     if (this.mode) {
       throw new Error(`WorkerQueue already initialized as ${this.mode}!`);
     }
@@ -76,7 +82,9 @@ export class WorkerQueue {
 
     if (!this.workerQueue) {
       logger.verbose("[dist] creating work queue ");
-      this.workerQueue = new Queue(workerQueueId, { ...config.workerQueueOptions } as QueueOptions);
+      this.workerQueue = new Queue(workerQueueId, {
+        ...config.workerQueueOptions,
+      } as QueueOptions);
       logger.verbose("[dist] clearing work queue");
 
       await this.workerQueue.drain(false);
@@ -99,7 +107,13 @@ export class WorkerQueue {
 
       const emitter = new EventEmitter();
 
-      const completeHandler = async ({ jobId, returnvalue }: { jobId: string; returnvalue: any }) => {
+      const completeHandler = async ({
+        jobId,
+        returnvalue,
+      }: {
+        jobId: string;
+        returnvalue: any;
+      }) => {
         if (job.id === jobId) {
           this.queueEvents!.off("completed", completeHandler);
           this.queueEvents!.off("failed", failedHandler);
@@ -107,7 +121,10 @@ export class WorkerQueue {
         }
       };
 
-      const failedHandler: (args: { jobId: string; failedReason: string }) => void = ({ jobId, failedReason }) => {
+      const failedHandler: (args: {
+        jobId: string;
+        failedReason: string;
+      }) => void = ({ jobId, failedReason }) => {
         if (job.id === jobId) {
           this.queueEvents!.off("completed", completeHandler);
           this.queueEvents!.off("failed", failedHandler);

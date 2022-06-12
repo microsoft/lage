@@ -6,7 +6,10 @@ import { logger } from "../logger";
 
 export type RemoteFallbackCacheProviderOptions = Pick<
   CacheOptions,
-  "internalCacheFolder" | "cacheStorageConfig" | "writeRemoteCache" | "skipLocalCache"
+  | "internalCacheFolder"
+  | "cacheStorageConfig"
+  | "writeRemoteCache"
+  | "skipLocalCache"
 >;
 
 /**
@@ -22,7 +25,11 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
   private static localHits: { [hash: string]: boolean } = {};
   private static remoteHits: { [hash: string]: boolean } = {};
 
-  constructor(private cacheOptions: RemoteFallbackCacheProviderOptions, logger: Logger, cwd: string) {
+  constructor(
+    private cacheOptions: RemoteFallbackCacheProviderOptions,
+    logger: Logger,
+    cwd: string
+  ) {
     this.localCacheStorageProvider = getCacheStorageProvider(
       {
         provider: "local",
@@ -53,13 +60,22 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
 
   async fetch(hash: string) {
     if (!this.cacheOptions.skipLocalCache) {
-      RemoteFallbackCacheProvider.localHits[hash] = await this.localCacheStorageProvider.fetch(hash);
-      logger.silly(`local cache fetch: ${hash} ${RemoteFallbackCacheProvider.localHits[hash]}`);
+      RemoteFallbackCacheProvider.localHits[hash] =
+        await this.localCacheStorageProvider.fetch(hash);
+      logger.silly(
+        `local cache fetch: ${hash} ${RemoteFallbackCacheProvider.localHits[hash]}`
+      );
     }
 
-    if (!RemoteFallbackCacheProvider.localHits[hash] && this.remoteCacheStorageProvider) {
-      RemoteFallbackCacheProvider.remoteHits[hash] = await this.remoteCacheStorageProvider.fetch(hash);
-      logger.silly(`remote fallback fetch: ${hash} ${RemoteFallbackCacheProvider.remoteHits[hash]}`);
+    if (
+      !RemoteFallbackCacheProvider.localHits[hash] &&
+      this.remoteCacheStorageProvider
+    ) {
+      RemoteFallbackCacheProvider.remoteHits[hash] =
+        await this.remoteCacheStorageProvider.fetch(hash);
+      logger.silly(
+        `remote fallback fetch: ${hash} ${RemoteFallbackCacheProvider.remoteHits[hash]}`
+      );
       return RemoteFallbackCacheProvider.remoteHits[hash];
     }
 
@@ -70,7 +86,8 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
     const putPromises: Promise<void>[] = [];
 
     // Write local cache if it doesn't already exist, or if the the hash isn't in the localHits
-    const shouldWriteLocalCache = !this.isLocalHit(hash) && !this.cacheOptions.skipLocalCache;
+    const shouldWriteLocalCache =
+      !this.isLocalHit(hash) && !this.cacheOptions.skipLocalCache;
 
     if (shouldWriteLocalCache) {
       logger.silly(`local cache put: ${hash}`);
@@ -79,11 +96,16 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
 
     // Write to remote if there is a no hit in the remote cache, and remote cache storage provider, and that the "writeRemoteCache" config flag is set to true
     const shouldWriteRemoteCache =
-      !this.isRemoteHit(hash) && !!this.remoteCacheStorageProvider && this.cacheOptions.writeRemoteCache;
+      !this.isRemoteHit(hash) &&
+      !!this.remoteCacheStorageProvider &&
+      this.cacheOptions.writeRemoteCache;
 
     if (shouldWriteRemoteCache) {
       logger.silly(`remote fallback put: ${hash}`);
-      const remotePut = this.remoteCacheStorageProvider!.put(hash, filesToCache);
+      const remotePut = this.remoteCacheStorageProvider!.put(
+        hash,
+        filesToCache
+      );
       putPromises.push(remotePut);
     }
 
@@ -91,10 +113,16 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
   }
 
   private isRemoteHit(hash) {
-    return hash in RemoteFallbackCacheProvider.remoteHits && RemoteFallbackCacheProvider.remoteHits[hash];
+    return (
+      hash in RemoteFallbackCacheProvider.remoteHits &&
+      RemoteFallbackCacheProvider.remoteHits[hash]
+    );
   }
 
   private isLocalHit(hash) {
-    return hash in RemoteFallbackCacheProvider.localHits && RemoteFallbackCacheProvider.localHits[hash];
+    return (
+      hash in RemoteFallbackCacheProvider.localHits &&
+      RemoteFallbackCacheProvider.localHits[hash]
+    );
   }
 }

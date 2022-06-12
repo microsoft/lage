@@ -1,7 +1,9 @@
 import { LogStructuredData } from "./interfaces/LogStructuredData";
 import { Logger } from "./Logger";
 
-export default function createLogger<TLogStructuredData extends LogStructuredData = LogStructuredData>() {
+export default function createLogger<
+  TLogStructuredData extends LogStructuredData = LogStructuredData
+>() {
   return new Logger<TLogStructuredData>();
 }
 

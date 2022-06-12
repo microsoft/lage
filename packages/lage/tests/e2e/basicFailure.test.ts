@@ -27,12 +27,36 @@ describe("basic failure case where a dependent target has failed", () => {
 
     jsonOutput = parseNdJson(output);
 
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "build", "failed"))).toBeTruthy();
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "test", "completed"))).toBeFalsy();
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "completed"))).toBeFalsy();
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "test", "completed"))).toBeFalsy();
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "lint", "completed"))).toBeFalsy();
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "c", "test", "completed"))).toBeFalsy();
+    expect(
+      jsonOutput.find((entry) =>
+        filterEntry(entry.data, "b", "build", "failed")
+      )
+    ).toBeTruthy();
+    expect(
+      jsonOutput.find((entry) =>
+        filterEntry(entry.data, "b", "test", "completed")
+      )
+    ).toBeFalsy();
+    expect(
+      jsonOutput.find((entry) =>
+        filterEntry(entry.data, "a", "build", "completed")
+      )
+    ).toBeFalsy();
+    expect(
+      jsonOutput.find((entry) =>
+        filterEntry(entry.data, "a", "test", "completed")
+      )
+    ).toBeFalsy();
+    expect(
+      jsonOutput.find((entry) =>
+        filterEntry(entry.data, "a", "lint", "completed")
+      )
+    ).toBeFalsy();
+    expect(
+      jsonOutput.find((entry) =>
+        filterEntry(entry.data, "c", "test", "completed")
+      )
+    ).toBeFalsy();
 
     repo.cleanup();
   });
@@ -62,12 +86,36 @@ describe("basic failure case where a dependent target has failed", () => {
 
     jsonOutput = parseNdJson(output);
 
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "build", "failed"))).toBeTruthy();
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "test", "completed"))).toBeFalsy();
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "completed"))).toBeFalsy();
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "test", "completed"))).toBeFalsy();
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "lint", "completed"))).toBeFalsy();
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "c", "test", "completed"))).toBeTruthy();
+    expect(
+      jsonOutput.find((entry) =>
+        filterEntry(entry.data, "b", "build", "failed")
+      )
+    ).toBeTruthy();
+    expect(
+      jsonOutput.find((entry) =>
+        filterEntry(entry.data, "b", "test", "completed")
+      )
+    ).toBeFalsy();
+    expect(
+      jsonOutput.find((entry) =>
+        filterEntry(entry.data, "a", "build", "completed")
+      )
+    ).toBeFalsy();
+    expect(
+      jsonOutput.find((entry) =>
+        filterEntry(entry.data, "a", "test", "completed")
+      )
+    ).toBeFalsy();
+    expect(
+      jsonOutput.find((entry) =>
+        filterEntry(entry.data, "a", "lint", "completed")
+      )
+    ).toBeFalsy();
+    expect(
+      jsonOutput.find((entry) =>
+        filterEntry(entry.data, "c", "test", "completed")
+      )
+    ).toBeTruthy();
 
     repo.cleanup();
   });
@@ -120,7 +168,9 @@ describe("basic failure case where a dependent target has failed", () => {
       const results = e as any;
 
       expect(results.exitCode).not.toBe(0);
-      expect(results.stderr).not.toContain("Cannot read property 'stack' of undefined");
+      expect(results.stderr).not.toContain(
+        "Cannot read property 'stack' of undefined"
+      );
     }
 
     repo.cleanup();
@@ -128,5 +178,10 @@ describe("basic failure case where a dependent target has failed", () => {
 });
 
 function filterEntry(taskData, pkg, task, status) {
-  return taskData && taskData.package === pkg && taskData.task === task && taskData.status === status;
+  return (
+    taskData &&
+    taskData.package === pkg &&
+    taskData.task === task &&
+    taskData.status === status
+  );
 }

@@ -8,7 +8,11 @@ const { defaults } = require("jest-config");
 module.exports = {
   clearMocks: true,
   collectCoverage: false,
-  collectCoverageFrom: ["src/**/*.ts", "!src/types/*.ts", "!**/node_modules/**"],
+  collectCoverageFrom: [
+    "src/**/*.ts",
+    "!src/types/*.ts",
+    "!**/node_modules/**",
+  ],
   coverageDirectory: "coverage",
   coverageProvider: "v8",
   globals: {
@@ -25,7 +29,10 @@ module.exports = {
   preset: "ts-jest/presets/js-with-ts",
   testMatch: ["**/?(*.)+(spec|test).[tj]s?(x)"],
   testPathIgnorePatterns: ["/node_modules/"],
-  transformIgnorePatterns: ["/node_modules/(?!(@docusaurus)/)", "\\.pnp\\.[^\\/]+$"],
+  transformIgnorePatterns: [
+    "/node_modules/(?!(@docusaurus)/)",
+    "\\.pnp\\.[^\\/]+$",
+  ],
   watchPathIgnorePatterns: ["/node_modules/"],
   testEnvironment: "jest-environment-jsdom",
 };

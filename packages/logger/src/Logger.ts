@@ -4,7 +4,9 @@ import type { Reporter } from "./interfaces/Reporter";
 
 import { LogLevel } from "./interfaces/LogLevel";
 
-export class Logger<TLogStructuredData extends LogStructuredData = LogStructuredData> {
+export class Logger<
+  TLogStructuredData extends LogStructuredData = LogStructuredData
+> {
   reporters: Reporter[] = [];
   logs: LogEntry[] = [];
 

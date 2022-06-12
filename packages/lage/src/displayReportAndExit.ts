@@ -11,7 +11,10 @@ export function displayReportAndExit(
     reporter.summarize(context);
   }
 
-  if (context.measures.failedTargets && context.measures.failedTargets.length > 0) {
+  if (
+    context.measures.failedTargets &&
+    context.measures.failedTargets.length > 0
+  ) {
     process.exit(1);
   }
 }

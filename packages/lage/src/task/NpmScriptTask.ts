@@ -34,8 +34,14 @@ export class NpmScriptTask {
     }, NpmScriptTask.gracefulKillTimeout);
   }
 
-  constructor(public task: string, public info: PackageInfo, private config: Config, private logger: TaskLogger) {
-    NpmScriptTask.npmCmd = NpmScriptTask.npmCmd || findNpmClient(config.npmClient);
+  constructor(
+    public task: string,
+    public info: PackageInfo,
+    private config: Config,
+    private logger: TaskLogger
+  ) {
+    NpmScriptTask.npmCmd =
+      NpmScriptTask.npmCmd || findNpmClient(config.npmClient);
     this.npmArgs = getNpmCommand(config.node, config.args, task);
   }
 
@@ -50,7 +56,8 @@ export class NpmScriptTask {
         stdio: "pipe",
         env: {
           ...process.env,
-          ...(process.stdout.isTTY && this.config.reporter !== "json" && { FORCE_COLOR: "1" }),
+          ...(process.stdout.isTTY &&
+            this.config.reporter !== "json" && { FORCE_COLOR: "1" }),
           LAGE_PACKAGE_NAME: info.name,
         },
       });

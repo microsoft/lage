@@ -1,7 +1,9 @@
 import type { LogLevel } from "./LogLevel";
 import { LogStructuredData } from "./LogStructuredData";
 
-export interface LogEntry<TLogStructuredData extends LogStructuredData = LogStructuredData> {
+export interface LogEntry<
+  TLogStructuredData extends LogStructuredData = LogStructuredData
+> {
   /** a timestamp of when the log event occurred */
   timestamp: number;
 

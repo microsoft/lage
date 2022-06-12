@@ -3,10 +3,10 @@
 /** @type {import("lage").ConfigOptions} */
 module.exports = {
   pipeline: {
-    "build": ["^build"],
-    "test": [],
-    "lint": [],
-    "start": []
+    build: ["^build"],
+    test: [],
+    lint: [],
+    start: [],
   },
-  npmClient: "yarn"
-}
+  npmClient: "yarn",
+};

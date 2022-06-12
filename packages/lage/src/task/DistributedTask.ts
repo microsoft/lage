@@ -46,14 +46,23 @@ export class DistributedTask {
       const job = await this.workerQueue.addJob(id);
 
       if (job) {
-        const completeHandler = async ({ jobId, returnvalue }: { jobId: string; returnvalue: JobResults }) => {
+        const completeHandler = async ({
+          jobId,
+          returnvalue,
+        }: {
+          jobId: string;
+          returnvalue: JobResults;
+        }) => {
           job.off("completed", completeHandler);
           job.off("failed", failedHandler);
           await this.getRemoteCache({ ...returnvalue, cwd: this.cwd });
           resolve();
         };
 
-        const failedHandler: (args: { jobId: string; failedReason: string }) => void = ({ jobId, failedReason }) => {
+        const failedHandler: (args: {
+          jobId: string;
+          failedReason: string;
+        }) => void = ({ jobId, failedReason }) => {
           job.off("completed", completeHandler);
           job.off("failed", failedHandler);
           logger.error(failedReason);

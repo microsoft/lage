@@ -17,7 +17,9 @@ export default function Table(props) {
           <tr key={capability}>
             <td>{capability}</td>
             {tableContents.map((item) => (
-              <th key={item.capabilities[capability]}>{item.capabilities[capability]}</th>
+              <th key={item.capabilities[capability]}>
+                {item.capabilities[capability]}
+              </th>
             ))}
           </tr>
         ))}

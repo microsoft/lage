@@ -36,16 +36,22 @@ describe("transitive task deps test", () => {
 
     for (const pkg of ["a", "b"]) {
       for (const task of ["build", "bundle", "test"]) {
-        const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "completed"));
+        const index = jsonOutput.findIndex((e) =>
+          filterEntry(e.data, pkg, task, "completed")
+        );
         if (index > -1) {
-          indices[getTargetId(pkg, task)] = index;  
+          indices[getTargetId(pkg, task)] = index;
         }
       }
     }
 
-    expect(indices[getTargetId("a", "build")]).toBeLessThan(indices[getTargetId("a", "test")]);
+    expect(indices[getTargetId("a", "build")]).toBeLessThan(
+      indices[getTargetId("a", "test")]
+    );
 
-    expect(indices[getTargetId("b", "build")]).toBeLessThan(indices[getTargetId("a", "test")]);
+    expect(indices[getTargetId("b", "build")]).toBeLessThan(
+      indices[getTargetId("a", "test")]
+    );
 
     repo.cleanup();
   });
@@ -83,22 +89,26 @@ describe("transitive task deps test", () => {
 
     for (const pkg of ["a", "b", "c"]) {
       for (const task of ["transpile", "bundle"]) {
-        const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "completed"));
+        const index = jsonOutput.findIndex((e) =>
+          filterEntry(e.data, pkg, task, "completed")
+        );
         if (index > -1) {
-          indices[getTargetId(pkg, task)] = index;  
+          indices[getTargetId(pkg, task)] = index;
         }
       }
     }
 
     // own package transpilation should be run
-    expect(indices[getTargetId("a", "transpile")]).toBeLessThan(indices[getTargetId("a", "bundle")]);
+    expect(indices[getTargetId("a", "transpile")]).toBeLessThan(
+      indices[getTargetId("a", "bundle")]
+    );
     // b & c#transpile should not be queued, since we only take a local dependency
     expect(indices[getTargetId("b", "transpile")]).toBeUndefined();
     expect(indices[getTargetId("c", "transpile")]).toBeUndefined();
 
     repo.cleanup();
   });
-  
+
   it("only runs direct dependencies for ^ prefix dependencies -- ", () => {
     const repo = new Monorepo("transitiveDeps-carat-prefix");
 
@@ -132,14 +142,18 @@ describe("transitive task deps test", () => {
 
     for (const pkg of ["a", "b", "c"]) {
       for (const task of ["transpile", "bundle"]) {
-        const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "started"));
+        const index = jsonOutput.findIndex((e) =>
+          filterEntry(e.data, pkg, task, "started")
+        );
         if (index > -1) {
-          indices[getTargetId(pkg, task)] = index;  
+          indices[getTargetId(pkg, task)] = index;
         }
       }
     }
 
-    expect(indices[getTargetId("b", "transpile")]).toBeLessThan(indices[getTargetId("a", "bundle")]);
+    expect(indices[getTargetId("b", "transpile")]).toBeLessThan(
+      indices[getTargetId("a", "bundle")]
+    );
     // own package transpilation should not be run, since we only want to to consider dependencies
     // with a ^ dependency.
     expect(indices[getTargetId("a", "transpile")]).toBeUndefined();
@@ -195,16 +209,22 @@ describe("transitive task deps test", () => {
 
     for (const pkg of ["a", "b", "c"]) {
       for (const task of ["transpile", "bundle"]) {
-        const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "started"));
+        const index = jsonOutput.findIndex((e) =>
+          filterEntry(e.data, pkg, task, "started")
+        );
         if (index > -1) {
-          indices[getTargetId(pkg, task)] = index;  
+          indices[getTargetId(pkg, task)] = index;
         }
       }
     }
 
     // Dependency transpilation should run before bundling
-    expect(indices[getTargetId("c", "transpile")]).toBeLessThan(indices[getTargetId("a", "bundle")]);
-    expect(indices[getTargetId("b", "transpile")]).toBeLessThan(indices[getTargetId("a", "bundle")]);
+    expect(indices[getTargetId("c", "transpile")]).toBeLessThan(
+      indices[getTargetId("a", "bundle")]
+    );
+    expect(indices[getTargetId("b", "transpile")]).toBeLessThan(
+      indices[getTargetId("a", "bundle")]
+    );
     // own package transpilation should not be run, since we only want to to consider transitive
     // dependencies with a ^^ dependency.
     expect(indices[getTargetId("a", "transpile")]).toBeUndefined();
@@ -213,12 +233,19 @@ describe("transitive task deps test", () => {
     //
     // In this test we use priority to ensure that b#transpile will always run before
     // c#transpile if they do not have an explicit task dependency.
-    expect(indices[getTargetId("b", "transpile")]).toBeLessThan(indices[getTargetId("c", "transpile")]);
+    expect(indices[getTargetId("b", "transpile")]).toBeLessThan(
+      indices[getTargetId("c", "transpile")]
+    );
 
     repo.cleanup();
   });
 });
 
 function filterEntry(taskData, pkg, task, status) {
-  return taskData && taskData.package === pkg && taskData.task === task && taskData.status === status;
+  return (
+    taskData &&
+    taskData.package === pkg &&
+    taskData.task === task &&
+    taskData.status === status
+  );
 }

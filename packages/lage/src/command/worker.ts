@@ -42,7 +42,9 @@ export async function worker(cwd: string, config: Config) {
       deps
         .filter((d) => d !== START_TARGET_ID)
         .map((depTargetId: string) => {
-          return networkLimit(() => getCache(pipeline.targets.get(depTargetId)!, workspace.root, config));
+          return networkLimit(() =>
+            getCache(pipeline.targets.get(depTargetId)!, workspace.root, config)
+          );
         })
     );
 
@@ -53,7 +55,12 @@ export async function worker(cwd: string, config: Config) {
 
     if (cacheResult.cacheHit) {
       taskLogger.info(`[${job.id}] skipped`);
-      return { hash: cacheResult.hash, id: target.id, cwd: target.cwd, outputGlob: target.outputGlob };
+      return {
+        hash: cacheResult.hash,
+        id: target.id,
+        cwd: target.cwd,
+        outputGlob: target.outputGlob,
+      };
     }
 
     // Step 3. Try running the task based on the target ID from the queue
@@ -89,7 +96,12 @@ export async function worker(cwd: string, config: Config) {
 
       taskLogger.info(`[${job.id}] done`);
 
-      return { hash: cacheResult.hash, id: target.id, cwd: target.cwd, outputGlob: target.outputGlob };
+      return {
+        hash: cacheResult.hash,
+        id: target.id,
+        cwd: target.cwd,
+        outputGlob: target.outputGlob,
+      };
     } catch (e) {
       // Step 4a. If there is an error, we report the output in a message as an Error. This gets sent
       //          across the redis server via the queue, so there will be a size limit to it
@@ -142,7 +154,11 @@ async function getCache(target: PipelineTarget, root: string, config: Config) {
   return { hash, cacheHit };
 }
 
-async function saveCache(hash: string | null, target: PipelineTarget, config: Config) {
+async function saveCache(
+  hash: string | null,
+  target: PipelineTarget,
+  config: Config
+) {
   const cacheOptions = getCacheOptions(target, config);
   await cachePut(hash, target.cwd, cacheOptions);
 }

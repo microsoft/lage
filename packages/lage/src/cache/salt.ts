@@ -11,7 +11,11 @@ export function salt(
   repoRoot: string,
   customKey: string = ""
 ): string {
-  return hashStrings([...getEnvHash(environmentGlobFiles, repoRoot), command, customKey]);
+  return hashStrings([
+    ...getEnvHash(environmentGlobFiles, repoRoot),
+    command,
+    customKey,
+  ]);
 }
 
 function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {

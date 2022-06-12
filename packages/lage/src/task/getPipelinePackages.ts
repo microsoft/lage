@@ -1,7 +1,11 @@
 import { Config } from "../types/Config";
 import { filterPackages } from "./filterPackages";
 import { Workspace } from "../types/Workspace";
-import { getScopedPackages, getChangedPackages, getBranchChanges } from "workspace-tools";
+import {
+  getScopedPackages,
+  getChangedPackages,
+  getBranchChanges,
+} from "workspace-tools";
 import * as fg from "fast-glob";
 import { logger } from "../logger";
 
@@ -21,9 +25,15 @@ export function getPipelinePackages(workspace: Workspace, config: Config) {
   // Be specific with the changed packages only if no repo-wide changes occurred
   if (hasSince && !hasRepoChanged(since, workspace.root, repoWideChanges)) {
     try {
-      changedPackages = getChangedPackages(workspace.root, since, config.ignore);
-    } catch(e) {
-      logger.warn(`An error in the git command has caused this scope run to include every package\n${e}`);
+      changedPackages = getChangedPackages(
+        workspace.root,
+        since,
+        config.ignore
+      );
+    } catch (e) {
+      logger.warn(
+        `An error in the git command has caused this scope run to include every package\n${e}`
+      );
       // if getChangedPackages throws, we will assume all have changed (using changedPackage = undefined)
     }
   }
@@ -57,9 +67,11 @@ function hasRepoChanged(
     }
 
     return repoWideChanged;
-  } catch(e) {
+  } catch (e) {
     // if this fails, let's assume repo has changed
-    logger.warn(`An error in the git command has caused this to consider the repo has changed\n${e}`);
+    logger.warn(
+      `An error in the git command has caused this to consider the repo has changed\n${e}`
+    );
     return true;
   }
 }

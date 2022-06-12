@@ -3,7 +3,12 @@ import { generateTopologicGraph } from "../workspace/generateTopologicalGraph";
 import { NpmScriptTask } from "./NpmScriptTask";
 import { PackageInfo, PackageInfos } from "workspace-tools";
 import { RunContext } from "../types/RunContext";
-import { PipelineTarget, TargetConfig, TargetConfigFactory, TaskArgs } from "../types/PipelineDefinition";
+import {
+  PipelineTarget,
+  TargetConfig,
+  TargetConfigFactory,
+  TaskArgs,
+} from "../types/PipelineDefinition";
 import { TopologicalGraph } from "../types/TopologicalGraph";
 import { Workspace } from "../types/Workspace";
 import pGraph, { PGraphNodeMap } from "p-graph";
@@ -22,7 +27,10 @@ export const START_TARGET_ID = "__start";
  * - for doing distributed work, the WrapperTask will instead place the PipelineTarget info into a worker queue
  */
 export class Pipeline {
-  private cachedTransitiveTaskDependencies: Map<string, "walk-in-progress" | Set<string>> = new Map()
+  private cachedTransitiveTaskDependencies: Map<
+    string,
+    "walk-in-progress" | Set<string>
+  > = new Map();
 
   /** Target represent a unit of work and the configuration of how to run it */
   targets: Map<string, PipelineTarget> = new Map([
@@ -60,7 +68,13 @@ export class Pipeline {
   private runTask(id: string, cwd: string, run?: PipelineTarget["run"]) {
     if (this.config.dist) {
       return (args: TaskArgs) => {
-        const task = new DistributedTask(id, cwd, this.config, this.context?.workerQueue!, args.logger);
+        const task = new DistributedTask(
+          id,
+          cwd,
+          this.config,
+          this.context?.workerQueue!,
+          args.logger
+        );
         task.run();
       };
     }
@@ -99,7 +113,11 @@ export class Pipeline {
   /**
    * Generates a package target during the expansion of the shortcut syntax
    */
-  private generatePackageTarget(packageName: string, task: string, deps: string[]): PipelineTarget {
+  private generatePackageTarget(
+    packageName: string,
+    task: string,
+    deps: string[]
+  ): PipelineTarget {
     const info = this.packageInfos[packageName];
     const id = getTargetId(packageName, task);
 
@@ -112,7 +130,9 @@ export class Pipeline {
       cwd: path.dirname(this.packageInfos[packageName].packageJsonPath),
       run: this.maybeRunNpmTask(task, info),
       // TODO: do we need to really merge this? Is this desired? (this is the OLD behavior)
-      deps: this.targets.has(id) ? [...(this.targets.get(id)!.deps || []), ...deps] : deps,
+      deps: this.targets.has(id)
+        ? [...(this.targets.get(id)!.deps || []), ...deps]
+        : deps,
     };
   }
 
@@ -159,7 +179,11 @@ export class Pipeline {
    * @param id
    * @param target
    */
-  private convertToPipelineTarget(id: string, index: number, target: TargetConfig): PipelineTarget[] {
+  private convertToPipelineTarget(
+    id: string,
+    index: number,
+    target: TargetConfig
+  ): PipelineTarget[] {
     if (target.type === "global") {
       const targetId = `${id}.${index}`;
       return [
@@ -169,7 +193,9 @@ export class Pipeline {
           cache: target.cache !== false,
           cwd: this.workspace.root,
           task: id,
-          run: this.runTask(targetId, this.workspace.root, target.run) || (() => {}),
+          run:
+            this.runTask(targetId, this.workspace.root, target.run) ||
+            (() => {}),
         },
       ];
     } else if (id.includes("#")) {
@@ -184,8 +210,11 @@ export class Pipeline {
           cwd: path.dirname(this.packageInfos[pkg!].packageJsonPath),
           packageName: pkg,
           run:
-            this.runTask(id, path.dirname(this.packageInfos[pkg!].packageJsonPath), target.run) ||
-            this.maybeRunNpmTask(task, this.packageInfos[pkg!]),
+            this.runTask(
+              id,
+              path.dirname(this.packageInfos[pkg!].packageJsonPath),
+              target.run
+            ) || this.maybeRunNpmTask(task, this.packageInfos[pkg!]),
         },
       ];
     } else {
@@ -201,8 +230,11 @@ export class Pipeline {
           cwd: path.dirname(this.packageInfos[pkg].packageJsonPath),
           packageName: pkg,
           run:
-            this.runTask(targetId, path.dirname(this.packageInfos[pkg].packageJsonPath), target.run) ||
-            this.maybeRunNpmTask(id, this.packageInfos[pkg]),
+            this.runTask(
+              targetId,
+              path.dirname(this.packageInfos[pkg].packageJsonPath),
+              target.run
+            ) || this.maybeRunNpmTask(id, this.packageInfos[pkg]),
         };
       });
     }
@@ -213,7 +245,10 @@ export class Pipeline {
    * @param id
    * @param targetDefinition
    */
-  addTargetDefinition(id: string, targetDefinition: string[] | TargetConfig | TargetConfigFactory) {
+  addTargetDefinition(
+    id: string,
+    targetDefinition: string[] | TargetConfig | TargetConfigFactory
+  ) {
     // e.g. build: ["^build", "prepare"]
     if (Array.isArray(targetDefinition)) {
       const targets = this.expandShorthandTargets(id, targetDefinition);
@@ -224,7 +259,9 @@ export class Pipeline {
     } else {
       // e.g. build: { /* target config */ }
       const targets =
-        typeof targetDefinition === "function" ? this.generateFactoryTargets(targetDefinition) : [targetDefinition];
+        typeof targetDefinition === "function"
+          ? this.generateFactoryTargets(targetDefinition)
+          : [targetDefinition];
 
       targets.forEach((target, index) => {
         const pipelineTargets = this.convertToPipelineTarget(id, index, target);
@@ -272,16 +309,20 @@ export class Pipeline {
           this.dependencies.push([dep, id]);
         } else if (dep.startsWith("^") && packageName) {
           // topo dep -> build: ['^build']
-          const [depTask, dependencySet] = dep.startsWith("^^") ?
-            [dep.substr(2), [...this.getTransitiveGraphDependencies(packageName)]]
-            : [dep.substr(1), this.graph[packageName].dependencies]
-          
+          const [depTask, dependencySet] = dep.startsWith("^^")
+            ? [
+                dep.substr(2),
+                [...this.getTransitiveGraphDependencies(packageName)],
+              ]
+            : [dep.substr(1), this.graph[packageName].dependencies];
+
           const dependencyIds = targets
             .filter((needle) => {
               const { task, packageName: needlePackageName } = needle;
 
               return (
-                task === depTask && dependencySet.some((depPkg) => depPkg === needlePackageName)
+                task === depTask &&
+                dependencySet.some((depPkg) => depPkg === needlePackageName)
               );
             })
             .map((needle) => needle.id);
@@ -295,7 +336,9 @@ export class Pipeline {
             this.dependencies.push([getTargetId(packageName, dep), target.id]);
           }
         } else if (!dep.startsWith("^")) {
-          const dependencyIds = targets.filter((needle) => needle.task === dep).map((needle) => needle.id);
+          const dependencyIds = targets
+            .filter((needle) => needle.task === dep)
+            .map((needle) => needle.id);
 
           for (const dependencyId of dependencyIds) {
             this.dependencies.push([dependencyId, id]);
@@ -315,21 +358,24 @@ export class Pipeline {
   getTransitiveGraphDependencies(packageName: string): Set<string> {
     const cachedResult = this.cachedTransitiveTaskDependencies.get(packageName);
     if (cachedResult) {
-      return (cachedResult ==="walk-in-progress")
-        // There is a recursive walk over this set of dependencies in progress.
-        // If we hit this case, that means that a dependency of this package depends on it.
-        //
-        // In this case we return an empty set to omit this package and it's downstream from its
-        // dependency
-        ? new Set()
-        // we already computed this for this package, return the cached result.
-        : cachedResult;
+      return cachedResult === "walk-in-progress"
+        ? // There is a recursive walk over this set of dependencies in progress.
+          // If we hit this case, that means that a dependency of this package depends on it.
+          //
+          // In this case we return an empty set to omit this package and it's downstream from its
+          // dependency
+          new Set()
+        : // we already computed this for this package, return the cached result.
+          cachedResult;
     } else {
       // No cached result. Compute now with a recursive walk
 
       // mark that we are traversing this package to prevent infinite recursion
       // in cases of circular dependencies
-      this.cachedTransitiveTaskDependencies.set(packageName, 'walk-in-progress');
+      this.cachedTransitiveTaskDependencies.set(
+        packageName,
+        "walk-in-progress"
+      );
 
       let immediateDependencies = this.graph[packageName]?.dependencies ?? [];
 
@@ -337,14 +383,16 @@ export class Pipeline {
       // immediate dependencies' dependencies.
       let transitiveDepSet = new Set<string>(immediateDependencies);
       for (let immediateDependency of immediateDependencies) {
-        for (let transitiveSubDependency of this.getTransitiveGraphDependencies(immediateDependency)) {
-          transitiveDepSet.add(transitiveSubDependency)
+        for (let transitiveSubDependency of this.getTransitiveGraphDependencies(
+          immediateDependency
+        )) {
+          transitiveDepSet.add(transitiveSubDependency);
         }
       }
 
       // Cache the result and return
       this.cachedTransitiveTaskDependencies.set(packageName, transitiveDepSet);
-      return transitiveDepSet
+      return transitiveDepSet;
     }
   }
 
@@ -433,7 +481,9 @@ export class Pipeline {
 
     knownTasks.add(START_TARGET_ID);
 
-    const unknownCommands = this.config.command.filter((cmd) => !knownTasks.has(cmd));
+    const unknownCommands = this.config.command.filter(
+      (cmd) => !knownTasks.has(cmd)
+    );
 
     for (const command of unknownCommands) {
       this.addTargetDefinition(command, [`^${command}`]);
@@ -446,7 +496,9 @@ export class Pipeline {
     return target.priority !== undefined
       ? target.priority
       : this.config.priorities?.find(
-          (priority) => priority.package === target.packageName && priority.task === target.task
+          (priority) =>
+            priority.package === target.packageName &&
+            priority.task === target.task
         )?.priority;
   }
 
@@ -475,7 +527,12 @@ export class Pipeline {
               return Promise.resolve();
             }
 
-            const wrappedTask = new WrappedTarget(target, this.workspace.root, this.config, context);
+            const wrappedTask = new WrappedTarget(
+              target,
+              this.workspace.root,
+              this.config,
+              context
+            );
             return wrappedTask.run();
           },
           priority: this.getTargetPriority(target),
@@ -489,7 +546,9 @@ export class Pipeline {
     }
 
     await pGraph(nodeMap, targetGraph).run({
-      concurrency: this.config.dist ? targetGraph.length : this.config.concurrency,
+      concurrency: this.config.dist
+        ? targetGraph.length
+        : this.config.concurrency,
       continue: this.config.continue,
     });
   }

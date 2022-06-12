@@ -63,7 +63,7 @@ describe("RemoteFallbackCacheProvider", () => {
     ).toBeTruthy();
 
     repo.cleanup();
-  })
+  });
 
   it("should operate with local provider ONLY by default", () => {
     const repo = new Monorepo("fallback");

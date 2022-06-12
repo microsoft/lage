@@ -29,7 +29,10 @@ export class WrappedTarget implements LoggableTarget {
     private context: RunContext
   ) {
     this.status = "pending";
-    this.logger = new TaskLogger(target.packageName || "[GLOBAL]", target.packageName ? target.task : target.id);
+    this.logger = new TaskLogger(
+      target.packageName || "[GLOBAL]",
+      target.packageName ? target.task : target.id
+    );
 
     const outputGlob = target.outputGlob || config.cacheOptions.outputGlob;
     this.cacheOptions = {
@@ -81,7 +84,13 @@ export class WrappedTarget implements LoggableTarget {
     const { target, root, config, cacheOptions } = this;
 
     if (config.cache && target.cache) {
-      hash = await cacheHash(target.id, target.cwd, root, cacheOptions, config.args);
+      hash = await cacheHash(
+        target.id,
+        target.cwd,
+        root,
+        cacheOptions,
+        config.args
+      );
 
       if (hash && !config.resetCache) {
         cacheHit = await cacheFetch(hash, target.id, target.cwd, cacheOptions);

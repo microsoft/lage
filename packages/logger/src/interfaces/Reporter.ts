@@ -2,7 +2,9 @@ import type { LogLevel } from "./LogLevel";
 import type { LogEntry } from "./LogEntry";
 import { LogStructuredData } from "./LogStructuredData";
 
-export interface Reporter<TLogStructuredData extends LogStructuredData = LogStructuredData> {
+export interface Reporter<
+  TLogStructuredData extends LogStructuredData = LogStructuredData
+> {
   /** log level, use the LogLevel object */
   logLevel?: LogLevel;
 

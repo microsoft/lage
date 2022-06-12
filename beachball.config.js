@@ -2,15 +2,15 @@
 /** @type {import('beachball').BeachballConfig}*/
 module.exports = {
   ignorePatterns: [
-    '.*ignore',
-    '.github/**',
-    'beachball.config.js',
-    'decks/**',
-    'docs/**',
-    'jasmine.json',
-    'packages/*/jest.config.js',
-    'packages/*/tests/**',
+    ".*ignore",
+    ".github/**",
+    "beachball.config.js",
+    "decks/**",
+    "docs/**",
+    "jasmine.json",
+    "packages/*/jest.config.js",
+    "packages/*/tests/**",
     // This one is especially important (otherwise dependabot would be blocked by change file requirements)
-    'yarn.lock',
+    "yarn.lock",
   ],
 };

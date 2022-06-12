@@ -1,5 +1,5 @@
 import { Monorepo } from "../mock/monorepo";
-import { getTargetId } from '../../src/task/taskId';
+import { getTargetId } from "../../src/task/taskId";
 import { parseNdJson } from "./parseNdJson";
 
 describe("bigapp test", () => {
