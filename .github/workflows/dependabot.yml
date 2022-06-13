@@ -12,16 +12,29 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
+          git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
           git config user.email "nobody@users.noreply.github.com"
           git config user.name "Dependabot"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@v1.1.1
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - run: yarn
       - name: create change file
         run: |
-          yarn
-          yarn change --type patch --message "Dependabot bumps dependencies: ${{steps.metadata.outputs.dependency-names}}"
-      - name: push changes back into PR
-        run: git push
+          if ! yarn checkchange; then
+            yarn change --type patch --message "Dependabot bumps dependencies: ${{steps.metadata.outputs.dependency-names}}"
+            git push origin HEAD:$GITHUB_HEAD_REF
+            if [[ "$(git log --pretty=%B -n 1 | head -n 1)" == "Change files" ]]; then
+              echo "::set-output name=didUpdate::yes"
+            else
+              echo "::error::Change files were needed but did not appear to be committed (has something changed about beachball options?)"
+              echo "See below for the current status and last 3 commits:"
+              git status
+              git log -n 3
+              exit 1
+            fi
+          fi
