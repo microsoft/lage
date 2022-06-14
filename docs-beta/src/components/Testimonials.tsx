@@ -1,5 +1,5 @@
 import React from 'react';
-import { TestimonialList } from '../pages/data/TestimonialList';
+import { TestimonialList } from '../data/TestimonialList';
 
 function Testimonial({testimonial, link}) {
   return (

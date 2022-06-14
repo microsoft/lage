@@ -10,7 +10,7 @@ import '../css/tailwind-styles.css';
 import Testimonials from '../components/Testimonials';
 import Table from '../components/Table';
 import { styles } from "../components/shared-styles"
-import { tableContents } from "./data/TableContents";
+import { tableContents } from "../data/TableContents";
 
 export default function Home() {
   const {siteConfig}=useDocusaurusContext();  

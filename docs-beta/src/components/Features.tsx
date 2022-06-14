@@ -1,6 +1,6 @@
 import React from 'react';
 import { styles } from "./shared-styles"
-import { FeatureList } from '../pages/data/FeatureList';
+import { FeatureList } from '../data/FeatureList';
 
 function Feature({Svg, title}) {
   return (
