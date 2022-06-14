@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 22 Apr 2022 16:41:30 GMT and should not be manually modified.
+This log was last generated on Tue, 14 Jun 2022 22:29:46 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.42.0
+
+Tue, 14 Jun 2022 22:29:46 GMT
+
+### Minor changes
+
+- Fix handling of stdio chunks that don't end in a new line (4015993+KyleDavidE@users.noreply.github.com)
 
 ## 0.41.0
 

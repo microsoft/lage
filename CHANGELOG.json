@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 14 Jun 2022 22:29:46 GMT",
+      "tag": "lage_v0.42.0",
+      "version": "0.42.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Fix handling of stdio chunks that don't end in a new line",
+            "author": "4015993+KyleDavidE@users.noreply.github.com",
+            "commit": "17ce5779f657d0aa50a8d3c2768d85cd53e9cc8d",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 22 Apr 2022 16:41:30 GMT",
       "tag": "lage_v0.41.0",
       "version": "0.41.0",
