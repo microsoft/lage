@@ -14,8 +14,8 @@ jobs:
           fetch-depth: 0
       - run: |
           git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
-          git config user.email "nobody@users.noreply.github.com"
-          git config user.name "Dependabot"
+          git config user.email "dependabot[bot]@users.noreply.github.com"
+          git config user.name "dependabot[bot]"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Dependabot metadata
