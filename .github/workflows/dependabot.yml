@@ -10,6 +10,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
       - run: |
           git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
@@ -28,7 +29,7 @@ jobs:
         run: |
           if ! yarn checkchange; then
             yarn change --type patch --message "Dependabot bumps dependencies: ${{steps.metadata.outputs.dependency-names}}"
-            git push origin HEAD:$GITHUB_HEAD_REF
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
             if [[ "$(git log --pretty=%B -n 1 | head -n 1)" == "Change files" ]]; then
               echo "::set-output name=didUpdate::yes"
             else
