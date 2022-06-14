@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Dependabot bumps dependencies: workspace-tools",
-  "packageName": "lage",
-  "email": "nobody@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

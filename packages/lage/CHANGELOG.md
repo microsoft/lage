@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 10 Jun 2022 19:39:32 GMT and should not be manually modified.
+This log was last generated on Tue, 14 Jun 2022 20:51:18 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.2
+
+Tue, 14 Jun 2022 20:51:18 GMT
+
+### Patches
+
+- Dependabot bumps dependencies: workspace-tools (nobody@users.noreply.github.com)
 
 ## 1.6.1
 
