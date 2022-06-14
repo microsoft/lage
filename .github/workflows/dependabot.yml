@@ -11,7 +11,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
           git config user.email "nobody@users.noreply.github.com"
@@ -23,8 +22,9 @@ jobs:
         uses: dependabot/fetch-metadata@v1.1.1
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
-      - run: yarn
-      - name: create change file
+      - name: Install beachball
+        uses: ecraig12345/beachball-actions/install-beachball@v1
+      - name: Create change file
         run: |
           if ! yarn checkchange; then
             yarn change --type patch --message "Dependabot bumps dependencies: ${{steps.metadata.outputs.dependency-names}}"
