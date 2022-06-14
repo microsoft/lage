@@ -9,7 +9,7 @@ const config = {
   title: 'Lage',
   tagline: 'A Beautiful JS Monorepo Task Runner',
   url: process.env.DEPLOY_URL ? process.env.DEPLOY_URL : 'https://microsoft.github.io',
-  baseUrl: process.env.NETLIFY ? '/' : '/lage/',
+  baseUrl: '/lage/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/lage-logo.svg',
