@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/"
+  to = "/lage"
+  status = 301
