@@ -11,7 +11,7 @@ export default function Footer() {
       <TwoColumns>
         <div>
           <img className="mx-12 py-8"
-              src="http://placekitten.com/400/400"/>
+              src="https://placekitten.com/400/400"/>
         </div>
         <div>
           <h1 className={styles.footerTitle}>Seeing is believing -- Give Lage a spin</h1>
