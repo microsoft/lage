@@ -19,13 +19,13 @@ export default function Header() {
                     <p className={styles.fullLengthPara}> Be one of the cool kids using Lage.</p>
 
                     <SideBySide>
-                        <img className={styles.customerLogo} src="http://placekitten.com/75/75"/>
-                        <img className={styles.customerLogo} src="http://placekitten.com/75/75"/>
-                        <img className={styles.customerLogo} src="http://placekitten.com/75/75"/>
+                        <img className={styles.customerLogo} src="https://placekitten.com/75/75"/>
+                        <img className={styles.customerLogo} src="https://placekitten.com/75/75"/>
+                        <img className={styles.customerLogo} src="https://placekitten.com/75/75"/>
                     </SideBySide>
                 </div>
                 <div>
-                    <img className="mx-auto w-3/4 h-3/4 px-3 md:w-full lg:w-full md:h-full lg:h-full" src="http://placekitten.com/300/300"/>
+                    <img className="mx-auto w-3/4 h-3/4 px-3 md:w-full lg:w-full md:h-full lg:h-full" src="https://placekitten.com/300/300"/>
                 </div>
             </TwoColumns>
         </header>

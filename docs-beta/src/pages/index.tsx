@@ -27,13 +27,13 @@ export default function Home() {
                    author="@devs_for_days89"/>
           </div>
           <div>
-            <img className="mx-auto mt-3 px-12" src="http://placekitten.com/600/600"/>
+            <img className="mx-auto mt-3 px-12" src="https://placekitten.com/600/600"/>
           </div>
         </TwoColumns>
 
         <TwoColumns className="mt-16">
           <div>
-            <img className="mx-auto mt-3 px-12" src="http://placekitten.com/600/600"/>
+            <img className="mx-auto mt-3 px-12" src="https://placekitten.com/600/600"/>
           </div>
           <div className="text-right justify-end">
             <h1 className={styles.point}>Here is what Lage does the best.</h1>
