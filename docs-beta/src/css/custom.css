@@ -1,11 +1,26 @@
 @tailwind base;
 @tailwind components;
+
+@font-face {
+     font-family: "Londrina Solid";
+     src: url(../../static/fonts/LondrinaSolid.ttf) format('truetype');
+};
+
+@font-face {
+     font-family: "Bahnschrift";
+     src: url(../../static/fonts/Bahnschrift.ttf) format('truetype');
+};
+
 @tailwind utilities;
 
-.theme-dark {
-    --color-primary: 0 0 0;
-    --color-secondary: 255 255 255;
-    --color-tertiary: 212 212 216;
-    --color-brand: 13 148 136;
-    --color-accent: 234 88 12;
+.theme-color {
+    --color-button: 134 0 156;
+    --color-point: 255 214 107;
+    --color-body-primary: 33 153 190; 
+    --color-body-secondary: 6 119 126;
+    --color-primary: 255 255 255;
+    --color-secondary: 33 153 190;
+    --color-tertiary: 255 0 0;
+    --color-navbar: 28 88 106;
+    --color-tool: 14 70 74;
 }

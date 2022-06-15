@@ -9,10 +9,6 @@ const lage = {
     "Detecting affected projects/packages": "Yes",
     "Workspace analysis": "Yes",
     "Dependency graph visualization": "Yes",
-    "Source code sharing": "Yes",
-    "Consistent tooling": "Yes",
-    "Code generation": "Yes",
-    "Project constraints and visibility": "Yes",
   },
 };
 
@@ -27,10 +23,6 @@ const bazel = {
     "Detecting affected projects/packages": "Yes",
     "Workspace analysis": "Yes",
     "Dependency graph visualization": "Yes",
-    "Source code sharing": "Yes",
-    "Consistent tooling": "Yes",
-    "Code generation": "Yes",
-    "Project constraints and visibility": "Yes",
   },
 };
 
@@ -45,10 +37,6 @@ const gradle = {
     "Detecting affected projects/packages": "Yes",
     "Workspace analysis": "Yes",
     "Dependency graph visualization": "Yes",
-    "Source code sharing": "Yes",
-    "Consistent tooling": "Yes",
-    "Code generation": "Yes",
-    "Project constraints and visibility": "Yes",
   },
 };
 
@@ -63,10 +51,6 @@ const nx = {
     "Detecting affected projects/packages": "Yes",
     "Workspace analysis": "Yes",
     "Dependency graph visualization": "Yes",
-    "Source code sharing": "Yes",
-    "Consistent tooling": "Yes",
-    "Code generation": "Yes",
-    "Project constraints and visibility": "Yes",
   },
 };
 
@@ -81,46 +65,6 @@ const lerna = {
     "Detecting affected projects/packages": "Yes",
     "Workspace analysis": "Yes",
     "Dependency graph visualization": "Yes",
-    "Source code sharing": "Yes",
-    "Consistent tooling": "Yes",
-    "Code generation": "Yes",
-    "Project constraints and visibility": "Yes",
-  },
-};
-
-const pants = {
-  name: "Pants",
-  capabilities: {
-    "Local computation caching": "Yes",
-    "Local task orchastration": "Yes",
-    "Distributed computation caching": "Yes",
-    "Distributed task execution": "Yes",
-    "Transparent remote execution": "Yes",
-    "Detecting affected projects/packages": "Yes",
-    "Workspace analysis": "Yes",
-    "Dependency graph visualization": "Yes",
-    "Source code sharing": "Yes",
-    "Consistent tooling": "Yes",
-    "Code generation": "Yes",
-    "Project constraints and visibility": "Yes",
-  },
-};
-
-const rush = {
-  name: "Rush",
-  capabilities: {
-    "Local computation caching": "Yes",
-    "Local task orchastration": "Yes",
-    "Distributed computation caching": "Yes",
-    "Distributed task execution": "Yes",
-    "Transparent remote execution": "Yes",
-    "Detecting affected projects/packages": "Yes",
-    "Workspace analysis": "Yes",
-    "Dependency graph visualization": "Yes",
-    "Source code sharing": "Yes",
-    "Consistent tooling": "Yes",
-    "Code generation": "Yes",
-    "Project constraints and visibility": "Yes",
   },
 };
 
@@ -135,11 +79,7 @@ const turborepo = {
     "Detecting affected projects/packages": "Yes",
     "Workspace analysis": "Yes",
     "Dependency graph visualization": "Yes",
-    "Source code sharing": "Yes",
-    "Consistent tooling": "Yes",
-    "Code generation": "Yes",
-    "Project constraints and visibility": "Yes",
   },
 };
 
-export const tableContents = [lage, bazel, gradle, nx, lerna, pants, rush, turborepo];
+export const tableContents = [lage, bazel, gradle, nx, lerna, turborepo];
