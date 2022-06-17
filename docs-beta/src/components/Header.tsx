@@ -9,7 +9,7 @@ import { Illustration } from "./Illustration";
 export default function Header() {
   return (
     <header className="theme-color bg-body-primary flex justify-center items-center pt-8 pb-24">
-      <div className="2xl:container">
+      <div className="2xl:w-big-screen">
         <TwoColumns imageOnTop={true} imageFirst={false}>
           <div>
             <HeaderTitle>Never build the same code twice</HeaderTitle>

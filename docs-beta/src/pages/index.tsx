@@ -19,7 +19,7 @@ export default function Home() {
       <Header />
       <Illustration src="img/Wave Shape 1.svg" isWave={true} />
       <main className="theme-color bg-gradient-to-b from-body-secondary to-body-primary pb-20">
-        <div className="2xl:container">
+        <div className="2xl:w-big-screen 2xl:mx-auto">
           <Quote author="Jason Gore" organization="Microsoft Loop">
             Finally a task runner that
             <span className="text-point"> truly understands</span> the structure

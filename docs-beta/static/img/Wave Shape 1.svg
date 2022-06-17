@@ -1,4 +1,4 @@
-<svg width="1920" height="256" viewBox="0 0 1920 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg preserveAspectRatio="none" width="1920" height="256" viewBox="0 0 1920 256" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="1920" height="256" fill="#2199BE"/>
 <path d="M1920 256V91.2732C1749.8 -1.833 1480.16 -76.3178 992.51 144.272C504.86 364.862 309.801 33.9771 0 256H1920Z" fill="#06777E"/>
 </svg>

@@ -20,6 +20,9 @@ module.exports = {
       center: true,
     },
     extend: {
+      spacing: {
+        'big-screen': '1920px',
+      },
       colors: {
         primary: withOpacityValue("--color-primary"),
         secondary: withOpacityValue("--color-secondary"),

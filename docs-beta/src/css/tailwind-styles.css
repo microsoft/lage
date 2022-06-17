@@ -641,6 +641,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 3rem;
 }
 
+.max-h-9 {
+  max-height: 2.25rem;
+}
+
 .w-8 {
   width: 2rem;
 }
@@ -679,10 +683,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-11\/12 {
   width: 91.666667%;
-}
-
-.max-w-xs {
-  max-width: 20rem;
 }
 
 .max-w-sm {
@@ -1197,39 +1197,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 
 @media (min-width: 1536px) {
-  .\32xl\:container {
-    width: 100%;
-    margin-right: auto;
+  .\32xl\:mx-auto {
     margin-left: auto;
+    margin-right: auto;
   }
 
-  @media (min-width: 640px) {
-    .\32xl\:container {
-      max-width: 640px;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .\32xl\:container {
-      max-width: 768px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .\32xl\:container {
-      max-width: 1024px;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .\32xl\:container {
-      max-width: 1280px;
-    }
-  }
-
-  @media (min-width: 1536px) {
-    .\32xl\:container {
-      max-width: 1536px;
-    }
+  .\32xl\:w-big-screen {
+    width: 1920px;
   }
 }
