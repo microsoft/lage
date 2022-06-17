@@ -13,6 +13,9 @@
     "start": "tsc -w --preserveWatchOutput",
     "test": "jest"
   },
+  "dependencies": {
+    "@lage-run/logger": "^1.0.0"
+  },
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/node": "^12.0.0",

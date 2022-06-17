@@ -1,10 +1,10 @@
 import { Writable } from "stream";
-import { Logger } from "./Logger";
+import { Logger, LogLevel } from "@lage-run/Logger";
 
-export class LogWritable extends Writable {
+export class TargetLogWritable extends Writable {
   private buffer: string = "";
 
-  constructor(private logger: Logger) {
+  constructor(private logLevel: LogLevel, private logger: Logger) {
     super();
   }
 
@@ -24,7 +24,7 @@ export class LogWritable extends Writable {
             .toString()
             .replace(/^(\r\n|\n|\r)|(\r\n|\n|\r)$/g, "")
             .trimRight();
-        this.logger.verbose(this.buffer);
+        this.logger.log(this.logLevel, this.buffer);
         this.buffer = "";
         prev = curr;
       }
