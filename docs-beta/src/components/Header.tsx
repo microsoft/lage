@@ -9,23 +9,25 @@ import { Illustration } from "./Illustration";
 export default function Header() {
   return (
     <header className="theme-color bg-body-primary flex justify-center items-center pt-8 pb-24">
-      <TwoColumns imageOnTop={true} imageFirst={false}>
-        <div>
-          <HeaderTitle>Never build the same code twice</HeaderTitle>
-          <ProductDescription>
-            Give your monorepo the smarts to <i>actually</i> save you time
-          </ProductDescription>
-          <SideBySide>
-            <Button isEmphasized={true} to="/docs/Introducing Lage/Overview">
-              Get Started
-            </Button>
-            <Button isEmphasized={false} to="/docs/Introducing Lage/Overview">
-              Try the Demo
-            </Button>
-          </SideBySide>
-        </div>
-        <Illustration src="img/frog-monitor0.png" />
-      </TwoColumns>
+      <div className="2xl:container">
+        <TwoColumns imageOnTop={true} imageFirst={false}>
+          <div>
+            <HeaderTitle>Never build the same code twice</HeaderTitle>
+            <ProductDescription>
+              Give your monorepo the smarts to <i>actually</i> save you time
+            </ProductDescription>
+            <SideBySide>
+              <Button isEmphasized={true} to="/docs/Introducing Lage/Overview">
+                Get Started
+              </Button>
+              <Button isEmphasized={false} to="/docs/Introducing Lage/Overview">
+                Try the Demo
+              </Button>
+            </SideBySide>
+          </div>
+          <Illustration src="img/frog-monitor0.png" />
+        </TwoColumns>
+      </div>
     </header>
   );
 }

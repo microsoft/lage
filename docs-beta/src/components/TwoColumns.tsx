@@ -71,9 +71,9 @@ export const TwoColumns = (props) => {
         )}
       </div>
 
-      <div className="grid hidden mx-12 md:flex md:items-center md:grid-cols-2">
+      <div className="hidden mx-12 md:flex md:flex-row md:items-center md:">
         {React.Children.map(props.children, (child, i) => {
-          if (i < 2) return <div className="flex align-center">{child}</div>;
+          if (i < 2) return <div className="w-1/2">{child}</div>;
           else return;
         })}
       </div>

@@ -10,35 +10,37 @@ import { Button } from "./Button";
 export default function Footer() {
   return (
     <div className="theme-color bg-body-secondary py-8">
-      <div className="mt-16 md:mt-28" />
+      <div className="2xl:container">
+        <div className="mt-16 md:mt-28" />
 
-      <TwoColumns imageOnTop={true} imageFirst={true}>
-        <Illustration src="img/frog-sing0.png" />
-        <div>
-          <Point>Seeing is believing— give Lage a spin</Point>
-          <Description>
-            There’s no better time than now to save yourself time. Get started
-            within a minute with a single command!
-          </Description>
-          <SideBySide>
-            <Button isEmphasized={true} to="/docs/Introducing Lage/Overview">
-              Get Started
-            </Button>
-            <Button isEmphasized={false} to="/docs/Introducing Lage/Overview">
-              Try the Demo
-            </Button>
-          </SideBySide>
-        </div>
-      </TwoColumns>
+        <TwoColumns imageOnTop={true} imageFirst={true}>
+          <Illustration src="img/frog-sing0.png" />
+          <div>
+            <Point>Seeing is believing— give Lage a spin</Point>
+            <Description>
+              There’s no better time than now to save yourself time. Get started
+              within a minute with a single command!
+            </Description>
+            <SideBySide>
+              <Button isEmphasized={true} to="/docs/Introducing Lage/Overview">
+                Get Started
+              </Button>
+              <Button isEmphasized={false} to="/docs/Introducing Lage/Overview">
+                Try the Demo
+              </Button>
+            </SideBySide>
+          </div>
+        </TwoColumns>
 
-      <div className="mt-16 md:mt-28" />
+        <div className="mt-16 md:mt-28" />
 
-      <Point> Better together</Point>
-      <Description>
-        Lage works great on its own, but even better alongside its related
-        tools.
-      </Description>
-      <Tools />
+        <Point> Better together</Point>
+        <Description>
+          Lage works great on its own, but even better alongside its related
+          tools.
+        </Description>
+        <Tools />
+      </div>
     </div>
   );
 }

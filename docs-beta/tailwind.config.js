@@ -16,6 +16,9 @@ module.exports = {
     "./src/components/*.ts",
   ],
   theme: {
+    container: {
+      center: true,
+    },
     extend: {
       colors: {
         primary: withOpacityValue("--color-primary"),
