@@ -4,10 +4,9 @@ import { PackageInfo } from "workspace-tools";
 import { findNpmClient } from "../workspace/findNpmClient";
 import { spawn } from "child_process";
 import path from "path";
-import { TaskLogWritable } from "../logger/TaskLogWritable";
-
 import { getNpmCommand } from "./getNpmCommand";
 import { Config } from "../types/Config";
+import { LogLevel } from "../logger/LogLevel";
 
 export class NpmScriptTask {
   static npmCmd: string = "";
@@ -34,8 +33,14 @@ export class NpmScriptTask {
     }, NpmScriptTask.gracefulKillTimeout);
   }
 
-  constructor(public task: string, public info: PackageInfo, private config: Config, private logger: TaskLogger) {
-    NpmScriptTask.npmCmd = NpmScriptTask.npmCmd || findNpmClient(config.npmClient);
+  constructor(
+    public task: string,
+    public info: PackageInfo,
+    private config: Config,
+    private logger: TaskLogger
+  ) {
+    NpmScriptTask.npmCmd =
+      NpmScriptTask.npmCmd || findNpmClient(config.npmClient);
     this.npmArgs = getNpmCommand(config.node, config.args, task);
   }
 
@@ -50,19 +55,16 @@ export class NpmScriptTask {
         stdio: "pipe",
         env: {
           ...process.env,
-          ...(process.stdout.isTTY && this.config.reporter !== "json" && { FORCE_COLOR: "1" }),
+          ...(process.stdout.isTTY &&
+            this.config.reporter !== "json" && { FORCE_COLOR: "1" }),
           LAGE_PACKAGE_NAME: info.name,
         },
       });
 
       NpmScriptTask.activeProcesses.add(cp);
 
-      const stdoutLogger = new TaskLogWritable(this.logger);
-      cp.stdout.pipe(stdoutLogger);
-
-      const stderrLogger = new TaskLogWritable(this.logger);
-      cp.stderr.pipe(stderrLogger);
-
+      this.logger.stream(LogLevel.verbose, cp.stdout);
+      this.logger.stream(LogLevel.verbose, cp.stderr);
       cp.on("exit", handleChildProcessExit);
 
       function handleChildProcessExit(code: number) {
