@@ -1,41 +1,38 @@
-import type { ChildProcess } from "child_process";
 import { Logger, LogLevel } from "@lage-run/logger";
 import { spawn } from "child_process";
+import type { ChildProcess } from "child_process";
 import { TargetLogWritable } from "./TargetLogWritable";
 
-export interface TargetOptions {
+export interface TargetDefinition {
+  id: string;
+  label: string;
+  package: string;
   cwd: string;
-  cmd: string;
+
+  outputs?: string[];
+  inputs?: string[];
+
+  color?: boolean;
   args?: string[];
-  env?: Record<string, string>;
+  env?: Record<string, string | undefined>;
+
+  cmd: string;
+
+  onStart?: (target: Target) => void;
+  onComplete?: (target: Target) => void;
+  onFail?: (target: Target, childProcess: ChildProcess) => void;
+  onSkip?: (target: Target) => void;
 }
 
 export class Target {
-  static cmd: string = "";
-  static activeProcesses = new Set<ChildProcess>();
-  static gracefulKillTimeout = 2500;
-
-  npmArgs: string[] = [];
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
 
-  static killAllActiveProcesses() {
-    // first, send SIGTERM everywhere
-    for (const cp of Target.activeProcesses) {
-      cp.kill("SIGTERM");
-    }
-
-    // wait for "gracefulKillTimeout" to make sure everything is terminated via SIGKILL
-    setTimeout(() => {
-      for (const cp of Target.activeProcesses) {
-        if (!cp.killed) {
-          cp.kill("SIGKILL");
-        }
-      }
-    }, Target.gracefulKillTimeout);
+  constructor(private options: TargetDefinition, private logger: Logger) {
+    this.options.color = this.options.color ?? Boolean(process.stdout.isTTY);
+    this.options.env = this.options.env ?? process.env;
+    this.options.outputs = this.options.outputs ?? ["!node_modules/**/*"];
   }
-
-  constructor(private options: TargetOptions, private logger: Logger) {}
 
   run() {
     const { cmd, args = [], cwd, env } = this.options;
@@ -43,6 +40,7 @@ export class Target {
 
     return new Promise<void>((resolve, reject) => {
       logger.verbose(`Running ${[cmd, ...args].join(" ")}`);
+      this.startTime = process.hrtime();
 
       const cp = spawn(cmd, args, {
         cwd: cwd ?? process.cwd(),
@@ -50,22 +48,29 @@ export class Target {
           ...process.env,
           ...env,
         },
-        stdio: ["ignore", new TargetLogWritable(LogLevel.verbose, logger), "inherit"],
+        stdio: [
+          "ignore",
+          new TargetLogWritable(LogLevel.verbose, logger),
+          new TargetLogWritable(LogLevel.verbose, logger),
+        ],
       });
 
-      Target.activeProcesses.add(cp);
+      cp.on("exit", (code, signal) => {
+        if (code === 0) {
+          this.duration = process.hrtime(this.startTime);
 
-      const stdoutLogger = new TargetLogWritable(LogLevel.verbose, this.logger);
-      cp.stdout.pipe(stdoutLogger);
+          if (this.options.onComplete) {
+            this.options.onComplete(this);
+          }
 
-      const stderrLogger = new TargetLogWritable(LogLevel.verbose, this.logger);
-      cp.stderr.pipe(stderrLogger);
+          return resolve();
+        }
+      });
 
       cp.on("exit", handleChildProcessExit);
 
       function handleChildProcessExit(code: number) {
         if (code === 0) {
-          Target.activeProcesses.delete(cp);
           return resolve();
         }
 
