@@ -87,7 +87,7 @@ describe("logger", () => {
     logger.stream(LogLevel.info, stream, { foo: "bar" });
     logger.addReporter(reporter);
 
-    // chuck w/o a new line
+    // chunk w/o a new line
     stream.write("foo ");
     // chunk with multiple newlines
     stream.write("bar\nfiz\n");
