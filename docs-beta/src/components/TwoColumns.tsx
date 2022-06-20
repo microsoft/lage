@@ -1,14 +1,82 @@
-import React from 'react';
+import React from "react";
 
-export default function TwoColumns({className = "", children}) {
-    return (
-        <div className={`mx-auto ${className}`}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-        {React.Children.map(children, (child, i) => {
-            if (i < 2) return <div className="flex float-left py-4 align-center">{child}</div>
-            else return
-            })}
-        </div>
-        </div>
-    );
-}
+export const TwoColumns = (props) => {
+  return (
+    <div className="mx-auto">
+      <div className="flex items-center md:hidden">
+        {props.imageOnTop && props.imageFirst && (
+          <div>
+            <>
+              {React.Children.map(
+                props.children,
+                (child, i) => i === 0 && child
+              )}
+            </>
+            <>
+              {React.Children.map(
+                props.children,
+                (child, i) => i === 1 && child
+              )}
+            </>
+          </div>
+        )}
+        {props.imageOnTop && !props.imageFirst && (
+          <div>
+            <>
+              {React.Children.map(
+                props.children,
+                (child, i) => i === 1 && child
+              )}
+            </>
+            <>
+              {React.Children.map(
+                props.children,
+                (child, i) => i === 0 && child
+              )}
+            </>
+          </div>
+        )}
+        {!props.imageOnTop && props.imageFirst && (
+          <div>
+            <>
+              {React.Children.map(
+                props.children,
+                (child, i) => i === 1 && child
+              )}
+            </>
+            <>
+              {React.Children.map(
+                props.children,
+                (child, i) => i === 0 && child
+              )}
+            </>
+          </div>
+        )}
+
+        {!props.imageOnTop && !props.imageFirst && (
+          <div>
+            <>
+              {React.Children.map(
+                props.children,
+                (child, i) => i === 0 && child
+              )}
+            </>
+            <>
+              {React.Children.map(
+                props.children,
+                (child, i) => i === 1 && child
+              )}
+            </>
+          </div>
+        )}
+      </div>
+
+      <div className="hidden mx-12 md:flex md:flex-row md:items-center md:">
+        {React.Children.map(props.children, (child, i) => {
+          if (i < 2) return <div className="w-1/2">{child}</div>;
+          else return;
+        })}
+      </div>
+    </div>
+  );
+};

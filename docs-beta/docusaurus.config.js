@@ -16,7 +16,7 @@ const config = {
   organizationName: 'microsoft', // Usually your GitHub org/user name.
   projectName: 'lage', // Usually your repo name.
   customFields:{
-    image: 'img/lage-logo.svg'
+    image: 'img/lage.png'
   },
 
   presets: [
@@ -40,10 +40,9 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Lage',
         logo: {
           alt: 'Lage Logo',
-          src: 'img/lage-logo.svg',
+          src: 'img/lage.png',
         },
         items: [
           {

@@ -1,32 +1,45 @@
-import React from 'react';
-import Link from '@docusaurus/Link';
-import SideBySide from './SideBySide';
-import TwoColumns from './TwoColumns';
-import Tools from './Tools';
-import { styles } from "./shared-styles"
+import React from "react";
+import { SideBySide } from "./SideBySide";
+import { TwoColumns } from "./TwoColumns";
+import { Tools } from "./Tools";
+import { Point } from "./Point";
+import { Illustration } from "./Illustration";
+import { Description } from "./Description";
+import { Button } from "./Button";
 
 export default function Footer() {
   return (
-    <div className="theme-dark bg-brand py-8">
-      <TwoColumns>
-        <div>
-          <img className="mx-12 py-8"
-              src="https://placekitten.com/400/400"/>
-        </div>
-        <div>
-          <h1 className={styles.footerTitle}>Seeing is believing -- Give Lage a spin</h1>
-          <p className={styles.fullLengthPara}>Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </p>
-          <SideBySide>
-            <Link className={styles.button} to="/docs/Introducing Lage/Overview">Get Started</Link>
-            <Link className={styles.button} to="/docs/Introducing Lage/Overview">Try the Demo</Link>
-          </SideBySide>
-        </div>
-      </TwoColumns>
+    <div className="theme-color bg-body-secondary py-8">
+      <div className="2xl:w-big-screen 2xl:mx-auto">
+        <div className="mt-16 md:mt-28" />
 
-      <p className={styles.point}> Better Together</p>
-      <p className={styles.para}>This is about the other tools that Lage work with. This is about the other tools that Lage work with. This is about the other tools that Lage work with. This is about the other tools that Lage work with. This is about the other tools that Lage work with. This is about the other tools that Lage work with. This is about the other tools that Lage work with.</p>
-      <div className="px-12">
-        <Tools/>
+        <TwoColumns imageOnTop={true} imageFirst={true}>
+          <Illustration src="img/frog-sing0.png" />
+          <div>
+            <Point>Seeing is believing— give Lage a spin</Point>
+            <Description>
+              There’s no better time than now to save yourself time. Get started
+              within a minute with a single command!
+            </Description>
+            <SideBySide>
+              <Button isEmphasized={true} to="/docs/Introducing Lage/Overview">
+                Get Started
+              </Button>
+              <Button isEmphasized={false} to="/docs/Introducing Lage/Overview">
+                Try the Demo
+              </Button>
+            </SideBySide>
+          </div>
+        </TwoColumns>
+
+        <div className="mt-16 md:mt-28" />
+
+        <Point> Better together</Point>
+        <Description>
+          Lage works great on its own, but even better alongside its related
+          tools.
+        </Description>
+        <Tools />
       </div>
     </div>
   );
