@@ -1,7 +1,7 @@
 import { Writable } from "stream";
 import { Logger, LogLevel } from "@lage-run/Logger";
 
-export class TargetLogWritable extends Writable {
+export class LogWritable extends Writable {
   private buffer: string = "";
 
   constructor(private logLevel: LogLevel, private logger: Logger) {

@@ -9,7 +9,7 @@ import { TaskLogWritable } from "../logger/TaskLogWritable";
 import { getNpmCommand } from "./getNpmCommand";
 import { Config } from "../types/Config";
 
-export class NpmScriptTask {
+export class NpmScriptExecutor {
   static npmCmd: string = "";
   static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
