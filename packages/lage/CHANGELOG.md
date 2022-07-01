@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 14 Jun 2022 20:51:18 GMT and should not be manually modified.
+This log was last generated on Fri, 01 Jul 2022 15:42:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.3
+
+Fri, 01 Jul 2022 15:42:50 GMT
+
+### Patches
+
+- adding real renovate config, publishing 1.x to latest again (kchau@microsoft.com)
 
 ## 1.6.2
 
