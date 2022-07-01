@@ -2,6 +2,6 @@
   "type": "patch",
   "comment": "adding real renovate config, publishing 1.x to latest again",
   "packageName": "lage",
-  "email": "ken@gizzar.com",
+  "email": "kchau@microsoft.com",
   "dependentChangeType": "none"
 }
