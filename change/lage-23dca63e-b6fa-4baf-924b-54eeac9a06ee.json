@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Update dependency workspace-tools to ^0.21.0",
+  "packageName": "lage",
+  "email": "renovate@whitesourcesoftware.com",
+  "dependentChangeType": "patch"
+}
