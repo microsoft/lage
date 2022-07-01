@@ -1,6 +1,14 @@
 # lage
 
-This is the *stable* release branch. It is what will appear in the "latest" tag for npm registry.
+> **Warning**
+>
+> Deprecation warning! 
+> 
+> This is the *stable* release branch. It is what will appear in the "stable" tag for npm registry. As there are some large changes in the 1.0+ branch (latest), we have decided to preserve this branch to help with any hotfixes. 
+> 
+> This branch will no longer publish new versions on submit post September 2022 - the release pipeline will only occur manually as triggered by a contributor to this repo. 
+>
+> If you are consuming lage now, please see the latest: https://github.com/microsoft/lage/tree/master
 
 Documentation is here: https://microsoft.github.io/lage/
 

@@ -20,7 +20,7 @@
     "docs:build": "vuepress build docs",
     "gen-typedoc": "ts-node --transpile-only scripts/gen-typedoc.ts",
     "gh-pages": "gh-pages",
-    "release": "beachball publish -y -b origin/stable --tag latest",
+    "release": "beachball publish -y -b origin/stable --tag stable",
     "start": "tsc -w --preserveWatchOutput",
     "test": "ts-node --project tests/tsconfig.json node_modules/jasmine/bin/jasmine --config=jasmine.json"
   },
