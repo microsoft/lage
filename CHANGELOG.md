@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 14 Jun 2022 22:29:46 GMT and should not be manually modified.
+This log was last generated on Fri, 01 Jul 2022 15:17:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.42.1
+
+Fri, 01 Jul 2022 15:17:14 GMT
+
+### Patches
+
+- Make the package publish to "stable" tag (ken@gizzar.com)
 
 ## 0.42.0
 

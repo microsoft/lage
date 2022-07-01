@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 01 Jul 2022 15:17:14 GMT",
+      "tag": "lage_v0.42.1",
+      "version": "0.42.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Make the package publish to \"stable\" tag",
+            "author": "ken@gizzar.com",
+            "commit": "b27ef96f21c2ced4cc721a01fcea0641e75deef4",
+            "package": "lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Jun 2022 22:29:46 GMT",
       "tag": "lage_v0.42.0",
       "version": "0.42.0",

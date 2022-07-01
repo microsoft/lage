@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Make the package publish to \"stable\" tag",
-  "packageName": "lage",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
