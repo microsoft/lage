@@ -1,0 +1,66 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base", ":pinOnlyDevDependencies"],
+  "ignorePaths": ["**/node_modules/**", "**/test-scenarios/**"],
+  "prHourlyLimit": 5,
+  "postUpdateOptions": ["yarnDedupeHighest"],
+  "configWarningReuseIssue": false,
+  "allowPostUpgradeCommandTemplating": true,
+  "gitAuthor": "Renovate Bot <renovate@whitesourcesoftware.com>",
+  "postUpgradeTasks": {
+    "commands": [
+      "git add --all",
+      "npx beachball change --no-commit --type patch --message '{{{commitMessage}}}'",
+      "git reset"
+    ],
+    "fileFilters": ["**/*"],
+    "executionMode": "branch"
+  },
+  "major": {
+    "dependencyDashboardApproval": true
+  },
+  "packageRules": [
+    {
+      "groupName": "d3 packages",
+      "matchPackagePrefixes": ["d3-", "@types/d3-"]
+    },
+    {
+      "groupName": "eslint packages",
+      "matchPackagePatterns": ["eslint"]
+    },
+    {
+      "groupName": "fluentui packages",
+      "matchPackagePrefixes": ["@fluentui/"]
+    },
+    {
+      "matchPackageNames": ["@oribuild/api"],
+      "followTag": "unstable",
+      "commitMessageAction": "Update"
+    },
+    {
+      "groupName": "React monorepo",
+      "matchPackageNames": [
+        "@types/react",
+        "@types/react-dom",
+        "@types/react-test-renderer",
+        "@types/react-is",
+        "@types/scheduler",
+        "react",
+        "react-dom",
+        "react-test-renderer",
+        "react-is",
+        "scheduler"
+      ]
+    },
+    {
+      "groupName": "rollup packages",
+      "matchPackagePrefixes": ["@rollup"],
+      "matchPackagePatterns": ["^rollup"]
+    },
+    {
+      "groupName": "typescript packages",
+      "matchPackageNames": ["typescript", "tslib"],
+      "schedule": ["every monday"]
+    }
+  ]
+}
