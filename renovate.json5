@@ -30,8 +30,7 @@
     },
     {
       "groupName": "lage core deps",
-      "matchPackagePrefixes": ["backfill"],
-      "matchPackageNames": ["workspace-tools", "p-graph", "p-profiler"],
+      "matchPackagePrefixes": ["backfill", "workspace-tools", "p-graph", "p-profiler"],
     },
     {
       "groupName": "typescript packages",
