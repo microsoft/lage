@@ -1,8 +1,24 @@
 # Change Log - lage
 
-This log was last generated on Fri, 01 Jul 2022 16:00:40 GMT and should not be manually modified.
+This log was last generated on Fri, 01 Jul 2022 16:15:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.6
+
+Fri, 01 Jul 2022 16:15:39 GMT
+
+### Patches
+
+- Pin dependencies (email not defined)
+
+## 1.6.5
+
+Fri, 01 Jul 2022 16:11:45 GMT
+
+### Patches
+
+- Update dependency workspace-tools to ^0.21.0 (renovate@whitesourcesoftware.com)
 
 ## 1.6.4
 
