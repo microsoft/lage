@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Update dependency @types/node to v12.20.55",
+  "packageName": "lage",
+  "email": "renovate@whitesourcesoftware.com",
+  "dependentChangeType": "patch"
+}
