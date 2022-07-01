@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 01 Jul 2022 16:27:14 GMT",
+      "tag": "lage_v1.6.8",
+      "version": "1.6.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "f58725c19af9e8e102597d3b19dc8af3e8c47fea",
+            "comment": "Update dependency @marp-team/marp-cli to v0.23.3"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 Jul 2022 16:25:11 GMT",
       "tag": "lage_v1.6.7",
       "version": "1.6.7",
