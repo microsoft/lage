@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/logger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Logger for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"

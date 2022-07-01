@@ -2,6 +2,21 @@
   "name": "@lage-run/logger",
   "entries": [
     {
+      "date": "Fri, 01 Jul 2022 16:15:39 GMT",
+      "tag": "@lage-run/logger_v1.0.1",
+      "version": "1.0.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/logger",
+            "commit": "7ecee913b1cd4e6427aeb2c5f6f1e0e1f3225713",
+            "comment": "Pin dependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 06 Jun 2022 22:25:42 GMT",
       "tag": "@lage-run/logger_v1.0.0",
       "version": "1.0.0",

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Pin dependencies",
-  "packageName": "@lage-run/logger",
-  "email": "email not defined",
-  "dependentChangeType": "patch"
-}
