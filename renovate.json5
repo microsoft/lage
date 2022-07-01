@@ -19,6 +19,7 @@
   "major": {
     "dependencyDashboardApproval": true
   },
+  "ignoreDeps": ["lage-npm"],
   "packageRules": [
     {
       "groupName": "eslint packages",
