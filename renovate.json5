@@ -1,0 +1,47 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base", ":pinOnlyDevDependencies"],
+  "ignorePaths": ["**/node_modules/**"],
+  "prHourlyLimit": 5,
+  "postUpdateOptions": ["yarnDedupeHighest"],
+  "configWarningReuseIssue": false,
+  "allowPostUpgradeCommandTemplating": true,
+  "gitAuthor": "Renovate Bot <renovate@whitesourcesoftware.com>",
+  "postUpgradeTasks": {
+    "commands": [
+      "git add --all",
+      "npx beachball change --no-commit --type patch --message 'fix: {{{commitMessage}}}'",
+      "git reset"
+    ],
+    "fileFilters": ["**/*"],
+    "executionMode": "branch"
+  },
+  "major": {
+    "dependencyDashboardApproval": true
+  },
+  "packageRules": [
+    {
+      "groupName": "eslint packages",
+      "matchPackagePatterns": ["eslint"]
+    },
+    {
+      "groupName": "Docusaurus deps",
+      "matchPackagePatterns": ["docusaurus", "@docusaurus/*"]
+    },
+    {
+      "groupName": "lage core deps",
+      "matchPackagePrefixes": ["backfill"],
+      "matchPackageNames": ["workspace-tools", "p-graph", "p-profiler"],
+    },
+    {
+      "groupName": "typescript packages",
+      "matchPackageNames": ["typescript", "tslib"],
+      "schedule": ["every monday"]
+    },
+    {
+      "groupName": "jest packages",
+      "matchPackageNames": ["ts-jest", "jest", "@types/jest"],
+      "schedule": ["every monday"]
+    },
+  ]
+}
