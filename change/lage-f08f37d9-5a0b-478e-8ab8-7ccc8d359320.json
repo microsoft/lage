@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Update dependency @marp-team/marp-cli to v0.23.3",
+  "packageName": "lage",
+  "email": "renovate@whitesourcesoftware.com",
+  "dependentChangeType": "patch"
+}
