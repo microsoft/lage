@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base", ":pinOnlyDevDependencies"],
-  "ignorePaths": ["**/node_modules/**", "**/test-scenarios/**"],
+  "ignorePaths": ["**/node_modules/**"],
   "prHourlyLimit": 5,
   "postUpdateOptions": ["yarnDedupeHighest"],
   "configWarningReuseIssue": false,
@@ -10,7 +10,7 @@
   "postUpgradeTasks": {
     "commands": [
       "git add --all",
-      "npx beachball change --no-commit --type patch --message '{{{commitMessage}}}'",
+      "npx beachball change --no-commit --type patch --message 'fix: {{{commitMessage}}}'",
       "git reset"
     ],
     "fileFilters": ["**/*"],
@@ -21,46 +21,27 @@
   },
   "packageRules": [
     {
-      "groupName": "d3 packages",
-      "matchPackagePrefixes": ["d3-", "@types/d3-"]
-    },
-    {
       "groupName": "eslint packages",
       "matchPackagePatterns": ["eslint"]
     },
     {
-      "groupName": "fluentui packages",
-      "matchPackagePrefixes": ["@fluentui/"]
+      "groupName": "Docusaurus deps",
+      "matchPackagePatterns": ["docusaurus", "@docusaurus/*"]
     },
     {
-      "matchPackageNames": ["@oribuild/api"],
-      "followTag": "unstable",
-      "commitMessageAction": "Update"
-    },
-    {
-      "groupName": "React monorepo",
-      "matchPackageNames": [
-        "@types/react",
-        "@types/react-dom",
-        "@types/react-test-renderer",
-        "@types/react-is",
-        "@types/scheduler",
-        "react",
-        "react-dom",
-        "react-test-renderer",
-        "react-is",
-        "scheduler"
-      ]
-    },
-    {
-      "groupName": "rollup packages",
-      "matchPackagePrefixes": ["@rollup"],
-      "matchPackagePatterns": ["^rollup"]
+      "groupName": "lage core deps",
+      "matchPackagePrefixes": ["backfill"],
+      "matchPackageNames": ["workspace-tools", "p-graph", "p-profiler"],
     },
     {
       "groupName": "typescript packages",
       "matchPackageNames": ["typescript", "tslib"],
       "schedule": ["every monday"]
-    }
+    },
+    {
+      "groupName": "jest packages",
+      "matchPackageNames": ["ts-jest", "jest", "@types/jest"],
+      "schedule": ["every monday"]
+    },
   ]
 }
