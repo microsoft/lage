@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 01 Jul 2022 16:37:19 GMT and should not be manually modified.
+This log was last generated on Fri, 01 Jul 2022 21:16:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.10
+
+Fri, 01 Jul 2022 21:16:36 GMT
+
+### Patches
+
+- Update dependency watchpack to v1.7.5 (email not defined)
 
 ## 1.6.9
 

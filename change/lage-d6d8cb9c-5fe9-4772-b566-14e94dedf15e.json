@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update dependency watchpack to v1.7.5",
-  "packageName": "lage",
-  "email": "email not defined",
-  "dependentChangeType": "patch"
-}
