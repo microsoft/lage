@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update dependency mermaid to v8.14.0",
-  "packageName": "lage",
-  "email": "renovate@whitesourcesoftware.com",
-  "dependentChangeType": "patch"
-}

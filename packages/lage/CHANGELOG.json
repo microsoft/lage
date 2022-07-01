@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 01 Jul 2022 16:37:19 GMT",
+      "tag": "lage_v1.6.9",
+      "version": "1.6.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "c9d0beeee78e55f39581cec827f34510a0f4323f",
+            "comment": "Update dependency mermaid to v8.14.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 Jul 2022 16:27:14 GMT",
       "tag": "lage_v1.6.8",
       "version": "1.6.8",
