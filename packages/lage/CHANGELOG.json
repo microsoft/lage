@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 01 Jul 2022 16:11:45 GMT",
+      "tag": "lage_v1.6.5",
+      "version": "1.6.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "d849123a63fd58a413980f4be7937dddf40d3bc2",
+            "comment": "Update dependency workspace-tools to ^0.21.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 Jul 2022 16:00:40 GMT",
       "tag": "lage_v1.6.4",
       "version": "1.6.4",
