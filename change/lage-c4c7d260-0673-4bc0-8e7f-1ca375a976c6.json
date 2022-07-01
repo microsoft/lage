@@ -1,6 +1,6 @@
 {
-  "type": "none",
-  "comment": "adding real renovate config",
+  "type": "patch",
+  "comment": "adding real renovate config, publishing 1.x to latest again",
   "packageName": "lage",
   "email": "ken@gizzar.com",
   "dependentChangeType": "none"
