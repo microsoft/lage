@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 01 Jul 2022 16:25:11 GMT",
+      "tag": "lage_v1.6.7",
+      "version": "1.6.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "3cee217a37ec7d80a90f9434f39826e758bbdd2a",
+            "comment": "Update dependency @types/node to v12.20.55"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 Jul 2022 16:15:39 GMT",
       "tag": "lage_v1.6.6",
       "version": "1.6.6",

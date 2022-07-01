@@ -1,8 +1,16 @@
 # Change Log - @lage-run/logger
 
-This log was last generated on Fri, 01 Jul 2022 16:15:39 GMT and should not be manually modified.
+This log was last generated on Fri, 01 Jul 2022 16:25:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.2
+
+Fri, 01 Jul 2022 16:25:11 GMT
+
+### Patches
+
+- Update dependency @types/node to v12.20.55 (renovate@whitesourcesoftware.com)
 
 ## 1.0.1
 
