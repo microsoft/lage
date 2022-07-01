@@ -27,7 +27,7 @@
   },
   "resolutions": {
     "mermaid": "8.14.0",
-    "watchpack": "1.6.1"
+    "watchpack": "1.7.5"
   },
   "dependencies": {
     "@xmldom/xmldom": "^0.8.0",
