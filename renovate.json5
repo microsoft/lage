@@ -10,7 +10,7 @@
   "postUpgradeTasks": {
     "commands": [
       "git add --all",
-      "npx beachball change --no-commit --type patch --message 'fix: {{{commitMessage}}}'",
+      "npx beachball change --no-commit --type patch --message '{{{commitMessage}}}'",
       "git reset"
     ],
     "fileFilters": ["**/*"],
