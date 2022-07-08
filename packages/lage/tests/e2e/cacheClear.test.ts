@@ -4,8 +4,8 @@ import path from "path";
 import { Monorepo } from "../mock/monorepo";
 import { parseNdJson } from "./parseNdJson";
 
-const defaultCacheLocation = 'node_modules/.cache/backfill';
-const cacheLocation = '.cache/backfill';
+const defaultCacheLocation = "node_modules/.cache/backfill";
+const cacheLocation = ".cache/backfill";
 
 describe("Cache clear", () => {
   it("should clear cache when internalCacheFolder is passed", () => {
@@ -60,7 +60,7 @@ describe("Cache clear", () => {
 
     repo.cleanup();
   });
-  
+
   it("should clear cache with the default cache location", () => {
     const repo = new Monorepo("cache");
 
@@ -90,8 +90,14 @@ describe("Cache clear", () => {
     // Run build so we get a cache folder
     repo.run("build");
 
-    const cacheFolderA = path.join(repo.root, `packages/a/${defaultCacheLocation}`);
-    const cacheFolderB = path.join(repo.root, `packages/b/${defaultCacheLocation}`);
+    const cacheFolderA = path.join(
+      repo.root,
+      `packages/a/${defaultCacheLocation}`
+    );
+    const cacheFolderB = path.join(
+      repo.root,
+      `packages/b/${defaultCacheLocation}`
+    );
 
     // Cache is created in the right place
     expect(fs.existsSync(cacheFolderA)).toBeTruthy();
@@ -102,7 +108,7 @@ describe("Cache clear", () => {
     expect(fs.readdirSync(cacheFolderB)).toHaveLength(1);
 
     // Clear the cache
-    
+
     const results = repo.run("clear");
 
     const output = results.stdout + results.stderr;
