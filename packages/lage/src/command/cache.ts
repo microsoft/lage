@@ -70,10 +70,9 @@ function pruneCache(cwd: string, config: Config) {
 }
 
 function getCachePath(info: PackageInfo, cacheOptions: CacheOptions) {
-  const cacheFolder =
-    cacheOptions.internalCacheFolder !== ""
-      ? `../${cacheOptions.internalCacheFolder}`
-      : undefined;
+  const cacheFolder = !cacheOptions.internalCacheFolder
+    ? undefined
+    : `../${cacheOptions.internalCacheFolder}`;
 
   return path.join(
     info.packageJsonPath,
