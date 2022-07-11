@@ -5,7 +5,6 @@ import execa from "execa";
 
 export class Monorepo {
   static tmpdir = os.tmpdir();
-  static yarnCache = path.join(Monorepo.tmpdir, "yarn-cache-");
 
   root: string;
 
@@ -86,6 +85,7 @@ export class Monorepo {
           writeInfo: `node "${lagePath}" info`,
           test: `node "${lagePath}" test --reporter json --log-level silly`,
           lint: `node "${lagePath}" lint --reporter json --log-level silly`,
+          clear: `node "${lagePath}" cache --clear --reporter json --log-level silly`,
         },
         devDependencies: {
           lage: path.resolve(__dirname, "..", ".."),
