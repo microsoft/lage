@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Ensure cache --clear respects internalCacheFolder when it's passed in",
-  "packageName": "lage",
-  "email": "branth@microsoft.com",
-  "dependentChangeType": "patch"
-}

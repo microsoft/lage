@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 01 Jul 2022 21:16:36 GMT and should not be manually modified.
+This log was last generated on Mon, 11 Jul 2022 23:22:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.11
+
+Mon, 11 Jul 2022 23:22:39 GMT
+
+### Patches
+
+- Ensure cache --clear respects internalCacheFolder when it's passed in (branth@microsoft.com)
 
 ## 1.6.10
 

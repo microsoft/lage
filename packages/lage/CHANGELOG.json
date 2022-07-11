@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 11 Jul 2022 23:22:39 GMT",
+      "tag": "lage_v1.6.11",
+      "version": "1.6.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "branth@microsoft.com",
+            "package": "lage",
+            "commit": "1e8baeb9602fe433406eceb9441f54a751f8a8e0",
+            "comment": "Ensure cache --clear respects internalCacheFolder when it's passed in"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 Jul 2022 21:16:36 GMT",
       "tag": "lage_v1.6.10",
       "version": "1.6.10",
