@@ -2,6 +2,21 @@
   "name": "@lage-run/logger",
   "entries": [
     {
+      "date": "Wed, 13 Jul 2022 16:08:30 GMT",
+      "tag": "@lage-run/logger_v1.1.0",
+      "version": "1.1.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kyleehrlich@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "b3d6f30845394a70654f277705b3b9c452a1a3a1",
+            "comment": "Replace stdio handler with nodejs readline interfaces to fix handling when log lines span multiple chunks"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 Jul 2022 16:25:11 GMT",
       "tag": "@lage-run/logger_v1.0.2",
       "version": "1.0.2",

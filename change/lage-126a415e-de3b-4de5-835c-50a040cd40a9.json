@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Replace stdio handler with nodejs readline interfaces to fix handling when log lines span multiple chunks",
-  "packageName": "lage",
-  "email": "kyleehrlich@microsoft.com",
-  "dependentChangeType": "patch"
-}
