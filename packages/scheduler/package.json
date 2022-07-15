@@ -1,5 +1,5 @@
 {
-  "name": "@lage-run/runner",
+  "name": "@lage-run/scheduler",
   "version": "0.1.0",
   "description": "Graph runner for Lage",
   "repository": {

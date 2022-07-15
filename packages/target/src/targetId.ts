@@ -1,4 +1,4 @@
-export function getTargetId(pkgName: string, task: string) {
+export function getTargetId(pkgName: string | undefined, task: string) {
   return `${pkgName}#${task}`;
 }
 

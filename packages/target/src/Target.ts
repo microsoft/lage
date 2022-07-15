@@ -1,29 +1,17 @@
-import { ChildProcess } from "child_process";
-
-export interface Target {
+export interface Target<TRunOptions> {
   id: string;
   label: string;
   cwd: string;
   status: "pending" | "running" | "complete" | "failed";
 
-  // @deprecated
-  deps?: string[];
-
   // Dependencies on other Targets
   dependencies?: string[];
+  priority?: number;
 
-  // Inputs and outputs of the Target - for caching
+  // Cache Options: inputs and outputs of the Target
   outputs?: string[];
   inputs?: string[];
 
-  // Options for the Target - different for each kind of target
-  package?: string;
-  script?: string;
-  cmd?: string;
-  color?: boolean;
-  args?: string[];
-  env?: Record<string, string | undefined>;
-
   /** For custom run definition */
-  run?: (target: Target) => Promise<void>;
+  run?: (target: Target<TRunOptions>, options: TRunOptions) => Promise<void>;
 }
