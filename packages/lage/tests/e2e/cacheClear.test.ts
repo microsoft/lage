@@ -62,7 +62,7 @@ describe("Cache clear", () => {
   });
 
   it("should clear cache with the default cache location", () => {
-    const repo = new Monorepo("cache");
+    const repo = new Monorepo("cache-default");
 
     repo.init();
     repo.setLageConfig(
@@ -111,9 +111,7 @@ describe("Cache clear", () => {
 
     const results = repo.run("clear");
 
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
-    console.log(jsonOutput);
+    results.stdout + results.stderr;
 
     // Cache folders should be empty
     expect(fs.readdirSync(cacheFolderA)).toHaveLength(0);
