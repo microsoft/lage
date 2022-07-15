@@ -36,8 +36,7 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
     // a custom provider (currently S3 would be a custom provider)
     const isRemoteProvider =
       isCustomProvider(cacheOptions.cacheStorageConfig) ||
-      (typeof cacheOptions.cacheStorageConfig.provider === "string" &&
-        !cacheOptions.cacheStorageConfig.provider.includes("local"));
+      (typeof cacheOptions.cacheStorageConfig.provider === "string" && !cacheOptions.cacheStorageConfig.provider.includes("local"));
 
     if (isRemoteProvider) {
       logger.silly("remote provider enabled");
@@ -78,8 +77,7 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
     }
 
     // Write to remote if there is a no hit in the remote cache, and remote cache storage provider, and that the "writeRemoteCache" config flag is set to true
-    const shouldWriteRemoteCache =
-      !this.isRemoteHit(hash) && !!this.remoteCacheStorageProvider && this.cacheOptions.writeRemoteCache;
+    const shouldWriteRemoteCache = !this.isRemoteHit(hash) && !!this.remoteCacheStorageProvider && this.cacheOptions.writeRemoteCache;
 
     if (shouldWriteRemoteCache) {
       logger.silly(`remote fallback put: ${hash}`);

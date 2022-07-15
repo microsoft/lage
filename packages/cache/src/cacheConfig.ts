@@ -19,16 +19,14 @@ export function getCacheConfig(cwd: string, cacheOptions: CacheOptions) {
     ...defaultCacheConfig,
     ...cacheOptions,
     ...envConfig,
-    writeRemoteCache:
-      cacheOptions.writeRemoteCache || !!process.env.LAGE_WRITE_REMOTE_CACHE,
+    writeRemoteCache: cacheOptions.writeRemoteCache || !!process.env.LAGE_WRITE_REMOTE_CACHE,
   };
 
   const configWithFallback: CacheOptions = {
     ...configWithEnvOverrides,
     cacheStorageConfig: {
       ...configWithEnvOverrides.cacheStorageConfig,
-      provider: (logger: Logger, cwd: string) =>
-        new RemoteFallbackCacheProvider(configWithEnvOverrides, logger, cwd),
+      provider: (logger: Logger, cwd: string) => new RemoteFallbackCacheProvider(configWithEnvOverrides, logger, cwd),
       name: "remote-fallback-provider",
     },
   };

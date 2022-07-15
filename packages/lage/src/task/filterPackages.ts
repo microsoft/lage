@@ -1,8 +1,4 @@
-import {
-  getTransitiveConsumers,
-  getTransitiveDependencies,
-  PackageInfos,
-} from "workspace-tools";
+import { getTransitiveConsumers, getTransitiveDependencies, PackageInfos } from "workspace-tools";
 import { logger } from "../logger";
 
 /**
@@ -16,33 +12,20 @@ export function filterPackages(options: {
   scopedPackages: string[] | undefined;
   changedPackages: string[] | undefined;
 }) {
-  const {
-    scopedPackages,
-    changedPackages,
-    allPackages,
-    deps,
-    includeDependencies,
-  } = options;
+  const { scopedPackages, changedPackages, allPackages, deps, includeDependencies } = options;
 
   let filtered: string[] = [];
 
   // If scope is defined, use the transitive providers of the since packages up to the scope
-  if (
-    typeof scopedPackages !== "undefined" &&
-    typeof changedPackages !== "undefined"
-  ) {
+  if (typeof scopedPackages !== "undefined" && typeof changedPackages !== "undefined") {
     // If both scoped and since are specified, we have to merge two lists:
     // 1. changed packages that ARE themselves the scoped packages
     // 2. changed package consumers (package dependents) that are within the scoped subgraph
     filtered = changedPackages
       .filter((pkg) => scopedPackages.includes(pkg))
-      .concat(
-        getTransitiveConsumers(changedPackages, allPackages, scopedPackages)
-      );
+      .concat(getTransitiveConsumers(changedPackages, allPackages, scopedPackages));
 
-    logger.verbose(
-      `filterPackages changed within scope: ${filtered.join(",")}`
-    );
+    logger.verbose(`filterPackages changed within scope: ${filtered.join(",")}`);
   } else if (typeof changedPackages !== "undefined") {
     filtered = [...changedPackages];
     logger.verbose(`filterPackages changed: ${changedPackages.join(",")}`);
@@ -61,9 +44,7 @@ export function filterPackages(options: {
 
   // adds dependencies of all filtered package thus far
   if (includeDependencies) {
-    filtered = filtered.concat(
-      getTransitiveDependencies(filtered, allPackages)
-    );
+    filtered = filtered.concat(getTransitiveDependencies(filtered, allPackages));
   }
 
   const unique = new Set(filtered);

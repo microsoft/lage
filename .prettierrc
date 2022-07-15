@@ -1,3 +1,6 @@
 {
-  "printWidth": 140
+  "printWidth": 140,
+  "semi": true,
+  "singleQuote": false,
+  "trailingComma": "es5"
 }

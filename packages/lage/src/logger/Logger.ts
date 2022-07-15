@@ -4,9 +4,7 @@ import { Reporter } from "./reporters/Reporter";
 import { NpmLogReporter } from "./reporters/NpmLogReporter";
 
 export class Logger {
-  static reporters: Reporter[] = [
-    new NpmLogReporter({ logLevel: LogLevel.info }),
-  ];
+  static reporters: Reporter[] = [new NpmLogReporter({ logLevel: LogLevel.info })];
 
   logs: LogEntry[] = [];
 

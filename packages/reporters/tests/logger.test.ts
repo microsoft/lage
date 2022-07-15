@@ -25,14 +25,14 @@ describe("logger", () => {
 
   it("should create a logger that reports to a multiple reporter", () => {
     const logger = createLogger();
-    
+
     const reporter1 = new TestReporter();
     const reporter2 = new TestReporter();
-    
+
     logger.addReporter(reporter1);
     logger.addReporter(reporter2);
     logger.info("info");
-    
+
     expect(reporter1.entries[0].level).toBe(LogLevel.info);
     expect(reporter1.entries[0].data).toBeUndefined();
     expect(reporter1.entries[0].msg).toBe("info");
@@ -44,12 +44,12 @@ describe("logger", () => {
 
   it("should be able to report on structured data", () => {
     const logger = createLogger();
-    
+
     const reporter = new TestReporter();
-    
+
     logger.addReporter(reporter);
-    logger.info("info", { foo: "bar"});
-    
+    logger.info("info", { foo: "bar" });
+
     expect(reporter.entries[0].level).toBe(LogLevel.info);
     expect(reporter.entries[0].data).not.toBeUndefined();
     expect(reporter.entries[0].data.foo).toBe("bar");

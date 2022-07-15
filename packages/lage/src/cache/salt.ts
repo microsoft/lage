@@ -5,12 +5,7 @@ import * as fs from "fs";
 
 let envHash: string[];
 
-export function salt(
-  environmentGlobFiles: string[],
-  command: string,
-  repoRoot: string,
-  customKey: string = ""
-): string {
+export function salt(environmentGlobFiles: string[], command: string, repoRoot: string, customKey: string = ""): string {
   return hashStrings([...getEnvHash(environmentGlobFiles, repoRoot), command, customKey]);
 }
 

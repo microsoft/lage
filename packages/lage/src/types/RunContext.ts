@@ -7,12 +7,12 @@ export interface Measures {
   duration: [number, number];
 
   /** list of failed targets */
-  failedTargets?: string[]; 
+  failedTargets?: string[];
 }
 
 export interface RunContext {
   measures: Measures;
   targets: Map<string, LoggableTarget>;
   profiler: Profiler;
-  workerQueue: WorkerQueue | undefined
+  workerQueue: WorkerQueue | undefined;
 }

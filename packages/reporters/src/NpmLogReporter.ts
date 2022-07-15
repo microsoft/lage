@@ -20,7 +20,7 @@ const colors = {
   error: chalk.white,
   task: chalk.cyan,
   pkg: chalk.magenta,
-  silly: chalk.green
+  silly: chalk.green,
 };
 
 function getTaskLogPrefix(pkg: string, task: string) {
@@ -89,9 +89,7 @@ export class NpmLogReporter implements Reporter {
   }
 
   private logTaskEntry(pkg: string, task: string, entry: LogEntry) {
-    const normalizedArgs = this.options.grouped
-      ? normalize(entry.msg)
-      : normalize(getTaskLogPrefix(pkg, task), entry.msg);
+    const normalizedArgs = this.options.grouped ? normalize(entry.msg) : normalize(getTaskLogPrefix(pkg, task), entry.msg);
     const logFn = log[LogLevel[entry.level]];
     const colorFn = colors[LogLevel[entry.level]];
     const data = entry.data as TaskData;
@@ -179,9 +177,9 @@ export class NpmLogReporter implements Reporter {
 
       log.info(
         "",
-        `[Tasks Count] success: ${successfulTasks.length}, skipped: ${skippedTasks.length}, incomplete: ${targets.size -
-          successfulTasks.length -
-          skippedTasks.length}`
+        `[Tasks Count] success: ${successfulTasks.length}, skipped: ${skippedTasks.length}, incomplete: ${
+          targets.size - successfulTasks.length - skippedTasks.length
+        }`
       );
     } else {
       log.info("", "Nothing has been run.");

@@ -22,12 +22,7 @@ export class WrappedTarget implements LoggableTarget {
   logger: TaskLogger;
   cacheOptions: CacheOptions;
 
-  constructor(
-    public target: PipelineTarget,
-    private root: string,
-    private config: Config,
-    private context: RunContext
-  ) {
+  constructor(public target: PipelineTarget, private root: string, private config: Config, private context: RunContext) {
     this.status = "pending";
     this.logger = new TaskLogger(target.packageName || "[GLOBAL]", target.packageName ? target.task : target.id);
 

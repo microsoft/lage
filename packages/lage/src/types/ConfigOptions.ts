@@ -11,7 +11,7 @@ export interface ConfigOptions {
   /**
    * Defines the task pipeline, prefix with "^" character to denote a direct topological dependency,
    * prefix with ^^ to denote a transitive topological dependency.
-   * 
+   *
    * Example:
    *
    * ```
@@ -63,6 +63,6 @@ export interface ConfigOptions {
    * Worker queue settings
    */
   workerQueueOptions: QueueOptions & {
-    timeoutSeconds: number
-  }; 
+    timeoutSeconds: number;
+  };
 }

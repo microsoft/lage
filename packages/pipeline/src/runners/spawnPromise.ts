@@ -1,8 +1,4 @@
-import {
-  spawn,
-  SpawnOptionsWithStdioTuple,
-  StdioNull,
-} from "child_process";
+import { spawn, SpawnOptionsWithStdioTuple, StdioNull } from "child_process";
 
 export function spawnPromise(
   cmd: string,
@@ -17,10 +13,7 @@ export function spawnPromise(
     cp.on("error", handleChildProcessError);
     cp.on("exit", handleChildProcessExit);
 
-    function handleChildProcessExit(
-      code: number,
-      signal: NodeJS.Signals | null
-    ) {
+    function handleChildProcessExit(code: number, signal: NodeJS.Signals | null) {
       if (code === 0 && !signal) {
         return resolve();
       }
