@@ -109,9 +109,7 @@ describe("Cache clear", () => {
 
     // Clear the cache
 
-    const results = repo.run("clear");
-
-    results.stdout + results.stderr;
+    repo.run("clear");
 
     // Cache folders should be empty
     expect(fs.readdirSync(cacheFolderA)).toHaveLength(0);
