@@ -55,7 +55,6 @@ export default function Home() {
         <div className="flex justify-content items-end mx-12">
           <textarea
             className="bg-white border rounded py-2 px-3 text-black w-80 h-80"
-            type="text"
             onChange={(event) => setInput(event.target.value)}
             value={input}
             placeholder=" Paste the content here."

@@ -18,8 +18,6 @@ export const FlowGraph = (props) => {
   const json = JSON.parse(props.children);
   const nodes = createNodes(json);
   const edges = createEdges(json);
-  console.log(nodes);
-  console.log(edges);
   const initialNodes = nodes;
   const initialEdges = edges;
   const { siteConfig } = useDocusaurusContext();
