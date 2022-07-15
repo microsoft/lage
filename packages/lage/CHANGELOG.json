@@ -2,6 +2,201 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 13 Jul 2022 16:08:30 GMT",
+      "tag": "lage_v1.7.0",
+      "version": "1.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kyleehrlich@microsoft.com",
+            "package": "lage",
+            "commit": "b3d6f30845394a70654f277705b3b9c452a1a3a1",
+            "comment": "Replace stdio handler with nodejs readline interfaces to fix handling when log lines span multiple chunks"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 11 Jul 2022 23:22:39 GMT",
+      "tag": "lage_v1.6.11",
+      "version": "1.6.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "branth@microsoft.com",
+            "package": "lage",
+            "commit": "1e8baeb9602fe433406eceb9441f54a751f8a8e0",
+            "comment": "Ensure cache --clear respects internalCacheFolder when it's passed in"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Jul 2022 21:16:36 GMT",
+      "tag": "lage_v1.6.10",
+      "version": "1.6.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "d7e83738af4d2ae1e32530fe283aa2b98e5d4c54",
+            "comment": "Update dependency watchpack to v1.7.5"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Jul 2022 16:37:19 GMT",
+      "tag": "lage_v1.6.9",
+      "version": "1.6.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "c9d0beeee78e55f39581cec827f34510a0f4323f",
+            "comment": "Update dependency mermaid to v8.14.0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Jul 2022 16:27:14 GMT",
+      "tag": "lage_v1.6.8",
+      "version": "1.6.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "f58725c19af9e8e102597d3b19dc8af3e8c47fea",
+            "comment": "Update dependency @marp-team/marp-cli to v0.23.3"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Jul 2022 16:25:11 GMT",
+      "tag": "lage_v1.6.7",
+      "version": "1.6.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "3cee217a37ec7d80a90f9434f39826e758bbdd2a",
+            "comment": "Update dependency @types/node to v12.20.55"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Jul 2022 16:15:39 GMT",
+      "tag": "lage_v1.6.6",
+      "version": "1.6.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "7ecee913b1cd4e6427aeb2c5f6f1e0e1f3225713",
+            "comment": "Pin dependencies"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Jul 2022 16:11:45 GMT",
+      "tag": "lage_v1.6.5",
+      "version": "1.6.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "d849123a63fd58a413980f4be7937dddf40d3bc2",
+            "comment": "Update dependency workspace-tools to ^0.21.0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Jul 2022 16:00:40 GMT",
+      "tag": "lage_v1.6.4",
+      "version": "1.6.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "7faf63185c15faadb10a40895b301e1588587b6d",
+            "comment": "Update dependency beachball to v2.23.0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Jul 2022 15:42:50 GMT",
+      "tag": "lage_v1.6.3",
+      "version": "1.6.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "comment": "adding real renovate config, publishing 1.x to latest again",
+            "commit": "ee4b292649346c858731355f91071e153843bbca"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Jun 2022 20:51:18 GMT",
+      "tag": "lage_v1.6.2",
+      "version": "1.6.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "nobody@users.noreply.github.com",
+            "package": "lage",
+            "comment": "Dependabot bumps dependencies: workspace-tools",
+            "commit": "e8745eb4396c35a954d897346ac2c416125f214f"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 10 Jun 2022 19:39:32 GMT",
+      "tag": "lage_v1.6.1",
+      "version": "1.6.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "comment": "Fast path on hash calculations for Windows as well",
+            "commit": "f6de97771dcd98ade351c7204aa3f742957886d8"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 10 Jun 2022 18:43:25 GMT",
+      "tag": "lage_v1.6.0",
+      "version": "1.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "comment": "Bumping backfill - minor lage bump because it is significant in its dep change behavior",
+            "commit": "6e4672a9a4e2f4aa6246792ef11ea99445ee1c62"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 25 May 2022 20:06:36 GMT",
       "tag": "lage_v1.5.2",
       "version": "1.5.2",

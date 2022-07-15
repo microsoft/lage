@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Lage',
   tagline: 'A Beautiful JS Monorepo Task Runner',
-  url: 'https://microsoft.github.io',
+  url: process.env.DEPLOY_URL ? process.env.DEPLOY_URL : 'https://microsoft.github.io',
   baseUrl: '/lage/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -16,7 +16,7 @@ const config = {
   organizationName: 'microsoft', // Usually your GitHub org/user name.
   projectName: 'lage', // Usually your repo name.
   customFields:{
-    image: 'img/lage-logo.svg'
+    image: 'img/lage.png'
   },
 
   presets: [
@@ -40,10 +40,9 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Lage',
         logo: {
           alt: 'Lage Logo',
-          src: 'img/lage-logo.svg',
+          src: 'img/lage.png',
         },
         items: [
           {
@@ -58,20 +57,6 @@ const config = {
             position: 'right',
           },
         ],
-      },
-      footer: {
-        style: 'dark',
-        links: [
-          {
-            title: 'Contributing',
-            items: [
-              {
-                label: 'Contributing to Lage',
-                to: '/docs/Contributing/contribution-guide',
-              },
-            ],
-          }
-        ]
       },
       prism: {
         theme: lightCodeTheme,

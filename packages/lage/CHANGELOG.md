@@ -1,8 +1,112 @@
 # Change Log - lage
 
-This log was last generated on Wed, 25 May 2022 20:06:36 GMT and should not be manually modified.
+This log was last generated on Wed, 13 Jul 2022 16:08:30 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.7.0
+
+Wed, 13 Jul 2022 16:08:30 GMT
+
+### Minor changes
+
+- Replace stdio handler with nodejs readline interfaces to fix handling when log lines span multiple chunks (kyleehrlich@microsoft.com)
+
+## 1.6.11
+
+Mon, 11 Jul 2022 23:22:39 GMT
+
+### Patches
+
+- Ensure cache --clear respects internalCacheFolder when it's passed in (branth@microsoft.com)
+
+## 1.6.10
+
+Fri, 01 Jul 2022 21:16:36 GMT
+
+### Patches
+
+- Update dependency watchpack to v1.7.5 (email not defined)
+
+## 1.6.9
+
+Fri, 01 Jul 2022 16:37:19 GMT
+
+### Patches
+
+- Update dependency mermaid to v8.14.0 (renovate@whitesourcesoftware.com)
+
+## 1.6.8
+
+Fri, 01 Jul 2022 16:27:14 GMT
+
+### Patches
+
+- Update dependency @marp-team/marp-cli to v0.23.3 (renovate@whitesourcesoftware.com)
+
+## 1.6.7
+
+Fri, 01 Jul 2022 16:25:11 GMT
+
+### Patches
+
+- Update dependency @types/node to v12.20.55 (renovate@whitesourcesoftware.com)
+
+## 1.6.6
+
+Fri, 01 Jul 2022 16:15:39 GMT
+
+### Patches
+
+- Pin dependencies (email not defined)
+
+## 1.6.5
+
+Fri, 01 Jul 2022 16:11:45 GMT
+
+### Patches
+
+- Update dependency workspace-tools to ^0.21.0 (renovate@whitesourcesoftware.com)
+
+## 1.6.4
+
+Fri, 01 Jul 2022 16:00:40 GMT
+
+### Patches
+
+- Update dependency beachball to v2.23.0 (renovate@whitesourcesoftware.com)
+
+## 1.6.3
+
+Fri, 01 Jul 2022 15:42:50 GMT
+
+### Patches
+
+- adding real renovate config, publishing 1.x to latest again (kchau@microsoft.com)
+
+## 1.6.2
+
+Tue, 14 Jun 2022 20:51:18 GMT
+
+### Patches
+
+- Dependabot bumps dependencies: workspace-tools (nobody@users.noreply.github.com)
+
+## 1.6.1
+
+Fri, 10 Jun 2022 19:39:32 GMT
+
+### Patches
+
+- Fast path on hash calculations for Windows as well (kchau@microsoft.com)
+
+## 1.6.0
+
+Fri, 10 Jun 2022 18:43:25 GMT
+
+### Minor changes
+
+- Bumping backfill - minor lage bump because it is significant in its dep change behavior (kchau@microsoft.com)
 
 ## 1.5.2
 

@@ -1,28 +1,26 @@
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
+@tailwind base;
+@tailwind components;
 
-/* You can override the default Infima variables here. */
-:root {
-  --ifm-color-primary: #a7cff7;
-  --ifm-color-primary-dark: #85c0f4;
-  --ifm-color-primary-darker: #5cb1f0;
-  --ifm-color-primary-darkest: #00a2ed;
-  --ifm-color-primary-light: #c6dffa;
-  --ifm-color-primary-lighter: #e3effc;
-  --ifm-color-primary-lightest: #ffffff;
-  --ifm-code-font-size: 95%;
-}
+@font-face {
+     font-family: "Londrina Solid";
+     src: url(../../static/fonts/LondrinaSolid.ttf) format('truetype');
+};
 
-.docusaurus-highlight-code-line {
-  background-color: rgba(0, 0, 0, 0.1);
-  display: block;
-  margin: 0 calc(-1 * var(--ifm-pre-padding));
-  padding: 0 var(--ifm-pre-padding);
-}
+@font-face {
+     font-family: "Bahnschrift";
+     src: url(../../static/fonts/Bahnschrift.ttf) format('truetype');
+};
 
-html[data-theme='dark'] .docusaurus-highlight-code-line {
-  background-color: rgba(0, 0, 0, 0.3);
+@tailwind utilities;
+
+.theme-color {
+    --color-button: 134 0 156;
+    --color-point: 255 214 107;
+    --color-body-primary: 33 153 190; 
+    --color-body-secondary: 6 119 126;
+    --color-primary: 255 255 255;
+    --color-secondary: 33 153 190;
+    --color-tertiary: 255 0 0;
+    --color-navbar: 28 88 106;
+    --color-tool: 14 70 74;
 }
