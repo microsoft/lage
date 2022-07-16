@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sat, 16 Jul 2022 02:57:37 GMT",
+      "tag": "lage_v1.7.1",
+      "version": "1.7.1",
+      "comments": {
+        "none": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "lage",
+            "commit": "fe9ed19e94ecf2f5942376123d30bfb462d1f47a",
+            "comment": "updating per prettier"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 15 Jul 2022 17:10:04 GMT",
       "tag": "lage_v1.7.1",
       "version": "1.7.1",
