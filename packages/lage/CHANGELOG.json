@@ -2,6 +2,36 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sat, 16 Jul 2022 02:57:37 GMT",
+      "tag": "lage_v1.7.1",
+      "version": "1.7.1",
+      "comments": {
+        "none": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "lage",
+            "commit": "fe9ed19e94ecf2f5942376123d30bfb462d1f47a",
+            "comment": "updating per prettier"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 15 Jul 2022 17:10:04 GMT",
+      "tag": "lage_v1.7.1",
+      "version": "1.7.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "f14b727c5430e87cc2ad3e468b554ee75e21c291",
+            "comment": "Update dependency workspace-tools to ^0.23.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 13 Jul 2022 16:08:30 GMT",
       "tag": "lage_v1.7.0",
       "version": "1.7.0",

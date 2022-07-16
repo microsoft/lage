@@ -19,8 +19,8 @@
     "gh-pages": "gh-pages",
     "docs-beta": "yarn workspace @lage-run/docs-beta start",
     "docs-beta:build": "yarn workspace @lage/docs build",
-    "format": "prettier --config .prettierrc packages/**/*.{ts,tsx} *.json --write",
-    "format:check": "prettier --config .prettierrc packages/**/*.{ts,tsx} *.json --check"
+    "format": "prettier --config .prettierrc packages/**/*.ts **/*.json --write",
+    "format:check": "prettier --config .prettierrc packages/**/*.ts **/*.json --check"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
