@@ -58,10 +58,7 @@ function pruneCache(cwd: string, config: Config) {
 
         logger.verbose(`clearing cache for ${info.name}`);
 
-        if (
-          now.getTime() - entryStat.mtime.getTime() >
-          prunePeriod * MS_IN_A_DAY
-        ) {
+        if (now.getTime() - entryStat.mtime.getTime() > prunePeriod * MS_IN_A_DAY) {
           remove(entryPath, entryStat);
         }
       }
@@ -70,14 +67,9 @@ function pruneCache(cwd: string, config: Config) {
 }
 
 function getCachePath(info: PackageInfo, cacheOptions: CacheOptions) {
-  const cacheFolder = !cacheOptions.internalCacheFolder
-    ? undefined
-    : `../${cacheOptions.internalCacheFolder}`;
+  const cacheFolder = !cacheOptions.internalCacheFolder ? undefined : `../${cacheOptions.internalCacheFolder}`;
 
-  return path.join(
-    info.packageJsonPath,
-    cacheFolder ?? "../node_modules/.cache/backfill"
-  );
+  return path.join(info.packageJsonPath, cacheFolder ?? "../node_modules/.cache/backfill");
 }
 
 function remove(entryPath: string, entryStat: Stats) {

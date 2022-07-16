@@ -1,5 +1,5 @@
 import { Monorepo } from "../mock/monorepo";
-import { getTargetId } from '../../src/task/taskId';
+import { getTargetId } from "../../src/task/taskId";
 import { parseNdJson } from "./parseNdJson";
 import { silent } from "npmlog";
 import exp from "constants";
@@ -19,25 +19,25 @@ describe("info test", () => {
   });
 });
 
-function testInfoWithReporter(reporterName: string) : string {
-    const repo = new Monorepo("info-" + reporterName);
+function testInfoWithReporter(reporterName: string): string {
+  const repo = new Monorepo("info-" + reporterName);
 
-    repo.init();
-    repo.install();
+  repo.init();
+  repo.install();
 
-    repo.addPackage("FooApp1", ["FooCore"]);
-    repo.addPackage("FooApp2", ["FooCore"]);
-    repo.addPackage("FooCore", ["BuildTool"]);
-    repo.addPackage("BarPage", ["BarCore"]);
-    repo.addPackage("BarCore", ["BuildTool"]);
-    repo.addPackage("BuildTool");
-    repo.linkPackages();
+  repo.addPackage("FooApp1", ["FooCore"]);
+  repo.addPackage("FooApp2", ["FooCore"]);
+  repo.addPackage("FooCore", ["BuildTool"]);
+  repo.addPackage("BarPage", ["BarCore"]);
+  repo.addPackage("BarCore", ["BuildTool"]);
+  repo.addPackage("BuildTool");
+  repo.linkPackages();
 
-    const results = repo.run("writeInfo", ["test", "--reporter", reporterName], true);
-    expect(results.exitCode).toBe(0);
-    expect(results.stderr).toBe("");
+  const results = repo.run("writeInfo", ["test", "--reporter", reporterName], true);
+  expect(results.exitCode).toBe(0);
+  expect(results.stderr).toBe("");
 
-    repo.cleanup();
-    
-    return results.stdout;
+  repo.cleanup();
+
+  return results.stdout;
 }

@@ -6,9 +6,7 @@ import path from "path";
 const ConfigModuleName = "lage";
 
 function getPipeline(info: PackageInfo) {
-  const results = cosmiconfigSync(ConfigModuleName).search(
-    path.dirname(info.packageJsonPath)
-  );
+  const results = cosmiconfigSync(ConfigModuleName).search(path.dirname(info.packageJsonPath));
 
   if (results && results.config) {
     return results.config.pipeline;
@@ -17,10 +15,7 @@ function getPipeline(info: PackageInfo) {
   return null;
 }
 
-export function getPackagePipelines(
-  allPackages: PackageInfos,
-  defaultPipeline: PipelineDefinition
-) {
+export function getPackagePipelines(allPackages: PackageInfos, defaultPipeline: PipelineDefinition) {
   const packagePipelines = new Map<string, PipelineDefinition>();
 
   for (const pkg of Object.keys(allPackages)) {

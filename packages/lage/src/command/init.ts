@@ -13,9 +13,7 @@ export async function init(cwd: string) {
   try {
     workspaceManager = whichWorkspaceManager(cwd);
   } catch (e) {
-    logger.error(
-      "lage requires you to be using a workspace - make sure you are using yarn workspaces, pnpm workspaces, or rush"
-    );
+    logger.error("lage requires you to be using a workspace - make sure you are using yarn workspaces, pnpm workspaces, or rush");
   }
 
   const pipeline = {
@@ -31,19 +29,12 @@ export async function init(cwd: string) {
 
   const lageConfigFile = path.join(cwd, "lage.config.js");
   if (!fs.existsSync(lageConfigFile)) {
-    fs.writeFileSync(
-      lageConfigFile,
-      "module.exports = " + JSON.stringify(lageConfig, null, 2) + ";"
-    );
+    fs.writeFileSync(lageConfigFile, "module.exports = " + JSON.stringify(lageConfig, null, 2) + ";");
   }
 
   installLage(cwd, workspaceManager);
 
-  logger.info(
-    `Lage is initialized! You can now run: ${renderBuildCommand(
-      workspaceManager
-    )}`
-  );
+  logger.info(`Lage is initialized! You can now run: ${renderBuildCommand(workspaceManager)}`);
 }
 
 function renderBuildCommand(workspaceManager: WorkspaceManager) {
@@ -112,9 +103,7 @@ function getLageVersion() {
   const lagePackageJsonFile = require.resolve("../../package.json", {
     paths: [__dirname],
   });
-  const lagePackageJson = JSON.parse(
-    fs.readFileSync(lagePackageJsonFile, "utf-8")
-  );
+  const lagePackageJson = JSON.parse(fs.readFileSync(lagePackageJsonFile, "utf-8"));
   return lagePackageJson.version;
 }
 

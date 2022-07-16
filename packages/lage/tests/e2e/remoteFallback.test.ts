@@ -46,24 +46,16 @@ describe("RemoteFallbackCacheProvider", () => {
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("local cache fetch"))
-    ).toBeFalsy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("local cache fetch"))).toBeFalsy();
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("remote fallback fetch"))
-    ).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback fetch"))).toBeTruthy();
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("local cache put"))
-    ).toBeFalsy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("local cache put"))).toBeFalsy();
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))
-    ).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))).toBeTruthy();
 
     repo.cleanup();
-  })
+  });
 
   it("should operate with local provider ONLY by default", () => {
     const repo = new Monorepo("fallback");
@@ -99,21 +91,13 @@ describe("RemoteFallbackCacheProvider", () => {
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("local cache fetch"))
-    ).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("local cache fetch"))).toBeTruthy();
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("remote fallback fetch"))
-    ).toBeFalsy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback fetch"))).toBeFalsy();
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("local cache put"))
-    ).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("local cache put"))).toBeTruthy();
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))
-    ).toBeFalsy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))).toBeFalsy();
 
     repo.cleanup();
   });
@@ -161,21 +145,13 @@ describe("RemoteFallbackCacheProvider", () => {
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("local cache fetch"))
-    ).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("local cache fetch"))).toBeTruthy();
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("remote fallback fetch"))
-    ).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback fetch"))).toBeTruthy();
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("local cache put"))
-    ).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("local cache put"))).toBeTruthy();
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))
-    ).toBeFalsy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))).toBeFalsy();
 
     repo.cleanup();
   });
@@ -224,21 +200,13 @@ describe("RemoteFallbackCacheProvider", () => {
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("local cache fetch"))
-    ).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("local cache fetch"))).toBeTruthy();
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("remote fallback fetch"))
-    ).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback fetch"))).toBeTruthy();
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("local cache put"))
-    ).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("local cache put"))).toBeTruthy();
 
-    expect(
-      jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))
-    ).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))).toBeTruthy();
 
     repo.cleanup();
   });

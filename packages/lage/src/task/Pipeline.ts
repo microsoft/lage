@@ -22,7 +22,7 @@ export const START_TARGET_ID = "__start";
  * - for doing distributed work, the WrapperTask will instead place the PipelineTarget info into a worker queue
  */
 export class Pipeline {
-  private cachedTransitiveTaskDependencies: Map<string, "walk-in-progress" | Set<string>> = new Map()
+  private cachedTransitiveTaskDependencies: Map<string, "walk-in-progress" | Set<string>> = new Map();
 
   /** Target represent a unit of work and the configuration of how to run it */
   targets: Map<string, PipelineTarget> = new Map([
@@ -223,8 +223,7 @@ export class Pipeline {
       }
     } else {
       // e.g. build: { /* target config */ }
-      const targets =
-        typeof targetDefinition === "function" ? this.generateFactoryTargets(targetDefinition) : [targetDefinition];
+      const targets = typeof targetDefinition === "function" ? this.generateFactoryTargets(targetDefinition) : [targetDefinition];
 
       targets.forEach((target, index) => {
         const pipelineTargets = this.convertToPipelineTarget(id, index, target);
@@ -272,17 +271,15 @@ export class Pipeline {
           this.dependencies.push([dep, id]);
         } else if (dep.startsWith("^") && packageName) {
           // topo dep -> build: ['^build']
-          const [depTask, dependencySet] = dep.startsWith("^^") ?
-            [dep.substr(2), [...this.getTransitiveGraphDependencies(packageName)]]
-            : [dep.substr(1), this.graph[packageName].dependencies]
-          
+          const [depTask, dependencySet] = dep.startsWith("^^")
+            ? [dep.substr(2), [...this.getTransitiveGraphDependencies(packageName)]]
+            : [dep.substr(1), this.graph[packageName].dependencies];
+
           const dependencyIds = targets
             .filter((needle) => {
               const { task, packageName: needlePackageName } = needle;
 
-              return (
-                task === depTask && dependencySet.some((depPkg) => depPkg === needlePackageName)
-              );
+              return task === depTask && dependencySet.some((depPkg) => depPkg === needlePackageName);
             })
             .map((needle) => needle.id);
 
@@ -315,21 +312,21 @@ export class Pipeline {
   getTransitiveGraphDependencies(packageName: string): Set<string> {
     const cachedResult = this.cachedTransitiveTaskDependencies.get(packageName);
     if (cachedResult) {
-      return (cachedResult ==="walk-in-progress")
-        // There is a recursive walk over this set of dependencies in progress.
-        // If we hit this case, that means that a dependency of this package depends on it.
-        //
-        // In this case we return an empty set to omit this package and it's downstream from its
-        // dependency
-        ? new Set()
-        // we already computed this for this package, return the cached result.
-        : cachedResult;
+      return cachedResult === "walk-in-progress"
+        ? // There is a recursive walk over this set of dependencies in progress.
+          // If we hit this case, that means that a dependency of this package depends on it.
+          //
+          // In this case we return an empty set to omit this package and it's downstream from its
+          // dependency
+          new Set()
+        : // we already computed this for this package, return the cached result.
+          cachedResult;
     } else {
       // No cached result. Compute now with a recursive walk
 
       // mark that we are traversing this package to prevent infinite recursion
       // in cases of circular dependencies
-      this.cachedTransitiveTaskDependencies.set(packageName, 'walk-in-progress');
+      this.cachedTransitiveTaskDependencies.set(packageName, "walk-in-progress");
 
       let immediateDependencies = this.graph[packageName]?.dependencies ?? [];
 
@@ -338,13 +335,13 @@ export class Pipeline {
       let transitiveDepSet = new Set<string>(immediateDependencies);
       for (let immediateDependency of immediateDependencies) {
         for (let transitiveSubDependency of this.getTransitiveGraphDependencies(immediateDependency)) {
-          transitiveDepSet.add(transitiveSubDependency)
+          transitiveDepSet.add(transitiveSubDependency);
         }
       }
 
       // Cache the result and return
       this.cachedTransitiveTaskDependencies.set(packageName, transitiveDepSet);
-      return transitiveDepSet
+      return transitiveDepSet;
     }
   }
 
@@ -445,9 +442,7 @@ export class Pipeline {
   private getTargetPriority(target: PipelineTarget) {
     return target.priority !== undefined
       ? target.priority
-      : this.config.priorities?.find(
-          (priority) => priority.package === target.packageName && priority.task === target.task
-        )?.priority;
+      : this.config.priorities?.find((priority) => priority.package === target.packageName && priority.task === target.task)?.priority;
   }
 
   /**

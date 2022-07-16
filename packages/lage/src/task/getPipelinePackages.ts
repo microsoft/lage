@@ -22,7 +22,7 @@ export function getPipelinePackages(workspace: Workspace, config: Config) {
   if (hasSince && !hasRepoChanged(since, workspace.root, repoWideChanges)) {
     try {
       changedPackages = getChangedPackages(workspace.root, since, config.ignore);
-    } catch(e) {
+    } catch (e) {
       logger.warn(`An error in the git command has caused this scope run to include every package\n${e}`);
       // if getChangedPackages throws, we will assume all have changed (using changedPackage = undefined)
     }
@@ -37,11 +37,7 @@ export function getPipelinePackages(workspace: Workspace, config: Config) {
   });
 }
 
-function hasRepoChanged(
-  since: string,
-  root: string,
-  environmentGlob: string[]
-) {
+function hasRepoChanged(since: string, root: string, environmentGlob: string[]) {
   try {
     const changedFiles = getBranchChanges(since, root);
     const envFiles = fg.sync(environmentGlob, { cwd: root });
@@ -57,7 +53,7 @@ function hasRepoChanged(
     }
 
     return repoWideChanged;
-  } catch(e) {
+  } catch (e) {
     // if this fails, let's assume repo has changed
     logger.warn(`An error in the git command has caused this to consider the repo has changed\n${e}`);
     return true;

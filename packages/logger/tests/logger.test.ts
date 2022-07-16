@@ -1,15 +1,8 @@
 import { PassThrough } from "stream";
-import createLogger, {
-  LogEntry,
-  LogLevel,
-  LogStructuredData,
-  Reporter,
-} from "../src/index";
+import createLogger, { LogEntry, LogLevel, LogStructuredData, Reporter } from "../src/index";
 
 describe("logger", () => {
-  class TestReporter<T extends LogStructuredData = LogStructuredData>
-    implements Reporter
-  {
+  class TestReporter<T extends LogStructuredData = LogStructuredData> implements Reporter {
     logLevel = LogLevel.warn;
     entries: LogEntry<T>[] = [];
 
