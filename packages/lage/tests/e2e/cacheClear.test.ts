@@ -90,14 +90,8 @@ describe("Cache clear", () => {
     // Run build so we get a cache folder
     repo.run("build");
 
-    const cacheFolderA = path.join(
-      repo.root,
-      `packages/a/${defaultCacheLocation}`
-    );
-    const cacheFolderB = path.join(
-      repo.root,
-      `packages/b/${defaultCacheLocation}`
-    );
+    const cacheFolderA = path.join(repo.root, `packages/a/${defaultCacheLocation}`);
+    const cacheFolderB = path.join(repo.root, `packages/b/${defaultCacheLocation}`);
 
     // Cache is created in the right place
     expect(fs.existsSync(cacheFolderA)).toBeTruthy();

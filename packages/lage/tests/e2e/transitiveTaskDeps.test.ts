@@ -38,7 +38,7 @@ describe("transitive task deps test", () => {
       for (const task of ["build", "bundle", "test"]) {
         const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "completed"));
         if (index > -1) {
-          indices[getTargetId(pkg, task)] = index;  
+          indices[getTargetId(pkg, task)] = index;
         }
       }
     }
@@ -85,7 +85,7 @@ describe("transitive task deps test", () => {
       for (const task of ["transpile", "bundle"]) {
         const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "completed"));
         if (index > -1) {
-          indices[getTargetId(pkg, task)] = index;  
+          indices[getTargetId(pkg, task)] = index;
         }
       }
     }
@@ -98,7 +98,7 @@ describe("transitive task deps test", () => {
 
     repo.cleanup();
   });
-  
+
   it("only runs direct dependencies for ^ prefix dependencies -- ", () => {
     const repo = new Monorepo("transitiveDeps-carat-prefix");
 
@@ -134,7 +134,7 @@ describe("transitive task deps test", () => {
       for (const task of ["transpile", "bundle"]) {
         const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "started"));
         if (index > -1) {
-          indices[getTargetId(pkg, task)] = index;  
+          indices[getTargetId(pkg, task)] = index;
         }
       }
     }
@@ -197,7 +197,7 @@ describe("transitive task deps test", () => {
       for (const task of ["transpile", "bundle"]) {
         const index = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "started"));
         if (index > -1) {
-          indices[getTargetId(pkg, task)] = index;  
+          indices[getTargetId(pkg, task)] = index;
         }
       }
     }

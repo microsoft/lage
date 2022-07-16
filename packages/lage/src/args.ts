@@ -41,10 +41,7 @@ export function arrifyArgs(args: { [key: string]: string | string[] }) {
   }
 }
 
-export function getPassThroughArgs(
-  command: string[],
-  args: { [key: string]: string | string[] }
-) {
+export function getPassThroughArgs(command: string[], args: { [key: string]: string | string[] }) {
   let result: string[] = [];
 
   let lageArgs = [

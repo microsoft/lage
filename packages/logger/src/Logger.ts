@@ -4,9 +4,7 @@ import type { Reporter } from "./interfaces/Reporter";
 import { LogLevel } from "./interfaces/LogLevel";
 import { createInterface } from "readline";
 
-export class Logger<
-  TLogStructuredData extends LogStructuredData = LogStructuredData
-> {
+export class Logger<TLogStructuredData extends LogStructuredData = LogStructuredData> {
   reporters: Reporter[] = [];
   logs: LogEntry[] = [];
 
@@ -45,11 +43,7 @@ export class Logger<
     this.log(LogLevel.silly, msg, data);
   }
 
-  stream(
-    level: LogLevel,
-    input: NodeJS.ReadableStream,
-    data?: TLogStructuredData
-  ) {
+  stream(level: LogLevel, input: NodeJS.ReadableStream, data?: TLogStructuredData) {
     const readline = createInterface({
       input,
       crlfDelay: Infinity,

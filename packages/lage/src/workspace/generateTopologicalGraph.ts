@@ -13,10 +13,7 @@ export function generateTopologicGraph(workspace: Workspace) {
 
     graph[pkg] = {
       dependencies: [...(deps ? deps : [])],
-      location: path.relative(
-        workspace.root,
-        path.dirname(info.packageJsonPath)
-      ),
+      location: path.relative(workspace.root, path.dirname(info.packageJsonPath)),
     };
   }
 
