@@ -11882,7 +11882,7 @@ workspace-tools@^0.19.0:
     multimatch "^4.0.0"
     read-yaml-file "^2.0.0"
 
-workspace-tools@^0.23.0:
+workspace-tools@^0.23.0, workspace-tools@^0.23.3:
   version "0.23.3"
   resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.23.3.tgz#1833c848170d1370675535963778524d0ad0aef4"
   integrity sha512-8JWfnW9Kj24X8l4sOvwN77cxExBM57fpbjo+UqvFzY7L9FeyY4MUCqpLKpKARkK8okF/PFPOL9Dl1QgsEMT4yw==

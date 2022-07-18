@@ -1,5 +1,5 @@
 {
-  "name": "@lage-run/target",
+  "name": "@lage-run/target-graph",
   "version": "0.1.0",
   "description": "Target for Lage",
   "repository": {
@@ -12,6 +12,9 @@
     "build": "tsc",
     "start": "tsc -w --preserveWatchOutput",
     "test": "jest"
+  },
+  "dependencies": {
+    "workspace-tools": "^0.23.3"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",

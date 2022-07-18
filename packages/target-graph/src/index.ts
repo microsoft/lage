@@ -1,2 +1,2 @@
 export { getPackageAndTask, getTargetId } from "./targetId";
-export { Target } from "./Target";
+export { Target } from "./types/Target";
