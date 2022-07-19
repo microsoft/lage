@@ -1,5 +1,5 @@
-import { createNodes } from "./get-nodes-edges";
-import { createEdges } from "./get-nodes-edges";
+import createNodes from "./createNodes";
+import createEdges from "./createEdges";
 import React, { useCallback } from "react";
 import ReactFlow, {
   addEdge,

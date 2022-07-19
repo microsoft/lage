@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-export default memo(({ data }) => {
+export default memo(( data ) => {
   return (
     <>
       <div className="center">

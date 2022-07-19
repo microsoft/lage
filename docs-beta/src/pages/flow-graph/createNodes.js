@@ -1,7 +1,5 @@
-const position = { x: 0, y: 0 };
-const edgeType = "smoothstep";
-
-export function createNodes(file) {
+export default function createNodes(file) {
+  const position = { x: 0, y: 0 };
   const nodes = [];
   var node = {};
   const names = new Set();
@@ -41,21 +39,3 @@ export function createNodes(file) {
   });
   return nodes;
 }
-
-export function createEdges(file) {
-  const edges = [];
-  var edge = {};
-
-  // generating the edges
-  file["dependencies"].forEach((dep) => {
-    edge = {
-      id: dep["dependency"] + "-" + dep["name"],
-      type: edgeType,
-      source: dep["dependency"],
-      target: dep["name"],
-    };
-    edges.push(edge);
-  });
-  return edges;
-}
-
