@@ -1,0 +1,10 @@
+{
+  "type": "patch",
+  "comment": {
+    "title": "",
+    "value": ""
+  },
+  "packageName": "lage",
+  "email": "email not defined",
+  "dependentChangeType": "patch"
+}
