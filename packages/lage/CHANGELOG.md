@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 15 Jul 2022 17:10:04 GMT and should not be manually modified.
+This log was last generated on Tue, 19 Jul 2022 21:14:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.7.2
+
+Tue, 19 Jul 2022 21:14:57 GMT
+
+### Patches
+
+- [object Object] (pushkargupta@microsoft.com)
 
 ## 1.7.1
 
