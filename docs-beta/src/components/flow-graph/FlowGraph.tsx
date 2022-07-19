@@ -1,5 +1,5 @@
-import createNodes from "./createNodes";
-import createEdges from "./createEdges";
+import createNodes from "../../grapher/createNodes";
+import createEdges from "../../grapher/createEdges";
 import React, { useCallback } from "react";
 import ReactFlow, {
   addEdge,
@@ -12,7 +12,7 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import dagre from "dagre";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import independentNode from "./independent-node";
+import independentNode from "./IndependentNode";
 
 export const FlowGraph = (props) => {
   const json = JSON.parse(props.children);

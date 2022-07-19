@@ -52,7 +52,7 @@ const config = {
             label: 'Guide',
           },
           {
-            href: '../../flow-index',
+            href: 'grapher',
             position: 'left',
             label: 'Grapher',
           },
