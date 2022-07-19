@@ -225,7 +225,7 @@ export class TargetGraphBuilder {
     }
   }
 
-  generateTargetGraph() {
+  build() {
     this.expandDependencies();
     return {
       targets: this.targets,
