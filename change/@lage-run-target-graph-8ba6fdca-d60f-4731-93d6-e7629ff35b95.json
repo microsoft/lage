@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "initial check in of target-graph - a refactored Pipeline and Target from lage v1",
+  "packageName": "@lage-run/target-graph",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
