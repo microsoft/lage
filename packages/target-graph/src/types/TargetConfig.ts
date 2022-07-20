@@ -1,4 +1,4 @@
-import type { Target } from "../../lib";
+import type { Target } from "./Target";
 
 /** target configuration */
 export interface TargetConfig {
