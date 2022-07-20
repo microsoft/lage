@@ -14,5 +14,5 @@ export interface TargetConfig {
   cache?: boolean;
   options?: Record<string, any>;
 
-  run?: (target: Target) => Promise<boolean> | void;
+  run?: (target: Target) => Promise<void> | void;
 }

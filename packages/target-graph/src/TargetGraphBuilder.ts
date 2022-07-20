@@ -6,6 +6,7 @@ import path from "path";
 import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap";
 import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target";
+import { npmScriptRunner } from "./runners/npmScriptRunner";
 
 export const START_TARGET_ID = "__start";
 
@@ -55,11 +56,8 @@ export class TargetGraphBuilder {
         inputs: config.inputs,
         outputs: config.outputs,
         priority: config.priority,
+        run: config.run,
         options,
-        run(target) {
-          // TODO: pick the right runner based on the target type
-          return;
-        },
       });
     } else if (id.includes("#")) {
       const { packageName: pkg, task } = getPackageAndTask(id);
@@ -81,10 +79,7 @@ export class TargetGraphBuilder {
         outputs: config.outputs,
         priority: config.priority,
         options,
-        run(target) {
-          // TODO: pick the right runner based on the target type
-          return;
-        },
+        run: config.run,
       };
 
       this.targets.set(id, target);
@@ -110,6 +105,7 @@ export class TargetGraphBuilder {
           outputs: config.outputs,
           priority: config.priority,
           options,
+          run: config.run,
         };
         this.targets.set(targetId, target);
       }

@@ -23,5 +23,5 @@ export interface Target {
   options?: Record<string, any>;
 
   /** For custom run definition */
-  run?: <TRunOptions>(root: string, target: Target, options: TRunOptions) => Promise<void> | void;
+  run?: (target: Target) => Promise<void> | void;
 }

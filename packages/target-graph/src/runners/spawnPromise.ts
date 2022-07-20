@@ -1,9 +1,9 @@
-import { spawn, SpawnOptionsWithStdioTuple, StdioNull } from "child_process";
+import { spawn, SpawnOptions, SpawnOptionsWithStdioTuple, StdioNull } from "child_process";
 
 export function spawnPromise(
   cmd: string,
   args: ReadonlyArray<string>,
-  options: SpawnOptionsWithStdioTuple<StdioNull, StdioNull, StdioNull>
+  options: SpawnOptionsWithStdioTuple<StdioNull, StdioNull, StdioNull> | SpawnOptions
 ): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     const cp = spawn(cmd, args, options);
