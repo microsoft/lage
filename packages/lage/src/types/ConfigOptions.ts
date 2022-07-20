@@ -55,6 +55,21 @@ export interface ConfigOptions {
   includeDependencies: boolean;
 
   /**
+   * Run the tasks for the dependents of scoped tasks
+   */
+  includeDependents: boolean;
+
+  /**
+   * Include development dependencies of scoped tasks
+   */
+  withDevDependencies: boolean;
+
+  /**
+   * Include peer dependencies of scoped tasks
+   */
+  withPeerDependencies: boolean;
+
+  /**
    * Options that will be sent to all log reporters.
    */
   loggerOptions: LoggerOptions;
