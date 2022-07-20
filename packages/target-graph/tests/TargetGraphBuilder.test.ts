@@ -1,5 +1,5 @@
 import { PackageInfos } from "workspace-tools";
-import { START_TARGET_ID, TargetGraphBuilder } from "../src/target-graph-builder";
+import { START_TARGET_ID, TargetGraphBuilder } from "../src/TargetGraphBuilder";
 
 function createPackageInfo(packages: { [id: string]: string[] }) {
   const packageInfos: PackageInfos = {};

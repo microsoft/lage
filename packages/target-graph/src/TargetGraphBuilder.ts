@@ -6,7 +6,6 @@ import path from "path";
 import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap";
 import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target";
-import { npmScriptRunner } from "./runners/npmScriptRunner";
 
 export const START_TARGET_ID = "__start";
 
@@ -20,7 +19,7 @@ export const START_TARGET_ID = "__start";
  * const rootDir = process.cwd();
  * const packageInfos = getPackageInfos(rootDir);
  * const builder = new TargetGraphBuilder(rootDir, packageInfos);
- * const targetGraph = builder.build();
+ * const targetGraph = builder.buildTargetGraph([...packages], [...tasks]);
  * ```
  */
 export class TargetGraphBuilder {

@@ -1,27 +1,54 @@
 export interface Target {
-  // state of the target
+  /**
+   * Run state of the target
+   */
   status: "pending" | "running" | "complete" | "failed";
 
+  /**
+   * Unique ID of the target (e.g. "pkg-a#build")
+   */
   id: string;
   label: string;
   cwd: string;
   task: string;
 
-  // Package name if the target is a package target
+  /**
+   * Package name of the target. Undefined if this target is associated with repo root.
+   */
   packageName?: string;
 
-  // Dependencies on other Targets
+  /**
+   * Dependencies of the target - these are the targets that must be complete before the target can be complete
+   */
   dependencies: string[];
+
+  /**
+   * Any custom priority for the target. A priority of >0 will always be prioritized over the default targets in queue
+   */
   priority?: number;
 
-  // Cache Options: inputs and outputs of the Target
+  /**
+   * Outputs of this target (for cache purposes)
+   */
   outputs?: string[];
+
+  /**
+   * Inputs for this target (for cache purposes)
+   */
   inputs?: string[];
+
+  /**
+   * Whether to cache this target
+   */
   cache?: boolean;
 
-  // Run options for the Target
+  /** 
+   * Run options for the Target
+   */
   options?: Record<string, any>;
 
-  /** For custom run definition */
+  /** 
+   * Custom run definition, if left blank, the scheduler will decide which runner to use to fulfill the work for the `Target`
+   */
   run?: (target: Target) => Promise<void> | void;
 }
