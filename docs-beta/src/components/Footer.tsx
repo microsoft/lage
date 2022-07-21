@@ -9,7 +9,7 @@ import { Button } from "./Button";
 
 export default function Footer() {
   return (
-    <div className="theme-color bg-body-secondary py-8">
+    <div className="theme-color bg-bodyPrimary py-8">
       <div className="2xl:w-big-screen 2xl:mx-auto">
         <div className="mt-16 md:mt-28" />
 

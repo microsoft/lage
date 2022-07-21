@@ -8,7 +8,7 @@
     "module": "ES2022",
     "moduleResolution": "Node",
     "declaration": true,
-    "lib": ["ES2017"],
+    "lib": ["ES2017", "DOM"],
     "allowJs": true,
     "outDir": "./lib",
     "strict": true,
