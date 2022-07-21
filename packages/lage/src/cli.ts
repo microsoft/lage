@@ -32,7 +32,7 @@ try {
     case "graph":
       graph(cwd, config);
       break;
-      
+
     case "version":
       version();
       break;
