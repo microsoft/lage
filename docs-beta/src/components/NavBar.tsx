@@ -8,7 +8,7 @@ import { HamburgerButton } from "./HamburgerButton";
 export default function NavBar() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   return (
-    <div className="pl-4 pr-4 md:pr-20 bg-body-primary md:bg-navbar">
+    <div className="pl-4 pr-4 md:pr-20 bg-bodySecondary md:bg-navbar">
       <div className="flex items-center justify-between">
         <a href=".">
           <img className="w-20 h-7 md:hidden" src="img/lage.png" alt="Logo" />
@@ -54,6 +54,7 @@ export default function NavBar() {
             <img className="w-20 h-7" src="img/lage.png" alt="Logo" />
           </a>
           <NavButton to="/docs/Introducing Lage/Overview">Guide</NavButton>
+          <NavButton to="/lage/grapher">Grapher</NavButton>
         </div>
         {/*Aligned to right*/}
         <div className="flex items-center">

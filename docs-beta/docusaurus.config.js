@@ -52,6 +52,11 @@ const config = {
             label: 'Guide',
           },
           {
+            href: 'grapher',
+            position: 'left',
+            label: 'Grapher',
+          },
+          {
             href: 'https://github.com/microsoft/lage',
             label: 'GitHub',
             position: 'right',
