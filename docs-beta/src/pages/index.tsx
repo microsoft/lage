@@ -1,6 +1,6 @@
 import React from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import "../../static/tailwind/tailwind-styles.css";
+import "../css/tailwind-styles.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { TwoColumns } from "../components/TwoColumns";
@@ -18,7 +18,7 @@ export default function Home() {
       <NavBar />
       <Header />
       <Illustration src="img/Wave Shape 1.svg" isWave={true} />
-      <main className="theme-color bg-gradient-to-b from-body-secondary to-body-primary pb-20">
+      <main className="theme-color bg-gradient-to-b from-bodyPrimary to-bodySecondary pb-20">
         <div className="2xl:w-big-screen 2xl:mx-auto">
           <Quote author="Jason Gore" organization="Microsoft Loop">
             Finally a task runner that

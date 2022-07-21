@@ -7,7 +7,7 @@ export interface LogEntry {
   data?: LogStructuredData;
 }
 
-export type LogStructuredData = TaskData | InfoData;
+export type LogStructuredData = TaskData | InfoData | GraphData;
 
 export interface TaskData {
   status?: "pending" | "started" | "completed" | "failed" | "skipped";
@@ -15,6 +15,10 @@ export interface TaskData {
   task?: string;
   duration?: string;
   hash?: string | null;
+}
+
+export interface GraphData {
+  edges?: [string, string][];
 }
 
 /**

@@ -30,6 +30,7 @@
     "watchpack": "1.7.5"
   },
   "dependencies": {
+    "@lage-run/logger": "*",
     "@xmldom/xmldom": "^0.8.0",
     "abort-controller": "^3.0.0",
     "backfill": "^6.1.20",

@@ -10,8 +10,9 @@ module.exports = {
   content: [
     "./src/pages/*.js",
     "./src/components/*.js",
-    "./src/pages/*.tsx",
-    "./src/pages/*.ts",
+    "./src/pages/**/*.tsx",
+    "./src/pages/**/*.ts",
+    "./src/pages/**/*.js",
     "./src/components/*.tsx",
     "./src/components/*.ts",
   ],
@@ -20,15 +21,23 @@ module.exports = {
       center: true,
     },
     extend: {
+      fontFamily: {
+        londrina: ["Londrina Solid"],
+        bahnschrift: ["Bahnschrift"],
+      },
       spacing: {
         'big-screen': '1920px',
       },
       colors: {
+        button: withOpacityValue("--color-button"),
+        point: withOpacityValue("--color-point"),
+        bodySecondary: withOpacityValue("--color-bodySecondary"),
+        bodyPrimary: withOpacityValue("--color-bodyPrimary"),
         primary: withOpacityValue("--color-primary"),
         secondary: withOpacityValue("--color-secondary"),
         tertiary: withOpacityValue("--color-tertiary"),
-        brand: withOpacityValue("--color-brand"),
-        accent: withOpacityValue("--color-accent"),
+        navbar: withOpacityValue("--color-navbar"),
+        tool: withOpacityValue("--color-tool"),
       },
     },
   },

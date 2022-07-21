@@ -8,6 +8,7 @@ import { initReporters } from "./logger/initReporters";
 import { version } from "./command/version";
 import { cache } from "./command/cache";
 import { worker } from "./command/worker";
+import { graph } from "./command/graph";
 
 // Parse CLI args
 const cwd = process.cwd();
@@ -26,6 +27,10 @@ try {
 
     case "info":
       info(cwd, config);
+      break;
+
+    case "graph":
+      graph(cwd);
       break;
 
     case "version":
