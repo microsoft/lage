@@ -2,6 +2,7 @@ import fs, { Stats } from "fs";
 import path from "path";
 import { PackageInfo } from "workspace-tools";
 import { logger } from "../logger";
+import { CacheOptions } from "../types/CacheOptions";
 import { Config } from "../types/Config";
 import { getWorkspace } from "../workspace/getWorkspace";
 
@@ -25,7 +26,7 @@ function clearCache(cwd: string, config: Config) {
   const workspace = getWorkspace(cwd, config);
   const { allPackages } = workspace;
   for (const info of Object.values(allPackages)) {
-    const cachePath = getCachePath(info);
+    const cachePath = getCachePath(info, config.cacheOptions);
 
     if (fs.existsSync(cachePath)) {
       const entries = fs.readdirSync(cachePath);
@@ -46,7 +47,7 @@ function pruneCache(cwd: string, config: Config) {
   const workspace = getWorkspace(cwd, config);
   const { allPackages } = workspace;
   for (const info of Object.values(allPackages)) {
-    const cachePath = getCachePath(info);
+    const cachePath = getCachePath(info, config.cacheOptions);
 
     if (fs.existsSync(cachePath)) {
       const entries = fs.readdirSync(cachePath);
@@ -57,10 +58,7 @@ function pruneCache(cwd: string, config: Config) {
 
         logger.verbose(`clearing cache for ${info.name}`);
 
-        if (
-          now.getTime() - entryStat.mtime.getTime() >
-          prunePeriod * MS_IN_A_DAY
-        ) {
+        if (now.getTime() - entryStat.mtime.getTime() > prunePeriod * MS_IN_A_DAY) {
           remove(entryPath, entryStat);
         }
       }
@@ -68,8 +66,10 @@ function pruneCache(cwd: string, config: Config) {
   }
 }
 
-function getCachePath(info: PackageInfo) {
-  return path.join(info.packageJsonPath, "../node_modules/.cache/backfill");
+function getCachePath(info: PackageInfo, cacheOptions: CacheOptions) {
+  const cacheFolder = !cacheOptions.internalCacheFolder ? undefined : `../${cacheOptions.internalCacheFolder}`;
+
+  return path.join(info.packageJsonPath, cacheFolder ?? "../node_modules/.cache/backfill");
 }
 
 function remove(entryPath: string, entryStat: Stats) {

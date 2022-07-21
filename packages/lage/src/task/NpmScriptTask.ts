@@ -4,10 +4,9 @@ import { PackageInfo } from "workspace-tools";
 import { findNpmClient } from "../workspace/findNpmClient";
 import { spawn } from "child_process";
 import path from "path";
-import { TaskLogWritable } from "../logger/TaskLogWritable";
-
 import { getNpmCommand } from "./getNpmCommand";
 import { Config } from "../types/Config";
+import { LogLevel } from "../logger/LogLevel";
 
 export class NpmScriptTask {
   static npmCmd: string = "";
@@ -57,12 +56,8 @@ export class NpmScriptTask {
 
       NpmScriptTask.activeProcesses.add(cp);
 
-      const stdoutLogger = new TaskLogWritable(this.logger);
-      cp.stdout.pipe(stdoutLogger);
-
-      const stderrLogger = new TaskLogWritable(this.logger);
-      cp.stderr.pipe(stderrLogger);
-
+      this.logger.stream(LogLevel.verbose, cp.stdout);
+      this.logger.stream(LogLevel.verbose, cp.stderr);
       cp.on("exit", handleChildProcessExit);
 
       function handleChildProcessExit(code: number) {

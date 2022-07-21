@@ -15,7 +15,7 @@ export interface CliOptions {
   /**
    * number of parallel tasks that can be run at a time
    *
-   * By default, this is the number of CPU cores detected by `os.cpus().length`,
+   * By default, this is the number of CPU cores detected by `os.cpus().length` - 1,
    * change to any number to achieve desired concurrency.
    */
   concurrency: number;
