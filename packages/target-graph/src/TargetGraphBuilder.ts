@@ -33,6 +33,46 @@ export class TargetGraphBuilder {
     this.dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
   }
 
+  private createGlobalTarget(id: string, config: TargetConfig): Target {
+    const { options, dependsOn, deps, cache, inputs, outputs, priority, run } = config;
+    const { task } = getPackageAndTask(id);
+    const targetId = getTargetId(undefined, task);
+    return {
+      id: targetId,
+      label: targetId,
+      task: targetId,
+      cache: cache !== false,
+      cwd: this.root,
+      dependencies: dependsOn ?? deps ?? [],
+      status: "pending",
+      inputs,
+      outputs,
+      priority,
+      run,
+      options,
+    };
+  }
+
+  private createPackageTarget(packageName: string, task: string, config: TargetConfig): Target {
+    const { options, dependsOn, deps, cache, inputs, outputs, priority, run } = config;
+    const info = this.packageInfos[packageName];
+    return {
+      id: getTargetId(packageName, task),
+      label: `${packageName} - ${task}`,
+      packageName,
+      task,
+      cache: cache !== false,
+      cwd: path.dirname(info.packageJsonPath),
+      dependencies: dependsOn ?? deps ?? [],
+      status: "pending",
+      inputs,
+      outputs,
+      priority,
+      run,
+      options,
+    };
+  }
+
   /**
    * Adds a target definition
    * @param id
@@ -41,72 +81,18 @@ export class TargetGraphBuilder {
   addTargetConfig(id: string, config: TargetConfig = {}): void {
     // Generates a target definition from the target config
     if (config.type === "global" || id.startsWith("//")) {
-      const targetId = id;
-      const options = { ...config.options };
-
-      this.targets.set(targetId, {
-        id: targetId,
-        label: targetId,
-        task: targetId,
-        cache: config.cache !== false,
-        cwd: this.root,
-        dependencies: config.dependsOn ?? config.deps ?? [],
-        status: "pending",
-        inputs: config.inputs,
-        outputs: config.outputs,
-        priority: config.priority,
-        run: config.run,
-        options,
-      });
+      const target = this.createGlobalTarget(id, config);
+      this.targets.set(target.id, target);
     } else if (id.includes("#")) {
-      const { packageName: pkg, task } = getPackageAndTask(id);
-      const options = {
-        packageName: pkg as string,
-        task,
-        ...config.options,
-      };
-      const info = this.packageInfos[options.packageName];
-      const target: Target = {
-        id,
-        label: `${pkg} - ${task}`,
-        task,
-        cache: config.cache !== false,
-        cwd: path.dirname(info.packageJsonPath),
-        dependencies: config.dependsOn ?? config.deps ?? [],
-        status: "pending",
-        inputs: config.inputs,
-        outputs: config.outputs,
-        priority: config.priority,
-        options,
-        run: config.run,
-      };
-
-      this.targets.set(id, target);
+      const { packageName, task } = getPackageAndTask(id);
+      const target = this.createPackageTarget(packageName!, task, config);
+      this.targets.set(target.id, target);
     } else {
       const packages = Object.keys(this.packageInfos);
-      for (const pkg of packages) {
-        const targetId = getTargetId(pkg, id);
-        const options = {
-          packageName: pkg as string,
-          task: id,
-          ...config.options,
-        };
-        const target: Target = {
-          id: targetId,
-          label: `${pkg} - ${id}`,
-          task: id,
-          cache: config.cache !== false,
-          cwd: this.root,
-          dependencies: config.dependsOn ?? config.deps ?? [],
-          packageName: pkg as string,
-          status: "pending",
-          inputs: config.inputs,
-          outputs: config.outputs,
-          priority: config.priority,
-          options,
-          run: config.run,
-        };
-        this.targets.set(targetId, target);
+      for (const packageName of packages) {
+        const task = id;
+        const target = this.createPackageTarget(packageName!, task, config);
+        this.targets.set(target.id, target);
       }
     }
   }
@@ -115,12 +101,27 @@ export class TargetGraphBuilder {
    * Adds all the target dependencies to the graph
    */
   private expandDependencies() {
+    const addDependency = (from: string, to: string) => {
+      this.dependencies.push([from, to]);
+    };
+
+    const findDependenciesByTask = (task: string, dependencies: string[]) => {
+      return targets
+        .filter((needle) => {
+          const { task: needleTask, packageName: needlePackageName } = needle;
+          return needleTask === task && dependencies.some((depPkg) => depPkg === needlePackageName);
+        })
+        .map((needle) => needle.id);
+    };
+
     const targets = [...this.targets.values()];
+
     for (const target of targets) {
-      const { dependencies, packageName, id } = target;
+      const { dependencies, packageName, id: to } = target;
 
       // Always start with a root node with a special "START_TARGET_ID"
-      this.dependencies.push([START_TARGET_ID, id]);
+      // because any node could potentially be part of the entry point in building the scoped target subgraph
+      this.dependencies.push([START_TARGET_ID, to]);
 
       // Skip any targets that have no "deps" specified
       if (!dependencies || dependencies.length === 0) {
@@ -140,40 +141,46 @@ export class TargetGraphBuilder {
        *
        * We interpret anything outside of these conditions as invalid
        */
-      for (const dep of dependencies) {
-        if (dep.includes("#")) {
-          // package and task as deps
-          this.dependencies.push([dep, id]);
-        } else if (dep.startsWith("^") && packageName) {
-          // topo dep -> build: ['^build']
-          const [depTask, dependencySet] = dep.startsWith("^^")
-            ? [dep.substring(2), [...this.getTransitiveGraphDependencies(packageName)]]
-            : [dep.substring(1), [...(this.dependencyMap.dependencies.get(packageName) ?? [])]];
-
-          const dependencyIds = targets
-            .filter((needle) => {
-              const { task, packageName: needlePackageName } = needle;
-
-              return task === depTask && dependencySet.some((depPkg) => depPkg === needlePackageName);
-            })
-            .map((needle) => needle.id);
-
-          for (const dependencyId of dependencyIds) {
-            this.dependencies.push([dependencyId, id]);
+      for (const dependencyTargetId of dependencies) {
+        if (dependencyTargetId.includes("#")) {
+          // id's with a # are package-task dependencies, or global
+          // therefore, we must use getPackageAndTask() & getTargetId() to normalize the target id
+          // (e.g. "build": ["build-tool#build"])
+          const { packageName, task } = getPackageAndTask(dependencyTargetId);
+          const normalizedDependencyTargetId = getTargetId(packageName, task);
+          addDependency(normalizedDependencyTargetId, to);
+        } else if (dependencyTargetId.startsWith("^^") && packageName) {
+          // Transitive depdency (e.g. bundle: ['^^transpile'])
+          const depTask = dependencyTargetId.substring(2);
+          const targetDependencies = [...(this.getTransitiveGraphDependencies(packageName) ?? [])];
+          const dependencyTargetIds = findDependenciesByTask(depTask, targetDependencies);
+          for (const from of dependencyTargetIds) {
+            addDependency(from, to);
+          }
+        } else if (dependencyTargetId.startsWith("^") && packageName) {
+          // Topological dependency (e.g. build: ['^build'])
+          const depTask = dependencyTargetId.substring(1);
+          const targetDependencies = [...(this.dependencyMap.dependencies.get(packageName) ?? [])];
+          const dependencyTargetIds = findDependenciesByTask(depTask, targetDependencies);
+          for (const from of dependencyTargetIds) {
+            addDependency(from, to);
           }
         } else if (packageName) {
-          // Intra package task dependency - only add the target dependency if it exists in the pipeline targets lists
-          if (this.targets.has(getTargetId(packageName, dep))) {
-            this.dependencies.push([getTargetId(packageName, dep), target.id]);
+          // Add dependency on a specific package and given task name as dependency
+          // (e.g. bundle: ['build'])
+          const task = dependencyTargetId;
+          if (this.targets.has(getTargetId(packageName, task))) {
+            addDependency(getTargetId(packageName, task), to);
           }
-        } else if (!dep.startsWith("^")) {
-          const dependencyIds = targets.filter((needle) => needle.task === dep).map((needle) => needle.id);
-
+        } else if (!dependencyTargetId.startsWith("^")) {
+          // Global dependency - add all targets that match task name as dependency
+          // (e.g. "#bundle": ['build'])
+          const dependencyIds = targets.filter((needle) => needle.task === dependencyTargetId).map((needle) => needle.id);
           for (const dependencyId of dependencyIds) {
-            this.dependencies.push([dependencyId, id]);
+            addDependency(dependencyId, to);
           }
         } else {
-          throw new Error(`invalid pipeline config detected: ${target.id}, packageName: ${packageName}, dep: ${dep}`);
+          throw new Error(`invalid pipeline config detected: ${target.id}, packageName: ${packageName}, dep: ${dependencyTargetId}`);
         }
       }
     }
@@ -222,6 +229,20 @@ export class TargetGraphBuilder {
 
   private createSubGraph(tasks: string[], scope?: string[]) {
     const targetGraph: [string, string][] = [];
+    const knownDeps = new Set<string>();
+
+    const knownDepsKey = (from: string, to: string) => {
+      return `${from}->${to}`;
+    };
+
+    const addTargetGraphEdge = (from: string, to: string) => {
+      if (knownDeps.has(knownDepsKey(from, to))) {
+        return;
+      }
+      knownDeps.add(knownDepsKey(from, to));
+      targetGraph.push([from, to]);
+    };
+
     const queue: string[] = [];
 
     if (!scope) {
@@ -233,15 +254,15 @@ export class TargetGraphBuilder {
       for (const pkg of scope) {
         if (this.targets.has(getTargetId(pkg, task))) {
           queue.push(getTargetId(pkg, task));
-          targetGraph.push([START_TARGET_ID, getTargetId(pkg, task)]);
+          addTargetGraphEdge(START_TARGET_ID, getTargetId(pkg, task));
         }
       }
 
-      // if we have globals, send those into the queue
+      // if we have global targets, send those into the queue
       for (const target of this.targets.values()) {
         if (target.task === task && !target.packageName) {
           queue.push(target.id);
-          targetGraph.push([START_TARGET_ID, target.id]);
+          addTargetGraphEdge(START_TARGET_ID, target.id);
         }
       }
     }
@@ -261,7 +282,7 @@ export class TargetGraphBuilder {
         if (to === id) {
           // dedupe the targetGraph edges
           if (targetGraph.find(([fromId, toId]) => fromId === from && toId === to) === undefined) {
-            targetGraph.push([from, to]);
+            addTargetGraphEdge(from, to);
           }
 
           if (from) {

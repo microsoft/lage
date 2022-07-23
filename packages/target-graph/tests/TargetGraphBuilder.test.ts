@@ -77,7 +77,7 @@ describe("target graph builder", () => {
     `);
   });
 
-  it("should generate targetGraph with some specific package task target dependencies", () => {
+  it("should generate targetGraph with some specific package task target dependencies, running against all packages", () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
@@ -112,15 +112,45 @@ Array [
     "c#build",
   ],
   Array [
-    "__start",
-    "a#build",
-  ],
-  Array [
     "b#build",
     "c#build",
   ],
 ]
 `);
+  });
+
+  it("should generate targetGraph with some specific package task target dependencies, running against a specific package", () => {
+    const root = "/repos/a";
+
+    const packageInfos = createPackageInfo({
+      a: ["b"],
+      b: [],
+      c: ["b"],
+    });
+
+    const builder = new TargetGraphBuilder(root, packageInfos);
+
+    builder.addTargetConfig("build", {
+      dependsOn: ["^build"],
+    });
+
+    builder.addTargetConfig("a#build", {
+      dependsOn: [],
+    });
+
+    const targetGraph = builder.buildTargetGraph(["build"], ["a", "b"]);
+    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
+  Array [
+    Array [
+      "__start",
+      "a#build",
+    ],
+    Array [
+      "__start",
+      "b#build",
+    ],
+  ]
+  `);
   });
 
   it("should generate targetGraph with transitive dependencies", () => {
@@ -199,10 +229,6 @@ Array [
   Array [
     "__start",
     "c#build",
-  ],
-  Array [
-    "__start",
-    "common#build",
   ],
   Array [
     "__start",

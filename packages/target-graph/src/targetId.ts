@@ -1,3 +1,10 @@
+/**
+ * Generates a unique target id in this format: `<package-name>#<task-name>` or `//#<task-name>` 
+ *
+ * @param pkgName 
+ * @param task 
+ * @returns 
+ */
 export function getTargetId(pkgName: string | undefined, task: string) {
   return `${typeof pkgName === 'string' ? pkgName : '' }#${task}`;
 }
@@ -14,7 +21,7 @@ export function getPackageAndTask(targetId: string) {
   if (targetId.includes("#")) {
     const parts = targetId.split("#");
 
-    // "//" means root
+    // `//#<task-name>` or `#<task-name>` means root by convention
     if (targetId.startsWith('#') || parts[0] === "//") { 
       return { packageName: undefined, task: parts[1] }
     }
