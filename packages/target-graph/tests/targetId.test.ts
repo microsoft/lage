@@ -12,7 +12,6 @@ describe("getTargetId", () => {
   });
 });
 
-
 describe("getPackageAndTask", () => {
   it("should split up the package name and task given an id", () => {
     const { packageName, task } = getPackageAndTask("pkg#task");

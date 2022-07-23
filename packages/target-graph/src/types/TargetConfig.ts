@@ -1,20 +1,20 @@
 import type { Target } from "./Target";
 
-/** 
+/**
  * Target configuration - to be used inside `lage.config.js` options.pipeline configurations
  */
 export interface TargetConfig {
   /**
    * @deprecated
    * The type of the target - The configuration parser will use the id of the target to determine the type
-   * 
+   *
    * This is a legacy way of specifying the type of the target, to be deprecated in the next major version
    */
   type?: "package" | "global";
 
-  /** 
-   * @deprecated - use `dependsOn` instead 
-   * 
+  /**
+   * @deprecated - use `dependsOn` instead
+   *
    * The dependencies of the target. Dependencies are target specs in one of these forms:
    * - "pkg-a#build"
    * - "build"
@@ -23,7 +23,7 @@ export interface TargetConfig {
    */
   deps?: string[];
 
-  /** 
+  /**
    * The dependencies of the target. Dependencies are target specs in one of these forms:
    * - "pkg-a#build"
    * - "build"

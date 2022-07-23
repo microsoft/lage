@@ -229,9 +229,9 @@ export class TargetGraphBuilder {
   /**
    * Gets a list of package names that are direct or indirect dependencies of rootPackageName in this.graph,
    * and caches them on the Pipeline.
-   * 
+   *
    * For example, this is useful for a bundling target that depends on all transitive dependencies to have been built.
-   * 
+   *
    * @param packageName the root package to begin walking from
    */
   private getTransitiveGraphDependencies(packageName: string): Set<string> {
@@ -272,8 +272,8 @@ export class TargetGraphBuilder {
 
   /**
    * Filters out targets that are not part of the entry point.
-   * @param tasks 
-   * @param scope 
+   * @param tasks
+   * @param scope
    * @returns a list of target to target dependencies
    */
   private createSubGraph(tasks: string[], scope?: string[]) {
@@ -346,16 +346,16 @@ export class TargetGraphBuilder {
 
   /**
    * Builds a scoped target graph for given tasks and packages
-   * 
-   * Steps: 
+   *
+   * Steps:
    * 1. expands the dependency specs from the target definitions
    * 2. sub-graph filtered from the full dependency graph
    * 3. filtering all targets to just only the ones listed in the sub-graph
    * 4. returns the sub-graph
-   * 
-   * @param tasks 
-   * @param scope 
-   * @returns 
+   *
+   * @param tasks
+   * @param scope
+   * @returns
    */
   buildTargetGraph(tasks: string[], scope?: string[]) {
     this.expandDependencies();

@@ -37,12 +37,12 @@ export interface Target {
    */
   cache?: boolean;
 
-  /** 
+  /**
    * Run options for the Target
    */
   options?: Record<string, any>;
 
-  /** 
+  /**
    * Custom run definition, if left blank, the scheduler will decide which runner to use to fulfill the work for the `Target`
    */
   run?: (target: Target) => Promise<void> | void;
