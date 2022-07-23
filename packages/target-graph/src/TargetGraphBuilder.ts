@@ -23,16 +23,33 @@ export const START_TARGET_ID = "__start";
  * ```
  */
 export class TargetGraphBuilder {
+  /** Cached transitive task dependency */
   private cachedTransitiveTaskDependencies: Map<string, "walk-in-progress" | Set<string>> = new Map();
 
+  /** A map of targets - used internally for looking up generated targets from the target configurations */
   private targets: Map<string, Target> = new Map();
+
+  /** List of target to target dependency, represents the _full_ target graph during dependency expansion */
   private dependencies: [string, string][] = [];
+
+  /** A cache of the dependencyMap for packages, used inside dependency expansion */
   private dependencyMap: DependencyMap;
 
+  /**
+   * Initializes the builder with package infos
+   * @param root the root directory of the workspace
+   * @param packageInfos the package infos for the workspace
+   */
   constructor(private root: string, private packageInfos: PackageInfos) {
     this.dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
   }
 
+  /**
+   * Creates a global `Target`
+   * @param id
+   * @param config
+   * @returns a generated global Target
+   */
   private createGlobalTarget(id: string, config: TargetConfig): Target {
     const { options, dependsOn, deps, cache, inputs, outputs, priority, run } = config;
     const { task } = getPackageAndTask(id);
@@ -52,6 +69,13 @@ export class TargetGraphBuilder {
     };
   }
 
+  /**
+   * Creates a package task `Target`
+   * @param packageName
+   * @param task
+   * @param config
+   * @returns a package task `Target`
+   */
   private createPackageTarget(packageName: string, task: string, config: TargetConfig): Target {
     const { options, dependsOn, deps, cache, inputs, outputs, priority, run } = config;
     const info = this.packageInfos[packageName];
@@ -72,7 +96,8 @@ export class TargetGraphBuilder {
   }
 
   /**
-   * Adds a target definition
+   * Generates new `Target`, indexed by the id based on a new target configuration.
+   *
    * @param id
    * @param targetDefinition
    */
@@ -96,14 +121,29 @@ export class TargetGraphBuilder {
   }
 
   /**
-   * Adds all the target dependencies to the graph
+   * Expands the dependency graph by adding all transitive dependencies of the given targets.
    */
   private expandDependencies() {
+    /**
+     * Adds a dependency in the form of [from, to] to the dependency list.
+     * @param from
+     * @param to
+     */
     const addDependency = (from: string, to: string) => {
       this.dependencies.push([from, to]);
     };
 
-    const findDependenciesByTask = (task: string, dependencies: string[]) => {
+    /**
+     * Finds all transitive dependencies, given a task and optionally a dependency list.
+     * @param task
+     * @param dependencies
+     * @returns
+     */
+    const findDependenciesByTask = (task: string, dependencies?: string[]) => {
+      if (!dependencies) {
+        return targets.filter((needle) => needle.task === task).map((needle) => needle.id);
+      }
+
       return targets
         .filter((needle) => {
           const { task: needleTask, packageName: needlePackageName } = needle;
@@ -173,7 +213,8 @@ export class TargetGraphBuilder {
         } else if (!dependencyTargetId.startsWith("^")) {
           // Global dependency - add all targets that match task name as dependency
           // (e.g. "#bundle": ['build'])
-          const dependencyIds = targets.filter((needle) => needle.task === dependencyTargetId).map((needle) => needle.id);
+          const task = dependencyTargetId;
+          const dependencyIds = findDependenciesByTask(task);
           for (const dependencyId of dependencyIds) {
             addDependency(dependencyId, to);
           }
@@ -187,6 +228,9 @@ export class TargetGraphBuilder {
   /**
    * Gets a list of package names that are direct or indirect dependencies of rootPackageName in this.graph,
    * and caches them on the Pipeline.
+   * 
+   * For example, this is useful for a bundling target that depends on all transitive dependencies to have been built.
+   * 
    * @param packageName the root package to begin walking from
    */
   private getTransitiveGraphDependencies(packageName: string): Set<string> {
@@ -225,6 +269,12 @@ export class TargetGraphBuilder {
     }
   }
 
+  /**
+   * Filters out targets that are not part of the entry point.
+   * @param tasks 
+   * @param scope 
+   * @returns a list of target to target dependencies
+   */
   private createSubGraph(tasks: string[], scope?: string[]) {
     const targetGraph: [string, string][] = [];
     const knownDeps = new Set<string>();
@@ -293,6 +343,19 @@ export class TargetGraphBuilder {
     return targetGraph;
   }
 
+  /**
+   * Builds a scoped target graph for given tasks and packages
+   * 
+   * Steps: 
+   * 1. expands the dependency specs from the target definitions
+   * 2. sub-graph filtered from the full dependency graph
+   * 3. filtering all targets to just only the ones listed in the sub-graph
+   * 4. returns the sub-graph
+   * 
+   * @param tasks 
+   * @param scope 
+   * @returns 
+   */
   buildTargetGraph(tasks: string[], scope?: string[]) {
     this.expandDependencies();
 
