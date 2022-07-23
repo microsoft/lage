@@ -1,11 +1,12 @@
-// TODO: move types out to an export from root
 import { createDependencyMap } from "workspace-tools/lib/graph/createDependencyMap";
 import { getPackageAndTask, getTargetId } from "./targetId";
-import { TargetConfig } from "./types/TargetConfig";
+
 import path from "path";
+
 import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap";
 import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target";
+import type { TargetConfig } from "./types/TargetConfig";
 
 export const START_TARGET_ID = "__start";
 
