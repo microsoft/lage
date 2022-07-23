@@ -2,6 +2,39 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 21 Jul 2022 19:19:28 GMT",
+      "tag": "lage_v1.7.2",
+      "version": "1.7.2",
+      "comments": {
+        "none": [
+          {
+            "author": "bkocak1@villanova.edu",
+            "package": "lage",
+            "commit": "f64e5cc8cd2da5173dde9d3a536e14668dbd6a8e",
+            "comment": "formatting with prettier"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 19 Jul 2022 21:14:57 GMT",
+      "tag": "lage_v1.7.2",
+      "version": "1.7.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "pushkargupta@microsoft.com",
+            "package": "lage",
+            "commit": "13ee1037646069bc36e42baf33bbcf5579040bc0",
+            "comment": {
+              "title": "Lage Concurrency",
+              "value": "assigned the default concurrency to os.cpus().length - 1"
+            }
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 16 Jul 2022 02:57:37 GMT",
       "tag": "lage_v1.7.1",
       "version": "1.7.1",

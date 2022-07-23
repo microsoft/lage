@@ -16,8 +16,8 @@
 .theme-color {
     --color-button: 134 0 156;
     --color-point: 255 214 107;
-    --color-body-primary: 33 153 190; 
-    --color-body-secondary: 6 119 126;
+    --color-bodySecondary: 33 153 190; 
+    --color-bodyPrimary: 6 119 126;
     --color-primary: 255 255 255;
     --color-secondary: 33 153 190;
     --color-tertiary: 255 0 0;
