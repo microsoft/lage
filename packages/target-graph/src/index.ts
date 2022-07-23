@@ -1,3 +1,6 @@
+export type { Target } from "./types/Target";
+export type { TargetGraph } from "./types/TargetGraph";
+export type { TargetConfig } from "./types/TargetConfig";
+
 export { getPackageAndTask, getTargetId } from "./targetId";
-export { Target } from "./types/Target";
-export * from "./target-graph-builder";
+export { TargetGraphBuilder } from "./TargetGraphBuilder";
