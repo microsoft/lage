@@ -31,3 +31,4 @@ interface TargetGraph {
 
 ### `Target`
 
+This is merely an interface that contains enough information to let the runner & scheduler know what to run. The "how" of how to run a target resides in the scheduler and a separate runner implementation.

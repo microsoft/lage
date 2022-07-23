@@ -1,10 +1,5 @@
 export interface Target {
   /**
-   * Run state of the target
-   */
-  status: "pending" | "running" | "complete" | "failed";
-
-  /**
    * Unique ID of the target (e.g. "pkg-a#build")
    */
   id: string;
