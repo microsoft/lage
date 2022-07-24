@@ -2687,7 +2687,7 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-12.20.24.tgz"
   integrity sha512-yxDeaQIAJlMav7fH5AQqPH1u8YIuhYJXYBzxaQ4PifsU0GDO38MSdmEDeRlIxrKbC6NbEaaEHDanWb+y30U8SQ==
 
-"@types/node@12.20.55":
+"@types/node@12.20.55", "@types/node@^12.0.0":
   version "12.20.55"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.55.tgz#c329cbd434c42164f846b909bd6f85b5537f6240"
   integrity sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==
@@ -11913,7 +11913,7 @@ workspace-tools@^0.19.0:
     multimatch "^4.0.0"
     read-yaml-file "^2.0.0"
 
-workspace-tools@^0.23.0:
+workspace-tools@^0.23.0, workspace-tools@^0.23.3:
   version "0.23.3"
   resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.23.3.tgz#1833c848170d1370675535963778524d0ad0aef4"
   integrity sha512-8JWfnW9Kj24X8l4sOvwN77cxExBM57fpbjo+UqvFzY7L9FeyY4MUCqpLKpKARkK8okF/PFPOL9Dl1QgsEMT4yw==
