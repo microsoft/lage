@@ -1,15 +1,7 @@
 import createNodes from "../../grapher/createNodes";
 import createEdges from "../../grapher/createEdges";
 import React, { useCallback } from "react";
-import ReactFlow, {
-  addEdge,
-  ConnectionLineType,
-  useNodesState,
-  useEdgesState,
-  MiniMap,
-  Controls,
-  Background
-} from "react-flow-renderer";
+import ReactFlow, { addEdge, ConnectionLineType, useNodesState, useEdgesState, MiniMap, Controls, Background } from "react-flow-renderer";
 import dagre from "dagre";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import independentNode from "./IndependentNode";
@@ -58,44 +50,34 @@ export const FlowGraph = (props) => {
     return { nodes, edges };
   };
 
-  const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-    initialNodes,
-    initialEdges
-  );
+  const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(initialNodes, initialEdges);
 
   const nodeColor = (node) => {
     switch (node.type) {
-      case 'input':
-        return '#A7E2E8';
-      case 'independentNode':
-        return '#90D4A1';
-      case 'output':
-        return '#F2B4FF';
+      case "input":
+        return "#A7E2E8";
+      case "independentNode":
+        return "#90D4A1";
+      case "output":
+        return "#F2B4FF";
       default:
-        return '#FFFFFF';
+        return "#FFFFFF";
     }
   };
-
 
   const LayoutFlow = () => {
     const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
 
     const onConnect = useCallback(
-      (params) =>
-        setEdges((eds) =>
-          addEdge(
-            { ...params, type: ConnectionLineType.SmoothStep, animated: true },
-            eds
-          )
-        ),
+      (params) => setEdges((eds) => addEdge({ ...params, type: ConnectionLineType.SmoothStep, animated: true }, eds)),
       []
     );
 
     return (
       <div className="bg-bodyPrimary">
         <ReactFlow
-          style={{ width: "60rem", height: "40rem"}}
+          style={{ width: "60rem", height: "40rem" }}
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
@@ -105,15 +87,13 @@ export const FlowGraph = (props) => {
           connectionLineType={ConnectionLineType.SmoothStep}
           fitView
         >
-      <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} />
-      <Controls />
-      <Background/>
+          <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} />
+          <Controls />
+          <Background />
         </ReactFlow>
       </div>
     );
   };
 
-  return (
-    <LayoutFlow />
-  );
+  return <LayoutFlow />;
 };

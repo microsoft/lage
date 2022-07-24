@@ -1,5 +1,4 @@
 export default function createEdges(file) {
-  const edgeType = "smoothstep";
   const edges = [];
   var edge = {};
 
@@ -7,12 +6,16 @@ export default function createEdges(file) {
   file["dependencies"].forEach((dep) => {
     edge = {
       id: dep["dependency"] + "-" + dep["name"],
-      type: edgeType,
+      type: "default",
       source: dep["dependency"],
       target: dep["name"],
+      markerEnd: {
+        type: "arrowclosed",
+        color: "purple",
+      },
+      animated: true,
     };
     edges.push(edge);
   });
   return edges;
 }
-

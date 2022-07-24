@@ -3,6 +3,7 @@ import { getWorkspaceRoot, getPackageInfos, createPackageGraph } from "workspace
 import { getConfig } from "../config/getConfig";
 import { getWorkspace } from "../workspace/getWorkspace";
 import { getPipelinePackages } from "../task/getPipelinePackages";
+import { logger } from "../logger";
 
 export async function graph(cwd: string, config: Config) {
   const fs = require("fs");
@@ -33,6 +34,8 @@ export async function graph(cwd: string, config: Config) {
       withPeerDependencies: true,
     });
   }
-  
+
+  logger.info("graph-output.js is created!");
+  logger.info("Go to http://localhost:3000/lage/grapher to visualize package dependencies.");
   fs.writeFileSync("graph-output.js", JSON.stringify(edges));
 }
