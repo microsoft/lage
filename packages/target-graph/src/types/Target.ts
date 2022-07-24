@@ -40,7 +40,7 @@ export interface Target {
   /**
    * Run options for the Target
    */
-  options?: Record<string, any>; /* eslint-disable-line @typescript-eslint/no-explicit-any */ 
+  options?: Record<string, any> /* eslint-disable-line @typescript-eslint/no-explicit-any */;
 
   /**
    * Custom run definition, if left blank, the scheduler will decide which runner to use to fulfill the work for the `Target`
