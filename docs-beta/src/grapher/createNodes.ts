@@ -5,6 +5,9 @@ export default function createNodes(file) {
   const names = new Set();
   const dependencies = new Set();
 
+  if (file === undefined || file["dependencies"] ===undefined || file["packages"] === undefined) {
+    console.log("Make sure dependencies and packages are set within the JSON object.");
+  } else {
   file["dependencies"].forEach((dep) => {
     names.add(dep["name"]);
     dependencies.add(dep["dependency"]);
@@ -37,5 +40,6 @@ export default function createNodes(file) {
     };
     nodes.push(node);
   });
-  return nodes;
+}
+return nodes;
 }

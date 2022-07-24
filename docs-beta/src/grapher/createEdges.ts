@@ -3,6 +3,9 @@ export default function createEdges(file) {
   var edge = {};
 
   // generating the edges
+  if (file === undefined || file["dependencies"] ===undefined) {
+    console.log("Make sure dependencies are set within the JSON object.");
+  } else {
   file["dependencies"].forEach((dep) => {
     edge = {
       id: dep["dependency"] + "-" + dep["name"],
@@ -17,5 +20,6 @@ export default function createEdges(file) {
     };
     edges.push(edge);
   });
-  return edges;
+}
+return edges;
 }
