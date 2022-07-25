@@ -2,6 +2,7 @@
 const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs");
+const os = require("os");
 
 const [command, ...spawnArgs] = process.argv.slice(2);
 const spawnCommand = findCommand(command);
@@ -69,13 +70,11 @@ function getBinPath(packagePath, command) {
     return undefined;
   }
 
-  const unixPath = `${packagePath}/node_modules/.bin/${command}`;
-  const winpath = `${packagePath}/node_modules/.bin/${command}.cmd`;
+  const binPath =
+    os.platform() === "win32" ? `${packagePath}/node_modules/.bin/${command}.cmd` : `${packagePath}/node_modules/.bin/${command}`;
 
-  for (const binPath of [unixPath, winpath]) {
-    if (fs.existsSync(binPath)) {
-      return binPath;
-    }
+  if (fs.existsSync(binPath)) {
+    return binPath;
   }
 
   return undefined;
