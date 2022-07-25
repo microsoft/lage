@@ -253,13 +253,13 @@ export class TargetGraphBuilder {
       // in cases of circular dependencies
       this.cachedTransitiveTaskDependencies.set(packageName, "walk-in-progress");
 
-      let immediateDependencies = [...(this.dependencyMap.dependencies.get(packageName) ?? [])];
+      const immediateDependencies = [...(this.dependencyMap.dependencies.get(packageName) ?? [])];
 
       // build the set of transitive dependencies by recursively walking the
       // immediate dependencies' dependencies.
-      let transitiveDepSet = new Set<string>(immediateDependencies);
-      for (let immediateDependency of immediateDependencies) {
-        for (let transitiveSubDependency of this.getTransitiveGraphDependencies(immediateDependency)) {
+      const transitiveDepSet = new Set<string>(immediateDependencies);
+      for (const immediateDependency of immediateDependencies) {
+        for (const transitiveSubDependency of this.getTransitiveGraphDependencies(immediateDependency)) {
           transitiveDepSet.add(transitiveSubDependency);
         }
       }

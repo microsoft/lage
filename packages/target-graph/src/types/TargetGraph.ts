@@ -1,4 +1,4 @@
-import { Target } from "../types/Target";
+import type { Target } from "../types/Target";
 
 export interface TargetGraph {
   targets: Map<string, Target>;
