@@ -8,7 +8,7 @@ import { Point } from "../components/Point";
 
 export default function Grapher() {
   const [input, setInput] = useState(
-    '{"packages": ["a","c","d","b"],"dependencies": [{"name": "a","dependency": "c"},{"name": "d","dependency": "c"},{"name": "c","dependency": "b"},{"name": "a","dependency": "b"},{"name": "d","dependency": "b"},{"name": "d","dependency": "a"}]}'
+    '{"packages": ["Build Tool","Bar Core","Foo Core","Bar Page", "Foo App 1", "Foo App 2"],"dependencies": [{"name": "Bar Core","dependency": "Build Tool"},{"name": "Bar Page","dependency": "Bar Core"}, {"name": "Foo App 1","dependency": "Foo Core"},{"name": "Foo App 2","dependency": "Foo Core"},{"name": "Foo Core","dependency": "Build Tool"}]}'
   );
   const [graphInput, setGraphInput] = useState("");
   const [showGraph, setShowGraph] = useState(false);
@@ -44,7 +44,7 @@ export default function Grapher() {
             className="bg-white border rounded py-2 px-3 text-black w-80 h-80"
             onChange={(event) => setInput(event.target.value)}
             value={input}
-            placeholder='{"packages": ["a","c","d","b"],"dependencies": [{"name": "a","dependency": "c"},{"name": "d","dependency": "c"},{"name": "c","dependency": "b"},{"name": "a","dependency": "b"},{"name": "d","dependency": "b"},{"name": "d","dependency": "a"}]}'
+            placeholder='{"packages": ["Build Tool","Bar Core","Foo Core","Bar Page", "Foo App 1", "Foo App 2"],"dependencies": [{"name": "Bar Core","dependency": "Build Tool"},{"name": "Bar Page","dependency": "Bar Core"}, {"name": "Foo App 1","dependency": "Foo Core"},{"name": "Foo App 2","dependency": "Foo Core"},{"name": "Foo Core","dependency": "Build Tool"}]}'
           />
           <button
             type="submit"

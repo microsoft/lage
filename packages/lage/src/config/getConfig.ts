@@ -77,7 +77,7 @@ export function getConfig(cwd: string): Config {
     safeExit: parsedArgs.safeExit,
     includeDependencies: parsedArgs.includeDependencies,
     includeDependents: parsedArgs.includeDependents,
-    withDevDependencies: parsedArgs.withDevDependencies,
+    withDevDependencies: parsedArgs.withDevDependencies !== false,
     withPeerDependencies: parsedArgs.withPeerDependenies,
     clear: parsedArgs.clear || false,
     prune: parsedArgs.prune,

@@ -34,7 +34,6 @@ export async function graph(cwd: string, config: Config) {
       withPeerDependencies: true,
     });
   }
-
   logger.info("graph-output.js is created!");
   logger.info("Go to http://localhost:3000/lage/grapher to visualize package dependencies.");
   fs.writeFileSync("graph-output.js", JSON.stringify(edges));
