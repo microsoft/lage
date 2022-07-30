@@ -1,0 +1,23 @@
+{
+  "ts-node": {
+    "transpileOnly": true
+  },
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "declaration": true,
+    "lib": ["ES2017"],
+    "allowJs": true,
+    "outDir": "./lib",
+    "strict": true,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noUnusedLocals": false,
+    "sourceMap": true
+  },
+  "include": ["src", "tests"]
+}

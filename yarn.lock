@@ -2691,6 +2691,13 @@
   resolved "https://registry.npmjs.org/@types/minimatch/-/minimatch-3.0.3.tgz"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
+"@types/mock-fs@^4.13.1":
+  version "4.13.1"
+  resolved "https://registry.yarnpkg.com/@types/mock-fs/-/mock-fs-4.13.1.tgz#9201554ceb23671badbfa8ac3f1fa9e0706305be"
+  integrity sha512-m6nFAJ3lBSnqbvDZioawRvpLXSaPyn52Srf7OfzjubYbYX8MTUdIgDxQl0wEapm4m/pNYSd9TXocpQ0TvZFlYA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/node-fetch@^2.5.0":
   version "2.5.7"
   resolved "https://registry.npmjs.org/@types/node-fetch/-/node-fetch-2.5.7.tgz"
@@ -8684,6 +8691,11 @@ mkdirp@^0.5.3:
   integrity sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==
   dependencies:
     minimist "^1.2.6"
+
+mock-fs@^5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-5.1.2.tgz#6fa486e06d00f8793a8d2228de980eff93ce6db7"
+  integrity sha512-YkjQkdLulFrz0vD4BfNQdQRVmgycXTV7ykuHMlyv+C8WCHazpkiQRDthwa02kSyo8wKnY9wRptHfQLgmf0eR+A==
 
 moment-mini@^2.24.0:
   version "2.24.0"
