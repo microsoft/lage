@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@lage-run/target-graph": "^0.1.0",
+    "@lage-run/logger": "^1.1.0",
     "backfill-cache": "^5.6.1",
     "backfill-hasher": "^6.4.1",
     "backfill-logger": "^5.1.3",

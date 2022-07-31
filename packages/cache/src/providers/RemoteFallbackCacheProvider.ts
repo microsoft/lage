@@ -1,13 +1,9 @@
-import { ICacheStorage } from "backfill-config";
-import { getCacheStorageProvider, isCustomProvider } from "backfill-cache";
-import { Logger } from "backfill-logger";
+import { isCustomProvider } from "backfill-cache";
 import { CacheOptions } from "../types/CacheOptions";
-import { logger } from "../logger";
-
-export type RemoteFallbackCacheProviderOptions = Pick<
-  CacheOptions,
-  "internalCacheFolder" | "cacheStorageConfig" | "writeRemoteCache" | "skipLocalCache"
->;
+import { Logger } from "@lage-run/logger";
+import { CacheProvider } from "../types/CacheProvider";
+import { BackfillCacheProvider } from "./BackfillCacheProvider";
+import type { Target } from "@lage-run/target-graph";
 
 /**
  * Remote Fallback Cache Provider
@@ -15,22 +11,22 @@ export type RemoteFallbackCacheProviderOptions = Pick<
  * This backfill cache provider will fallback to a remote cache provider if the local cache does not contain the item.
  * It will also automatically populate the local cache with the remote cache.
  */
-export class RemoteBackfillFallbackCacheProvider implements ICacheStorage {
-  private localCacheStorageProvider: ICacheStorage;
-  private remoteCacheStorageProvider?: ICacheStorage;
+export class RemoteFallbackCacheProvider implements CacheProvider {
+  private localCacheStorageProvider: CacheProvider;
+  private remoteCacheStorageProvider?: CacheProvider;
 
   private static localHits: { [hash: string]: boolean } = {};
   private static remoteHits: { [hash: string]: boolean } = {};
 
-  constructor(private cacheOptions: RemoteFallbackCacheProviderOptions, logger: Logger, cwd: string) {
-    this.localCacheStorageProvider = getCacheStorageProvider(
-      {
+  constructor(root: string, private cacheOptions: CacheOptions, private logger: Logger) {
+    const localCacheOptions: CacheOptions = {
+      ...cacheOptions,
+      cacheStorageConfig: {
         provider: "local",
       },
-      cacheOptions.internalCacheFolder,
-      logger,
-      cwd
-    );
+    };
+
+    this.localCacheStorageProvider = new BackfillCacheProvider(root, localCacheOptions);
 
     // Remote providers should have a provider name of something other than "local" OR it is
     // a custom provider (currently S3 would be a custom provider)
@@ -39,49 +35,47 @@ export class RemoteBackfillFallbackCacheProvider implements ICacheStorage {
       (typeof cacheOptions.cacheStorageConfig.provider === "string" && !cacheOptions.cacheStorageConfig.provider.includes("local"));
 
     if (isRemoteProvider) {
-      logger.silly("remote provider enabled");
-
-      this.remoteCacheStorageProvider = getCacheStorageProvider(
-        cacheOptions.cacheStorageConfig,
-        cacheOptions.internalCacheFolder,
-        logger,
-        cwd
-      );
+      this.logger.silly("remote provider enabled");
+      this.remoteCacheStorageProvider = new BackfillCacheProvider(root, cacheOptions);
     }
   }
 
-  async fetch(hash: string) {
+  hash(target: Target, args: any): Promise<string> {
+    return this.localCacheStorageProvider.hash(target, args);
+  }
+
+  async fetch(hash: string, target: Target) {
     if (!this.cacheOptions.skipLocalCache) {
-      RemoteFallbackCacheProvider.localHits[hash] = await this.localCacheStorageProvider.fetch(hash);
-      logger.silly(`local cache fetch: ${hash} ${RemoteFallbackCacheProvider.localHits[hash]}`);
+      RemoteFallbackCacheProvider.localHits[hash] = await this.localCacheStorageProvider.fetch(hash, target);
+      this.logger.silly(`local cache fetch: ${hash} ${RemoteFallbackCacheProvider.localHits[hash]}`);
     }
 
     if (!RemoteFallbackCacheProvider.localHits[hash] && this.remoteCacheStorageProvider) {
-      RemoteFallbackCacheProvider.remoteHits[hash] = await this.remoteCacheStorageProvider.fetch(hash);
-      logger.silly(`remote fallback fetch: ${hash} ${RemoteFallbackCacheProvider.remoteHits[hash]}`);
+      RemoteFallbackCacheProvider.remoteHits[hash] = await this.remoteCacheStorageProvider.fetch(hash, target);
+      this.logger.silly(`remote fallback fetch: ${hash} ${RemoteFallbackCacheProvider.remoteHits[hash]}`);
       return RemoteFallbackCacheProvider.remoteHits[hash];
     }
 
     return RemoteFallbackCacheProvider.localHits[hash];
   }
 
-  async put(hash: string, filesToCache: string[]) {
+  async put(hash: string, target: Target) {
     const putPromises: Promise<void>[] = [];
 
     // Write local cache if it doesn't already exist, or if the the hash isn't in the localHits
     const shouldWriteLocalCache = !this.isLocalHit(hash) && !this.cacheOptions.skipLocalCache;
 
     if (shouldWriteLocalCache) {
-      logger.silly(`local cache put: ${hash}`);
-      putPromises.push(this.localCacheStorageProvider.put(hash, filesToCache));
+      this.logger.silly(`local cache put: ${hash}`);
+      putPromises.push(this.localCacheStorageProvider.put(hash, target));
     }
 
     // Write to remote if there is a no hit in the remote cache, and remote cache storage provider, and that the "writeRemoteCache" config flag is set to true
     const shouldWriteRemoteCache = !this.isRemoteHit(hash) && !!this.remoteCacheStorageProvider && this.cacheOptions.writeRemoteCache;
 
     if (shouldWriteRemoteCache) {
-      logger.silly(`remote fallback put: ${hash}`);
-      const remotePut = this.remoteCacheStorageProvider!.put(hash, filesToCache);
+      this.logger.silly(`remote fallback put: ${hash}`);
+      const remotePut = this.remoteCacheStorageProvider!.put(hash, target);
       putPromises.push(remotePut);
     }
 
@@ -95,29 +89,12 @@ export class RemoteBackfillFallbackCacheProvider implements ICacheStorage {
   private isLocalHit(hash) {
     return hash in RemoteFallbackCacheProvider.localHits && RemoteFallbackCacheProvider.localHits[hash];
   }
-}
 
+  async clear(): Promise<void> {
+    return this.localCacheStorageProvider.clear();
+  }
 
-
-class RemoteBackfillFallbackCacheProvider implements CacheProvider {
-  constructor(test: any) {
-    throw new Error("Method not implemented.");
-  }
-  hash(target: Target): Promise<string> {
-    throw new Error("Method not implemented.");
-  }
-  fetch(hash: string, target: Target): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-  put(hash: string, target: Target): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-  clear(): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-  purge(since: number): Promise<void> {
-    throw new Error("Method not implemented.");
+  async purge(sinceDays: number): Promise<void> {
+    return this.localCacheStorageProvider.purge(sinceDays);
   }
 }
-
-const provider = new RemoteFallbackCacheProvider();

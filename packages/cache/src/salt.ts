@@ -27,7 +27,7 @@ function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
       const hasher = crypto.createHash("sha1");
       hasher.update(file);
 
-      const fileBuffer = fs.readFileSync(path.join(repoRoot, file), 'utf-8');
+      const fileBuffer = fs.readFileSync(path.join(repoRoot, file), "utf-8");
       const data = fileBuffer.replace(newline, LF);
       hasher.update(data);
 

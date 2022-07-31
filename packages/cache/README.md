@@ -8,7 +8,23 @@ This package provides:
 ## Usage
 
 ```ts
-const cacheProvider = new TargetCacheProvider(cacheOptions);
+const cacheOptions = {
+  cacheStorageOptions: {
+    provider: "azure-blob",
+    options: {
+      connectionString: "asdfasdfasdfafds";
+      container: "container";
+      maxSize?: 150;
+    }
+  },
+  internalCacheFolder: ".cache"
+  writeRemoteCache: true,
+  outputGlob: ["dist/**", "lib/**"]
+}
+
+const root = getWorkspaceRoot(cwd);
+
+const cacheProvider = new RemoteBackfillFallbackCacheProvider(root, cacheOptions);
 
 let hash: string | null = null;
 let cacheHit = false;

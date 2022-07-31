@@ -1,4 +1,7 @@
 import type { Target } from "@lage-run/target-graph";
+import type { Config as BackfillCacheOptions } from "backfill-config";
+
+export interface CacheProviderOptions extends BackfillCacheOptions {}
 
 export interface CacheProvider {
   hash(target: Target, args: any): Promise<string>;

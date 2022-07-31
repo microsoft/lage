@@ -78,7 +78,7 @@ export class BackfillCacheProvider implements CacheProvider {
   async clear(): Promise<void> {
     const allPackages = getPackageInfos(this.root);
     for (const info of Object.values(allPackages)) {
-      const cachePath = getCachePath(info, this.cacheOptions);
+      const cachePath = getCachePath(info, this.cacheOptions.internalCacheFolder);
 
       if (fs.existsSync(cachePath)) {
         const entries = await readdir(cachePath);
@@ -97,7 +97,7 @@ export class BackfillCacheProvider implements CacheProvider {
     const now = new Date();
     const allPackages = getPackageInfos(this.root);
     for (const info of Object.values(allPackages)) {
-      const cachePath = getCachePath(info, this.cacheOptions);
+      const cachePath = getCachePath(info, this.cacheOptions.internalCacheFolder);
 
       if (fs.existsSync(cachePath)) {
         const entries = await readdir(cachePath);
@@ -115,8 +115,8 @@ export class BackfillCacheProvider implements CacheProvider {
   }
 }
 
-function getCachePath(info: PackageInfo, cacheOptions: CacheOptions) {
-  return path.resolve(path.dirname(info.packageJsonPath), cacheOptions.internalCacheFolder || "node_modules/.cache/backfill");
+function getCachePath(info: PackageInfo, internalCacheFolder?: string) {
+  return path.resolve(path.dirname(info.packageJsonPath), internalCacheFolder ?? "node_modules/.cache/backfill");
 }
 
 async function removeCache(cachePath: string, entryStat: fs.Stats) {

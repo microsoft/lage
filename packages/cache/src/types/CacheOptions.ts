@@ -1,8 +1,9 @@
-import type { Config as BackfillCacheOptions } from "backfill-config";
+import type { CacheProviderOptions } from "./CacheProvider";
 
-export interface CacheOptions extends BackfillCacheOptions {
+export interface CacheOptions extends CacheProviderOptions {
   writeRemoteCache?: boolean;
+  skipLocalCache: boolean;
+
   environmentGlob: string[];
   cacheKey: string;
-  skipLocalCache: boolean;
 }
