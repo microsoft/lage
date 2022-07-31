@@ -25,6 +25,7 @@
     "workspace-tools": "^0.23.3"
   },
   "devDependencies": {
+    "@lage-run/monorepo-fixture": "^0.1.0",
     "@types/jest": "^27.0.1",
     "@types/mock-fs": "^4.13.1",
     "@types/node": "^12.0.0",

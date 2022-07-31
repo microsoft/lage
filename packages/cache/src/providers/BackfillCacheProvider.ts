@@ -11,7 +11,7 @@ import { salt } from "../salt";
 import { Target } from "@lage-run/target-graph";
 import * as fs from "fs";
 import * as path from "path";
-import os from "os";
+import * as os from "os";
 import type { CacheOptions } from "../types/CacheOptions";
 import type { Logger as BackfillLogger } from "backfill-logger";
 

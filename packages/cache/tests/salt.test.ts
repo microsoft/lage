@@ -6,6 +6,10 @@ describe("salt", () => {
     _testResetEnvHash();
   });
 
+  afterEach(() => {
+    mockFs.restore();
+  });
+
   it("should generate the same salt for the same files each time even with env-hash cache reset", () => {
     const contents = {
       "lage.config.js": 'module.exports = { environmentGlob: ["test.txt"] }',
