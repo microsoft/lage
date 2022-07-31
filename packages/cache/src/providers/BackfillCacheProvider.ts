@@ -1,17 +1,19 @@
 import { CacheProvider } from "../types/CacheProvider";
+
+import { createDefaultConfig } from "backfill-config";
 import { getCacheStorageProvider } from "backfill-cache";
 import { getPackageInfos, PackageInfo } from "workspace-tools";
 import { Hasher } from "backfill-hasher";
+import { makeLogger } from "backfill-logger";
+
 import { promisify } from "util";
 import { salt } from "../salt";
 import { Target } from "@lage-run/target-graph";
 import * as fs from "fs";
 import * as path from "path";
+import os from "os";
 import type { CacheOptions } from "../types/CacheOptions";
 import type { Logger as BackfillLogger } from "backfill-logger";
-
-import { makeLogger } from "backfill-logger";
-import os from "os";
 
 const rmdir = promisify(fs.rmdir);
 const rm = promisify(fs.unlink);
@@ -28,14 +30,20 @@ export class BackfillCacheProvider implements CacheProvider {
 
   private getCacheStorageProvider(cwd: string) {
     const { cacheStorageConfig, internalCacheFolder, incrementalCaching } = this.cacheOptions;
-    return getCacheStorageProvider(cacheStorageConfig, internalCacheFolder, this.backfillLogger, cwd, incrementalCaching);
+    return getCacheStorageProvider(
+      cacheStorageConfig ?? { provider: "local" },
+      internalCacheFolder,
+      this.backfillLogger,
+      cwd,
+      incrementalCaching
+    );
   }
 
   constructor(private root: string, private cacheOptions: CacheOptions) {
     this.backfillLogger = createBackfillLogger();
   }
 
-  hash(target: Target, args: any): Promise<string> {
+  hash(target: Target, args?: any): Promise<string> {
     const hashKey = salt(
       this.cacheOptions.environmentGlob || ["lage.config.js"],
       `${target.id}|${JSON.stringify(args)}`,
@@ -69,7 +77,7 @@ export class BackfillCacheProvider implements CacheProvider {
     const cacheStorage = this.getCacheStorageProvider(target.cwd);
 
     try {
-      await cacheStorage.put(hash, target.outputs || this.cacheOptions.outputGlob);
+      await cacheStorage.put(hash, target.outputs ?? this.cacheOptions.outputGlob ?? ["**/*"]);
     } catch (e) {
       // backfill throws an error if outputGlob doesn't match any files, we will skip this error
     }
@@ -143,4 +151,11 @@ function createBackfillLogger() {
       },
     },
   });
+}
+
+export function createCacheConfig(cwd: string, cacheOptions: Partial<CacheOptions> = {}) {
+  return {
+    ...createDefaultConfig(cwd),
+    ...cacheOptions,
+  };
 }
