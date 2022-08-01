@@ -143,7 +143,7 @@ describe("RemoteFallbackCacheProvider", () => {
       put: jest.fn(),
       clear: jest.fn(),
       purge: jest.fn(),
-      isReadOnly: true
+      isReadOnly: true,
     };
 
     const options: RemoteFallbackCacheProviderOptions = {
@@ -179,7 +179,7 @@ describe("RemoteFallbackCacheProvider", () => {
       put: jest.fn(),
       clear: jest.fn(),
       purge: jest.fn(),
-      isReadOnly: true
+      isReadOnly: true,
     };
 
     const remoteCacheProvider: CacheProvider = {
@@ -187,7 +187,7 @@ describe("RemoteFallbackCacheProvider", () => {
       put: jest.fn(),
       clear: jest.fn(),
       purge: jest.fn(),
-      isReadOnly: true
+      isReadOnly: true,
     };
 
     const options: RemoteFallbackCacheProviderOptions = {

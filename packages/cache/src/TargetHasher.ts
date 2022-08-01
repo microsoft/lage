@@ -12,8 +12,8 @@ export interface TargetHasherOptions {
 
 /**
  * TargetHasher is a class that can be used to generate a hash of a target.
- * 
- * Currently, it encapsulates the use of `backfill-hasher` to generate a hash. 
+ *
+ * Currently, it encapsulates the use of `backfill-hasher` to generate a hash.
  */
 export class TargetHasher {
   private backfillLogger: BackfillLogger;

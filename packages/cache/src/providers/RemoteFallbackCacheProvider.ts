@@ -23,7 +23,7 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
   private static localHits: { [hash: string]: boolean } = {};
   private static remoteHits: { [hash: string]: boolean } = {};
 
-  constructor(private options: RemoteFallbackCacheProviderOptions) { }
+  constructor(private options: RemoteFallbackCacheProviderOptions) {}
 
   async fetch(hash: string, target: Target) {
     const { logger, remoteCacheProvider, localCacheProvider } = this.options;
@@ -55,8 +55,7 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
     }
 
     // Write to remote if there is a no hit in the remote cache, and remote cache storage provider, and that the "writeRemoteCache" config flag is set to true
-    const shouldWriteRemoteCache =
-      !this.isRemoteHit(hash) && !!remoteCacheProvider && !remoteCacheProvider.isReadOnly;
+    const shouldWriteRemoteCache = !this.isRemoteHit(hash) && !!remoteCacheProvider && !remoteCacheProvider.isReadOnly;
 
     if (shouldWriteRemoteCache) {
       logger.silly(`remote fallback put: ${hash}`);

@@ -19,7 +19,7 @@ export interface CacheOptions extends CacheProviderOptions {
   environmentGlob?: string[];
 
   /**
-   * The cache key is a custom string that will be concatenated with the package file contents and the environment glob contents 
+   * The cache key is a custom string that will be concatenated with the package file contents and the environment glob contents
    * to generate the cache key.
    */
   cacheKey?: string;

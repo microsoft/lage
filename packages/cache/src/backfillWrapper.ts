@@ -1,5 +1,5 @@
 import { makeLogger } from "backfill-logger";
-import * as os from 'os';
+import * as os from "os";
 
 export function createBackfillLogger() {
   const stdout = process.stdout;

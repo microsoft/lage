@@ -9,7 +9,7 @@ export function _testResetEnvHash() {
   envHash = undefined;
 }
 
-export async function salt(environmentGlobFiles: string[], command: string, repoRoot: string, customKey = ""): Promise<string> {  
+export async function salt(environmentGlobFiles: string[], command: string, repoRoot: string, customKey = ""): Promise<string> {
   return hashStrings([...(await getEnvHash(environmentGlobFiles, repoRoot)), command, customKey]);
 }
 
