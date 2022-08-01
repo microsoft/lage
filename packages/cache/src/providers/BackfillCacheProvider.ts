@@ -1,18 +1,18 @@
 import { createDefaultConfig } from "backfill-config";
 import { getCacheStorageProvider } from "backfill-cache";
 import { getPackageInfos } from "workspace-tools";
-import { Hasher } from "backfill-hasher";
-import { makeLogger } from "backfill-logger";
+
 import { promisify } from "util";
-import { salt } from "../salt";
+
 import * as fs from "fs";
-import * as os from "os";
 import * as path from "path";
+
 import type { CacheOptions } from "../types/CacheOptions";
-import type { CacheProvider } from "../types/CacheProvider";
+import type { CacheProvider, CacheProviderOptions } from "../types/CacheProvider";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { PackageInfo } from "workspace-tools";
-import type { Target } from "@lage-run/target-graph";
+import { createBackfillLogger } from "../backfillWrapper";
+import { Target } from "@lage-run/target-graph";
 
 const rmdir = promisify(fs.rmdir);
 const rm = promisify(fs.unlink);
@@ -21,6 +21,12 @@ const stat = promisify(fs.stat);
 
 const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
+export interface BackfillCacheProviderOptions {
+  root: string;
+  cacheOptions: Partial<CacheProviderOptions>;
+  isReadOnly?: boolean;
+}
+
 export class BackfillCacheProvider implements CacheProvider {
   /**
    * logger for backfill
@@ -28,7 +34,8 @@ export class BackfillCacheProvider implements CacheProvider {
   private backfillLogger: BackfillLogger;
 
   private getTargetCacheStorageProvider(cwd: string) {
-    const { cacheStorageConfig, internalCacheFolder, incrementalCaching } = createCacheConfig(cwd, this.cacheOptions);
+    const { cacheOptions } = this.options;
+    const { cacheStorageConfig, internalCacheFolder, incrementalCaching } = createCacheConfig(cwd, cacheOptions);
 
     return getCacheStorageProvider(
       cacheStorageConfig ?? { provider: "local" },
@@ -39,19 +46,8 @@ export class BackfillCacheProvider implements CacheProvider {
     );
   }
 
-  constructor(private root: string, private cacheOptions: Partial<CacheOptions> = {}) {
+  constructor(private options: BackfillCacheProviderOptions) {
     this.backfillLogger = createBackfillLogger();
-  }
-
-  async hash(target: Target, args?: unknown): Promise<string> {
-    const hashKey = await salt(
-      this.cacheOptions.environmentGlob || ["lage.config.js"],
-      `${target.id}|${JSON.stringify(args)}`,
-      this.root,
-      this.cacheOptions.cacheKey
-    );
-    const hasher = new Hasher({ packageRoot: target.cwd }, this.backfillLogger);
-    return hasher.createPackageHash(hashKey);
   }
 
   async fetch(hash: string, target: Target): Promise<boolean> {
@@ -70,23 +66,23 @@ export class BackfillCacheProvider implements CacheProvider {
   }
 
   async put(hash: string, target: Target): Promise<void> {
-    if (!hash) {
+    if (!hash || this.options.isReadOnly) {
       return;
     }
 
     const cacheStorage = this.getTargetCacheStorageProvider(target.cwd);
 
     try {
-      await cacheStorage.put(hash, target.outputs ?? this.cacheOptions.outputGlob ?? ["**/*"]);
+      await cacheStorage.put(hash, target.outputs ?? this.options.cacheOptions.outputGlob ?? ["**/*"]);
     } catch (e) {
       // backfill throws an error if outputGlob doesn't match any files, we will skip this error
     }
   }
 
   async clear(): Promise<void> {
-    const allPackages = getPackageInfos(this.root);
+    const allPackages = getPackageInfos(this.options.root);
     for (const info of Object.values(allPackages)) {
-      const cachePath = getCachePath(info, this.cacheOptions.internalCacheFolder);
+      const cachePath = getCachePath(info, this.options.cacheOptions.internalCacheFolder);
 
       if (fs.existsSync(cachePath)) {
         const entries = await readdir(cachePath);
@@ -103,9 +99,9 @@ export class BackfillCacheProvider implements CacheProvider {
   async purge(sinceDays: number): Promise<void> {
     const prunePeriod = sinceDays || 30;
     const now = new Date();
-    const allPackages = getPackageInfos(this.root);
+    const allPackages = getPackageInfos(this.options.root);
     for (const info of Object.values(allPackages)) {
-      const cachePath = getCachePath(info, this.cacheOptions.internalCacheFolder);
+      const cachePath = getCachePath(info, this.options.cacheOptions.internalCacheFolder);
 
       if (fs.existsSync(cachePath)) {
         const entries = await readdir(cachePath);
@@ -135,25 +131,7 @@ async function removeCache(cachePath: string, entryStat: fs.Stats) {
   }
 }
 
-function createBackfillLogger() {
-  const stdout = process.stdout;
-  const stderr = process.stderr;
-  return makeLogger("error", {
-    console: {
-      info(...args) {
-        stdout.write(args.join(" ") + os.EOL);
-      },
-      warn(...args) {
-        stderr.write(args.join(" ") + os.EOL);
-      },
-      error(...args) {
-        stderr.write(args.join(" ") + os.EOL);
-      },
-    },
-  });
-}
-
-export function createCacheConfig(cwd: string, cacheOptions: Partial<CacheOptions> = {}) {
+function createCacheConfig(cwd: string, cacheOptions: Partial<CacheOptions> = {}) {
   return {
     ...createDefaultConfig(cwd),
     ...cacheOptions,
