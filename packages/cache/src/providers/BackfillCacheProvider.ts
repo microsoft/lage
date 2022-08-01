@@ -1,19 +1,18 @@
-import { CacheProvider } from "../types/CacheProvider";
-
 import { createDefaultConfig } from "backfill-config";
 import { getCacheStorageProvider } from "backfill-cache";
-import { getPackageInfos, PackageInfo } from "workspace-tools";
+import { getPackageInfos } from "workspace-tools";
 import { Hasher } from "backfill-hasher";
 import { makeLogger } from "backfill-logger";
-
 import { promisify } from "util";
 import { salt } from "../salt";
-import { Target } from "@lage-run/target-graph";
 import * as fs from "fs";
-import * as path from "path";
 import * as os from "os";
+import * as path from "path";
 import type { CacheOptions } from "../types/CacheOptions";
+import type { CacheProvider } from "../types/CacheProvider";
 import type { Logger as BackfillLogger } from "backfill-logger";
+import type { PackageInfo } from "workspace-tools";
+import type { Target } from "@lage-run/target-graph";
 
 const rmdir = promisify(fs.rmdir);
 const rm = promisify(fs.unlink);
@@ -28,8 +27,9 @@ export class BackfillCacheProvider implements CacheProvider {
    */
   private backfillLogger: BackfillLogger;
 
-  private getCacheStorageProvider(cwd: string) {
-    const { cacheStorageConfig, internalCacheFolder, incrementalCaching } = this.cacheOptions;
+  private getTargetCacheStorageProvider(cwd: string) {
+    const { cacheStorageConfig, internalCacheFolder, incrementalCaching } = createCacheConfig(cwd, this.cacheOptions);
+
     return getCacheStorageProvider(
       cacheStorageConfig ?? { provider: "local" },
       internalCacheFolder,
@@ -39,12 +39,12 @@ export class BackfillCacheProvider implements CacheProvider {
     );
   }
 
-  constructor(private root: string, private cacheOptions: CacheOptions) {
+  constructor(private root: string, private cacheOptions: Partial<CacheOptions> = {}) {
     this.backfillLogger = createBackfillLogger();
   }
 
-  hash(target: Target, args?: any): Promise<string> {
-    const hashKey = salt(
+  async hash(target: Target, args?: unknown): Promise<string> {
+    const hashKey = await salt(
       this.cacheOptions.environmentGlob || ["lage.config.js"],
       `${target.id}|${JSON.stringify(args)}`,
       this.root,
@@ -59,7 +59,7 @@ export class BackfillCacheProvider implements CacheProvider {
       return false;
     }
 
-    const cacheStorage = this.getCacheStorageProvider(target.cwd);
+    const cacheStorage = this.getTargetCacheStorageProvider(target.cwd);
 
     try {
       return await cacheStorage.fetch(hash);
@@ -74,7 +74,7 @@ export class BackfillCacheProvider implements CacheProvider {
       return;
     }
 
-    const cacheStorage = this.getCacheStorageProvider(target.cwd);
+    const cacheStorage = this.getTargetCacheStorageProvider(target.cwd);
 
     try {
       await cacheStorage.put(hash, target.outputs ?? this.cacheOptions.outputGlob ?? ["**/*"]);

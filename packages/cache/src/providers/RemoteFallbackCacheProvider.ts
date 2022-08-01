@@ -1,8 +1,8 @@
 import { BackfillCacheProvider } from "./BackfillCacheProvider";
-import { CacheOptions } from "../types/CacheOptions";
-import { CacheProvider } from "../types/CacheProvider";
 import { isCustomProvider } from "backfill-cache";
-import { Logger } from "@lage-run/logger";
+import type { CacheOptions } from "../types/CacheOptions";
+import type { CacheProvider } from "../types/CacheProvider";
+import type { Logger } from "@lage-run/logger";
 import type { Target } from "@lage-run/target-graph";
 
 /**
@@ -40,7 +40,7 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
     }
   }
 
-  hash(target: Target, args: any): Promise<string> {
+  hash(target: Target, args?: unknown): Promise<string> {
     return this.localCacheStorageProvider.hash(target, args);
   }
 
