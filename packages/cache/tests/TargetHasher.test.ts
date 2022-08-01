@@ -20,7 +20,7 @@ describe("BackfillCacheProvider", () => {
 
     const options: TargetHasherOptions = {
       root: monorepo.root,
-      environmentGlob: ["**/*"],
+      environmentGlob: ["lage.config.js"],
       cacheKey: "",
     };
 

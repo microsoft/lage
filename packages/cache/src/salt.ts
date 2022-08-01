@@ -24,8 +24,8 @@ async function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
 
     files.sort((a, b) => a.localeCompare(b));
 
-    const hasher = crypto.createHash("sha1");
     for (const file of files) {
+      const hasher = crypto.createHash("sha1");
       hasher.update(file);
 
       const fileBuffer = await fs.readFile(path.join(repoRoot, file), "utf-8");

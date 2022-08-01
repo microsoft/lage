@@ -43,7 +43,7 @@ describe("BackfillCacheProvider", () => {
     const contents = await monorepo.readFiles(["packages/a/output.txt"]);
 
     expect(contents["packages/a/output.txt"]).toBe("output");
-    expect(fetchResult).toBeTruth();
+    expect(fetchResult).toBeTruthy();
 
     await monorepo.cleanup();
   });
