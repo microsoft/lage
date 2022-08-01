@@ -1,11 +1,9 @@
-import { createBackfillLogger } from "../backfillWrapper";
-import { createDefaultConfig } from "backfill-config";
+import { createBackfillCacheConfig, createBackfillLogger } from "../backfillWrapper";
 import { getCacheStorageProvider } from "backfill-cache";
 import { getPackageInfos } from "workspace-tools";
 import { promisify } from "util";
 import * as fs from "fs";
 import * as path from "path";
-import type { CacheOptions } from "../types/CacheOptions";
 import type { CacheProvider, CacheProviderOptions } from "../types/CacheProvider";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { PackageInfo } from "workspace-tools";
@@ -32,7 +30,7 @@ export class BackfillCacheProvider implements CacheProvider {
 
   private getTargetCacheStorageProvider(cwd: string) {
     const { cacheOptions } = this.options;
-    const { cacheStorageConfig, internalCacheFolder, incrementalCaching } = createCacheConfig(cwd, cacheOptions);
+    const { cacheStorageConfig, internalCacheFolder, incrementalCaching } = createBackfillCacheConfig(cwd, cacheOptions);
 
     return getCacheStorageProvider(
       cacheStorageConfig ?? { provider: "local" },
@@ -126,11 +124,4 @@ async function removeCache(cachePath: string, entryStat: fs.Stats) {
   } else {
     rm(cachePath);
   }
-}
-
-function createCacheConfig(cwd: string, cacheOptions: Partial<CacheOptions> = {}) {
-  return {
-    ...createDefaultConfig(cwd),
-    ...cacheOptions,
-  };
 }

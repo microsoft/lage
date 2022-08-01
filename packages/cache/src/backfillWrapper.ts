@@ -1,5 +1,11 @@
+/**
+ * Backfill wrappers: some functions that uses the `backfill` library that doesn't require them to be inside a class
+ */
+
+import { createDefaultConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
 import * as os from "os";
+import { CacheOptions } from "./types/CacheOptions";
 
 export function createBackfillLogger() {
   const stdout = process.stdout;
@@ -17,4 +23,11 @@ export function createBackfillLogger() {
       },
     },
   });
+}
+
+export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<CacheOptions> = {}) {
+  return {
+    ...createDefaultConfig(cwd),
+    ...cacheOptions,
+  };
 }
