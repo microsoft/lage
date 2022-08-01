@@ -8,6 +8,8 @@ This package provides:
 ## Usage
 
 ```ts
+import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
+
 const cacheOptions = {
   internalCacheFolder: ".cache",
   outputGlob: ["dist/**", "lib/**"]
@@ -15,7 +17,7 @@ const cacheOptions = {
 
 const root = getWorkspaceRoot(cwd);
 
-const options = {
+const remoteFallbackCacheProviderOptions = {
   root,
   localCacheProvider: cacheOptions.skipLocalCache ? undefined : new BackfillCacheProvider({
     root,
@@ -43,7 +45,7 @@ const options = {
   })
 }
 
-const cacheProvider = new RemoteBackfillFallbackCacheProvider(options);
+const cacheProvider = new RemoteFallbackCacheProvider(remoteFallbackCacheProviderOptions);
 const hasher = new TargetHasher({
   root,
   environmentGlob: ["lage.config.js"],
