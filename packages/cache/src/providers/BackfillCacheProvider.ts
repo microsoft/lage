@@ -1,18 +1,15 @@
+import { createBackfillLogger } from "../backfillWrapper";
 import { createDefaultConfig } from "backfill-config";
 import { getCacheStorageProvider } from "backfill-cache";
 import { getPackageInfos } from "workspace-tools";
-
 import { promisify } from "util";
-
 import * as fs from "fs";
 import * as path from "path";
-
 import type { CacheOptions } from "../types/CacheOptions";
 import type { CacheProvider, CacheProviderOptions } from "../types/CacheProvider";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { PackageInfo } from "workspace-tools";
-import { createBackfillLogger } from "../backfillWrapper";
-import { Target } from "@lage-run/target-graph";
+import type { Target } from "@lage-run/target-graph";
 
 const rmdir = promisify(fs.rmdir);
 const rm = promisify(fs.unlink);
