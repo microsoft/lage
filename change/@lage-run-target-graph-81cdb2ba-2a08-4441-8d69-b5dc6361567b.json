@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Update some dev dependencies",
+  "packageName": "@lage-run/target-graph",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}

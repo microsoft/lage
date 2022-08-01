@@ -11,7 +11,7 @@ const packagePath = process.cwd();
   });
 
   // 2. Lint files.
-  const results = await eslint.lintFiles(["src/**/*.ts", "tests/**/*.ts"]);
+  const results = await eslint.lintFiles(["src/**/*.ts"]);
 
   // 3. Format the results.
   const formatter = await eslint.loadFormatter("stylish");

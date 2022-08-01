@@ -26,8 +26,4 @@ jobs:
       - run: yarn
       - run: yarn format:check
       - run: yarn checkchange
-
-      ## TODO: use lage itself to do this in pipeline & remote cache
-      - run: yarn build
-      - run: yarn test
-      - run: yarn lint
+      - run: yarn lage build test lint
