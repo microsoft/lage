@@ -19,6 +19,11 @@ const logger = new Logger();
 const cacheProvider = new RemoteFallbackCacheProvider({ root, logger, ... });
 const hasher = new TargetHasher({ root, ... });
 
+const runner = new NpmScriptRunner({
+  logger,
+  ...
+})
+
 const scheduler = new SimpleScheduler({
   logger,
   concurrency,
@@ -41,4 +46,7 @@ const packages = ["package-a", "package-b"];
 const targetGraph = builder.buildTargetGraph(tasks, packages);
 
 await scheduler.run(root, targetGraph);
+
+// If an error happened...
+scheduler.abort();
 ```

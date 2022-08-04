@@ -5,6 +5,7 @@ import { TargetHasher } from "@lage-run/cache";
 import type { CacheProvider } from "@lage-run/cache";
 import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";
+import { TargetRunner } from "./types/TargetRunner";
 
 type TargetStatus = "pending" | "running" | "success" | "failed" | "skipped";
 
@@ -20,17 +21,14 @@ export interface WrappedTargetOptions {
 }
 
 export class WrappedTarget {
-  static npmCmd: string = "";
-  static activeProcesses = new Set<ChildProcess>();
-  static gracefulKillTimeout = 2500;
-
-  npmArgs: string[] = [];
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
+  target: Target;
   status: TargetStatus;
 
   constructor(public options: WrappedTargetOptions) {
     this.status = "pending";
+    this.target = options.target;
   }
 
   onStart() {
@@ -96,7 +94,7 @@ export class WrappedTarget {
     await cacheProvider.put(hash, target);
   }
 
-  async run() {
+  async run(runner: TargetRunner) {
     const { target, logger, shouldCache, continueOnError } = this.options;
 
     try {
@@ -122,7 +120,7 @@ export class WrappedTarget {
           logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
         }
 
-        await target.run(target);
+        await runner.run(target);
 
         if (cacheEnabled) {
           await this.saveCache(hash);

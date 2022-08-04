@@ -14,14 +14,20 @@ export interface SimpleSchedulerOptions {
   hasher: TargetHasher;
   shouldCache: boolean;
   shouldResetCache: boolean;
-  runners: Map<string, TargetRunner>;
+
+  // TODO: allow for multiple kinds of runner
+  runner: TargetRunner;
 }
 
 export class SimpleScheduler {
-  constructor(private options: SimpleSchedulerOptions) {}
+  targets: Map<string, WrappedTarget>;
+
+  constructor(private options: SimpleSchedulerOptions) {
+    this.targets = new Map();
+  }
 
   async run(root: string, targetGraph: TargetGraph) {
-    const { concurrency, continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher } = this.options;
+    const { concurrency, continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, runner } = this.options;
     const { dependencies, targets } = targetGraph;
     const pGraphNodes: PGraphNodeMap = new Map();
     const pGraphEdges = dependencies;
@@ -37,7 +43,7 @@ export class SimpleScheduler {
               return Promise.resolve();
             }
 
-            const wrappedTask = new WrappedTarget({
+            const wrappedTarget = new WrappedTarget({
               target,
               root,
               logger,
@@ -48,17 +54,30 @@ export class SimpleScheduler {
               continueOnError,
             });
 
+            this.targets.set(target.id, wrappedTarget);
+
             // TODO: pick a runner
-            return wrappedTask.run();
+            return wrappedTarget.run(runner);
           },
           priority: target.priority,
         });
       }
     }
 
-    await pGraph(pGraphNodes, pGraphEdges).run({
-      concurrency,
-      continue: continueOnError,
-    });
+    try {
+      await pGraph(pGraphNodes, pGraphEdges).run({
+        concurrency,
+        continue: continueOnError,
+      });
+      return this.targets;
+    } catch (e) {
+      logger.error(typeof e === "string" ? e : e instanceof Error && "message" in e ? e.message : "unknown error");
+      process.exitCode = 1;
+      return this.targets;
+    }
+  }
+
+  abort() {
+    this.options.runner.abort();
   }
 }

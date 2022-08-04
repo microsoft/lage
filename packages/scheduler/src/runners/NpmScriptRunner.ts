@@ -1,7 +1,9 @@
-import { spawn } from "child_process";
 import { Logger, LogLevel } from "@lage-run/logger";
-import type { Target } from "@lage-run/target-graph";
+import { spawn } from "child_process";
+import { TargetRunner } from "../types/TargetRunner";
 import type { ChildProcess } from "child_process";
+import type { Target } from "@lage-run/target-graph";
+import { WrappedTarget } from "../WrappedTarget";
 
 export interface NpmScriptRunnerOptions {
   logger: Logger;
@@ -10,7 +12,7 @@ export interface NpmScriptRunnerOptions {
   npmCmd: string;
 }
 
-export class NpmScriptRunner {
+export class NpmScriptRunner implements TargetRunner {
   static npmCmd: string = "";
   static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
@@ -19,7 +21,7 @@ export class NpmScriptRunner {
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
 
-  static killAllActiveProcesses() {
+  abort() {
     // first, send SIGTERM everywhere
     for (const cp of NpmScriptRunner.activeProcesses) {
       cp.kill("SIGTERM");
@@ -48,8 +50,8 @@ export class NpmScriptRunner {
 
     const npmArgs = this.getNpmCommand(nodeArgs, commandArgs, target.task);
 
-    return new Promise<void>((resolve, reject) => {
-      logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}`);
+    return new Promise<boolean>((resolve, reject) => {
+      logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}`, { target });
 
       const cp = spawn(npmCmd, npmArgs, {
         cwd: target.cwd,
@@ -63,20 +65,28 @@ export class NpmScriptRunner {
 
       NpmScriptRunner.activeProcesses.add(cp);
 
-      logger.stream(LogLevel.verbose, cp.stdout);
-      logger.stream(LogLevel.verbose, cp.stderr);
+      logger.stream(LogLevel.verbose, cp.stdout, { target });
+      logger.stream(LogLevel.verbose, cp.stderr, { target });
+
+      let exitHandled = false;
 
       cp.on("exit", handleChildProcessExit);
+      cp.on("error", () => handleChildProcessExit(1));
 
       function handleChildProcessExit(code: number) {
-        if (code === 0) {
-          NpmScriptRunner.activeProcesses.delete(cp);
-          return resolve();
+        if (exitHandled) {
+          return;
         }
 
         cp.stdout.destroy();
         cp.stdin.destroy();
-        reject();
+
+        if (code === 0) {
+          NpmScriptRunner.activeProcesses.delete(cp);
+          return resolve(true);
+        }
+
+        reject(false);
       }
     });
   }
