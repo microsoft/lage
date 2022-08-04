@@ -32,6 +32,7 @@ const scheduler = new SimpleScheduler({
   continueOnError: true,
   shouldCache: true,
   shouldResetCache: false,
+  runner
 });
 
 const targetGraphBuilder = new TargetGraphBuilder();
