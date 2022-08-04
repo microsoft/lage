@@ -4,7 +4,9 @@ import { WrappedTarget } from "./WrappedTarget";
 import pGraph from "p-graph";
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { PGraphNodeMap } from "p-graph";
-import { TargetRunner } from "./types/TargetRunner";
+import type { TargetRunner } from "./types/TargetRunner";
+import type { TargetScheduler } from "./types/TargetScheduler";
+import type { TargetRunInfo } from "./types/TargetRunInfo";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -19,11 +21,11 @@ export interface SimpleSchedulerOptions {
   runner: TargetRunner;
 }
 
-export class SimpleScheduler {
-  targets: Map<string, WrappedTarget>;
+export class SimpleScheduler implements TargetScheduler {
+  targetRunInfo: Map<string, TargetRunInfo>;
 
   constructor(private options: SimpleSchedulerOptions) {
-    this.targets = new Map();
+    this.targetRunInfo = new Map();
   }
 
   async run(root: string, targetGraph: TargetGraph) {
@@ -54,7 +56,7 @@ export class SimpleScheduler {
               continueOnError,
             });
 
-            this.targets.set(target.id, wrappedTarget);
+            this.targetRunInfo.set(target.id, wrappedTarget);
 
             // TODO: pick a runner
             return wrappedTarget.run(runner);
@@ -69,11 +71,11 @@ export class SimpleScheduler {
         concurrency,
         continue: continueOnError,
       });
-      return this.targets;
+      return this.targetRunInfo;
     } catch (e) {
       logger.error(typeof e === "string" ? e : e instanceof Error && "message" in e ? e.message : "unknown error");
       process.exitCode = 1;
-      return this.targets;
+      return this.targetRunInfo;
     }
   }
 

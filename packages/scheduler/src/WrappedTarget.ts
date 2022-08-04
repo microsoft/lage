@@ -3,11 +3,10 @@ import { hrToSeconds } from "./formatDuration";
 import { Logger } from "@lage-run/logger";
 import { TargetHasher } from "@lage-run/cache";
 import type { CacheProvider } from "@lage-run/cache";
-import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";
-import { TargetRunner } from "./types/TargetRunner";
-
-type TargetStatus = "pending" | "running" | "success" | "failed" | "skipped";
+import type { TargetRunInfo } from "./types/TargetRunInfo";
+import type { TargetRunner } from "./types/TargetRunner";
+import type { TargetStatus } from "./types/TargetStatus";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -20,7 +19,7 @@ export interface WrappedTargetOptions {
   continueOnError: boolean;
 }
 
-export class WrappedTarget {
+export class WrappedTarget implements TargetRunInfo {
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
   target: Target;
