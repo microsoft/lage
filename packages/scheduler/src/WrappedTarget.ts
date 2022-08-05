@@ -1,7 +1,7 @@
-import { controller } from "./abortSignal";
 import { hrToSeconds } from "./formatDuration";
 import { Logger } from "@lage-run/logger";
 import { TargetHasher } from "@lage-run/cache";
+import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
 import type { Target } from "@lage-run/target-graph";
 import type { TargetRunContext } from "./types/TargetRunContext";
@@ -17,6 +17,7 @@ export interface WrappedTargetOptions {
   shouldCache: boolean;
   shouldResetCache: boolean;
   continueOnError: boolean;
+  abortController: AbortController;
 }
 
 export class WrappedTarget implements TargetRunContext {
@@ -30,16 +31,22 @@ export class WrappedTarget implements TargetRunContext {
     this.target = options.target;
   }
 
+  onAbort() {
+    this.status = "running";
+    this.options.logger.info("aborted", { target: this.target, status: "aborted" });
+  }
+
   onStart() {
     this.status = "running";
     this.startTime = process.hrtime();
-    this.options.logger.info("started", { status: "started" });
+    this.options.logger.info("started", { target: this.target, status: "started" });
   }
 
   onComplete() {
     this.status = "success";
     this.duration = process.hrtime(this.startTime);
     this.options.logger.info("completed", {
+      target: this.target,
       status: "completed",
       duration: hrToSeconds(this.duration),
     });
@@ -49,15 +56,21 @@ export class WrappedTarget implements TargetRunContext {
     this.status = "failed";
     this.duration = process.hrtime(this.startTime);
     this.options.logger.info("failed", {
+      target: this.target,
       status: "failed",
       duration: hrToSeconds(this.duration),
     });
+
+    if (!this.options.continueOnError) {
+      this.options.abortController.abort();
+    }
   }
 
   onSkipped(hash: string | null) {
     this.status = "skipped";
     this.duration = process.hrtime(this.startTime);
     this.options.logger.info(`skipped`, {
+      target: this.target,
       status: "skipped",
       duration: hrToSeconds(this.duration),
       hash,
@@ -94,48 +107,59 @@ export class WrappedTarget implements TargetRunContext {
   }
 
   async run(runner: TargetRunner) {
-    const { target, logger, shouldCache, continueOnError } = this.options;
+    const { target, logger, shouldCache, abortController } = this.options;
+
+    const abortSignal = abortController.signal;
+
+    if (abortSignal.aborted) {
+      this.onAbort();
+      return;
+    }
+
+    abortSignal.addEventListener("abort", () => {
+      this.onAbort();
+      throw new Error(`${target.id} aborted in the middle of an execution`);
+    });
 
     try {
       const { hash, cacheHit } = await this.getCache();
 
-      const cacheEnabled = target.cache && shouldCache && hash;
-
       this.onStart();
 
-      if (target.run) {
-        // skip if cache hit!
-        if (cacheHit) {
-          // save the cache anyway - this will cause remote cache to be saved locally
-          if (cacheEnabled) {
-            await this.saveCache(hash);
-          }
-
-          this.onSkipped(hash);
-          return true;
-        }
-
-        if (cacheEnabled) {
-          logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
-        }
-
-        await runner.run(target);
-
-        if (cacheEnabled) {
-          await this.saveCache(hash);
-        }
+      const cacheEnabled = target.cache && shouldCache && hash;
+      if (cacheEnabled) {
+        logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
       }
+
+      // skip if cache hit!
+      if (cacheHit) {
+        this.onSkipped(hash);
+        return;
+      }
+
+      await runner.run(target);
+
+      if (cacheEnabled) {
+        await this.saveCache(hash);
+      }
+
       this.onComplete();
     } catch (e) {
       this.onFail();
-
-      if (!continueOnError) {
-        controller.abort();
-      }
-
-      throw e;
     }
+  }
 
-    return true;
+  /**
+   * A JSON representation of this wrapped target, suitable for serialization in tests.
+   *
+   * Skips the unpredictable properties of the wrapped target like the startTime and duration.
+   *
+   * @returns
+   */
+  toJSON() {
+    return {
+      target: this.target.id,
+      status: this.status,
+    };
   }
 }

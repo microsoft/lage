@@ -7,5 +7,5 @@ export interface TargetRunContext {
   duration: [number, number];
   target: Target;
   status: TargetStatus;
-  run(runner: TargetRunner): Promise<boolean>;
+  run(runner: TargetRunner): Promise<void>;
 }

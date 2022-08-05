@@ -1,6 +1,7 @@
 import { Target } from "@lage-run/target-graph";
+import type { AbortSignal } from "abort-controller";
 
 export interface TargetRunner {
-  abort(): void;
-  run(target: Target): Promise<boolean>;
+  abort?(): void;
+  run(target: Target, abortSignal?: AbortSignal): Promise<void>;
 }

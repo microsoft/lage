@@ -2,18 +2,29 @@ import { Logger } from "@lage-run/logger";
 import { CacheProvider, TargetHasher } from "@lage-run/cache";
 import { TargetRunner } from "../src/types/TargetRunner";
 import { SimpleScheduler } from "../src/SimpleScheduler";
-import { getStartTargetId, getTargetId, Target, TargetGraph } from "@lage-run/target-graph";
+import { getStartTargetId, Target, TargetGraph } from "@lage-run/target-graph";
+import { NoOpRunner } from "../src/runners/NoOpRunner";
 
 /**
- * Purely manually managed target graph. 
+ * Purely manually managed target graph.
  * 1. It doesn't gaurantee that the targets' dependencies are the same as the graph's dependencies.
  * 2. It will auto create a startTargetId -> each target's id.
  */
 class TestTargetGraph implements TargetGraph {
-  targets: Map<string, Target> = new Map();
+  targets: Map<string, Target> = new Map([
+    [
+      getStartTargetId(),
+      {
+        id: getStartTargetId(),
+        cwd: "",
+        label: "Start",
+      },
+    ] as [string, Target],
+  ]);
+
   dependencies: [string, string][] = [];
 
-  addTarget(this: TargetGraph, packageName: string, task: string) {
+  addTarget(packageName: string, task: string) {
     const id = `${packageName}#${task}`;
 
     this.targets.set(id, {
@@ -40,7 +51,7 @@ class TestTargetGraph implements TargetGraph {
 }
 
 describe("SimpleScheduler", () => {
-  it.only("should run all targets, if no target dependencies exists in the target graph", async () => {
+  it("should run all targets, if no target dependencies exists in the target graph", async () => {
     const root = "/root-of-repo";
     const logger = new Logger();
 
@@ -53,12 +64,7 @@ describe("SimpleScheduler", () => {
 
     const hasher = new TargetHasher({ root, environmentGlob: [] });
 
-    const runner: TargetRunner = {
-      abort() {},
-      async run(_target) {
-        return true;
-      },
-    };
+    const runner = NoOpRunner;
 
     const scheduler = new SimpleScheduler({
       logger,
@@ -76,12 +82,25 @@ describe("SimpleScheduler", () => {
 
     const targetRunContexts = await scheduler.run(root, targetGraph);
 
-    expect(targetRunContexts.size).toBe(2);
-    expect(targetRunContexts.get("a#test")!.status).toBe("success");
-    expect(targetRunContexts.get("b#test")!.status).toBe("success");
+    expect(targetRunContexts).toMatchInlineSnapshot(`
+Map {
+  "__start" => Object {
+    "status": "success",
+    "target": "__start",
+  },
+  "a#build" => Object {
+    "status": "success",
+    "target": "a#build",
+  },
+  "b#build" => Object {
+    "status": "success",
+    "target": "b#build",
+  },
+}
+`);
   });
 
-  it("should abort early throwing an error, if one target fails without continue on error", async () => {
+  it.only("should abort early throwing an error, if one target fails without continue on error", async () => {
     const root = "/root-of-repo";
     const logger = new Logger();
 
@@ -98,16 +117,14 @@ describe("SimpleScheduler", () => {
       abort() {},
       async run(target) {
         if (target.packageName === "d" || target.packageName === "e") {
-          return false;
+          throw new Error(`failing! ${target.packageName}#${target.task}`);
         }
-
-        return true;
       },
     };
 
     const scheduler = new SimpleScheduler({
       logger,
-      concurrency: 1,
+      concurrency: 4,
       cacheProvider,
       hasher,
       runner,
@@ -124,17 +141,13 @@ describe("SimpleScheduler", () => {
       .addTarget("d", "build")
       .addTarget("e", "build");
 
-    await expect(() => scheduler.run(root, targetGraph)).toThrow();
+    await scheduler.run(root, targetGraph);
 
     const targetRunContexts = scheduler.targetRunContexts;
-    expect(targetRunContexts.size).toBe(5);
-    expect(targetRunContexts.get("d#test")!.status).toBe("success");
+    expect(targetRunContexts.size).toBe(6);
 
-    let failedCount = 0;
-    for (const entry of targetRunContexts.values()) {
-      failedCount = entry.status === "failed" ? failedCount + 1 : failedCount;
-    }
+    expect(targetRunContexts.get("d#build")!.status).not.toBe("success");
 
-    expect(failedCount).toBe(1);
+    console.log(targetRunContexts)
   });
 });

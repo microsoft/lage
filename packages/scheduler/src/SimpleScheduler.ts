@@ -7,6 +7,9 @@ import type { PGraphNodeMap } from "p-graph";
 import type { TargetRunner } from "./types/TargetRunner";
 import type { TargetScheduler } from "./types/TargetScheduler";
 import type { TargetRunContext } from "./types/TargetRunContext";
+import type { AbortSignal } from "abort-controller";
+import { AbortController } from "abort-controller";
+import { NoOpRunner } from "./runners/NoOpRunner";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -36,15 +39,19 @@ export interface SimpleSchedulerOptions {
  */
 export class SimpleScheduler implements TargetScheduler {
   targetRunContexts: Map<string, TargetRunContext>;
+  abortController: AbortController;
+  abortSignal: AbortSignal;
 
   constructor(private options: SimpleSchedulerOptions) {
     this.targetRunContexts = new Map();
+    this.abortController = new AbortController();
+    this.abortSignal = this.abortController.signal;
   }
 
   async run(root: string, targetGraph: TargetGraph) {
     const { concurrency, continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, runner } = this.options;
     const { dependencies, targets } = targetGraph;
-    
+
     const pGraphNodes: PGraphNodeMap = new Map();
     const pGraphEdges = dependencies;
 
@@ -58,19 +65,25 @@ export class SimpleScheduler implements TargetScheduler {
         shouldCache,
         shouldResetCache,
         continueOnError,
+        abortSignal: this.abortSignal,
       });
 
       this.targetRunContexts.set(target.id, wrappedTarget);
 
       pGraphNodes.set(target.id, {
-        run: () => {
-          if (target.id === getStartTargetId()) {
-            return Promise.resolve();
+        /** picks the runner, and run the wrapped target with the runner */
+        run: async() => {
+          if (this.abortSignal.aborted) {
+            return;
           }
 
-          // TODO: pick a runner
+          if (target.id === getStartTargetId()) {
+            return this.targetRunContexts.get(target.id)!.run(NoOpRunner);
+          }
+
           return this.targetRunContexts.get(target.id)!.run(runner);
         },
+
         priority: target.priority,
       });
     }
@@ -89,6 +102,6 @@ export class SimpleScheduler implements TargetScheduler {
   }
 
   abort() {
-    this.options.runner.abort();
+    this.abortController.abort();
   }
 }

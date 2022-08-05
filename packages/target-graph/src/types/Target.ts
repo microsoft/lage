@@ -43,6 +43,11 @@ export interface Target {
   options?: Record<string, any> /* eslint-disable-line @typescript-eslint/no-explicit-any */;
 
   /**
+   * Whether the target should be displayed by reporters
+   */
+  hidden?: boolean;
+
+  /**
    * Custom run definition, if left blank, the scheduler will decide which runner to use to fulfill the work for the `Target`
    */
   run?: (target: Target) => Promise<void> | void;

@@ -1,9 +1,9 @@
 import { Logger, LogLevel } from "@lage-run/logger";
+import { AbortSignal } from "abort-controller";
 import { spawn } from "child_process";
 import { TargetRunner } from "../types/TargetRunner";
 import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";
-import { WrappedTarget } from "../WrappedTarget";
 
 export interface NpmScriptRunnerOptions {
   logger: Logger;
@@ -44,13 +44,13 @@ export class NpmScriptRunner implements TargetRunner {
     return [...nodeArgs, "run", task, ...extraArgs];
   }
 
-  run(target: Target) {
+  run(target: Target, abortSignal?: AbortSignal) {
     const { logger, nodeArgs, commandArgs } = this.options;
     const { npmCmd } = NpmScriptRunner;
 
     const npmArgs = this.getNpmCommand(nodeArgs, commandArgs, target.task);
 
-    return new Promise<boolean>((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}`, { target });
 
       const cp = spawn(npmCmd, npmArgs, {
@@ -83,10 +83,16 @@ export class NpmScriptRunner implements TargetRunner {
 
         if (code === 0) {
           NpmScriptRunner.activeProcesses.delete(cp);
-          return resolve(true);
+          return resolve();
         }
 
         reject(false);
+      }
+
+      if (abortSignal) {
+        abortSignal.addEventListener("aborted", () => {
+          cp.kill("SIGTERM");
+        })
       }
     });
   }
