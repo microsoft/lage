@@ -2,30 +2,23 @@ import { Logger, LogLevel } from "@lage-run/logger";
 import { AbortSignal } from "abort-controller";
 import { spawn } from "child_process";
 import { TargetRunner } from "../types/TargetRunner";
-import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";
 
 export interface NpmScriptRunnerOptions {
   logger: Logger;
-  commandArgs: string[];
-  nodeArgs: string[];
+  taskArgs: string[];
+  nodeOptions: string;
   npmCmd: string;
 }
 
 export class NpmScriptRunner implements TargetRunner {
-  static npmCmd: string = "";
-  static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
-
-  npmArgs: string[] = [];
-  startTime: [number, number] = [0, 0];
-  duration: [number, number] = [0, 0];
 
   constructor(private options: NpmScriptRunnerOptions) {}
 
-  private getNpmCommand(nodeArgs: string[], passThroughArgs: string[], task: string) {
-    const extraArgs = passThroughArgs.length > 0 ? ["--", ...passThroughArgs] : [];
-    return [...nodeArgs, "run", task, ...extraArgs];
+  private getNpmArgs(task: string, taskTargs: string[]) {
+    const extraArgs = taskTargs.length > 0 ? ["--", ...taskTargs] : [];
+    return ["run", task, ...extraArgs];
   }
 
   run(target: Target, abortSignal?: AbortSignal) {
@@ -33,10 +26,9 @@ export class NpmScriptRunner implements TargetRunner {
       return Promise.resolve();
     }
 
-    const { logger, nodeArgs, commandArgs } = this.options;
-    const { npmCmd } = NpmScriptRunner;
+    const { logger, nodeOptions, npmCmd, taskArgs } = this.options;
 
-    const npmArgs = this.getNpmCommand(nodeArgs, commandArgs, target.task);
+    const npmArgs = this.getNpmArgs(target.task, taskArgs);
 
     return new Promise<void>((resolve, reject) => {
       const cp = spawn(npmCmd, npmArgs, {
@@ -45,13 +37,12 @@ export class NpmScriptRunner implements TargetRunner {
         env: {
           ...process.env,
           ...(process.stdout.isTTY && { FORCE_COLOR: "1" }),
+          ...(nodeOptions && { NODE_OPTIONS: nodeOptions }),
           LAGE_PACKAGE_NAME: target.packageName,
         },
       });
 
-      logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}, pid: ${cp.pid}`, { target });
-
-      NpmScriptRunner.activeProcesses.add(cp);
+      logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}, pid: ${cp.pid}`, { target, pid: cp.pid });
 
       logger.stream(LogLevel.verbose, cp.stdout, { target, pid: cp.pid });
       logger.stream(LogLevel.verbose, cp.stderr, { target, pid: cp.pid });
@@ -66,11 +57,12 @@ export class NpmScriptRunner implements TargetRunner {
           return;
         }
 
+        exitHandled = true;
+
         cp.stdout.destroy();
         cp.stdin.destroy();
 
         if (code === 0) {
-          NpmScriptRunner.activeProcesses.delete(cp);
           return resolve();
         }
 
@@ -78,16 +70,20 @@ export class NpmScriptRunner implements TargetRunner {
       }
 
       if (abortSignal) {
+        /**
+         * Handling abort signal from the abort controller. Gracefully kills the process,
+         * will be handled by exit handler separately to resolve the promise.
+         */
         abortSignal.addEventListener("aborted", () => {
-          logger.verbose(`Abort signal detected, killing process id: ${cp.pid}}`, { target });
+          logger.verbose(`Abort signal detected, killing process id: ${cp.pid}}`, { target, pid: cp.pid });
+
           cp.kill("SIGTERM");
+
           // wait for "gracefulKillTimeout" to make sure everything is terminated via SIGKILL
           setTimeout(() => {
-  
-              if (!cp.killed) {
-                cp.kill("SIGKILL");
-              }
-  
+            if (!cp.killed) {
+              cp.kill("SIGKILL");
+            }
           }, NpmScriptRunner.gracefulKillTimeout);
         });
       }
