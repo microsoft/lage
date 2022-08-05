@@ -41,7 +41,7 @@ export class SimpleScheduler implements TargetScheduler {
       for (const target of [fromTarget, toTarget]) {
         pGraphNodes.set(target.id, {
           run: () => {
-            if (target.id === getStartTargetId() || !target.run) {
+            if (target.id === getStartTargetId()) {
               return Promise.resolve();
             }
 
@@ -71,11 +71,11 @@ export class SimpleScheduler implements TargetScheduler {
         concurrency,
         continue: continueOnError,
       });
+      
       return this.targetRunInfo;
     } catch (e) {
       logger.error(typeof e === "string" ? e : e instanceof Error && "message" in e ? e.message : "unknown error");
-      process.exitCode = 1;
-      return this.targetRunInfo;
+      throw e;
     }
   }
 
