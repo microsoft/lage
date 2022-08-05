@@ -118,7 +118,7 @@ export class WrappedTarget implements TargetRunContext {
 
     abortSignal.addEventListener("abort", () => {
       this.onAbort();
-      throw new Error(`${target.id} aborted in the middle of an execution`);
+      return;
     });
 
     try {
@@ -137,7 +137,7 @@ export class WrappedTarget implements TargetRunContext {
         return;
       }
 
-      await runner.run(target);
+      await runner.run(target, abortSignal);
 
       if (cacheEnabled) {
         await this.saveCache(hash);

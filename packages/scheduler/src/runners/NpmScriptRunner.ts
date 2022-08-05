@@ -21,22 +21,6 @@ export class NpmScriptRunner implements TargetRunner {
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
 
-  abort() {
-    // first, send SIGTERM everywhere
-    for (const cp of NpmScriptRunner.activeProcesses) {
-      cp.kill("SIGTERM");
-    }
-
-    // wait for "gracefulKillTimeout" to make sure everything is terminated via SIGKILL
-    setTimeout(() => {
-      for (const cp of NpmScriptRunner.activeProcesses) {
-        if (!cp.killed) {
-          cp.kill("SIGKILL");
-        }
-      }
-    }, NpmScriptRunner.gracefulKillTimeout);
-  }
-
   constructor(private options: NpmScriptRunnerOptions) {}
 
   private getNpmCommand(nodeArgs: string[], passThroughArgs: string[], task: string) {
@@ -45,14 +29,16 @@ export class NpmScriptRunner implements TargetRunner {
   }
 
   run(target: Target, abortSignal?: AbortSignal) {
+    if (abortSignal?.aborted) {
+      return Promise.resolve();
+    }
+
     const { logger, nodeArgs, commandArgs } = this.options;
     const { npmCmd } = NpmScriptRunner;
 
     const npmArgs = this.getNpmCommand(nodeArgs, commandArgs, target.task);
 
     return new Promise<void>((resolve, reject) => {
-      logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}`, { target });
-
       const cp = spawn(npmCmd, npmArgs, {
         cwd: target.cwd,
         stdio: "pipe",
@@ -63,10 +49,12 @@ export class NpmScriptRunner implements TargetRunner {
         },
       });
 
+      logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}, pid: ${cp.pid}`, { target });
+
       NpmScriptRunner.activeProcesses.add(cp);
 
-      logger.stream(LogLevel.verbose, cp.stdout, { target });
-      logger.stream(LogLevel.verbose, cp.stderr, { target });
+      logger.stream(LogLevel.verbose, cp.stdout, { target, pid: cp.pid });
+      logger.stream(LogLevel.verbose, cp.stderr, { target, pid: cp.pid });
 
       let exitHandled = false;
 
@@ -91,8 +79,17 @@ export class NpmScriptRunner implements TargetRunner {
 
       if (abortSignal) {
         abortSignal.addEventListener("aborted", () => {
+          logger.verbose(`Abort signal detected, killing process id: ${cp.pid}}`, { target });
           cp.kill("SIGTERM");
-        })
+          // wait for "gracefulKillTimeout" to make sure everything is terminated via SIGKILL
+          setTimeout(() => {
+  
+              if (!cp.killed) {
+                cp.kill("SIGKILL");
+              }
+  
+          }, NpmScriptRunner.gracefulKillTimeout);
+        });
       }
     });
   }

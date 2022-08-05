@@ -114,7 +114,6 @@ Map {
     const hasher = new TargetHasher({ root, environmentGlob: [] });
 
     const runner: TargetRunner = {
-      abort() {},
       async run(target) {
         if (target.packageName === "d" || target.packageName === "e") {
           throw new Error(`failing! ${target.packageName}#${target.task}`);
@@ -145,9 +144,6 @@ Map {
 
     const targetRunContexts = scheduler.targetRunContexts;
     expect(targetRunContexts.size).toBe(6);
-
     expect(targetRunContexts.get("d#build")!.status).not.toBe("success");
-
-    console.log(targetRunContexts)
   });
 });

@@ -65,7 +65,7 @@ export class SimpleScheduler implements TargetScheduler {
         shouldCache,
         shouldResetCache,
         continueOnError,
-        abortSignal: this.abortSignal,
+        abortController: this.abortController,
       });
 
       this.targetRunContexts.set(target.id, wrappedTarget);
