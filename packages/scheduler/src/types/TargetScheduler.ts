@@ -1,8 +1,8 @@
 import { TargetGraph } from "@lage-run/target-graph";
-import { TargetRunInfo } from "./TargetRunInfo";
+import { TargetRunContext } from "./TargetRunContext";
 
 export interface TargetScheduler {
-  targetRunInfo: Map<string, TargetRunInfo>;
+  targetRunContexts: Map<string, TargetRunContext>;
   abort(): void;
-  run(root: string, targetGraph: TargetGraph): Promise<TargetScheduler["targetRunInfo"]>;
+  run(root: string, targetGraph: TargetGraph): Promise<TargetScheduler["targetRunContexts"]>;
 }

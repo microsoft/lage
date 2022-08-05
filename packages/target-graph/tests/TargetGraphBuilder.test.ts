@@ -1,5 +1,6 @@
 import type { PackageInfos } from "workspace-tools";
-import { START_TARGET_ID, TargetGraphBuilder } from "../src/TargetGraphBuilder";
+import { TargetGraphBuilder } from "../src/TargetGraphBuilder";
+import { getStartTargetId } from "../src/targetId";
 
 function createPackageInfo(packages: { [id: string]: string[] }) {
   const packageInfos: PackageInfos = {};
@@ -33,11 +34,11 @@ describe("target graph builder", () => {
 
     const targetGraph = builder.buildTargetGraph(["build"]);
 
-    expect(targetGraph.targets.size).toBe(2);
+    expect(targetGraph.targets.size).toBe(3);
 
     expect(targetGraph.dependencies.length).toBe(3);
-    expect(targetGraph.dependencies).toContainEqual([START_TARGET_ID, "a#build"]);
-    expect(targetGraph.dependencies).toContainEqual([START_TARGET_ID, "b#build"]);
+    expect(targetGraph.dependencies).toContainEqual([getStartTargetId(), "a#build"]);
+    expect(targetGraph.dependencies).toContainEqual([getStartTargetId(), "b#build"]);
     expect(targetGraph.dependencies).toContainEqual(["b#build", "a#build"]);
   });
 

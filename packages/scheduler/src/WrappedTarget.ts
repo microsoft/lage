@@ -4,7 +4,7 @@ import { Logger } from "@lage-run/logger";
 import { TargetHasher } from "@lage-run/cache";
 import type { CacheProvider } from "@lage-run/cache";
 import type { Target } from "@lage-run/target-graph";
-import type { TargetRunInfo } from "./types/TargetRunInfo";
+import type { TargetRunContext } from "./types/TargetRunContext";
 import type { TargetRunner } from "./types/TargetRunner";
 import type { TargetStatus } from "./types/TargetStatus";
 
@@ -19,7 +19,7 @@ export interface WrappedTargetOptions {
   continueOnError: boolean;
 }
 
-export class WrappedTarget implements TargetRunInfo {
+export class WrappedTarget implements TargetRunContext {
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
   target: Target;

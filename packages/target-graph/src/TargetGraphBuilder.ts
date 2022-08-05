@@ -358,6 +358,14 @@ export class TargetGraphBuilder {
   buildTargetGraph(tasks: string[], scope?: string[]) {
     this.expandDependencies();
 
+    const startId = getStartTargetId();
+    this.targets.set(startId, {
+      id: startId,
+      task: startId,
+      cwd: "",
+      label: "Start"
+    } as Target);
+
     const subGraphEdges = this.createSubGraph(tasks, scope);
     const subGraphTargets: Map<string, Target> = new Map();
 
