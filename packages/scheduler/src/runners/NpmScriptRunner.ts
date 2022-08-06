@@ -3,6 +3,7 @@ import { AbortSignal } from "abort-controller";
 import { spawn } from "child_process";
 import { TargetRunner } from "../types/TargetRunner";
 import type { Target } from "@lage-run/target-graph";
+import { findNpmClient } from "./workspace/findNpmClient";
 
 export interface NpmScriptRunnerOptions {
   logger: Logger;
@@ -13,8 +14,11 @@ export interface NpmScriptRunnerOptions {
 
 export class NpmScriptRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
+  private npmCmd: string;
 
-  constructor(private options: NpmScriptRunnerOptions) {}
+  constructor(private options: NpmScriptRunnerOptions) {
+    this.npmCmd = findNpmClient(options.npmCmd ?? "npm");
+  }
 
   private getNpmArgs(task: string, taskTargs: string[]) {
     const extraArgs = taskTargs.length > 0 ? ["--", ...taskTargs] : [];
@@ -32,7 +36,7 @@ export class NpmScriptRunner implements TargetRunner {
     const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter(str => str).join(' ');
 
     return new Promise<void>((resolve, reject) => {
-      const cp = spawn(npmCmd, npmRunArgs, {
+      const cp = spawn(this.npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: "pipe",
         env: {
