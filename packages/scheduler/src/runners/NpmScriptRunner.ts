@@ -4,6 +4,8 @@ import { spawn } from "child_process";
 import { TargetRunner } from "../types/TargetRunner";
 import type { Target } from "@lage-run/target-graph";
 import { findNpmClient } from "./workspace/findNpmClient";
+import { readFile } from "fs/promises";
+import { join } from "path";
 
 export interface NpmScriptRunnerOptions {
   logger: Logger;
@@ -25,17 +27,28 @@ export class NpmScriptRunner implements TargetRunner {
     return ["run", task, ...extraArgs];
   }
 
-  run(target: Target, abortSignal?: AbortSignal) {
+  private async hasNpmScript(target: Target) {
+    const { task } = target;
+    const packageJsonPath = join(target.cwd, "package.json");
+    const packageJson = JSON.parse(await readFile(packageJsonPath, "utf8"));
+    return packageJson.scripts?.[task];
+  }
+
+  async run(target: Target, abortSignal?: AbortSignal) {
     if (abortSignal?.aborted) {
       return Promise.resolve();
     }
 
     const { logger, nodeOptions, npmCmd, taskArgs } = this.options;
 
-    const npmRunArgs = this.getNpmArgs(target.task, taskArgs);
-    const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter(str => str).join(' ');
+    if (!await this.hasNpmScript(target)) {
+      return;  
+    }
 
-    return new Promise<void>((resolve, reject) => {
+    const npmRunArgs = this.getNpmArgs(target.task, taskArgs);
+    const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter((str) => str).join(" ");
+
+    await new Promise<void>((resolve, reject) => {
       const cp = spawn(this.npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: "pipe",
