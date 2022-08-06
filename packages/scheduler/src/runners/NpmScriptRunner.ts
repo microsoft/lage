@@ -28,21 +28,22 @@ export class NpmScriptRunner implements TargetRunner {
 
     const { logger, nodeOptions, npmCmd, taskArgs } = this.options;
 
-    const npmArgs = this.getNpmArgs(target.task, taskArgs);
+    const npmRunArgs = this.getNpmArgs(target.task, taskArgs);
+    const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter(str => str).join(' ');
 
     return new Promise<void>((resolve, reject) => {
-      const cp = spawn(npmCmd, npmArgs, {
+      const cp = spawn(npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: "pipe",
         env: {
           ...process.env,
           ...(process.stdout.isTTY && { FORCE_COLOR: "1" }),
-          ...(nodeOptions && { NODE_OPTIONS: nodeOptions }),
+          ...(npmRunNodeOptions && { NODE_OPTIONS: npmRunNodeOptions }),
           LAGE_PACKAGE_NAME: target.packageName,
         },
       });
 
-      logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}, pid: ${cp.pid}`, { target, pid: cp.pid });
+      logger.verbose(`Running ${[npmCmd, ...npmRunArgs].join(" ")}, pid: ${cp.pid}`, { target, pid: cp.pid });
 
       logger.stream(LogLevel.verbose, cp.stdout, { target, pid: cp.pid });
       logger.stream(LogLevel.verbose, cp.stderr, { target, pid: cp.pid });
