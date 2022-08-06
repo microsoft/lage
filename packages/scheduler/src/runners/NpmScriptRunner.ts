@@ -1,11 +1,10 @@
-import { Logger, LogLevel } from "@lage-run/logger";
 import { AbortSignal } from "abort-controller";
+import { join } from "path";
+import { Logger, LogLevel } from "@lage-run/logger";
+import { readFile } from "fs/promises";
 import { spawn } from "child_process";
 import { TargetRunner } from "../types/TargetRunner";
 import type { Target } from "@lage-run/target-graph";
-import { findNpmClient } from "./workspace/findNpmClient";
-import { readFile } from "fs/promises";
-import { join } from "path";
 
 export interface NpmScriptRunnerOptions {
   logger: Logger;
@@ -14,13 +13,28 @@ export interface NpmScriptRunnerOptions {
   npmCmd: string;
 }
 
+/**
+ * Runs a npm script on a target.
+ *
+ * Requires target to have a packageName, and a task.
+ *
+ * This class deals with these concepts:
+ *
+ * 1. Spawning the npm client.
+ * 2. Generates npm command line arguments
+ * 3. Handling exit & error events from child process.
+ * 4. Stream stdout & stderr from child process to a logger.
+ * 5. Handling the abort controller signal - kills the child process if started.
+ * 6. injecting these environment variables into the child process:
+ *    - LAGE_PACKAGE_NAME - the name of the package
+ *    - LAGE_TASK - the name of the task
+ *    - NODE_OPTIONS - the node options to use when spawning the child process
+ *    - FORCE_COLOR - set to "1" detect that this is a TTY
+ */
 export class NpmScriptRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
-  private npmCmd: string;
 
-  constructor(private options: NpmScriptRunnerOptions) {
-    this.npmCmd = findNpmClient(options.npmCmd ?? "npm");
-  }
+  constructor(private options: NpmScriptRunnerOptions) {}
 
   private getNpmArgs(task: string, taskTargs: string[]) {
     const extraArgs = taskTargs.length > 0 ? ["--", ...taskTargs] : [];
@@ -41,15 +55,15 @@ export class NpmScriptRunner implements TargetRunner {
 
     const { logger, nodeOptions, npmCmd, taskArgs } = this.options;
 
-    if (!await this.hasNpmScript(target)) {
-      return;  
+    if (!(await this.hasNpmScript(target))) {
+      return;
     }
 
     const npmRunArgs = this.getNpmArgs(target.task, taskArgs);
     const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter((str) => str).join(" ");
 
     await new Promise<void>((resolve, reject) => {
-      const cp = spawn(this.npmCmd, npmRunArgs, {
+      const cp = spawn(npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: "pipe",
         env: {
@@ -57,6 +71,7 @@ export class NpmScriptRunner implements TargetRunner {
           ...(process.stdout.isTTY && { FORCE_COLOR: "1" }),
           ...(npmRunNodeOptions && { NODE_OPTIONS: npmRunNodeOptions }),
           LAGE_PACKAGE_NAME: target.packageName,
+          LAGE_TASK: target.task,
         },
       });
 
@@ -95,14 +110,16 @@ export class NpmScriptRunner implements TargetRunner {
         abortSignal.addEventListener("aborted", () => {
           logger.verbose(`Abort signal detected, killing process id: ${cp.pid}}`, { target, pid: cp.pid });
 
-          cp.kill("SIGTERM");
+          if (!cp.killed) {
+            cp.kill("SIGTERM");
 
-          // wait for "gracefulKillTimeout" to make sure everything is terminated via SIGKILL
-          setTimeout(() => {
-            if (!cp.killed) {
-              cp.kill("SIGKILL");
-            }
-          }, NpmScriptRunner.gracefulKillTimeout);
+            // wait for "gracefulKillTimeout" to make sure everything is terminated via SIGKILL
+            setTimeout(() => {
+              if (!cp.killed) {
+                cp.kill("SIGKILL");
+              }
+            }, NpmScriptRunner.gracefulKillTimeout);
+          }
         });
       }
     });
