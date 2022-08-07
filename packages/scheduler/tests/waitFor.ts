@@ -6,16 +6,17 @@ export function waitFor(condition: () => boolean, maxWait: number = 5000) {
   return new Promise<void>((resolve, reject) => {
     const loop = (timer) => {
       clearTimeout(timer);
+
       retries++;
 
       if (condition()) {
         resolve();
-      } else if (retries < maxRetries) {
-        loop(timer);
-      } else {
+      } else if (retries > maxRetries) {
         reject();
+      } else {
+        timer = setTimeout(() => loop(timer), timeout);
       }
-    }
+    };
 
     const timer = setTimeout(() => loop(timer), timeout);
   });

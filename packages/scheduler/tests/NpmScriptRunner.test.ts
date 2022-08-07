@@ -1,12 +1,79 @@
-import { Logger } from "@lage-run/logger";
-import { Target } from "@lage-run/target-graph";
+import { Logger, LogLevel, Reporter } from "@lage-run/logger";
+import { getTargetId, Target } from "@lage-run/target-graph";
 import { NpmScriptRunner } from "../src/runners/NpmScriptRunner";
 import path from "path";
 import { AbortController } from "abort-controller";
 import { waitFor } from "./waitFor";
+import "child_process";
+import { ChildProcess } from "child_process";
+
+let childProcesses: Map<string, ChildProcess> = new Map();
+
+function getChildProcessKey(packageName: string, task: string) {
+  const testName = expect.getState().currentTestName.replace(/ /g, "_");
+  const id = getTargetId(packageName, task);
+  return `${testName}:${id}`;
+}
+
+jest.mock("child_process", () => {
+  const originalModule = jest.requireActual("child_process");
+
+  //Mock the default export and named export 'foo'
+  return {
+    __esModule: true,
+    ...originalModule,
+    spawn(cmd: string, args: string[], options: any) {
+      const cp = originalModule.spawn.apply(originalModule, [cmd, args, options]);
+      const key = getChildProcessKey(options.env.LAGE_PACKAGE_NAME, options.env.LAGE_TASK);
+      childProcesses.set(key, cp);
+      return cp;
+    },
+  };
+});
+
+function createTarget(packageName: string): Target {
+  return {
+    cwd: path.resolve(__dirname, "fixtures/package-a"),
+    dependencies: [],
+    label: "",
+    id: `${packageName}#build`,
+    task: "build",
+    packageName,
+  };
+}
 
 describe("NpmScriptRunner", () => {
   it("can kill the child process based on abort signal", async () => {
+    const logger = new Logger();
+
+    const abortController = new AbortController();
+
+    const runner = new NpmScriptRunner({
+      logger,
+      nodeOptions: "",
+      npmCmd: path.resolve(__dirname, "fixtures/fakeNpm"),
+      taskArgs: ["--sleep=50000"],
+    });
+
+    const target = createTarget("a");
+
+    const exceptionSpy = jest.fn();
+    const runPromise = runner.run(target, abortController.signal).catch(() => exceptionSpy());
+
+    await waitFor(() => childProcesses.has(getChildProcessKey("a", target.task)));
+
+    abortController.abort();
+
+    await waitFor(
+      () => childProcesses.has(getChildProcessKey("a", target.task)) && childProcesses.get(getChildProcessKey("a", target.task))!.killed
+    );
+
+    await runPromise;
+
+    expect(exceptionSpy).toHaveBeenCalled();
+  });
+
+  it("can kill many concurrent child processes based on abort signal", async () => {
     const logger = new Logger();
     const abortController = new AbortController();
 
@@ -14,29 +81,41 @@ describe("NpmScriptRunner", () => {
       logger,
       nodeOptions: "",
       npmCmd: path.resolve(__dirname, "fixtures/fakeNpm"),
-      taskArgs: [],
+      taskArgs: ["--sleep=50000"],
     });
 
-    const runPromise = runner.run(
-      {
-        cwd: path.resolve(__dirname, "fixtures/package-a"),
-        dependencies: [],
-        label: "",
-        id: "a#build",
-        task: "build",
-        packageName: "a",
-      } as Target,
-      abortController.signal
-    ).catch(() => {
-      /* ignored */
-    });
+    const fakePackages = ["a", "b", "c", "d", "e", "f", "g", "h"];
+    const fakeExceptionSpies: { [key: string]: () => void } = {};
+    for (const packageName of fakePackages) {
+      fakeExceptionSpies[packageName] = jest.fn();
+    }
 
-    await waitFor(() => !!runner.childProcess);
+    let runPromises = fakePackages.map((packageName) =>
+      runner.run(createTarget(packageName), abortController.signal).catch(() => {
+        fakeExceptionSpies[packageName]();
+      })
+    );
+
+    await waitFor(() =>
+      fakePackages.reduce((acc, packageName) => acc && childProcesses.has(getChildProcessKey(packageName, "build")), true)
+    );
 
     abortController.abort();
-    
-    await waitFor(() => !!runner.childProcess && runner.childProcess.killed);
 
-    return expect(runPromise).rejects;
+    await waitFor(() =>
+      fakePackages.reduce(
+        (acc, packageName) =>
+          acc &&
+          childProcesses.has(getChildProcessKey(packageName, "build")) &&
+          childProcesses.get(getChildProcessKey(packageName, "build"))!.killed,
+        true
+      )
+    );
+
+    await Promise.race(runPromises);
+
+    for (const packageName of fakePackages) {
+      expect(fakeExceptionSpies[packageName]).toHaveBeenCalled();
+    }
   });
 });

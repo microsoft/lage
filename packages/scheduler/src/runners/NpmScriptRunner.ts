@@ -34,10 +34,6 @@ export interface NpmScriptRunnerOptions {
 export class NpmScriptRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
 
-  childProcess: ChildProcess | undefined;
-
-  dude() {}
-
   private exitHandled = false;
 
   constructor(private options: NpmScriptRunnerOptions) {}
@@ -56,6 +52,7 @@ export class NpmScriptRunner implements TargetRunner {
 
   async run(target: Target, abortSignal?: AbortSignal) {
     const { logger, nodeOptions, npmCmd, taskArgs } = this.options;
+    let childProcess: ChildProcess | undefined;
 
     // By convention, do not run anything if there is no script for this task defined in package.json (counts as "success")
     if (!(await this.hasNpmScript(target))) {
@@ -73,16 +70,16 @@ export class NpmScriptRunner implements TargetRunner {
 
       const abortSignalHandler = () => {
         abortSignal.removeEventListener("abort", abortSignalHandler);
-        if (this.childProcess && !this.childProcess.killed) {
-          const pid = this.childProcess.pid;
+        if (childProcess && !childProcess.killed) {
+          const pid = childProcess.pid;
           logger.verbose(`Abort signal detected, attempting to killing process id ${pid}`, { target, pid });
 
-          this.childProcess.kill("SIGTERM");
+          childProcess.kill("SIGTERM");
 
           // wait for "gracefulKillTimeout" to make sure everything is terminated via SIGKILL
           const t = setTimeout(() => {
-            if (this.childProcess && !this.childProcess.killed) {
-              this.childProcess.kill("SIGKILL");
+            if (childProcess && !childProcess.killed) {
+              childProcess.kill("SIGKILL");
             }
           }, NpmScriptRunner.gracefulKillTimeout);
 
@@ -103,7 +100,7 @@ export class NpmScriptRunner implements TargetRunner {
     const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter((str) => str).join(" ");
 
     await new Promise<void>((resolve, reject) => {
-      this.childProcess = spawn(npmCmd, npmRunArgs, {
+      childProcess = spawn(npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: ["inherit", "pipe", "pipe"],
         env: {
@@ -116,8 +113,8 @@ export class NpmScriptRunner implements TargetRunner {
       });
 
       const handleChildProcessExit = (code: number, signal?: any) => {
-        this.childProcess?.off("exit", handleChildProcessExit);
-        this.childProcess?.off("error", handleChildProcessExit);
+        childProcess?.off("exit", handleChildProcessExit);
+        childProcess?.off("error", handleChildProcessExit);
 
         if (this.exitHandled) {
           return;
@@ -125,26 +122,26 @@ export class NpmScriptRunner implements TargetRunner {
 
         this.exitHandled = true;
 
-        this.childProcess?.stdout?.destroy();
-        this.childProcess?.stderr?.destroy();
-        this.childProcess?.stdin?.destroy();
+        childProcess?.stdout?.destroy();
+        childProcess?.stderr?.destroy();
+        childProcess?.stdin?.destroy();
 
         if (code === 0) {
           return resolve();
         }
 
-        reject(false);
+        reject();
       };
 
-      const { pid } = this.childProcess;
+      const { pid } = childProcess;
 
       logger.verbose(`Running ${[npmCmd, ...npmRunArgs].join(" ")}, pid: ${pid}`, { target, pid });
 
-      logger.stream(LogLevel.verbose, this.childProcess.stdout!, { target, pid });
-      logger.stream(LogLevel.verbose, this.childProcess.stderr!, { target, pid });
+      logger.stream(LogLevel.verbose, childProcess.stdout!, { target, pid });
+      logger.stream(LogLevel.verbose, childProcess.stderr!, { target, pid });
 
-      this.childProcess.on("exit", handleChildProcessExit);
-      this.childProcess.on("error", () => handleChildProcessExit(1));
+      childProcess.on("exit", handleChildProcessExit);
+      childProcess.on("error", () => handleChildProcessExit(1));
     });
   }
 }

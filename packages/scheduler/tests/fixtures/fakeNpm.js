@@ -1,4 +1,10 @@
-console.log('start');
+let sleep = parseInt(process.argv.find(arg => arg.includes('--sleep=')).trim().replace('--sleep=', '') ?? '100');
+let fail = !!process.argv.find(arg => arg.includes('--fail'));
+
+if (fail) {
+  throw new Error('Fake npm failed');
+}
+
 setTimeout(() => {
-  console.log('end')
-}, 50000);
+  /* do NOTHING */
+}, sleep);
