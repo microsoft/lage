@@ -116,11 +116,6 @@ export class WrappedTarget implements TargetRunContext {
       return;
     }
 
-    abortSignal.addEventListener("abort", () => {
-      this.onAbort();
-      return;
-    });
-
     try {
       const { hash, cacheHit } = await this.getCache();
 
@@ -137,6 +132,9 @@ export class WrappedTarget implements TargetRunContext {
         return;
       }
 
+      /**
+       * TargetRunner should run() a target. The promise resolves if successful, or rejects otherwise (aborted or failed).
+       */
       await runner.run(target, abortSignal);
 
       if (cacheEnabled) {
@@ -145,7 +143,11 @@ export class WrappedTarget implements TargetRunContext {
 
       this.onComplete();
     } catch (e) {
-      this.onFail();
+      if (abortSignal.aborted) {
+        this.onAbort();
+      } else {
+        this.onFail();
+      }
     }
   }
 
