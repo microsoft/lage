@@ -112,7 +112,8 @@ describe("NpmScriptRunner", () => {
       )
     );
 
-    await Promise.race(runPromises);
+        
+    await Promise.all(runPromises);
 
     for (const packageName of fakePackages) {
       expect(fakeExceptionSpies[packageName]).toHaveBeenCalled();

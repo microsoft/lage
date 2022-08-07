@@ -34,8 +34,6 @@ export interface NpmScriptRunnerOptions {
 export class NpmScriptRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
 
-  private exitHandled = false;
-
   constructor(private options: NpmScriptRunnerOptions) {}
 
   private getNpmArgs(task: string, taskTargs: string[]) {
@@ -112,15 +110,17 @@ export class NpmScriptRunner implements TargetRunner {
         },
       });
 
+      let exitHandled = false;
+
       const handleChildProcessExit = (code: number, signal?: any) => {
         childProcess?.off("exit", handleChildProcessExit);
         childProcess?.off("error", handleChildProcessExit);
 
-        if (this.exitHandled) {
+        if (exitHandled) {
           return;
         }
 
-        this.exitHandled = true;
+        exitHandled = true;
 
         childProcess?.stdout?.destroy();
         childProcess?.stderr?.destroy();
@@ -129,7 +129,7 @@ export class NpmScriptRunner implements TargetRunner {
         if (code === 0) {
           return resolve();
         }
-
+        
         reject();
       };
 
