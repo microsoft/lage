@@ -18,7 +18,7 @@ function getChildProcessKey(packageName: string, task: string) {
 jest.mock("child_process", () => {
   const originalModule = jest.requireActual("child_process");
 
-  //Mock the default export and named export 'foo'
+  // Mock the default export and named export 'foo'
   return {
     __esModule: true,
     ...originalModule,
@@ -43,6 +43,75 @@ function createTarget(packageName: string): Target {
 }
 
 describe("NpmScriptRunner", () => {
+  it("can run a npm script to completion", async () => {
+    const logger = new Logger();
+
+    const abortController = new AbortController();
+
+    const runner = new NpmScriptRunner({
+      logger,
+      nodeOptions: "",
+      npmCmd: path.resolve(__dirname, "fixtures/fakeNpm"),
+      taskArgs: ["--sleep=50"],
+    });
+
+    const target = createTarget("a");
+
+    const exceptionSpy = jest.fn();
+    const runPromise = runner.run(target, abortController.signal).catch(() => exceptionSpy());
+
+    await waitFor(() => childProcesses.has(getChildProcessKey("a", target.task)));
+
+    await runPromise;
+
+    expect(exceptionSpy).not.toHaveBeenCalled();
+  });
+
+  it("sets up the environment variables relevant to lage", async () => {
+    const logger = new Logger();
+
+    let entries: any[] = [];
+    logger.addReporter({
+      logLevel: LogLevel.verbose,
+      log(entry) {
+        entries.push(entry);
+      },
+      summarize(_ctx) {},
+    } as Reporter);
+
+    const abortController = new AbortController();
+
+    const runner = new NpmScriptRunner({
+      logger,
+      nodeOptions: "",
+      npmCmd: path.resolve(__dirname, "fixtures/fakeNpm"),
+      taskArgs: ["--sleep=50"],
+    });
+
+    const target = createTarget("a");
+
+    const exceptionSpy = jest.fn();
+
+    await runner.run(target, abortController.signal).catch(() => exceptionSpy());
+
+    const envEntry = entries
+      .map((entry) => {
+        try {
+          const obj = JSON.parse(entry.msg);
+
+          if (obj.LAGE_PACKAGE_NAME === target.packageName! && obj.LAGE_TASK === target.task) {
+            return obj;
+          }
+        } catch (e) {}
+
+        return undefined;
+      })
+      .filter((entry) => entry !== undefined)[0];
+
+    expect(envEntry.LAGE_PACKAGE_NAME).toBe(target.packageName!);
+    expect(envEntry.LAGE_TASK).toBe(target.task);
+  });
+
   it("can kill the child process based on abort signal", async () => {
     const logger = new Logger();
 
@@ -112,7 +181,6 @@ describe("NpmScriptRunner", () => {
       )
     );
 
-        
     await Promise.all(runPromises);
 
     for (const packageName of fakePackages) {
