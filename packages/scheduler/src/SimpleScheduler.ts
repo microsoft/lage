@@ -47,6 +47,16 @@ export class SimpleScheduler implements TargetScheduler {
     this.abortSignal = this.abortController.signal;
   }
 
+  /**
+   * The job of the run method is to:
+   * 1. Convert the target graph into a promise graph.
+   * 2. Create a promise graph of all targets
+   * 3. Pass the continueOnError option to the promise graph runner.
+   * 
+   * @param root 
+   * @param targetGraph 
+   * @returns 
+   */
   async run(root: string, targetGraph: TargetGraph) {
     const { concurrency, continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, runner } = this.options;
     const { dependencies, targets } = targetGraph;
@@ -70,7 +80,9 @@ export class SimpleScheduler implements TargetScheduler {
       this.targetRunContexts.set(target.id, wrappedTarget);
 
       pGraphNodes.set(target.id, {
-        /** picks the runner, and run the wrapped target with the runner */
+        /** 
+         * Picks the runner, and run the wrapped target with the runner
+         */
         run: async() => {
           if (this.abortSignal.aborted) {
             return;
@@ -100,6 +112,9 @@ export class SimpleScheduler implements TargetScheduler {
     }
   }
 
+  /**
+   * Abort the scheduler using the abort controller.
+   */
   abort() {
     this.abortController.abort();
   }

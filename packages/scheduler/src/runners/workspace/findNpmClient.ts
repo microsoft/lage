@@ -11,7 +11,7 @@ export function findNpmClient(npmClient: string) {
   return found;
 }
 
-export function findInPath(target: string) {
+function findInPath(target: string) {
   const envPath = process.env.PATH ?? "";
   const pathExt = process.env.PATHEXT ?? "";
 
