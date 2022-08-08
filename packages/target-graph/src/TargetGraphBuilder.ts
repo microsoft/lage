@@ -364,7 +364,7 @@ export class TargetGraphBuilder {
       task: startId,
       cwd: "",
       label: "Start",
-      hidden: true
+      hidden: true,
     } as Target);
 
     const subGraphEdges = this.createSubGraph(tasks, scope);

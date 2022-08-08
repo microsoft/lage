@@ -1,6 +1,3 @@
 {
-  "eslint.workingDirectories": [
-    "src",
-    "tests"
-  ]
+  "eslint.workingDirectories": ["src", "tests"]
 }
