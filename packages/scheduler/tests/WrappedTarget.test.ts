@@ -24,7 +24,7 @@ describe("WrappedTarget", () => {
     const cacheProvider = {
       async clear() {},
       async fetch() {
-        return true;
+        return false;
       },
       async purge() {},
       async put() {},
@@ -65,7 +65,7 @@ describe("WrappedTarget", () => {
     const cacheProvider = {
       async clear() {},
       async fetch() {
-        return true;
+        return false;
       },
       async purge() {},
       async put() {},
@@ -117,7 +117,7 @@ describe("WrappedTarget", () => {
     const cacheProvider = {
       async clear() {},
       async fetch() {
-        return true;
+        return false;
       },
       async purge() {},
       async put() {},
@@ -226,7 +226,50 @@ describe("WrappedTarget", () => {
     const runPromises = wrappedTargets.map((wrappedTarget) => wrappedTarget.run(runner));
 
     await Promise.all(runPromises);
-    
+
     expect(wrappedTargets.some((t) => t.status === "aborted")).toBeTruthy();
+  });
+
+  it("should skip the work if cache is hit", async () => {
+    const cacheProvider = {
+      async clear() {},
+      async fetch() {
+        return true;
+      },
+      async purge() {},
+      async put() {},
+    } as CacheProvider;
+
+    const hasher = {
+      async hash(target: Target) {
+        return "xyz";
+      },
+    } as TargetHasher;
+
+    const logger = new Logger();
+
+    const wrappedTarget = new WrappedTarget({
+      abortController: new AbortController(),
+      cacheProvider,
+      continueOnError: false,
+      hasher,
+      logger,
+      root: process.cwd(),
+      shouldCache: true,
+      shouldResetCache: false,
+      target: { ...createTarget("a"), cache: true },
+    });
+
+    const runner = {
+      async run(target: Target, abortSignal?: AbortSignal) {
+        // nothing
+      },
+    } as TargetRunner;
+
+    expect(wrappedTarget.status).toBe("pending");
+
+    await wrappedTarget.run(runner);
+
+    expect(wrappedTarget.status).toBe("skipped");
   });
 });
