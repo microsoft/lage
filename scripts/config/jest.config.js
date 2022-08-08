@@ -1,7 +1,17 @@
-/*
- * For a detailed explanation regarding each configuration property, visit:
- * https://jestjs.io/docs/configuration
- */
+const {getWorkspaceRoot, getPackageInfos} = require('workspace-tools');
+const path = require('path');
+
+const root = getWorkspaceRoot(process.cwd());
+const packages = getPackageInfos(root);
+const moduleNameMapper = Object.values(packages).reduce((acc, {
+  packageJsonPath,
+  name
+}) => {
+  const packagePath = path.dirname(packageJsonPath);
+  acc[`^${name}/(.*)$`] = `${packagePath}/src/$1`;
+  acc[`^${name}$`] = `${packagePath}/src/index.ts`;
+  return acc;
+}, {});
 
 module.exports = {
   clearMocks: true,
@@ -19,4 +29,5 @@ module.exports = {
   testPathIgnorePatterns: ["/node_modules/"],
   transformIgnorePatterns: ["/node_modules/", "\\.pnp\\.[^\\/]+$"],
   watchPathIgnorePatterns: ["/node_modules/"],
+  moduleNameMapper
 };
