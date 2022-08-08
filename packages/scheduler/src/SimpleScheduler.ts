@@ -31,7 +31,6 @@ export interface SimpleSchedulerOptions {
  * 1. Can cache results of target runs via the cache provider.
  * 2. Takes a TargetRunner, a CacheProvider, a TargetHasher and a Logger as constructor parameters (dependency injection).
  * 3. Directly constructs new WrappedTarget, which provides the call to caching and logging.
- * 4. Can
  *
  * Roadmap / future enhancements:
  * 1. Allow for multiple kinds of runner (currently only ONE is supported, and it is applied to all targets)

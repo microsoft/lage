@@ -20,6 +20,13 @@ export interface WrappedTargetOptions {
   abortController: AbortController;
 }
 
+/**
+ * Wraps a target with additional functionality:
+ * 1. Caching
+ * 2. Logging
+ * 3. Abort signal
+ * 4. Continue on error
+ */
 export class WrappedTarget implements TargetRunContext {
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
