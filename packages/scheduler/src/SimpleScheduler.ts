@@ -31,7 +31,6 @@ export interface SimpleSchedulerOptions {
  * 1. Can cache results of target runs via the cache provider.
  * 2. Takes a TargetRunner, a CacheProvider, a TargetHasher and a Logger as constructor parameters (dependency injection).
  * 3. Directly constructs new WrappedTarget, which provides the call to caching and logging.
- * 4. Can
  *
  * Roadmap / future enhancements:
  * 1. Allow for multiple kinds of runner (currently only ONE is supported, and it is applied to all targets)
@@ -48,6 +47,16 @@ export class SimpleScheduler implements TargetScheduler {
     this.abortSignal = this.abortController.signal;
   }
 
+  /**
+   * The job of the run method is to:
+   * 1. Convert the target graph into a promise graph.
+   * 2. Create a promise graph of all targets
+   * 3. Pass the continueOnError option to the promise graph runner.
+   * 
+   * @param root 
+   * @param targetGraph 
+   * @returns 
+   */
   async run(root: string, targetGraph: TargetGraph) {
     const { concurrency, continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, runner } = this.options;
     const { dependencies, targets } = targetGraph;
@@ -71,7 +80,9 @@ export class SimpleScheduler implements TargetScheduler {
       this.targetRunContexts.set(target.id, wrappedTarget);
 
       pGraphNodes.set(target.id, {
-        /** picks the runner, and run the wrapped target with the runner */
+        /** 
+         * Picks the runner, and run the wrapped target with the runner
+         */
         run: async() => {
           if (this.abortSignal.aborted) {
             return;
@@ -101,6 +112,9 @@ export class SimpleScheduler implements TargetScheduler {
     }
   }
 
+  /**
+   * Abort the scheduler using the abort controller.
+   */
   abort() {
     this.abortController.abort();
   }
