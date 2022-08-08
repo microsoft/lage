@@ -63,7 +63,7 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
 
     if (shouldWriteRemoteCache) {
       logger.silly(`remote fallback put: ${hash}`);
-      const remotePut = remoteCacheProvider!.put(hash, target);
+      const remotePut = remoteCacheProvider.put(hash, target);
       putPromises.push(remotePut);
     }
 

@@ -55,7 +55,8 @@ describe("target graph builder", () => {
 
     const targetGraph = builder.buildTargetGraph(["test", "lint"]);
 
-    expect(targetGraph.targets.size).toBe(4);
+    // includes the pseudo-target for the "start" target
+    expect(targetGraph.targets.size).toBe(5);
     expect(targetGraph.dependencies).toMatchInlineSnapshot(`
       Array [
         Array [
