@@ -1,6 +1,7 @@
 {
   "name": "monorepo-scripts",
   "version": "1.0.0",
+  "private": true,
   "bin": {
     "monorepo-scripts": "bin/monorepo-scripts.js"
   },
