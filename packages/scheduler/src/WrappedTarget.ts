@@ -32,7 +32,7 @@ export class WrappedTarget implements TargetRunContext {
   }
 
   onAbort() {
-    this.status = "running";
+    this.status = "aborted";
     this.options.logger.info("aborted", { target: this.target, status: "aborted" });
   }
 
