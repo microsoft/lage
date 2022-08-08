@@ -211,7 +211,6 @@ describe("WrappedTarget", () => {
           }
 
           const timeout = setTimeout(() => {
-            console.log("resolve");
             resolve();
           }, 50000);
 
