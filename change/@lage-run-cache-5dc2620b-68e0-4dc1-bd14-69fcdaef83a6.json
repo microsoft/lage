@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Gets the args from the cliArgs, not the target",
+  "packageName": "@lage-run/cache",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}
