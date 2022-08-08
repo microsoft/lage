@@ -1,8 +1,9 @@
 import { AbortSignal } from "abort-controller";
+import { ChildProcess, spawn } from "child_process";
+import { existsSync } from "fs";
 import { join } from "path";
 import { Logger, LogLevel } from "@lage-run/logger";
 import { readFile } from "fs/promises";
-import { ChildProcess, spawn } from "child_process";
 import { TargetRunner } from "../types/TargetRunner";
 import type { Target } from "@lage-run/target-graph";
 
@@ -34,7 +35,9 @@ export interface NpmScriptRunnerOptions {
 export class NpmScriptRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
 
-  constructor(private options: NpmScriptRunnerOptions) {}
+  constructor(private options: NpmScriptRunnerOptions) {
+    this.validateOptions(options);
+  }
 
   private getNpmArgs(task: string, taskTargs: string[]) {
     const extraArgs = taskTargs.length > 0 ? ["--", ...taskTargs] : [];
@@ -48,8 +51,15 @@ export class NpmScriptRunner implements TargetRunner {
     return packageJson.scripts?.[task];
   }
 
+  private validateOptions(options: NpmScriptRunnerOptions) {
+    if (!existsSync(options.npmCmd)) {
+      throw new Error(`NPM Script Runner: ${this.options.npmCmd} does not exist`);
+    }
+  }
+
   async run(target: Target, abortSignal?: AbortSignal) {
     const { logger, nodeOptions, npmCmd, taskArgs } = this.options;
+
     let childProcess: ChildProcess | undefined;
 
     // By convention, do not run anything if there is no script for this task defined in package.json (counts as "success")
@@ -129,7 +139,7 @@ export class NpmScriptRunner implements TargetRunner {
         if (code === 0) {
           return resolve();
         }
-        
+
         reject();
       };
 

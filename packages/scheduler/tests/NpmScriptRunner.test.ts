@@ -1,11 +1,12 @@
-import { Logger, LogLevel, Reporter } from "@lage-run/logger";
-import { getTargetId, Target } from "@lage-run/target-graph";
-import { NpmScriptRunner } from "../src/runners/NpmScriptRunner";
-import path from "path";
-import { AbortController } from "abort-controller";
-import { waitFor } from "./waitFor";
 import "child_process";
+import { AbortController } from "abort-controller";
 import { ChildProcess } from "child_process";
+import { getTargetId, Target } from "@lage-run/target-graph";
+import { Logger, LogLevel, Reporter } from "@lage-run/logger";
+import { NpmScriptRunner } from "../src/runners/NpmScriptRunner";
+import { waitFor } from "./waitFor";
+import os from "os";
+import path from "path";
 
 let childProcesses: Map<string, ChildProcess> = new Map();
 
@@ -43,6 +44,8 @@ function createTarget(packageName: string): Target {
 }
 
 describe("NpmScriptRunner", () => {
+  const npmCmd = path.join(__dirname, "fixtures", "fakeNpm" + (os.platform() === "win32" ? ".cmd" : ""));
+
   it("can run a npm script to completion", async () => {
     const logger = new Logger();
 
@@ -51,7 +54,7 @@ describe("NpmScriptRunner", () => {
     const runner = new NpmScriptRunner({
       logger,
       nodeOptions: "",
-      npmCmd: path.resolve(__dirname, "fixtures/fakeNpm"),
+      npmCmd,
       taskArgs: ["--sleep=50"],
     });
 
@@ -84,7 +87,7 @@ describe("NpmScriptRunner", () => {
     const runner = new NpmScriptRunner({
       logger,
       nodeOptions: "",
-      npmCmd: path.resolve(__dirname, "fixtures/fakeNpm"),
+      npmCmd,
       taskArgs: ["--sleep=50"],
     });
 
@@ -120,7 +123,7 @@ describe("NpmScriptRunner", () => {
     const runner = new NpmScriptRunner({
       logger,
       nodeOptions: "",
-      npmCmd: path.resolve(__dirname, "fixtures/fakeNpm"),
+      npmCmd,
       taskArgs: ["--sleep=50000"],
     });
 
@@ -149,7 +152,7 @@ describe("NpmScriptRunner", () => {
     const runner = new NpmScriptRunner({
       logger,
       nodeOptions: "",
-      npmCmd: path.resolve(__dirname, "fixtures/fakeNpm"),
+      npmCmd,
       taskArgs: ["--sleep=50000"],
     });
 
