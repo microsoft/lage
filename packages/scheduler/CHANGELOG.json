@@ -1,0 +1,32 @@
+{
+  "name": "@lage-run/scheduler",
+  "entries": [
+    {
+      "date": "Tue, 09 Aug 2022 21:16:28 GMT",
+      "tag": "@lage-run/scheduler_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/scheduler",
+            "commit": "6dc38b30d19b0cba7e2609d3681e4e55c4fd6238",
+            "comment": "brand new package to do scheduling of work"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/target-graph to v0.2.0",
+            "commit": "6dc38b30d19b0cba7e2609d3681e4e55c4fd6238"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v0.1.1",
+            "commit": "6dc38b30d19b0cba7e2609d3681e4e55c4fd6238"
+          }
+        ]
+      }
+    }
+  ]
+}

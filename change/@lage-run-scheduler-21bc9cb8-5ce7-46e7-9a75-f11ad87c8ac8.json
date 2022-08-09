@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "brand new package to do scheduling of work",
-  "packageName": "@lage-run/scheduler",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
