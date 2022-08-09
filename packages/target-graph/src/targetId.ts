@@ -31,3 +31,8 @@ export function getPackageAndTask(targetId: string) {
     return { packageName: undefined, task: targetId };
   }
 }
+
+const START_TARGET_ID = "__start";
+export function getStartTargetId() {
+  return START_TARGET_ID;
+}

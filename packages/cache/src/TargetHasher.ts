@@ -8,6 +8,7 @@ export interface TargetHasherOptions {
   root: string;
   environmentGlob: string[];
   cacheKey?: string;
+  cliArgs?: string[];
 }
 
 /**
@@ -22,10 +23,10 @@ export class TargetHasher {
     this.backfillLogger = createBackfillLogger();
   }
 
-  async hash(target: Target, args?: unknown): Promise<string> {
+  async hash(target: Target): Promise<string> {
     const hashKey = await salt(
       this.options.environmentGlob || ["lage.config.js"],
-      `${target.id}|${JSON.stringify(args)}`,
+      `${target.id}|${JSON.stringify(this.options.cliArgs)}`,
       this.options.root,
       this.options.cacheKey || ""
     );

@@ -1,5 +1,6 @@
 import type { PackageInfos } from "workspace-tools";
-import { START_TARGET_ID, TargetGraphBuilder } from "../src/TargetGraphBuilder";
+import { TargetGraphBuilder } from "../src/TargetGraphBuilder";
+import { getStartTargetId } from "../src/targetId";
 
 function createPackageInfo(packages: { [id: string]: string[] }) {
   const packageInfos: PackageInfos = {};
@@ -33,12 +34,25 @@ describe("target graph builder", () => {
 
     const targetGraph = builder.buildTargetGraph(["build"]);
 
-    expect(targetGraph.targets.size).toBe(2);
+    // size is 3, because we also need to account for the root target node (start target ID)
+    expect(targetGraph.targets.size).toBe(3);
 
-    expect(targetGraph.dependencies.length).toBe(3);
-    expect(targetGraph.dependencies).toContainEqual([START_TARGET_ID, "a#build"]);
-    expect(targetGraph.dependencies).toContainEqual([START_TARGET_ID, "b#build"]);
-    expect(targetGraph.dependencies).toContainEqual(["b#build", "a#build"]);
+    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
+Array [
+  Array [
+    "__start",
+    "a#build",
+  ],
+  Array [
+    "__start",
+    "b#build",
+  ],
+  Array [
+    "b#build",
+    "a#build",
+  ],
+]
+`);
   });
 
   it("should generate target graphs for tasks that do not depend on each other", () => {
@@ -54,7 +68,8 @@ describe("target graph builder", () => {
 
     const targetGraph = builder.buildTargetGraph(["test", "lint"]);
 
-    expect(targetGraph.targets.size).toBe(4);
+    // includes the pseudo-target for the "start" target
+    expect(targetGraph.targets.size).toBe(5);
     expect(targetGraph.dependencies).toMatchInlineSnapshot(`
       Array [
         Array [

@@ -1,5 +1,5 @@
 import { createDependencyMap } from "workspace-tools/lib/graph/createDependencyMap";
-import { getPackageAndTask, getTargetId } from "./targetId";
+import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId";
 
 import path from "path";
 
@@ -7,8 +7,6 @@ import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMa
 import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target";
 import type { TargetConfig } from "./types/TargetConfig";
-
-export const START_TARGET_ID = "__start";
 
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
@@ -160,7 +158,7 @@ export class TargetGraphBuilder {
 
       // Always start with a root node with a special "START_TARGET_ID"
       // because any node could potentially be part of the entry point in building the scoped target subgraph
-      this.dependencies.push([START_TARGET_ID, to]);
+      this.dependencies.push([getStartTargetId(), to]);
 
       // Skip any targets that have no "deps" specified
       if (!dependencies || dependencies.length === 0) {
@@ -303,7 +301,7 @@ export class TargetGraphBuilder {
       for (const pkg of scope) {
         if (this.targets.has(getTargetId(pkg, task))) {
           queue.push(getTargetId(pkg, task));
-          addTargetGraphEdge(START_TARGET_ID, getTargetId(pkg, task));
+          addTargetGraphEdge(getStartTargetId(), getTargetId(pkg, task));
         }
       }
 
@@ -311,7 +309,7 @@ export class TargetGraphBuilder {
       for (const target of this.targets.values()) {
         if (target.task === task && !target.packageName) {
           queue.push(target.id);
-          addTargetGraphEdge(START_TARGET_ID, target.id);
+          addTargetGraphEdge(getStartTargetId(), target.id);
         }
       }
     }
@@ -359,6 +357,15 @@ export class TargetGraphBuilder {
    */
   buildTargetGraph(tasks: string[], scope?: string[]) {
     this.expandDependencies();
+
+    const startId = getStartTargetId();
+    this.targets.set(startId, {
+      id: startId,
+      task: startId,
+      cwd: "",
+      label: "Start",
+      hidden: true,
+    } as Target);
 
     const subGraphEdges = this.createSubGraph(tasks, scope);
     const subGraphTargets: Map<string, Target> = new Map();

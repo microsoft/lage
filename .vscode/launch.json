@@ -8,15 +8,11 @@
       "type": "node",
       "request": "launch",
       "name": "Jest",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "program": "node_modules/jest/bin/jest.js",
-      "outFiles": [
-        "${workspaceFolder}/**/*.js"
-      ],
+      "outFiles": ["${workspaceFolder}/**/*.js"],
       "args": ["--runInBand", "${fileBasenameNoExtension}"],
-      "sourceMaps": true,
+      "sourceMaps": true
     }
   ]
 }

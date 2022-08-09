@@ -165,13 +165,14 @@ describe("RemoteFallbackCacheProvider", () => {
 
     const hash = "some-hash";
 
-    await provider.put(hash, target);
+    await provider.fetch(hash, target);
 
+    expect(remoteCacheProvider.fetch).toHaveBeenCalled();
     expect(localCacheProvider.put).toHaveBeenCalled();
     expect(remoteCacheProvider.put).not.toHaveBeenCalled();
   });
 
-  it("should fetch from remote cache as fallback", async () => {
+  it("should call the put() method anyway because readonly is enforced inside the underlying cacheProviders", async () => {
     const root = "/test";
 
     const localCacheProvider: CacheProvider = {
@@ -211,7 +212,10 @@ describe("RemoteFallbackCacheProvider", () => {
 
     await provider.put(hash, target);
 
-    expect(localCacheProvider.put).not.toHaveBeenCalled();
+    // local fetch is false, do the "put" - but readonly is enforced inside the localCacheProvider
+    expect(localCacheProvider.put).toHaveBeenCalled();
+
+    // remote fetch is true, skip the "put"
     expect(remoteCacheProvider.put).not.toHaveBeenCalled();
   });
 });
