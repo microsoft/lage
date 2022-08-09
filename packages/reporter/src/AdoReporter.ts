@@ -1,19 +1,31 @@
-import { getPackageAndTask } from "../../task/taskId";
-import { RunContext } from "../../types/RunContext";
-import { Reporter } from "./Reporter";
-import { LogEntry } from "../LogEntry";
-
+import { getPackageAndTask } from "@lage-run/target-graph";
+import type { Reporter, LogEntry } from "@lage-run/logger";
+import { TargetScheduler } from "@lage-run/scheduler/lib/types/TargetScheduler";
 export class AdoReporter implements Reporter {
-  log(entry: LogEntry) {}
+  private logEntries = new Map<string, LogEntry[]>();
 
-  summarize(context: RunContext) {
-    const { measures, targets } = context;
-    if (measures.failedTargets && measures.failedTargets.length > 0) {
+  log(entry: LogEntry<any>) {
+    if (entry.data.target) {
+      if (!this.logEntries.has(entry.data.target.id)) {
+        this.logEntries.set(entry.data.target.id, [])
+      }
+      
+      this.logEntries.get(entry.data.target.id)!.push(entry);
+    }
+  }
+
+  summarize(scheduler: TargetScheduler) {
+    // const { measures, targets } = context;
+    const { targetRunContexts } = scheduler;
+    const failedTargets = [...targetRunContexts.values()].filter(({ status }) => status === "failed");
+
+    if (failedTargets && failedTargets.length > 0) {
       const failedPackages: { packageName?: string; taskLogs?: string; task: string }[] = [];
 
-      for (const failedTargetId of measures.failedTargets) {
+      for (const failedTargetRun of failedTargets) {
+        const failedTargetId = failedTargetRun.target.id;
         const { packageName, task } = getPackageAndTask(failedTargetId);
-        const taskLogs = targets.get(failedTargetId)?.logger.getLogs();
+        const taskLogs = this.logEntries.get(failedTargetId);
         let packageLogs = ``;
         if (taskLogs) {
           packageLogs += `[${packageName} ${task}]`;

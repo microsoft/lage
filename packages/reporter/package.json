@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "@lage-run/logger": "^1.1.0",
-    "@lage-run/target-graph": "^0.1.0"
+    "@lage-run/target-graph": "^0.2.0",
+    "@lage-run/scheduler": "^0.1.1"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",

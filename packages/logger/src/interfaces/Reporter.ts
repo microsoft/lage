@@ -10,5 +10,5 @@ export interface Reporter<TLogStructuredData extends LogStructuredData = LogStru
   log(entry: LogEntry<TLogStructuredData>): void;
 
   /** renders a summary based on the incoming data */
-  summarize<TSummaryData>(context: TSummaryData): void;
+  summarize(context: unknown): void;
 }

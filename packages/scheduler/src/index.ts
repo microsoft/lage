@@ -1,3 +1,7 @@
 export { SimpleScheduler } from "./SimpleScheduler";
-export type { TargetRunner } from "./types/TargetRunner";
 export { NpmScriptRunner } from "./runners/NpmScriptRunner";
+
+export type { TargetStatus } from "./types/TargetStatus";
+export type { TargetRunContext } from "./types/TargetRunContext";
+export type { TargetRunner } from "./types/TargetRunner";
+export type { TargetScheduler } from "./types/TargetScheduler";
