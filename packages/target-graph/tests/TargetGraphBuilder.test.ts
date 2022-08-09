@@ -34,12 +34,25 @@ describe("target graph builder", () => {
 
     const targetGraph = builder.buildTargetGraph(["build"]);
 
+    // size is 3, because we also need to account for the root target node (start target ID)
     expect(targetGraph.targets.size).toBe(3);
 
-    expect(targetGraph.dependencies.length).toBe(3);
-    expect(targetGraph.dependencies).toContainEqual([getStartTargetId(), "a#build"]);
-    expect(targetGraph.dependencies).toContainEqual([getStartTargetId(), "b#build"]);
-    expect(targetGraph.dependencies).toContainEqual(["b#build", "a#build"]);
+    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
+Array [
+  Array [
+    "__start",
+    "a#build",
+  ],
+  Array [
+    "__start",
+    "b#build",
+  ],
+  Array [
+    "b#build",
+    "a#build",
+  ],
+]
+`);
   });
 
   it("should generate target graphs for tasks that do not depend on each other", () => {
