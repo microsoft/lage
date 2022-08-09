@@ -15,8 +15,12 @@
   },
   "dependencies": {
     "@lage-run/logger": "^1.1.0",
+    "@lage-run/scheduler": "^0.1.1",
     "@lage-run/target-graph": "^0.2.0",
-    "@lage-run/scheduler": "^0.1.1"
+    "@xmldom/xmldom": "^0.8.0",
+    "chalk": "^4.0.0",
+    "ink": "^3.2.0",
+    "react": "^18.2.0"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",

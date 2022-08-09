@@ -15,7 +15,6 @@ export class AdoReporter implements Reporter {
   }
 
   summarize(scheduler: TargetScheduler) {
-    // const { measures, targets } = context;
     const { targetRunContexts } = scheduler;
     const failedTargets = [...targetRunContexts.values()].filter(({ status }) => status === "failed");
 
