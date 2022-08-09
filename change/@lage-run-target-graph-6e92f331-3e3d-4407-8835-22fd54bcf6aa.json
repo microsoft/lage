@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "refactored the start target id constant into a function",
-  "packageName": "@lage-run/target-graph",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

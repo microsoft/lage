@@ -1,0 +1,40 @@
+{
+  "name": "@lage-run/target-graph",
+  "entries": [
+    {
+      "date": "Tue, 09 Aug 2022 21:16:28 GMT",
+      "tag": "@lage-run/target-graph_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/target-graph",
+            "commit": "6dc38b30d19b0cba7e2609d3681e4e55c4fd6238",
+            "comment": "refactored the start target id constant into a function"
+          },
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/target-graph",
+            "commit": "6dc38b30d19b0cba7e2609d3681e4e55c4fd6238",
+            "comment": "Update some dev dependencies"
+          },
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/target-graph",
+            "commit": "6dc38b30d19b0cba7e2609d3681e4e55c4fd6238",
+            "comment": "fixed formatting"
+          }
+        ],
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "6dc38b30d19b0cba7e2609d3681e4e55c4fd6238",
+            "comment": "initial check in of target-graph - a refactored Pipeline and Target from lage v1"
+          }
+        ]
+      }
+    }
+  ]
+}

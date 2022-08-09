@@ -1,0 +1,32 @@
+{
+  "name": "@lage-run/cache",
+  "entries": [
+    {
+      "date": "Tue, 09 Aug 2022 21:16:28 GMT",
+      "tag": "@lage-run/cache_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cache",
+            "commit": "6dc38b30d19b0cba7e2609d3681e4e55c4fd6238",
+            "comment": "Gets the args from the cliArgs, not the target"
+          },
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cache",
+            "commit": "6dc38b30d19b0cba7e2609d3681e4e55c4fd6238",
+            "comment": "Adds a @lage-run/cache for v2 refactoring"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.2.0",
+            "commit": "6dc38b30d19b0cba7e2609d3681e4e55c4fd6238"
+          }
+        ]
+      }
+    }
+  ]
+}

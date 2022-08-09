@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Adds a @lage-run/cache for v2 refactoring",
-  "packageName": "@lage-run/cache",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

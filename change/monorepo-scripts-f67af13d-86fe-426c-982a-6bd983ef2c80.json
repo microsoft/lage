@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fixed the lint command to no longer lint the test files",
-  "packageName": "monorepo-scripts",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

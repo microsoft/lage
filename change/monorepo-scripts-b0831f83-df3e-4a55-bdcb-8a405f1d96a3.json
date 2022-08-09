@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixed formatting",
-  "packageName": "monorepo-scripts",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

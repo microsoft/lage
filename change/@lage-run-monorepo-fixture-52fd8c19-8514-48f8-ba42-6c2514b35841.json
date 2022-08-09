@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "New monorepo fixture library",
-  "packageName": "@lage-run/monorepo-fixture",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
