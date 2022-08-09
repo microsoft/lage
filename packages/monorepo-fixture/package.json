@@ -2,6 +2,7 @@
   "name": "@lage-run/monorepo-fixture",
   "version": "0.1.0",
   "description": "Monorepo fixture",
+  "private": true,
   "repository": {
     "url": "https://github.com/microsoft/lage"
   },

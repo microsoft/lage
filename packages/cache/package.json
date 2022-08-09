@@ -31,5 +31,8 @@
     "@types/node": "^14.0.0",
     "monorepo-scripts": "*",
     "mock-fs": "^5.1.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
