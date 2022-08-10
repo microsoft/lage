@@ -1,5 +1,4 @@
 import { Target } from "@lage-run/target-graph";
-import { TargetRunner } from "./TargetRunner";
 import { TargetStatus } from "./TargetStatus";
 
 export interface TargetRunContext {
@@ -7,5 +6,4 @@ export interface TargetRunContext {
   duration: [number, number];
   target: Target;
   status: TargetStatus;
-  run(runner: TargetRunner): Promise<void>;
 }

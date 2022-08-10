@@ -1,7 +1,16 @@
-import type { TargetRunContext, TargetStatus } from "@lage-run/scheduler";
+import type { TargetRunContext } from "./TargetRunContext";
+import type { TargetStatus } from "./TargetStatus";
 
-export type TargetRunContextSummary = { [key in TargetStatus]: TargetRunContext[] | undefined };
+// the "-?" syntax is TypeScript's way of making Mapped Types index signatures to always include a key
+// https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#mapping-modifiers
+export type TargetRunSummary = { [key in TargetStatus]-?: TargetRunContext[] };
 
-export interface SchedulerRunSummary extends TargetRunContextSummary {
+export type SchedulerRunResults = "success" | "failed" | "aborted";
+
+export interface SchedulerRunSummary {
+  targetRunSummary: TargetRunSummary;
+  startTime: [number, number];
   duration: [number, number];
+  results: SchedulerRunResults;
+  error?: string;
 }

@@ -5,6 +5,7 @@ import chalk from "chalk";
 import log from "npmlog";
 import type { Reporter, LogEntry, LogStructuredData } from "@lage-run/logger";
 import type { TargetRunContext, TargetScheduler, TargetStatus } from "@lage-run/scheduler";
+import { SchedulerRunSummary } from "@lage-run/scheduler/lib/types/SchedulerRunSummary";
 
 const maxLengths = {
   pkg: 0,
@@ -146,15 +147,15 @@ export class NpmLogReporter implements Reporter {
     log.info("", "----------------------------------------------");
   }
 
-  summarize(runContexts: Map<string, TargetRunContext>) {
+  summarize(schedulerRunSummary: SchedulerRunSummary) {
     const { hr } = this;
 
-    const wrappedTargets = [...runContexts.values()];
+    // const wrappedTargets = [...runContexts.values()];
 
-    const failedTargets = wrappedTargets.filter(t => t.status === "failed");
-    const successfulTasks = wrappedTargets.filter((t) => t.status === "success");
-    const skippedTasks = wrappedTargets.filter((t) => t.status === "skipped");
-    const abortedTasks = wrappedTargets.filter((t) => t.status === "aborted");
+    // const failedTargets = wrappedTargets.filter(t => t.status === "failed");
+    // const successfulTasks = wrappedTargets.filter((t) => t.status === "success");
+    // const skippedTasks = wrappedTargets.filter((t) => t.status === "skipped");
+    // const abortedTasks = wrappedTargets.filter((t) => t.status === "aborted");
 
     const statusColorFn: {
       [status in TargetStatus]: chalk.Chalk;
