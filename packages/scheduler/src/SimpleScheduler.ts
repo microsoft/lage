@@ -10,6 +10,7 @@ import type { TargetRunContext } from "./types/TargetRunContext";
 import type { AbortSignal } from "abort-controller";
 import { AbortController } from "abort-controller";
 import { NoOpRunner } from "./runners/NoOpRunner";
+import { SchedulerRunSummary } from "./types/SchedulerRunSummary";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -47,6 +48,14 @@ export class SimpleScheduler implements TargetScheduler {
     this.abortSignal = this.abortController.signal;
   }
 
+  private summarize(duration: [number, number]): SchedulerRunSummary {
+    let summary: SchedulerRunSummary = {
+
+    }
+
+    return summary;
+  }
+
   /**
    * The job of the run method is to:
    * 1. Convert the target graph into a promise graph.
@@ -58,6 +67,8 @@ export class SimpleScheduler implements TargetScheduler {
    * @returns
    */
   async run(root: string, targetGraph: TargetGraph) {
+    const startTime: [number, number] = process.hrtime();
+
     const { concurrency, continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, runner } = this.options;
     const { dependencies, targets } = targetGraph;
 

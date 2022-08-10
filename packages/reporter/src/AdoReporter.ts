@@ -1,22 +1,21 @@
 import { getPackageAndTask } from "@lage-run/target-graph";
 import type { Reporter, LogEntry } from "@lage-run/logger";
-import { TargetScheduler } from "@lage-run/scheduler/lib/types/TargetScheduler";
+import type { TargetRunContext, TargetScheduler } from "@lage-run/scheduler";
 export class AdoReporter implements Reporter {
   private logEntries = new Map<string, LogEntry[]>();
 
   log(entry: LogEntry<any>) {
     if (entry.data.target) {
       if (!this.logEntries.has(entry.data.target.id)) {
-        this.logEntries.set(entry.data.target.id, [])
+        this.logEntries.set(entry.data.target.id, []);
       }
-      
+
       this.logEntries.get(entry.data.target.id)!.push(entry);
     }
   }
 
-  summarize(scheduler: TargetScheduler) {
-    const { targetRunContexts } = scheduler;
-    const failedTargets = [...targetRunContexts.values()].filter(({ status }) => status === "failed");
+  summarize(runContexts: Map<string, TargetRunContext>) {
+    const failedTargets = [...runContexts.values()].filter(({ status }) => status === "failed");
 
     if (failedTargets && failedTargets.length > 0) {
       const failedPackages: { packageName?: string; taskLogs?: string; task: string }[] = [];
