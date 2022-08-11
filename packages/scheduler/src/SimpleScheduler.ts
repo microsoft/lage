@@ -117,7 +117,7 @@ export class SimpleScheduler implements TargetScheduler {
       const targetRunByStatus = categorizeTargetRuns([...this.wrappedTargets.values()]);
       if (targetRunByStatus.aborted.length > 0) {
         results = "aborted";
-      } 
+      }
 
       return {
         targetRunByStatus,
@@ -125,7 +125,7 @@ export class SimpleScheduler implements TargetScheduler {
         duration,
         startTime,
         results,
-        error
+        error,
       };
     }
   }

@@ -1,8 +1,7 @@
-
 /**
  * LogStructuredData for the `info` command
  */
- export interface InfoData {
+export interface InfoData {
   command?: string[];
   scope?: string[];
   packageTasks?: PackageTaskInfo[];

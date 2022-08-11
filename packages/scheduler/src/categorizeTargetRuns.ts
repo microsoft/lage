@@ -16,5 +16,5 @@ export function categorizeTargetRuns(targetRuns: TargetRun[]): TargetRunSummary 
     summary[status]!.push(targetRun.target.id);
   }
 
-  return summary;  
+  return summary;
 }

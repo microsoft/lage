@@ -76,7 +76,7 @@ export class NpmLogReporter implements Reporter {
       return this.logTargetEntry(entry);
     }
   }
-  
+
   private logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
     const logFn = logFns[entry.level];
 
