@@ -39,9 +39,9 @@ describe("AdoReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"VERB: a task ➔ start 
-"
-`);
+      "VERB: a task ➔ start 
+      "
+    `);
   });
 
   it("records a target message entry", () => {
@@ -63,9 +63,9 @@ describe("AdoReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"VERB: a task |  test message
-"
-`);
+      "VERB: a task |  test message
+      "
+    `);
   });
 
   it("groups messages together", () => {
@@ -105,26 +105,26 @@ describe("AdoReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"##[group] a test
-VERB:  ➔ start a test
-VERB:  |  test message for a#test
-VERB:  |  test message for a#test again
-VERB:  ✓ done a test - 10.00s
-##[endgroup]
-##[group] b build
-VERB:  ➔ start b build
-VERB:  |  test message for b#build
-VERB:  |  test message for b#build again
-VERB:  ✓ done b build - 30.00s
-##[endgroup]
-##[group] a build
-VERB:  ➔ start a build
-VERB:  |  test message for a#build
-VERB:  |  test message for a#build again
-VERB:  ✖ fail a build
-##[endgroup]
-"
-`);
+      "##[group] a test success , took 10.00s
+      VERB:  ➔ start a test
+      VERB:  |  test message for a#test
+      VERB:  |  test message for a#test again
+      VERB:  ✓ done a test - 10.00s
+      ##[endgroup]
+      ##[group] b build success , took 30.00s
+      VERB:  ➔ start b build
+      VERB:  |  test message for b#build
+      VERB:  |  test message for b#build again
+      VERB:  ✓ done b build - 30.00s
+      ##[endgroup]
+      ##[group] a build failed , took 60.00s
+      VERB:  ➔ start a build
+      VERB:  |  test message for a#build
+      VERB:  |  test message for a#build again
+      VERB:  ✖ fail a build
+      ##[endgroup]
+      "
+    `);
   });
 
   it("interweave messages when ungrouped", () => {
@@ -164,20 +164,20 @@ VERB:  ✖ fail a build
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"VERB: a build ➔ start 
-VERB: a test ➔ start 
-VERB: b build ➔ start 
-VERB: a build |  test message for a#build
-VERB: a test |  test message for a#test
-VERB: a build |  test message for a#build again
-VERB: b build |  test message for b#build
-VERB: a test |  test message for a#test again
-VERB: b build |  test message for b#build again
-VERB: a test ✓ done  - 10.00s
-VERB: b build ✓ done  - 30.00s
-VERB: a build ✖ fail 
-"
-`);
+      "VERB: a build ➔ start 
+      VERB: a test ➔ start 
+      VERB: b build ➔ start 
+      VERB: a build |  test message for a#build
+      VERB: a test |  test message for a#test
+      VERB: a build |  test message for a#build again
+      VERB: b build |  test message for b#build
+      VERB: a test |  test message for a#test again
+      VERB: b build |  test message for b#build again
+      VERB: a test ✓ done  - 10.00s
+      VERB: b build ✓ done  - 30.00s
+      VERB: a build ✖ fail 
+      "
+    `);
   });
 
   it("can filter out verbose messages", () => {
@@ -217,14 +217,14 @@ VERB: a build ✖ fail
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"INFO: a build ➔ start 
-INFO: a test ➔ start 
-INFO: b build ➔ start 
-INFO: a test ✓ done  - 10.00s
-INFO: b build ✓ done  - 30.00s
-INFO: a build ✖ fail 
-"
-`);
+      "INFO: a build ➔ start 
+      INFO: a test ➔ start 
+      INFO: b build ➔ start 
+      INFO: a test ✓ done  - 10.00s
+      INFO: b build ✓ done  - 30.00s
+      INFO: a build ✖ fail 
+      "
+    `);
   });
 
   it("can group verbose messages", () => {
@@ -283,36 +283,36 @@ INFO: a build ✖ fail
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"##[group] a test
-INFO:  ➔ start a test
-VERB:  |  test message for a#test
-VERB:  |  test message for a#test again
-INFO:  ✓ done a test - 10.00s
-##[endgroup]
-##[group] b build
-INFO:  ➔ start b build
-VERB:  |  test message for b#build
-VERB:  |  test message for b#build again
-INFO:  ✓ done b build - 30.00s
-##[endgroup]
-##[group] a build
-INFO:  ➔ start a build
-VERB:  |  test message for a#build
-VERB:  |  test message for a#build again, but look there is an error!
-INFO:  ✖ fail a build
-##[endgroup]
-##[section]Summary
-INFO: a build failed, took 60.00s
-INFO: a test success, took 60.00s
-INFO: b build success, took 60.00s
-[Tasks Count] success: 2, skipped: 0, pending: 0, aborted: 0
-##[error] [a build] ERROR DETECTED
-##[error] 
-##[error] test message for a#build
-##[error] test message for a#build again, but look there is an error!
-##[error] 
-INFO:  Took a total of 1m 40.00s to complete
-"
-`);
+      "##[group] a test success , took 10.00s
+      INFO:  ➔ start a test
+      VERB:  |  test message for a#test
+      VERB:  |  test message for a#test again
+      INFO:  ✓ done a test - 10.00s
+      ##[endgroup]
+      ##[group] b build success , took 30.00s
+      INFO:  ➔ start b build
+      VERB:  |  test message for b#build
+      VERB:  |  test message for b#build again
+      INFO:  ✓ done b build - 30.00s
+      ##[endgroup]
+      ##[group] a build failed , took 60.00s
+      INFO:  ➔ start a build
+      VERB:  |  test message for a#build
+      VERB:  |  test message for a#build again, but look there is an error!
+      INFO:  ✖ fail a build
+      ##[endgroup]
+      ##[section]Summary
+      INFO: a build failed, took 60.00s
+      INFO: a test success, took 60.00s
+      INFO: b build success, took 60.00s
+      [Tasks Count] success: 2, skipped: 0, pending: 0, aborted: 0
+      ##[error] [a build] ERROR DETECTED
+      ##[error] 
+      ##[error] test message for a#build
+      ##[error] test message for a#build again, but look there is an error!
+      ##[error] 
+      INFO:  Took a total of 1m 40.00s to complete
+      "
+    `);
   });
 });

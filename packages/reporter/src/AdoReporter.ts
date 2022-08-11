@@ -29,7 +29,6 @@ const logLevelLabel = {
   [LogLevel.verbose]: "VERB",
 };
 
-
 function getTaskLogPrefix(pkg: string, task: string) {
   return `${colors.pkg(pkg)} ${colors.task(task)}`;
 }
@@ -135,7 +134,12 @@ export class AdoReporter implements Reporter {
 
     if (isTargetStatusLogEntry(data)) {
       if (data.status === "success" || data.status === "failed" || data.status === "skipped" || data.status === "aborted") {
-        this.logStream.write(`##[group] ${data.target.packageName} ${data.target.task}\n`);
+        const { status, duration } = data;
+        this.logStream.write(
+          `##[group] ${colors.pkg(data.target.packageName ?? "<root>")} ${colors.task(data.target.task)} ${status} ${
+            duration ? `, took ${formatDuration(hrToSeconds(duration))}` : ""
+          }\n`
+        );
         const entries = this.groupedEntries.get(id)! as LogEntry<TargetStatusEntry>[];
 
         for (const targetEntry of entries) {
