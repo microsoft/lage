@@ -1,6 +1,6 @@
 {
-  "name": "@lage-run/reporter",
-  "version": "1.1.0",
+  "name": "@lage-run/reporters",
+  "version": "0.1.0",
   "description": "Log reporters for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"

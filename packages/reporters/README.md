@@ -1,4 +1,4 @@
-# @lage-run/reporter
+# @lage-run/reporters
 
 This package provides some default built-in reporters to be used inside @lage-run/cli (and lage, the main entry point to the tool). The `Reporter` interface comes from `@lage-run/logger`. 
 
