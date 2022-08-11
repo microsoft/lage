@@ -6,10 +6,11 @@ import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { PGraphNodeMap } from "p-graph";
 import type { TargetRunner } from "./types/TargetRunner";
 import type { TargetScheduler } from "./types/TargetScheduler";
-import type { TargetRunContext } from "./types/TargetRunContext";
 import type { AbortSignal } from "abort-controller";
 import { AbortController } from "abort-controller";
 import { NoOpRunner } from "./runners/NoOpRunner";
+import { SchedulerRunResults, SchedulerRunSummary } from "./types/SchedulerRunSummary";
+import { categorizeTargetRuns } from "./categorizeTargetRuns";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -37,12 +38,12 @@ export interface SimpleSchedulerOptions {
  *
  */
 export class SimpleScheduler implements TargetScheduler {
-  targetRunContexts: Map<string, TargetRunContext>;
+  wrappedTargets: Map<string, WrappedTarget>;
   abortController: AbortController;
   abortSignal: AbortSignal;
 
   constructor(private options: SimpleSchedulerOptions) {
-    this.targetRunContexts = new Map();
+    this.wrappedTargets = new Map();
     this.abortController = new AbortController();
     this.abortSignal = this.abortController.signal;
   }
@@ -57,7 +58,9 @@ export class SimpleScheduler implements TargetScheduler {
    * @param targetGraph
    * @returns
    */
-  async run(root: string, targetGraph: TargetGraph) {
+  async run(root: string, targetGraph: TargetGraph): Promise<SchedulerRunSummary> {
+    const startTime: [number, number] = process.hrtime();
+
     const { concurrency, continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, runner } = this.options;
     const { dependencies, targets } = targetGraph;
 
@@ -77,7 +80,7 @@ export class SimpleScheduler implements TargetScheduler {
         abortController: this.abortController,
       });
 
-      this.targetRunContexts.set(target.id, wrappedTarget);
+      this.wrappedTargets.set(target.id, wrappedTarget);
 
       pGraphNodes.set(target.id, {
         /**
@@ -89,26 +92,41 @@ export class SimpleScheduler implements TargetScheduler {
           }
 
           if (target.id === getStartTargetId()) {
-            return this.targetRunContexts.get(target.id)!.run(NoOpRunner);
+            return this.wrappedTargets.get(target.id)!.run(NoOpRunner);
           }
 
-          return this.targetRunContexts.get(target.id)!.run(runner);
+          return this.wrappedTargets.get(target.id)!.run(runner);
         },
 
         priority: target.priority,
       });
     }
 
+    let results: SchedulerRunResults = "success";
+    let error: string | undefined;
+
     try {
       await pGraph(pGraphNodes, pGraphEdges).run({
         concurrency,
         continue: continueOnError,
       });
-
-      return this.targetRunContexts;
     } catch (e) {
-      logger.error(typeof e === "string" ? e : e instanceof Error && "message" in e ? e.message : "unknown error");
-      throw e;
+      error = e instanceof Error ? e.message : String(e);
+    } finally {
+      const duration = process.hrtime(startTime);
+      const targetRunByStatus = categorizeTargetRuns([...this.wrappedTargets.values()]);
+      if (targetRunByStatus.aborted.length > 0 || targetRunByStatus.pending.length > 0) {
+        results = "aborted";
+      }
+
+      return {
+        targetRunByStatus,
+        targetRuns: this.wrappedTargets,
+        duration,
+        startTime,
+        results,
+        error,
+      };
     }
   }
 

@@ -4,7 +4,7 @@ import { TargetHasher } from "@lage-run/cache";
 import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
 import type { Target } from "@lage-run/target-graph";
-import type { TargetRunContext } from "./types/TargetRunContext";
+import type { TargetRun } from "./types/TargetRun";
 import type { TargetRunner } from "./types/TargetRunner";
 import type { TargetStatus } from "./types/TargetStatus";
 
@@ -27,7 +27,7 @@ export interface WrappedTargetOptions {
  * 3. Abort signal
  * 4. Continue on error
  */
-export class WrappedTarget implements TargetRunContext {
+export class WrappedTarget implements TargetRun {
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
   target: Target;
