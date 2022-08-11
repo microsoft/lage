@@ -90,6 +90,7 @@ export class NpmLogReporter implements Reporter {
 
   private logTaskEntry(pkg: string, task: string, entry: LogEntry) {
     const normalizedArgs = this.options.grouped ? normalize(entry.msg) : normalize(getTaskLogPrefix(pkg, task), entry.msg);
+
     const logFn = log[LogLevel[entry.level]];
     const colorFn = colors[LogLevel[entry.level]];
     const data = entry.data as TaskData;

@@ -12,17 +12,34 @@ const maxLengths = {
   task: 0,
 };
 const colors = {
-  info: chalk.white,
-  verbose: chalk.gray,
-  warn: chalk.white,
-  error: chalk.white,
+  [LogLevel.info]: chalk.white,
+  [LogLevel.verbose]: chalk.gray,
+  [LogLevel.warn]: chalk.white,
+  [LogLevel.error]: chalk.white,
+  [LogLevel.silly]: chalk.green,
   task: chalk.cyan,
   pkg: chalk.magenta,
-  silly: chalk.green,
+  ok: chalk.green,
+  error: chalk.red,
+  warn: chalk.yellow,
 };
 
+const logLevelEnum = {
+  [LogLevel.info]: "info",
+  [LogLevel.warn]: "warn",
+  [LogLevel.error]: "error",
+  [LogLevel.silly]: "silly",
+  [LogLevel.verbose]: "verbose",
+};
+
+const logFns = Object.values(logLevelEnum).reduce((acc, level) => {
+  acc[LogLevel[level]] = log[level];
+  return acc;
+}, {});
+
+
 function getTaskLogPrefix(pkg: string, task: string) {
-  return `${colors.pkg(pkg.padStart(maxLengths.pkg))} ${colors.task(task.padStart(maxLengths.task))}`;
+  return `${colors.pkg(pkg)} ${colors.task(task)}`;
 }
 
 function normalize(prefixOrMessage: string, message?: string) {
@@ -41,12 +58,13 @@ function isTargetStatusLogEntry(data?: LogStructuredData): data is TargetStatusE
 }
 
 export class NpmLogReporter implements Reporter {
+  npmLog = log;
   private logEntries = new Map<string, LogEntry[]>();
   readonly groupedEntries = new Map<string, LogEntry[]>();
 
   constructor(private options: { logLevel?: LogLevel; grouped?: boolean }) {
     options.logLevel = options.logLevel || LogLevel.info;
-    log.level = LogLevel[options.logLevel];
+    log.level = logLevelEnum[options.logLevel];
   }
 
   log(entry: LogEntry<any>) {
@@ -72,37 +90,43 @@ export class NpmLogReporter implements Reporter {
   private logGenericEntry(entry: LogEntry) {
     const normalizedArgs = normalize(entry.msg);
 
-    const logFn = log[LogLevel[entry.level]];
-    const colorFn = colors[LogLevel[entry.level]];
+    const logFn = logFns[entry.level];
+    const colorFn = colors[entry.level];
 
     return logFn(normalizedArgs.prefix, colorFn(normalizedArgs.message));
   }
 
   private logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
-    const logFn = log[LogLevel[entry.level]];
-    const colorFn = colors[LogLevel[entry.level]];
+    const logFn = logFns[entry.level];
+
+    const colorFn = colors[entry.level];
     const data = entry.data!;
 
     if (isTargetStatusLogEntry(data)) {
       const { target, hash, duration } = data;
       const { packageName, task } = target;
+
       const normalizedArgs = this.options.grouped
         ? normalize(entry.msg)
         : normalize(getTaskLogPrefix(packageName ?? "<root>", task), entry.msg);
+
       const pkgTask = this.options.grouped ? `${chalk.magenta(packageName)} ${chalk.cyan(task)}` : "";
 
       switch (data.status) {
         case "running":
-          return logFn(normalizedArgs.prefix, colorFn(`➔ start ${pkgTask}`));
+          return logFn(normalizedArgs.prefix, colorFn(`${colors.ok("➔")} start ${pkgTask}`));
 
         case "success":
-          return logFn(normalizedArgs.prefix, colorFn(`✓ done ${pkgTask} - ${formatDuration(hrToSeconds(duration!))}`));
+          return logFn(normalizedArgs.prefix, colorFn(`${colors.ok("✓")} done ${pkgTask} - ${formatDuration(hrToSeconds(duration!))}`));
 
         case "failed":
-          return logFn(normalizedArgs.prefix, colorFn(`✖ fail ${pkgTask}`));
+          return logFn(normalizedArgs.prefix, colorFn(`${colors.error("✖")} fail ${pkgTask}`));
 
         case "skipped":
-          return logFn(normalizedArgs.prefix, colorFn(`» skip ${pkgTask} - ${hash!}`));
+          return logFn(normalizedArgs.prefix, colorFn(`${colors.ok("»")} skip ${pkgTask} - ${hash!}`));
+
+        case "aborted":
+          return logFn(normalizedArgs.prefix, colorFn(`${colors.warn("»")} aborted ${pkgTask}`));
       }
     } else {
       const { target } = data;
