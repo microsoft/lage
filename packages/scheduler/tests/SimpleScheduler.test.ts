@@ -291,48 +291,59 @@ describe("SimpleScheduler", () => {
 
     expect(dropTiming(summary)).toMatchInlineSnapshot(`
       Object {
+        "error": undefined,
         "results": "aborted",
-        "targetRunSummary": Object {
+        "targetRunByStatus": Object {
           "aborted": Array [],
           "failed": Array [],
           "pending": Array [
-            Object {
-              "status": "pending",
-              "target": "a#build",
-            },
-            Object {
-              "status": "pending",
-              "target": "b#build",
-            },
-            Object {
-              "status": "pending",
-              "target": "c#build",
-            },
-            Object {
-              "status": "pending",
-              "target": "d#build",
-            },
-            Object {
-              "status": "pending",
-              "target": "e#build",
-            },
-            Object {
-              "status": "pending",
-              "target": "f#build",
-            },
-            Object {
-              "status": "pending",
-              "target": "g#build",
-            },
+            "a#build",
+            "b#build",
+            "c#build",
+            "d#build",
+            "e#build",
+            "f#build",
+            "g#build",
           ],
           "running": Array [],
           "skipped": Array [],
           "success": Array [
-            Object {
-              "status": "success",
-              "target": "__start",
-            },
+            "__start",
           ],
+        },
+        "targetRuns": Map {
+          "__start" => Object {
+            "status": "success",
+            "target": "__start",
+          },
+          "a#build" => Object {
+            "status": "pending",
+            "target": "a#build",
+          },
+          "b#build" => Object {
+            "status": "pending",
+            "target": "b#build",
+          },
+          "c#build" => Object {
+            "status": "pending",
+            "target": "c#build",
+          },
+          "d#build" => Object {
+            "status": "pending",
+            "target": "d#build",
+          },
+          "e#build" => Object {
+            "status": "pending",
+            "target": "e#build",
+          },
+          "f#build" => Object {
+            "status": "pending",
+            "target": "f#build",
+          },
+          "g#build" => Object {
+            "status": "pending",
+            "target": "g#build",
+          },
         },
       }
     `);

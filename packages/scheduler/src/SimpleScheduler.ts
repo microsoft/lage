@@ -115,7 +115,7 @@ export class SimpleScheduler implements TargetScheduler {
     } finally {
       const duration = process.hrtime(startTime);
       const targetRunByStatus = categorizeTargetRuns([...this.wrappedTargets.values()]);
-      if (targetRunByStatus.aborted.length > 0) {
+      if (targetRunByStatus.aborted.length > 0 || targetRunByStatus.pending.length > 0) {
         results = "aborted";
       }
 
