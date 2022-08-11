@@ -5,7 +5,7 @@ import chalk from "chalk";
 import log from "npmlog";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler";
-import { TargetEntry } from "./types/TargetLogEntry";
+import { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
 
 const maxLengths = {
   pkg: 0,
@@ -36,7 +36,7 @@ function normalize(prefixOrMessage: string, message?: string) {
   }
 }
 
-function isTargetLogEntry(data?: LogStructuredData) {
+function isTargetStatusLogEntry(data?: LogStructuredData): data is TargetStatusEntry {
   return data !== undefined && data.target;
 }
 
@@ -50,7 +50,7 @@ export class NpmLogReporter implements Reporter {
   }
 
   log(entry: LogEntry<any>) {
-    if (entry.data.target) {
+    if (entry.data && entry.data.target) {
       if (!this.logEntries.has(entry.data.target.id)) {
         this.logEntries.set(entry.data.target.id, []);
       }
@@ -59,9 +59,9 @@ export class NpmLogReporter implements Reporter {
     }
 
     if (this.options.logLevel! >= entry.level) {
-      if (isTargetLogEntry(entry.data) && !this.options.grouped) {
+      if (isTargetStatusLogEntry(entry.data) && !this.options.grouped) {
         return this.logTargetEntry(entry);
-      } else if (isTargetLogEntry(entry.data) && this.options.grouped) {
+      } else if (isTargetStatusLogEntry(entry.data) && this.options.grouped) {
         return this.logTargetEntryByGroup(entry);
       } else {
         return this.logGenericEntry(entry);
@@ -78,12 +78,12 @@ export class NpmLogReporter implements Reporter {
     return logFn(normalizedArgs.prefix, colorFn(normalizedArgs.message));
   }
 
-  private logTargetEntry(entry: LogEntry<TargetEntry>) {
+  private logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
     const logFn = log[LogLevel[entry.level]];
     const colorFn = colors[LogLevel[entry.level]];
     const data = entry.data!;
 
-    if (data.status) {
+    if (isTargetStatusLogEntry(data)) {
       const { target, hash, duration } = data;
       const { packageName, task } = target;
       const normalizedArgs = this.options.grouped
@@ -114,25 +114,27 @@ export class NpmLogReporter implements Reporter {
     }
   }
 
-  private logTargetEntryByGroup(entry: LogEntry<TargetEntry>) {
+  private logTargetEntryByGroup(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
     const data = entry.data!;
-    if (data.status) {
-      const target = data.target;
-      const { packageName, task, id } = target;
 
-      this.groupedEntries.set(id, this.groupedEntries.get(id) || []);
-      this.groupedEntries.get(id)?.push(entry);
+    const target = data.target;
+    const { id } = target;
 
-      if (data && (data.status === "success" || data.status === "failed" || data.status === "skipped" || data.status === "aborted")) {
-        const entries = this.groupedEntries.get(id)! as LogEntry<TargetEntry>[];
+    this.groupedEntries.set(id, this.groupedEntries.get(id) || []);
+    this.groupedEntries.get(id)?.push(entry);
 
-        for (const targetEntry of entries) {
-          this.logTargetEntry(targetEntry);
-        }
+    if (
+      isTargetStatusLogEntry(data) &&
+      (data.status === "success" || data.status === "failed" || data.status === "skipped" || data.status === "aborted")
+    ) {
+      const entries = this.groupedEntries.get(id)! as LogEntry<TargetStatusEntry>[];
 
-        if (entries.length > 2) {
-          this.hr();
-        }
+      for (const targetEntry of entries) {
+        this.logTargetEntry(targetEntry);
+      }
+
+      if (entries.length > 2) {
+        this.hr();
       }
     }
   }
