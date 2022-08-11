@@ -2,6 +2,21 @@
   "name": "@lage-run/logger",
   "entries": [
     {
+      "date": "Thu, 11 Aug 2022 23:52:59 GMT",
+      "tag": "@lage-run/logger_v1.1.1",
+      "version": "1.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "e7170c999eb659b1b167aa54380d3804ea366017",
+            "comment": "updates logger types to accommodate reporters"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 16 Jul 2022 02:57:37 GMT",
       "tag": "@lage-run/logger_v1.1.0",
       "version": "1.1.0",

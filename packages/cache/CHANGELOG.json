@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Thu, 11 Aug 2022 23:52:59 GMT",
+      "tag": "@lage-run/cache_v0.1.2",
+      "version": "0.1.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/logger to v1.1.1",
+            "commit": "e7170c999eb659b1b167aa54380d3804ea366017"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 09 Aug 2022 21:16:28 GMT",
       "tag": "@lage-run/cache_v0.1.1",
       "version": "0.1.1",

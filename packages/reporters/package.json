@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/reporters",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Log reporters for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -14,8 +14,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@lage-run/logger": "^1.1.0",
-    "@lage-run/scheduler": "^0.1.1",
+    "@lage-run/logger": "^1.1.1",
+    "@lage-run/scheduler": "^0.1.2",
     "@lage-run/target-graph": "^0.2.0",
     "chalk": "^4.0.0"
   },

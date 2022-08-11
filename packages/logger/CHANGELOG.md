@@ -1,8 +1,16 @@
 # Change Log - @lage-run/logger
 
-This log was last generated on Wed, 13 Jul 2022 16:08:30 GMT and should not be manually modified.
+This log was last generated on Thu, 11 Aug 2022 23:52:59 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.1
+
+Thu, 11 Aug 2022 23:52:59 GMT
+
+### Patches
+
+- updates logger types to accommodate reporters (kchau@microsoft.com)
 
 ## 1.1.0
 
