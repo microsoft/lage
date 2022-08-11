@@ -224,7 +224,7 @@ describe("NpmLogReporter", () => {
     `);
   });
 
-  it("can filter out verbose messages", () => {
+  it("can display a summary of a failure", () => {
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: true, logLevel: LogLevel.info });

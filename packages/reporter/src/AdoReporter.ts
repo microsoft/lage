@@ -136,7 +136,7 @@ export class AdoReporter implements Reporter {
       if (data.status === "success" || data.status === "failed" || data.status === "skipped" || data.status === "aborted") {
         const { status, duration } = data;
         this.logStream.write(
-          `##[group] ${colors.pkg(data.target.packageName ?? "<root>")} ${colors.task(data.target.task)} ${status} ${
+          `##[group] ${colors.pkg(data.target.packageName ?? "<root>")} ${colors.task(data.target.task)} ${status}${
             duration ? `, took ${formatDuration(hrToSeconds(duration))}` : ""
           }\n`
         );

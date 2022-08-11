@@ -105,19 +105,19 @@ describe("AdoReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "##[group] a test success , took 10.00s
+      "##[group] a test success, took 10.00s
       VERB:  ➔ start a test
       VERB:  |  test message for a#test
       VERB:  |  test message for a#test again
       VERB:  ✓ done a test - 10.00s
       ##[endgroup]
-      ##[group] b build success , took 30.00s
+      ##[group] b build success, took 30.00s
       VERB:  ➔ start b build
       VERB:  |  test message for b#build
       VERB:  |  test message for b#build again
       VERB:  ✓ done b build - 30.00s
       ##[endgroup]
-      ##[group] a build failed , took 60.00s
+      ##[group] a build failed, took 60.00s
       VERB:  ➔ start a build
       VERB:  |  test message for a#build
       VERB:  |  test message for a#build again
@@ -227,7 +227,7 @@ describe("AdoReporter", () => {
     `);
   });
 
-  it("can group verbose messages", () => {
+  it("can group verbose messages, displaying summary", () => {
     const writer = new streams.WritableStream();
 
     const reporter = new AdoReporter({ grouped: true, logLevel: LogLevel.verbose });
@@ -283,19 +283,19 @@ describe("AdoReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "##[group] a test success , took 10.00s
+      "##[group] a test success, took 10.00s
       INFO:  ➔ start a test
       VERB:  |  test message for a#test
       VERB:  |  test message for a#test again
       INFO:  ✓ done a test - 10.00s
       ##[endgroup]
-      ##[group] b build success , took 30.00s
+      ##[group] b build success, took 30.00s
       INFO:  ➔ start b build
       VERB:  |  test message for b#build
       VERB:  |  test message for b#build again
       INFO:  ✓ done b build - 30.00s
       ##[endgroup]
-      ##[group] a build failed , took 60.00s
+      ##[group] a build failed, took 60.00s
       INFO:  ➔ start a build
       VERB:  |  test message for a#build
       VERB:  |  test message for a#build again, but look there is an error!
