@@ -24,7 +24,6 @@
     "access": "public"
   },
   "files": [
-    "lib/**/*",
-    "package.json"
+    "lib/**/*"
   ]
 }
