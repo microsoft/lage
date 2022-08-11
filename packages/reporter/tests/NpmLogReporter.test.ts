@@ -5,7 +5,6 @@ import { LogLevel } from "@lage-run/logger";
 import { NpmLogReporter } from "../src/NpmLogReporter";
 import streams from "memory-streams";
 import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry";
-import { Target } from "@lage-run/target-graph";
 
 function createTarget(packageName: string, task: string) {
   return {
