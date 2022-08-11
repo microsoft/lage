@@ -1,7 +1,7 @@
 {
   "type": "patch",
   "comment": "Brand new reporter package for lage v2",
-  "packageName": "@lage-run/reporter",
+  "packageName": "@lage-run/reporters",
   "email": "kchau@microsoft.com",
   "dependentChangeType": "patch"
 }
