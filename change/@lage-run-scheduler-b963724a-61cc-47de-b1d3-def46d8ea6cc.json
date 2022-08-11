@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "updates the summary output of scheduler run for reports",
+  "packageName": "@lage-run/scheduler",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
