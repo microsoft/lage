@@ -114,13 +114,14 @@ export class SimpleScheduler implements TargetScheduler {
       error = e instanceof Error ? e.message : String(e);
     } finally {
       const duration = process.hrtime(startTime);
-      const targetRunSummary = categorizeTargetRuns([...this.wrappedTargets.values()]);
-      if (targetRunSummary.aborted.length > 0) {
+      const targetRunByStatus = categorizeTargetRuns([...this.wrappedTargets.values()]);
+      if (targetRunByStatus.aborted.length > 0) {
         results = "aborted";
       } 
 
       return {
-        targetRunSummary,
+        targetRunByStatus,
+        targetRuns: this.wrappedTargets,
         duration,
         startTime,
         results,

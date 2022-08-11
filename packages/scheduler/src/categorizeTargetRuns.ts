@@ -1,7 +1,7 @@
 import type { TargetRunSummary } from "./types/SchedulerRunSummary";
-import type { TargetRunContext } from "./types/TargetRunContext";
+import type { TargetRun } from "./types/TargetRun";
 
-export function categorizeTargetRuns(targetRuns: TargetRunContext[]): TargetRunSummary {
+export function categorizeTargetRuns(targetRuns: TargetRun[]): TargetRunSummary {
   const summary: TargetRunSummary = {
     aborted: [],
     failed: [],
@@ -11,9 +11,9 @@ export function categorizeTargetRuns(targetRuns: TargetRunContext[]): TargetRunS
     pending: [],
   };
 
-  for (const wrappedTarget of targetRuns) {
-    const { status } = wrappedTarget;
-    summary[status]!.push(wrappedTarget);
+  for (const targetRun of targetRuns) {
+    const { status } = targetRun;
+    summary[status]!.push(targetRun.target.id);
   }
 
   return summary;  
