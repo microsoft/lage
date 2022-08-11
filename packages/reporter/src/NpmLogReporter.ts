@@ -7,10 +7,6 @@ import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler";
 import { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
 
-const maxLengths = {
-  pkg: 0,
-  task: 0,
-};
 const colors = {
   [LogLevel.info]: chalk.white,
   [LogLevel.verbose]: chalk.gray,
@@ -37,7 +33,6 @@ const logFns = Object.values(logLevelEnum).reduce((acc, level) => {
   return acc;
 }, {});
 
-
 function getTaskLogPrefix(pkg: string, task: string) {
   return `${colors.pkg(pkg)} ${colors.task(task)}`;
 }
@@ -54,7 +49,7 @@ function normalize(prefixOrMessage: string, message?: string) {
 }
 
 function isTargetStatusLogEntry(data?: LogStructuredData): data is TargetStatusEntry {
-  return data !== undefined && data.target;
+  return data !== undefined && data.target && data.status !== undefined;
 }
 
 export class NpmLogReporter implements Reporter {
@@ -77,13 +72,11 @@ export class NpmLogReporter implements Reporter {
     }
 
     if (this.options.logLevel! >= entry.level) {
-      if (isTargetStatusLogEntry(entry.data) && !this.options.grouped) {
-        return this.logTargetEntry(entry);
-      } else if (isTargetStatusLogEntry(entry.data) && this.options.grouped) {
+      if (this.options.grouped) {
         return this.logTargetEntryByGroup(entry);
-      } else {
-        return this.logGenericEntry(entry);
       }
+
+      return this.logTargetEntry(entry);
     }
   }
 
@@ -129,6 +122,7 @@ export class NpmLogReporter implements Reporter {
           return logFn(normalizedArgs.prefix, colorFn(`${colors.warn("»")} aborted ${pkgTask}`));
       }
     } else {
+      // this is a generic log
       const { target } = data;
       const { packageName, task } = target;
       const normalizedArgs = this.options.grouped
