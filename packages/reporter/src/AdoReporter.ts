@@ -1,51 +1,208 @@
-import { getPackageAndTask } from "@lage-run/target-graph";
+import { formatDuration, hrToSeconds } from "./formatDuration";
+import { getPackageAndTask, getTargetId, Target } from "@lage-run/target-graph";
+import { LogLevel, LogStructuredData } from "@lage-run/logger";
+import chalk from "chalk";
 import type { Reporter, LogEntry } from "@lage-run/logger";
-import type { TargetRunContext, SchedulerRunSummary } from "@lage-run/scheduler";
+import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler";
+import { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
+import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
+import { Writable } from "stream";
+
+const colors = {
+  [LogLevel.info]: chalk.white,
+  [LogLevel.verbose]: chalk.gray,
+  [LogLevel.warn]: chalk.white,
+  [LogLevel.error]: chalk.white,
+  [LogLevel.silly]: chalk.green,
+  task: chalk.cyan,
+  pkg: chalk.magenta,
+  ok: chalk.green,
+  error: chalk.red,
+  warn: chalk.yellow,
+};
+
+const logLevelLabel = {
+  [LogLevel.info]: "INFO",
+  [LogLevel.warn]: "WARN",
+  [LogLevel.error]: "ERR!",
+  [LogLevel.silly]: "SILLY",
+  [LogLevel.verbose]: "VERB",
+};
+
+
+function getTaskLogPrefix(pkg: string, task: string) {
+  return `${colors.pkg(pkg)} ${colors.task(task)}`;
+}
+
+function normalize(prefixOrMessage: string, message?: string) {
+  if (typeof message === "string") {
+    const prefix = prefixOrMessage;
+    return { prefix, message };
+  } else {
+    const prefix = "";
+    const message = prefixOrMessage;
+    return { prefix, message };
+  }
+}
+
+function format(level: LogLevel, prefix: string, message: string) {
+  return `${logLevelLabel[level]}: ${prefix} ${message}\n`;
+}
+
 export class AdoReporter implements Reporter {
+  logStream: Writable = process.stdout;
+
   private logEntries = new Map<string, LogEntry[]>();
+  readonly groupedEntries = new Map<string, LogEntry[]>();
+
+  constructor(private options: { logLevel?: LogLevel; grouped?: boolean }) {
+    options.logLevel = options.logLevel || LogLevel.info;
+  }
 
   log(entry: LogEntry<any>) {
-    if (entry.data.target) {
+    if (entry.data && entry.data.target) {
       if (!this.logEntries.has(entry.data.target.id)) {
         this.logEntries.set(entry.data.target.id, []);
       }
 
       this.logEntries.get(entry.data.target.id)!.push(entry);
     }
+
+    if (this.options.logLevel! >= entry.level) {
+      if (this.options.grouped) {
+        return this.logTargetEntryByGroup(entry);
+      }
+
+      return this.logTargetEntry(entry);
+    }
+  }
+
+  private logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
+    const colorFn = colors[entry.level];
+    const data = entry.data!;
+
+    if (isTargetStatusLogEntry(data)) {
+      const { target, hash, duration } = data;
+      const { packageName, task } = target;
+
+      const normalizedArgs = this.options.grouped
+        ? normalize(entry.msg)
+        : normalize(getTaskLogPrefix(packageName ?? "<root>", task), entry.msg);
+
+      const pkgTask = this.options.grouped ? `${chalk.magenta(packageName)} ${chalk.cyan(task)}` : "";
+
+      switch (data.status) {
+        case "running":
+          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.ok("➔")} start ${pkgTask}`)));
+
+        case "success":
+          return this.logStream.write(
+            format(
+              entry.level,
+              normalizedArgs.prefix,
+              colorFn(`${colors.ok("✓")} done ${pkgTask} - ${formatDuration(hrToSeconds(duration!))}`)
+            )
+          );
+
+        case "failed":
+          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.error("✖")} fail ${pkgTask}`)));
+
+        case "skipped":
+          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.ok("»")} skip ${pkgTask} - ${hash!}`)));
+
+        case "aborted":
+          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.warn("»")} aborted ${pkgTask}`)));
+      }
+    } else {
+      // this is a generic log
+      const { target } = data;
+      const { packageName, task } = target;
+      const normalizedArgs = this.options.grouped
+        ? normalize(entry.msg)
+        : normalize(getTaskLogPrefix(packageName ?? "<root>", task), entry.msg);
+      return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn("|  " + normalizedArgs.message)));
+    }
+  }
+
+  private logTargetEntryByGroup(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
+    const data = entry.data!;
+
+    const target = data.target;
+    const { id } = target;
+
+    this.groupedEntries.set(id, this.groupedEntries.get(id) || []);
+    this.groupedEntries.get(id)?.push(entry);
+
+    if (isTargetStatusLogEntry(data)) {
+      if (data.status === "success" || data.status === "failed" || data.status === "skipped" || data.status === "aborted") {
+        this.logStream.write(`##[group] ${data.target.packageName} ${data.target.task}\n`);
+        const entries = this.groupedEntries.get(id)! as LogEntry<TargetStatusEntry>[];
+
+        for (const targetEntry of entries) {
+          this.logTargetEntry(targetEntry);
+        }
+
+        this.logStream.write(`##[endgroup]\n`);
+      }
+    }
   }
 
   summarize(schedulerRunSummary: SchedulerRunSummary) {
-    const failedTargets = schedulerRunSummary.targetRunByStatus.failed.map((id) => schedulerRunSummary.targetRuns.get(id)!);
+    const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
+    const { failed, aborted, skipped, success, pending } = targetRunByStatus;
 
-    if (failedTargets && failedTargets.length > 0) {
-      const failedPackages: { packageName?: string; taskLogs?: string; task: string }[] = [];
+    const statusColorFn: {
+      [status in TargetStatus]: chalk.Chalk;
+    } = {
+      success: chalk.greenBright,
+      failed: chalk.redBright,
+      skipped: chalk.gray,
+      running: chalk.yellow,
+      pending: chalk.gray,
+      aborted: chalk.red,
+    };
 
-      for (const failedTargetRun of failedTargets) {
-        const failedTargetId = failedTargetRun.target.id;
-        const { packageName, task } = getPackageAndTask(failedTargetId);
-        const taskLogs = this.logEntries.get(failedTargetId);
-        let packageLogs = ``;
-        if (taskLogs) {
-          packageLogs += `[${packageName} ${task}]`;
-          for (let i = 0; i < taskLogs.length; i += 1) {
-            packageLogs += taskLogs[i].msg.replace("\n", "");
-          }
-        }
-        failedPackages.push({ packageName, taskLogs: packageLogs, task });
+    this.logStream.write(chalk.cyanBright(`##[section]Summary\n`));
+
+    if (targetRuns.size > 0) {
+      for (const wrappedTarget of targetRuns.values()) {
+        const colorFn = statusColorFn[wrappedTarget.status];
+        const target = wrappedTarget.target;
+
+        this.logStream.write(
+          format(
+            LogLevel.info,
+            getTaskLogPrefix(target.packageName || "[GLOBAL]", target.task),
+            colorFn(
+              `${wrappedTarget.status}${wrappedTarget.duration ? `, took ${formatDuration(hrToSeconds(wrappedTarget.duration))}` : ""}`
+            )
+          )
+        );
       }
 
-      const logGroup: string[] = [];
-      let packagesMessage = `##vso[task.logissue type=error]Your build failed on the following packages => `;
-      failedPackages.forEach(({ packageName, task, taskLogs }) => {
-        packagesMessage += `[${packageName} ${task}], `;
-        if (taskLogs) {
-          logGroup.push(taskLogs);
-        }
-      });
-      packagesMessage += "find the error logs above with the prefix 'ERR!'";
-      console.log(packagesMessage);
-
-      console.log(`##vso[task.logissue type=warning]${logGroup.join(" | ")}`);
+      this.logStream.write(
+        `[Tasks Count] success: ${success.length}, skipped: ${skipped.length}, pending: ${pending.length}, aborted: ${aborted.length}\n`
+      );
+    } else {
+      this.logStream.write("Nothing has been run.\n");
     }
+
+    if (failed && failed.length > 0) {
+      for (const targetId of failed) {
+        const { packageName, task } = getPackageAndTask(targetId);
+        const taskLogs = this.logEntries.get(targetId);
+
+        this.logStream.write(`##[error] [${chalk.magenta(packageName)} ${chalk.cyan(task)}] ${chalk.redBright("ERROR DETECTED")}\n`);
+
+        if (taskLogs) {
+          for (const entry of taskLogs) {
+            // Log each entry separately to prevent truncation
+            this.logStream.write(`##[error] ${entry.msg}\n`);
+          }
+        }
+      }
+    }
+
+    this.logStream.write(format(LogLevel.info, "", `Took a total of ${formatDuration(hrToSeconds(duration))} to complete`));
   }
 }

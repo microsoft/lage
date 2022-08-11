@@ -6,6 +6,7 @@ import log from "npmlog";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler";
 import { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
+import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
 
 const colors = {
   [LogLevel.info]: chalk.white,
@@ -48,10 +49,6 @@ function normalize(prefixOrMessage: string, message?: string) {
   }
 }
 
-function isTargetStatusLogEntry(data?: LogStructuredData): data is TargetStatusEntry {
-  return data !== undefined && data.target && data.status !== undefined;
-}
-
 export class NpmLogReporter implements Reporter {
   npmLog = log;
   private logEntries = new Map<string, LogEntry[]>();
@@ -79,16 +76,7 @@ export class NpmLogReporter implements Reporter {
       return this.logTargetEntry(entry);
     }
   }
-
-  private logGenericEntry(entry: LogEntry) {
-    const normalizedArgs = normalize(entry.msg);
-
-    const logFn = logFns[entry.level];
-    const colorFn = colors[entry.level];
-
-    return logFn(normalizedArgs.prefix, colorFn(normalizedArgs.message));
-  }
-
+  
   private logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
     const logFn = logFns[entry.level];
 

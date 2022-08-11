@@ -2,10 +2,9 @@
 process.env.FORCE_COLOR = "0";
 
 import { LogLevel } from "@lage-run/logger";
-import { NpmLogReporter } from "../src/NpmLogReporter";
+import { AdoReporter } from "../src/AdoReporter";
 import streams from "memory-streams";
 import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry";
-import { Target } from "@lage-run/target-graph";
 
 function createTarget(packageName: string, task: string) {
   return {
@@ -18,12 +17,12 @@ function createTarget(packageName: string, task: string) {
   };
 }
 
-describe("NpmLogReporter", () => {
+describe("AdoReporter", () => {
   it("records a target status entry", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.npmLog.stream = writer;
+    const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.verbose });
+    reporter.logStream = writer;
 
     reporter.log({
       data: {
@@ -40,16 +39,16 @@ describe("NpmLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "verb a task ➔ start 
-      "
-    `);
+"VERB: a task ➔ start 
+"
+`);
   });
 
   it("records a target message entry", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.npmLog.stream = writer;
+    const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.verbose });
+    reporter.logStream = writer;
 
     reporter.log({
       data: {
@@ -64,16 +63,16 @@ describe("NpmLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "verb a task |  test message
-      "
-    `);
+"VERB: a task |  test message
+"
+`);
   });
 
   it("groups messages together", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new NpmLogReporter({ grouped: true, logLevel: LogLevel.verbose });
-    reporter.npmLog.stream = writer;
+    const reporter = new AdoReporter({ grouped: true, logLevel: LogLevel.verbose });
+    reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -106,30 +105,33 @@ describe("NpmLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "verb ➔ start a test
-      verb |  test message for a#test
-      verb |  test message for a#test again
-      verb ✓ done a test - 10.00s
-      info ----------------------------------------------
-      verb ➔ start b build
-      verb |  test message for b#build
-      verb |  test message for b#build again
-      verb ✓ done b build - 30.00s
-      info ----------------------------------------------
-      verb ➔ start a build
-      verb |  test message for a#build
-      verb |  test message for a#build again
-      verb ✖ fail a build
-      info ----------------------------------------------
-      "
-    `);
+"##[group] a test
+VERB:  ➔ start a test
+VERB:  |  test message for a#test
+VERB:  |  test message for a#test again
+VERB:  ✓ done a test - 10.00s
+##[endgroup]
+##[group] b build
+VERB:  ➔ start b build
+VERB:  |  test message for b#build
+VERB:  |  test message for b#build again
+VERB:  ✓ done b build - 30.00s
+##[endgroup]
+##[group] a build
+VERB:  ➔ start a build
+VERB:  |  test message for a#build
+VERB:  |  test message for a#build again
+VERB:  ✖ fail a build
+##[endgroup]
+"
+`);
   });
 
   it("interweave messages when ungrouped", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.npmLog.stream = writer;
+    const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.verbose });
+    reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -162,27 +164,27 @@ describe("NpmLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "verb a build ➔ start 
-      verb a test ➔ start 
-      verb b build ➔ start 
-      verb a build |  test message for a#build
-      verb a test |  test message for a#test
-      verb a build |  test message for a#build again
-      verb b build |  test message for b#build
-      verb a test |  test message for a#test again
-      verb b build |  test message for b#build again
-      verb a test ✓ done  - 10.00s
-      verb b build ✓ done  - 30.00s
-      verb a build ✖ fail 
-      "
-    `);
+"VERB: a build ➔ start 
+VERB: a test ➔ start 
+VERB: b build ➔ start 
+VERB: a build |  test message for a#build
+VERB: a test |  test message for a#test
+VERB: a build |  test message for a#build again
+VERB: b build |  test message for b#build
+VERB: a test |  test message for a#test again
+VERB: b build |  test message for b#build again
+VERB: a test ✓ done  - 10.00s
+VERB: b build ✓ done  - 30.00s
+VERB: a build ✖ fail 
+"
+`);
   });
 
   it("can filter out verbose messages", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.info });
-    reporter.npmLog.stream = writer;
+    const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.info });
+    reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -215,21 +217,21 @@ describe("NpmLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "info a build ➔ start 
-      info a test ➔ start 
-      info b build ➔ start 
-      info a test ✓ done  - 10.00s
-      info b build ✓ done  - 30.00s
-      info a build ✖ fail 
-      "
-    `);
+"INFO: a build ➔ start 
+INFO: a test ➔ start 
+INFO: b build ➔ start 
+INFO: a test ✓ done  - 10.00s
+INFO: b build ✓ done  - 30.00s
+INFO: a build ✖ fail 
+"
+`);
   });
 
-  it("can filter out verbose messages", () => {
+  it("can group verbose messages", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new NpmLogReporter({ grouped: true, logLevel: LogLevel.info });
-    reporter.npmLog.stream = writer;
+    const reporter = new AdoReporter({ grouped: true, logLevel: LogLevel.verbose });
+    reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -271,29 +273,45 @@ describe("NpmLogReporter", () => {
         aborted: [],
         skipped: [],
       },
-      targetRuns: new Map(),
+      targetRuns: new Map([
+        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
+        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0] }],
+        [bBuildTarget.id, { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0] }],
+      ]),
     });
 
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"info ➔ start a test
-info ✓ done a test - 10.00s
-info ➔ start b build
-info ✓ done b build - 30.00s
-info ➔ start a build
-info ✖ fail a build
-info 🏗 Summary
-info 
-info Nothing has been run.
-info ----------------------------------------------
-ERR! [a build] ERROR DETECTED
-ERR! 
-ERR! test message for a#build
-ERR! test message for a#build again, but look there is an error!
-ERR! 
-info ----------------------------------------------
-info Took a total of 1m 40.00s to complete
+"##[group] a test
+INFO:  ➔ start a test
+VERB:  |  test message for a#test
+VERB:  |  test message for a#test again
+INFO:  ✓ done a test - 10.00s
+##[endgroup]
+##[group] b build
+INFO:  ➔ start b build
+VERB:  |  test message for b#build
+VERB:  |  test message for b#build again
+INFO:  ✓ done b build - 30.00s
+##[endgroup]
+##[group] a build
+INFO:  ➔ start a build
+VERB:  |  test message for a#build
+VERB:  |  test message for a#build again, but look there is an error!
+INFO:  ✖ fail a build
+##[endgroup]
+##[section]Summary
+INFO: a build failed, took 60.00s
+INFO: a test success, took 60.00s
+INFO: b build success, took 60.00s
+[Tasks Count] success: 2, skipped: 0, pending: 0, aborted: 0
+##[error] [a build] ERROR DETECTED
+##[error] 
+##[error] test message for a#build
+##[error] test message for a#build again, but look there is an error!
+##[error] 
+INFO:  Took a total of 1m 40.00s to complete
 "
 `);
   });
