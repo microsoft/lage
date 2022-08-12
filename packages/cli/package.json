@@ -20,7 +20,10 @@
     "@lage-run/logger": "^1.1.1",
     "@lage-run/scheduler": "^0.1.2",
     "@lage-run/target-graph": "^0.2.0",
-    "commander": "^9.4.0"
+    "@lage-run/cache": "^0.1.2",
+    "@lage-run/reporters": "^0.1.1",
+    "commander": "^9.4.0",
+    "workspace-tools": "^0.23.0"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",

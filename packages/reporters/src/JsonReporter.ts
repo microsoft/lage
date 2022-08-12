@@ -7,6 +7,10 @@ export class JsonReporter implements Reporter {
   constructor(private options: { logLevel: LogLevel }) {}
 
   log(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
+    if (entry.data && entry.data.target && entry.data.target.hidden) {
+      return;
+    }
+    
     if (this.options.logLevel >= entry.level) {
       console.log(JSON.stringify(entry));
     }

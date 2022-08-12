@@ -3,8 +3,6 @@ import { Priority } from "./Priority";
 import { PipelineDefinition } from "./PipelineDefinition";
 import { LoggerOptions } from "./LoggerOptions";
 
-import { QueueOptions } from "bullmq";
-
 export type NpmClient = "npm" | "yarn" | "pnpm";
 
 export interface ConfigOptions {
@@ -26,9 +24,6 @@ export interface ConfigOptions {
    */
   pipeline: PipelineDefinition;
 
-  /** Should cache be enabled */
-  cache: boolean;
-
   /** Backfill cache options */
   cacheOptions: CacheOptions;
 
@@ -45,24 +40,7 @@ export interface ConfigOptions {
   priorities: Priority[];
 
   /**
-   * Should we try to run the task graph as much as we can even though one task has failed
-   */
-  continue: boolean;
-
-  /**
-   * Run the tasks for the dependencies of scoped tasks
-   */
-  includeDependencies: boolean;
-
-  /**
    * Options that will be sent to all log reporters.
    */
   loggerOptions: LoggerOptions;
-
-  /**
-   * Worker queue settings
-   */
-  workerQueueOptions: QueueOptions & {
-    timeoutSeconds: number;
-  };
 }

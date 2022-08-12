@@ -1,6 +1,6 @@
 import { Command } from "commander";
 
-import { runCommand } from "./command/run";
+import { runCommand } from "./commands/run/runCommand";
 
 async function main() {
   const program = new Command();

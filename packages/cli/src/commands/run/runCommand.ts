@@ -1,56 +1,10 @@
 import { Command, Option } from "commander";
 import os from "os";
-/**
- * 
-    args: getPassThroughArgs(command, parsedArgs),
-    
-    
-    cacheOptions:
-      {
-        ...configResults?.config.cacheOptions,
-        ...(parsedArgs.cacheKey && { cacheKey: parsedArgs.cacheKey }),
-        ...(parsedArgs.skipLocalCache && { skipLocalCache: true }),
-      } || {},
-    command,
-    concurrency,
-    
-    ignore: parsedArgs.ignore || configResults?.config.ignore || [],
-    
-    npmClient: configResults?.config.npmClient || "npm",
-    pipeline: configResults?.config.pipeline || {},
-    priorities: configResults?.config.priorities || [],
-    
-    
-    scope,
-    since: parsedArgs.since || undefined,
-    verbose: parsedArgs.verbose,
-    only: false,
-    repoWideChanges: configResults?.config.repoWideChanges || [
-      "lage.config.js",
-      "package-lock.json",
-      "yarn.lock",
-      "pnpm-lock.yaml",
-      "lerna.json",
-      "rush.json",
-    ],
-    to: parsedArgs.to || [],
-    continue: parsedArgs.continue || configResults?.config.continue,
-    safeExit: parsedArgs.safeExit,
-    includeDependencies: parsedArgs.includeDependencies,
-    clear: parsedArgs.clear || false,
-    prune: parsedArgs.prune,
-    logLevel: parsedArgs.logLevel,
-    loggerOptions: configResults?.config.loggerOptions || {},
-    dist,
-    workerQueueOptions: configResults?.config.workerQueueOptions || {},
- */
+import { runAction } from "./runAction";
 
 const runCommand = new Command("run");
 runCommand
-  .action((options, command) => {
-    console.log(command.args);
-    console.log(options);
-  })
+  .action(runAction)
   .option(
     "-c, --concurrency <n>",
     "concurrency",
@@ -63,18 +17,23 @@ runCommand
     },
     os.cpus().length - 1
   )
+  // Common Options
   .option("--reporter <reporter>", "reporter", "npmLog")
+  .option("--scope <scope...>", "scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)")
+  .option("--no-dependents", "disables running any dependents of the scoped packages")
+  .option("--no-dependencies", "disables running any dependencies of the scoped packages")
+  .option("--since <since>", "only runs packages that have changed since the given commit, tag, or branch")
+  .option("--to <scope...>", "runs up to a package (shorthand for --scope=<scope...> --no-dependents)")
+  .option("--verbose", "verbose output")
+
+  // Run Command Options
   .option("--grouped", "groups the logs", false)
   .option("--no-cache", "disables the cache")
   .option("--reset-cache", "resets the cache, filling it after a run")
-  .option("--no-deps", "disables running any dependents of the packages")
+
   .option("--profile [profile]", "writes a run profile into a file that can be processed by Chromium devtool")
   .option("--nodearg <nodeArg...>", "arguments to be passed to node (e.g. --nodearg=--max_old_space_size=1234 --nodearg=--heap-prof")
-  .option("--scope <scope...>", "scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)")
-  .option("--since <since>", "only runs packages that have changed since the given commit, tag, or branch")
-  .option("--to <to>", "runs up to a package (shorthand for --scope=<to> --no-deps)")
   .option("--continue", "continues the run even on error")
-  .option("--verbose", "verbose output")
   .addOption(new Option("--log-level <level>", "log level").choices(["info", "warn", "error", "verbose", "silly"]))
   .allowUnknownOption(true)
   .addHelpCommand("[run] command1 [command2...commandN] [options]", "run commands")
