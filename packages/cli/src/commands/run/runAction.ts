@@ -4,7 +4,7 @@ import { findNpmClient } from "../../workspace/findNpmClient";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { NpmLogReporter } from "@lage-run/reporters";
+import { InteractiveReporter } from "./interactive/InteractiveReporter";
 import { NpmScriptRunner, SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger, { LogLevel } from "@lage-run/logger";
@@ -24,10 +24,12 @@ export async function runAction(options: Record<string, any>, command: Command) 
   // Configure logger
   const logger = createLogger();
 
-  const reporter = new NpmLogReporter({
-    grouped: options.grouped,
-    logLevel: options.verbose ? LogLevel.verbose : options.logLevel,
-  });
+  // const reporter = new NpmLogReporter({
+  //   grouped: options.grouped,
+  //   logLevel: options.verbose ? LogLevel.verbose : options.logLevel,
+  // });
+
+  const reporter = new InteractiveReporter({});
   logger.addReporter(reporter);
 
   // Build Target Graph

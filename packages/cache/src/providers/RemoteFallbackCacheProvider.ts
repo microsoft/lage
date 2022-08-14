@@ -27,16 +27,16 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
 
     if (localCacheProvider) {
       RemoteFallbackCacheProvider.localHits[hash] = await localCacheProvider.fetch(hash, target);
-      logger.silly(`local cache fetch: ${hash} ${RemoteFallbackCacheProvider.localHits[hash]}`);
+      logger.silly(`local cache fetch: ${hash} ${RemoteFallbackCacheProvider.localHits[hash]}`, { target });
     }
 
     if (!RemoteFallbackCacheProvider.localHits[hash] && remoteCacheProvider) {
       RemoteFallbackCacheProvider.remoteHits[hash] = await remoteCacheProvider.fetch(hash, target);
-      logger.silly(`remote fallback fetch: ${hash} ${RemoteFallbackCacheProvider.remoteHits[hash]}`);
+      logger.silly(`remote fallback fetch: ${hash} ${RemoteFallbackCacheProvider.remoteHits[hash]}`, { target });
 
       // now save this into the localCacheProvider, if available
       if (localCacheProvider) {
-        logger.silly(`local cache put, fetched cache from remote: ${hash}`);
+        logger.silly(`local cache put, fetched cache from remote: ${hash}`, { target });
         await localCacheProvider.put(hash, target);
       }
 
@@ -54,7 +54,7 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
     const shouldWriteLocalCache = !this.isLocalHit(hash) && !!localCacheProvider;
 
     if (shouldWriteLocalCache) {
-      logger.silly(`local cache put: ${hash}`);
+      logger.silly(`local cache put: ${hash}`, { target });
       putPromises.push(localCacheProvider.put(hash, target));
     }
 
@@ -62,7 +62,7 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
     const shouldWriteRemoteCache = !this.isRemoteHit(hash) && !!remoteCacheProvider;
 
     if (shouldWriteRemoteCache) {
-      logger.silly(`remote fallback put: ${hash}`);
+      logger.silly(`remote fallback put: ${hash}`, { target });
       const remotePut = remoteCacheProvider.put(hash, target);
       putPromises.push(remotePut);
     }

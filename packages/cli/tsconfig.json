@@ -17,7 +17,8 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "noUnusedLocals": false,
-    "sourceMap": true
+    "sourceMap": true,
+    "jsx": "react-jsx"
   },
-  "include": ["src/cli.ts"]
+  "include": ["src/cli.ts", "src/**/*.tsx"]
 }
