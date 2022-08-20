@@ -59,7 +59,6 @@ export async function runAction(options: Record<string, any>, command: Command) 
 
   for (const [id, definition] of Object.entries(config.pipeline)) {
     if (Array.isArray(definition)) {
-      builder.addTargetConfig;
       builder.addTargetConfig(id, {
         cache: true,
         dependsOn: definition,
@@ -81,6 +80,7 @@ export async function runAction(options: Record<string, any>, command: Command) 
       root,
       cacheOptions: {
         outputGlob: config.cacheOptions.outputGlob,
+        internalCacheFolder: config.cacheOptions.internalCacheFolder,
       },
     }),
     remoteCacheProvider: new BackfillCacheProvider({ root, cacheOptions: config.cacheOptions }),

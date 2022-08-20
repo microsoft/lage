@@ -7,11 +7,3 @@ This is the command line interface (CLI) for lage. It contains the logic to tie 
 3. for running the targets, there are some reserved options for lage, but the rest are passed through to the scripts
 4. figures out the filtered packages as entry points (dependencies are also run, unless --no-dependents are specified)
 5. scheduler, reporter, cache, logger are initialized and run
-
-## Interactive mode
-
-A fresh and exciting UI is available for lage CLI using react + ink to make local development enjoyable with topological targets! Run lage like so:
-
-```
-lage build test lint --interactive
-```
