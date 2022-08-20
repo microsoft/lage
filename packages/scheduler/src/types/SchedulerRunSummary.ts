@@ -5,7 +5,7 @@ import type { TargetStatus } from "./TargetStatus";
 // https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#mapping-modifiers
 export type TargetRunSummary = { [key in TargetStatus]-?: string[] };
 
-export type SchedulerRunResults = "success" | "failed" | "aborted";
+export type SchedulerRunResults = "success" | "failed";
 
 export interface SchedulerRunSummary {
   targetRunByStatus: TargetRunSummary;

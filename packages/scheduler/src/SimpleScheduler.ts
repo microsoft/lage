@@ -102,7 +102,7 @@ export class SimpleScheduler implements TargetScheduler {
       });
     }
 
-    let results: SchedulerRunResults = "success";
+    let results: SchedulerRunResults = "failed";
     let error: string | undefined;
 
     try {
@@ -115,8 +115,15 @@ export class SimpleScheduler implements TargetScheduler {
     } finally {
       const duration = process.hrtime(startTime);
       const targetRunByStatus = categorizeTargetRuns([...this.wrappedTargets.values()]);
-      if (targetRunByStatus.aborted.length > 0 || targetRunByStatus.pending.length > 0) {
-        results = "aborted";
+
+      if (
+        targetRunByStatus.failed.length +
+          targetRunByStatus.aborted.length +
+          targetRunByStatus.pending.length +
+          targetRunByStatus.running.length ===
+        0
+      ) {
+        results = "success";
       }
 
       return {

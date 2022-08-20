@@ -18,7 +18,7 @@ runCommand
     os.cpus().length - 1
   )
   // Common Options
-  .option("--reporter <reporter>", "reporter", "npmLog")
+  .option("--reporter <reporter...>", "reporter", "npmLog")
   .option("--scope <scope...>", "scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)")
   .option("--no-dependents", "disables running any dependents of the scoped packages")
   .option("--no-dependencies", "disables running any dependencies of the scoped packages")

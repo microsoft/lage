@@ -4,10 +4,10 @@ import { findNpmClient } from "../../workspace/findNpmClient";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { NpmLogReporter } from "@lage-run/reporters";
+import { createReporter } from '../../createReporter'
 import { NpmScriptRunner, SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
-import createLogger, { LogLevel } from "@lage-run/logger";
+import createLogger, { LogLevel, Reporter } from "@lage-run/logger";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
@@ -20,15 +20,23 @@ function filterArgsForTasks(args: string[]) {
 export async function runAction(options: Record<string, any>, command: Command) {
   const cwd = process.cwd();
   const config = getConfig(cwd);
+  const reporterInstances: Reporter[] = [];
 
   // Configure logger
   const logger = createLogger();
 
-  const reporter = new NpmLogReporter({
-    grouped: options.grouped,
-    logLevel: options.verbose ? LogLevel.verbose : options.logLevel,
-  });
-  logger.addReporter(reporter);
+  const reporterOptions = Array.isArray(options.reporter) ? options.reporter : [options.reporter];
+
+  for (const reporter of reporterOptions) {
+    const reporterInstance = createReporter({
+      verbose: options.verbose,
+      grouped: options.grouped,
+      logLevel: LogLevel[options.logLevel],
+      reporter: reporter as string,
+    });
+    reporterInstances.push(reporterInstance);
+    logger.addReporter(reporterInstance);
+  }
 
   // Build Target Graph
   const root = getWorkspaceRoot(process.cwd())!;
@@ -37,6 +45,7 @@ export async function runAction(options: Record<string, any>, command: Command) 
   const builder = new TargetGraphBuilder(root, packageInfos);
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
+  
   const packages = getFilteredPackages({
     root,
     logger,
@@ -104,5 +113,11 @@ export async function runAction(options: Record<string, any>, command: Command) 
 
   const summary = await scheduler.run(root, targetGraph);
 
-  reporter.summarize(summary);
+  for (const reporterInstance of reporterInstances) {
+    reporterInstance.summarize(summary);
+  }
+
+  if (summary.results !== "success") {
+    process.exitCode = 1;
+  }
 }

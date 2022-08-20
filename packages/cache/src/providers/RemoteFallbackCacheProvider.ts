@@ -35,7 +35,7 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
       logger.silly(`remote fallback fetch: ${hash} ${RemoteFallbackCacheProvider.remoteHits[hash]}`);
 
       // now save this into the localCacheProvider, if available
-      if (localCacheProvider) {
+      if (localCacheProvider && RemoteFallbackCacheProvider.remoteHits[hash]) {
         logger.silly(`local cache put, fetched cache from remote: ${hash}`);
         await localCacheProvider.put(hash, target);
       }
