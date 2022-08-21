@@ -219,7 +219,6 @@ describe("RemoteFallbackCacheProvider", () => {
     expect(remoteCacheProvider.put).not.toHaveBeenCalled();
   });
 
-
   it("should not put any local cache if the remote fallback has nothing", async () => {
     const root = "/test";
 

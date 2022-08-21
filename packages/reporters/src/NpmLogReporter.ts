@@ -186,7 +186,7 @@ export class NpmLogReporter implements Reporter {
         if (wrappedTarget.target.hidden) {
           continue;
         }
-        
+
         const colorFn = statusColorFn[wrappedTarget.status];
         const target = wrappedTarget.target;
 

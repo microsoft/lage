@@ -4,7 +4,7 @@ import { findNpmClient } from "../../workspace/findNpmClient";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { createReporter } from '../../createReporter'
+import { createReporter } from "../../createReporter";
 import { NpmScriptRunner, SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger, { LogLevel, Reporter } from "@lage-run/logger";
@@ -45,7 +45,7 @@ export async function runAction(options: Record<string, any>, command: Command) 
   const builder = new TargetGraphBuilder(root, packageInfos);
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
-  
+
   const packages = getFilteredPackages({
     root,
     logger,
