@@ -24,17 +24,19 @@ runCommand
   .option("--no-dependencies", "disables running any dependencies of the scoped packages")
   .option("--since <since>", "only runs packages that have changed since the given commit, tag, or branch")
   .option("--to <scope...>", "runs up to a package (shorthand for --scope=<scope...> --no-dependents)")
+  .addOption(new Option("--log-level <level>", "log level").choices(["info", "warn", "error", "verbose", "silly"]).conflicts("--verbose"))
   .option("--verbose", "verbose output")
 
   // Run Command Options
   .option("--grouped", "groups the logs", false)
   .option("--no-cache", "disables the cache")
   .option("--reset-cache", "resets the cache, filling it after a run")
+  .option("--skip-local-cache", "skips caching locally")
 
   .option("--profile [profile]", "writes a run profile into a file that can be processed by Chromium devtool")
   .option("--nodearg <nodeArg...>", "arguments to be passed to node (e.g. --nodearg=--max_old_space_size=1234 --nodearg=--heap-prof")
   .option("--continue", "continues the run even on error")
-  .addOption(new Option("--log-level <level>", "log level").choices(["info", "warn", "error", "verbose", "silly"]))
+  
   .allowUnknownOption(true)
   .addHelpCommand("[run] command1 [command2...commandN] [options]", "run commands")
   .addHelpText(

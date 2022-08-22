@@ -19,5 +19,5 @@
     "noUnusedLocals": false,
     "sourceMap": true
   },
-  "include": ["src/cli.ts"]
+  "include": ["src/cli.ts", "src/index.ts"]
 }

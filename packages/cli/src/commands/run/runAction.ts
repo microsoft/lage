@@ -76,14 +76,20 @@ export async function runAction(options: Record<string, any>, command: Command) 
   const cacheProvider = new RemoteFallbackCacheProvider({
     root,
     logger,
-    localCacheProvider: new BackfillCacheProvider({
-      root,
-      cacheOptions: {
-        outputGlob: config.cacheOptions.outputGlob,
-        internalCacheFolder: config.cacheOptions.internalCacheFolder,
-      },
-    }),
-    remoteCacheProvider: new BackfillCacheProvider({ root, cacheOptions: config.cacheOptions }),
+    localCacheProvider:
+      options.skipLocalCache === true
+        ? undefined
+        : new BackfillCacheProvider({
+            root,
+            cacheOptions: {
+              outputGlob: config.cacheOptions.outputGlob,
+              internalCacheFolder: config.cacheOptions.internalCacheFolder,
+            },
+          }),
+    remoteCacheProvider: config.cacheOptions?.cacheStorageConfig
+      ? new BackfillCacheProvider({ root, cacheOptions: config.cacheOptions })
+      : undefined,
+    writeRemoteCache: config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true"
   });
 
   const hasher = new TargetHasher({

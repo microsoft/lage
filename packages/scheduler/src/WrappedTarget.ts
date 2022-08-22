@@ -155,6 +155,8 @@ export class WrappedTarget implements TargetRun {
       } else {
         this.onFail();
       }
+
+      throw e;
     }
   }
 

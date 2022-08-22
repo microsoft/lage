@@ -74,7 +74,7 @@ function hasRepoChanged(since: string, root: string, environmentGlob: string[], 
   }
 }
 
-function filterPackages(options: {
+export function filterPackages(options: {
   logger: Logger;
   packageInfos: PackageInfos;
   includeDependents: boolean;
