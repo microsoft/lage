@@ -21,7 +21,7 @@ runCommand
   .option("--reporter <reporter...>", "reporter", "npmLog")
   .option("--scope <scope...>", "scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)")
   .option("--no-dependents|--no-deps", "disables running any dependents of the scoped packages")
-  .option("--dependencies|--include-dependencies", "adds the scoped packages dependencies as the \"entry points\" for the target graph run")
+  .option("--dependencies|--include-dependencies", 'adds the scoped packages dependencies as the "entry points" for the target graph run')
   .option("--since <since>", "only runs packages that have changed since the given commit, tag, or branch")
   .option("--to <scope...>", "runs up to a package (shorthand for --scope=<scope...> --no-dependents)")
   .addOption(new Option("--log-level <level>", "log level").choices(["info", "warn", "error", "verbose", "silly"]).conflicts("--verbose"))
@@ -36,7 +36,7 @@ runCommand
   .option("--profile [profile]", "writes a run profile into a file that can be processed by Chromium devtool")
   .option("--nodearg <nodeArg...>", "arguments to be passed to node (e.g. --nodearg=--max_old_space_size=1234 --nodearg=--heap-prof")
   .option("--continue", "continues the run even on error")
-  
+
   .allowUnknownOption(true)
   .addHelpCommand("[run] command1 [command2...commandN] [options]", "run commands")
   .addHelpText(

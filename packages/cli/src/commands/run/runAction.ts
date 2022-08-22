@@ -89,7 +89,7 @@ export async function runAction(options: Record<string, any>, command: Command) 
     remoteCacheProvider: config.cacheOptions?.cacheStorageConfig
       ? new BackfillCacheProvider({ root, cacheOptions: config.cacheOptions })
       : undefined,
-    writeRemoteCache: config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true"
+    writeRemoteCache: config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true",
   });
 
   const hasher = new TargetHasher({
