@@ -50,7 +50,7 @@ describe("transitive task deps test", () => {
     repo.cleanup();
   });
 
-  it.only("only runs package local dependencies for no-prefix dependencies", () => {
+  it("only runs package local dependencies for no-prefix dependencies", () => {
     const repo = new Monorepo("transitiveDeps-no-prefix");
 
     repo.init();

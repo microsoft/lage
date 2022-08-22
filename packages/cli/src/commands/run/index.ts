@@ -20,8 +20,8 @@ runCommand
   // Common Options
   .option("--reporter <reporter...>", "reporter", "npmLog")
   .option("--scope <scope...>", "scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)")
-  .option("--no-dependents", "disables running any dependents of the scoped packages")
-  .option("--no-dependencies", "disables running any dependencies of the scoped packages")
+  .option("--no-dependents|--no-deps", "disables running any dependents of the scoped packages")
+  .option("--dependencies|--include-dependencies", "adds the scoped packages dependencies as the \"entry points\" for the target graph run")
   .option("--since <since>", "only runs packages that have changed since the given commit, tag, or branch")
   .option("--to <scope...>", "runs up to a package (shorthand for --scope=<scope...> --no-dependents)")
   .addOption(new Option("--log-level <level>", "log level").choices(["info", "warn", "error", "verbose", "silly"]).conflicts("--verbose"))
