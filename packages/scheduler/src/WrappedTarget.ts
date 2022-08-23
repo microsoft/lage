@@ -40,22 +40,23 @@ export class WrappedTarget implements TargetRun {
 
   onAbort() {
     this.status = "aborted";
+    this.duration = process.hrtime(this.startTime);
     this.options.logger.info("aborted", { target: this.target, status: "aborted" });
   }
 
   onStart() {
     this.status = "running";
     this.startTime = process.hrtime();
-    this.options.logger.info("started", { target: this.target, status: "started" });
+    this.options.logger.info("running", { target: this.target, status: "running" });
   }
 
   onComplete() {
     this.status = "success";
     this.duration = process.hrtime(this.startTime);
-    this.options.logger.info("completed", {
+    this.options.logger.info("success", {
       target: this.target,
-      status: "completed",
-      duration: hrToSeconds(this.duration),
+      status: "success",
+      duration: this.duration,
     });
   }
 
@@ -108,7 +109,7 @@ export class WrappedTarget implements TargetRun {
     }
 
     const { logger, target, cacheProvider } = this.options;
-    logger.verbose(`hash put ${hash}`);
+    logger.verbose(`hash put ${hash}`, { target });
 
     await cacheProvider.put(hash, target);
   }
@@ -116,6 +117,7 @@ export class WrappedTarget implements TargetRun {
   async run(runner: TargetRunner) {
     const { target, logger, shouldCache, abortController } = this.options;
 
+    this.onStart();
     const abortSignal = abortController.signal;
 
     if (abortSignal.aborted) {
@@ -126,11 +128,9 @@ export class WrappedTarget implements TargetRun {
     try {
       const { hash, cacheHit } = await this.getCache();
 
-      this.onStart();
-
       const cacheEnabled = target.cache && shouldCache && hash;
       if (cacheEnabled) {
-        logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`);
+        logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`, { target });
       }
 
       // skip if cache hit!
@@ -155,6 +155,8 @@ export class WrappedTarget implements TargetRun {
       } else {
         this.onFail();
       }
+
+      throw e;
     }
   }
 

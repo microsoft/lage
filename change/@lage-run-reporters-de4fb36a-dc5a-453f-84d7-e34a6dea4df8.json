@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Be sure to hide the __start target id from reporters",
+  "packageName": "@lage-run/reporters",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}

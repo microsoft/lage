@@ -39,9 +39,9 @@ describe("NpmLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "verb a task ➔ start 
-      "
-    `);
+"verb a task ➔ start
+"
+`);
   });
 
   it("records a target message entry", () => {
@@ -161,20 +161,20 @@ describe("NpmLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "verb a build ➔ start 
-      verb a test ➔ start 
-      verb b build ➔ start 
-      verb a build |  test message for a#build
-      verb a test |  test message for a#test
-      verb a build |  test message for a#build again
-      verb b build |  test message for b#build
-      verb a test |  test message for a#test again
-      verb b build |  test message for b#build again
-      verb a test ✓ done  - 10.00s
-      verb b build ✓ done  - 30.00s
-      verb a build ✖ fail 
-      "
-    `);
+"verb a build ➔ start
+verb a test ➔ start
+verb b build ➔ start
+verb a build |  test message for a#build
+verb a test |  test message for a#test
+verb a build |  test message for a#build again
+verb b build |  test message for b#build
+verb a test |  test message for a#test again
+verb b build |  test message for b#build again
+verb a test ✓ done - 10.00s
+verb b build ✓ done - 30.00s
+verb a build ✖ fail
+"
+`);
   });
 
   it("can filter out verbose messages", () => {
@@ -214,14 +214,14 @@ describe("NpmLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "info a build ➔ start 
-      info a test ➔ start 
-      info b build ➔ start 
-      info a test ✓ done  - 10.00s
-      info b build ✓ done  - 30.00s
-      info a build ✖ fail 
-      "
-    `);
+"info a build ➔ start
+info a test ➔ start
+info b build ➔ start
+info a test ✓ done - 10.00s
+info b build ✓ done - 30.00s
+info a build ✖ fail
+"
+`);
   });
 
   it("can display a summary of a failure", () => {
@@ -282,7 +282,7 @@ info ➔ start b build
 info ✓ done b build - 30.00s
 info ➔ start a build
 info ✖ fail a build
-info 🏗 Summary
+info Summary
 info 
 info Nothing has been run.
 info ----------------------------------------------

@@ -8,6 +8,8 @@ export interface RemoteFallbackCacheProviderOptions {
 
   localCacheProvider?: CacheProvider;
   remoteCacheProvider?: CacheProvider;
+
+  writeRemoteCache: boolean;
 }
 
 /**
@@ -35,7 +37,7 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
       logger.silly(`remote fallback fetch: ${hash} ${RemoteFallbackCacheProvider.remoteHits[hash]}`);
 
       // now save this into the localCacheProvider, if available
-      if (localCacheProvider) {
+      if (localCacheProvider && RemoteFallbackCacheProvider.remoteHits[hash]) {
         logger.silly(`local cache put, fetched cache from remote: ${hash}`);
         await localCacheProvider.put(hash, target);
       }
@@ -47,7 +49,7 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
   }
 
   async put(hash: string, target: Target) {
-    const { logger, remoteCacheProvider, localCacheProvider } = this.options;
+    const { logger, remoteCacheProvider, localCacheProvider, writeRemoteCache } = this.options;
     const putPromises: Promise<void>[] = [];
 
     // Write local cache if it doesn't already exist, or if the the hash isn't in the localHits
@@ -59,7 +61,7 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
     }
 
     // Write to remote if there is a no hit in the remote cache, and remote cache storage provider, and that the "writeRemoteCache" config flag is set to true
-    const shouldWriteRemoteCache = !this.isRemoteHit(hash) && !!remoteCacheProvider;
+    const shouldWriteRemoteCache = !this.isRemoteHit(hash) && !!remoteCacheProvider && writeRemoteCache;
 
     if (shouldWriteRemoteCache) {
       logger.silly(`remote fallback put: ${hash}`);

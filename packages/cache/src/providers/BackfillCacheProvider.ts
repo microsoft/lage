@@ -19,7 +19,6 @@ const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
 export interface BackfillCacheProviderOptions {
   root: string;
   cacheOptions: Partial<CacheProviderOptions>;
-  isReadOnly?: boolean;
 }
 
 export class BackfillCacheProvider implements CacheProvider {
@@ -61,7 +60,7 @@ export class BackfillCacheProvider implements CacheProvider {
   }
 
   async put(hash: string, target: Target): Promise<void> {
-    if (!hash || this.options.isReadOnly) {
+    if (!hash) {
       return;
     }
 

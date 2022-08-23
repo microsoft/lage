@@ -73,7 +73,7 @@ export class NpmScriptRunner implements TargetRunner {
      */
     if (abortSignal) {
       if (abortSignal.aborted) {
-        return Promise.resolve();
+        return;
       }
 
       const abortSignalHandler = () => {

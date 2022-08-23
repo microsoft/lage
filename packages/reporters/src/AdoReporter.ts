@@ -59,6 +59,10 @@ export class AdoReporter implements Reporter {
   }
 
   log(entry: LogEntry<any>) {
+    if (entry.data && entry.data.target && entry.data.target.hidden) {
+      return;
+    }
+
     if (entry.data && entry.data.target) {
       if (!this.logEntries.has(entry.data.target.id)) {
         this.logEntries.set(entry.data.target.id, []);

@@ -13,7 +13,9 @@ export function categorizeTargetRuns(targetRuns: TargetRun[]): TargetRunSummary 
 
   for (const targetRun of targetRuns) {
     const { status } = targetRun;
-    summary[status]!.push(targetRun.target.id);
+    if (!targetRun.target.hidden) {
+      summary[status]!.push(targetRun.target.id);
+    }
   }
 
   return summary;

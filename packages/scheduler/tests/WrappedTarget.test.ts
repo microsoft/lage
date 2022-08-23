@@ -7,6 +7,7 @@ import { CacheProvider, TargetHasher } from "@lage-run/cache";
 import { Logger } from "@lage-run/logger";
 import { TargetRunner } from "../src/types/TargetRunner";
 import { rejects } from "assert";
+import { createCipheriv } from "crypto";
 
 function createTarget(packageName: string): Target {
   return {
@@ -148,18 +149,20 @@ describe("WrappedTarget", () => {
       wrappedTargets.push(wrappedTarget);
     }
 
+    const oops = new Error("oops");
+
     const runner = {
       async run(target: Target, abortSignal?: AbortSignal) {
         // nothing
         if (target.packageName === "a") {
-          throw new Error("oops");
+          throw oops;
         }
       },
     } as TargetRunner;
 
     const runPromises = wrappedTargets.map((wrappedTarget) => wrappedTarget.run(runner));
 
-    await Promise.all(runPromises);
+    await expect(Promise.all(runPromises)).rejects.toThrow(oops);
 
     for (const wrappedTarget of wrappedTargets) {
       expect(wrappedTarget.status).not.toBe("pending");
@@ -203,11 +206,13 @@ describe("WrappedTarget", () => {
       wrappedTargets.push(wrappedTarget);
     }
 
+    const oops = new Error("oops");
+
     const runner = {
       run(target: Target, abortSignal?: AbortSignal) {
         return new Promise((resolve, reject) => {
           if (target.packageName === "a") {
-            reject(new Error("oops"));
+            reject(oops);
           }
 
           const timeout = setTimeout(() => {
@@ -224,7 +229,7 @@ describe("WrappedTarget", () => {
 
     const runPromises = wrappedTargets.map((wrappedTarget) => wrappedTarget.run(runner));
 
-    await Promise.all(runPromises);
+    await expect(Promise.all(runPromises)).rejects.toBe(oops);
 
     expect(wrappedTargets.some((t) => t.status === "aborted")).toBeTruthy();
   });
