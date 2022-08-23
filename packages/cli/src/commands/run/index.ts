@@ -20,10 +20,6 @@ addLoggerOptions(runCommand)
     os.cpus().length - 1
   )
   // Common Options
-  .option("--reporter <reporter...>", "reporter", "npmLog")
-  .addOption(new Option("--log-level <level>", "log level").choices(["info", "warn", "error", "verbose", "silly"]).conflicts("--verbose"))
-  .option("--verbose", "verbose output")
-
   .option("--scope <scope...>", "scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)")
   .option("--no-dependents|--no-deps", "disables running any dependents of the scoped packages")
   .option("--dependencies|--include-dependencies", 'adds the scoped packages dependencies as the "entry points" for the target graph run')
