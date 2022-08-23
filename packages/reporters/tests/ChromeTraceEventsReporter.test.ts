@@ -112,7 +112,7 @@ describe("ChromeTraceEventsReporter", () => {
     `);
     expect(consoleWriter.toString()).toMatchInlineSnapshot(`
       "
-      Profiler output written to C:\\\\workspace\\\\lage\\\\packages\\\\reporters\\\\profile.json, open it with chrome://tracing or edge://tracing
+      Profiler output written to profile.json, open it with chrome://tracing or edge://tracing
       "
     `);
   });

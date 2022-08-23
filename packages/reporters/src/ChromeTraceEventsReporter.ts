@@ -116,9 +116,7 @@ export class ChromeTraceEventsReporter implements Reporter {
 
     this.consoleLogStream.write(
       chalk.blueBright(
-        `\nProfiler output written to ${chalk.underline(
-          path.join(process.cwd(), this.outputFile)
-        )}, open it with chrome://tracing or edge://tracing\n`
+        `\nProfiler output written to ${chalk.underline(this.outputFile)}, open it with chrome://tracing or edge://tracing\n`
       )
     );
   }
