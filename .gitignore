@@ -8,3 +8,4 @@ lib
 coverage
 .idea/
 **/.docusaurus/
+profile*.json

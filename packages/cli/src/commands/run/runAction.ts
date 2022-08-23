@@ -1,10 +1,11 @@
 import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
 import { Command } from "commander";
+import { createProfileReporter } from "./createProfileReporter";
+import { createReporter } from "../../createReporter";
 import { findNpmClient } from "../../workspace/findNpmClient";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { createReporter } from "../../createReporter";
 import { NpmScriptRunner, SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger, { LogLevel, Reporter } from "@lage-run/logger";
@@ -17,7 +18,25 @@ function filterArgsForTasks(args: string[]) {
   };
 }
 
-export async function runAction(options: Record<string, any>, command: Command) {
+interface RunOptions {
+  reporter: string[];
+  concurrency: number;
+  profile: string | boolean | undefined;
+  verbose: boolean;
+  logLevel: keyof typeof LogLevel;
+  grouped: boolean;
+  dependencies: boolean;
+  dependents: boolean;
+  since: string;
+  scope: string[];
+  skipLocalCache: boolean;
+  continue: boolean;
+  cache: boolean;
+  resetCache: boolean;
+  nodeargs: string;
+}
+
+export async function runAction(options: RunOptions, command: Command) {
   const cwd = process.cwd();
   const config = getConfig(cwd);
   const reporterInstances: Reporter[] = [];
@@ -36,6 +55,12 @@ export async function runAction(options: Record<string, any>, command: Command) 
     });
     reporterInstances.push(reporterInstance);
     logger.addReporter(reporterInstance);
+  }
+
+  if (options.profile !== undefined) {
+    const reporter = createProfileReporter(options);
+    reporterInstances.push(reporter);
+    logger.addReporter(reporter);
   }
 
   // Build Target Graph
@@ -83,7 +108,7 @@ export async function runAction(options: Record<string, any>, command: Command) 
             root,
             cacheOptions: {
               outputGlob: config.cacheOptions.outputGlob,
-              internalCacheFolder: config.cacheOptions.internalCacheFolder,
+              ...(config.cacheOptions.internalCacheFolder && { internalCacheFolder: config.cacheOptions.internalCacheFolder }),
             },
           }),
     remoteCacheProvider: config.cacheOptions?.cacheStorageConfig

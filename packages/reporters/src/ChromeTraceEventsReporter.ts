@@ -1,9 +1,11 @@
-import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler";
-import type { LogEntry, Reporter } from "@lage-run/logger";
-import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
-import fs from "fs";
 import { getStartTargetId } from "@lage-run/target-graph";
+import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
+import chalk from "chalk";
+import fs from "fs";
+import path from "path";
+import type { LogEntry, Reporter } from "@lage-run/logger";
+import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler";
+import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
 
 interface TraceEventsObject {
   traceEvents: CompleteEvent[];
@@ -22,7 +24,7 @@ interface CompleteEvent {
 }
 
 export interface ChromeTraceEventsReporterOptions {
-  outputFile: string;
+  outputFile?: string;
   concurrency: number;
   categorize?: (targetRun?: TargetRun) => string;
 }
@@ -30,12 +32,20 @@ export interface ChromeTraceEventsReporterOptions {
 function range(len: number) {
   return Array(len)
     .fill(0)
-    .map((_, idx) => idx);
+    .map((_, idx) => idx + 1);
 }
 
 function hrTimeToMicroseconds(hr: [number, number]) {
   return hr[0] * 1e6 + hr[1] * 1e-3;
 }
+
+function getTimeBasedFilename(prefix: string) {
+  const now = new Date(); // 2011-10-05T14:48:00.000Z
+  const datetime = now.toISOString().split(".")[0]; // 2011-10-05T14:48:00
+  const datetimeNormalized = datetime.replace(/-|:/g, ""); // 20111005T144800
+  return `${prefix ? prefix + "-" : ""}${datetimeNormalized}.json`;
+};
+
 export class ChromeTraceEventsReporter implements Reporter {
   private threads: number[];
   private targetIdThreadMap: Map<string, number> = new Map();
@@ -45,6 +55,10 @@ export class ChromeTraceEventsReporter implements Reporter {
   };
 
   constructor(private options: ChromeTraceEventsReporterOptions) {
+    if (!options.outputFile) {
+      options.outputFile = getTimeBasedFilename("profile");
+    }
+
     this.threads = range(options.concurrency);
   }
 
@@ -55,18 +69,20 @@ export class ChromeTraceEventsReporter implements Reporter {
         const threadId = this.threads.shift() ?? 0;
         this.targetIdThreadMap.set(data.target.id, threadId);
       } else {
-        const threadId = this.targetIdThreadMap.get(data.target.id);
+        const threadId = this.targetIdThreadMap.get(data.target.id)!;
+
         this.events.traceEvents.push({
           name: data.target.id,
           cat: "",
           ph: "X",
           ts: entry.timestamp * 1000, // in microseconds
-          dur: hrTimeToMicroseconds(data.duration ?? [0, 0]), // in microseconds
+          dur: hrTimeToMicroseconds(data.duration ?? [0, 1000]), // in microseconds
           pid: 1,
           tid: threadId ?? 0,
         });
 
-        this.threads.unshift(threadId ?? 0);
+        this.threads.unshift(threadId);
+        this.threads.sort((a, b) => a - b);
       }
     }
   }
@@ -76,15 +92,17 @@ export class ChromeTraceEventsReporter implements Reporter {
 
     // categorize events
     const { categorize } = this.options;
-
-    if (categorize) {
-      for (const event of this.events.traceEvents) {
-        const targetRun = targetRuns.get(event.name);
-        event.cat = `${categorize(targetRun)},${targetRun?.status}`;
+  
+    for (const event of this.events.traceEvents) {
+      const targetRun = targetRuns.get(event.name);
+      event.cat = targetRun?.status ?? "";
+      if (categorize) {
+        event.cat += `,${categorize(targetRun)}`;
       }
     }
 
     // write events to file
-    fs.writeFileSync(this.options.outputFile ?? "profile.cpuprofile", JSON.stringify(this.events, null, 2));
+    fs.writeFileSync(this.options.outputFile!, JSON.stringify(this.events, null, 2));
+    console.log(chalk.blueBright(`Profiler output written to ${chalk.underline(path.join(process.cwd(), this.options.outputFile!))}, open it with chrome://tracing or edge://tracing`));
   }
 }
