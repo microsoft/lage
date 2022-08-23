@@ -1,7 +1,9 @@
-import { hrToSeconds } from "./formatDuration";
 import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler";
 import type { LogEntry, Reporter } from "@lage-run/logger";
 import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
+import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
+import fs from "fs";
+import { getStartTargetId } from "@lage-run/target-graph";
 
 interface TraceEventsObject {
   traceEvents: CompleteEvent[];
@@ -15,13 +17,14 @@ interface CompleteEvent {
   ts: number; // in microseconds
   pid: number;
   tid: number;
-  args: Record<string, any>;
+  dur: number;
+  args?: Record<string, any>;
 }
 
 export interface ChromeTraceEventsReporterOptions {
   outputFile: string;
   concurrency: number;
-  categorize?: (targetRun: TargetRun) => string;
+  categorize?: (targetRun?: TargetRun) => string;
 }
 
 function range(len: number) {
@@ -30,41 +33,58 @@ function range(len: number) {
     .map((_, idx) => idx);
 }
 
+function hrTimeToMicroseconds(hr: [number, number]) {
+  return hr[0] * 1e6 + hr[1] * 1e-3;
+}
 export class ChromeTraceEventsReporter implements Reporter {
-  constructor(private options: ChromeTraceEventsReporterOptions) {}
+  private threads: number[];
+  private targetIdThreadMap: Map<string, number> = new Map();
+  private events: TraceEventsObject = {
+    traceEvents: [],
+    displayTimeUnit: "ms",
+  };
 
-  log(_entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {}
+  constructor(private options: ChromeTraceEventsReporterOptions) {
+    this.threads = range(options.concurrency);
+  }
+
+  log(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
+    const data = entry.data;
+    if (isTargetStatusLogEntry(data) && data.status !== "pending" && data.target.id !== getStartTargetId()) {
+      if (data.status === "running") {
+        const threadId = this.threads.shift() ?? 0;
+        this.targetIdThreadMap.set(data.target.id, threadId);
+      } else {
+        const threadId = this.targetIdThreadMap.get(data.target.id);
+        this.events.traceEvents.push({
+          name: data.target.id,
+          cat: "",
+          ph: "X",
+          ts: entry.timestamp * 1000, // in microseconds
+          dur: hrTimeToMicroseconds(data.duration ?? [0, 0]), // in microseconds
+          pid: 1,
+          tid: threadId ?? 0,
+        });
+
+        this.threads.unshift(threadId ?? 0);
+      }
+    }
+  }
 
   summarize(schedulerRunSummary: SchedulerRunSummary) {
-    const threads = range(this.options.concurrency);
-    const events: TraceEventsObject = {
-      traceEvents: [],
-      displayTimeUnit: "ms",
-    };
+    const { targetRuns } = schedulerRunSummary;
 
-    const { duration, targetRuns, targetRunByStatus } = schedulerRunSummary;
+    // categorize events
+    const { categorize } = this.options;
 
-    const summary: any = {};
-    const taskStats: any[] = [];
-
-    for (const targetRun of targetRuns.values()) {
-      taskStats.push({
-        package: targetRun.target.packageName,
-        task: targetRun.target.task,
-        duration: hrToSeconds(targetRun.duration),
-        status: targetRun.status,
-      });
-    }
-
-    for (const status of Object.keys(targetRunByStatus)) {
-      if (targetRunByStatus[status] && targetRunByStatus[status].length.length > 0) {
-        summary[`${status}Targets`] = targetRunByStatus[status].length;
+    if (categorize) {
+      for (const event of this.events.traceEvents) {
+        const targetRun = targetRuns.get(event.name);
+        event.cat = `${categorize(targetRun)},${targetRun?.status}`;
       }
     }
 
-    summary.duration = hrToSeconds(duration);
-    summary.taskStats = taskStats;
-
-    console.log(JSON.stringify({ summary }));
+    // write events to file
+    fs.writeFileSync(this.options.outputFile ?? "profile.cpuprofile", JSON.stringify(this.events, null, 2));
   }
 }
