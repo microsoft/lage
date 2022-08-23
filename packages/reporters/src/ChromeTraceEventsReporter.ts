@@ -6,6 +6,7 @@ import path from "path";
 import type { LogEntry, Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler";
 import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
+import { Writable } from "stream";
 
 interface TraceEventsObject {
   traceEvents: CompleteEvent[];
@@ -44,22 +45,29 @@ function getTimeBasedFilename(prefix: string) {
   const datetime = now.toISOString().split(".")[0]; // 2011-10-05T14:48:00
   const datetimeNormalized = datetime.replace(/-|:/g, ""); // 20111005T144800
   return `${prefix ? prefix + "-" : ""}${datetimeNormalized}.json`;
-};
+}
 
 export class ChromeTraceEventsReporter implements Reporter {
+  logStream: Writable;
+  consoleLogStream: Writable = process.stdout;
+
   private threads: number[];
   private targetIdThreadMap: Map<string, number> = new Map();
   private events: TraceEventsObject = {
     traceEvents: [],
     displayTimeUnit: "ms",
   };
+  private outputFile: string;
 
   constructor(private options: ChromeTraceEventsReporterOptions) {
-    if (!options.outputFile) {
-      options.outputFile = getTimeBasedFilename("profile");
+    this.outputFile = options.outputFile ?? getTimeBasedFilename("profile");
+    this.threads = range(options.concurrency);
+
+    if (!fs.existsSync(path.dirname(this.outputFile))) {
+      fs.mkdirSync(path.dirname(this.outputFile), { recursive: true });
     }
 
-    this.threads = range(options.concurrency);
+    this.logStream = fs.createWriteStream(this.outputFile, { flags: "w" });
   }
 
   log(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
@@ -92,7 +100,7 @@ export class ChromeTraceEventsReporter implements Reporter {
 
     // categorize events
     const { categorize } = this.options;
-  
+
     for (const event of this.events.traceEvents) {
       const targetRun = targetRuns.get(event.name);
       event.cat = targetRun?.status ?? "";
@@ -101,8 +109,15 @@ export class ChromeTraceEventsReporter implements Reporter {
       }
     }
 
-    // write events to file
-    fs.writeFileSync(this.options.outputFile!, JSON.stringify(this.events, null, 2));
-    console.log(chalk.blueBright(`Profiler output written to ${chalk.underline(path.join(process.cwd(), this.options.outputFile!))}, open it with chrome://tracing or edge://tracing`));
+    // write events to stream
+    this.logStream.write(JSON.stringify(this.events, null, 2));
+
+    this.consoleLogStream.write(
+      chalk.blueBright(
+        `\nProfiler output written to ${chalk.underline(
+          path.join(process.cwd(), this.outputFile)
+        )}, open it with chrome://tracing or edge://tracing\n`
+      )
+    );
   }
 }
