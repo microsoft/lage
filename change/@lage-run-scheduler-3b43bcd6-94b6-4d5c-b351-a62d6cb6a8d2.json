@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "skip hidden target (start) from summary; fixes up the exit result handling",
-  "packageName": "@lage-run/scheduler",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
