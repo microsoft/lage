@@ -1,4 +1,4 @@
-import { Monorepo } from "../mock/monorepo";
+import { Monorepo } from "./mock/monorepo";
 import { getTargetId } from "@lage-run/target-graph";
 import { filterEntry, parseNdJson } from "./parseNdJson";
 

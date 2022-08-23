@@ -1,4 +1,4 @@
-import { filterPackages } from "../../src/filter/getFilteredPackages";
+import { filterPackages } from "../src/filter/getFilteredPackages";
 import { PackageInfos, PackageInfo } from "workspace-tools";
 import { Logger } from "@lage-run/logger";
 

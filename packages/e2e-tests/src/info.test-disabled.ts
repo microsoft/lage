@@ -1,4 +1,4 @@
-import { Monorepo } from "../mock/monorepo";
+import { Monorepo } from "./mock/monorepo";
 
 describe("info test", () => {
   it("with json reporter", () => {

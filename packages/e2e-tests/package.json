@@ -1,7 +1,8 @@
 {
-  "name": "@lage-run/cli",
+  "name": "@lage-run/e2e-tests",
   "version": "0.1.0",
-  "description": "Command Line Interface for Lage",
+  "description": "End to End Tests for Lage",
+  "private": true,
   "repository": {
     "url": "https://github.com/microsoft/lage"
   },
@@ -17,13 +18,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@lage-run/logger": "^1.1.1",
-    "@lage-run/scheduler": "^0.1.2",
-    "@lage-run/target-graph": "^0.2.0",
-    "@lage-run/cache": "^0.1.2",
-    "@lage-run/reporters": "^0.1.1",
-    "commander": "^9.4.0",
-    "workspace-tools": "^0.23.0"
+    "@lage-run/cli": "^0.1.0"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
@@ -32,8 +27,5 @@
     "memory-streams": "^0.1.3",
     "ts-jest": "^27.0.5",
     "typescript": "^4.4.4"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }
