@@ -2,6 +2,27 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Tue, 23 Aug 2022 07:53:50 GMT",
+      "tag": "@lage-run/cache_v0.1.3",
+      "version": "0.1.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cache",
+            "commit": "8fb3883281416a778e6528038a6b1d63749ae2dd",
+            "comment": "Fixing the local fallback logic"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/logger to v1.1.2",
+            "commit": "8fb3883281416a778e6528038a6b1d63749ae2dd"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 11 Aug 2022 23:52:59 GMT",
       "tag": "@lage-run/cache_v0.1.2",
       "version": "0.1.2",

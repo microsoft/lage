@@ -8,7 +8,6 @@ import { createReporter } from "../../createReporter";
 import { NpmScriptRunner, SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger, { LogLevel, Reporter } from "@lage-run/logger";
-import { ChromeTraceEventsReporter } from "@lage-run/reporters";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
@@ -37,15 +36,6 @@ export async function runAction(options: Record<string, any>, command: Command) 
     });
     reporterInstances.push(reporterInstance);
     logger.addReporter(reporterInstance);
-  }
-
-  if (options.profile) {
-    const reporter = new ChromeTraceEventsReporter({
-      concurrency: options.concurrency,
-      outputFile: options.profile ?? "profile.cpuprofile",
-    });
-    reporterInstances.push(reporter);
-    logger.addReporter(reporter);
   }
 
   // Build Target Graph

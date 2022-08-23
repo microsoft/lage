@@ -7,7 +7,6 @@ module.exports = {
     test: [],
     lint: [],
     start: [],
-    
     "lage#test": ["build"],
     "@lage-run/e2e-tests#test": ["^build"],
 

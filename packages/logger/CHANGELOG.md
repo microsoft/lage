@@ -1,8 +1,16 @@
 # Change Log - @lage-run/logger
 
-This log was last generated on Thu, 11 Aug 2022 23:52:59 GMT and should not be manually modified.
+This log was last generated on Tue, 23 Aug 2022 07:53:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.2
+
+Tue, 23 Aug 2022 07:53:50 GMT
+
+### Patches
+
+- Updated @types/node to ^14.0.0 (ken@gizzar.com)
 
 ## 1.1.1
 
