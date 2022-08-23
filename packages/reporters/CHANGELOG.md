@@ -1,8 +1,17 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Tue, 23 Aug 2022 07:53:50 GMT and should not be manually modified.
+This log was last generated on Tue, 23 Aug 2022 21:26:23 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.3
+
+Tue, 23 Aug 2022 21:26:23 GMT
+
+### Patches
+
+- Adds the ChromeTraceEventReporters that is used in --profile (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.1.4
 
 ## 0.1.2
 

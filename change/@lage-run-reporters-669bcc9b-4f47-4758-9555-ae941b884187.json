@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Adds the ChromeTraceEventReporters that is used in --profile",
-  "packageName": "@lage-run/reporters",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

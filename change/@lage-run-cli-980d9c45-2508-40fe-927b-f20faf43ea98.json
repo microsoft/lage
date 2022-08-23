@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Adds the --profile flag",
-  "packageName": "@lage-run/cli",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "removed the rename of TargetRun",
-  "packageName": "@lage-run/scheduler",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
