@@ -33,7 +33,7 @@ export class Monorepo {
     // pretends to perform a npm install of lage
     if (!fs.existsSync(this.lagePath)) {
       fs.mkdirSync(path.dirname(this.lagePath), { recursive: true });
-      fs.symlinkSync(path.join(__dirname, "..", ".."), this.lagePath, "junction");
+      fs.symlinkSync(path.join(__dirname, "..", "..", "..", "cli"), this.lagePath, "junction");
     }
   }
 
