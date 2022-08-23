@@ -67,9 +67,9 @@ describe("ChromeTraceEventsReporter", () => {
         skipped: [],
       },
       targetRuns: new Map([
-        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
-        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0] }],
-        [bBuildTarget.id, { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0] }],
+        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [0, 0] }],
+        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [10, 0], startTime: [1, 0] }],
+        [bBuildTarget.id, { target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0] }],
       ]),
     });
 
@@ -83,7 +83,7 @@ describe("ChromeTraceEventsReporter", () => {
             \\"name\\": \\"a#test\\",
             \\"cat\\": \\"success\\",
             \\"ph\\": \\"X\\",
-            \\"ts\\": 0,
+            \\"ts\\": 1000000,
             \\"dur\\": 10000000,
             \\"pid\\": 1,
             \\"tid\\": 2
@@ -92,7 +92,7 @@ describe("ChromeTraceEventsReporter", () => {
             \\"name\\": \\"b#build\\",
             \\"cat\\": \\"success\\",
             \\"ph\\": \\"X\\",
-            \\"ts\\": 0,
+            \\"ts\\": 2000000,
             \\"dur\\": 30000000,
             \\"pid\\": 1,
             \\"tid\\": 3
