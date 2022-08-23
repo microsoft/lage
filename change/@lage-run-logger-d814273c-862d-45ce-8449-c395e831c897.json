@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Updated @types/node to ^14.0.0",
-  "packageName": "@lage-run/logger",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

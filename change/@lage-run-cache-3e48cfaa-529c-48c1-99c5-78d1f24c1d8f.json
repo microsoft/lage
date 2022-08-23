@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fixing the local fallback logic",
-  "packageName": "@lage-run/cache",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 09 Aug 2022 21:16:28 GMT and should not be manually modified.
+This log was last generated on Tue, 23 Aug 2022 07:53:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.7.5
+
+Tue, 23 Aug 2022 07:53:50 GMT
+
+### Patches
+
+- Updated @types/node to ^14.0.0 (ken@gizzar.com)
 
 ## 1.7.3
 
