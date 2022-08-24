@@ -158,6 +158,8 @@ export class WrappedTarget implements TargetRun {
       /**
        * TargetRunner should run() a target. The promise resolves if successful, or rejects otherwise (aborted or failed).
        */
+
+      // TODO: instead of passing a hash, pass in the stderr/stdout transformer streams
       await runner.run(target, abortSignal, hash ?? undefined);
 
       if (cacheEnabled) {
