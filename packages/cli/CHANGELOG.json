@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 24 Aug 2022 20:50:50 GMT",
+      "tag": "@lage-run/cli_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "bc21cddad948d0ff517a3a1f8a4cb5cc249af03b",
+            "comment": "adds cache command"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 24 Aug 2022 16:23:48 GMT",
       "tag": "@lage-run/cli_v0.1.4",
       "version": "0.1.4",

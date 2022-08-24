@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 24 Aug 2022 16:23:48 GMT and should not be manually modified.
+This log was last generated on Wed, 24 Aug 2022 20:50:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.0
+
+Wed, 24 Aug 2022 20:50:50 GMT
+
+### Minor changes
+
+- adds cache command (ken@gizzar.com)
 
 ## 0.1.4
 
