@@ -20,7 +20,7 @@ export async function clearCache(cwd: string, internalCacheFolder: string, logge
     if (fs.existsSync(cachePath)) {
       logger.info(`clearing cache for ${workspace.name}`);
       const entries = fs.readdirSync(cachePath);
-      
+
       for (const entry of entries) {
         const entryPath = path.join(cachePath, entry);
         const entryStat = await stat(entryPath);
