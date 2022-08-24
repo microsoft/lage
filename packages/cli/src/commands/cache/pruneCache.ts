@@ -17,11 +17,11 @@ export async function pruneCache(pruneDays: number, cwd: string, internalCacheFo
     if (fs.existsSync(cachePath)) {
       const entries = fs.readdirSync(cachePath);
 
+      logger.info(`prune cache for ${workspace.name} older than ${prunePeriod} days`);
+
       for (const entry of entries) {
         const entryPath = path.join(cachePath, entry);
         const entryStat = await stat(entryPath);
-
-        logger.verbose(`clearing cache for ${workspace.name}`);
 
         if (now.getTime() - entryStat.mtime.getTime() > prunePeriod * MS_IN_A_DAY) {
           await removeCacheEntry(entryPath, entryStat);
