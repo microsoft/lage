@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 24 Aug 2022 22:26:03 GMT",
+      "tag": "lage_v1.7.8",
+      "version": "1.7.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "ae1468bf230ea12b1910214d0ce394da75675d09",
+            "comment": "Update dependency @types/node to v14.18.26"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 24 Aug 2022 16:23:48 GMT",
       "tag": "lage_v1.7.7",
       "version": "1.7.7",

@@ -2,6 +2,39 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Wed, 24 Aug 2022 22:26:03 GMT",
+      "tag": "@lage-run/reporters_v0.1.6",
+      "version": "0.1.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/reporters",
+            "commit": "ae1468bf230ea12b1910214d0ce394da75675d09",
+            "comment": "Update dependency @types/node to v14.18.26"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/logger to v1.1.3",
+            "commit": "ae1468bf230ea12b1910214d0ce394da75675d09"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler to v0.1.7",
+            "commit": "ae1468bf230ea12b1910214d0ce394da75675d09"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.2.2",
+            "commit": "ae1468bf230ea12b1910214d0ce394da75675d09"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 24 Aug 2022 16:23:48 GMT",
       "tag": "@lage-run/reporters_v0.1.5",
       "version": "0.1.5",

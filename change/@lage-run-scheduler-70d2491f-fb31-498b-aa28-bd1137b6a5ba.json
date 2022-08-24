@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update dependency @types/node to v14.18.26",
-  "packageName": "@lage-run/scheduler",
-  "email": "renovate@whitesourcesoftware.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Wed, 24 Aug 2022 15:22:38 GMT and should not be manually modified.
+This log was last generated on Wed, 24 Aug 2022 22:26:03 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.2
+
+Wed, 24 Aug 2022 22:26:03 GMT
+
+### Patches
+
+- Update dependency @types/node to v14.18.26 (renovate@whitesourcesoftware.com)
 
 ## 0.2.1
 

@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Wed, 24 Aug 2022 16:23:48 GMT and should not be manually modified.
+This log was last generated on Wed, 24 Aug 2022 22:26:03 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.6
+
+Wed, 24 Aug 2022 22:26:03 GMT
+
+### Patches
+
+- Update dependency @types/node to v14.18.26 (renovate@whitesourcesoftware.com)
+- Bump @lage-run/target-graph to v0.2.2
+- Bump @lage-run/logger to v1.1.3
 
 ## 0.1.5
 
