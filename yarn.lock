@@ -8221,12 +8221,11 @@ klona@^2.0.5:
   resolved "https://registry.npmjs.org/klona/-/klona-2.0.5.tgz"
   integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
 
-"lage-npm@npm:lage@1.7.5":
-  version "1.7.5"
-  resolved "https://registry.yarnpkg.com/lage/-/lage-1.7.5.tgz#489c0b6ea0919835d213ba0504e08b40a3632bde"
-  integrity sha512-etz0l7Cgo2Lz1SiKgnhvLuhrYF1RoQ79c4CwJo4tXxGTL1nCrd76xcPKt3ju3aX2fEouWLTYHjd7xG2GcEFvHw==
+"lage-npm@npm:lage@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/lage/-/lage-1.7.2.tgz#249585a03b054551d74d798aa2b6f2aada749438"
+  integrity sha512-Vfw7uOz5qqHXNPV1cLnJiFhcL/e9kMR+xX56UTRK23KYaQ3sFurAMtMfvUNJnn++qUP64JE+nXZ6JMMiUxo2Ww==
   dependencies:
-    "@lage-run/logger" "*"
     "@xmldom/xmldom" "^0.8.0"
     abort-controller "^3.0.0"
     backfill "^6.1.20"
@@ -12232,7 +12231,7 @@ workspace-tools@^0.18.2:
     multimatch "^4.0.0"
     read-yaml-file "^2.0.0"
 
-workspace-tools@^0.23.0, workspace-tools@^0.23.3:
+workspace-tools@^0.23.0:
   version "0.23.3"
   resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.23.3.tgz#1833c848170d1370675535963778524d0ad0aef4"
   integrity sha512-8JWfnW9Kj24X8l4sOvwN77cxExBM57fpbjo+UqvFzY7L9FeyY4MUCqpLKpKARkK8okF/PFPOL9Dl1QgsEMT4yw==
@@ -12258,7 +12257,7 @@ workspace-tools@^0.24.0:
     multimatch "^4.0.0"
     read-yaml-file "^2.0.0"
 
-workspace-tools@^0.26.3:
+workspace-tools@^0.26.0, workspace-tools@^0.26.3:
   version "0.26.3"
   resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.26.3.tgz#521ff930e889873eab5d223289d7136d1e9a1b42"
   integrity sha512-aNnxt0rBh8CwQ6DfYn/CU1xNTKu+dwoNjZ9oddEAOogvIOMQGJ57OQ3XI7+iRZu1XfO+HK2xsQLMbZGjmAJ8UA==
