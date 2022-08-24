@@ -1,7 +1,6 @@
 import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
 import { Command } from "commander";
 import { createProfileReporter } from "./createProfileReporter";
-import { createReporter } from "../../createReporter";
 import { findNpmClient } from "../../workspace/findNpmClient";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
@@ -9,6 +8,8 @@ import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { NpmScriptRunner, SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger, { LogLevel, Reporter } from "@lage-run/logger";
+import { initializeReporters } from "../../reporters/initialize";
+import { ReporterInitOptions } from "../../types/LoggerOptions";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
@@ -18,13 +19,9 @@ function filterArgsForTasks(args: string[]) {
   };
 }
 
-interface RunOptions {
-  reporter: string[];
+interface RunOptions extends ReporterInitOptions {
   concurrency: number;
   profile: string | boolean | undefined;
-  verbose: boolean;
-  logLevel: keyof typeof LogLevel;
-  grouped: boolean;
   dependencies: boolean;
   dependents: boolean;
   since: string;
@@ -44,18 +41,7 @@ export async function runAction(options: RunOptions, command: Command) {
   // Configure logger
   const logger = createLogger();
 
-  const reporterOptions = Array.isArray(options.reporter) ? options.reporter : [options.reporter];
-
-  for (const reporter of reporterOptions) {
-    const reporterInstance = createReporter({
-      verbose: options.verbose,
-      grouped: options.grouped,
-      logLevel: LogLevel[options.logLevel],
-      reporter: reporter as string,
-    });
-    reporterInstances.push(reporterInstance);
-    logger.addReporter(reporterInstance);
-  }
+  initializeReporters(logger, options);
 
   if (options.profile !== undefined) {
     const reporter = createProfileReporter(options);

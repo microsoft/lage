@@ -1,9 +1,11 @@
 import { Command, Option } from "commander";
 import os from "os";
-import { runAction } from "./runAction";
+import { runAction } from "./action";
+import { addLoggerOptions } from "../addLoggerOptions";
 
 const runCommand = new Command("run");
-runCommand
+
+addLoggerOptions(runCommand)
   .action(runAction)
   .option(
     "-c, --concurrency <n>",
@@ -18,14 +20,11 @@ runCommand
     os.cpus().length - 1
   )
   // Common Options
-  .option("--reporter <reporter...>", "reporter", "npmLog")
   .option("--scope <scope...>", "scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)")
   .option("--no-dependents|--no-deps", "disables running any dependents of the scoped packages")
   .option("--dependencies|--include-dependencies", 'adds the scoped packages dependencies as the "entry points" for the target graph run')
   .option("--since <since>", "only runs packages that have changed since the given commit, tag, or branch")
   .option("--to <scope...>", "runs up to a package (shorthand for --scope=<scope...> --no-dependents)")
-  .addOption(new Option("--log-level <level>", "log level").choices(["info", "warn", "error", "verbose", "silly"]).conflicts("--verbose"))
-  .option("--verbose", "verbose output")
 
   // Run Command Options
   .option("--grouped", "groups the logs", false)

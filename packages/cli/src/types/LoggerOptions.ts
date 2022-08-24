@@ -13,3 +13,10 @@ export interface LoggerOptions {
     [level: string]: LogLevel;
   };
 }
+
+export interface ReporterInitOptions {
+  reporter: string[] | string;
+  verbose: boolean;
+  grouped: boolean;
+  logLevel: keyof typeof LogLevel;
+}
