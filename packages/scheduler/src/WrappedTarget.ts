@@ -1,5 +1,5 @@
 import { hrToSeconds } from "./formatDuration";
-import { Logger } from "@lage-run/logger";
+import { Logger, LogLevel } from "@lage-run/logger";
 import { TargetHasher } from "@lage-run/cache";
 import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
@@ -7,6 +7,8 @@ import type { Target } from "@lage-run/target-graph";
 import type { TargetRun } from "./types/TargetRun";
 import type { TargetRunner } from "./types/TargetRunner";
 import type { TargetStatus } from "./types/TargetStatus";
+import { getLageOutputCacheLocation } from "./createCachedOutputTransform";
+import fs from "fs";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -135,14 +137,28 @@ export class WrappedTarget implements TargetRun {
 
       // skip if cache hit!
       if (cacheHit) {
+        const cachedOutputFile = getLageOutputCacheLocation(this.target, hash ?? "");
         this.onSkipped(hash);
+
+        if (fs.existsSync(cachedOutputFile)) {
+          const cachedOutput = fs.createReadStream(cachedOutputFile, "utf8");
+          this.options.logger.verbose(">> Replaying cached output", { target });
+          this.options.logger.stream(LogLevel.verbose, cachedOutput, { target });
+
+          return await new Promise<void>((resolve, reject) => {
+            cachedOutput.on("close", () => {
+              resolve();
+            });
+          });
+        }
+
         return;
       }
 
       /**
        * TargetRunner should run() a target. The promise resolves if successful, or rejects otherwise (aborted or failed).
        */
-      await runner.run(target, abortSignal);
+      await runner.run(target, abortSignal, hash ?? undefined);
 
       if (cacheEnabled) {
         await this.saveCache(hash);
