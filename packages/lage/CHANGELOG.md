@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 24 Aug 2022 15:22:38 GMT and should not be manually modified.
+This log was last generated on Wed, 24 Aug 2022 16:23:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.7.7
+
+Wed, 24 Aug 2022 16:23:48 GMT
+
+### Patches
+
+- update backfill & backfill-hasher (mhuan13@gmail.com)
 
 ## 1.7.6
 
