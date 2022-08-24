@@ -28,7 +28,7 @@
     "@lage-run/monorepo-fixture": "^0.1.0",
     "@types/jest": "^27.0.1",
     "@types/mock-fs": "^4.13.1",
-    "@types/node": "^14.0.0",
+    "@types/node": "14.18.26",
     "monorepo-scripts": "*",
     "mock-fs": "^5.1.2"
   },
