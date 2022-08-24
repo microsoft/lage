@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "update backfill & backfill-hasher",
+  "packageName": "lage",
+  "email": "mhuan13@gmail.com",
+  "dependentChangeType": "patch"
+}
