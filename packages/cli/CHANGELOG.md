@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 24 Aug 2022 22:26:03 GMT and should not be manually modified.
+This log was last generated on Thu, 25 Aug 2022 20:06:40 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.2
+
+Thu, 25 Aug 2022 20:06:40 GMT
+
+### Patches
+
+- Fixes where the reporter instances can be found (from logger instance) (kchau@microsoft.com)
 
 ## 0.2.1
 

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fixes where the reporter instances can be found (from logger instance)",
-  "packageName": "@lage-run/cli",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
