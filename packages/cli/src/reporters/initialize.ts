@@ -6,7 +6,6 @@ import { createReporter } from "./createReporter";
 export function initializeReporters(logger: Logger, options: ReporterInitOptions) {
   const { reporter, verbose, grouped, logLevel } = options;
   const reporterOptions = Array.isArray(reporter) ? reporter : [reporter];
-  const reporterInstances: Reporter[] = [];
   for (const reporter of reporterOptions) {
     const reporterInstance = createReporter({
       verbose,
@@ -14,9 +13,8 @@ export function initializeReporters(logger: Logger, options: ReporterInitOptions
       logLevel: LogLevel[logLevel],
       reporter: reporter as string,
     });
-    reporterInstances.push(reporterInstance);
     logger.addReporter(reporterInstance);
   }
 
-  return reporterInstances;
+  return logger.reporters;
 }
