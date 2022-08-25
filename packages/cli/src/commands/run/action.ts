@@ -36,7 +36,6 @@ interface RunOptions extends ReporterInitOptions {
 export async function runAction(options: RunOptions, command: Command) {
   const cwd = process.cwd();
   const config = getConfig(cwd);
-  const reporterInstances: Reporter[] = [];
 
   // Configure logger
   const logger = createLogger();
@@ -45,7 +44,6 @@ export async function runAction(options: RunOptions, command: Command) {
 
   if (options.profile !== undefined) {
     const reporter = createProfileReporter(options);
-    reporterInstances.push(reporter);
     logger.addReporter(reporter);
   }
 
@@ -130,8 +128,8 @@ export async function runAction(options: RunOptions, command: Command) {
 
   const summary = await scheduler.run(root, targetGraph);
 
-  for (const reporterInstance of reporterInstances) {
-    reporterInstance.summarize(summary);
+  for (const reporter of logger.reporters) {
+    reporter.summarize(summary);
   }
 
   if (summary.results !== "success") {
