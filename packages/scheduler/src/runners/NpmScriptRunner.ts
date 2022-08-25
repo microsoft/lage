@@ -4,10 +4,10 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { Logger, LogLevel } from "@lage-run/logger";
 import { readFile } from "fs/promises";
-import { TargetRunner } from "../types/TargetRunner";
+import { TargetRunner, TargetRunOptions } from "../types/TargetRunner";
 import type { Target } from "@lage-run/target-graph";
 import { createCachedOutputTransform } from "../createCachedOutputTransform";
-import { Stream } from "stream";
+import type { Transform } from "stream";
 
 export interface NpmScriptRunnerOptions {
   logger: Logger;
@@ -59,7 +59,7 @@ export class NpmScriptRunner implements TargetRunner {
     }
   }
 
-  async run(target: Target, abortSignal?: AbortSignal, hash?: string) {
+  async run(target: Target, abortSignal?: AbortSignal, { cachedStdoutStream, cachedStderrStream }: TargetRunOptions = {}) {
     const { logger, nodeOptions, npmCmd, taskArgs } = this.options;
 
     let childProcess: ChildProcess | undefined;
@@ -152,11 +152,11 @@ export class NpmScriptRunner implements TargetRunner {
       let stdout = childProcess.stdout!;
       let stderr = childProcess.stderr!;
 
-      if (hash) {
-        const cachedStdoutStream = createCachedOutputTransform(target, hash);
-        const cachedStderrStream = createCachedOutputTransform(target, hash);
-
+      if (cachedStdoutStream) {
         stdout = stdout.pipe(cachedStdoutStream);
+      }
+
+      if (cachedStderrStream) {
         stderr = stderr.pipe(cachedStderrStream);
       }
 

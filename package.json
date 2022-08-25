@@ -30,5 +30,15 @@
     "gh-pages": "2.2.0",
     "jest": "^27.2.0",
     "lage-npm": "npm:lage@1.7.7"
+  },
+  "turbo": {
+    "pipeline": {
+      "build": {
+        
+        "dependsOn": ["^build"],
+        
+        "outputs": ["lib/**"]
+      }
+    }
   }
 }

@@ -7,7 +7,7 @@ import type { Target } from "@lage-run/target-graph";
 import type { TargetRun } from "./types/TargetRun";
 import type { TargetRunner } from "./types/TargetRunner";
 import type { TargetStatus } from "./types/TargetStatus";
-import { getLageOutputCacheLocation } from "./createCachedOutputTransform";
+import { createCachedOutputTransform, getLageOutputCacheLocation } from "./createCachedOutputTransform";
 import fs from "fs";
 
 export interface WrappedTargetOptions {
@@ -138,7 +138,6 @@ export class WrappedTarget implements TargetRun {
       // skip if cache hit!
       if (cacheHit) {
         const cachedOutputFile = getLageOutputCacheLocation(this.target, hash ?? "");
-        this.onSkipped(hash);
 
         if (fs.existsSync(cachedOutputFile)) {
           const cachedOutput = fs.createReadStream(cachedOutputFile, "utf8");
@@ -147,11 +146,13 @@ export class WrappedTarget implements TargetRun {
 
           return await new Promise<void>((resolve, reject) => {
             cachedOutput.on("close", () => {
+              this.onSkipped(hash);
               resolve();
             });
           });
         }
 
+        this.onSkipped(hash);
         return;
       }
 
@@ -160,7 +161,16 @@ export class WrappedTarget implements TargetRun {
        */
 
       // TODO: instead of passing a hash, pass in the stderr/stdout transformer streams
-      await runner.run(target, abortSignal, hash ?? undefined);
+      await runner.run(
+        target,
+        abortSignal,
+        hash
+          ? {
+              cachedStdoutStream: createCachedOutputTransform(target, hash),
+              cachedStderrStream: createCachedOutputTransform(target, hash),
+            }
+          : undefined
+      );
 
       if (cacheEnabled) {
         await this.saveCache(hash);
