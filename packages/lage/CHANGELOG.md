@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 24 Aug 2022 22:26:03 GMT and should not be manually modified.
+This log was last generated on Thu, 25 Aug 2022 19:01:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.7.9
+
+Thu, 25 Aug 2022 19:01:34 GMT
+
+### Patches
+
+- Update dependency beachball to v2.30.1 (renovate@whitesourcesoftware.com)
 
 ## 1.7.8
 

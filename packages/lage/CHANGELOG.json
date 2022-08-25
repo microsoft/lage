@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 25 Aug 2022 19:01:34 GMT",
+      "tag": "lage_v1.7.9",
+      "version": "1.7.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "9f99ae972fdf5740a5b78e494bfb984536767d1b",
+            "comment": "Update dependency beachball to v2.30.1"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 24 Aug 2022 22:26:03 GMT",
       "tag": "lage_v1.7.8",
       "version": "1.7.8",
