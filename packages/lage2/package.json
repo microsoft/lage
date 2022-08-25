@@ -18,5 +18,8 @@
   "files": [
     "dist/lage.js",
     "dist/lage.js.map"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
