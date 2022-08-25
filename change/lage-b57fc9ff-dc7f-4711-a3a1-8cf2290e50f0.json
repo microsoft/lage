@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Update dependency beachball to v2.30.1",
+  "packageName": "lage",
+  "email": "renovate@whitesourcesoftware.com",
+  "dependentChangeType": "patch"
+}
