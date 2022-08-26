@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "beautifying the output",
+  "packageName": "@lage-run/reporters",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}
