@@ -1,41 +1,36 @@
 import { formatDuration, hrToSeconds } from "./formatDuration";
 import { getPackageAndTask } from "@lage-run/target-graph";
+import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
 import { LogLevel } from "@lage-run/logger";
+import { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
+import { Writable } from "stream";
+import ansiRegex from "ansi-regex";
 import chalk from "chalk";
-import log from "npmlog";
+import gradient from "gradient-string";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler";
-import { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
 
 const colors = {
   [LogLevel.info]: chalk.white,
   [LogLevel.verbose]: chalk.gray,
   [LogLevel.warn]: chalk.white,
-  [LogLevel.error]: chalk.white,
+  [LogLevel.error]: chalk.hex("#FF1010"),
   [LogLevel.silly]: chalk.green,
-  task: chalk.cyan,
-  pkg: chalk.magenta,
+  task: chalk.hex("#00DDDD"),
+  pkg: chalk.hex("#FFD66B"),
   ok: chalk.green,
   error: chalk.red,
   warn: chalk.yellow,
 };
 
-const logLevelEnum = {
-  [LogLevel.info]: "info",
-  [LogLevel.warn]: "warn",
-  [LogLevel.error]: "error",
-  [LogLevel.silly]: "silly",
-  [LogLevel.verbose]: "verbose",
-};
-
-const logFns = Object.values(logLevelEnum).reduce((acc, level) => {
-  acc[LogLevel[level]] = log[level];
-  return acc;
-}, {});
+const stripAnsiRegex = ansiRegex();
 
 function getTaskLogPrefix(pkg: string, task: string) {
   return `${colors.pkg(pkg)} ${colors.task(task)}`;
+}
+
+function stripAnsi(message: string) {
+  return message.replace(stripAnsiRegex, "");
 }
 
 function normalize(prefixOrMessage: string, message?: string) {
@@ -50,86 +45,90 @@ function normalize(prefixOrMessage: string, message?: string) {
 }
 
 export class NpmLogReporter implements Reporter {
-  npmLog = log;
+  logStream: Writable = process.stdout;
   private logEntries = new Map<string, LogEntry[]>();
   readonly groupedEntries = new Map<string, LogEntry[]>();
 
   constructor(private options: { logLevel?: LogLevel; grouped?: boolean }) {
     options.logLevel = options.logLevel || LogLevel.info;
-    log.level = logLevelEnum[options.logLevel];
   }
 
   log(entry: LogEntry<any>) {
-    if (entry.data && entry.data.target && entry.data.target.hidden) {
+    // if "hidden", do not even attempt to record or report the entry
+    if (entry?.data?.target?.hidden) {
       return;
     }
 
-    if (entry.data && entry.data.target) {
+    // save the logs for errors
+    if (entry.data?.target?.id) {
       if (!this.logEntries.has(entry.data.target.id)) {
         this.logEntries.set(entry.data.target.id, []);
       }
-
       this.logEntries.get(entry.data.target.id)!.push(entry);
     }
 
-    if (this.options.logLevel! >= entry.level) {
-      if (entry && entry.data && entry.data.target) {
-        if (this.options.grouped) {
-          return this.logTargetEntryByGroup(entry);
-        }
-
-        return this.logTargetEntry(entry);
-      }
+    // if loglevel is not high enough, do not report the entry
+    if (this.options.logLevel! < entry.level) {
+      return;
     }
 
-    return this.logGenericEntry(entry);
+    // log to grouped entries
+    if (this.options.grouped && entry.data?.target) {
+      return this.logTargetEntryByGroup(entry);
+    }
+
+    // log normal target entries
+    if (entry.data && entry.data.target) {
+      return this.logTargetEntry(entry);
+    }
+
+    // log generic entries (not related to target)
+    return this.print(entry.msg);
   }
 
-  private logGenericEntry(entry: LogEntry<any>) {
-    const logFn = logFns[entry.level];
-    logFn("", entry.msg);
+  private printEntry(entry: LogEntry<any>, message: string) {
+    let prefix = "";
+    let msg = message;
+
+    if (entry?.data?.target) {
+      const { packageName, task } = entry.data.target;
+      const normalizedArgs = normalize(getTaskLogPrefix(packageName ?? "<root>", task), msg);
+      prefix = normalizedArgs.prefix;
+      msg = normalizedArgs.message;
+    }
+
+    this.print(`${prefix ? prefix + " " : ""}${msg}`);
+  }
+
+  private print(message: string) {
+    this.logStream.write(message + "\n");
   }
 
   private logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
-    const logFn = logFns[entry.level];
-
     const colorFn = colors[entry.level];
     const data = entry.data!;
 
     if (isTargetStatusLogEntry(data)) {
-      const { target, hash, duration } = data;
-      const { packageName, task } = target;
-
-      const normalizedArgs = this.options.grouped
-        ? normalize(entry.msg)
-        : normalize(getTaskLogPrefix(packageName ?? "<root>", task), entry.msg);
-
-      const pkgTask = this.options.grouped ? ` ${chalk.magenta(packageName)} ${chalk.cyan(task)}` : "";
+      const { hash, duration } = data;
 
       switch (data.status) {
         case "running":
-          return logFn(normalizedArgs.prefix, colorFn(`${colors.ok("➔")} start${pkgTask}`));
+          return this.printEntry(entry, colorFn(`${colors.ok("➔")} start`));
 
         case "success":
-          return logFn(normalizedArgs.prefix, colorFn(`${colors.ok("✓")} done${pkgTask} - ${formatDuration(hrToSeconds(duration!))}`));
+          return this.printEntry(entry, colorFn(`${colors.ok("✓")} done - ${formatDuration(hrToSeconds(duration!))}`));
 
         case "failed":
-          return logFn(normalizedArgs.prefix, colorFn(`${colors.error("✖")} fail${pkgTask}`));
+          return this.printEntry(entry, colorFn(`${colors.error("✖")} fail`));
 
         case "skipped":
-          return logFn(normalizedArgs.prefix, colorFn(`${colors.ok("»")} skip${pkgTask} - ${hash!}`));
+          return this.printEntry(entry, colorFn(`${colors.ok("»")} skip - ${hash!}`));
 
         case "aborted":
-          return logFn(normalizedArgs.prefix, colorFn(`${colors.warn("»")} aborted${pkgTask}`));
+          return this.printEntry(entry, colorFn(`${colors.warn("»")} aborted`));
       }
     } else {
-      // this is a generic log
-      const { target } = data;
-      const { packageName, task } = target;
-      const normalizedArgs = this.options.grouped
-        ? normalize(entry.msg)
-        : normalize(getTaskLogPrefix(packageName ?? "<root>", task), entry.msg);
-      return logFn(normalizedArgs.prefix, colorFn("|  " + normalizedArgs.message));
+      return this.printEntry(entry, colorFn(":  " + stripAnsi(entry.msg)));
     }
   }
 
@@ -139,14 +138,11 @@ export class NpmLogReporter implements Reporter {
     const target = data.target;
     const { id } = target;
 
-    this.groupedEntries.set(id, this.groupedEntries.get(id) || []);
-    this.groupedEntries.get(id)?.push(entry);
-
     if (
       isTargetStatusLogEntry(data) &&
       (data.status === "success" || data.status === "failed" || data.status === "skipped" || data.status === "aborted")
     ) {
-      const entries = this.groupedEntries.get(id)! as LogEntry<TargetStatusEntry>[];
+      const entries = this.logEntries.get(id)! as LogEntry<TargetStatusEntry>[];
 
       for (const targetEntry of entries) {
         this.logTargetEntry(targetEntry);
@@ -159,12 +155,10 @@ export class NpmLogReporter implements Reporter {
   }
 
   hr() {
-    log.info("", "----------------------------------------------");
+    this.print("┈".repeat(80));
   }
 
   summarize(schedulerRunSummary: SchedulerRunSummary) {
-    const { hr } = this;
-
     const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
     const { failed, aborted, skipped, success, pending } = targetRunByStatus;
 
@@ -179,53 +173,58 @@ export class NpmLogReporter implements Reporter {
       aborted: chalk.red,
     };
 
-    log.info("", chalk.cyanBright(`Summary\n`));
-
     if (targetRuns.size > 0) {
+      this.print(chalk.cyanBright(`\nSummary`));
+
+      this.hr();
+
       for (const wrappedTarget of targetRuns.values()) {
         if (wrappedTarget.target.hidden) {
           continue;
         }
 
-        const colorFn = statusColorFn[wrappedTarget.status];
+        const colorFn = statusColorFn[wrappedTarget.status] ?? chalk.white;
         const target = wrappedTarget.target;
 
-        log.verbose(
-          "",
-          getTaskLogPrefix(target.packageName || "[GLOBAL]", target.task),
-          colorFn(
+        this.print(
+          `${getTaskLogPrefix(target.packageName || "<root>", target.task)} ${colorFn(
             `${wrappedTarget.status === "running" ? "running - incomplete" : wrappedTarget.status}${
               wrappedTarget.duration ? `, took ${formatDuration(hrToSeconds(wrappedTarget.duration))}` : ""
             }`
-          )
+          )}`
         );
       }
 
-      log.info("", `success: ${success.length}, skipped: ${skipped.length}, pending: ${pending.length}, aborted: ${aborted.length}`);
+      this.print(
+        `success: ${success.length}, skipped: ${skipped.length}, pending: ${pending.length}, aborted: ${aborted.length}, failed: ${failed.length}`
+      );
     } else {
-      log.info("", "Nothing has been run.");
+      this.print("Nothing has been run.");
     }
 
-    hr();
+    this.hr();
 
     if (failed && failed.length > 0) {
       for (const targetId of failed) {
         const { packageName, task } = getPackageAndTask(targetId);
-        const taskLogs = this.logEntries.get(targetId);
+        const failureLogs = this.logEntries.get(targetId);
 
-        log.error("", `[${chalk.magenta(packageName)} ${chalk.cyan(task)}] ${chalk.redBright("ERROR DETECTED")}`);
+        this.print(`[${colors.pkg(packageName)} ${colors.task(task)}] ${colors[LogLevel.error]("ERROR DETECTED")}`);
 
-        if (taskLogs) {
-          for (const entry of taskLogs) {
+        if (failureLogs) {
+          for (const entry of failureLogs) {
             // Log each entry separately to prevent truncation
-            log.error("", entry.msg);
+            this.print(entry.msg);
           }
         }
 
-        hr();
+        this.hr();
       }
     }
 
-    log.info("", `Took a total of ${formatDuration(hrToSeconds(duration))} to complete`);
+    const allCacheHits = [...targetRuns.values()].filter((run) => !run.target.hidden).length === skipped.length;
+    const allCacheHitText = allCacheHits ? gradient({ r: 237, g: 178, b: 77 }, "cyan")(`All targets skipped!`) : "";
+
+    this.print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
   }
 }

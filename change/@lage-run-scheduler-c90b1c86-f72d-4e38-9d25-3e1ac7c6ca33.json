@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "caches the console output",
+  "packageName": "@lage-run/scheduler",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}

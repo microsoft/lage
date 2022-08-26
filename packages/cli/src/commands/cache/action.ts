@@ -18,11 +18,11 @@ export async function cacheAction(options: CacheOptions, command: Command) {
 
   initializeReporters(logger, options);
 
-  if (options.prune) {
-    await pruneCache(options.prune, process.cwd(), config.cacheOptions.internalCacheFolder, logger);
+  if (options.clear) {
+    return await clearCache(process.cwd(), config.cacheOptions.internalCacheFolder, logger);
+  } else if (options.prune) {
+    return await pruneCache(options.prune, process.cwd(), config.cacheOptions.internalCacheFolder, logger);
   }
 
-  if (options.clear) {
-    await clearCache(process.cwd(), config.cacheOptions.internalCacheFolder, logger);
-  }
+  command.help();
 }

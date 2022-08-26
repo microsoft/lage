@@ -5,6 +5,7 @@ import { LogLevel } from "@lage-run/logger";
 import { NpmLogReporter } from "../src/NpmLogReporter";
 import streams from "memory-streams";
 import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry";
+import { TargetRun } from "@lage-run/scheduler";
 
 function createTarget(packageName: string, task: string) {
   return {
@@ -22,7 +23,7 @@ describe("NpmLogReporter", () => {
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.npmLog.stream = writer;
+    reporter.logStream = writer;
 
     reporter.log({
       data: {
@@ -39,16 +40,16 @@ describe("NpmLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"verb a task ➔ start
-"
-`);
+      "a task ➔ start
+      "
+    `);
   });
 
   it("records a target message entry", () => {
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.npmLog.stream = writer;
+    reporter.logStream = writer;
 
     reporter.log({
       data: {
@@ -63,7 +64,7 @@ describe("NpmLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "verb a task |  test message
+      "a task :  test message
       "
     `);
   });
@@ -72,7 +73,7 @@ describe("NpmLogReporter", () => {
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: true, logLevel: LogLevel.verbose });
-    reporter.npmLog.stream = writer;
+    reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -105,21 +106,21 @@ describe("NpmLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "verb ➔ start a test
-      verb |  test message for a#test
-      verb |  test message for a#test again
-      verb ✓ done a test - 10.00s
-      info ----------------------------------------------
-      verb ➔ start b build
-      verb |  test message for b#build
-      verb |  test message for b#build again
-      verb ✓ done b build - 30.00s
-      info ----------------------------------------------
-      verb ➔ start a build
-      verb |  test message for a#build
-      verb |  test message for a#build again
-      verb ✖ fail a build
-      info ----------------------------------------------
+      "a test ➔ start
+      a test :  test message for a#test
+      a test :  test message for a#test again
+      a test ✓ done - 10.00s
+      ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+      b build ➔ start
+      b build :  test message for b#build
+      b build :  test message for b#build again
+      b build ✓ done - 30.00s
+      ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+      a build ➔ start
+      a build :  test message for a#build
+      a build :  test message for a#build again
+      a build ✖ fail
+      ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
       "
     `);
   });
@@ -128,7 +129,7 @@ describe("NpmLogReporter", () => {
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.npmLog.stream = writer;
+    reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -161,27 +162,27 @@ describe("NpmLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"verb a build ➔ start
-verb a test ➔ start
-verb b build ➔ start
-verb a build |  test message for a#build
-verb a test |  test message for a#test
-verb a build |  test message for a#build again
-verb b build |  test message for b#build
-verb a test |  test message for a#test again
-verb b build |  test message for b#build again
-verb a test ✓ done - 10.00s
-verb b build ✓ done - 30.00s
-verb a build ✖ fail
-"
-`);
+      "a build ➔ start
+      a test ➔ start
+      b build ➔ start
+      a build :  test message for a#build
+      a test :  test message for a#test
+      a build :  test message for a#build again
+      b build :  test message for b#build
+      a test :  test message for a#test again
+      b build :  test message for b#build again
+      a test ✓ done - 10.00s
+      b build ✓ done - 30.00s
+      a build ✖ fail
+      "
+    `);
   });
 
   it("can filter out verbose messages", () => {
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.info });
-    reporter.npmLog.stream = writer;
+    reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -214,21 +215,21 @@ verb a build ✖ fail
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"info a build ➔ start
-info a test ➔ start
-info b build ➔ start
-info a test ✓ done - 10.00s
-info b build ✓ done - 30.00s
-info a build ✖ fail
-"
-`);
+      "a build ➔ start
+      a test ➔ start
+      b build ➔ start
+      a test ✓ done - 10.00s
+      b build ✓ done - 30.00s
+      a build ✖ fail
+      "
+    `);
   });
 
   it("can display a summary of a failure", () => {
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: true, logLevel: LogLevel.info });
-    reporter.npmLog.stream = writer;
+    reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -270,29 +271,46 @@ info a build ✖ fail
         aborted: [],
         skipped: [],
       },
-      targetRuns: new Map(),
+      targetRuns: new Map([
+        [aBuildTarget.id, { target: { hidden: false, packageName: "a", task: "build" }, status: "failed" } as unknown as TargetRun],
+        [aTestTarget.id, { target: { hidden: false, packageName: "a", task: "test" }, status: "success" } as unknown as TargetRun],
+        [bBuildTarget.id, { target: { hidden: false, packageName: "b", task: "build" }, status: "success" } as unknown as TargetRun],
+      ]),
     });
 
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"info ➔ start a test
-info ✓ done a test - 10.00s
-info ➔ start b build
-info ✓ done b build - 30.00s
-info ➔ start a build
-info ✖ fail a build
-info Summary
-info 
-info Nothing has been run.
-info ----------------------------------------------
-ERR! [a build] ERROR DETECTED
-ERR! 
-ERR! test message for a#build
-ERR! test message for a#build again, but look there is an error!
-ERR! 
-info ----------------------------------------------
-info Took a total of 1m 40.00s to complete
+"a test ➔ start
+a test :  test message for a#test
+a test :  test message for a#test again
+a test ✓ done - 10.00s
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+b build ➔ start
+b build :  test message for b#build
+b build :  test message for b#build again
+b build ✓ done - 30.00s
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+a build ➔ start
+a build :  test message for a#build
+a build :  test message for a#build again, but look there is an error!
+a build ✖ fail
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+
+Summary
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+a build failed
+a test success
+b build success
+success: 2, skipped: 0, pending: 0, aborted: 0, failed: 1
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+[a build] ERROR DETECTED
+
+test message for a#build
+test message for a#build again, but look there is an error!
+
+┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+Took a total of 1m 40.00s to complete. 
 "
 `);
   });
