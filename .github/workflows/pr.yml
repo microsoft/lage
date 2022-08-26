@@ -23,6 +23,23 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn
-      - run: yarn format:check
-      - run: yarn checkchange
-      - run: yarn lage build test lint
+      - name: Code Format Check
+        run: |
+              if [ "$RUNNER_OS" == "Linux" ]; then
+                yarn format:check
+              fi
+        shell: bash
+      - name: Check Change Files
+        run: |
+              if [ "$RUNNER_OS" == "Linux" ]; then
+                yarn format:check
+              fi
+        shell: bash
+      - name: Build, Test, Lint
+        run: |
+              if [ "$RUNNER_OS" == "Linux" ]; then
+                yarn lage build test lint
+              elif [ "$RUNNER_OS" == "Windows" ]; then
+                yarn lage build test --scope=!@lage-run/lage
+              fi
+        shell: bash
