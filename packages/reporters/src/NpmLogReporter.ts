@@ -17,7 +17,7 @@ const colors = {
   [LogLevel.error]: chalk.hex('#FF1010'),
   [LogLevel.silly]: chalk.green,
   task: chalk.hex('#00DDDD'),
-  pkg: chalk.hex('#44FF33'),
+  pkg: chalk.hex('#FFD66B'),
   ok: chalk.green,
   error: chalk.red,
   warn: chalk.yellow,
