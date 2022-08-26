@@ -4,10 +4,8 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { Logger, LogLevel } from "@lage-run/logger";
 import { readFile } from "fs/promises";
-import { TargetRunner, TargetRunOptions } from "../types/TargetRunner";
+import { TargetCaptureStreams, TargetRunner } from "../types/TargetRunner";
 import type { Target } from "@lage-run/target-graph";
-import { createCachedOutputTransform } from "../createCachedOutputTransform";
-import type { Transform } from "stream";
 
 export interface NpmScriptRunnerOptions {
   logger: Logger;
@@ -59,7 +57,7 @@ export class NpmScriptRunner implements TargetRunner {
     }
   }
 
-  async run(target: Target, abortSignal?: AbortSignal, { cachedStdoutStream, cachedStderrStream }: TargetRunOptions = {}) {
+  async run(target: Target, abortSignal?: AbortSignal, captureStreams: TargetCaptureStreams = {}) {
     const { logger, nodeOptions, npmCmd, taskArgs } = this.options;
 
     let childProcess: ChildProcess | undefined;
@@ -152,12 +150,12 @@ export class NpmScriptRunner implements TargetRunner {
       let stdout = childProcess.stdout!;
       let stderr = childProcess.stderr!;
 
-      if (cachedStdoutStream) {
-        stdout = stdout.pipe(cachedStdoutStream);
+      if (captureStreams.stdout) {
+        stdout = stdout.pipe(captureStreams.stdout);
       }
 
-      if (cachedStderrStream) {
-        stderr = stderr.pipe(cachedStderrStream);
+      if (captureStreams.stderr) {
+        stderr = stderr.pipe(captureStreams.stderr);
       }
 
       logger.stream(LogLevel.verbose, stdout, { target, pid });

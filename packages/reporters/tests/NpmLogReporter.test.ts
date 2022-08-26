@@ -22,7 +22,7 @@ describe("NpmLogReporter", () => {
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.npmLog.stream = writer;
+    reporter.logStream = writer;
 
     reporter.log({
       data: {
@@ -48,7 +48,7 @@ describe("NpmLogReporter", () => {
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.npmLog.stream = writer;
+    reporter.logStream = writer;
 
     reporter.log({
       data: {
@@ -72,7 +72,7 @@ describe("NpmLogReporter", () => {
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: true, logLevel: LogLevel.verbose });
-    reporter.npmLog.stream = writer;
+    reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -128,7 +128,7 @@ describe("NpmLogReporter", () => {
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.npmLog.stream = writer;
+    reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -181,7 +181,7 @@ verb a build ✖ fail
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.info });
-    reporter.npmLog.stream = writer;
+    reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -228,7 +228,7 @@ info a build ✖ fail
     const writer = new streams.WritableStream();
 
     const reporter = new NpmLogReporter({ grouped: true, logLevel: LogLevel.info });
-    reporter.npmLog.stream = writer;
+    reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");

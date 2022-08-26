@@ -15,18 +15,22 @@ export async function clearCache(cwd: string, internalCacheFolder: string, logge
   const workspaces = getWorkspaces(workspaceRoot);
 
   for (const workspace of workspaces) {
+    logger.info(`clear cache for ${workspace.name}`);
     const cachePath = getCacheDir(workspace.path, internalCacheFolder);
+    const logOutputCachePath = path.join(workspace.path, "node_modules/.cache/lage/output/");
+    await Promise.all([clearPath(cachePath), clearPath(logOutputCachePath)]);
+  }
+}
 
-    if (fs.existsSync(cachePath)) {
-      logger.info(`clearing cache for ${workspace.name}`);
-      const entries = fs.readdirSync(cachePath);
+async function clearPath(cachePath: string) {
+  if (fs.existsSync(cachePath)) {
+    const entries = fs.readdirSync(cachePath);
 
-      for (const entry of entries) {
-        const entryPath = path.join(cachePath, entry);
-        const entryStat = await stat(entryPath);
+    for (const entry of entries) {
+      const entryPath = path.join(cachePath, entry);
+      const entryStat = await stat(entryPath);
 
-        await removeCacheEntry(entryPath, entryStat);
-      }
+      await removeCacheEntry(entryPath, entryStat);
     }
   }
 }

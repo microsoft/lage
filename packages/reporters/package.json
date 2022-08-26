@@ -18,7 +18,7 @@
     "@lage-run/scheduler": "^0.1.7",
     "@lage-run/target-graph": "^0.2.2",
     "chalk": "^4.0.0",
-    "ansi-regex": "^6.0.1"
+    "ansi-regex": "^5.0.1"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",

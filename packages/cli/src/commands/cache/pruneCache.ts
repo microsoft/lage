@@ -9,23 +9,27 @@ const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
 export async function pruneCache(pruneDays: number, cwd: string, internalCacheFolder: string, logger: Logger) {
   const prunePeriod = pruneDays || 30;
-  const now = new Date();
+  const now = new Date().getTime();
   const workspaces = getWorkspaces(cwd);
   for (const workspace of workspaces) {
+    logger.info(`prune cache for ${workspace.name} older than ${prunePeriod} days`);
     const cachePath = getCacheDir(workspace.path, internalCacheFolder);
+    const logOutputCachePath = path.join(workspace.path, "node_modules/.cache/lage/output/");
 
-    if (fs.existsSync(cachePath)) {
-      const entries = fs.readdirSync(cachePath);
+    await Promise.all([prunePath(cachePath, prunePeriod, now), prunePath(logOutputCachePath, prunePeriod, now)]);
+  }
+}
 
-      logger.info(`prune cache for ${workspace.name} older than ${prunePeriod} days`);
+async function prunePath(cachePath: string, days: number, now: number) {
+  if (fs.existsSync(cachePath)) {
+    const entries = fs.readdirSync(cachePath);
 
-      for (const entry of entries) {
-        const entryPath = path.join(cachePath, entry);
-        const entryStat = await stat(entryPath);
+    for (const entry of entries) {
+      const entryPath = path.join(cachePath, entry);
+      const entryStat = await stat(entryPath);
 
-        if (now.getTime() - entryStat.mtime.getTime() > prunePeriod * MS_IN_A_DAY) {
-          await removeCacheEntry(entryPath, entryStat);
-        }
+      if (now - entryStat.mtime.getTime() > days * MS_IN_A_DAY) {
+        await removeCacheEntry(entryPath, entryStat);
       }
     }
   }

@@ -166,8 +166,8 @@ export class WrappedTarget implements TargetRun {
         abortSignal,
         hash
           ? {
-              cachedStdoutStream: createCachedOutputTransform(target, hash),
-              cachedStderrStream: createCachedOutputTransform(target, hash),
+              stdout: createCachedOutputTransform(target, hash),
+              stderr: createCachedOutputTransform(target, hash),
             }
           : undefined
       );
