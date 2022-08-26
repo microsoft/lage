@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fixed to use mainfield of main first instead of module.",
+  "packageName": "@lage-run/lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
