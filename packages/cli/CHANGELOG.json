@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 26 Aug 2022 06:34:51 GMT",
+      "tag": "@lage-run/cli_v0.2.3",
+      "version": "0.2.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "8b797903e36d31d9fbd4cc813166073e05872fd6",
+            "comment": "fixes cache cleaning to also clean the cached console outputs"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.2.0",
+            "commit": "8b797903e36d31d9fbd4cc813166073e05872fd6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.0",
+            "commit": "8b797903e36d31d9fbd4cc813166073e05872fd6"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 Aug 2022 20:06:40 GMT",
       "tag": "@lage-run/cli_v0.2.2",
       "version": "0.2.2",

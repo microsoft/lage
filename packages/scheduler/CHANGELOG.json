@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Fri, 26 Aug 2022 06:34:51 GMT",
+      "tag": "@lage-run/scheduler_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/scheduler",
+            "commit": "8b797903e36d31d9fbd4cc813166073e05872fd6",
+            "comment": "caches the console output"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 24 Aug 2022 22:26:03 GMT",
       "tag": "@lage-run/scheduler_v0.1.7",
       "version": "0.1.7",

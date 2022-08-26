@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixes cache cleaning to also clean the cached console outputs",
-  "packageName": "@lage-run/cli",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
