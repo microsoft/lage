@@ -310,7 +310,7 @@ test message for a#build
 test message for a#build again, but look there is an error!
 
 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-Took a total of 1m 40.00s to complete
+Took a total of 1m 40.00s to complete. 
 "
 `);
   });
