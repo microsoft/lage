@@ -20,6 +20,8 @@ export default {
       entries: [{ find: "string_decoder/", replacement: "string_decoder" }],
     }),
     nodeResolve({
+      // Since we are produce CJS, let's resolve main first!
+      mainFields: ["main", "module"],
       preferBuiltins: true,
     }),
     commonjs({
