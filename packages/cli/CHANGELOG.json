@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 26 Aug 2022 23:05:53 GMT",
+      "tag": "@lage-run/cli_v0.2.4",
+      "version": "0.2.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "753fa9544a994b6f90c9f1355483484bd855f583",
+            "comment": "get rid of memory-streams as a devDep"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 Aug 2022 06:34:51 GMT",
       "tag": "@lage-run/cli_v0.2.3",
       "version": "0.2.3",

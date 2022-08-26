@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "get rid of memory-streams as a devDep",
-  "packageName": "@lage-run/cli",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

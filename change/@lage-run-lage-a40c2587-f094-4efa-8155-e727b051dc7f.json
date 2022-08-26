@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fixes the bundle errors caused by readable-stream's weird import syntax",
-  "packageName": "@lage-run/lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

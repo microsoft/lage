@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Fri, 26 Aug 2022 06:34:51 GMT and should not be manually modified.
+This log was last generated on Fri, 26 Aug 2022 23:05:53 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.4
+
+Fri, 26 Aug 2022 23:05:53 GMT
+
+### Patches
+
+- get rid of memory-streams as a devDep (kchau@microsoft.com)
 
 ## 0.2.3
 

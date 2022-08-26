@@ -2,6 +2,27 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Fri, 26 Aug 2022 23:05:53 GMT",
+      "tag": "@lage-run/lage_v2.0.3",
+      "version": "2.0.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "753fa9544a994b6f90c9f1355483484bd855f583",
+            "comment": "Fixes the bundle errors caused by readable-stream's weird import syntax"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.2.4",
+            "commit": "753fa9544a994b6f90c9f1355483484bd855f583"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 Aug 2022 06:34:51 GMT",
       "tag": "@lage-run/lage_v2.0.2",
       "version": "2.0.2",
