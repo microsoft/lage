@@ -53,7 +53,8 @@ export class NpmLogReporter implements Reporter {
   }
 
   log(entry: LogEntry<any>) {
-    if (entry?.data?.target?.hidden || this.options.logLevel! < entry.level) {
+    // if "hidden", do not even attempt to record or report the entry
+    if (entry?.data?.target?.hidden) {
       return;
     }
 
@@ -65,29 +66,37 @@ export class NpmLogReporter implements Reporter {
       this.logEntries.get(entry.data.target.id)!.push(entry);
     }
 
+    // if loglevel is not high enough, do not report the entry
+    if (this.options.logLevel! < entry.level) {
+      return;
+    }
+
     // log to grouped entries
     if (this.options.grouped && entry.data?.target) {
       return this.logTargetEntryByGroup(entry);
     }
 
+    // log normal target entries
     if (entry.data && entry.data.target) {
       return this.logTargetEntry(entry);
     }
 
-    return this.printEntry(entry, entry.msg);
+    // log generic entries (not related to target)
+    return this.print(entry.msg);
   }
 
   private printEntry(entry: LogEntry<any>, message: string) {
     let prefix = "";
+    let msg = message;
 
     if (entry?.data?.target) {
       const { packageName, task } = entry.data.target;
-      const normalizedArgs = normalize(getTaskLogPrefix(packageName ?? "<root>", task), message);
+      const normalizedArgs = normalize(getTaskLogPrefix(packageName ?? "<root>", task), msg);
       prefix = normalizedArgs.prefix;
-      message = normalizedArgs.message;
+      msg = normalizedArgs.message;
     }
 
-    this.print(`${prefix ? prefix + " " : ""}${message}`);
+    this.print(`${prefix ? prefix + " " : ""}${msg}`);
   }
 
   private print(message: string) {
@@ -99,26 +108,23 @@ export class NpmLogReporter implements Reporter {
     const data = entry.data!;
 
     if (isTargetStatusLogEntry(data)) {
-      const { target, hash, duration } = data;
-      const { packageName, task } = target;
-
-      const pkgTask = this.options.grouped ? ` ${chalk.magenta(packageName)} ${chalk.cyan(task)}` : "";
+      const { hash, duration } = data;
 
       switch (data.status) {
         case "running":
-          return this.printEntry(entry, colorFn(`${colors.ok("➔")} start${pkgTask}`));
+          return this.printEntry(entry, colorFn(`${colors.ok("➔")} start`));
 
         case "success":
-          return this.printEntry(entry, colorFn(`${colors.ok("✓")} done${pkgTask} - ${formatDuration(hrToSeconds(duration!))}`));
+          return this.printEntry(entry, colorFn(`${colors.ok("✓")} done - ${formatDuration(hrToSeconds(duration!))}`));
 
         case "failed":
-          return this.printEntry(entry, colorFn(`${colors.error("✖")} fail${pkgTask}`));
+          return this.printEntry(entry, colorFn(`${colors.error("✖")} fail`));
 
         case "skipped":
-          return this.printEntry(entry, colorFn(`${colors.ok("»")} skip${pkgTask} - ${hash!}`));
+          return this.printEntry(entry, colorFn(`${colors.ok("»")} skip - ${hash!}`));
 
         case "aborted":
-          return this.printEntry(entry, colorFn(`${colors.warn("»")} aborted${pkgTask}`));
+          return this.printEntry(entry, colorFn(`${colors.warn("»")} aborted`));
       }
     } else {
       return this.printEntry(entry, colorFn(":  " + stripAnsi(entry.msg)));
@@ -131,14 +137,11 @@ export class NpmLogReporter implements Reporter {
     const target = data.target;
     const { id } = target;
 
-    this.groupedEntries.set(id, this.groupedEntries.get(id) || []);
-    this.groupedEntries.get(id)?.push(entry);
-
     if (
       isTargetStatusLogEntry(data) &&
       (data.status === "success" || data.status === "failed" || data.status === "skipped" || data.status === "aborted")
     ) {
-      const entries = this.groupedEntries.get(id)! as LogEntry<TargetStatusEntry>[];
+      const entries = this.logEntries.get(id)! as LogEntry<TargetStatusEntry>[];
 
       for (const targetEntry of entries) {
         this.logTargetEntry(targetEntry);
@@ -179,7 +182,7 @@ export class NpmLogReporter implements Reporter {
           continue;
         }
 
-        const colorFn = statusColorFn[wrappedTarget.status];
+        const colorFn = statusColorFn[wrappedTarget.status] ?? chalk.white;
         const target = wrappedTarget.target;
 
         this.print(
@@ -203,12 +206,12 @@ export class NpmLogReporter implements Reporter {
     if (failed && failed.length > 0) {
       for (const targetId of failed) {
         const { packageName, task } = getPackageAndTask(targetId);
-        const taskLogs = this.logEntries.get(targetId);
+        const failureLogs = this.logEntries.get(targetId);
 
         this.print(`[${chalk.magenta(packageName)} ${chalk.cyan(task)}] ${chalk.redBright("ERROR DETECTED")}`);
 
-        if (taskLogs) {
-          for (const entry of taskLogs) {
+        if (failureLogs) {
+          for (const entry of failureLogs) {
             // Log each entry separately to prevent truncation
             this.print(entry.msg);
           }
