@@ -14,10 +14,10 @@ const colors = {
   [LogLevel.info]: chalk.white,
   [LogLevel.verbose]: chalk.gray,
   [LogLevel.warn]: chalk.white,
-  [LogLevel.error]: chalk.hex('#FF1010'),
+  [LogLevel.error]: chalk.hex("#FF1010"),
   [LogLevel.silly]: chalk.green,
-  task: chalk.hex('#00DDDD'),
-  pkg: chalk.hex('#FFD66B'),
+  task: chalk.hex("#00DDDD"),
+  pkg: chalk.hex("#FFD66B"),
   ok: chalk.green,
   error: chalk.red,
   warn: chalk.yellow,
@@ -222,7 +222,6 @@ export class NpmLogReporter implements Reporter {
       }
     }
 
-    
     const allCacheHits = [...targetRuns.values()].filter((run) => !run.target.hidden).length === skipped.length;
     const allCacheHitText = allCacheHits ? gradient({ r: 237, g: 178, b: 77 }, "cyan")(`All targets skipped!`) : "";
 

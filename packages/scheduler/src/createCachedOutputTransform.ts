@@ -11,7 +11,7 @@ export function getLageOutputCacheLocation(target: Target, hash: string) {
 export function createCachedOutputTransform(target: Target, hash: string) {
   const outputFile = getLageOutputCacheLocation(target, hash);
   const outputPath = path.dirname(outputFile);
-  
+
   if (!fs.existsSync(outputFile)) {
     fs.mkdirSync(outputPath, { recursive: true });
     const writeStream = fs.createWriteStream(path.join(outputPath, hash + ".txt"));
@@ -29,6 +29,6 @@ export function createCachedOutputTransform(target: Target, hash: string) {
   return new Transform({
     transform(chunk, encoding, callback) {
       callback(null, chunk);
-    }
+    },
   });
 }
