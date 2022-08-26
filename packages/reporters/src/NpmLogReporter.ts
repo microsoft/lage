@@ -3,20 +3,21 @@ import { getPackageAndTask } from "@lage-run/target-graph";
 import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
 import { LogLevel } from "@lage-run/logger";
 import { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
+import { Writable } from "stream";
 import ansiRegex from "ansi-regex";
 import chalk from "chalk";
+import gradient from "gradient-string";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler";
-import { Writable } from "stream";
 
 const colors = {
   [LogLevel.info]: chalk.white,
   [LogLevel.verbose]: chalk.gray,
   [LogLevel.warn]: chalk.white,
-  [LogLevel.error]: chalk.white,
+  [LogLevel.error]: chalk.hex('#FF1010'),
   [LogLevel.silly]: chalk.green,
-  task: chalk.cyan,
-  pkg: chalk.magenta,
+  task: chalk.hex('#00DDDD'),
+  pkg: chalk.hex('#44FF33'),
   ok: chalk.green,
   error: chalk.red,
   warn: chalk.yellow,
@@ -208,7 +209,7 @@ export class NpmLogReporter implements Reporter {
         const { packageName, task } = getPackageAndTask(targetId);
         const failureLogs = this.logEntries.get(targetId);
 
-        this.print(`[${chalk.magenta(packageName)} ${chalk.cyan(task)}] ${chalk.redBright("ERROR DETECTED")}`);
+        this.print(`[${colors.pkg(packageName)} ${colors.task(task)}] ${colors[LogLevel.error]("ERROR DETECTED")}`);
 
         if (failureLogs) {
           for (const entry of failureLogs) {
@@ -221,6 +222,10 @@ export class NpmLogReporter implements Reporter {
       }
     }
 
-    this.print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete`);
+    
+    const allCacheHits = [...targetRuns.values()].filter((run) => !run.target.hidden).length === skipped.length;
+    const allCacheHitText = allCacheHits ? gradient({ r: 237, g: 178, b: 77 }, "cyan")(`All targets skipped!`) : "";
+
+    this.print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
   }
 }
