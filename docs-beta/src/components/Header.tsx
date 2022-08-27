@@ -5,6 +5,7 @@ import { HeaderTitle } from "./HeaderTitle";
 import { ProductDescription } from "./ProductDescription";
 import { Button } from "./Button";
 import { Illustration } from "./Illustration";
+import { AsciiPlayer } from "./AsciinemaPlayer";
 
 export default function Header() {
   return (
@@ -25,7 +26,9 @@ export default function Header() {
               </Button>
             </SideBySide>
           </div>
-          <Illustration src="img/frog-monitor0.png" />
+
+          {/* <Illustration src="img/frog-monitor0.png" /> */}
+          <AsciiPlayer />
         </TwoColumns>
       </div>
     </header>
