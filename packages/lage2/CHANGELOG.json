@@ -2,6 +2,21 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Sat, 27 Aug 2022 00:12:13 GMT",
+      "tag": "@lage-run/lage_v2.0.4",
+      "version": "2.0.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "796bdf0551975d37a1c4f104c910c02d39cdec9a",
+            "comment": "Fixed to use mainfield of main first instead of module."
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 Aug 2022 23:05:53 GMT",
       "tag": "@lage-run/lage_v2.0.3",
       "version": "2.0.3",
