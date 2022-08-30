@@ -5,13 +5,14 @@ import { HeaderTitle } from "./HeaderTitle";
 import { ProductDescription } from "./ProductDescription";
 import { Button } from "./Button";
 import { Illustration } from "./Illustration";
+import { FrogMonitor } from "./terminal/FrogMonitor";
 
 export default function Header() {
   return (
     <header className="theme-color bg-bodySecondary flex justify-center items-center pt-8 pb-24">
       <div className="2xl:w-big-screen">
         <TwoColumns imageOnTop={true} imageFirst={false}>
-          <div>
+          <div className="flex-1">
             <HeaderTitle>Never build the same code twice</HeaderTitle>
             <ProductDescription>
               Give your monorepo the smarts to <i>actually</i> save you time
@@ -25,7 +26,7 @@ export default function Header() {
               </Button>
             </SideBySide>
           </div>
-          <Illustration src="img/frog-monitor0.png" />
+          <FrogMonitor />
         </TwoColumns>
       </div>
     </header>

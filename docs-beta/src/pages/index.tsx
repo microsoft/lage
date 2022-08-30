@@ -1,5 +1,6 @@
 import React from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import "asciinema-player/dist/bundle/asciinema-player.css";
 import "../css/tailwind-styles.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";

@@ -18,6 +18,7 @@
     "@docusaurus/core": "2.0.0-beta.21",
     "@docusaurus/preset-classic": "2.0.0-beta.21",
     "@mdx-js/react": "^1.6.21",
+    "asciinema-player": "^3.0.1",
     "clsx": "^1.1.1",
     "mermaid": "^8.13.9",
     "prism-react-renderer": "^1.2.1",
