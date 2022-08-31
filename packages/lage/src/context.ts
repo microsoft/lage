@@ -34,6 +34,6 @@ export function createContext(config: Pick<Config, "concurrency" | "profile">): 
       failedTargets: [],
     },
     targets: new Map(),
-    profiler
+    profiler,
   };
 }
