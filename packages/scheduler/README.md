@@ -24,6 +24,12 @@ const runner = new NpmScriptRunner({
   ...
 })
 
+const runnerPicker = new TargetRunnerPicker({
+  runners: {
+    npmScript: runner
+  }
+})
+
 const scheduler = new SimpleScheduler({
   logger,
   concurrency,

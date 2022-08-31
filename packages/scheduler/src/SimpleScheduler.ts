@@ -4,13 +4,12 @@ import { WrappedTarget } from "./WrappedTarget";
 import pGraph from "p-graph";
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { PGraphNodeMap } from "p-graph";
-import type { TargetRunner } from "./types/TargetRunner";
 import type { TargetScheduler } from "./types/TargetScheduler";
 import type { AbortSignal } from "abort-controller";
 import { AbortController } from "abort-controller";
-import { NoOpRunner } from "./runners/NoOpRunner";
 import { SchedulerRunResults, SchedulerRunSummary } from "./types/SchedulerRunSummary";
 import { categorizeTargetRuns } from "./categorizeTargetRuns";
+import { TargetRunnerPicker } from "./runners/TargetRunnerPicker";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -20,9 +19,7 @@ export interface SimpleSchedulerOptions {
   hasher: TargetHasher;
   shouldCache: boolean;
   shouldResetCache: boolean;
-
-  // TODO: allow for multiple kinds of runner
-  runner: TargetRunner;
+  runnerPicker: { pick: TargetRunnerPicker["pick"] };
 }
 
 /**
@@ -61,7 +58,7 @@ export class SimpleScheduler implements TargetScheduler {
   async run(root: string, targetGraph: TargetGraph): Promise<SchedulerRunSummary> {
     const startTime: [number, number] = process.hrtime();
 
-    const { concurrency, continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, runner } = this.options;
+    const { concurrency, continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, runnerPicker } = this.options;
     const { dependencies, targets } = targetGraph;
 
     const pGraphNodes: PGraphNodeMap = new Map();
@@ -91,10 +88,7 @@ export class SimpleScheduler implements TargetScheduler {
             return;
           }
 
-          if (target.id === getStartTargetId()) {
-            return this.wrappedTargets.get(target.id)!.run(NoOpRunner);
-          }
-
+          const runner = runnerPicker.pick(target);
           return this.wrappedTargets.get(target.id)!.run(runner);
         },
 

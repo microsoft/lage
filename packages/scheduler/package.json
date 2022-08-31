@@ -21,12 +21,14 @@
     "p-graph": "^1.1.1",
     "p-profiler": "^0.2.1",
     "abort-controller": "^3.0.0",
+    "workerpool": "^6.2.1",
     "workspace-tools": "^0.26.0"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "^0.1.0",
     "@types/jest": "^27.0.1",
     "@types/node": "14.18.26",
+    "@types/workerpool": "^6.1.0",
     "monorepo-scripts": "*"
   },
   "publishConfig": {
