@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 25 Aug 2022 19:01:34 GMT and should not be manually modified.
+This log was last generated on Wed, 31 Aug 2022 19:31:26 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.8.0
+
+Wed, 31 Aug 2022 19:31:26 GMT
+
+### Minor changes
+
+- Get rid of experimental distributed mode (kchau@microsoft.com)
 
 ## 1.7.9
 

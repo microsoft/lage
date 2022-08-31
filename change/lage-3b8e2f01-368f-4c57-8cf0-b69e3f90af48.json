@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Get rid of experimental distributed mode",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

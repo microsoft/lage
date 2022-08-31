@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 31 Aug 2022 19:31:26 GMT",
+      "tag": "lage_v1.8.0",
+      "version": "1.8.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "2bced4ff1337ac476a1e95c86b0a077b2c942216",
+            "comment": "Get rid of experimental distributed mode"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 Aug 2022 19:01:34 GMT",
       "tag": "lage_v1.7.9",
       "version": "1.7.9",
