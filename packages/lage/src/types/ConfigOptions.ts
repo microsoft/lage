@@ -58,11 +58,4 @@ export interface ConfigOptions {
    * Options that will be sent to all log reporters.
    */
   loggerOptions: LoggerOptions;
-
-  /**
-   * Worker queue settings
-   */
-  workerQueueOptions: QueueOptions & {
-    timeoutSeconds: number;
-  };
 }

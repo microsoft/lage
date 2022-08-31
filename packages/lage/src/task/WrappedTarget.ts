@@ -98,7 +98,7 @@ export class WrappedTarget implements LoggableTarget {
     try {
       const { hash, cacheHit } = await this.getCache();
 
-      const cacheEnabled = target.cache && config.cache && hash && !config.dist;
+      const cacheEnabled = target.cache && config.cache && hash;
 
       this.onStart();
 

@@ -7,7 +7,6 @@ import { info } from "./command/info";
 import { initReporters } from "./logger/initReporters";
 import { version } from "./command/version";
 import { cache } from "./command/cache";
-import { worker } from "./command/worker";
 import { graph } from "./command/graph";
 
 // Parse CLI args
@@ -35,11 +34,6 @@ try {
 
     case "version":
       version();
-      break;
-
-    case "experiment-worker":
-      logger.info(`Lage worker - let's make it`);
-      worker(cwd, config);
       break;
 
     default:

@@ -11,15 +11,11 @@ import path from "path";
 import { getPipelinePackages } from "./getPipelinePackages";
 import { getPackageAndTask, getTargetId } from "./taskId";
 import { WrappedTarget } from "./WrappedTarget";
-import { DistributedTask } from "./DistributedTask";
 
 export const START_TARGET_ID = "__start";
 
 /**
  * Pipeline class represents lage's understanding of the dependency graphs and wraps the promise graph implementations to execute tasks in order
- *
- * Distributed notes:
- * - for doing distributed work, the WrapperTask will instead place the PipelineTarget info into a worker queue
  */
 export class Pipeline {
   private cachedTransitiveTaskDependencies: Map<string, "walk-in-progress" | Set<string>> = new Map();
@@ -57,17 +53,6 @@ export class Pipeline {
     this.loadConfig(config);
   }
 
-  private runTask(id: string, cwd: string, run?: PipelineTarget["run"]) {
-    if (this.config.dist) {
-      return (args: TaskArgs) => {
-        const task = new DistributedTask(id, cwd, this.config, this.context?.workerQueue!, args.logger);
-        task.run();
-      };
-    }
-
-    return run;
-  }
-
   /**
    * NPM Tasks are blindly placed in the task dependency graph, but we skip doing work if the package does not contain the specific npm task
    * @param task
@@ -80,19 +65,8 @@ export class Pipeline {
     }
 
     return (args: TaskArgs) => {
-      if (this.config.dist && this.context?.workerQueue!) {
-        const distributedTask = new DistributedTask(
-          getTargetId(info.name, task),
-          path.dirname(info.packageJsonPath),
-          this.config,
-          this.context?.workerQueue!,
-          args.logger
-        );
-        return distributedTask.run();
-      } else {
-        const npmTask = new NpmScriptTask(task, info, this.config, args.logger);
-        return npmTask.run();
-      }
+      const npmTask = new NpmScriptTask(task, info, this.config, args.logger);
+      return npmTask.run();
     };
   }
 
@@ -169,7 +143,7 @@ export class Pipeline {
           cache: target.cache !== false,
           cwd: this.workspace.root,
           task: id,
-          run: this.runTask(targetId, this.workspace.root, target.run) || (() => {}),
+          run: () => {},
         },
       ];
     } else if (id.includes("#")) {
@@ -183,9 +157,7 @@ export class Pipeline {
           task: id,
           cwd: path.dirname(this.packageInfos[pkg!].packageJsonPath),
           packageName: pkg,
-          run:
-            this.runTask(id, path.dirname(this.packageInfos[pkg!].packageJsonPath), target.run) ||
-            this.maybeRunNpmTask(task, this.packageInfos[pkg!]),
+          run: this.maybeRunNpmTask(task, this.packageInfos[pkg!]),
         },
       ];
     } else {
@@ -200,9 +172,7 @@ export class Pipeline {
           task: id,
           cwd: path.dirname(this.packageInfos[pkg].packageJsonPath),
           packageName: pkg,
-          run:
-            this.runTask(targetId, path.dirname(this.packageInfos[pkg].packageJsonPath), target.run) ||
-            this.maybeRunNpmTask(id, this.packageInfos[pkg]),
+          run: this.maybeRunNpmTask(id, this.packageInfos[pkg]),
         };
       });
     }
@@ -478,13 +448,8 @@ export class Pipeline {
       }
     }
 
-    // Initialize the worker queue if in distributed mode
-    if (this.config.dist) {
-      await context.workerQueue?.initializeAsMaster(targetGraph.length * 2);
-    }
-
     await pGraph(nodeMap, targetGraph).run({
-      concurrency: this.config.dist ? targetGraph.length : this.config.concurrency,
+      concurrency: this.config.concurrency,
       continue: this.config.continue,
     });
   }
