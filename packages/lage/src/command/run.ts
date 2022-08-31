@@ -28,9 +28,6 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   signal.addEventListener("abort", async () => {
     aborted = true;
     NpmScriptTask.killAllActiveProcesses();
-    if (config.dist) {
-      await context?.workerQueue?.close();
-    }
     displayReportAndExit(reporters, context);
   });
 
@@ -62,9 +59,6 @@ export async function run(cwd: string, config: Config, reporters: Reporter[]) {
   }
 
   if (!aborted) {
-    if (config.dist) {
-      await context?.workerQueue?.close();
-    }
     displayReportAndExit(reporters, context);
   }
 }

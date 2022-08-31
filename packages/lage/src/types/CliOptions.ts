@@ -192,9 +192,4 @@ export interface CliOptions {
      */
     skipLocalCache: boolean;
   };
-
-  /**
-   * Turns on distributed-run mode - the master node will do no work, but expect workers to join
-   */
-  dist: boolean;
 }

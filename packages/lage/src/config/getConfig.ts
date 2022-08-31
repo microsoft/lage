@@ -80,7 +80,5 @@ export function getConfig(cwd: string): Config {
     prune: parsedArgs.prune,
     logLevel: parsedArgs.logLevel,
     loggerOptions: configResults?.config.loggerOptions || {},
-    dist,
-    workerQueueOptions: configResults?.config.workerQueueOptions || {},
   };
 }

@@ -1,5 +1,4 @@
 import Profiler from "p-profiler";
-import { WorkerQueue } from "../task/WorkerQueue";
 import { LoggableTarget } from "./PipelineDefinition";
 
 export interface Measures {
@@ -14,5 +13,4 @@ export interface RunContext {
   measures: Measures;
   targets: Map<string, LoggableTarget>;
   profiler: Profiler;
-  workerQueue: WorkerQueue | undefined;
 }
