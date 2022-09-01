@@ -1,14 +1,14 @@
 import { AbortSignal } from "abort-controller";
-import { Logger, LogLevel } from "@lage-run/logger";
-
-import { TargetCaptureStreams, TargetRunner } from "../types/TargetRunner";
-import { getPackageAndTask, Target, TargetConfig } from "@lage-run/target-graph";
+import { Logger } from "@lage-run/logger";
+import type { Target, TargetConfig } from "@lage-run/target-graph";
+import type { TargetRunner } from "../types/TargetRunner";
 import type { WorkerPool, WorkerPoolOptions } from "workerpool";
 import workerpool from "workerpool";
 
 export interface WorkerRunnerOptions {
   logger: Logger;
   workerTargetConfigs: Record<string, TargetConfig>;
+  continueOnError?: boolean;
 }
 
 /**
@@ -21,12 +21,13 @@ export interface WorkerRunnerOptions {
  * Example:
  *
  * ```ts
+ * // lage.config.js
  * {
  *   pipeline: {
  *     "lint": {
  *       type: "worker",
- *       worker: "workers/lint.js",
  *       options: {
+ *         worker: "workers/lint.js",
  *         maxWorkers: 15,
  *         minWorkers: 2,
  *       }
@@ -34,10 +35,17 @@ export interface WorkerRunnerOptions {
  *   }
  * }
  * ```
+ *
+ * ```js
+ * // worker.js
+ * const { WorkerRunner } = require("@lage-run/scheduler");
+ * WorkerRunner.register({
+ * })
+ * ```
  */
 export class WorkerRunner implements TargetRunner {
-  static register(methods?: { [k: string]: (...args: any[]) => any }) {
-    workerpool.worker(methods);
+  static register(run: (...args: any[]) => any) {
+    workerpool.worker({ run });
   }
 
   private workerPools: { [poolId: string]: WorkerPool } = {};
@@ -50,13 +58,13 @@ export class WorkerRunner implements TargetRunner {
 
     let poolId: string = "";
     let poolOptions: WorkerPoolOptions = {};
-    let workerScript: string="";
+    let workerScript: string = "";
 
     if (workerTargetConfigs[target.id]) {
       poolId = target.id;
       workerScript = workerTargetConfigs[target.id].options?.worker;
       poolOptions = workerTargetConfigs[target.id].options ?? {};
-    } else if (workerTargetConfigs[task]){
+    } else if (workerTargetConfigs[task]) {
       poolId = task;
       workerScript = workerTargetConfigs[task].options?.worker;
       poolOptions = workerTargetConfigs[task].options ?? {};
@@ -70,6 +78,7 @@ export class WorkerRunner implements TargetRunner {
   }
 
   async run(target: Target, abortSignal?: AbortSignal) {
+    const { continueOnError } = this.options;
     /**
      * Handling abort signal from the abort controller. Gracefully kills the process,
      * will be handled by exit handler separately to resolve the promise.
@@ -81,6 +90,10 @@ export class WorkerRunner implements TargetRunner {
 
       const abortSignalHandler = () => {
         abortSignal.removeEventListener("abort", abortSignalHandler);
+
+        if (!continueOnError) {
+          pool.terminate();
+        }
       };
 
       abortSignal.addEventListener("abort", abortSignalHandler);

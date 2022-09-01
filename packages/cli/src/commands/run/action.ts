@@ -5,7 +5,7 @@ import { findNpmClient } from "../../workspace/findNpmClient";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { NpmScriptRunner, SimpleScheduler, WorkerRunner, TargetRunnerPicker } from "@lage-run/scheduler";
+import { NpmScriptRunner, SimpleScheduler, WorkerRunner, TargetRunnerPicker, TargetRunner } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger, { LogLevel, Reporter } from "@lage-run/logger";
 import { initializeReporters } from "../../reporters/initialize";
@@ -108,7 +108,7 @@ export async function runAction(options: RunOptions, command: Command) {
   });
 
   // Run Tasks with Scheduler + NpmScriptRunner
-  const runners = {
+  const runners: Record<string, TargetRunner> = {
     npmScript: new NpmScriptRunner({
       logger,
       nodeOptions: options.nodeargs,
@@ -123,7 +123,7 @@ export async function runAction(options: RunOptions, command: Command) {
         }
 
         return workerTargetConfigs;
-      }, {})
+      }, {}),
     }),
   };
 
@@ -143,6 +143,12 @@ export async function runAction(options: RunOptions, command: Command) {
   });
 
   const summary = await scheduler.run(root, targetGraph);
+
+  for (const runner of Object.values(runners)) {
+    if (runner.cleanup) {
+      await runner.cleanup();
+    }
+  }
 
   for (const reporter of logger.reporters) {
     reporter.summarize(summary);
