@@ -2,8 +2,6 @@ const { ESLint } = require("eslint");
 const packagePath = process.cwd();
 
 (async function main() {
-  const optionsPath = `${packagePath}/.eslintrc.js`;
-
   // 1. Create an instance.
   const eslint = new ESLint({
     cwd: packagePath,
@@ -19,6 +17,10 @@ const packagePath = process.cwd();
 
   // 4. Output it.
   console.log(resultText);
+
+  if (results[0].errorCount > 0) {
+    throw new Error(`Linting failed with ${results[0].errorCount} errors`);
+  }
 })().catch((error) => {
   process.exitCode = 1;
   console.error(error);
