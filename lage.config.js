@@ -9,7 +9,7 @@ module.exports = {
     lint: {
       type: "worker",
       options: {
-        maxWorkers: 4,
+        maxWorkers: 3,
         worker: path.join(__dirname, "scripts/worker/lint.js"),
       },
     },

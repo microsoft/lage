@@ -2,7 +2,7 @@
 const { ESLint } = require("eslint");
 const PROJECT_ROOT = require("path").resolve(__dirname, "..", "..");
 
-const { WorkerRunner } = require("@lage-run/scheduler");
+const { registerWorker } = require("@lage-run/scheduler");
 const { threadId } = require("node:worker_threads");
 const { readFile } = require("fs/promises");
 
@@ -45,4 +45,4 @@ async function run(target) {
   }
 }
 
-WorkerRunner.register(run);
+registerWorker(run);

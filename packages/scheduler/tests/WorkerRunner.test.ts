@@ -1,5 +1,5 @@
-import { Logger } from "@lage-run/logger";
-import { Target } from "@lage-run/target-graph";
+import { Logger, Reporter } from "@lage-run/logger";
+import { Target, TargetConfig } from "@lage-run/target-graph";
 import path from "path";
 import { WorkerRunner } from "../src/runners/WorkerRunner";
 
@@ -7,30 +7,48 @@ describe("WorkerRunner", () => {
   it("can create a pool to run worker targets in parallel with worker_thread", async () => {
     const workerFixture = path.join(__dirname, "./fixtures/worker.js");
     const logger = new Logger();
+
+    const dummyReporter = {
+      log(entry) {
+        console.log(entry);
+      },
+    } as Reporter;
+
+    logger.addReporter(dummyReporter);
+
     const runner = new WorkerRunner({
       logger,
-      workerScripts: {
-        work: workerFixture,
-      },
-      poolOptions: {
+      workerTargetConfigs: {
         work: {
-          maxWorkers: 2,
-        },
+          options: {
+            worker: workerFixture,
+            maxWorkers: 2,
+          },
+        } as TargetConfig,
       },
     });
 
-    const target = {
+    const target1 = {
       id: "a#work",
       task: "work",
       packageName: "a",
       cwd: "/repo/dummy/cwd",
       dependencies: [],
       label: "a - work",
-      type: "worker"
+      type: "worker",
     } as Target;
 
-    await runner.run(target);
+    const target2 = {
+      id: "b#work",
+      task: "work",
+      packageName: "b",
+      cwd: "/repo/dummy/cwd",
+      dependencies: [],
+      label: "b - work",
+      type: "worker",
+    } as Target;
 
+    await Promise.all([runner.run(target1), runner.run(target2)]);
     await runner.cleanup();
   });
 });

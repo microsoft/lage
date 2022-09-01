@@ -48,7 +48,13 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
       input,
       crlfDelay: Infinity,
     });
-    readline.on("line", (line) => this.log(level, line, data));
+
+    const lineLogger = (line) => this.log(level, line, data);
+    readline.on("line", lineLogger);
+
+    return () => {
+      readline.off("line", lineLogger);
+    };
   }
 
   addReporter(reporter: Reporter) {
