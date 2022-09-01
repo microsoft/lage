@@ -182,6 +182,9 @@ export class WorkerRunner implements TargetRunner {
 
     if (stdout) {
       if (captureStreams.stdout) {
+        stdout.setMaxListeners(stdout.getMaxListeners() + 1);
+        captureStreams.stdout.setMaxListeners(captureStreams.stdout.getMaxListeners() + 1);
+
         stdout = stdout.pipe(captureStreams.stdout);
       }
 
@@ -190,6 +193,9 @@ export class WorkerRunner implements TargetRunner {
 
     if (stderr) {
       if (captureStreams.stderr) {
+        stderr.setMaxListeners(stderr.getMaxListeners() + 1);
+        captureStreams.stderr.setMaxListeners(captureStreams.stderr.getMaxListeners() + 1);
+
         stderr = stderr.pipe(captureStreams.stderr);
       }
 
@@ -253,8 +259,9 @@ export class WorkerRunner implements TargetRunner {
 
           reject();
         }
-      }
+      };
 
+      childProcess.setMaxListeners(childProcess.getMaxListeners() + 1);
       childProcess.on("message", messageHandler);
     });
   }

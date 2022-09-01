@@ -1,10 +1,10 @@
 // @ts-check
 
 /** @typedef {import("@lage-run/target-graph").Target} Target **/
-/** @typedef {import("workerpool").WorkerPool} WorkerPool **/
+/** @typedef {import("@lage-run/worker-threads-pool").WorkerPool} WorkerPool **/
 /** @typedef {[id: string, script: string, options: string]} WorkerProcessArgs */
 
-const workerpool = require("workerpool");
+const { WorkerPool } = require("@lage-run/worker-threads-pool");
 
 /** @type {WorkerPool} */
 let pool;
@@ -36,7 +36,12 @@ async function onMessage(message) {
     let status = "success";
     let statusMessage = "";
     try {
-      await pool.exec("run", [target]);
+      // THE ACTUAL RUN FROM WORKER POOL
+      const [results, err] = await pool.exec("run", [target]);
+
+      // if (err) {
+      //   status = "error";
+      // }
     } catch (error) {
       status = "error";
       statusMessage = String(error);
