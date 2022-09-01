@@ -2,18 +2,13 @@ import { AbortSignal } from "abort-controller";
 import { Logger, LogLevel } from "@lage-run/logger";
 
 import { TargetCaptureStreams, TargetRunner } from "../types/TargetRunner";
-import { getPackageAndTask, Target } from "@lage-run/target-graph";
+import { getPackageAndTask, Target, TargetConfig } from "@lage-run/target-graph";
 import type { WorkerPool, WorkerPoolOptions } from "workerpool";
 import workerpool from "workerpool";
 
 export interface WorkerRunnerOptions {
   logger: Logger;
-  workerScripts: {
-    [poolId: string]: string;
-  }
-  poolOptions: {
-    [poolId: string]: WorkerPoolOptions;
-  };
+  workerTargetConfigs: Record<string, TargetConfig>;
 }
 
 /**
@@ -42,30 +37,33 @@ export interface WorkerRunnerOptions {
  */
 export class WorkerRunner implements TargetRunner {
   static register(methods?: { [k: string]: (...args: any[]) => any }) {
-
     workerpool.worker(methods);
   }
 
   private workerPools: { [poolId: string]: WorkerPool } = {};
 
-  constructor(private options: WorkerRunnerOptions) {
-    if (!options.poolOptions) {
-      throw new Error("WorkerRunner requires poolOptions");
-    }
-  }
+  constructor(private options: WorkerRunnerOptions) {}
 
   private createOrGetPool(target: Target) {
     const { task } = target;
-    const { poolOptions, workerScripts } = this.options;
+    const { workerTargetConfigs } = this.options;
 
-    const poolId = poolOptions[task] ? task : poolOptions[target.id] ? target.id : undefined;
+    let poolId: string = "";
+    let poolOptions: WorkerPoolOptions = {};
+    let workerScript: string="";
 
-    if (!poolId) {
-      throw new Error(`No worker pool has been defined for this target: ${target.id}`);
+    if (workerTargetConfigs[target.id]) {
+      poolId = target.id;
+      workerScript = workerTargetConfigs[target.id].options?.worker;
+      poolOptions = workerTargetConfigs[target.id].options ?? {};
+    } else if (workerTargetConfigs[task]){
+      poolId = task;
+      workerScript = workerTargetConfigs[task].options?.worker;
+      poolOptions = workerTargetConfigs[task].options ?? {};
     }
 
-    if (!this.workerPools[poolId] && workerScripts[poolId]) {
-      this.workerPools[poolId] = workerpool.pool(workerScripts[poolId], poolOptions[poolId]);
+    if (!this.workerPools[poolId]) {
+      this.workerPools[poolId] = workerpool.pool(workerScript, poolOptions);
     }
 
     return this.workerPools[poolId];
