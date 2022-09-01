@@ -56,6 +56,7 @@ export class TargetGraphBuilder {
     return {
       id: targetId,
       label: targetId,
+      type: config.type,
       task: targetId,
       cache: cache !== false,
       cwd: this.root,
@@ -81,6 +82,7 @@ export class TargetGraphBuilder {
     return {
       id: getTargetId(packageName, task),
       label: `${packageName} - ${task}`,
+      type: config.type,
       packageName,
       task,
       cache: cache !== false,
@@ -102,7 +104,7 @@ export class TargetGraphBuilder {
    */
   addTargetConfig(id: string, config: TargetConfig = {}): void {
     // Generates a target definition from the target config
-    if (config.type === "global" || id.startsWith("//")) {
+    if (id.startsWith("//") || id.startsWith("#")) {
       const target = this.createGlobalTarget(id, config);
       this.targets.set(target.id, target);
     } else if (id.includes("#")) {

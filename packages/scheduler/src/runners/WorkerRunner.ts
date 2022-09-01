@@ -8,6 +8,9 @@ import workerpool from "workerpool";
 
 export interface WorkerRunnerOptions {
   logger: Logger;
+  workerScripts: {
+    [poolId: string]: string;
+  }
   poolOptions: {
     [poolId: string]: WorkerPoolOptions;
   };
@@ -38,6 +41,11 @@ export interface WorkerRunnerOptions {
  * ```
  */
 export class WorkerRunner implements TargetRunner {
+  static register(methods?: { [k: string]: (...args: any[]) => any }) {
+
+    workerpool.worker(methods);
+  }
+
   private workerPools: { [poolId: string]: WorkerPool } = {};
 
   constructor(private options: WorkerRunnerOptions) {
@@ -47,8 +55,8 @@ export class WorkerRunner implements TargetRunner {
   }
 
   private createOrGetPool(target: Target) {
-    const { packageName, task } = getPackageAndTask(target.id);
-    const { poolOptions } = this.options;
+    const { task } = target;
+    const { poolOptions, workerScripts } = this.options;
 
     const poolId = poolOptions[task] ? task : poolOptions[target.id] ? target.id : undefined;
 
@@ -56,12 +64,14 @@ export class WorkerRunner implements TargetRunner {
       throw new Error(`No worker pool has been defined for this target: ${target.id}`);
     }
 
-    if (!this.workerPools[poolId]) {
-      this.workerPools[poolId] = workerpool.pool(poolOptions[poolId]);
+    if (!this.workerPools[poolId] && workerScripts[poolId]) {
+      this.workerPools[poolId] = workerpool.pool(workerScripts[poolId], poolOptions[poolId]);
     }
+
+    return this.workerPools[poolId];
   }
 
-  async run(target: Target, abortSignal?: AbortSignal, captureStreams: TargetCaptureStreams = {}) {
+  async run(target: Target, abortSignal?: AbortSignal) {
     /**
      * Handling abort signal from the abort controller. Gracefully kills the process,
      * will be handled by exit handler separately to resolve the promise.
@@ -78,10 +88,11 @@ export class WorkerRunner implements TargetRunner {
       abortSignal.addEventListener("abort", abortSignalHandler);
     }
 
-    /**
-     * Actually spawn the npm client to run the task
-     */
-    const npmRunArgs = this.getNpmArgs(target.task, taskArgs);
-    const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter((str) => str).join(" ");
+    const pool = this.createOrGetPool(target);
+    return await pool.exec("run", [target, abortSignal]);
+  }
+
+  async cleanup() {
+    await Promise.all(Object.values(this.workerPools).map((pool) => pool.terminate()));
   }
 }

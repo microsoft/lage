@@ -8,6 +8,11 @@ export interface Target {
   task: string;
 
   /**
+   * Type of the target. If not specified, it will default to "npmScript". Determines the runner for the target.
+   */
+  type?: string;
+
+  /**
    * Package name of the target. Undefined if this target is associated with repo root.
    */
   packageName?: string;
