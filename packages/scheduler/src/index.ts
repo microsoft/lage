@@ -1,5 +1,4 @@
 export { NpmScriptRunner } from "./runners/NpmScriptRunner";
-export { registerWorker } from "./registerWorker";
 export { SimpleScheduler } from "./SimpleScheduler";
 export { TargetRunnerPicker } from "./runners/TargetRunnerPicker";
 export { WorkerRunner } from "./runners/WorkerRunner";

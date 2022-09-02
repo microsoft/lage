@@ -1,6 +1,6 @@
 import { parentPort } from "node:worker_threads";
 
-export function registerWorker(fn: (data: any) => void) {
+export function registerWorker(fn: (data: any) => Promise<void> | void) {
   parentPort?.on("message", async (task) => {
     try {
       const results = await fn(task);

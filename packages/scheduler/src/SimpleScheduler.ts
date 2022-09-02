@@ -1,15 +1,15 @@
-import { getStartTargetId, TargetGraph } from "@lage-run/target-graph";
-import { Logger } from "@lage-run/logger";
+import { AbortController } from "abort-controller";
+import { categorizeTargetRuns } from "./categorizeTargetRuns";
 import { WrappedTarget } from "./WrappedTarget";
 import pGraph from "p-graph";
-import type { CacheProvider, TargetHasher } from "@lage-run/cache";
-import type { PGraphNodeMap } from "p-graph";
-import type { TargetScheduler } from "./types/TargetScheduler";
 import type { AbortSignal } from "abort-controller";
-import { AbortController } from "abort-controller";
-import { SchedulerRunResults, SchedulerRunSummary } from "./types/SchedulerRunSummary";
-import { categorizeTargetRuns } from "./categorizeTargetRuns";
-import { TargetRunnerPicker } from "./runners/TargetRunnerPicker";
+import type { CacheProvider, TargetHasher } from "@lage-run/cache";
+import type { Logger } from "@lage-run/logger";
+import type { PGraphNodeMap } from "p-graph";
+import type { SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "./types/SchedulerRunSummary";
+import type { TargetGraph } from "@lage-run/target-graph";
+import type { TargetRunnerPicker } from "./runners/TargetRunnerPicker";
+import type { TargetScheduler } from "./types/TargetScheduler";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -98,6 +98,8 @@ export class SimpleScheduler implements TargetScheduler {
 
     let results: SchedulerRunResults = "failed";
     let error: string | undefined;
+    let duration: [number, number] = [0, 0];
+    let targetRunByStatus: TargetRunSummary;
 
     try {
       await pGraph(pGraphNodes, pGraphEdges).run({
@@ -107,8 +109,8 @@ export class SimpleScheduler implements TargetScheduler {
     } catch (e) {
       error = e instanceof Error ? e.message : String(e);
     } finally {
-      const duration = process.hrtime(startTime);
-      const targetRunByStatus = categorizeTargetRuns([...this.wrappedTargets.values()]);
+      duration = process.hrtime(startTime);
+      targetRunByStatus = categorizeTargetRuns([...this.wrappedTargets.values()]);
 
       if (
         targetRunByStatus.failed.length +
@@ -119,16 +121,16 @@ export class SimpleScheduler implements TargetScheduler {
       ) {
         results = "success";
       }
-
-      return {
-        targetRunByStatus,
-        targetRuns: this.wrappedTargets,
-        duration,
-        startTime,
-        results,
-        error,
-      };
     }
+
+    return {
+      targetRunByStatus,
+      targetRuns: this.wrappedTargets,
+      duration,
+      startTime,
+      results,
+      error,
+    };
   }
 
   /**

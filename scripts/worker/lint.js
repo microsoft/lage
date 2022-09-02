@@ -2,16 +2,15 @@
 const { ESLint } = require("eslint");
 const PROJECT_ROOT = require("path").resolve(__dirname, "..", "..");
 
-const { registerWorker } = require("@lage-run/scheduler");
-const { threadId } = require("node:worker_threads");
+const { registerWorker } = require("@lage-run/worker-threads-pool");
 const { readFile } = require("fs/promises");
 
 const path = require("path");
 
-async function run(target) {
-  console.log("My thread id is", threadId);
-
+async function run(data) {
+  const {target} = data;
   const packageJson = JSON.parse(await readFile(path.join(target.cwd, "package.json"), "utf8"));
+
   if (!packageJson.scripts?.[target.task]) {
     // pass
     return;

@@ -5,8 +5,9 @@
 
 import { AsyncResource } from "node:async_hooks";
 import { EventEmitter } from "node:events";
+import { Worker } from "node:worker_threads";
 import os from "node:os";
-import { Worker, WorkerOptions } from "node:worker_threads";
+import type { WorkerOptions } from "node:worker_threads";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
@@ -36,7 +37,7 @@ interface WorkerPoolOptions {
 export class WorkerPool extends EventEmitter {
   workers: Worker[] = [];
   freeWorkers: Worker[] = [];
-  tasks: any[] = [];
+  queue: { task: unknown; resolve: (value?: unknown) => void; reject: (reason: unknown) => void }[] = [];
 
   constructor(private options: WorkerPoolOptions) {
     super();
@@ -44,7 +45,7 @@ export class WorkerPool extends EventEmitter {
 
     this.workers = [];
     this.freeWorkers = [];
-    this.tasks = [];
+    this.queue = [];
 
     for (let i = 0; i < maxWorkers; i++) {
       this.addNewWorker();
@@ -53,7 +54,7 @@ export class WorkerPool extends EventEmitter {
     // Any time the kWorkerFreedEvent is emitted, dispatch
     // the next task pending in the queue, if any.
     this.on(kWorkerFreedEvent, () => {
-      if (this.tasks.length > 0) {
+      if (this.queue.length > 0) {
         this._exec();
       }
     });
@@ -97,7 +98,7 @@ export class WorkerPool extends EventEmitter {
 
   exec(task: unknown) {
     return new Promise((resolve, reject) => {
-      this.tasks.push({ task, resolve, reject });
+      this.queue.push({ task, resolve, reject });
       this._exec();
     });
   }
@@ -105,15 +106,17 @@ export class WorkerPool extends EventEmitter {
   _exec() {
     if (this.freeWorkers.length > 0) {
       const worker = this.freeWorkers.pop();
-      const { task, resolve, reject } = this.tasks.shift();
+      const work = this.queue.shift();
+      const { task, resolve, reject } = work as any;
 
       if (worker) {
-        worker[kTaskInfo] = new WorkerPoolTaskInfo(resolve, reject, worker);
-        worker.postMessage(task);
         this.emit("running", {
           worker,
           task,
         });
+
+        worker[kTaskInfo] = new WorkerPoolTaskInfo(resolve, reject, worker);
+        worker.postMessage(task);
       }
     }
   }

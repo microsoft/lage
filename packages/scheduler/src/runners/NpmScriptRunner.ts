@@ -1,10 +1,12 @@
-import { AbortSignal } from "abort-controller";
-import { ChildProcess, spawn } from "child_process";
 import { existsSync } from "fs";
 import { join } from "path";
-import { Logger, LogLevel } from "@lage-run/logger";
+import type { Logger } from "@lage-run/logger";
+import { LogLevel } from "@lage-run/logger";
 import { readFile } from "fs/promises";
-import { TargetCaptureStreams, TargetRunner } from "../types/TargetRunner";
+import { spawn } from "child_process";
+import type { TargetCaptureStreams, TargetRunner } from "../types/TargetRunner";
+import type { AbortSignal } from "abort-controller";
+import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";
 
 export interface NpmScriptRunnerOptions {
@@ -122,7 +124,7 @@ export class NpmScriptRunner implements TargetRunner {
 
       let exitHandled = false;
 
-      const handleChildProcessExit = (code: number, signal?: any) => {
+      const handleChildProcessExit = (code: number) => {
         childProcess?.off("exit", handleChildProcessExit);
         childProcess?.off("error", handleChildProcessExit);
 

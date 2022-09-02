@@ -1,6 +1,6 @@
-import { Target } from "@lage-run/target-graph";
+import type { Target } from "@lage-run/target-graph";
 import type { AbortSignal } from "abort-controller";
-import { Transform } from "stream";
+import type { Transform } from "stream";
 
 export interface TargetCaptureStreams {
   stdout?: Transform;

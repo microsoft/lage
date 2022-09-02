@@ -1,4 +1,4 @@
-import { Target } from "@lage-run/target-graph";
+import type { Target } from "@lage-run/target-graph";
 import { Transform } from "node:stream";
 import fs from "node:fs";
 import path from "node:path";

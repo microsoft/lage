@@ -1,11 +1,11 @@
-import { AbortSignal } from "abort-controller";
-import { fork } from "child_process";
-import { getWorkspaceRoot } from "workspace-tools";
-import { Logger, LogLevel } from "@lage-run/logger";
-import path from "path";
-import type { ChildProcess } from "child_process";
+import { LogLevel } from "@lage-run/logger";
+import { WorkerPool } from "@lage-run/worker-threads-pool";
+import os from "os";
+import type { AbortSignal } from "abort-controller";
+import type { Logger } from "@lage-run/logger";
 import type { Target, TargetConfig } from "@lage-run/target-graph";
 import type { TargetCaptureStreams, TargetRunner } from "../types/TargetRunner";
+import type { Worker } from "worker_threads";
 
 export interface WorkerRunnerOptions {
   logger: Logger;
@@ -53,7 +53,10 @@ export interface PoolOptions {
  * ```
  */
 export class WorkerRunner implements TargetRunner {
-  private poolProcesses: Record<string, ChildProcess> = {};
+  private pools: Record<string, WorkerPool> = {};
+  private captureStreams: Record<string, TargetCaptureStreams> = {};
+  private releaseStreams: Record<string, () => void> = {};
+
   static gracefulKillTimeout = 2500;
 
   constructor(private options: WorkerRunnerOptions) {}
@@ -62,9 +65,9 @@ export class WorkerRunner implements TargetRunner {
     const { task } = target;
     const { workerTargetConfigs } = this.options;
 
-    let id: string = "";
+    let id = "";
     let options: Record<string, any> = {};
-    let script: string = "";
+    let script = "";
 
     if (workerTargetConfigs[target.id]) {
       id = target.id;
@@ -84,122 +87,56 @@ export class WorkerRunner implements TargetRunner {
     };
   }
 
-  createPoolProcess(poolOptions: PoolOptions, abortSignal?: AbortSignal) {
-    const { logger, nodeOptions } = this.options;
+  ensurePool(poolOptions: PoolOptions) {
     const { id, script, options } = poolOptions;
 
-    const root = getWorkspaceRoot(process.cwd());
+    if (!this.pools[id]) {
+      const pool = new WorkerPool({
+        maxWorkers: options.maxWorkers ?? os.cpus().length,
+        script,
+        workerOptions: {
+          stdout: true,
+          stderr: true,
+        },
+      });
 
-    let childProcess: ChildProcess;
-    /**
-     * Handling abort signal from the abort controller. Gracefully kills the process,
-     * will be handled by exit handler separately to resolve the promise.
-     */
-    if (abortSignal) {
-      if (abortSignal.aborted) {
-        return;
-      }
+      pool.on("running", this.onWorkerRunning.bind(this));
 
-      const abortSignalHandler = () => {
-        abortSignal.removeEventListener("abort", abortSignalHandler);
-        if (childProcess && !childProcess.killed) {
-          const pid = childProcess.pid;
-          logger.verbose(`Abort signal detected, attempting to killing process id ${pid} for the worker pool: ${id}`);
-
-          childProcess.kill("SIGTERM");
-
-          // wait for "gracefulKillTimeout" to make sure everything is terminated via SIGKILL
-          const t = setTimeout(() => {
-            if (childProcess && !childProcess.killed) {
-              childProcess.kill("SIGKILL");
-            }
-          }, WorkerRunner.gracefulKillTimeout);
-
-          // Remember that even this timeout needs to be unref'ed, otherwise the process will hang due to this timeout
-          if (t.unref) {
-            t.unref();
-          }
-        }
-      };
-
-      abortSignal.addEventListener("abort", abortSignalHandler);
+      this.pools[id] = pool;
     }
 
-    /**
-     * Actually spawn the npm client to run the task
-     */
-    const workerProcessScript = path.join(path.dirname(__filename), "../../worker/workerProcess.js");
-    const combinedNodeOptions = [nodeOptions, options.nodeOptions].filter((str) => str).join(" ");
-
-    childProcess = fork(workerProcessScript, [id, script, JSON.stringify(options)], {
-      cwd: root,
-      stdio: ["inherit", "pipe", "pipe", "ipc"],
-      env: {
-        ...process.env,
-        ...(process.stdout.isTTY && { FORCE_COLOR: "1" }),
-        ...(combinedNodeOptions && { NODE_OPTIONS: combinedNodeOptions }),
-      },
-    });
-
-    if (!childProcess) {
-      throw new Error(`Failed to spawn child process for the worker pool: ${id}`);
-    }
-
-    // Handle exit
-    let exitHandled = false;
-
-    const handleChildProcessExit = (code: number, signal?: any) => {
-      childProcess.off("exit", handleChildProcessExit);
-      childProcess.off("error", handleChildProcessExit);
-
-      if (exitHandled) {
-        return;
-      }
-
-      exitHandled = true;
-
-      childProcess.stdout?.destroy();
-      childProcess.stderr?.destroy();
-    };
-
-    childProcess.on("exit", handleChildProcessExit);
-    childProcess.on("error", () => handleChildProcessExit(1));
-
-    return childProcess;
+    return this.pools[id];
   }
 
-  captureStream(target: Target, childProcess: ChildProcess, captureStreams: TargetCaptureStreams = {}) {
+  captureStream(target: Target, worker: Worker, captureStreams: TargetCaptureStreams = {}) {
     const { logger } = this.options;
-    const { pid } = childProcess;
 
-    let stdout = childProcess.stdout;
-    let stderr = childProcess.stderr;
+    let stdout = worker.stdout;
+    let stderr = worker.stderr;
 
-    let releaseStreams = {
-      stdout: () => {},
-      stderr: () => {},
+    const releaseStreams = {
+      stdout: () => {
+        // pass
+      },
+      stderr: () => {
+        // pass
+      },
     };
 
     if (stdout) {
       if (captureStreams.stdout) {
-        stdout.setMaxListeners(stdout.getMaxListeners() + 1);
-        captureStreams.stdout.setMaxListeners(captureStreams.stdout.getMaxListeners() + 1);
-
         stdout = stdout.pipe(captureStreams.stdout);
       }
 
-      releaseStreams.stdout = logger.stream(LogLevel.verbose, stdout, { target, pid });
+      releaseStreams.stdout = logger.stream(LogLevel.verbose, stdout, { target, tid: worker.threadId });
     }
 
     if (stderr) {
       if (captureStreams.stderr) {
-        stderr.setMaxListeners(stderr.getMaxListeners() + 1);
-        captureStreams.stderr.setMaxListeners(captureStreams.stderr.getMaxListeners() + 1);
-
         stderr = stderr.pipe(captureStreams.stderr);
       }
 
-      releaseStreams.stderr = logger.stream(LogLevel.verbose, stderr, { target, pid });
+      releaseStreams.stderr = logger.stream(LogLevel.verbose, stderr, { target, tid: worker.threadId });
     }
 
     return () => {
@@ -216,59 +153,29 @@ export class WorkerRunner implements TargetRunner {
     };
   }
 
+  onWorkerRunning(data: { worker: Worker; task: { target: Target } }) {
+    const { worker, task } = data;
+    const { target } = task;
+
+    this.releaseStreams[target.id] = this.captureStream(target, worker, this.captureStreams[target.id]);
+  }
+
   async run(target: Target, abortSignal?: AbortSignal, captureStreams: TargetCaptureStreams = {}) {
     const poolOptions = this.getPoolOptions(target);
-    const { logger } = this.options;
 
-    if (!this.poolProcesses[poolOptions.id]) {
-      const proc = this.createPoolProcess(poolOptions, abortSignal);
+    this.captureStreams[target.id] = captureStreams;
 
-      if (!proc) {
-        // this happens when the abort signal is triggered
-        return;
-      }
+    const pool = this.ensurePool(poolOptions);
+    await pool.exec({ target });
 
-      this.poolProcesses[poolOptions.id] = proc;
+    if (this.releaseStreams[target.id]) {
+      this.releaseStreams[target.id]();
     }
-
-    const childProcess = this.poolProcesses[poolOptions.id];
-
-    if (!childProcess) {
-      throw new Error(`Failed to find child process for the worker pool: ${poolOptions.id}`);
-    }
-
-    const releaseStreams = this.captureStream(target, childProcess, captureStreams);
-    return new Promise<void>((resolve, reject) => {
-      logger.verbose(`Sending message to worker pool: ${poolOptions.id} for target ${target.id}`, { target });
-
-      childProcess.send({ type: "run", target });
-
-      const messageHandler = (message: any) => {
-        childProcess.off("message", messageHandler);
-
-        if (message.type === "status") {
-          logger.verbose(`Received message from worker pool: ${poolOptions.id} for target ${target.id} with status: ${message.status}`, {
-            target,
-          });
-
-          releaseStreams();
-
-          if (message.status === "success") {
-            return resolve();
-          }
-
-          reject();
-        }
-      };
-
-      childProcess.setMaxListeners(childProcess.getMaxListeners() + 1);
-      childProcess.on("message", messageHandler);
-    });
   }
 
   cleanup() {
-    for (const poolProcess of Object.values(this.poolProcesses)) {
-      poolProcess.send({ type: "cleanup" });
+    for (const pool of Object.values(this.pools)) {
+      pool.close();
     }
   }
 }
