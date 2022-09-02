@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Supports worker as a new target type",
+  "packageName": "@lage-run/target-graph",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}
