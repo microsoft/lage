@@ -23,7 +23,10 @@ class WorkerPoolTaskInfo extends AsyncResource {
     }
   ) {
     super("WorkerPoolTaskInfo");
-    this.runInAsyncScope(options.setup, null, options.worker);
+
+    if (options.setup) {
+      this.runInAsyncScope(options.setup, null, options.worker);
+    }
   }
 
   done(err: Error, results: unknown) {

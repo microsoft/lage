@@ -15,14 +15,14 @@ describe("WorkerPool", () => {
 
     const numTasks = 100;
 
-    pool.on("running", (data) => {
+    const setup = (data) => {
       running.push(data);
-    });
+    };
 
     const range = Array(numTasks)
       .fill(0)
       .map((_, i) => i);
-    const results = await Promise.all(range.map((i) => pool.exec({ id: i })));
+    const results = await Promise.all(range.map((i) => pool.exec({ id: i }, setup)));
 
     expect(pool.workers.length).toBe(5);
 
@@ -45,9 +45,9 @@ describe("WorkerPool", () => {
 
     const numTasks = 100;
 
-    pool.on("running", (data) => {
+    const setup = (data) => {
       running.push(data);
-    });
+    };
 
     const range = Array(numTasks)
       .fill(0)
@@ -56,7 +56,7 @@ describe("WorkerPool", () => {
     let results: any[] = [];
 
     try {
-      results = await Promise.all(range.map((i) => pool.exec({ id: i }).catch(() => {})));
+      results = await Promise.all(range.map((i) => pool.exec({ id: i }, setup).catch(() => {})));
     } finally {
       pool.close();
     }
