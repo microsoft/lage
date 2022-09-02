@@ -12,6 +12,7 @@ async function run(data) {
   const packageJson = JSON.parse(await readFile(path.join(target.cwd, "package.json"), "utf8"));
 
   if (!packageJson.scripts?.[target.task]) {
+    console.log(`No script found for ${target.task} in ${target.cwd}`);
     // pass
     return;
   }
@@ -31,18 +32,14 @@ async function run(data) {
 
   const results = await eslint.lintFiles(files);
 
-  if (results[0].errorCount > 0) {
-    const formatter = await eslint.loadFormatter("stylish");
-    const resultText = formatter.format(results);
+  const formatter = await eslint.loadFormatter("stylish");
+  const resultText = formatter.format(results);
 
-    // 4. Output it.
-    console.log(resultText);
+  // 4. Output it.
+  console.log(resultText);
 
-    if (results[0].errorCount > 0) {
-      throw new Error(`Linting failed with ${results[0].errorCount} errors`);
-    }
-  } else {
-    console.log(`Linting passed for ${target.id}`);
+  if (results.some(r => r.errorCount > 0)) {
+    throw new Error(`Linting failed with errors`);
   }
 }
 

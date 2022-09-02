@@ -5,7 +5,7 @@ const packagePath = process.cwd();
   // 1. Create an instance.
   const eslint = new ESLint({
     cwd: packagePath,
-    baseConfig: require('../config/eslintrc.js')
+    baseConfig: require("../config/eslintrc.js"),
   });
 
   // 2. Lint files.
@@ -18,7 +18,7 @@ const packagePath = process.cwd();
   // 4. Output it.
   console.log(resultText);
 
-  if (results[0].errorCount > 0) {
+  if (results.some((r) => r.errorCount > 0)) {
     throw new Error(`Linting failed with ${results[0].errorCount} errors`);
   }
 })().catch((error) => {
