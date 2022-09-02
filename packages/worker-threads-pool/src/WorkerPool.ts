@@ -97,7 +97,7 @@ export class WorkerPool extends EventEmitter {
       worker[kTaskInfo] = null;
       this.freeWorkers.push(worker);
       this.emit(kWorkerFreedEvent);
-    }
+    };
 
     worker.on("message", msgHandler);
 
@@ -113,7 +113,7 @@ export class WorkerPool extends EventEmitter {
       // current one.
       this.workers.splice(this.workers.indexOf(worker), 1);
       this.addNewWorker();
-    }
+    };
 
     worker.on("error", errHandler);
 

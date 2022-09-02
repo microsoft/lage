@@ -52,7 +52,7 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
 
     const lineLogger = (line) => {
       this.log(level, line, data);
-    }
+    };
 
     readline.on("line", lineLogger);
 
