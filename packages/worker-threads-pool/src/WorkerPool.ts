@@ -136,11 +136,6 @@ export class WorkerPool extends EventEmitter {
       const { task, resolve, reject, cleanup, setup } = work as any;
 
       if (worker) {
-        this.emit("running", {
-          worker,
-          task,
-        });
-
         worker[kTaskInfo] = new WorkerPoolTaskInfo({ cleanup, resolve, reject, worker, setup });
         worker.postMessage(task);
       }
