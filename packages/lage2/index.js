@@ -1,1 +1,1 @@
-export { registerWorker } from "@lage-run/scheduler";
+export { registerWorker } from "@lage-run/worker-threads-pool";

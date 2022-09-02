@@ -1,11 +1,9 @@
 // Fixture uses the `workerpool`
-const workerpool = require("workerpool");
-const {threadId} = require("worker_threads");
+const { registerWorker } = require("@lage-run/worker-threads-pool");
+const { threadId } = require("worker_threads");
 
-function run(target, _abortSignal) {
+function run({ target }) {
   console.log(`Thread: ${threadId}, Target: ${target.id}`);
 }
 
-workerpool.worker({
-  run,
-});
+registerWorker(run);

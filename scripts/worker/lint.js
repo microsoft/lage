@@ -8,7 +8,7 @@ const { readFile } = require("fs/promises");
 const path = require("path");
 
 async function run(data) {
-  const {target} = data;
+  const { target } = data;
   const packageJson = JSON.parse(await readFile(path.join(target.cwd, "package.json"), "utf8"));
 
   if (!packageJson.scripts?.[target.task]) {
@@ -41,6 +41,8 @@ async function run(data) {
     if (results[0].errorCount > 0) {
       throw new Error(`Linting failed with ${results[0].errorCount} errors`);
     }
+  } else {
+    console.log(`Linting passed for ${target.id}`);
   }
 }
 
