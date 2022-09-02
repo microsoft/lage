@@ -6,7 +6,6 @@ import { createInterface } from "readline";
 
 export class Logger<TLogStructuredData extends LogStructuredData = LogStructuredData> {
   reporters: Reporter[] = [];
-  logs: LogEntry[] = [];
 
   log(level: LogLevel, msg: string, data?: TLogStructuredData) {
     const entry = {
@@ -15,8 +14,6 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
       msg,
       data,
     };
-
-    this.logs.push(entry);
 
     for (const reporter of this.reporters) {
       reporter.log(entry);
