@@ -1,5 +1,4 @@
 import type { LogStructuredData } from "./interfaces/LogStructuredData";
-import type { LogEntry } from "./interfaces/LogEntry";
 import type { Reporter } from "./interfaces/Reporter";
 import { LogLevel } from "./interfaces/LogLevel";
 import { createInterface } from "readline";
