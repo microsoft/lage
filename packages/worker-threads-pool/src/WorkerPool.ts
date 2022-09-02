@@ -13,15 +13,30 @@ const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
 
 class WorkerPoolTaskInfo extends AsyncResource {
-  constructor(private resolve: (value: unknown) => void, private reject: (reason: unknown) => void, private worker: Worker) {
+  constructor(
+    private options: {
+      setup: (worker: Worker) => void;
+      cleanup: (worker: Worker) => void;
+      resolve: (value: unknown) => void;
+      reject: (reason: unknown) => void;
+      worker: Worker;
+    }
+  ) {
     super("WorkerPoolTaskInfo");
+    this.runInAsyncScope(options.setup, null, options.worker);
   }
 
   done(err: Error, results: unknown) {
+    const { cleanup, worker, resolve, reject } = this.options;
+
+    if (cleanup) {
+      this.runInAsyncScope(cleanup, null, worker);
+    }
+
     if (err) {
-      this.runInAsyncScope(this.reject, null, err, this.worker);
+      this.runInAsyncScope(reject, null, err, worker);
     } else {
-      this.runInAsyncScope(this.resolve, null, results, this.worker);
+      this.runInAsyncScope(resolve, null, results, worker);
     }
 
     this.emitDestroy();
@@ -34,10 +49,18 @@ interface WorkerPoolOptions {
   workerOptions?: WorkerOptions;
 }
 
+interface QueueItem {
+  setup?: (worker: Worker) => void;
+  cleanup?: (worker: Worker) => void;
+  task: unknown;
+  resolve: (value?: unknown) => void;
+  reject: (reason: unknown) => void;
+}
+
 export class WorkerPool extends EventEmitter {
   workers: Worker[] = [];
   freeWorkers: Worker[] = [];
-  queue: { task: unknown; resolve: (value?: unknown) => void; reject: (reason: unknown) => void }[] = [];
+  queue: QueueItem[] = [];
 
   constructor(private options: WorkerPoolOptions) {
     super();
@@ -64,7 +87,7 @@ export class WorkerPool extends EventEmitter {
     const { script, workerOptions } = this.options;
     const worker = new Worker(script, workerOptions);
 
-    worker.on("message", (data) => {
+    const msgHandler = (data) => {
       // In case of success: Call the callback that was passed to `runTask`,
       // remove the `TaskInfo` associated with the Worker, and mark it as free
       // again.
@@ -74,9 +97,11 @@ export class WorkerPool extends EventEmitter {
       worker[kTaskInfo] = null;
       this.freeWorkers.push(worker);
       this.emit(kWorkerFreedEvent);
-    });
+    }
 
-    worker.on("error", (err) => {
+    worker.on("message", msgHandler);
+
+    const errHandler = (err) => {
       // In case of an uncaught exception: Call the callback that was passed to
       // `runTask` with the error.
       if (worker[kTaskInfo]) {
@@ -88,17 +113,18 @@ export class WorkerPool extends EventEmitter {
       // current one.
       this.workers.splice(this.workers.indexOf(worker), 1);
       this.addNewWorker();
-    });
+    }
+
+    worker.on("error", errHandler);
 
     this.workers.push(worker);
-
     this.freeWorkers.push(worker);
     this.emit(kWorkerFreedEvent);
   }
 
-  exec(task: unknown) {
+  exec(task: unknown, setup?: (worker: Worker) => void, cleanup?: (worker: Worker) => void) {
     return new Promise((resolve, reject) => {
-      this.queue.push({ task, resolve, reject });
+      this.queue.push({ task, resolve, reject, cleanup, setup });
       this._exec();
     });
   }
@@ -107,7 +133,7 @@ export class WorkerPool extends EventEmitter {
     if (this.freeWorkers.length > 0) {
       const worker = this.freeWorkers.pop();
       const work = this.queue.shift();
-      const { task, resolve, reject } = work as any;
+      const { task, resolve, reject, cleanup, setup } = work as any;
 
       if (worker) {
         this.emit("running", {
@@ -115,15 +141,16 @@ export class WorkerPool extends EventEmitter {
           task,
         });
 
-        worker[kTaskInfo] = new WorkerPoolTaskInfo(resolve, reject, worker);
+        worker[kTaskInfo] = new WorkerPoolTaskInfo({ cleanup, resolve, reject, worker, setup });
         worker.postMessage(task);
       }
     }
   }
 
-  close() {
+  async close() {
     for (const worker of this.workers) {
-      worker.terminate();
+      worker.removeAllListeners();
+      await worker.terminate();
     }
   }
 }

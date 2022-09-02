@@ -54,8 +54,6 @@ export interface PoolOptions {
  */
 export class WorkerRunner implements TargetRunner {
   private pools: Record<string, WorkerPool> = {};
-  private captureStreams: Record<string, TargetCaptureStreams> = {};
-  private releaseStreams: Record<string, () => void> = {};
 
   static gracefulKillTimeout = 2500;
 
@@ -100,8 +98,6 @@ export class WorkerRunner implements TargetRunner {
         },
       });
 
-      pool.on("running", this.onWorkerRunning.bind(this));
-
       this.pools[id] = pool;
     }
 
@@ -140,37 +136,47 @@ export class WorkerRunner implements TargetRunner {
     }
 
     return () => {
-      releaseStreams.stdout();
-      releaseStreams.stderr();
-
       if (captureStreams.stdout && stdout) {
         stdout.unpipe(captureStreams.stdout);
+        captureStreams.stdout.destroy();
       }
 
       if (captureStreams.stderr && stderr) {
         stderr.unpipe(captureStreams.stderr);
+        captureStreams.stderr.destroy();
       }
+      releaseStreams.stdout();
+      releaseStreams.stderr();
     };
   }
 
-  onWorkerRunning(data: { worker: Worker; task: { target: Target } }) {
-    const { worker, task } = data;
-    const { target } = task;
-
-    this.releaseStreams[target.id] = this.captureStream(target, worker, this.captureStreams[target.id]);
-  }
-
   async run(target: Target, abortSignal?: AbortSignal, captureStreams: TargetCaptureStreams = {}) {
-    const poolOptions = this.getPoolOptions(target);
+    if (abortSignal) {
+      if (abortSignal.aborted) {
+        return;
+      }
 
-    this.captureStreams[target.id] = captureStreams;
+      const abortSignalHandler = () => {
+        abortSignal.removeEventListener("abort", abortSignalHandler);
+        this.cleanup();
+      };
 
-    const pool = this.ensurePool(poolOptions);
-    await pool.exec({ target });
-
-    if (this.releaseStreams[target.id]) {
-      this.releaseStreams[target.id]();
+      abortSignal.addEventListener("abort", abortSignalHandler);
     }
+
+    const poolOptions = this.getPoolOptions(target);
+    const pool = this.ensurePool(poolOptions);
+    let cleanupStreams: () => void;
+
+    await pool.exec(
+      { target },
+      (worker) => {
+        cleanupStreams = this.captureStream(target, worker, captureStreams);
+      },
+      (worker) => {
+        cleanupStreams();
+      }
+    );
   }
 
   cleanup() {

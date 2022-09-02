@@ -26,9 +26,11 @@ export function createCachedOutputTransform(target: Target, hash: string) {
     return transform;
   }
 
-  return new Transform({
+  const transform = new Transform({
     transform(chunk, encoding, callback) {
       callback(null, chunk);
     },
   });
+
+  return transform;
 }

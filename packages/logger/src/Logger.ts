@@ -47,13 +47,18 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
     const readline = createInterface({
       input,
       crlfDelay: Infinity,
+      terminal: false,
     });
 
-    const lineLogger = (line) => this.log(level, line, data);
+    const lineLogger = (line) => {
+      this.log(level, line, data);
+    }
+
     readline.on("line", lineLogger);
 
     return () => {
       readline.off("line", lineLogger);
+      readline.close();
     };
   }
 
