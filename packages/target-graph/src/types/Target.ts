@@ -45,7 +45,7 @@ export interface Target {
   /**
    * Run options for the Target
    */
-  options?: Record<string, any> /* eslint-disable-line @typescript-eslint/no-explicit-any */;
+  options?: Record<string, any>;
 
   /**
    * Whether the target should be displayed by reporters
