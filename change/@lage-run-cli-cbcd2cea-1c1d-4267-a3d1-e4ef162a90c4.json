@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Supports workers as a new target type",
-  "packageName": "@lage-run/cli",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

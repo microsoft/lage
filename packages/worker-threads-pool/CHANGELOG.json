@@ -1,0 +1,20 @@
+{
+  "name": "@lage-run/worker-threads-pool",
+  "entries": [
+    {
+      "date": "Sun, 04 Sep 2022 23:00:20 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "21bc0d3c799d654d236aa994e8e98ac5c250567c",
+            "comment": "Supports worker as a new target type"
+          }
+        ]
+      }
+    }
+  ]
+}

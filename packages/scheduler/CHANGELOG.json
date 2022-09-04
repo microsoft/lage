@@ -2,6 +2,45 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Sun, 04 Sep 2022 23:00:20 GMT",
+      "tag": "@lage-run/scheduler_v0.3.0",
+      "version": "0.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/scheduler",
+            "commit": "21bc0d3c799d654d236aa994e8e98ac5c250567c",
+            "comment": "Supports worker as a new target type"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/target-graph to v0.3.0",
+            "commit": "21bc0d3c799d654d236aa994e8e98ac5c250567c"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/logger to v1.2.0",
+            "commit": "21bc0d3c799d654d236aa994e8e98ac5c250567c"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v0.1.7",
+            "commit": "21bc0d3c799d654d236aa994e8e98ac5c250567c"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.1.1",
+            "commit": "21bc0d3c799d654d236aa994e8e98ac5c250567c"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 Aug 2022 06:34:51 GMT",
       "tag": "@lage-run/scheduler_v0.2.0",
       "version": "0.2.0",

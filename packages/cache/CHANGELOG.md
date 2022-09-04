@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Wed, 24 Aug 2022 22:26:03 GMT and should not be manually modified.
+This log was last generated on Sun, 04 Sep 2022 23:00:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.7
+
+Sun, 04 Sep 2022 23:00:20 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.3.0
+- Bump @lage-run/logger to v1.2.0
 
 ## 0.1.6
 

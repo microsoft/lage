@@ -1,8 +1,20 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Fri, 26 Aug 2022 06:34:51 GMT and should not be manually modified.
+This log was last generated on Sun, 04 Sep 2022 23:00:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.0
+
+Sun, 04 Sep 2022 23:00:20 GMT
+
+### Minor changes
+
+- Supports worker as a new target type (ken@gizzar.com)
+- Bump @lage-run/target-graph to v0.3.0
+- Bump @lage-run/logger to v1.2.0
+- Bump @lage-run/cache to v0.1.7
+- Bump @lage-run/worker-threads-pool to v0.1.1
 
 ## 0.2.0
 

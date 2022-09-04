@@ -1,8 +1,16 @@
 # Change Log - @lage-run/logger
 
-This log was last generated on Wed, 24 Aug 2022 22:26:03 GMT and should not be manually modified.
+This log was last generated on Sun, 04 Sep 2022 23:00:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.0
+
+Sun, 04 Sep 2022 23:00:20 GMT
+
+### Minor changes
+
+- Supports worker as a new target type (ken@gizzar.com)
 
 ## 1.1.3
 

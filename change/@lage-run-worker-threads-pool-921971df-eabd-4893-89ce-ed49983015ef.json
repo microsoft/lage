@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Supports worker as a new target type",
-  "packageName": "@lage-run/worker-threads-pool",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

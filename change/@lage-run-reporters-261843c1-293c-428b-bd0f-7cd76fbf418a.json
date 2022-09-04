@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "adds a linter",
-  "packageName": "@lage-run/reporters",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "none"
-}
