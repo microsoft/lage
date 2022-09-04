@@ -8,6 +8,11 @@ export interface Target {
   task: string;
 
   /**
+   * Type of the target. If not specified, it will default to "npmScript". Determines the runner for the target.
+   */
+  type?: string;
+
+  /**
    * Package name of the target. Undefined if this target is associated with repo root.
    */
   packageName?: string;
@@ -40,7 +45,7 @@ export interface Target {
   /**
    * Run options for the Target
    */
-  options?: Record<string, any> /* eslint-disable-line @typescript-eslint/no-explicit-any */;
+  options?: Record<string, any>;
 
   /**
    * Whether the target should be displayed by reporters

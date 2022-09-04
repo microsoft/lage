@@ -1,12 +1,10 @@
 import type { LogStructuredData } from "./interfaces/LogStructuredData";
-import type { LogEntry } from "./interfaces/LogEntry";
 import type { Reporter } from "./interfaces/Reporter";
 import { LogLevel } from "./interfaces/LogLevel";
 import { createInterface } from "readline";
 
 export class Logger<TLogStructuredData extends LogStructuredData = LogStructuredData> {
   reporters: Reporter[] = [];
-  logs: LogEntry[] = [];
 
   log(level: LogLevel, msg: string, data?: TLogStructuredData) {
     const entry = {
@@ -15,8 +13,6 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
       msg,
       data,
     };
-
-    this.logs.push(entry);
 
     for (const reporter of this.reporters) {
       reporter.log(entry);
@@ -47,8 +43,19 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
     const readline = createInterface({
       input,
       crlfDelay: Infinity,
+      terminal: false,
     });
-    readline.on("line", (line) => this.log(level, line, data));
+
+    const lineLogger = (line) => {
+      this.log(level, line, data);
+    };
+
+    readline.on("line", lineLogger);
+
+    return () => {
+      readline.off("line", lineLogger);
+      readline.close();
+    };
   }
 
   addReporter(reporter: Reporter) {

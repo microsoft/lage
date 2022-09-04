@@ -1,4 +1,4 @@
-import { Target } from "@lage-run/target-graph";
+import type { Target } from "@lage-run/target-graph";
 import { Transform } from "node:stream";
 import fs from "node:fs";
 import path from "node:path";
@@ -26,9 +26,11 @@ export function createCachedOutputTransform(target: Target, hash: string) {
     return transform;
   }
 
-  return new Transform({
+  const transform = new Transform({
     transform(chunk, encoding, callback) {
       callback(null, chunk);
     },
   });
+
+  return transform;
 }

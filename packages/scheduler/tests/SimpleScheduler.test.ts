@@ -4,6 +4,7 @@ import { TargetRunner } from "../src/types/TargetRunner";
 import { SimpleScheduler } from "../src/SimpleScheduler";
 import { getStartTargetId, Target, TargetGraph } from "@lage-run/target-graph";
 import { NoOpRunner } from "../src/runners/NoOpRunner";
+import { TargetRunnerPicker } from "../src/runners/TargetRunnerPicker";
 
 /**
  * Purely manually managed target graph.
@@ -70,13 +71,16 @@ describe("SimpleScheduler", () => {
     const hasher = new TargetHasher({ root, environmentGlob: [] });
 
     const runner = NoOpRunner;
+    const runnerPicker = new TargetRunnerPicker({
+      runners: { npmScript: runner },
+    });
 
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 1,
       cacheProvider,
       hasher,
-      runner,
+      runnerPicker,
       continueOnError: false,
       shouldCache: true,
       shouldResetCache: false,
@@ -137,12 +141,16 @@ describe("SimpleScheduler", () => {
       },
     } as TargetRunner;
 
+    const runnerPicker = new TargetRunnerPicker({
+      runners: { npmScript: runner },
+    });
+
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 4,
       cacheProvider,
       hasher,
-      runner,
+      runnerPicker,
       continueOnError: false,
       shouldCache: true,
       shouldResetCache: false,
@@ -199,12 +207,16 @@ describe("SimpleScheduler", () => {
       },
     } as TargetRunner;
 
+    const runnerPicker = new TargetRunnerPicker({
+      runners: { npmScript: runner },
+    });
+
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 4,
       cacheProvider,
       hasher,
-      runner,
+      runnerPicker,
       continueOnError: true,
       shouldCache: true,
       shouldResetCache: false,
@@ -262,12 +274,16 @@ describe("SimpleScheduler", () => {
       },
     } as TargetRunner;
 
+    const runnerPicker = new TargetRunnerPicker({
+      runners: { npmScript: runner },
+    });
+
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 4,
       cacheProvider,
       hasher,
-      runner,
+      runnerPicker,
       continueOnError: true,
       shouldCache: true,
       shouldResetCache: false,

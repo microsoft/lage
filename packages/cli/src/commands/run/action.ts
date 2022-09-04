@@ -5,7 +5,7 @@ import { findNpmClient } from "../../workspace/findNpmClient";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { NpmScriptRunner, SimpleScheduler } from "@lage-run/scheduler";
+import { NpmScriptRunner, SimpleScheduler, WorkerRunner, TargetRunnerPicker, TargetRunner } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger, { LogLevel, Reporter } from "@lage-run/logger";
 import { initializeReporters } from "../../reporters/initialize";
@@ -108,11 +108,27 @@ export async function runAction(options: RunOptions, command: Command) {
   });
 
   // Run Tasks with Scheduler + NpmScriptRunner
-  const runner = new NpmScriptRunner({
-    logger,
-    nodeOptions: options.nodeargs,
-    taskArgs,
-    npmCmd: findNpmClient(config.npmClient),
+  const runners: Record<string, TargetRunner> = {
+    npmScript: new NpmScriptRunner({
+      logger,
+      nodeOptions: options.nodeargs,
+      taskArgs,
+      npmCmd: findNpmClient(config.npmClient),
+    }),
+    worker: new WorkerRunner({
+      logger,
+      workerTargetConfigs: Object.entries(config.pipeline).reduce((workerTargetConfigs, [id, def]) => {
+        if (!Array.isArray(def) && def.type === "worker") {
+          workerTargetConfigs[id] = def;
+        }
+
+        return workerTargetConfigs;
+      }, {}),
+    }),
+  };
+
+  const runnerPicker = new TargetRunnerPicker({
+    runners,
   });
 
   const scheduler = new SimpleScheduler({
@@ -123,10 +139,16 @@ export async function runAction(options: RunOptions, command: Command) {
     continueOnError: options.continue,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    runner,
+    runnerPicker,
   });
 
   const summary = await scheduler.run(root, targetGraph);
+
+  for (const runner of Object.values(runners)) {
+    if (runner.cleanup) {
+      await runner.cleanup();
+    }
+  }
 
   for (const reporter of logger.reporters) {
     reporter.summarize(summary);

@@ -6,7 +6,7 @@ import path from "path";
 import type { LogEntry, Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler";
 import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
-import { Writable } from "stream";
+import type { Writable } from "stream";
 
 interface TraceEventsObject {
   traceEvents: CompleteEvent[];
@@ -102,9 +102,9 @@ export class ChromeTraceEventsReporter implements Reporter {
     const { categorize } = this.options;
 
     for (const event of this.events.traceEvents) {
-      const targetRun = targetRuns.get(event.name);
+      const targetRun = targetRuns.get(event.name)!;
 
-      event.ts = hrTimeToMicroseconds(targetRun?.startTime!) - hrTimeToMicroseconds(startTime!);
+      event.ts = hrTimeToMicroseconds(targetRun.startTime) - hrTimeToMicroseconds(startTime);
       event.cat = targetRun?.status ?? "";
       if (categorize) {
         event.cat += `,${categorize(targetRun)}`;

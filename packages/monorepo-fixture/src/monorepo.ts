@@ -176,7 +176,7 @@ export class Monorepo {
     return contents;
   }
 
-  async commitFiles(files: { [name: string]: string | Object }, options: { executable?: boolean } = {}) {
+  async commitFiles(files: { [name: string]: string | object }, options: { executable?: boolean } = {}) {
     await this.writeFiles(files, options);
     await execa("git", ["add", "--", ...Object.keys(files)], {
       cwd: this.root,

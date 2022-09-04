@@ -1,7 +1,7 @@
 import { hrToSeconds } from "./formatDuration";
-import { SchedulerRunSummary } from "@lage-run/scheduler";
-import { LogEntry, LogLevel, Reporter } from "@lage-run/logger";
-import { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
+import type { SchedulerRunSummary } from "@lage-run/scheduler";
+import type { LogEntry, LogLevel, Reporter } from "@lage-run/logger";
+import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
 
 export class JsonReporter implements Reporter {
   constructor(private options: { logLevel: LogLevel }) {}

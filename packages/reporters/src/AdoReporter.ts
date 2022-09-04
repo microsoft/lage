@@ -1,12 +1,12 @@
 import { formatDuration, hrToSeconds } from "./formatDuration";
-import { getPackageAndTask, getTargetId, Target } from "@lage-run/target-graph";
-import { LogLevel, LogStructuredData } from "@lage-run/logger";
+import { getPackageAndTask } from "@lage-run/target-graph";
+import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
+import { LogLevel } from "@lage-run/logger";
 import chalk from "chalk";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler";
-import { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
-import { Writable } from "stream";
+import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
+import type { Writable } from "stream";
 
 const colors = {
   [LogLevel.info]: chalk.white,

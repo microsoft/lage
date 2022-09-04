@@ -1,4 +1,4 @@
-import { TargetGraph } from "@lage-run/target-graph";
+import type { TargetGraph } from "@lage-run/target-graph";
 import type { SchedulerRunSummary } from "./SchedulerRunSummary";
 
 export interface TargetScheduler {

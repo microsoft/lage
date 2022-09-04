@@ -3,9 +3,10 @@ import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
 import alias from "@rollup/plugin-alias";
+import multi from "@rollup/plugin-multi-entry";
 
 export default {
-  input: "@lage-run/cli/lib/cli.js",
+  input: ["@lage-run/cli/lib/cli.js", "index.js"],
   output: {
     banner: "#!/usr/bin/env node",
     sourcemap: "inline",
@@ -29,5 +30,6 @@ export default {
     }),
     json(),
     terser(),
+    multi(),
   ],
 };

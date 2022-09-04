@@ -5,12 +5,10 @@ import type { Target } from "./Target";
  */
 export interface TargetConfig {
   /**
-   * @deprecated
-   * The type of the target - The configuration parser will use the id of the target to determine the type
-   *
-   * This is a legacy way of specifying the type of the target, to be deprecated in the next major version
+   * The type of the target - The configuration parser will use the id of the target to determine the type.
+   * e.g. npmScript, worker
    */
-  type?: "package" | "global";
+  type?: string;
 
   /**
    * @deprecated - use `dependsOn` instead
@@ -55,7 +53,7 @@ export interface TargetConfig {
   /**
    * Run options for the Target. (e.g. `{ env: ...process.env, colors: true, ... }`)
    */
-  options?: Record<string, any> /* eslint-disable-line @typescript-eslint/no-explicit-any */;
+  options?: Record<string, any>;
 
   /**
    * Custom run definition, if left blank, the scheduler will decide which runner to use to fulfill the work for the `Target`

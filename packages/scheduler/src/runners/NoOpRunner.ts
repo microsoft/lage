@@ -1,5 +1,7 @@
-import { TargetRunner } from "../types/TargetRunner";
+import type { TargetRunner } from "../types/TargetRunner";
 
 export const NoOpRunner: TargetRunner = {
-  async run(_target) {},
+  async run() {
+    // pass
+  },
 };

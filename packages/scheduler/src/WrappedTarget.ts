@@ -1,6 +1,7 @@
 import { hrToSeconds } from "./formatDuration";
-import { Logger, LogLevel } from "@lage-run/logger";
-import { TargetHasher } from "@lage-run/cache";
+import type { Logger } from "@lage-run/logger";
+import { LogLevel } from "@lage-run/logger";
+import type { TargetHasher } from "@lage-run/cache";
 import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
 import type { Target } from "@lage-run/target-graph";
@@ -144,7 +145,7 @@ export class WrappedTarget implements TargetRun {
           this.options.logger.verbose(">> Replaying cached output", { target });
           this.options.logger.stream(LogLevel.verbose, cachedOutput, { target });
 
-          return await new Promise<void>((resolve, reject) => {
+          return await new Promise<void>((resolve) => {
             cachedOutput.on("close", () => {
               this.onSkipped(hash);
               resolve();

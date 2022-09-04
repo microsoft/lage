@@ -1,5 +1,5 @@
-import { Target } from "@lage-run/target-graph";
-import { TargetStatus } from "./TargetStatus";
+import type { Target } from "@lage-run/target-graph";
+import type { TargetStatus } from "./TargetStatus";
 
 export interface TargetRun {
   startTime: [number, number];
