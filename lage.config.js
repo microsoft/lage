@@ -14,6 +14,9 @@ module.exports = {
       },
     },
     start: [],
+    "#format": {
+      cache: false
+    },
 
     // TODO: a temporary hack to allow both of these projects to run build with lage
     "@lage-run/docs-beta#build": ["@lage/docs#build"],
