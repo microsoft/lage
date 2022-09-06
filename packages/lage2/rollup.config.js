@@ -3,10 +3,9 @@ import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
 import alias from "@rollup/plugin-alias";
-import multi from "@rollup/plugin-multi-entry";
 
-export default {
-  input: ["@lage-run/cli/lib/cli.js", "index.js"],
+export default [{
+  input: "@lage-run/cli/lib/cli.js",
   output: {
     banner: "#!/usr/bin/env node",
     sourcemap: "inline",
@@ -30,6 +29,25 @@ export default {
     }),
     json(),
     terser(),
-    multi(),
   ],
-};
+}, {
+  input: "./index.js",
+  output: {
+    file: "dist/main.js",
+    format: "cjs",
+    exports: "auto",
+    sourcemap: true,
+  },
+  plugins: [
+    nodeResolve({
+      // Since we are produce CJS, let's resolve main first!
+      mainFields: ["main", "module"],
+      preferBuiltins: true,
+    }),
+    commonjs({
+      ignoreDynamicRequires: true,
+    }),
+    json(),
+    terser(),
+  ]
+}];

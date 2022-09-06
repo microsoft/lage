@@ -209,7 +209,7 @@ export class NpmLogReporter implements Reporter {
         const { packageName, task } = getPackageAndTask(targetId);
         const failureLogs = this.logEntries.get(targetId);
 
-        this.print(`[${colors.pkg(packageName)} ${colors.task(task)}] ${colors[LogLevel.error]("ERROR DETECTED")}`);
+        this.print(`[${colors.pkg(packageName ?? "<root>")} ${colors.task(task)}] ${colors[LogLevel.error]("ERROR DETECTED")}`);
 
         if (failureLogs) {
           for (const entry of failureLogs) {

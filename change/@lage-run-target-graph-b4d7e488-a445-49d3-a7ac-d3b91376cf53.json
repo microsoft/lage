@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "disables cache for global targets (for now, since backfill doesn't support it)",
+  "packageName": "@lage-run/target-graph",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

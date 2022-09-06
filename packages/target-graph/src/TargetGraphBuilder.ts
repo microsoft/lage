@@ -57,8 +57,10 @@ export class TargetGraphBuilder {
       id: targetId,
       label: targetId,
       type: config.type,
-      task: targetId,
-      cache: cache !== false,
+      task,
+      // TODO: backfill currently cannot cache global targets!
+      // NOTE: We should force cache inputs to be defined for global targets
+      cache: false,
       cwd: this.root,
       dependencies: dependsOn ?? deps ?? [],
       inputs,
