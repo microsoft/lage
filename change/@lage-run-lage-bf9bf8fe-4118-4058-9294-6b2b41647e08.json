@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fixes the bundle output to be with code!",
-  "packageName": "@lage-run/lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

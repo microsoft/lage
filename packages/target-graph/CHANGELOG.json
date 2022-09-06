@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Tue, 06 Sep 2022 20:10:16 GMT",
+      "tag": "@lage-run/target-graph_v0.3.1",
+      "version": "0.3.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "f349df7d144cbe2a575c6dc7cc34fd30c1ccf035",
+            "comment": "disables cache for global targets (for now, since backfill doesn't support it)"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 04 Sep 2022 23:00:20 GMT",
       "tag": "@lage-run/target-graph_v0.3.0",
       "version": "0.3.0",

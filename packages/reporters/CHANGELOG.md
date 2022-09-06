@@ -1,8 +1,18 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Sun, 04 Sep 2022 23:00:20 GMT and should not be manually modified.
+This log was last generated on Tue, 06 Sep 2022 20:10:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.2
+
+Tue, 06 Sep 2022 20:10:16 GMT
+
+### Patches
+
+- Logs summary correctly for global targets (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.3.1
+- Bump @lage-run/target-graph to v0.3.1
 
 ## 0.2.1
 

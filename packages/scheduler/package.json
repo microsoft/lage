@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/scheduler",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Scheduler for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -15,9 +15,9 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/target-graph": "^0.3.0",
+    "@lage-run/target-graph": "^0.3.1",
     "@lage-run/logger": "^1.2.0",
-    "@lage-run/cache": "^0.1.7",
+    "@lage-run/cache": "^0.1.8",
     "@lage-run/worker-threads-pool": "^0.1.1",
     "p-graph": "^1.1.1",
     "p-profiler": "^0.2.1",

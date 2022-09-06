@@ -1,8 +1,18 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Sun, 04 Sep 2022 23:00:20 GMT and should not be manually modified.
+This log was last generated on Tue, 06 Sep 2022 20:10:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.1.1
+
+Tue, 06 Sep 2022 20:10:16 GMT
+
+### Patches
+
+- Fixes the bundle output to be with code! (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.3.1
+- Bump @lage-run/scheduler to v0.3.1
 
 ## 2.1.0
 
