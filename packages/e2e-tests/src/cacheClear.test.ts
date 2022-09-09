@@ -7,16 +7,15 @@ const defaultCacheLocation = "node_modules/.cache/backfill";
 const cacheLocation = ".cache/backfill";
 
 describe("Cache clear", () => {
-  for (const yarnVersion of [1, 3] as (1|3)[]) {
+  for (const yarnVersion of [1, 3] as (1 | 3)[]) {
     describe(`yarn version ${yarnVersion}`, () => {
-
       it("should clear cache when internalCacheFolder is passed", () => {
         const repo = new Monorepo("cache", yarnVersion);
         if (yarnVersion === 3) {
           console.log("yarn version 3 is not suppored, skipping test.");
           return;
         }
-    
+
         repo.init();
         repo.setLageConfig(
           `const fs = require('fs');
@@ -31,9 +30,9 @@ describe("Cache clear", () => {
             }
           };`
         );
-    
+
         repo.install();
-    
+
         repo.addPackage("a", [], {
           build: "echo a:build",
           test: "echo a:test",
@@ -42,31 +41,31 @@ describe("Cache clear", () => {
           build: "echo b:build",
         });
         repo.linkPackages();
-    
+
         // Run build so we get a cache folder
         repo.run("build");
-    
+
         const cacheFolderA = path.join(repo.root, `packages/a/${cacheLocation}`);
         const cacheFolderB = path.join(repo.root, `packages/b/${cacheLocation}`);
-    
+
         // Cache is created in the right place
         expect(fs.existsSync(cacheFolderA)).toBeTruthy();
         expect(fs.existsSync(cacheFolderB)).toBeTruthy();
-    
+
         // Check that cache folder is actually populated
         expect(fs.readdirSync(cacheFolderA)).toHaveLength(1);
         expect(fs.readdirSync(cacheFolderB)).toHaveLength(1);
-    
+
         // Clear the cache
         repo.run("clear");
-    
+
         // Cache folders should be empty
         expect(fs.readdirSync(cacheFolderA)).toHaveLength(0);
         expect(fs.readdirSync(cacheFolderB)).toHaveLength(0);
-    
+
         repo.cleanup();
       });
-    
+
       it("should clear cache with the default cache location", () => {
         const repo = new Monorepo("cache-default", yarnVersion);
         if (yarnVersion === 3) {
@@ -85,9 +84,9 @@ describe("Cache clear", () => {
             cache: true,
           };`
         );
-    
+
         repo.install();
-    
+
         repo.addPackage("a", [], {
           build: "echo a:build",
           test: "echo a:test",
@@ -96,29 +95,29 @@ describe("Cache clear", () => {
           build: "echo b:build",
         });
         repo.linkPackages();
-    
+
         // Run build so we get a cache folder
         repo.run("build");
-    
+
         const cacheFolderA = path.join(repo.root, `packages/a/${defaultCacheLocation}`);
         const cacheFolderB = path.join(repo.root, `packages/b/${defaultCacheLocation}`);
-    
+
         // Cache is created in the right place
         expect(fs.existsSync(cacheFolderA)).toBeTruthy();
         expect(fs.existsSync(cacheFolderB)).toBeTruthy();
-    
+
         // Check that cache folder is actually populated
         expect(fs.readdirSync(cacheFolderA)).toHaveLength(1);
         expect(fs.readdirSync(cacheFolderB)).toHaveLength(1);
-    
+
         // Clear the cache
-    
+
         repo.run("clear");
-    
+
         // Cache folders should be empty
         expect(fs.readdirSync(cacheFolderA)).toHaveLength(0);
         expect(fs.readdirSync(cacheFolderB)).toHaveLength(0);
-    
+
         repo.cleanup();
       });
     });
