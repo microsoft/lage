@@ -68,3 +68,19 @@ if (target.cache && !skipCaching) {
 
 await cacheProvider.put(hash, target);
 ```
+
+## Differentiating Cache
+To specifically differentiate the hash generated for the cache, between different steps the parameter `cacheKey` can be used. The parameter will be a part of the hash generation for the cache, and generated hash can be altered by modifying the parameter.
+
+### Usage
+Add the parameter in your `lage.config.js` as follows
+
+```ts
+{
+  cacheOptions: {
+    cacheKey: "some cache key"
+  }
+}
+```
+
+
