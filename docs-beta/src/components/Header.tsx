@@ -25,7 +25,7 @@ export default function Header() {
               </Button>
             </SideBySide>
           </div>
-          <Illustration src="img/frog-monitor0.png" />
+          <Illustration src="img/frog.webm" />
         </TwoColumns>
       </div>
     </header>
