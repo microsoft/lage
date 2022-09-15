@@ -7,6 +7,9 @@ function withOpacityValue(variable) {
   };
 }
 module.exports = {
+  corePlugins: {
+    preflight: false,
+  },
   content: [
     "./src/pages/*.js",
     "./src/pages/**/*.tsx",
@@ -26,7 +29,7 @@ module.exports = {
         bahnschrift: ["Bahnschrift"],
       },
       spacing: {
-        'big-screen': '1920px',
+        "big-screen": "1920px",
       },
       colors: {
         button: withOpacityValue("--color-button"),
@@ -41,6 +44,5 @@ module.exports = {
       },
     },
   },
-  corePlugins: { preflight: false },
   plugins: [],
 };

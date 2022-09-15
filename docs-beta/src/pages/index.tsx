@@ -9,11 +9,12 @@ import { Point } from "../components/Point";
 import { Description } from "../components/Description";
 import { Quote } from "../components/Quote";
 import NavBar from "../components/NavBar";
+import '../css/tailwind.css';
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <div className="theme-color">
+    <div className="theme-color" id="tailwind">
       <NavBar />
       <Header />
       <Illustration src="img/Wave Shape 1.svg" isWave={true} />
