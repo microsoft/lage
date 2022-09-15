@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Tue, 06 Sep 2022 20:10:16 GMT and should not be manually modified.
+This log was last generated on Thu, 15 Sep 2022 20:42:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.2
+
+Thu, 15 Sep 2022 20:42:32 GMT
+
+### Patches
+
+- Adds back the support for "ignore"  (kchau@microsoft.com)
 
 ## 0.3.1
 

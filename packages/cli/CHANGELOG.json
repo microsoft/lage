@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 15 Sep 2022 20:42:32 GMT",
+      "tag": "@lage-run/cli_v0.3.2",
+      "version": "0.3.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "e7104949d95cc2f280953bef79757c903ab4d9cb",
+            "comment": "Adds back the support for \"ignore\" "
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 06 Sep 2022 20:10:16 GMT",
       "tag": "@lage-run/cli_v0.3.1",
       "version": "0.3.1",
