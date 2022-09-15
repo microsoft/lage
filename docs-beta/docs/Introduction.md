@@ -1,12 +1,36 @@
-## Overview
+---
+sidebar_position: 1
+sidebar_label: Introduction
+sidebar_class_name: green
+slug: Introduction
+---
 
-Your JS repo has gotten large enough that you have turned to using a tool to help you manage multiple packages inside a repository. That's great! However, you realized quickly that the tasks defined inside the workspace have to be run in package dependency order.
+When your JavaScript repository has grown large enough that you have turned to using a [monorepo](https://monorepo.tools) to help you organize your code as multiple packages inside a repository. That's great! However, you realized quickly that the build scripts defined inside the workspace have to be run in package dependency order.
 
-Lerna, Rush, wsrun and even pnpm will provide a simple way for you to run npm scripts in a topological order. However, these tools will force you to run your tasks by script name one at a time. For example, all the `build` scripts will have to run first. Then all the `test` scripts run in the topological order.
+There exists tools in the market that will provide a way for you to run these npm scripts in a topological order. These tools will allow you execute your tasks in the correct order. So why choose `lage` for your repository? 
 
-This usually means that there are wasted CPU cycles in between `build` and `test`. We can achieve better pipelining the npm scripts if we had a way to say that `test` can run as soon as `build` are done for the package.
+1. `lage` is battle tested - it is in use by many JavaScript repositories number in the millions lines of code each
+2. `lage` can be easily adopted - all it takes is just one npm package install with a single configuration file for the entire repository
+3. `lage` supports remote cache as a fallback - never build the same code twice
+4. `lage` is optimized for modern multi-core development machines - don't waste your CPU resource waiting on a single core when you have so many to spare!
 
-`lage` (Norwegian for "make", pronounced law-geh) solves this by providing a terse pipelining syntax. It has many features geared towards speeding up the task runner that we'll explore later.
+## How does `lage` figure out how to schedule tasks?
+
+`lage` has a secret weapon: it has a "pipeline" configuration syntax to define the implicit relationship between tasks. Combined with a package graph, `lage` knows how to schedule which task to run first and which one can be run in parallel. Let's look at an example:
+
+### A hypothetical example
+
+1. Take a package graph
+
+![Package graph](/img/package-graph.png)
+
+2. Combine it with a task graph:
+
+![Task graph](/img/task-graph.png)
+
+3. `lage` generates a "target graph"
+
+![Target graph](/img/target-graph.png)
 
 ## Quick Start
 

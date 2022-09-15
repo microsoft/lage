@@ -17,11 +17,8 @@ export default function Header() {
               Give your monorepo the smarts to <i>actually</i> save you time
             </ProductDescription>
             <SideBySide>
-              <Button isEmphasized={true} to="/docs/Introducing Lage/Overview">
+              <Button isEmphasized={true} to="/docs/Introduction">
                 Get Started
-              </Button>
-              <Button isEmphasized={false} to="/docs/Introducing Lage/Overview">
-                Try the Demo
               </Button>
             </SideBySide>
           </div>

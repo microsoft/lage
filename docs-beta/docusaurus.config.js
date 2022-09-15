@@ -47,14 +47,9 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'Introducing Lage/Overview',
+            docId: 'Introduction',
             position: 'left',
             label: 'Guide',
-          },
-          {
-            href: 'grapher',
-            position: 'left',
-            label: 'Grapher',
           },
           {
             href: 'https://github.com/microsoft/lage',
