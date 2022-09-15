@@ -9,10 +9,10 @@ function withOpacityValue(variable) {
 module.exports = {
   content: [
     "./src/pages/*.js",
-    "./src/components/*.js",
     "./src/pages/**/*.tsx",
     "./src/pages/**/*.ts",
     "./src/pages/**/*.js",
+    "./src/components/*.js",
     "./src/components/*.tsx",
     "./src/components/*.ts",
   ],
@@ -41,5 +41,6 @@ module.exports = {
       },
     },
   },
+  corePlugins: { preflight: false },
   plugins: [],
 };

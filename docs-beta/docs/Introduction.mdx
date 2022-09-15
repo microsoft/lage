@@ -1,0 +1,46 @@
+---
+sidebar_position: 1
+sidebar_label: Introduction
+sidebar_class_name: green
+slug: Introduction
+---
+
+import ThemedImage from "@theme/ThemedImage";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+When your JavaScript repository has grown large enough that you have turned to using a [monorepo](https://monorepo.tools) to help you organize your code as multiple packages inside a repository. That's great! However, you realized quickly that the build scripts defined inside the workspace have to be run in package dependency order.
+
+There exists tools in the market that will provide a way for you to run these npm scripts in a topological order. These tools will allow you execute your tasks in the correct order. So why choose `lage` for your repository?
+
+1. `lage` is battle tested - it is in use by many JavaScript repositories number in the millions lines of code each
+2. `lage` can be easily adopted - all it takes is just one npm package install with a single configuration file for the entire repository
+3. `lage` supports remote cache as a fallback - never build the same code twice
+4. `lage` is optimized for modern multi-core development machines - don't waste your CPU resource waiting on a single core when you have so many to spare!
+
+## How does `lage` figure out how to schedule tasks?
+
+`lage` has a secret weapon: it has a "pipeline" configuration syntax to define the implicit relationship between tasks. Combined with a package graph, `lage` knows how to schedule which task to run first and which one can be run in parallel. Let's look at an example:
+
+### A hypothetical example
+
+1. Take a package graph
+
+<ThemedImage
+  alt="Package graph"
+  sources={{
+    light: useBaseUrl("/img/package-graph.png"),
+    dark: useBaseUrl("/img/package-graph-dark.png"),
+  }}
+  style={{
+    height: "400px"
+  }}
+/>
+
+2. Combine it with a task graph:
+
+![Task graph](/img/task-graph.png)
+
+3. `lage` generates a "target graph"
+
+![Target graph](/img/target-graph.png)
+

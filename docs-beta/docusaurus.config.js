@@ -23,7 +23,7 @@ const config = {
     [
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
+      {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
@@ -32,7 +32,7 @@ const config = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
-      }),
+      },
     ],
   ],
 
@@ -64,9 +64,23 @@ const config = {
       },
       colorMode : {
         defaultMode: 'dark',
-        disableSwitch: true
+        disableSwitch: false
       },
     }),
+
+  plugins: [
+    async function tailwindPlugin(context, options) {
+      return {
+        name: "docusaurus-tailwindcss",
+        configurePostCss(postcssOptions) {
+          // Appends TailwindCSS and AutoPrefixer.
+          postcssOptions.plugins.push(require("tailwindcss"));
+
+          return postcssOptions;
+        },
+      };
+    },
+  ]
 };
 
 module.exports = config;

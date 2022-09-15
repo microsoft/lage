@@ -1,5 +1,4 @@
 import React from "react";
-import "../css/tailwind-styles.css";
 import { Description } from "../components/Description";
 import NavBar from "../components/NavBar";
 import { useState } from "react";

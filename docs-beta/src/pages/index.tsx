@@ -1,6 +1,5 @@
 import React from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import "../css/tailwind-styles.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { TwoColumns } from "../components/TwoColumns";
