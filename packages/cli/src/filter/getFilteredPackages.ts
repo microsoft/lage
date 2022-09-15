@@ -15,11 +15,12 @@ export function getFilteredPackages(options: {
   logger: Logger;
   scope: string[] | undefined;
   since: string | undefined;
+  sinceIgnoreGlobs: string[] | undefined;
   repoWideChanges: string[];
   includeDependents: boolean;
   includeDependencies: boolean;
 }) {
-  const { scope, since, repoWideChanges, includeDependents, includeDependencies, logger, packageInfos, root } = options;
+  const { scope, since, sinceIgnoreGlobs, repoWideChanges, includeDependents, includeDependencies, logger, packageInfos, root } = options;
 
   // If scoped is defined, get scoped packages
   const hasScopes = Array.isArray(scope) && scope.length > 0;
@@ -34,7 +35,7 @@ export function getFilteredPackages(options: {
   // Be specific with the changed packages only if no repo-wide changes occurred
   if (hasSince && !hasRepoChanged(since, root, repoWideChanges, logger)) {
     try {
-      changedPackages = getChangedPackages(root, since);
+      changedPackages = getChangedPackages(root, since, sinceIgnoreGlobs);
     } catch (e) {
       logger.warn(`An error in the git command has caused this scope run to include every package\n${e}`);
       // if getChangedPackages throws, we will assume all have changed (using changedPackage = undefined)

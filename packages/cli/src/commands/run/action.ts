@@ -61,9 +61,10 @@ export async function runAction(options: RunOptions, command: Command) {
     packageInfos,
     includeDependencies: options.dependencies,
     includeDependents: options.dependents,
-    repoWideChanges: config.repoWideChanges,
     since: options.since,
     scope: options.scope,
+    repoWideChanges: config.repoWideChanges,
+    sinceIgnoreGlobs: config.ignore,
   });
 
   for (const [id, definition] of Object.entries(config.pipeline)) {
