@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 16 Sep 2022 01:59:38 GMT",
+      "tag": "lage_v1.8.1",
+      "version": "1.8.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "7bb3cfa39ca17144915a94233b46ba67e284788f",
+            "comment": "Pin devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 31 Aug 2022 19:31:26 GMT",
       "tag": "lage_v1.8.0",
       "version": "1.8.0",
