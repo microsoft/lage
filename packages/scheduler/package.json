@@ -26,9 +26,9 @@
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "^0.1.0",
-    "@types/jest": "^27.0.1",
+    "@types/jest": "27.5.1",
     "@types/node": "14.18.26",
-    "@types/workerpool": "^6.1.0",
+    "@types/workerpool": "6.1.0",
     "monorepo-scripts": "*"
   },
   "publishConfig": {
