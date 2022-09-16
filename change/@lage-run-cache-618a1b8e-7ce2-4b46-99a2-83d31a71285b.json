@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Update jest monorepo to v29",
-  "packageName": "@lage-run/cache",
-  "email": "renovate@whitesourcesoftware.com",
-  "dependentChangeType": "none"
-}

@@ -2,6 +2,21 @@
   "name": "@lage-run/logger",
   "entries": [
     {
+      "date": "Fri, 16 Sep 2022 03:59:54 GMT",
+      "tag": "@lage-run/logger_v1.2.0",
+      "version": "1.2.0",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/logger",
+            "commit": "feb30c988cd07f121e217f9825758af844b18b77",
+            "comment": "Update jest monorepo to v29"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Sep 2022 01:59:38 GMT",
       "tag": "@lage-run/logger_v1.2.0",
       "version": "1.2.0",

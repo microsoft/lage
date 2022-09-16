@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Fri, 16 Sep 2022 03:59:54 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "feb30c988cd07f121e217f9825758af844b18b77",
+            "comment": "Update jest monorepo to v29"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Sep 2022 01:59:38 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.1.1",
       "version": "0.1.1",
