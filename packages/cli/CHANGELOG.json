@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 16 Sep 2022 23:45:26 GMT",
+      "tag": "@lage-run/cli_v0.3.4",
+      "version": "0.3.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "9712fbe4c78c803822302d8a83ace2bc7f7c923e",
+            "comment": "Remove unused and non-exported path utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Sep 2022 20:06:10 GMT",
       "tag": "@lage-run/cli_v0.3.3",
       "version": "0.3.3",

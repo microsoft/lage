@@ -18,7 +18,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@lage-run/cli": "^0.3.3"
+    "@lage-run/cli": "^0.3.4"
   },
   "devDependencies": {
     "@types/jest": "29.0.3",

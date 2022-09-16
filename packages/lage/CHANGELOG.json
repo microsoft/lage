@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 16 Sep 2022 23:45:26 GMT",
+      "tag": "lage_v1.8.3",
+      "version": "1.8.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "9712fbe4c78c803822302d8a83ace2bc7f7c923e",
+            "comment": "Remove unused and non-exported path utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Sep 2022 23:37:14 GMT",
       "tag": "lage_v1.8.2",
       "version": "1.8.2",

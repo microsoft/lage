@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 16 Sep 2022 23:37:14 GMT and should not be manually modified.
+This log was last generated on Fri, 16 Sep 2022 23:45:26 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.8.3
+
+Fri, 16 Sep 2022 23:45:26 GMT
+
+### Patches
+
+- Remove unused and non-exported path utilities (elcraig@microsoft.com)
 
 ## 1.8.2
 
