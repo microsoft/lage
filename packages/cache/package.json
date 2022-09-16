@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "^0.1.0",
-    "@types/jest": "27.5.1",
+    "@types/jest": "29.0.3",
     "@types/mock-fs": "4.13.1",
     "@types/node": "14.18.26",
     "monorepo-scripts": "*",

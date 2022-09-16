@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Update jest monorepo to v29",
+  "packageName": "@lage-run/worker-threads-pool",
+  "email": "renovate@whitesourcesoftware.com",
+  "dependentChangeType": "none"
+}
