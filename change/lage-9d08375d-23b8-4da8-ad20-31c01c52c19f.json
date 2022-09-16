@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Update dependency mermaid to v9.1.7",
+  "packageName": "lage",
+  "email": "email not defined",
+  "dependentChangeType": "patch"
+}

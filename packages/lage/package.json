@@ -26,7 +26,7 @@
     "test": "jest"
   },
   "resolutions": {
-    "mermaid": "9.1.2",
+    "mermaid": "9.1.7",
     "watchpack": "1.7.5"
   },
   "dependencies": {
