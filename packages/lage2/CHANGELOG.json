@@ -2,6 +2,21 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Fri, 16 Sep 2022 23:51:28 GMT",
+      "tag": "@lage-run/lage_v2.1.4",
+      "version": "2.1.4",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/lage",
+            "commit": "60d4571bde1c50c284a96e11a1a1a13da944e681",
+            "comment": "Update devDependency rollup to v2.79.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Sep 2022 23:45:26 GMT",
       "tag": "@lage-run/lage_v2.1.4",
       "version": "2.1.4",

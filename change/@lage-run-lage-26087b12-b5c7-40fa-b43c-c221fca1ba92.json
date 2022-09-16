@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Update devDependency rollup to v2.79.0",
-  "packageName": "@lage-run/lage",
-  "email": "renovate@whitesourcesoftware.com",
-  "dependentChangeType": "none"
-}
