@@ -1,5 +1,10 @@
 {
+  "name": "lage-monorepo",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/lage.git"
+  },
   "workspaces": {
     "packages": [
       "packages/*",
