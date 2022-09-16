@@ -175,6 +175,6 @@ export class Monorepo {
   }
 
   cleanup() {
-    fs.rmdirSync(this.root, { recursive: true });
+    fs.rmSync(this.root, { recursive: true });
   }
 }

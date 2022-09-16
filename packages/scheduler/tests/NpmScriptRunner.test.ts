@@ -11,7 +11,7 @@ import path from "path";
 let childProcesses: Map<string, ChildProcess> = new Map();
 
 function getChildProcessKey(packageName: string, task: string) {
-  const testName = expect.getState().currentTestName.replace(/ /g, "_");
+  const testName = expect.getState().currentTestName!.replace(/ /g, "_");
   const id = getTargetId(packageName, task);
   return `${testName}:${id}`;
 }
@@ -169,17 +169,16 @@ describe("NpmScriptRunner", () => {
     );
 
     await waitFor(() =>
-      fakePackages.reduce((acc, packageName) => acc && childProcesses.has(getChildProcessKey(packageName, "build")), true)
+      fakePackages.reduce<boolean>((acc, packageName) => acc && childProcesses.has(getChildProcessKey(packageName, "build")), true)
     );
 
     abortController.abort();
 
     await waitFor(() =>
-      fakePackages.reduce(
+      fakePackages.reduce<boolean>(
         (acc, packageName) =>
           acc &&
-          childProcesses.has(getChildProcessKey(packageName, "build")) &&
-          childProcesses.get(getChildProcessKey(packageName, "build"))!.killed,
+          !!childProcesses.get(getChildProcessKey(packageName, "build"))?.killed,
         true
       )
     );
