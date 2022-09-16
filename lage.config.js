@@ -4,7 +4,14 @@ const path = require("path");
 /** @type {import("@lage-run/cli").ConfigOptions} */
 module.exports = {
   pipeline: {
-    build: ["^build"],
+    build: {
+      type: "worker",
+      options: {
+        maxWorkers: 4,
+        worker: path.join(__dirname, "scripts/worker/tsc.js"),
+      },
+      dependsOn: ["^build"],
+    }, //["^build"],
     test: ["build"],
     lint: {
       type: "worker",
