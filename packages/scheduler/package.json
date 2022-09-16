@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/scheduler",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Scheduler for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -17,7 +17,7 @@
   "dependencies": {
     "@lage-run/target-graph": "^0.3.1",
     "@lage-run/logger": "^1.2.0",
-    "@lage-run/cache": "^0.1.8",
+    "@lage-run/cache": "^0.1.9",
     "@lage-run/worker-threads-pool": "^0.1.1",
     "p-graph": "^1.1.1",
     "p-profiler": "^0.2.1",

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update dependency mock-fs to v5.1.4",
-  "packageName": "@lage-run/cache",
-  "email": "renovate@whitesourcesoftware.com",
-  "dependentChangeType": "patch"
-}

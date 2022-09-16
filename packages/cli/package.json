@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cli",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Command Line Interface for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -18,10 +18,10 @@
   },
   "dependencies": {
     "@lage-run/logger": "^1.2.0",
-    "@lage-run/scheduler": "^0.3.1",
+    "@lage-run/scheduler": "^0.3.2",
     "@lage-run/target-graph": "^0.3.1",
-    "@lage-run/cache": "^0.1.8",
-    "@lage-run/reporters": "^0.2.2",
+    "@lage-run/cache": "^0.1.9",
+    "@lage-run/reporters": "^0.2.3",
     "commander": "^9.4.0",
     "workspace-tools": "^0.26.0"
   },

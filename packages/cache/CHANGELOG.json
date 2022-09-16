@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Fri, 16 Sep 2022 01:32:24 GMT",
+      "tag": "@lage-run/cache_v0.1.9",
+      "version": "0.1.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cache",
+            "commit": "b509683b29885c254d2ffa3c18d60cba20371f90",
+            "comment": "Update dependency mock-fs to v5.1.4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 06 Sep 2022 20:10:16 GMT",
       "tag": "@lage-run/cache_v0.1.8",
       "version": "0.1.8",
