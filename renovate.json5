@@ -23,6 +23,8 @@
     {
       "groupName": "lage core deps",
       "matchPackagePrefixes": ["backfill", "workspace-tools", "p-graph", "p-profiler"],
+      "matchUpdateTypes": ["major", "minor", "patch", "bump"],
+      "dependencyDashboardApproval": false
     }
   ]
 }
