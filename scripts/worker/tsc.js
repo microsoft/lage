@@ -5,31 +5,34 @@ const { registerWorker } = require("../../../lage/packages/worker-threads-pool/l
 const ts = require("typescript");
 const path = require("path");
 const fs = require("fs/promises");
+const { existsSync } = require("fs");
 
 let oldProgram = undefined;
 
 async function run(data) {
   const { target } = data;
-  const tsconfigJsonFile = path.join(target.cwd, "tsconfig.json");
+  const { tsconfigFile = "tsconfig.json" } = target.options;
+  const tsconfigJsonFile = path.join(target.cwd, tsconfigFile);
 
-  if (!tsconfigJsonFile) {
+  if (!existsSync(tsconfigJsonFile)) {
     process.stdout.write(`No tsconfig.json in ${target.cwd}\n`);
     // pass
     return;
   }
-  
-  const configJson = JSON.parse(await fs.readFile(path.join(target.cwd, "tsconfig.json"), "utf-8"));
-  const compilerOptionsResults = ts.convertCompilerOptionsFromJson(configJson, path.join(target.cwd, "tsconfig.json"));
 
-  if (compilerOptionsResults.errors.length > 0) {
-    process.stderr.write(`Error parsing tsconfig.json in ${target.cwd}\n`);
-    throw new Error("Error parsing tsconfig.json");
+  let configParserHost = parseConfigHostFromCompilerHostLike(ts.sys);
+
+  let parsedCommandLine = ts.getParsedCommandLineOfConfigFile(tsconfigJsonFile, {}, configParserHost);
+
+  if (!parsedCommandLine) {
+    throw new Error("Could not parse tsconfig.json");
   }
 
-  const compilerOptions = compilerOptionsResults.options;
+  const compilerOptions = parsedCommandLine.options;
+
   let compilerHost = ts.createCompilerHost(compilerOptions);
 
-  let program = ts.createProgram([path.join(target.cwd, "src", "index.ts")], compilerOptions, compilerHost, oldProgram);
+  let program = ts.createProgram(parsedCommandLine.fileNames, compilerOptions, compilerHost, oldProgram);
   oldProgram = program;
 
   let errors = {
@@ -68,3 +71,19 @@ async function run(data) {
 }
 
 registerWorker(run);
+
+function parseConfigHostFromCompilerHostLike(host) {
+  return {
+    fileExists: (f) => host.fileExists(f),
+    readDirectory(root, extensions, excludes, includes, depth) {
+      return host.readDirectory(root, extensions, excludes, includes, depth);
+    },
+    readFile: (f) => host.readFile(f),
+    useCaseSensitiveFileNames: host.useCaseSensitiveFileNames,
+    getCurrentDirectory: host.getCurrentDirectory,
+    onUnRecoverableConfigFileDiagnostic: (d) => {
+      throw new Error(ts.flattenDiagnosticMessageText(d.messageText, "\n"));
+    },
+    trace: host.trace,
+  };
+}

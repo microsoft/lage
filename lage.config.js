@@ -12,6 +12,15 @@ module.exports = {
       },
       dependsOn: ["^ts"],
     },
+    ts2: {
+      type: "worker",
+      options: {
+        maxWorkers: 4,
+        worker: path.join(__dirname, "scripts/worker/tsc.js"),
+        tsconfigFile: "tsconfig.tests.json",
+      },
+      dependsOn: ["ts"],
+    },
     build: ["^build"],
     test: ["build"],
     lint: {
