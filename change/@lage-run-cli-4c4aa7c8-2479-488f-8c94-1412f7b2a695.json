@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Hoist widely-used devDependencies to the repo root",
+  "packageName": "@lage-run/cli",
+  "email": "elcraig@microsoft.com",
+  "dependentChangeType": "none"
+}
