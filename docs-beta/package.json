@@ -29,7 +29,7 @@
   "devDependencies": {
     "@docusaurus/module-type-aliases": "2.0.0-beta.21",
     "@testing-library/jest-dom": "5.16.5",
-    "@testing-library/react": "12.1.5",
+    "@testing-library/react": "13.4.0",
     "@tsconfig/docusaurus": "1.0.6",
     "@types/jest": "27.5.1",
     "identity-obj-proxy": "3.0.0",
