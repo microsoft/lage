@@ -9,9 +9,11 @@
     "github>microsoft/m365-renovate-config:restrictNode(14)"
   ],
 
-  "prHourlyLimit": 5,
-
   "ignoreDeps": ["lage-npm"],
+
+  "labels": ["renovate"],
+
+  "prHourlyLimit": 5,
 
   "packageRules": [
     {
