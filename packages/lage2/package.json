@@ -9,8 +9,8 @@
     "build": "rollup --config ./rollup.config.js"
   },
   "devDependencies": {
-    "@lage-run/cli": "^0.3.8",
-    "@lage-run/scheduler": "^0.3.5",
+    "@lage-run/cli": "*",
+    "@lage-run/scheduler": "*",
     "rollup": "2.79.0",
     "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-node-resolve": "13.3.0",

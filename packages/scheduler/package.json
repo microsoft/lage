@@ -25,7 +25,7 @@
     "workspace-tools": "^0.27.0"
   },
   "devDependencies": {
-    "@lage-run/monorepo-fixture": "^0.1.0",
+    "@lage-run/monorepo-fixture": "*",
     "@types/jest": "29.0.3",
     "@types/node": "14.18.29",
     "@types/workerpool": "6.1.0",

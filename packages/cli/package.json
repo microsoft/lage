@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/jest": "29.0.3",
     "@types/node": "14.18.29",
-    "@lage-run/monorepo-fixture": "^0.1.0",
+    "@lage-run/monorepo-fixture": "*",
     "jest": "29.0.3",
     "ts-jest": "29.0.1",
     "typescript": "4.6.4"
