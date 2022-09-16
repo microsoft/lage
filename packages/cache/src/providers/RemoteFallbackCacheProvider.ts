@@ -9,7 +9,7 @@ export interface RemoteFallbackCacheProviderOptions {
   localCacheProvider?: CacheProvider;
   remoteCacheProvider?: CacheProvider;
 
-  writeRemoteCache: boolean;
+  writeRemoteCache?: boolean;
 }
 
 /**

@@ -62,7 +62,6 @@ describe("BackfillCacheProvider", () => {
       cacheOptions: {
         outputGlob: ["output.txt"],
       },
-      isReadOnly: false,
     };
 
     const provider = new BackfillCacheProvider(options);

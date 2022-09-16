@@ -4,7 +4,6 @@ process.env.FORCE_COLOR = "0";
 import { LogLevel } from "@lage-run/logger";
 import { JsonReporter } from "../src/JsonReporter";
 import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry";
-import { format } from "util";
 
 function createTarget(packageName: string, task: string) {
   return {
@@ -55,21 +54,21 @@ describe("JsonReporter", () => {
     }
 
     expect(rawLogs).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "data": Object {
-            "duration": Array [
+      [
+        {
+          "data": {
+            "duration": [
               0,
               0,
             ],
-            "startTime": Array [
+            "startTime": [
               0,
               0,
             ],
             "status": "running",
-            "target": Object {
+            "target": {
               "cwd": "/repo/root/packages/a",
-              "dependencies": Array [],
+              "dependencies": [],
               "id": "a#build",
               "label": "a - build",
               "packageName": "a",
@@ -80,20 +79,20 @@ describe("JsonReporter", () => {
           "msg": "",
           "timestamp": 0,
         },
-        Object {
-          "data": Object {
-            "duration": Array [
+        {
+          "data": {
+            "duration": [
               0,
               0,
             ],
-            "startTime": Array [
+            "startTime": [
               1,
               0,
             ],
             "status": "running",
-            "target": Object {
+            "target": {
               "cwd": "/repo/root/packages/a",
-              "dependencies": Array [],
+              "dependencies": [],
               "id": "a#test",
               "label": "a - test",
               "packageName": "a",
@@ -104,20 +103,20 @@ describe("JsonReporter", () => {
           "msg": "",
           "timestamp": 0,
         },
-        Object {
-          "data": Object {
-            "duration": Array [
+        {
+          "data": {
+            "duration": [
               0,
               0,
             ],
-            "startTime": Array [
+            "startTime": [
               2,
               0,
             ],
             "status": "running",
-            "target": Object {
+            "target": {
               "cwd": "/repo/root/packages/b",
-              "dependencies": Array [],
+              "dependencies": [],
               "id": "b#build",
               "label": "b - build",
               "packageName": "b",
@@ -128,12 +127,12 @@ describe("JsonReporter", () => {
           "msg": "",
           "timestamp": 0,
         },
-        Object {
-          "data": Object {
+        {
+          "data": {
             "pid": 1,
-            "target": Object {
+            "target": {
               "cwd": "/repo/root/packages/a",
-              "dependencies": Array [],
+              "dependencies": [],
               "id": "a#build",
               "label": "a - build",
               "packageName": "a",
@@ -144,12 +143,12 @@ describe("JsonReporter", () => {
           "msg": "test message for a#build",
           "timestamp": 0,
         },
-        Object {
-          "data": Object {
+        {
+          "data": {
             "pid": 1,
-            "target": Object {
+            "target": {
               "cwd": "/repo/root/packages/a",
-              "dependencies": Array [],
+              "dependencies": [],
               "id": "a#test",
               "label": "a - test",
               "packageName": "a",
@@ -160,12 +159,12 @@ describe("JsonReporter", () => {
           "msg": "test message for a#test",
           "timestamp": 0,
         },
-        Object {
-          "data": Object {
+        {
+          "data": {
             "pid": 1,
-            "target": Object {
+            "target": {
               "cwd": "/repo/root/packages/a",
-              "dependencies": Array [],
+              "dependencies": [],
               "id": "a#build",
               "label": "a - build",
               "packageName": "a",
@@ -176,12 +175,12 @@ describe("JsonReporter", () => {
           "msg": "test message for a#build again",
           "timestamp": 0,
         },
-        Object {
-          "data": Object {
+        {
+          "data": {
             "pid": 1,
-            "target": Object {
+            "target": {
               "cwd": "/repo/root/packages/b",
-              "dependencies": Array [],
+              "dependencies": [],
               "id": "b#build",
               "label": "b - build",
               "packageName": "b",
@@ -192,12 +191,12 @@ describe("JsonReporter", () => {
           "msg": "test message for b#build",
           "timestamp": 0,
         },
-        Object {
-          "data": Object {
+        {
+          "data": {
             "pid": 1,
-            "target": Object {
+            "target": {
               "cwd": "/repo/root/packages/a",
-              "dependencies": Array [],
+              "dependencies": [],
               "id": "a#test",
               "label": "a - test",
               "packageName": "a",
@@ -208,12 +207,12 @@ describe("JsonReporter", () => {
           "msg": "test message for a#test again",
           "timestamp": 0,
         },
-        Object {
-          "data": Object {
+        {
+          "data": {
             "pid": 1,
-            "target": Object {
+            "target": {
               "cwd": "/repo/root/packages/b",
-              "dependencies": Array [],
+              "dependencies": [],
               "id": "b#build",
               "label": "b - build",
               "packageName": "b",
@@ -224,20 +223,20 @@ describe("JsonReporter", () => {
           "msg": "test message for b#build again",
           "timestamp": 0,
         },
-        Object {
-          "data": Object {
-            "duration": Array [
+        {
+          "data": {
+            "duration": [
               10,
               0,
             ],
-            "startTime": Array [
+            "startTime": [
               0,
               0,
             ],
             "status": "success",
-            "target": Object {
+            "target": {
               "cwd": "/repo/root/packages/a",
-              "dependencies": Array [],
+              "dependencies": [],
               "id": "a#test",
               "label": "a - test",
               "packageName": "a",
@@ -248,20 +247,20 @@ describe("JsonReporter", () => {
           "msg": "",
           "timestamp": 0,
         },
-        Object {
-          "data": Object {
-            "duration": Array [
+        {
+          "data": {
+            "duration": [
               30,
               0,
             ],
-            "startTime": Array [
+            "startTime": [
               2,
               0,
             ],
             "status": "success",
-            "target": Object {
+            "target": {
               "cwd": "/repo/root/packages/b",
-              "dependencies": Array [],
+              "dependencies": [],
               "id": "b#build",
               "label": "b - build",
               "packageName": "b",
@@ -272,20 +271,20 @@ describe("JsonReporter", () => {
           "msg": "",
           "timestamp": 0,
         },
-        Object {
-          "data": Object {
-            "duration": Array [
+        {
+          "data": {
+            "duration": [
               60,
               0,
             ],
-            "startTime": Array [
+            "startTime": [
               1,
               0,
             ],
             "status": "failed",
-            "target": Object {
+            "target": {
               "cwd": "/repo/root/packages/a",
-              "dependencies": Array [],
+              "dependencies": [],
               "id": "a#build",
               "label": "a - build",
               "packageName": "a",
@@ -359,24 +358,24 @@ describe("JsonReporter", () => {
     });
 
     expect(rawLogs).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "summary": Object {
+      [
+        {
+          "summary": {
             "duration": "100.00",
-            "taskStats": Array [
-              Object {
+            "taskStats": [
+              {
                 "duration": "60.00",
                 "package": "a",
                 "status": "failed",
                 "task": "build",
               },
-              Object {
+              {
                 "duration": "60.00",
                 "package": "a",
                 "status": "success",
                 "task": "test",
               },
-              Object {
+              {
                 "duration": "60.00",
                 "package": "b",
                 "status": "success",

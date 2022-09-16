@@ -1,6 +1,5 @@
 import type { PackageInfos } from "workspace-tools";
 import { TargetGraphBuilder } from "../src/TargetGraphBuilder";
-import { getStartTargetId } from "../src/targetId";
 
 function createPackageInfo(packages: { [id: string]: string[] }) {
   const packageInfos: PackageInfos = {};
@@ -38,21 +37,21 @@ describe("target graph builder", () => {
     expect(targetGraph.targets.size).toBe(3);
 
     expect(targetGraph.dependencies).toMatchInlineSnapshot(`
-Array [
-  Array [
-    "__start",
-    "a#build",
-  ],
-  Array [
-    "__start",
-    "b#build",
-  ],
-  Array [
-    "b#build",
-    "a#build",
-  ],
-]
-`);
+      [
+        [
+          "__start",
+          "a#build",
+        ],
+        [
+          "__start",
+          "b#build",
+        ],
+        [
+          "b#build",
+          "a#build",
+        ],
+      ]
+    `);
   });
 
   it("should generate target graphs for tasks that do not depend on each other", () => {
@@ -71,20 +70,20 @@ Array [
     // includes the pseudo-target for the "start" target
     expect(targetGraph.targets.size).toBe(5);
     expect(targetGraph.dependencies).toMatchInlineSnapshot(`
-      Array [
-        Array [
+      [
+        [
           "__start",
           "a#test",
         ],
-        Array [
+        [
           "__start",
           "b#test",
         ],
-        Array [
+        [
           "__start",
           "a#lint",
         ],
-        Array [
+        [
           "__start",
           "b#lint",
         ],
@@ -113,25 +112,25 @@ Array [
 
     const targetGraph = builder.buildTargetGraph(["build"]);
     expect(targetGraph.dependencies).toMatchInlineSnapshot(`
-Array [
-  Array [
-    "__start",
-    "a#build",
-  ],
-  Array [
-    "__start",
-    "b#build",
-  ],
-  Array [
-    "__start",
-    "c#build",
-  ],
-  Array [
-    "b#build",
-    "c#build",
-  ],
-]
-`);
+      [
+        [
+          "__start",
+          "a#build",
+        ],
+        [
+          "__start",
+          "b#build",
+        ],
+        [
+          "__start",
+          "c#build",
+        ],
+        [
+          "b#build",
+          "c#build",
+        ],
+      ]
+    `);
   });
 
   it("should generate targetGraph with some specific package task target dependencies, running against a specific package", () => {
@@ -155,17 +154,17 @@ Array [
 
     const targetGraph = builder.buildTargetGraph(["build"], ["a", "b"]);
     expect(targetGraph.dependencies).toMatchInlineSnapshot(`
-  Array [
-    Array [
-      "__start",
-      "a#build",
-    ],
-    Array [
-      "__start",
-      "b#build",
-    ],
-  ]
-  `);
+      [
+        [
+          "__start",
+          "a#build",
+        ],
+        [
+          "__start",
+          "b#build",
+        ],
+      ]
+    `);
   });
 
   it("should generate targetGraph with transitive dependencies", () => {
@@ -187,29 +186,29 @@ Array [
 
     const targetGraph = builder.buildTargetGraph(["bundle"], ["a"]);
     expect(targetGraph.dependencies).toMatchInlineSnapshot(`
-Array [
-  Array [
-    "__start",
-    "a#bundle",
-  ],
-  Array [
-    "b#transpile",
-    "a#bundle",
-  ],
-  Array [
-    "c#transpile",
-    "a#bundle",
-  ],
-  Array [
-    "__start",
-    "b#transpile",
-  ],
-  Array [
-    "__start",
-    "c#transpile",
-  ],
-]
-`);
+      [
+        [
+          "__start",
+          "a#bundle",
+        ],
+        [
+          "b#transpile",
+          "a#bundle",
+        ],
+        [
+          "c#transpile",
+          "a#bundle",
+        ],
+        [
+          "__start",
+          "b#transpile",
+        ],
+        [
+          "__start",
+          "c#transpile",
+        ],
+      ]
+    `);
   });
 
   it("should generate target graph for a general task on a specific target", () => {
@@ -232,40 +231,40 @@ Array [
 
     const targetGraph = builder.buildTargetGraph(["build"]);
     expect(targetGraph.dependencies).toMatchInlineSnapshot(`
-Array [
-  Array [
-    "__start",
-    "a#build",
-  ],
-  Array [
-    "__start",
-    "b#build",
-  ],
-  Array [
-    "__start",
-    "c#build",
-  ],
-  Array [
-    "__start",
-    "common#build",
-  ],
-  Array [
-    "common#copy",
-    "a#build",
-  ],
-  Array [
-    "common#copy",
-    "b#build",
-  ],
-  Array [
-    "common#copy",
-    "c#build",
-  ],
-  Array [
-    "__start",
-    "common#copy",
-  ],
-]
-`);
+      [
+        [
+          "__start",
+          "a#build",
+        ],
+        [
+          "__start",
+          "b#build",
+        ],
+        [
+          "__start",
+          "c#build",
+        ],
+        [
+          "__start",
+          "common#build",
+        ],
+        [
+          "common#copy",
+          "a#build",
+        ],
+        [
+          "common#copy",
+          "b#build",
+        ],
+        [
+          "common#copy",
+          "c#build",
+        ],
+        [
+          "__start",
+          "common#copy",
+        ],
+      ]
+    `);
   });
 });
