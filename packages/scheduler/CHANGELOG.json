@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Fri, 16 Sep 2022 20:06:10 GMT",
+      "tag": "@lage-run/scheduler_v0.3.2",
+      "version": "0.3.2",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/scheduler",
+            "commit": "4cc6afee8a8b0eeabd5e36f764615860baca6de4",
+            "comment": "Update devDependency @types/node to v14.18.29"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Sep 2022 03:59:54 GMT",
       "tag": "@lage-run/scheduler_v0.3.2",
       "version": "0.3.2",

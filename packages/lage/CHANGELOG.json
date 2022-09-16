@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 16 Sep 2022 20:06:10 GMT",
+      "tag": "lage_v1.8.1",
+      "version": "1.8.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "4cc6afee8a8b0eeabd5e36f764615860baca6de4",
+            "comment": "Update devDependency @types/node to v14.18.29"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Sep 2022 03:59:54 GMT",
       "tag": "lage_v1.8.1",
       "version": "1.8.1",

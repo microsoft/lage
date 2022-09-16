@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Update devDependency @types/node to v14.18.29",
-  "packageName": "@lage-run/target-graph",
-  "email": "email not defined",
-  "dependentChangeType": "none"
-}
