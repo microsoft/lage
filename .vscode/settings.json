@@ -1,3 +1,4 @@
 {
-  "eslint.workingDirectories": ["src", "tests"]
+  "eslint.workingDirectories": ["src", "tests"],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
