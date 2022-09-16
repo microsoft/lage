@@ -15,7 +15,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "workspace-tools": "^0.26.0"
+    "workspace-tools": "^0.27.0"
   },
   "devDependencies": {
     "@types/jest": "29.0.3",
