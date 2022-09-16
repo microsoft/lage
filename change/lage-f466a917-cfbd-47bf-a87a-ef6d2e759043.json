@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Remove unused and non-exported path utilities",
+  "packageName": "lage",
+  "email": "elcraig@microsoft.com",
+  "dependentChangeType": "patch"
+}
