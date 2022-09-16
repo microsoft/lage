@@ -1,10 +1,10 @@
 // @ts-check
 
-const { registerWorker } = require("@lage-run/worker-threads-pool");
-const { readFile } = require("fs/promises");
+const { registerWorker } = require("../../../lage/packages/worker-threads-pool/lib/index.js");
 
 const ts = require("typescript");
 const path = require("path");
+const fs = require("fs/promises");
 
 let oldProgram = undefined;
 
@@ -17,46 +17,50 @@ async function run(data) {
     // pass
     return;
   }
-  let compilerOptions = {
-    target: ts.ScriptTarget.ES2017,
-    module: ts.ModuleKind.CommonJS,
-    moduleResolution: ts.ModuleResolutionKind.NodeJs,
-    outDir: path.join(target.cwd, "dist"),
-    rootDir: path.join(target.cwd, "src"),
-    skipLibCheck: true,
-    skipDefaultLibCheck: true,
+  
+  const configJson = JSON.parse(await fs.readFile(path.join(target.cwd, "tsconfig.json"), "utf-8"));
+  const compilerOptionsResults = ts.convertCompilerOptionsFromJson(configJson, path.join(target.cwd, "tsconfig.json"));
 
-    declaration: true,
-    lib: ["ES2017"],
-    allowJs: true,
+  if (compilerOptionsResults.errors.length > 0) {
+    process.stderr.write(`Error parsing tsconfig.json in ${target.cwd}\n`);
+    throw new Error("Error parsing tsconfig.json");
+  }
 
-    strict: true,
-    noImplicitAny: false,
-    allowSyntheticDefaultImports: true,
-    esModuleInterop: true,
-    forceConsistentCasingInFileNames: true,
-
-    noUnusedLocals: false,
-    sourceMap: true,
-  };
-
+  const compilerOptions = compilerOptionsResults.options;
   let compilerHost = ts.createCompilerHost(compilerOptions);
 
   let program = ts.createProgram([path.join(target.cwd, "src", "index.ts")], compilerOptions, compilerHost, oldProgram);
   oldProgram = program;
 
-  process.stdout.write("Compiling...\n");
-  let emitResult = program.emit();
+  let errors = {
+    semantics: program.getSemanticDiagnostics(),
+    declaration: program.getDeclarationDiagnostics(),
+    syntactic: program.getSyntacticDiagnostics(),
+    global: program.getGlobalDiagnostics(),
+  };
 
-  for (const diagnostics of emitResult.diagnostics) {
-    if (typeof diagnostics.messageText === "string") {
-      process.stdout.write(diagnostics.messageText);
-    } else {
-      process.stdout.write(diagnostics.messageText.messageText);
+  let allErrors = [];
+
+  process.stdout.write("Compiling...\n");
+  program.emit();
+
+  let hasErrors = false;
+
+  for (const kind of Object.keys(errors)) {
+    for (const diagnostics of errors[kind]) {
+      hasErrors = true;
+
+      allErrors.push(diagnostics);
+      if (typeof diagnostics.messageText === "string") {
+        process.stdout.write(diagnostics.messageText);
+      } else {
+        process.stdout.write(diagnostics.messageText.messageText);
+      }
     }
   }
 
-  if (emitResult.diagnostics.some((d) => d.category === ts.DiagnosticCategory.Error)) {
+  if (hasErrors) {
+    process.stderr.write(ts.formatDiagnosticsWithColorAndContext(allErrors, compilerHost));
     throw new Error("Failed to compile");
   } else {
     process.stdout.write("Compiled successfully\n");
