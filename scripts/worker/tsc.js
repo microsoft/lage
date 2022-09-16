@@ -10,21 +10,34 @@ let oldProgram = undefined;
 
 async function run(data) {
   const { target } = data;
-  const packageJson = JSON.parse(await readFile(path.join(target.cwd, "package.json"), "utf8"));
+  const tsconfigJsonFile = path.join(target.cwd, "tsconfig.json");
 
-  if (!packageJson.scripts?.[target.task]) {
-    process.stdout.write(`No script found for ${target.task} in ${target.cwd}\n`);
+  if (!tsconfigJsonFile) {
+    process.stdout.write(`No tsconfig.json in ${target.cwd}\n`);
     // pass
     return;
   }
   let compilerOptions = {
-    target: ts.ScriptTarget.ES2015,
+    target: ts.ScriptTarget.ES2017,
     module: ts.ModuleKind.CommonJS,
     moduleResolution: ts.ModuleResolutionKind.NodeJs,
-    outDir: path.join(target.cwd, "lib"),
+    outDir: path.join(target.cwd, "dist"),
     rootDir: path.join(target.cwd, "src"),
     skipLibCheck: true,
     skipDefaultLibCheck: true,
+
+    declaration: true,
+    lib: ["ES2017"],
+    allowJs: true,
+
+    strict: true,
+    noImplicitAny: false,
+    allowSyntheticDefaultImports: true,
+    esModuleInterop: true,
+    forceConsistentCasingInFileNames: true,
+
+    noUnusedLocals: false,
+    sourceMap: true,
   };
 
   let compilerHost = ts.createCompilerHost(compilerOptions);

@@ -9,6 +9,7 @@
     ]
   },
   "scripts": {
+    "ts": "lage ts",
     "build": "lage build --scope=!@lage/docs --scope=lage --scope=@lage-run/* --scope=!@lage-run/docs-beta --verbose",
     "change": "beachball change",
     "checkchange": "beachball check",
