@@ -25,10 +25,6 @@
     "start": "tsc -w --preserveWatchOutput",
     "test": "jest"
   },
-  "resolutions": {
-    "mermaid": "9.1.2",
-    "watchpack": "1.7.5"
-  },
   "dependencies": {
     "@lage-run/logger": "*",
     "@xmldom/xmldom": "^0.8.0",
