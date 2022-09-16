@@ -30,7 +30,7 @@
     "@types/mock-fs": "^4.13.1",
     "@types/node": "14.18.26",
     "monorepo-scripts": "*",
-    "mock-fs": "^5.1.2"
+    "mock-fs": "5.1.4"
   },
   "publishConfig": {
     "access": "public"
