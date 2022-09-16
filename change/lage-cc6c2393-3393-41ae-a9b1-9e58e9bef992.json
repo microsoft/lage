@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update dependency mermaid to v9 [SECURITY]",
-  "packageName": "lage",
-  "email": "renovate@whitesourcesoftware.com",
-  "dependentChangeType": "patch"
-}

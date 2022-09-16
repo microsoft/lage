@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 31 Aug 2022 19:31:26 GMT and should not be manually modified.
+This log was last generated on Fri, 16 Sep 2022 23:37:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.8.2
+
+Fri, 16 Sep 2022 23:37:14 GMT
+
+### Patches
+
+- Update dependency mermaid to v9 [SECURITY] (renovate@whitesourcesoftware.com)
 
 ## 1.8.0
 
