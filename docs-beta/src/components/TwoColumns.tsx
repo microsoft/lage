@@ -2,7 +2,7 @@ import React from "react";
 
 export const TwoColumns = (props) => {
   return (
-    <div className="mx-auto">
+    <div>
       <div className="flex items-center md:hidden">
         {props.imageOnTop && props.imageFirst && (
           <div>
