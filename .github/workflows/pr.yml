@@ -29,17 +29,17 @@ jobs:
       - run: yarn
 
       - name: Code Format Check
-        if: ${{ matrix.os.startsWith('ubuntu') }}
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: yarn format:check
 
       - name: Check Change Files
-        if: ${{ matrix.os.startsWith('ubuntu') }}
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: yarn checkchange
 
       - name: Build, Test (Windows)
-        if: ${{ matrix.os.startsWith('windows') }}
+        if: ${{ startsWith(matrix.os, 'windows') }}
         run: yarn lage build test --scope=!@lage-run/lage
 
       - name: Build, Test, Lint (Linux)
-        if: ${{ matrix.os.startsWith('ubuntu') }}
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: yarn lage build test lint
