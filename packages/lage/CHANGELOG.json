@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 16 Sep 2022 20:12:14 GMT",
+      "tag": "lage_v1.8.1",
+      "version": "1.8.1",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "486f2bf2ecaa0a3bf963d3e3e7df9a92697ecdc9",
+            "comment": "Update devDependency gh-pages to v4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Sep 2022 20:06:10 GMT",
       "tag": "lage_v1.8.1",
       "version": "1.8.1",
