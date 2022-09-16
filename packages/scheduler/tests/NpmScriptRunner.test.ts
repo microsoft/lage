@@ -176,9 +176,7 @@ describe("NpmScriptRunner", () => {
 
     await waitFor(() =>
       fakePackages.reduce<boolean>(
-        (acc, packageName) =>
-          acc &&
-          !!childProcesses.get(getChildProcessKey(packageName, "build"))?.killed,
+        (acc, packageName) => acc && !!childProcesses.get(getChildProcessKey(packageName, "build"))?.killed,
         true
       )
     );
