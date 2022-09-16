@@ -1,23 +1,22 @@
-import React from "react";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { TwoColumns } from "../components/TwoColumns";
+import '../css/tailwind.css';
+import { Description } from "../components/Description";
 import { Highlight } from "../components/Highlight";
 import { Illustration } from "../components/Illustration";
 import { Point } from "../components/Point";
-import { Description } from "../components/Description";
 import { Quote } from "../components/Quote";
+import { TwoColumns } from "../components/TwoColumns";
+import { WaveDivider } from "../components/WaveDivider";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 import NavBar from "../components/NavBar";
-import '../css/tailwind.css';
+import React from "react";
 
 export default function Home() {
-  const { siteConfig } = useDocusaurusContext();
   return (
     <div className="theme-color" id="tailwind">
       <NavBar />
       <Header />
-      <Illustration src="img/Wave Shape 1.svg" isWave={true} />
+      <WaveDivider />
       <main className="theme-color bg-gradient-to-b from-bodyPrimary to-bodySecondary pb-20">
         <div className="2xl:w-big-screen 2xl:mx-auto">
           <Quote author="Jason Gore" organization="Microsoft Loop">
@@ -27,7 +26,7 @@ export default function Home() {
           </Quote>
 
           <TwoColumns imageOnTop={false} imageFirst={true}>
-            <Illustration src="img/frog-skip0.png" isWave={false} />
+            <Illustration src="img/frog-skip0.png" />
             <div>
               <Point>Seriously, never build more than once</Point>
               <Description>
@@ -70,7 +69,7 @@ export default function Home() {
                 <Highlight>Use one of our clouds, or bring your own!</Highlight>
               </div>
             </div>
-            <Illustration src="img/frog-cloud0.png" isWave={false} />
+            <Illustration src="img/frog-cloud0.png" />
           </TwoColumns>
 
           <div className="md:hidden">
@@ -85,7 +84,7 @@ export default function Home() {
           </Quote>
 
           <TwoColumns imageOnTop={false} imageFirst={true}>
-            <Illustration src="img/frog-hero0.png" isWave={false} />
+            <Illustration src="img/frog-hero0.png" />
             <div>
               <Point>Discover what is slowing you down</Point>
               <Description>
@@ -107,7 +106,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <Illustration src="img/Wave Shape 2.svg" isWave={true} />
+      <WaveDivider />
       <Footer />
     </div>
   );

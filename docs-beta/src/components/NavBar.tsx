@@ -53,8 +53,7 @@ export default function NavBar() {
           <a href=".">
             <img className="w-20 h-7" src="img/lage.png" alt="Logo" />
           </a>
-          <NavButton to="/docs/Introducing Lage/Overview">Guide</NavButton>
-          <NavButton to="/lage/grapher">Grapher</NavButton>
+          <NavButton to="/docs/Introduction">Guide</NavButton>
         </div>
         {/*Aligned to right*/}
         <div className="flex items-center">
