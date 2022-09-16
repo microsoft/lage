@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Pin dependencies",
+  "packageName": "@lage-run/target-graph",
+  "email": "email not defined",
+  "dependentChangeType": "patch"
+}
