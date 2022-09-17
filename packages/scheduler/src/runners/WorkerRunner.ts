@@ -104,53 +104,27 @@ export class WorkerRunner implements TargetRunner {
     return this.pools[id];
   }
 
-  captureStream(target: Target, worker: Worker, captureStreams: TargetCaptureStreams = {}) {
+  captureStream(target: Target, worker: Worker) {
     const { logger } = this.options;
 
     let stdout = worker.stdout;
     let stderr = worker.stderr;
 
-    const releaseStreams = {
-      stdout: () => {
-        // pass
-      },
-      stderr: () => {
-        // pass
-      },
-    };
+    const onData = (data) => logger.log(LogLevel.info, data, { target });
 
-    if (stdout) {
-      if (captureStreams.stdout) {
-        stdout = stdout.pipe(captureStreams.stdout);
-      }
+    stdout.setEncoding("utf-8");
+    stdout.on("data", onData);
 
-      releaseStreams.stdout = logger.stream(LogLevel.verbose, stdout, { target, tid: worker.threadId });
-    }
-
-    if (stderr) {
-      if (captureStreams.stderr) {
-        stderr = stderr.pipe(captureStreams.stderr);
-      }
-
-      releaseStreams.stderr = logger.stream(LogLevel.verbose, stderr, { target, tid: worker.threadId });
-    }
+    stderr.setEncoding("utf-8");
+    stderr.on("data", onData);
 
     return () => {
-      if (captureStreams.stdout && stdout) {
-        stdout.unpipe(captureStreams.stdout);
-        captureStreams.stdout.destroy();
-      }
-
-      if (captureStreams.stderr && stderr) {
-        stderr.unpipe(captureStreams.stderr);
-        captureStreams.stderr.destroy();
-      }
-      releaseStreams.stdout();
-      releaseStreams.stderr();
+      stdout.off("data", onData);
+      stderr.off("data", onData);
     };
   }
 
-  async run(target: Target, abortSignal?: AbortSignal, captureStreams: TargetCaptureStreams = {}) {
+  async run(target: Target, abortSignal?: AbortSignal) {
     if (abortSignal) {
       if (abortSignal.aborted) {
         return;
@@ -171,17 +145,17 @@ export class WorkerRunner implements TargetRunner {
     await pool.exec(
       { target },
       (worker) => {
-        cleanupStreams = this.captureStream(target, worker, captureStreams);
+        cleanupStreams = this.captureStream(target, worker);
       },
-      (worker) => {
+      () => {
         cleanupStreams();
       }
     );
   }
 
-  cleanup() {
+  async cleanup() {
     for (const pool of Object.values(this.pools)) {
-      pool.close();
+      await pool.close();
     }
   }
 }
