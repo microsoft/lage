@@ -3576,10 +3576,10 @@ batch@0.6.1:
   resolved "https://registry.npmjs.org/batch/-/batch-0.6.1.tgz"
   integrity sha1-3DQxT05nkxgJP8dgJyUl+UvyXBY=
 
-beachball@2.30.1:
-  version "2.30.1"
-  resolved "https://registry.yarnpkg.com/beachball/-/beachball-2.30.1.tgz#36057015f09f151abc24cf593d151303367b1f51"
-  integrity sha512-v3qzZ5a7gFTVOQ6P4Q6uUK5QJWD897bAVqkilh5JpKNpsP/v9XgMMFZe6xzCkKQqux6+QW0SJlQRqnD/MPi3ZQ==
+beachball@2.30.2:
+  version "2.30.2"
+  resolved "https://registry.yarnpkg.com/beachball/-/beachball-2.30.2.tgz#5c8541a24d956aa1f43fe6b40203e35ae2af76b3"
+  integrity sha512-WmTggiFjS9ox9uSYsiFdbffrlJgQj9A0fb2KAnE8u/wrKL+8ESZ1VFjdL+JWQcPvCwTERVeR52tf2399jALI1w==
   dependencies:
     cosmiconfig "^7.0.0"
     execa "^5.0.0"
@@ -3590,8 +3590,8 @@ beachball@2.30.1:
     prompts "^2.1.0"
     semver "^7.0.0"
     toposort "^2.0.2"
-    uuid "^8.3.1"
-    workspace-tools "^0.26.0"
+    uuid "^9.0.0"
+    workspace-tools "^0.27.0"
     yargs-parser "^21.0.0"
 
 big.js@^5.2.2:
@@ -10955,10 +10955,15 @@ utils-merge@1.0.1:
   resolved "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid@^8.1.0, uuid@^8.3.1, uuid@^8.3.2:
+uuid@^8.1.0, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
+
+uuid@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
+  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
 
 v8-compile-cache@^2.0.3, v8-compile-cache@^2.3.0:
   version "2.3.0"
