@@ -3479,10 +3479,10 @@ babel-preset-jest@^29.0.2:
     babel-plugin-jest-hoist "^29.0.2"
     babel-preset-current-node-syntax "^1.0.0"
 
-backfill-cache@^5.6.1:
-  version "5.6.1"
-  resolved "https://registry.npmjs.org/backfill-cache/-/backfill-cache-5.6.1.tgz"
-  integrity sha512-BaVakWMiCR/varXPE00QFqyfoWSikIIZMqNGt1JQEJ+MgkBBq4oHu4a3L2o1/u7IMOxKFXkz8sNXM+wyNSfAuA==
+backfill-cache@^5.6.1, backfill-cache@^5.6.2:
+  version "5.6.2"
+  resolved "https://registry.yarnpkg.com/backfill-cache/-/backfill-cache-5.6.2.tgz#4e2f7ccc0172153c107f9afa7e0f05882be848c2"
+  integrity sha512-E2SjMLgHt8NJ9sPKL6djxPqQKvI3YEedT0q/fZ8uknQbNg9H6JAxjWlff6sB8UcoBmep4R99ACUuYqOfFEBglw==
   dependencies:
     "@azure/storage-blob" "12.1.2"
     "@rushstack/package-deps-hash" "^3.2.4"
@@ -3497,7 +3497,7 @@ backfill-cache@^5.6.1:
 
 backfill-config@^6.3.0:
   version "6.3.0"
-  resolved "https://registry.npmjs.org/backfill-config/-/backfill-config-6.3.0.tgz"
+  resolved "https://registry.yarnpkg.com/backfill-config/-/backfill-config-6.3.0.tgz#bd95115fa7c446162ada80324b9bc820fb9fa9e3"
   integrity sha512-4Pvqe4SIthHmlJi1yEyh8ThdZCh9SbNcf12Dx1TNkLii6um3Ez1P1rruPNQGW8jFtLb5kOWWkTnXPj6OXewXSA==
   dependencies:
     backfill-logger "^5.1.3"
@@ -3505,21 +3505,21 @@ backfill-config@^6.3.0:
     fs-extra "^8.1.0"
     pkg-dir "^4.2.0"
 
-backfill-hasher@^6.4.2:
-  version "6.4.2"
-  resolved "https://registry.yarnpkg.com/backfill-hasher/-/backfill-hasher-6.4.2.tgz#bb037506d7c3197cb4a2beef29316e1c58e5ac06"
-  integrity sha512-nWJyk6M9ufWaJXjmeSpshK0/m0sXxWymZC4r2S/lJ35uoEfp1F4O0A3TBO5twlBp3kc6/jPiXsC2EVLmAQ5ZJA==
+backfill-hasher@^6.4.2, backfill-hasher@^6.4.3:
+  version "6.4.3"
+  resolved "https://registry.yarnpkg.com/backfill-hasher/-/backfill-hasher-6.4.3.tgz#45ec2319214a7e25d893629a6f933cad48b71d85"
+  integrity sha512-Btijbf5mC96bbFervlUMf5I14V9/bPPUiEFhWYO+XRyxlfbTejpvqzTpCDKEyCR/wMlt3AViAjZ3/UOZ6cMGsg==
   dependencies:
     "@rushstack/package-deps-hash" "^3.2.4"
     backfill-config "^6.3.0"
     backfill-logger "^5.1.3"
     find-up "^5.0.0"
     fs-extra "^8.1.0"
-    workspace-tools "^0.26.3"
+    workspace-tools "^0.27.0"
 
 backfill-logger@^5.1.3:
   version "5.1.3"
-  resolved "https://registry.npmjs.org/backfill-logger/-/backfill-logger-5.1.3.tgz"
+  resolved "https://registry.yarnpkg.com/backfill-logger/-/backfill-logger-5.1.3.tgz#29d4e9d205e2f44a95336db95652d6d2973e1fb8"
   integrity sha512-S1QUP+q3WWqcXWfwVt/jpi3r61CGWWJBfxGpzLPbRE8vMUw71P8sA+zYSx7M8ZI1PNZrxSA/TKq/NhoiMYXnpA==
   dependencies:
     chalk "^4.1.1"
@@ -3528,21 +3528,21 @@ backfill-logger@^5.1.3:
 
 backfill-utils-dotenv@^5.1.1:
   version "5.1.1"
-  resolved "https://registry.npmjs.org/backfill-utils-dotenv/-/backfill-utils-dotenv-5.1.1.tgz"
+  resolved "https://registry.yarnpkg.com/backfill-utils-dotenv/-/backfill-utils-dotenv-5.1.1.tgz#eedf05badad4bd34fbac5d020f37f3ca634c9669"
   integrity sha512-hSdY1pflGFf4xXXpI51bnNPr8arS3ga5tSeyeTjIdohC5IwUf+Eldz2yeSMrbqtP3PKIuxHc2RcwTJfL5jSBfg==
   dependencies:
     dotenv "^8.1.0"
     find-up "^5.0.0"
 
 backfill@^6.1.21:
-  version "6.1.21"
-  resolved "https://registry.yarnpkg.com/backfill/-/backfill-6.1.21.tgz#faf1151781f6a1a53c60a308645e327c96db11cd"
-  integrity sha512-RjY77n2zkwJJ+jjeqCA08+Kwd9C61HsBo/WDLlEstL4KKxu7WMQ2xSN7RYQMIoA4ui5MRFJsFz8QSEcewlWOtw==
+  version "6.1.23"
+  resolved "https://registry.yarnpkg.com/backfill/-/backfill-6.1.23.tgz#47e93c459215794459ba7525e9be3abbfb488f11"
+  integrity sha512-VidtpsjTnEFH5Vg7p+IR8F5Fko+FJWse9SWEmbufaflL/Jp9xQO5igReqIp+HX2qzz1JjpfrPmRzFwOyVFdkrA==
   dependencies:
     anymatch "^3.0.3"
-    backfill-cache "^5.6.1"
+    backfill-cache "^5.6.2"
     backfill-config "^6.3.0"
-    backfill-hasher "^6.4.2"
+    backfill-hasher "^6.4.3"
     backfill-logger "^5.1.3"
     backfill-utils-dotenv "^5.1.1"
     chokidar "^3.2.1"
@@ -11241,7 +11241,7 @@ word-wrap@^1.2.3:
   resolved "https://registry.npmjs.org/word-wrap/-/word-wrap-1.2.3.tgz"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
 
-workspace-tools@^0.26.0, workspace-tools@^0.26.3:
+workspace-tools@^0.26.0:
   version "0.26.3"
   resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.26.3.tgz#521ff930e889873eab5d223289d7136d1e9a1b42"
   integrity sha512-aNnxt0rBh8CwQ6DfYn/CU1xNTKu+dwoNjZ9oddEAOogvIOMQGJ57OQ3XI7+iRZu1XfO+HK2xsQLMbZGjmAJ8UA==
