@@ -5,11 +5,12 @@ import { findNpmClient } from "../../workspace/findNpmClient";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { NpmScriptRunner, SimpleScheduler, WorkerRunner, TargetRunnerPicker, TargetRunner } from "@lage-run/scheduler";
-import { TargetGraphBuilder } from "@lage-run/target-graph";
-import createLogger, { LogLevel, Reporter } from "@lage-run/logger";
 import { initializeReporters } from "../../reporters/initialize";
-import { ReporterInitOptions } from "../../types/LoggerOptions";
+import { NpmScriptRunner, SimpleScheduler, WorkerRunner, TargetRunnerPicker } from "@lage-run/scheduler";
+import { TargetGraphBuilder } from "@lage-run/target-graph";
+import createLogger from "@lage-run/logger";
+import type { ReporterInitOptions } from "../../types/LoggerOptions";
+import type { TargetRunner } from "@lage-run/scheduler";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
