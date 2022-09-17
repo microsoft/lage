@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sat, 17 Sep 2022 00:05:30 GMT",
+      "tag": "lage_v1.8.4",
+      "version": "1.8.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "047fbe82177b45863ae551840c1ed37221df59cc",
+            "comment": "Update dependency cosmiconfig to v7 (support `lagerc.cjs` and `lage.config.cjs`)"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Sep 2022 23:45:26 GMT",
       "tag": "lage_v1.8.3",
       "version": "1.8.3",

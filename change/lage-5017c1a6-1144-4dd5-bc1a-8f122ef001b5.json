@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update dependency cosmiconfig to v7 (support `lagerc.cjs` and `lage.config.cjs`)",
-  "packageName": "lage",
-  "email": "email not defined",
-  "dependentChangeType": "patch"
-}

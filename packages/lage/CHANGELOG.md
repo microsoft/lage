@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 16 Sep 2022 23:45:26 GMT and should not be manually modified.
+This log was last generated on Sat, 17 Sep 2022 00:05:30 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.8.4
+
+Sat, 17 Sep 2022 00:05:30 GMT
+
+### Patches
+
+- Update dependency cosmiconfig to v7 (support `lagerc.cjs` and `lage.config.cjs`) (email not defined)
 
 ## 1.8.3
 
