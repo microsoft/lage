@@ -9,20 +9,32 @@
     "github>microsoft/m365-renovate-config:restrictNode(14)"
   ],
 
-  "ignoreDeps": ["lage-npm"],
-
   "labels": ["renovate"],
 
   "prHourlyLimit": 5,
 
+  "regexManagers": [
+    {
+      "fileMatch": ["^package.json$"],
+      "matchStrings": [
+        "lage-npm\": \"npm:lage@(?<currentValue>[~^]?\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "lage-npm",
+      "packageNameTemplate": "lage",
+      "datasourceTemplate": "npm",
+      "depTypeTemplate": "devDependencies"
+    }
+  ],
+
   "packageRules": [
     {
       "groupName": "Docusaurus deps",
-      "matchPackagePatterns": ["docusaurus", "@docusaurus/*"]
+      "matchPackagePrefixes": ["docusaurus", "@docusaurus/*"]
     },
     {
       "groupName": "lage core deps",
-      "matchPackagePrefixes": ["backfill", "workspace-tools", "p-graph", "p-profiler"],
+      "matchPackagePrefixes": ["backfill-"],
+      "matchPackageNames": ["backfill", "workspace-tools", "p-graph", "p-profiler"],
       "matchUpdateTypes": ["major", "minor", "patch", "bump"],
       "dependencyDashboardApproval": false
     }
