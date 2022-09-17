@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update dependency workspace-tools to ^0.27.0",
-  "packageName": "@lage-run/cli",
-  "email": "email not defined",
-  "dependentChangeType": "patch"
-}

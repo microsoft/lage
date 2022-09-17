@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/target-graph",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Target for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"

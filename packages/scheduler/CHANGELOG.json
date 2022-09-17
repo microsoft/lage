@@ -2,6 +2,33 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Sat, 17 Sep 2022 01:09:34 GMT",
+      "tag": "@lage-run/scheduler_v0.3.3",
+      "version": "0.3.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/scheduler",
+            "commit": "f972817afd8d234b31c013290e1a7bc952e7bf61",
+            "comment": "Update dependency workspace-tools to ^0.27.0"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/target-graph to v0.3.2",
+            "commit": "f972817afd8d234b31c013290e1a7bc952e7bf61"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v0.1.10",
+            "commit": "f972817afd8d234b31c013290e1a7bc952e7bf61"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Sep 2022 20:06:10 GMT",
       "tag": "@lage-run/scheduler_v0.3.2",
       "version": "0.3.2",

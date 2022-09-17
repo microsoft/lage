@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sat, 17 Sep 2022 01:09:34 GMT",
+      "tag": "lage_v1.8.5",
+      "version": "1.8.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "f972817afd8d234b31c013290e1a7bc952e7bf61",
+            "comment": "Update dependency workspace-tools to ^0.27.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 17 Sep 2022 00:05:30 GMT",
       "tag": "lage_v1.8.4",
       "version": "1.8.4",
