@@ -1,7 +1,7 @@
 {
-  "type": "none",
-  "comment": "Update devDependency execa to v5",
+  "type": "patch",
+  "comment": "Update dependency execa to v5",
   "packageName": "lage",
   "email": "email not defined",
-  "dependentChangeType": "none"
+  "dependentChangeType": "patch"
 }
