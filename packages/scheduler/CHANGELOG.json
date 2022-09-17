@@ -2,6 +2,27 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Sat, 17 Sep 2022 20:20:49 GMT",
+      "tag": "@lage-run/scheduler_v0.3.4",
+      "version": "0.3.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/scheduler",
+            "commit": "425dc73ad81ce184a80ec2efcc10aecb0c569b40",
+            "comment": "Fixing logging in workerpools to not be out of order"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.1.2",
+            "commit": "425dc73ad81ce184a80ec2efcc10aecb0c569b40"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 17 Sep 2022 01:09:34 GMT",
       "tag": "@lage-run/scheduler_v0.3.3",
       "version": "0.3.3",

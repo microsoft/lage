@@ -1,8 +1,17 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Sat, 17 Sep 2022 01:09:34 GMT and should not be manually modified.
+This log was last generated on Sat, 17 Sep 2022 20:20:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.4
+
+Sat, 17 Sep 2022 20:20:49 GMT
+
+### Patches
+
+- Fixing logging in workerpools to not be out of order (ken@gizzar.com)
+- Bump @lage-run/worker-threads-pool to v0.1.2
 
 ## 0.3.3
 

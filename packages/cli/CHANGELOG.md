@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Sat, 17 Sep 2022 01:09:34 GMT and should not be manually modified.
+This log was last generated on Sat, 17 Sep 2022 20:20:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.6
+
+Sat, 17 Sep 2022 20:20:49 GMT
+
+### Patches
+
+- Fixing logging in workerpools to not be out of order (ken@gizzar.com)
+- Bump @lage-run/scheduler to v0.3.4
+- Bump @lage-run/reporters to v0.2.5
 
 ## 0.3.5
 

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fixing logging in workerpools to not be out of order",
-  "packageName": "@lage-run/cli",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
