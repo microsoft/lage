@@ -4,7 +4,7 @@ import os from "os";
 import type { AbortSignal } from "abort-controller";
 import type { Logger } from "@lage-run/logger";
 import type { Target, TargetConfig } from "@lage-run/target-graph";
-import type { TargetCaptureStreams, TargetRunner } from "../types/TargetRunner";
+import type { TargetRunner } from "../types/TargetRunner";
 import type { Worker } from "worker_threads";
 
 export interface WorkerRunnerOptions {
@@ -107,10 +107,9 @@ export class WorkerRunner implements TargetRunner {
   captureStream(target: Target, worker: Worker) {
     const { logger } = this.options;
 
-    let stdout = worker.stdout;
-    let stderr = worker.stderr;
-
-    const onData = (data) => logger.log(LogLevel.info, data, { target });
+    const stdout = worker.stdout;
+    const stderr = worker.stderr;
+    const onData = (data: string) => logger.log(LogLevel.info, data, { target });
 
     stdout.setEncoding("utf-8");
     stdout.on("data", onData);
