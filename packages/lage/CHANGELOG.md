@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Sat, 17 Sep 2022 01:09:34 GMT and should not be manually modified.
+This log was last generated on Sat, 17 Sep 2022 02:11:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.8.6
+
+Sat, 17 Sep 2022 02:11:00 GMT
+
+### Patches
+
+- Update dependency execa to v5 (email not defined)
 
 ## 1.8.5
 
