@@ -4,38 +4,69 @@ sidebar_label: Quick Start
 title: Quick Start
 ---
 
-`lage` gives you this capability with very little configuration. First, let's install the `lage` utility. You can place this in your workspace's root `package.json` by running `yarn add`:
+## Automated Installation
 
 ```
-yarn add -D lage
+npx lage init
 ```
 
-Confirm with `yarn` that you are sure to add a package at the root level, you then place a root level script inside the `package.json` to run `lage`:
+This will let `lage` install the latest version of lage into your repo as a one of the `devDependencies` at the root level.
 
-```
-{
-  "scripts": {
-    "build": "lage build",
-    "test": "lage test"
-  }
-}
-```
+`lage` is compatible with all the popular workspace managers, this can be applied to a `yarn`, `pnpm`, or `rush` workspace.
 
-Add a configuration file in the root to get started. Create this file at the root `lage.config.js`:
+## Customize `lage.config.js`
+
+The `init` command will also generate a default `lage.config.js`. This will likely need to be modified. In particular, pay attention to the `pipeline`
+configuration:
 
 ```js
 module.exports = {
   pipeline: {
     build: ["^build"],
     test: ["build"],
+    lint: [],
   },
 };
 ```
 
-Do not worry about the syntax for now. We will go over the configuration file in a coming section. You can now run this command:
+## Customize workspace (root level) `package.json`
+
+Modify the `package.json` to use `lage` to run your tasks:
+
+```json
+{
+  "name": "workspace-root",
+  "scripts": {
+    "build": "lage build",
+    "test": "lage test",
+    "lint": "lage lint"
+  },
+  "devDependencies": {
+    "lage": "latest"
+  }
+}
+```
+
+## Ready to Build, Test, and Lint!
+
+You are now ready to start running all the commands in your repository with `lage`. You'll notice that tasks are now cached!
 
 ```
-$ lage test
+npm run build
 ```
 
-`lage` will detect that you need to run `build` steps before `test`s are run.
+or 
+
+```
+yarn build
+```
+
+or
+
+```
+pnpm build
+```
+
+## Next Steps
+
+Now that you've configured `lage`, dig deeper in the [Tutorial](/docs/Tutorial/cli) section for features like remote caching, task skipping, customized pipelines, and setting priorities.
