@@ -29,8 +29,8 @@ const pkgColors = {
   cyanBright: chalk.cyanBright,
   greenBright: chalk.greenBright,
   yellow: chalk.yellow,
-  magenta: chalk.magenta
-}
+  magenta: chalk.magenta,
+};
 
 function getRandomPkgColor(): Chalk {
   const pkgColorValues = Object.values(pkgColors);
@@ -39,7 +39,7 @@ function getRandomPkgColor(): Chalk {
 
 const pkgNameToPkgColorMap = new Map<string, Chalk>();
 
-function getColorForPkg(pkg: string): Chalk  {
+function getColorForPkg(pkg: string): Chalk {
   if (!pkgNameToPkgColorMap.has(pkg)) {
     const color = getRandomPkgColor();
     pkgNameToPkgColorMap.set(pkg, color);
