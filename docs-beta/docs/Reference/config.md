@@ -34,7 +34,7 @@ module.exports = {
     build: ["^build"],
     test: {
       outputs: [],
-      dependsOn: ["build"]
+      dependsOn: ["build"],
     },
     lint: {
       type: "worker",
@@ -43,14 +43,21 @@ module.exports = {
         worker: "path/to/scripts/worker/lint.js",
       },
     },
-    // Calls "start" in all the packages
-    start: [],
-
-    // Temporary workarounds for projects that are in transition to lage
+    start: [], // Calls "start" in all the packages
     "specific-package-a#test": ["specific-package-b#build"],
   },
+
   npmClient: "yarn", // optional, by default "npm run" is used; "yarn" can exhibit slightly different behavior,
+
   cacheOptions: {
+    /** @see https://github.com/microsoft/backfill#configuration */
+    cacheStorageConfig: {
+      provider: "azure-blob", // use this to specify a remote cache provider such as "azure-blob",
+      options: {
+        // There are specific options here for different cache provider
+      },
+    },
+
     /**
      * Any of these files changed would invalidate the cache
      *
@@ -78,11 +85,11 @@ module.exports = {
   /**
    * affects the --since flag: ignore changes in these paths, so they do not count as changes between refs
    */
-  ignore: ["*.md"]
+  ignore: ["*.md"],
 
   /**
    * affects the --since flag: any changes in these paths mean that --since flag is disabled; caching is not affected by this flag
    */
-  repoWideChanges: ["yarn.lock"]
+  repoWideChanges: ["yarn.lock"],
 };
 ```
