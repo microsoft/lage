@@ -1,8 +1,25 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Tue, 06 Sep 2022 20:10:16 GMT and should not be manually modified.
+This log was last generated on Sat, 17 Sep 2022 01:09:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.10
+
+Sat, 17 Sep 2022 01:09:34 GMT
+
+### Patches
+
+- Update dependency workspace-tools to ^0.27.0 (email not defined)
+- Bump @lage-run/target-graph to v0.3.2
+
+## 0.1.9
+
+Fri, 16 Sep 2022 01:32:24 GMT
+
+### Patches
+
+- Update dependency mock-fs to v5.1.4 (renovate@whitesourcesoftware.com)
 
 ## 0.1.8
 

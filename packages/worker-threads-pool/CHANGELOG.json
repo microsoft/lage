@@ -2,6 +2,66 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Sat, 17 Sep 2022 20:20:49 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.1.2",
+      "version": "0.1.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "425dc73ad81ce184a80ec2efcc10aecb0c569b40",
+            "comment": "Get rid of unneeded hack around stream pipe"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 20:06:10 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "4cc6afee8a8b0eeabd5e36f764615860baca6de4",
+            "comment": "Update devDependency @types/node to v14.18.29"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 03:59:54 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "feb30c988cd07f121e217f9825758af844b18b77",
+            "comment": "Update jest monorepo to v29"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 01:59:38 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "7bb3cfa39ca17144915a94233b46ba67e284788f",
+            "comment": "Pin devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 04 Sep 2022 23:00:20 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.1.1",
       "version": "0.1.1",

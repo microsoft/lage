@@ -78,36 +78,36 @@ describe("ChromeTraceEventsReporter", () => {
 
     expect(writer.toString()).toMatchInlineSnapshot(`
       "{
-        \\"traceEvents\\": [
+        "traceEvents": [
           {
-            \\"name\\": \\"a#test\\",
-            \\"cat\\": \\"success\\",
-            \\"ph\\": \\"X\\",
-            \\"ts\\": 1000000,
-            \\"dur\\": 10000000,
-            \\"pid\\": 1,
-            \\"tid\\": 2
+            "name": "a#test",
+            "cat": "success",
+            "ph": "X",
+            "ts": 1000000,
+            "dur": 10000000,
+            "pid": 1,
+            "tid": 2
           },
           {
-            \\"name\\": \\"b#build\\",
-            \\"cat\\": \\"success\\",
-            \\"ph\\": \\"X\\",
-            \\"ts\\": 2000000,
-            \\"dur\\": 30000000,
-            \\"pid\\": 1,
-            \\"tid\\": 3
+            "name": "b#build",
+            "cat": "success",
+            "ph": "X",
+            "ts": 2000000,
+            "dur": 30000000,
+            "pid": 1,
+            "tid": 3
           },
           {
-            \\"name\\": \\"a#build\\",
-            \\"cat\\": \\"failed\\",
-            \\"ph\\": \\"X\\",
-            \\"ts\\": 0,
-            \\"dur\\": 60000000,
-            \\"pid\\": 1,
-            \\"tid\\": 1
+            "name": "a#build",
+            "cat": "failed",
+            "ph": "X",
+            "ts": 0,
+            "dur": 60000000,
+            "pid": 1,
+            "tid": 1
           }
         ],
-        \\"displayTimeUnit\\": \\"ms\\"
+        "displayTimeUnit": "ms"
       }"
     `);
     expect(consoleWriter.toString()).toMatchInlineSnapshot(`

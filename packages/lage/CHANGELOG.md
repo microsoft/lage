@@ -1,8 +1,48 @@
 # Change Log - lage
 
-This log was last generated on Wed, 31 Aug 2022 19:31:26 GMT and should not be manually modified.
+This log was last generated on Sat, 17 Sep 2022 02:11:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.8.6
+
+Sat, 17 Sep 2022 02:11:00 GMT
+
+### Patches
+
+- Update dependency execa to v5 (email not defined)
+
+## 1.8.5
+
+Sat, 17 Sep 2022 01:09:34 GMT
+
+### Patches
+
+- Update dependency workspace-tools to ^0.27.0 (email not defined)
+
+## 1.8.4
+
+Sat, 17 Sep 2022 00:05:30 GMT
+
+### Patches
+
+- Update dependency cosmiconfig to v7 (support `lagerc.cjs` and `lage.config.cjs`) (email not defined)
+
+## 1.8.3
+
+Fri, 16 Sep 2022 23:45:26 GMT
+
+### Patches
+
+- Remove unused and non-exported path utilities (elcraig@microsoft.com)
+
+## 1.8.2
+
+Fri, 16 Sep 2022 23:37:14 GMT
+
+### Patches
+
+- Update dependency mermaid to v9 [SECURITY] (renovate@whitesourcesoftware.com)
 
 ## 1.8.0
 

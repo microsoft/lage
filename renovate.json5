@@ -1,47 +1,42 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", ":pinOnlyDevDependencies"],
-  "ignorePaths": ["**/node_modules/**"],
+  "extends": [
+    "github>microsoft/m365-renovate-config:beachballLibraryRecommended",
+    "github>microsoft/m365-renovate-config:disableEsmVersions",
+    "github>microsoft/m365-renovate-config:groupMore",
+    "github>microsoft/m365-renovate-config:groupTypes",
+    "github>microsoft/m365-renovate-config:keepFresh",
+    "github>microsoft/m365-renovate-config:restrictNode(14)"
+  ],
+
+  "labels": ["renovate"],
+
   "prHourlyLimit": 5,
-  "postUpdateOptions": ["yarnDedupeHighest"],
-  "configWarningReuseIssue": false,
-  "allowPostUpgradeCommandTemplating": true,
-  "gitAuthor": "Renovate Bot <renovate@whitesourcesoftware.com>",
-  "postUpgradeTasks": {
-    "commands": [
-      "git add --all",
-      "npx beachball change --no-commit --type patch --message '{{{commitMessage}}}'",
-      "git reset"
-    ],
-    "fileFilters": ["**/*"],
-    "executionMode": "branch"
-  },
-  "major": {
-    "dependencyDashboardApproval": true
-  },
-  "ignoreDeps": ["lage-npm"],
+
+  "regexManagers": [
+    {
+      "fileMatch": ["^package.json$"],
+      "matchStrings": [
+        "lage-npm\": \"npm:lage@(?<currentValue>[~^]?\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "lage-npm",
+      "packageNameTemplate": "lage",
+      "datasourceTemplate": "npm",
+      "depTypeTemplate": "devDependencies"
+    }
+  ],
+
   "packageRules": [
     {
-      "groupName": "eslint packages",
-      "matchPackagePatterns": ["eslint"]
-    },
-    {
       "groupName": "Docusaurus deps",
-      "matchPackagePatterns": ["docusaurus", "@docusaurus/*"]
+      "matchPackagePrefixes": ["docusaurus", "@docusaurus/*"]
     },
     {
       "groupName": "lage core deps",
-      "matchPackagePrefixes": ["backfill", "workspace-tools", "p-graph", "p-profiler"],
-    },
-    {
-      "groupName": "typescript packages",
-      "matchPackageNames": ["typescript", "tslib"],
-      "schedule": ["every monday"]
-    },
-    {
-      "groupName": "jest packages",
-      "matchPackageNames": ["ts-jest", "jest", "@types/jest"],
-      "schedule": ["every monday"]
-    },
+      "matchPackagePrefixes": ["backfill-"],
+      "matchPackageNames": ["backfill", "workspace-tools", "p-graph", "p-profiler"],
+      "matchUpdateTypes": ["major", "minor", "patch", "bump"],
+      "dependencyDashboardApproval": false
+    }
   ]
 }

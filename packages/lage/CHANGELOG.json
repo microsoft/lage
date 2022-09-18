@@ -2,6 +2,156 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sat, 17 Sep 2022 02:37:06 GMT",
+      "tag": "lage_v1.8.6",
+      "version": "1.8.6",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "49237608a4dd44608c33578809c3fc87df657c29",
+            "comment": "Update devDependency beachball to v2.30.2"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 17 Sep 2022 02:11:00 GMT",
+      "tag": "lage_v1.8.6",
+      "version": "1.8.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "75e04107cab3038247a70784d22aae87f43e6ddc",
+            "comment": "Update dependency execa to v5"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 17 Sep 2022 01:09:34 GMT",
+      "tag": "lage_v1.8.5",
+      "version": "1.8.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "f972817afd8d234b31c013290e1a7bc952e7bf61",
+            "comment": "Update dependency workspace-tools to ^0.27.0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 17 Sep 2022 00:05:30 GMT",
+      "tag": "lage_v1.8.4",
+      "version": "1.8.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "047fbe82177b45863ae551840c1ed37221df59cc",
+            "comment": "Update dependency cosmiconfig to v7 (support `lagerc.cjs` and `lage.config.cjs`)"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 23:45:26 GMT",
+      "tag": "lage_v1.8.3",
+      "version": "1.8.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "9712fbe4c78c803822302d8a83ace2bc7f7c923e",
+            "comment": "Remove unused and non-exported path utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 23:37:14 GMT",
+      "tag": "lage_v1.8.2",
+      "version": "1.8.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "9d9570be7ca46df5e105bdc4060e3dbe518f097a",
+            "comment": "Update dependency mermaid to v9 [SECURITY]"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 20:12:14 GMT",
+      "tag": "lage_v1.8.1",
+      "version": "1.8.1",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "486f2bf2ecaa0a3bf963d3e3e7df9a92697ecdc9",
+            "comment": "Update devDependency gh-pages to v4"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 20:06:10 GMT",
+      "tag": "lage_v1.8.1",
+      "version": "1.8.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "4cc6afee8a8b0eeabd5e36f764615860baca6de4",
+            "comment": "Update devDependency @types/node to v14.18.29"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 03:59:54 GMT",
+      "tag": "lage_v1.8.1",
+      "version": "1.8.1",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "feb30c988cd07f121e217f9825758af844b18b77",
+            "comment": "Update jest monorepo to v29"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 01:59:38 GMT",
+      "tag": "lage_v1.8.1",
+      "version": "1.8.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "7bb3cfa39ca17144915a94233b46ba67e284788f",
+            "comment": "Pin devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 31 Aug 2022 19:31:26 GMT",
       "tag": "lage_v1.8.0",
       "version": "1.8.0",

@@ -2,6 +2,66 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Sat, 17 Sep 2022 01:09:34 GMT",
+      "tag": "@lage-run/target-graph_v0.3.2",
+      "version": "0.3.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "f972817afd8d234b31c013290e1a7bc952e7bf61",
+            "comment": "Update dependency workspace-tools to ^0.27.0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 20:06:10 GMT",
+      "tag": "@lage-run/target-graph_v0.3.1",
+      "version": "0.3.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "4cc6afee8a8b0eeabd5e36f764615860baca6de4",
+            "comment": "Update devDependency @types/node to v14.18.29"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 03:59:54 GMT",
+      "tag": "@lage-run/target-graph_v0.3.1",
+      "version": "0.3.1",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/target-graph",
+            "commit": "feb30c988cd07f121e217f9825758af844b18b77",
+            "comment": "Update jest monorepo to v29"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 01:59:38 GMT",
+      "tag": "@lage-run/target-graph_v0.3.1",
+      "version": "0.3.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "7bb3cfa39ca17144915a94233b46ba67e284788f",
+            "comment": "Pin devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 06 Sep 2022 20:10:16 GMT",
       "tag": "@lage-run/target-graph_v0.3.1",
       "version": "0.3.1",

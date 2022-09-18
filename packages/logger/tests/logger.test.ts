@@ -53,7 +53,7 @@ describe("logger", () => {
 
     expect(reporter.entries[0].level).toBe(LogLevel.info);
     expect(reporter.entries[0].data).not.toBeUndefined();
-    expect(reporter.entries[0].data.foo).toBe("bar");
+    expect(reporter.entries[0].data!.foo).toBe("bar");
     expect(reporter.entries[0].msg).toBe("info");
   });
 
@@ -67,7 +67,7 @@ describe("logger", () => {
 
     expect(reporter.entries[0].level).toBe(LogLevel.info);
     expect(reporter.entries[0].data).not.toBeUndefined();
-    expect(reporter.entries[0].data.somedata.foo).toBe("bar");
+    expect(reporter.entries[0].data!.somedata.foo).toBe("bar");
     expect(reporter.entries[0].msg).toBe("info");
   });
 

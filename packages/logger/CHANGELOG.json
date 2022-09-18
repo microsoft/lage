@@ -2,6 +2,51 @@
   "name": "@lage-run/logger",
   "entries": [
     {
+      "date": "Fri, 16 Sep 2022 20:06:10 GMT",
+      "tag": "@lage-run/logger_v1.2.0",
+      "version": "1.2.0",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/logger",
+            "commit": "4cc6afee8a8b0eeabd5e36f764615860baca6de4",
+            "comment": "Update devDependency @types/node to v14.18.29"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 03:59:54 GMT",
+      "tag": "@lage-run/logger_v1.2.0",
+      "version": "1.2.0",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/logger",
+            "commit": "feb30c988cd07f121e217f9825758af844b18b77",
+            "comment": "Update jest monorepo to v29"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 01:59:38 GMT",
+      "tag": "@lage-run/logger_v1.2.0",
+      "version": "1.2.0",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/logger",
+            "commit": "7bb3cfa39ca17144915a94233b46ba67e284788f",
+            "comment": "Pin devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 04 Sep 2022 23:00:20 GMT",
       "tag": "@lage-run/logger_v1.2.0",
       "version": "1.2.0",
