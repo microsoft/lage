@@ -1,5 +1,5 @@
 import React from "react";
-import { ToolList } from "../data/ToolList";
+import { ToolList } from "../../data/ToolList";
 
 function Tool({ Svg, title, description }) {
   return (

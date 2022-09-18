@@ -11,13 +11,12 @@ module.exports = {
     preflight: false,
   },
   content: [
-    "./src/pages/*.js",
     "./src/pages/**/*.tsx",
     "./src/pages/**/*.ts",
     "./src/pages/**/*.js",
-    "./src/components/*.js",
-    "./src/components/*.tsx",
-    "./src/components/*.ts",
+    "./src/components/**/*.js",
+    "./src/components/**/*.tsx",
+    "./src/components/**/*.ts",
   ],
   theme: {
     container: {

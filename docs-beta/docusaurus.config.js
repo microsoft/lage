@@ -28,7 +28,10 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl: 'https://github.com/microsoft/lage/',
-        }
+        },
+        theme: {
+          customCss: [require.resolve('./src/css/custom.css')],
+        },
       },
     ],
   ],
@@ -60,7 +63,6 @@ const config = {
         darkTheme: darkCodeTheme,
       },
       colorMode : {
-        defaultMode: 'dark',
         disableSwitch: false
       },
     }),

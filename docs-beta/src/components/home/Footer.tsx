@@ -8,7 +8,7 @@ import { Description } from "./Description";
 import { Button } from "./Button";
 import { Section } from "./Section";
 
-export default function Footer() {
+export function Footer() {
   return (
     <div className="theme-color bg-bodyPrimary py-8">
       <div className="container md:mx-auto">

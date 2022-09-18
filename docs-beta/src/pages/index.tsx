@@ -1,22 +1,21 @@
 import "../css/tailwind.css";
-import { Description } from "../components/Description";
-import { Highlight } from "../components/Highlight";
-import { Illustration } from "../components/Illustration";
-import { Point } from "../components/Point";
-import { Quote } from "../components/Quote";
-import { TwoColumns } from "../components/TwoColumns";
-import { WaveDivider } from "../components/WaveDivider";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import NavBar from "../components/NavBar";
+import { Description } from "../components/home/Description";
+import { Highlight } from "../components/home/Highlight";
+import { Illustration } from "../components/home/Illustration";
+import { Point } from "../components/home/Point";
+import { Quote } from "../components/home/Quote";
+import { Section } from "../components/home/Section";
+import { TwoColumns } from "../components/home/TwoColumns";
+import { WaveDivider } from "../components/home/WaveDivider";
+import { Footer } from "../components/home/Footer";
+import { Header } from "../components/home/Header";
+import { NavBar } from "../components/navbar/NavBar";
 import React from "react";
-import { Section } from "../components/Section";
 
 export default function Home() {
   return (
     <div className="theme-color bg-bodySecondary" id="tailwind">
       <NavBar />
-
       <Section>
         <Header />
       </Section>

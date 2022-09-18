@@ -1,0 +1,11 @@
+:root {
+  --ifm-color-primary: rgb(28 88 106);
+  --ifm-code-font-size: 95%;
+  --ifm-background-surface-color: rgb(28 88 106);
+  --ifm-navbar-link-color: white;
+  --ifm-navbar-link-hover-color: white;
+}
+
+html[data-theme='dark'] {
+  --ifm-color-primary: rgb(70, 189, 226);
+}

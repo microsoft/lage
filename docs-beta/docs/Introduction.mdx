@@ -17,7 +17,7 @@ There exists tools in the market that will provide a way for you to run these np
 3. `lage` supports remote cache as a fallback - never build the same code twice
 4. `lage` is optimized for modern multi-core development machines - don't waste your CPU resource waiting on a single core when you have so many to spare!
 
-## How does `lage` figure out how to schedule tasks?
+## How does `lage` schedule tasks?
 
 `lage` has a secret weapon: it has a "pipeline" configuration syntax to define the implicit relationship between tasks. Combined with a package graph, `lage` knows how to schedule which task to run first and which one can be run in parallel. Let's look at an example:
 

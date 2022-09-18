@@ -6,7 +6,7 @@ import { ProductDescription } from "./ProductDescription";
 import { Button } from "./Button";
 import { Illustration } from "./Illustration";
 
-export default function Header() {
+export function Header() {
   return (
     <header className="theme-color bg-bodySecondary flex justify-center items-center pt-8 pb-24">
       <div className="2xl:w-big-screen">

@@ -5,7 +5,7 @@ import { Cross } from "./Cross";
 import { Hamburger } from "./Hamburger";
 import { HamburgerButton } from "./HamburgerButton";
 
-export default function NavBar() {
+export function NavBar() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   return (
     <div className="pl-4 pr-4 md:pr-20 bg-bodySecondary md:bg-navbar">
@@ -28,20 +28,13 @@ export default function NavBar() {
             }
           >
             {/*Creating the cross to exit the hamburger menu*/}
-            <div
-              className="absolute top-0 right-0 px-8 py-8"
-              onClick={() => setIsNavOpen(false)}
-            >
+            <div className="absolute top-0 right-0 px-8 py-8" onClick={() => setIsNavOpen(false)}>
               <Cross />
             </div>
             {/*Contents of the hamburger menu*/}
             <div className="flex flex-col space-y-2 px-4 py-24">
-              <HamburgerButton to="/docs/Introducing Lage/Overview">
-                Guide
-              </HamburgerButton>
-              <HamburgerButton to="https://github.com/microsoft/lage">
-                GitHub
-              </HamburgerButton>
+              <HamburgerButton to="/docs/Introducing Lage/Overview">Guide</HamburgerButton>
+              <HamburgerButton to="https://github.com/microsoft/lage">GitHub</HamburgerButton>
             </div>
           </div>
         </section>
