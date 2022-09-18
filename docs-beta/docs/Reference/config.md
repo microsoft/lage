@@ -17,78 +17,72 @@ module.exports = {
 };
 ```
 
+### A Complete Tour of the Config
 
-## Options
+:::tip
 
-### CacheOptions
+Roll over the various properties to tour the different configs
 
-_type: BackfillCacheOptions & { environmentGlob: string[] }_
-### ConfigOptions
-#### cache
-_type: boolean_
+:::
 
-Should cache be enabled
-  
-#### cacheOptions
-_type: [CacheOptions](#CacheOptions)_
+```js twoslash
+/// <reference types="node" />
+/** @type {import("@lage-run/cli").ConfigOptions} */
+// ---cut---
+module.exports = {
+  pipeline: {
+    build: ["^build"],
+    test: {
+      outputs: [],
+      dependsOn: ["build"]
+    },
+    lint: {
+      type: "worker",
+      options: {
+        maxWorkers: 4,
+        worker: "path/to/scripts/worker/lint.js",
+      },
+    },
+    // Calls "start" in all the packages
+    start: [],
 
-Backfill cache options
-  
-#### ignore
-_type: string[]_
+    // Temporary workarounds for projects that are in transition to lage
+    "specific-package-a#test": ["specific-package-b#build"],
+  },
+  npmClient: "yarn", // optional, by default "npm run" is used; "yarn" can exhibit slightly different behavior,
+  cacheOptions: {
+    /**
+     * Any of these files changed would invalidate the cache
+     *
+     * NOTE: lockfiles are NOT necessary here. lage already takes external dependency versions into account.
+     */
+    environmentGlob: [".github/**", ".azure-devops/**"],
 
-Which files to ignore when calculating scopes with --since
-  
-#### npmClient
-_type: "npm" | "yarn" | "pnpm"_
+    /**
+     * Useful for when caches need to be versioned
+     */
+    cacheKey: "v1",
 
-Which NPM Client to use when running npm lifecycle scripts
-  
-#### pipeline
-_type: [Pipeline](#Pipeline)_
+    /**
+     * Manually set this to true so that remote caches are pushed - useful in CI systems that do *not* use standard
+     * environment variables to indicate that it is run from a CI system.
+     */
+    writeRemoteCache: boolean,
 
-Defines the task pipeline, prefix with "^" character to denote a topological dependency
+    /**
+     * Skips writes to local cache - also useful in CI (defaults to true when CI systems are detected)
+     */
+    skipLocalCache: boolean,
+  },
 
-Example:
+  /**
+   * affects the --since flag: ignore changes in these paths, so they do not count as changes between refs
+   */
+  ignore: ["*.md"]
 
+  /**
+   * affects the --since flag: any changes in these paths mean that --since flag is disabled; caching is not affected by this flag
+   */
+  repoWideChanges: ["yarn.lock"]
+};
 ```
-{
-  build: ["^build"],
-  test: ["build"],
-  lint: []
-}
-```
-
-  
-#### priorities
-_type: [Priority](#Priority)[]_
-
-Optional priority to set on tasks in a package to make the scheduler give priority to tasks on the critical path for high priority tasks
-  
-#### repoWideChanges
-_type: string[]_
-
-disables --since flag when any of this list of files changed
-  
-### Pipeline
-
-
-### Pipelines
-
-_type: Map<string, [Pipeline](#Pipeline)>_
-### Priority
-#### package
-_type: string_
-
-package name, as in package.json
-  
-#### priority
-_type: number_
-
-priority, the higher the more priority; undefined priority means lowest priority
-  
-#### task
-_type: string_
-
-task name, as listed in the `scripts` section of package.json
-  

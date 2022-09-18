@@ -9,3 +9,11 @@
 html[data-theme='dark'] {
   --ifm-color-primary: rgb(70, 189, 226);
 }
+
+[data-theme="light"] .shiki.nord {
+  display: none;
+}
+
+[data-theme="dark"] .shiki.min-light {
+  display: none;
+}
