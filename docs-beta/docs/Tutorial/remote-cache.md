@@ -16,7 +16,7 @@ Follow these steps to set up a remote cache
 
 ## 1. Make sure to upgrade to latest `lage` (v1.0.0+)
 
-See [migration guide](./migration)
+See [migration guide](Cookbook/migration.md)
 
 ```
 $ yarn upgrade lage

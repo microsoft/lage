@@ -22,11 +22,8 @@ export function Footer() {
               There’s no better time than now to save yourself time. Get started within a minute with a single command!
             </Description>
             <SideBySide>
-              <Button isEmphasized={true} to="/docs/Introducing Lage/Overview">
+              <Button isEmphasized={true} to="/docs/Introduction">
                 Get Started
-              </Button>
-              <Button isEmphasized={false} to="/docs/Introducing Lage/Overview">
-                Try the Demo
               </Button>
             </SideBySide>
           </div>

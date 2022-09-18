@@ -69,4 +69,4 @@ pnpm build
 
 ## Next Steps
 
-Now that you've configured `lage`, dig deeper in the [Tutorial](/docs/Tutorial/cli) section for features like remote caching, task skipping, customized pipelines, and setting priorities.
+Now that you've configured `lage`, dig deeper in the [Tutorial](Tutorial/pipeline.md) section for features like remote caching, task skipping, customized pipelines, and setting priorities.

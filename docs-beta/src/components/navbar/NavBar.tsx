@@ -33,7 +33,7 @@ export function NavBar() {
             </div>
             {/*Contents of the hamburger menu*/}
             <div className="flex flex-col space-y-2 px-4 py-24">
-              <HamburgerButton to="/docs/Introducing Lage/Overview">Guide</HamburgerButton>
+              <HamburgerButton to="/docs/Introduction">Guide</HamburgerButton>
               <HamburgerButton to="https://github.com/microsoft/lage">GitHub</HamburgerButton>
             </div>
           </div>
