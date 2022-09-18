@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Added random color for package output",
+  "packageName": "lage",
+  "email": "33559264+nemanjatesic@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
