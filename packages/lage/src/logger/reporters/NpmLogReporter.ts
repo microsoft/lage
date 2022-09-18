@@ -1,5 +1,5 @@
 import log from "npmlog";
-import chalk from "chalk";
+import chalk, { Chalk } from "chalk";
 import { Reporter } from "./Reporter";
 import { LogLevel } from "../LogLevel";
 import { LogEntry, LogStructuredData, TaskData, InfoData } from "../LogEntry";
@@ -23,8 +23,34 @@ const colors = {
   silly: chalk.green,
 };
 
+const pkgColors = {
+  red: chalk.red,
+  blue: chalk.blue,
+  cyanBright: chalk.cyanBright,
+  greenBright: chalk.greenBright,
+  yellow: chalk.yellow,
+  magenta: chalk.magenta
+}
+
+function getRandomPkgColor(): Chalk {
+  const pkgColorValues = Object.values(pkgColors);
+  return pkgColorValues[Math.floor(Math.random() * pkgColorValues.length)];
+}
+
+const pkgNameToPkgColorMap = new Map<string, Chalk>();
+
+function getColorForPkg(pkg: string): Chalk  {
+  if (!pkgNameToPkgColorMap.has(pkg)) {
+    const color = getRandomPkgColor();
+    pkgNameToPkgColorMap.set(pkg, color);
+  }
+
+  return pkgNameToPkgColorMap.get(pkg)!;
+}
+
 function getTaskLogPrefix(pkg: string, task: string) {
-  return `${colors.pkg(pkg.padStart(maxLengths.pkg))} ${colors.task(task.padStart(maxLengths.task))}`;
+  const pkgColor = getColorForPkg(pkg);
+  return `${pkgColor(pkg.padStart(maxLengths.pkg))} ${colors.task(task.padStart(maxLengths.task))}`;
 }
 
 function normalize(prefixOrMessage: string, message?: string) {
@@ -95,7 +121,8 @@ export class NpmLogReporter implements Reporter {
     const data = entry.data as TaskData;
 
     if (data.status) {
-      const pkgTask = this.options.grouped ? `${chalk.magenta(pkg)} ${chalk.cyan(task)}` : "";
+      const pkgColor = getColorForPkg(pkg);
+      const pkgTask = this.options.grouped ? `${pkgColor(pkg)} ${chalk.cyan(task)}` : "";
 
       switch (data.status) {
         case "started":
