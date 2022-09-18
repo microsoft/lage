@@ -1,10 +1,8 @@
 ---
 sidebar_position: 5
 
-title: Remote Cache
+title: 5. Remote Cache
 ---
-
-# Remote Cache
 
 As your repo grows in size and complexity, the build takes longer and longer even locally. `lage` elegantly provides an incremental build capability given a locally available cache. When we pair the caching capability of `lage` with a cloud storage provider, we can speed up local builds with remote cache made available by Continuous Integration, or CI, jobs. 
 
@@ -81,7 +79,7 @@ Create a secret named "BACKFILL_CACHE_PROVIDER_OPTIONS":
 {"connectionString":"the **read-write** connection string","container":"CONTAINER NAME"}
 ```
 
-## Notes
+::Note
 
 ### Uploading cache to a remote is *not* the default
 Without the `LAGE_WRITE_REMOTE_CACHE` environment variable, `lage` no longer uploads build caches to the remote server.
@@ -90,3 +88,5 @@ Without the `LAGE_WRITE_REMOTE_CACHE` environment variable, `lage` no longer upl
 Lage picks up your `.env` file contents using [`dotenv`](https://www.npmjs.com/package/dotenv) utility under the hood (see [backfill-utils-dotenv implementation](https://github.com/microsoft/backfill/blob/03b0e808d978faebf7be922a3f87d764ad0efce2/packages/utils-dotenv/README.md)).
 
 Need to access environment variables from the `.env` file in your application? You would need to setup a mechanism to inject them. Try using utilities like `dotenv` (for Node.js) or [`env-cmd`](https://www.npmjs.com/package/env-cmd) (for executing commands).
+
+:: 

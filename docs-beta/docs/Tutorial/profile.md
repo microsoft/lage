@@ -1,7 +1,7 @@
 ---
-sidebar_position: 7
+sidebar_position: 6
 
-title: Profiling `lage`
+title: 6. Profiling `lage`
 ---
 
 # Profiling `lage`

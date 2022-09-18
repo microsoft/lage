@@ -1,29 +1,60 @@
 ---
 sidebar_position: 3
 
-title: Scoped builds
+title: 3. Scoping by packages
 ---
 
-# Scoped Builds
+By examining the [target graph](/Introduction#how-does-lage-schedule-tasks), `lage` can understand which some targets that are not affected by a particular change being proposed in a pull request. In that case `lage` has a few CLI arguments that controls which target to run.
 
-Scoping a task runner can speed up the process especially if there are distinct clusters of packages that are not related to each other within the repository. `lage` has a `scope` option that allows the task running to proceed up to the packages found that matches the `scope` argument. This is a string matcher based on the name of the packages (not the package path).
+:::info
 
-> It is important to note that dependents and dependencies refer to the package & task.
+A target is an unit of execution in the `lage` graph. Think of it as a tuple of `[package, task]`.
+
+:::
 
 ## Scoped builds with all its dependents
 
-By default, it is helpful to be able to run tasks on all affected packages within a scope. Packages that changed will affect downstream consumers. In this case, pass along the `scope` to build all the dependencies as well.
-
-> Note: you can use wild card character: `*`. This is particularly helpful when packages are named by group or by scope.
+By default, `lage` runs tasks on all affected packages within a scope. Packages that changed will affect downstream consumers of the "scope". In this example, the `scope` is set as `a-common-library` - all of its transitive dependents (consumers of the `a-common-library` package) will also have their "build" script be called.   
 
 ```
-$ lage build --scope *build-tools*
+$ lage build --scope a-common-library
+```
+
+You can use wild card character: `*`. This is particularly helpful when packages are named by group or by scope. For example, `components-*` would match `components-foo` and `components-bar` packages.
+
+
+```
+$ lage build --scope components-*
+```
+
+:::note 
+
+npm has a concept of [@-scoped packages](https://docs.npmjs.com/cli/v8/using-npm/scope) in the package names. This describes a kind of grouping by an organization as defined by the npm spec. It is a *different* concept than the `lage` scope.
+
+:::
+
+Speaking of @-scopes. We found that typing the @-scopes when specifying the `lage` scoped runs is a kind of [toil](https://sre.google/sre-book/eliminating-toil/) as a command line argument. So, `lage` will accept bare package names like this:
+
+```
+# Given that there is a package named: @myorg/wonderful-library, we can match it this way:
+$ lage build --scope wonderful-library
 ```
 
 ## Scoped builds with no dependent & their dependencies
 
-Sometimes we want to run the tasks needed to satisfy the `build` script of all the packages that has the `build-tools` string in their names. Think of this as running tasks up and including the package matched in the scope. Simply add a `--no-deps` flag to run up to a package task.
+If you simply want to run all targets up to a certain scope, this is how you can achieve it:
 
 ```
-$ lage build --scope *build-tools* --no-deps
+## v2
+$ lage build --scope build-tools --no-dependents
+
+## v1
+$ lage build --scope build-tools --no-deps
+```
+
+In fact, this is so useful that `lage` has a special syntactic sugar for it:
+
+```
+## syntactic sugar for --scope build-tools --no-dependents
+$ lage build --to build-tools
 ```
