@@ -1,5 +1,5 @@
 import log from "npmlog";
-import chalk from "chalk";
+import chalk, { Chalk } from "chalk";
 import { Reporter } from "./Reporter";
 import { LogLevel } from "../LogLevel";
 import { LogEntry, LogStructuredData, TaskData, InfoData } from "../LogEntry";
@@ -8,6 +8,7 @@ import { RunContext } from "../../types/RunContext";
 import { getPackageAndTask, getTargetId } from "../../task/taskId";
 import { LoggerOptions } from "../../types/LoggerOptions";
 import { TargetStatus } from "../../types/TargetStatus";
+import crypto from "crypto";
 
 const maxLengths = {
   pkg: 0,
@@ -23,8 +24,29 @@ const colors = {
   silly: chalk.green,
 };
 
+const pkgColors: Chalk[] = [chalk.red, chalk.blue, chalk.cyanBright, chalk.greenBright, chalk.yellow, chalk.magenta];
+
+function hashStringToNumber(str: string): number {
+  const hash = crypto.createHash("md5");
+  hash.update(str);
+  const hex = hash.digest("hex").substring(0, 6);
+  return parseInt(hex, 16);
+}
+
+const pkgNameToIndexInPkgColorArray = new Map<string, number>();
+
+function getColorForPkg(pkg: string): Chalk {
+  if (!pkgNameToIndexInPkgColorArray.has(pkg)) {
+    const index = hashStringToNumber(pkg) % pkgColors.length;
+    pkgNameToIndexInPkgColorArray.set(pkg, index);
+  }
+
+  return pkgColors[pkgNameToIndexInPkgColorArray.get(pkg)!];
+}
+
 function getTaskLogPrefix(pkg: string, task: string) {
-  return `${colors.pkg(pkg.padStart(maxLengths.pkg))} ${colors.task(task.padStart(maxLengths.task))}`;
+  const pkgColor = getColorForPkg(pkg);
+  return `${pkgColor(pkg.padStart(maxLengths.pkg))} ${colors.task(task.padStart(maxLengths.task))}`;
 }
 
 function normalize(prefixOrMessage: string, message?: string) {
@@ -95,7 +117,8 @@ export class NpmLogReporter implements Reporter {
     const data = entry.data as TaskData;
 
     if (data.status) {
-      const pkgTask = this.options.grouped ? `${chalk.magenta(pkg)} ${chalk.cyan(task)}` : "";
+      const pkgColor = getColorForPkg(pkg);
+      const pkgTask = this.options.grouped ? `${pkgColor(pkg)} ${chalk.cyan(task)}` : "";
 
       switch (data.status) {
         case "started":
