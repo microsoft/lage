@@ -2,6 +2,7 @@ import { Command, Option } from "commander";
 import os from "os";
 import { runAction } from "./action";
 import { addLoggerOptions } from "../addLoggerOptions";
+import { isRunningFromCI } from "../isRunningFromCI";
 
 const runCommand = new Command("run");
 
@@ -30,8 +31,7 @@ addLoggerOptions(runCommand)
   .option("--grouped", "groups the logs", false)
   .option("--no-cache", "disables the cache")
   .option("--reset-cache", "resets the cache, filling it after a run")
-  .option("--skip-local-cache", "skips caching locally")
-
+  .option("--skip-local-cache", "skips caching locally (defaults to true in CI environments)", isRunningFromCI)
   .option("--profile [profile]", "writes a run profile into a file that can be processed by Chromium devtool")
   .option(
     "--nodearg <nodeArg>",
