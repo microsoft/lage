@@ -5,8 +5,6 @@ const PROJECT_ROOT = require("path").resolve(__dirname, "..", "..");
 const { registerWorker } = require("@lage-run/worker-threads-pool");
 const { readFile } = require("fs/promises");
 
-const { threadId } = require("node:worker_threads");
-
 const path = require("path");
 
 async function run(data) {
@@ -33,7 +31,7 @@ async function run(data) {
   const files = "src/**/*.ts";
   const results = await eslint.lintFiles(files);
   const formatter = await eslint.loadFormatter("stylish");
-  const resultText = formatter.format(results);
+  const resultText = await formatter.format(results);
 
   // 4. Output it.
   process.stdout.write(resultText + "\n");

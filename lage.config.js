@@ -12,11 +12,9 @@ module.exports = {
         maxWorkers: 4,
         worker: path.join(__dirname, "scripts/worker/lint.js"),
       },
+      dependsOn: ["@lage-run/worker-threads-pool#build"],
     },
     start: [],
-
-    // TODO: a temporary hack to allow both of these projects to run build with lage
-    "@lage-run/docs-beta#build": ["@lage/docs#build"],
   },
   npmClient: "yarn",
 };

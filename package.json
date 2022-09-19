@@ -9,17 +9,16 @@
     "packages": [
       "packages/*",
       "docs",
-      "docs-beta",
       "scripts"
     ]
   },
   "scripts": {
-    "build": "lage build --scope=!@lage/docs --scope=lage --scope=@lage-run/* --scope=!@lage-run/docs-beta --verbose",
+    "build": "lage build --scope=!@lage/docs --scope=lage --scope=@lage-run/* --verbose",
     "change": "beachball change",
     "checkchange": "beachball check",
     "release": "beachball publish -y --tag latest",
-    "start": "lage start --scope=!@lage/docs --scope=lage --scope=@lage-run/* --scope=!@lage-run/docs-beta --verbose",
-    "test": "lage test --scope !@lage/docs --scope=lage --scope=@lage-run/* --scope=!@lage-run/docs-beta --verbose",
+    "start": "lage start --scope=!@lage/docs --scope=lage --scope=@lage-run/* --verbose",
+    "test": "lage test --scope !@lage/docs --scope=lage --scope=@lage-run/* --verbose",
     "lint": "lage lint",
     "docs": "yarn workspace @lage/docs start",
     "docs:build": "yarn workspace @lage/docs build",
@@ -32,6 +31,6 @@
     "beachball": "2.30.2",
     "gh-pages": "4.0.0",
     "jest": "29.0.3",
-    "lage-npm": "npm:lage@1.7.7"
+    "lage-npm": "npm:@lage-run/lage@latest"
   }
 }
