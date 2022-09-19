@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_lage_run_docs=self.webpackChunk_lage_run_docs||[]).push([[324],{531:(e,a,t)=>{t.r(a),t.d(a,{default:()=>c});var s=t(7378),n=t(353);function c(){const{siteConfig:e}=(0,n.Z)();return s.createElement("div",{className:"theme-color",id:"tailwind"},s.createElement("div",{className:"md:bg-navbar"},"test"))}}}]);
