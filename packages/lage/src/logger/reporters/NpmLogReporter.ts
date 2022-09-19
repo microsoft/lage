@@ -8,6 +8,7 @@ import { RunContext } from "../../types/RunContext";
 import { getPackageAndTask, getTargetId } from "../../task/taskId";
 import { LoggerOptions } from "../../types/LoggerOptions";
 import { TargetStatus } from "../../types/TargetStatus";
+import crypto from "crypto";
 
 const maxLengths = {
   pkg: 0,
@@ -23,29 +24,24 @@ const colors = {
   silly: chalk.green,
 };
 
-const pkgColors = {
-  red: chalk.red,
-  blue: chalk.blue,
-  cyanBright: chalk.cyanBright,
-  greenBright: chalk.greenBright,
-  yellow: chalk.yellow,
-  magenta: chalk.magenta,
-};
+const pkgColors: Chalk[] = [chalk.red, chalk.blue, chalk.cyanBright, chalk.greenBright, chalk.yellow, chalk.magenta];
 
-function getRandomPkgColor(): Chalk {
-  const pkgColorValues = Object.values(pkgColors);
-  return pkgColorValues[Math.floor(Math.random() * pkgColorValues.length)];
+function hashStringToNumber(str: string): number {
+  const hash = crypto.createHash("sha256");
+  hash.update(str);
+  const hex = hash.digest("hex").substring(0, 6);
+  return parseInt(hex, 16);
 }
 
-const pkgNameToPkgColorMap = new Map<string, Chalk>();
+const pkgNameToIndexInPkgColorArray = new Map<string, number>();
 
 function getColorForPkg(pkg: string): Chalk {
-  if (!pkgNameToPkgColorMap.has(pkg)) {
-    const color = getRandomPkgColor();
-    pkgNameToPkgColorMap.set(pkg, color);
+  if (!pkgNameToIndexInPkgColorArray.has(pkg)) {
+    const index = hashStringToNumber(pkg) % pkgColors.length;
+    pkgNameToIndexInPkgColorArray.set(pkg, index);
   }
 
-  return pkgNameToPkgColorMap.get(pkg)!;
+  return pkgColors[pkgNameToIndexInPkgColorArray.get(pkg)!];
 }
 
 function getTaskLogPrefix(pkg: string, task: string) {
