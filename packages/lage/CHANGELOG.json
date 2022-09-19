@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 19 Sep 2022 19:44:48 GMT",
+      "tag": "lage_v1.8.8",
+      "version": "1.8.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "33559264+nemanjatesic@users.noreply.github.com",
+            "package": "lage",
+            "commit": "4970b3ae806ce82b79fdb14d24ed63ee10d869ef",
+            "comment": "Added random color for package output"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 19 Sep 2022 05:03:56 GMT",
       "tag": "lage_v1.8.7",
       "version": "1.8.7",

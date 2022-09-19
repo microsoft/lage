@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 19 Sep 2022 05:03:56 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Sep 2022 19:44:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.8.8
+
+Mon, 19 Sep 2022 19:44:48 GMT
+
+### Patches
+
+- Added random color for package output (33559264+nemanjatesic@users.noreply.github.com)
 
 ## 1.8.7
 
