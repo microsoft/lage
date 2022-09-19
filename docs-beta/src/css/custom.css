@@ -1,26 +1,19 @@
-@tailwind base;
-@tailwind components;
+:root {
+  --ifm-color-primary: rgb(28 88 106);
+  --ifm-code-font-size: 95%;
+  --ifm-background-surface-color: rgb(28 88 106);
+  --ifm-navbar-link-color: white;
+  --ifm-navbar-link-hover-color: white;
+}
 
-@font-face {
-     font-family: "Londrina Solid";
-     src: url(../../static/fonts/LondrinaSolid.ttf) format('truetype');
-};
+html[data-theme='dark'] {
+  --ifm-color-primary: rgb(70, 189, 226);
+}
 
-@font-face {
-     font-family: "Bahnschrift";
-     src: url(../../static/fonts/Bahnschrift.ttf) format('truetype');
-};
+[data-theme="light"] .shiki.nord {
+  display: none;
+}
 
-@tailwind utilities;
-
-.theme-color {
-    --color-button: 134 0 156;
-    --color-point: 255 214 107;
-    --color-bodySecondary: 33 153 190; 
-    --color-bodyPrimary: 6 119 126;
-    --color-primary: 255 255 255;
-    --color-secondary: 33 153 190;
-    --color-tertiary: 255 0 0;
-    --color-navbar: 28 88 106;
-    --color-tool: 14 70 74;
+[data-theme="dark"] .shiki.min-light {
+  display: none;
 }

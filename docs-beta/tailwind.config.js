@@ -7,14 +7,16 @@ function withOpacityValue(variable) {
   };
 }
 module.exports = {
+  corePlugins: {
+    preflight: false,
+  },
   content: [
-    "./src/pages/*.js",
-    "./src/components/*.js",
     "./src/pages/**/*.tsx",
     "./src/pages/**/*.ts",
     "./src/pages/**/*.js",
-    "./src/components/*.tsx",
-    "./src/components/*.ts",
+    "./src/components/**/*.js",
+    "./src/components/**/*.tsx",
+    "./src/components/**/*.ts",
   ],
   theme: {
     container: {
@@ -26,7 +28,7 @@ module.exports = {
         bahnschrift: ["Bahnschrift"],
       },
       spacing: {
-        'big-screen': '1920px',
+        "big-screen": "1920px",
       },
       colors: {
         button: withOpacityValue("--color-button"),

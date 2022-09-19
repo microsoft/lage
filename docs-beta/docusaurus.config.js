@@ -1,38 +1,44 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require("prism-react-renderer/themes/github");
+const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Lage',
-  tagline: 'A Beautiful JS Monorepo Task Runner',
-  url: process.env.DEPLOY_URL ? process.env.DEPLOY_URL : 'https://microsoft.github.io',
-  baseUrl: '/lage/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/lage-logo.svg',
-  organizationName: 'microsoft', // Usually your GitHub org/user name.
-  projectName: 'lage', // Usually your repo name.
-  customFields:{
-    image: 'img/lage.png'
+  title: "Lage",
+  tagline: "A Beautiful JS Monorepo Task Runner",
+  url: process.env.DEPLOY_URL ? process.env.DEPLOY_URL : "https://microsoft.github.io",
+  baseUrl: "/lage/",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
+  favicon: "img/lage-logo.svg",
+  organizationName: "microsoft", // Usually your GitHub org/user name.
+  projectName: "lage", // Usually your repo name.
+  customFields: {
+    image: "img/lage.png",
   },
 
   presets: [
     [
-      'classic',
+      "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
+      {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
-          editUrl: 'https://github.com/microsoft/lage/',
+          editUrl: "https://github.com/microsoft/lage/",
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: [require.resolve("./src/css/custom.css")],
         },
-      }),
+      },
+    ],
+    [
+      "docusaurus-preset-shiki-twoslash",
+      {
+        themes: ["min-light", "nord"],
+      },
     ],
   ],
 
@@ -41,25 +47,20 @@ const config = {
     ({
       navbar: {
         logo: {
-          alt: 'Lage Logo',
-          src: 'img/lage.png',
+          alt: "Lage Logo",
+          src: "img/lage.png",
         },
         items: [
           {
-            type: 'doc',
-            docId: 'Introducing Lage/Overview',
-            position: 'left',
-            label: 'Guide',
+            type: "doc",
+            docId: "Introduction",
+            position: "left",
+            label: "Guide",
           },
           {
-            href: 'grapher',
-            position: 'left',
-            label: 'Grapher',
-          },
-          {
-            href: 'https://github.com/microsoft/lage',
-            label: 'GitHub',
-            position: 'right',
+            href: "https://github.com/microsoft/lage",
+            label: "GitHub",
+            position: "right",
           },
         ],
       },
@@ -67,11 +68,24 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
-      colorMode : {
-        defaultMode: 'dark',
-        disableSwitch: true
+      colorMode: {
+        disableSwitch: false,
       },
     }),
+
+  plugins: [
+    async function tailwindPlugin(context, options) {
+      return {
+        name: "docusaurus-tailwindcss",
+        configurePostCss(postcssOptions) {
+          // Appends TailwindCSS and AutoPrefixer.
+          postcssOptions.plugins.push(require("tailwindcss"));
+
+          return postcssOptions;
+        },
+      };
+    },
+  ],
 };
 
 module.exports = config;

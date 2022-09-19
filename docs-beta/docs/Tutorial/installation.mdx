@@ -1,0 +1,63 @@
+---
+sidebar_position: 1
+
+title: 1. Installation
+---
+
+import { StackBlitz } from "@site/src/components/StackBlitz";
+
+Getting started with `lage` is easy. We have already covered the automated installation in the [Quick Start](/Quick Start) guide. If you prefer having more control, read about how to install `lage` manually in this page.
+
+## Manually install `lage` in a Yarn and PNPM workspace
+
+You can manually install `lage` as well.
+
+### 1. Place `lage` in the `devDependencies` at the root level.
+
+Feel free to replace `latest` tag with something specific. Take a look at the [npm link for lage](https://www.npmjs.com/package/lage) to see what the latest version may be at the time.
+
+```json
+{
+  "devDependencies": {
+    ...,
+    "lage": "latest",
+    ...
+  }
+}
+```
+
+### 2. Add a `lage.config.js` file to configure the pipeline:
+
+```js
+module.exports = {
+  pipeline: {
+    build: ["^build"],
+    test: ["build"],
+    lint: [],
+  },
+};
+```
+
+### 3. Inside your monorepo, run `yarn` or `pnpm install`
+
+```
+yarn
+```
+
+or
+
+```
+pnpm install
+```
+
+### 4. Run `lage` commands
+
+```
+yarn lage build
+```
+
+or
+
+```
+pnpm run lage build
+```
