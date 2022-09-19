@@ -24,8 +24,6 @@
     "docs": "yarn workspace @lage/docs start",
     "docs:build": "yarn workspace @lage/docs build",
     "gh-pages": "gh-pages",
-    "docs-beta": "yarn workspace @lage-run/docs-beta start",
-    "docs-beta:build": "yarn workspace @lage/docs build",
     "format": "prettier --config .prettierrc packages/**/*.ts **/*.json --write --ignore-path .gitignore",
     "format:check": "prettier --config .prettierrc packages/**/*.ts **/*.json --check --ignore-path .gitignore"
   },
