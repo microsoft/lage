@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Mon, 19 Sep 2022 03:33:34 GMT",
+      "tag": "@lage-run/cli_v0.3.7",
+      "version": "0.3.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "6b61da2f2dc0090042d9291b24dfc3bc6b3704ef",
+            "comment": "fix default fallback"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 17 Sep 2022 20:20:49 GMT",
       "tag": "@lage-run/cli_v0.3.6",
       "version": "0.3.6",
