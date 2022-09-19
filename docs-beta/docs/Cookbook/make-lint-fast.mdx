@@ -1,0 +1,116 @@
+---
+title: Make ESLint Fast with Dedicated Workers
+tags:
+  - version 2
+---
+
+import { Badge } from '@site/src/components/Badge'
+
+<Badge>version 2</Badge>
+
+ESLint is a wonderful piece of software that catches many software bugs and code quality issues before you check them into the shared code base in a repository. It comes at the price of speed - ESLint is a single-threaded application that can be difficult to speed up.
+
+There are several approaches to solving the limitation of the single core issues. One can conceivably create several ESLint processes with different segments or shards of the files to be linted. This could work, but since the division or segmentation changes depending on the number of files at different point in time, it makes the rest of method of acceleration difficult to achieve: remote caching, scoping, and pipelining.
+
+To combat this, a typical task runners spawn new a new ESLint process PER PACKAGE. With a sufficiently high number of CPU core count, one can recover the inefficiency of creating new ESLint processes by amortization through parallelization. This however, has its drawback as well! If there happens to be a set of very slow-booting plugins for ESLint, then this bootstrap cost becomes the dominant perf bottleneck.
+
+How can we have the cake and eat it too? Easy! Use dedicated workers!
+
+## Worker Runner
+
+`lage` solves this with dedicated workers. The idea is simple: if all of the packages in your monorepo subscribe to the same ESLint configuration, then you can save the bootstrap time by creating a _pool_ of ESLint instances (say, one per CPU core minus one). And have `lage` feed it files to lint per package. `lage` scheduler feeds these to the worker if work is NEEDED. Caching, scoping, pipeline all continue to work the same way!
+
+## Let's see some code!
+
+First, let's change our `lint` task configuration in the pipeline to a "worker" type:
+
+```js twoslash
+// @filename: lage.config.js
+
+const os = require("os");
+
+module.exports = {
+  pipeline: {
+    lint: {
+      type: "worker",
+      options: {
+        maxWorker: os.cpus().length - 1,
+        worker: "scripts/eslint-worker.js",
+      },
+    },
+  },
+};
+```
+
+Then, we implement an `eslint-worker.js` such as this:
+
+```js twoslash
+// @filename: scripts/eslint-worker.js
+
+const path = require("path");
+
+const { ESLint } = require("eslint");
+const { registerWorker } = require("@lage-run/lage");
+const { readFile } = require("fs/promises");
+const { threadId } = require("node:worker_threads");
+
+/** this is the workspace root - find it however you want! */
+const PROJECT_ROOT = path.resolve(__dirname, "..");
+
+/** @type {ESLint} */
+let eslintInstance = null;
+
+/** caches an ESLint instance for the worker */
+function getEslintInstance() {
+  if (!eslintInstance) {
+    const baseConfig = require(path.join(PROJECT_ROOT, "scripts/config/eslintrc.js"));
+    baseConfig.parserOptions.project = path.join(target.cwd, "tsconfig.json");
+
+    eslintInstance = new ESLint({
+      reportUnusedDisableDirectives: "error",
+      baseConfig,
+      fix: false,
+      cache: false,
+      cwd: target.cwd,
+    });
+  }
+
+  return eslintInstance;
+}
+
+/** Workers should have a run function that gets called per package task */
+async function run(data) {
+  const { target } = data;
+  const packageJson = JSON.parse(await readFile(path.join(target.cwd, "package.json"), "utf8"));
+
+  // If you had a package that doesn't use ESLint, you can skip with this condition
+  // Here, we use the "lint" definition inside package.json's scripts key
+  if (!packageJson.scripts?.[target.task]) {
+    process.stdout.write(`No script found for ${target.task} in ${target.cwd}\n`);
+    return;
+  }
+
+  const eslint = getEslintInstance();
+
+  // You can also use "options" to pass different files pattern to lint
+  // e.g. data.options.files; you'll need to then configure this inside lage.config.js's pipeline
+  const files = "src/**/*.ts";
+
+  const results = await eslint.lintFiles(files);
+
+  const formatter = await eslint.loadFormatter("stylish");
+
+  const resultText = formatter.format(results);
+
+  // Output results to stdout
+  process.stdout.write(resultText + "\n");
+
+  if (results.some((r) => r.errorCount > 0)) {
+    // throw an error to indicate that this task has failed
+    throw new Error(`Linting failed with errors`);
+  }
+}
+
+//  Be sure call this to register the worker with `lage`'s worker pool
+registerWorker(run);
+```
