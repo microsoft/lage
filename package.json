@@ -34,6 +34,6 @@
     "beachball": "2.30.2",
     "gh-pages": "4.0.0",
     "jest": "29.0.3",
-    "lage-npm": "npm:lage@1.7.7"
+    "lage-npm": "npm:lage@1.8.6"
   }
 }
