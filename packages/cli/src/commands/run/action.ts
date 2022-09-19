@@ -6,6 +6,7 @@ import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { initializeReporters } from "../../reporters/initialize";
+import { isRunningFromCI } from "../isRunningFromCI";
 import { NpmScriptRunner, SimpleScheduler, WorkerRunner, TargetRunnerPicker } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger from "@lage-run/logger";
@@ -84,6 +85,7 @@ export async function runAction(options: RunOptions, command: Command) {
   const targetGraph = builder.buildTargetGraph(tasks, packages);
 
   // Create Cache Provider
+
   const cacheProvider = new RemoteFallbackCacheProvider({
     root,
     logger,
@@ -100,7 +102,7 @@ export async function runAction(options: RunOptions, command: Command) {
     remoteCacheProvider: config.cacheOptions?.cacheStorageConfig
       ? new BackfillCacheProvider({ root, cacheOptions: config.cacheOptions })
       : undefined,
-    writeRemoteCache: config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true",
+    writeRemoteCache: config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI,
   });
 
   const hasher = new TargetHasher({
