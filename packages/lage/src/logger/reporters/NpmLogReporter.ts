@@ -27,7 +27,7 @@ const colors = {
 const pkgColors: Chalk[] = [chalk.red, chalk.blue, chalk.cyanBright, chalk.greenBright, chalk.yellow, chalk.magenta];
 
 function hashStringToNumber(str: string): number {
-  const hash = crypto.createHash("sha256");
+  const hash = crypto.createHash("md5");
   hash.update(str);
   const hex = hash.digest("hex").substring(0, 6);
   return parseInt(hex, 16);
