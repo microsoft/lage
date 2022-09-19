@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix unused var",
+  "packageName": "lage",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}
