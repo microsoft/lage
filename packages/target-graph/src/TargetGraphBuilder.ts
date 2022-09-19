@@ -50,7 +50,7 @@ export class TargetGraphBuilder {
    * @returns a generated global Target
    */
   private createGlobalTarget(id: string, config: TargetConfig): Target {
-    const { options, dependsOn, deps, cache, inputs, outputs, priority, run } = config;
+    const { options, dependsOn, deps, inputs, outputs, priority, run } = config;
     const { task } = getPackageAndTask(id);
     const targetId = getTargetId(undefined, task);
     return {
