@@ -13,10 +13,7 @@ module.exports = {
         worker: path.join(__dirname, "scripts/worker/lint.js"),
       },
     },
-    start: [],
-
-    // TODO: a temporary hack to allow both of these projects to run build with lage
-    "@lage-run/docs-beta#build": ["@lage/docs#build"],
+    start: []
   },
   npmClient: "yarn",
 };

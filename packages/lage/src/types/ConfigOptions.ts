@@ -3,8 +3,6 @@ import { Priority } from "./Priority";
 import { PipelineDefinition } from "./PipelineDefinition";
 import { LoggerOptions } from "./LoggerOptions";
 
-import { QueueOptions } from "bullmq";
-
 export type NpmClient = "npm" | "yarn" | "pnpm";
 
 export interface ConfigOptions {
