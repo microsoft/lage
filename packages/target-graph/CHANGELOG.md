@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Sat, 17 Sep 2022 01:09:34 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Sep 2022 05:03:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.3
+
+Mon, 19 Sep 2022 05:03:56 GMT
+
+### Patches
+
+- fix unused var (ken@gizzar.com)
 
 ## 0.3.2
 

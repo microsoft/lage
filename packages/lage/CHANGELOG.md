@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Sat, 17 Sep 2022 02:11:00 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Sep 2022 05:03:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.8.7
+
+Mon, 19 Sep 2022 05:03:56 GMT
+
+### Patches
+
+- fix unused var (ken@gizzar.com)
 
 ## 1.8.6
 
