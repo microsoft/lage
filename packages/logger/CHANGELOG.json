@@ -2,6 +2,21 @@
   "name": "@lage-run/logger",
   "entries": [
     {
+      "date": "Tue, 20 Sep 2022 02:32:14 GMT",
+      "tag": "@lage-run/logger_v1.2.0",
+      "version": "1.2.0",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "8193ad27df772d312844bfc4cc3ea43297e18098",
+            "comment": "Hoist widely-used devDependencies to the repo root"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Sep 2022 20:06:10 GMT",
       "tag": "@lage-run/logger_v1.2.0",
       "version": "1.2.0",

@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Tue, 20 Sep 2022 02:32:14 GMT",
+      "tag": "@lage-run/scheduler_v0.3.5",
+      "version": "0.3.5",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "8193ad27df772d312844bfc4cc3ea43297e18098",
+            "comment": "Hoist widely-used devDependencies to the repo root"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 19 Sep 2022 05:03:56 GMT",
       "tag": "@lage-run/scheduler_v0.3.5",
       "version": "0.3.5",
