@@ -50,16 +50,9 @@
     "@types/cosmiconfig": "6.0.0",
     "@types/execa": "2.0.0",
     "@types/ioredis": "4.28.10",
-    "@types/jest": "29.0.3",
-    "@types/node": "14.18.29",
     "@types/npmlog": "4.1.4",
     "@types/p-queue": "3.2.1",
     "@types/yargs-parser": "15.0.0",
-    "beachball": "2.30.2",
-    "gh-pages": "4.0.0",
-    "jest": "29.0.3",
-    "ts-jest": "29.0.1",
-    "ts-node": "8.10.2",
-    "typescript": "4.6.4"
+    "ts-node": "8.10.2"
   }
 }
