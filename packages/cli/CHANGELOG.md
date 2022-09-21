@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Mon, 19 Sep 2022 05:03:56 GMT and should not be manually modified.
+This log was last generated on Wed, 21 Sep 2022 23:32:29 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.9
+
+Wed, 21 Sep 2022 23:32:29 GMT
+
+### Patches
+
+- Making these corrections so that the dependencies and --no-dependents (dependents option) are correctly parsed and used in the program. (email not defined)
 
 ## 0.3.8
 
