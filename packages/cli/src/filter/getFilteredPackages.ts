@@ -115,6 +115,7 @@ export function filterPackages(options: {
 
   // adds dependencies of all filtered package thus far
   if (includeDependencies) {
+    logger.verbose(`filterPackages running with dependencies`);
     filtered = filtered.concat(getTransitiveDependencies(filtered, packageInfos));
   }
 
