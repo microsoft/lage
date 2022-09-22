@@ -74,7 +74,7 @@ function normalize(prefixOrMessage: string, message?: string) {
   }
 }
 
-export class NpmLogReporter implements Reporter {
+export class LogReporter implements Reporter {
   logStream: Writable = process.stdout;
   private logEntries = new Map<string, LogEntry[]>();
   readonly groupedEntries = new Map<string, LogEntry[]>();
@@ -122,9 +122,11 @@ export class NpmLogReporter implements Reporter {
 
     if (entry?.data?.target) {
       const { packageName, task } = entry.data.target;
+      const pkgColor = getColorForPkg(packageName);
+      const pkgTask = this.options.grouped ? `${pkgColor(packageName)} ${chalk.cyan(task)}` : "";
       const normalizedArgs = normalize(getTaskLogPrefix(packageName ?? "<root>", task), msg);
       prefix = normalizedArgs.prefix;
-      msg = normalizedArgs.message;
+      msg = `${normalizedArgs.message} ${pkgTask}`;
     }
 
     this.print(`${prefix ? prefix + " " : ""}${msg}`);
@@ -137,29 +139,24 @@ export class NpmLogReporter implements Reporter {
   private logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
     const colorFn = colors[entry.level];
     const data = entry.data!;
-    const pkg = data['package'];
-    const task = data['task'];
 
     if (isTargetStatusLogEntry(data)) {
       const { hash, duration } = data;
-      const pkgColor = getColorForPkg(pkg);
-      const pkgTask = this.options.grouped ? `${pkgColor(pkg)} ${chalk.cyan(task)}` : "";
-
       switch (data.status) {
         case "running":
-          return this.printEntry(entry, colorFn(`${colors.ok("➔")} start ${pkgTask}`));
+          return this.printEntry(entry, colorFn(`${colors.ok("➔")} start`));
 
         case "success":
-          return this.printEntry(entry, colorFn(`${colors.ok("✓")} done ${pkgTask} - ${formatDuration(hrToSeconds(duration!))}`));
+          return this.printEntry(entry, colorFn(`${colors.ok("✓")} done - ${formatDuration(hrToSeconds(duration!))}`));
 
         case "failed":
-          return this.printEntry(entry, colorFn(`${colors.error("✖")} fail ${pkgTask}`));
+          return this.printEntry(entry, colorFn(`${colors.error("✖")} fail`));
 
         case "skipped":
-          return this.printEntry(entry, colorFn(`${colors.ok("»")} skip ${pkgTask} - ${hash!}`));
+          return this.printEntry(entry, colorFn(`${colors.ok("»")} skip - ${hash!}`));
 
         case "aborted":
-          return this.printEntry(entry, colorFn(`${colors.warn("»")} aborted ${pkgTask}`));
+          return this.printEntry(entry, colorFn(`${colors.warn("»")} aborted`));
       }
     } else {
       return this.printEntry(entry, colorFn(":  " + stripAnsi(entry.msg)));
