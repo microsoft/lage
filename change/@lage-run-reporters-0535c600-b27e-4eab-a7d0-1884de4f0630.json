@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Add colors to the default logger in v2",
+  "packageName": "@lage-run/reporters",
+  "email": "phillip.burch@live.com",
+  "dependentChangeType": "patch"
+}
