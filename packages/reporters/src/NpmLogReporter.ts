@@ -24,6 +24,7 @@ const colors = {
   warn: chalk.yellow,
 };
 
+// Monokai color scheme
 const pkgColors: Chalk[] = [
   chalk.hex('#e5b567'), 
   chalk.hex('#b4d273'), 
