@@ -26,12 +26,12 @@ const colors = {
 
 // Monokai color scheme
 const pkgColors: Chalk[] = [
-  chalk.hex('#e5b567'), 
-  chalk.hex('#b4d273'), 
-  chalk.hex('#e87d3e'), 
-  chalk.hex('#9e86c8'), 
-  chalk.hex('#b05279'), 
-  chalk.hex('#6c99bb'),
+  chalk.hex("#e5b567"),
+  chalk.hex("#b4d273"),
+  chalk.hex("#e87d3e"),
+  chalk.hex("#9e86c8"),
+  chalk.hex("#b05279"),
+  chalk.hex("#6c99bb"),
 ];
 
 function hashStringToNumber(str: string): number {
