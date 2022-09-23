@@ -60,14 +60,9 @@ export class WatchScheduler implements TargetScheduler {
   async run(root: string, targetGraph: TargetGraph): Promise<SchedulerRunSummary> {
     const startTime: [number, number] = process.hrtime();
 
-    const { concurrency, continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, runnerPicker } = this.options;
-
-    this.options.pool.addNewWorker();
+    const { continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, runnerPicker } = this.options;
 
     const { dependencies, targets } = targetGraph;
-
-    const pGraphNodes: PGraphNodeMap = new Map();
-    const pGraphEdges = dependencies;
 
     for (const target of targets.values()) {
       const wrappedTarget = new WrappedTarget({
@@ -83,59 +78,9 @@ export class WatchScheduler implements TargetScheduler {
       });
 
       this.wrappedTargets.set(target.id, wrappedTarget);
-
-      pGraphNodes.set(target.id, {
-        /**
-         * Picks the runner, and run the wrapped target with the runner
-         */
-        run: async () => {
-          if (this.abortSignal.aborted) {
-            return;
-          }
-
-          const runner = runnerPicker.pick(target);
-          return this.wrappedTargets.get(target.id)!.run(runner);
-        },
-
-        priority: target.priority,
-      });
     }
 
-    let results: SchedulerRunResults = "failed";
-    let error: string | undefined;
-    let duration: [number, number] = [0, 0];
-    let targetRunByStatus: TargetRunSummary;
-
-    try {
-      await pGraph(pGraphNodes, pGraphEdges).run({
-        concurrency,
-        continue: continueOnError,
-      });
-    } catch (e) {
-      error = e instanceof Error ? e.message : String(e);
-    } finally {
-      duration = process.hrtime(startTime);
-      targetRunByStatus = categorizeTargetRuns([...this.wrappedTargets.values()]);
-
-      if (
-        targetRunByStatus.failed.length +
-          targetRunByStatus.aborted.length +
-          targetRunByStatus.pending.length +
-          targetRunByStatus.running.length ===
-        0
-      ) {
-        results = "success";
-      }
-    }
-
-    return {
-      targetRunByStatus,
-      targetRuns: this.wrappedTargets,
-      duration,
-      startTime,
-      results,
-      error,
-    };
+    return {} as any;
   }
 
   /**
