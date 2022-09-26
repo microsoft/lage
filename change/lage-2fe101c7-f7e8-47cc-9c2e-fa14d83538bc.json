@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "The defaults for CI environments is completely wrong, we need to make sure the defaults are correct for CI so it will write remote cache and skip local download remote cache",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
