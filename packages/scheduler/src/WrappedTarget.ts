@@ -1,15 +1,17 @@
+import { getLageOutputCacheLocation } from "./createCachedOutputTransform";
 import { hrToSeconds } from "./formatDuration";
-import type { Logger } from "@lage-run/logger";
 import { LogLevel } from "@lage-run/logger";
-import type { TargetHasher } from "@lage-run/cache";
+import { WorkerPool } from "@lage-run/worker-threads-pool";
+import fs from "fs";
 import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
+import type { Logger } from "@lage-run/logger";
 import type { Target } from "@lage-run/target-graph";
+import type { TargetHasher } from "@lage-run/cache";
 import type { TargetRun } from "./types/TargetRun";
-import type { TargetRunner } from "./types/TargetRunner";
 import type { TargetStatus } from "./types/TargetStatus";
-import { createCachedOutputTransform, getLageOutputCacheLocation } from "./createCachedOutputTransform";
-import fs from "fs";
+import type { Worker } from "worker_threads";
+import { createInterface } from "readline";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -21,6 +23,7 @@ export interface WrappedTargetOptions {
   shouldResetCache: boolean;
   continueOnError: boolean;
   abortController: AbortController;
+  pool: WorkerPool;
 }
 
 /**
@@ -117,8 +120,41 @@ export class WrappedTarget implements TargetRun {
     await cacheProvider.put(hash, target);
   }
 
-  async run(runner: TargetRunner) {
-    const { target, logger, shouldCache, abortController } = this.options;
+  captureStream(target: Target, worker: Worker) {
+
+
+    const { logger } = this.options;
+
+    const stdout = worker.stdout;
+    const stderr = worker.stderr;
+
+    const rl = createInterface({
+      input: stdout,
+      crlfDelay: Infinity,
+    });
+
+    // const onData = (data: string) => logger.verbose(data, { target });
+
+    // stdout.setEncoding("utf-8");
+    // stdout.on("data", onData);
+
+    // stderr.setEncoding("utf-8");
+    // stderr.on("data", onData);
+
+    const onLine = (line) => {
+      logger.verbose(line, { target });
+    }
+
+    rl.on("line", onLine);
+
+    return () => {
+      // stdout.off("data", onData);
+      // stderr.off("data", onData);
+    };
+  }
+
+  async run() {
+    const { target, logger, shouldCache, abortController, pool } = this.options;
 
     this.onStart();
     const abortSignal = abortController.signal;
@@ -161,16 +197,28 @@ export class WrappedTarget implements TargetRun {
        * TargetRunner should run() a target. The promise resolves if successful, or rejects otherwise (aborted or failed).
        */
 
-      // TODO: instead of passing a hash, pass in the stderr/stdout transformer streams
-      await runner.run(
-        target,
-        abortSignal,
-        hash
-          ? {
-              stdout: createCachedOutputTransform(target, hash),
-              stderr: createCachedOutputTransform(target, hash),
-            }
-          : undefined
+      // // TODO: instead of passing a hash, pass in the stderr/stdout transformer streams
+      // await runner.run(
+      //   target,
+      //   abortSignal,
+      //   hash
+      //     ? {
+      //         stdout: createCachedOutputTransform(target, hash),
+      //         stderr: createCachedOutputTransform(target, hash),
+      //       }
+      //     : undefined
+      // );
+
+      let cleanupStreams: () => void;
+
+      await pool.exec(
+        { target },
+        (worker) => {
+          cleanupStreams = this.captureStream(target, worker);
+        },
+        () => {
+          cleanupStreams();
+        }
       );
 
       if (cacheEnabled) {

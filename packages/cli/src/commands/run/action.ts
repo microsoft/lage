@@ -12,6 +12,7 @@ import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger from "@lage-run/logger";
 import type { ReporterInitOptions } from "../../types/LoggerOptions";
 import type { TargetRunner } from "@lage-run/scheduler";
+import { WorkerPool } from "@lage-run/worker-threads-pool";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
@@ -112,28 +113,19 @@ export async function runAction(options: RunOptions, command: Command) {
     cacheKey: config.cacheOptions.cacheKey,
   });
 
-  // Run Tasks with Scheduler + NpmScriptRunner
-  const runners: Record<string, TargetRunner> = {
-    npmScript: new NpmScriptRunner({
-      logger,
-      nodeOptions: options.nodeargs,
-      taskArgs,
-      npmCmd: findNpmClient(config.npmClient),
-    }),
-    worker: new WorkerRunner({
-      logger,
-      workerTargetConfigs: Object.entries(config.pipeline).reduce((workerTargetConfigs, [id, def]) => {
-        if (!Array.isArray(def) && def.type === "worker") {
-          workerTargetConfigs[id] = def;
-        }
-
-        return workerTargetConfigs;
-      }, {}),
-    }),
-  };
-
-  const runnerPicker = new TargetRunnerPicker({
-    runners,
+  const pool = new WorkerPool({
+    maxWorkers: options.concurrency,
+    script: require.resolve("@lage-run/scheduler/lib/workers/worker.js"),
+    workerOptions: {
+      stdout: true,
+      stderr: true,
+      workerData: {
+        nodeArgs: options.nodeargs,
+        taskArgs,
+        npmClient: config.npmClient,
+        loglevel: options.logLevel
+      }
+    },
   });
 
   const scheduler = new SimpleScheduler({
@@ -144,22 +136,26 @@ export async function runAction(options: RunOptions, command: Command) {
     continueOnError: options.continue,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    runnerPicker,
+    pool,
   });
+
+  // const summary = await scheduler.run(root, targetGraph);
 
   const summary = await scheduler.run(root, targetGraph);
 
-  for (const runner of Object.values(runners)) {
-    if (runner.cleanup) {
-      await runner.cleanup();
-    }
-  }
+  // for (const runner of Object.values(runners)) {
+  //   if (runner.cleanup) {
+  //     await runner.cleanup();
+  //   }
+  // }
 
-  for (const reporter of logger.reporters) {
-    reporter.summarize(summary);
-  }
+  // try {
+  //   for (const reporter of logger.reporters) {
+  //     reporter.summarize(summary);
+  //   }
+  // } catch (e) {}
 
-  if (summary.results !== "success") {
-    process.exitCode = 1;
-  }
+  // if (summary.results !== "success") {
+  //   process.exitCode = 1;
+  // }
 }

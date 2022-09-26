@@ -1,15 +1,14 @@
 import { AbortController } from "abort-controller";
 import { categorizeTargetRuns } from "./categorizeTargetRuns";
 import { WrappedTarget } from "./WrappedTarget";
-import pGraph from "p-graph";
+
 import type { AbortSignal } from "abort-controller";
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { Logger } from "@lage-run/logger";
-import type { PGraphNodeMap } from "p-graph";
 import type { SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "./types/SchedulerRunSummary";
-import type { TargetGraph } from "@lage-run/target-graph";
-import type { TargetRunnerPicker } from "./runners/TargetRunnerPicker";
+import { getStartTargetId, TargetGraph } from "@lage-run/target-graph";
 import type { TargetScheduler } from "./types/TargetScheduler";
+import type { WorkerPool } from "@lage-run/worker-threads-pool";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -19,7 +18,7 @@ export interface SimpleSchedulerOptions {
   hasher: TargetHasher;
   shouldCache: boolean;
   shouldResetCache: boolean;
-  runnerPicker: { pick: TargetRunnerPicker["pick"] };
+  pool: WorkerPool;
 }
 
 /**
@@ -38,6 +37,7 @@ export class SimpleScheduler implements TargetScheduler {
   wrappedTargets: Map<string, WrappedTarget>;
   abortController: AbortController;
   abortSignal: AbortSignal;
+  dependencies: [string, string][] = [];
 
   constructor(private options: SimpleSchedulerOptions) {
     this.wrappedTargets = new Map();
@@ -58,11 +58,10 @@ export class SimpleScheduler implements TargetScheduler {
   async run(root: string, targetGraph: TargetGraph): Promise<SchedulerRunSummary> {
     const startTime: [number, number] = process.hrtime();
 
-    const { concurrency, continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, runnerPicker } = this.options;
-    const { dependencies, targets } = targetGraph;
+    const { continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, pool } = this.options;
 
-    const pGraphNodes: PGraphNodeMap = new Map();
-    const pGraphEdges = dependencies;
+    const { dependencies, targets } = targetGraph;
+    this.dependencies = dependencies;
 
     for (const target of targets.values()) {
       const wrappedTarget = new WrappedTarget({
@@ -75,62 +74,152 @@ export class SimpleScheduler implements TargetScheduler {
         shouldResetCache,
         continueOnError,
         abortController: this.abortController,
+        pool,
       });
 
       this.wrappedTargets.set(target.id, wrappedTarget);
-
-      pGraphNodes.set(target.id, {
-        /**
-         * Picks the runner, and run the wrapped target with the runner
-         */
-        run: async () => {
-          if (this.abortSignal.aborted) {
-            return;
-          }
-
-          const runner = runnerPicker.pick(target);
-          return this.wrappedTargets.get(target.id)!.run(runner);
-        },
-
-        priority: target.priority,
-      });
     }
 
-    let results: SchedulerRunResults = "failed";
-    let error: string | undefined;
-    let duration: [number, number] = [0, 0];
-    let targetRunByStatus: TargetRunSummary;
+    await this.scheduleReadyTargets();
+    this.options.pool.close();
 
-    try {
-      await pGraph(pGraphNodes, pGraphEdges).run({
-        concurrency,
-        continue: continueOnError,
+    return {
+      startTime,
+      duration: process.hrtime(startTime),
+      results: {} as any,
+      targetRunByStatus: {} as any,
+      targetRuns: {} as any
+    };
+  }
+
+  // /**
+  //  * The job of the run method is to:
+  //  * 1. Convert the target graph into a promise graph.
+  //  * 2. Create a promise graph of all targets
+  //  * 3. Pass the continueOnError option to the promise graph runner.
+  //  *
+  //  * @param root
+  //  * @param targetGraph
+  //  * @returns
+  //  */
+  // async start(root: string, targetGraph: TargetGraph): Promise<SchedulerRunSummary> {
+  //   const startTime: [number, number] = process.hrtime();
+
+  //   const { continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, pool } = this.options;
+
+  //   const { dependencies, targets } = targetGraph;
+  //   this.dependencies = dependencies;
+
+  //   for (const target of targets.values()) {
+  //     const wrappedTarget = new WrappedTarget({
+  //       target,
+  //       root,
+  //       logger,
+  //       cacheProvider,
+  //       hasher,
+  //       shouldCache,
+  //       shouldResetCache,
+  //       continueOnError,
+  //       abortController: this.abortController,
+  //       pool,
+  //     });
+
+  //     this.wrappedTargets.set(target.id, wrappedTarget);
+  //   }
+
+  //   this.scheduleReadyTargets();
+
+  //   return {} as any;
+  // }
+
+  // onTargetChange(targetId: string) {
+  //   const queue = [targetId];
+  //   while (queue.length > 0) {
+  //     const current = queue.shift()!;
+
+  //     const target = this.wrappedTargets.get(current)!;
+
+  //     if (target.status !== "pending") {
+  //       target.status = "pending";
+  //       const dependents = this.dependencies.filter(([from]) => {
+  //         return from === current;
+  //       });
+
+  //       for (const [_, to] of dependents) {
+  //         queue.push(to);
+  //       }
+  //     }
+  //   }
+  //   this.scheduleReadyTargets();
+  // }
+
+  *getReadyTargets() {
+    // TODO: implement priorities
+    for (const [id, wrappedTarget] of this.wrappedTargets.entries()) {
+      if (id === getStartTargetId()) {
+        continue;
+      }
+
+      // find all the dependencies for a target
+      const targetDeps = this.dependencies
+        .filter(([_, to]) => {
+          return to === id;
+        })
+        .map(([from]) => from);
+
+      // TODO: implement maxWorker for a certain task type
+      // filter all dependencies for those that are "ready"
+      const ready = targetDeps.every((dep) => {
+        const fromTarget = this.wrappedTargets.get(dep)!;
+        return fromTarget.status === "success" || fromTarget.status === "skipped" || dep === getStartTargetId();
       });
-    } catch (e) {
-      error = e instanceof Error ? e.message : String(e);
-    } finally {
-      duration = process.hrtime(startTime);
-      targetRunByStatus = categorizeTargetRuns([...this.wrappedTargets.values()]);
 
-      if (
-        targetRunByStatus.failed.length +
-          targetRunByStatus.aborted.length +
-          targetRunByStatus.pending.length +
-          targetRunByStatus.running.length ===
-        0
-      ) {
-        results = "success";
+      if (ready && wrappedTarget.status === "pending") {
+        yield wrappedTarget;
+      }
+    }
+  }
+
+  isAllDone() {
+    for (const t of this.wrappedTargets.values()) {
+      if (t.status !== "skipped" && t.status !== "success" && t.target.id !== getStartTargetId()) {
+        return false;
       }
     }
 
-    return {
-      targetRunByStatus,
-      targetRuns: this.wrappedTargets,
-      duration,
-      startTime,
-      results,
-      error,
-    };
+    return true;
+  }
+
+  scheduleReadyTargets() {
+    if (this.isAllDone()) {
+      return;
+    }
+
+    const promises: Promise<any>[] = [];
+
+    for (const nextTarget of this.getReadyTargets()) {
+      this.wrappedTargets.get(nextTarget.target.id)!.status = "running";
+
+      promises.push(
+        nextTarget
+          .run()
+          .then(() => {
+            return this.scheduleReadyTargets();
+          })
+          .catch((e) => {
+            // if a continue option is set, this merely records what errors have been encountered
+            // it'll continue down the execution until all the tasks that still works
+            if (this.options?.continueOnError) {
+              return this.scheduleReadyTargets();
+            } else {
+              // immediately reject, if not using "continue" option
+              throw e;
+            }
+          })
+      );
+    }
+
+    return Promise.all(promises);
   }
 
   /**
@@ -140,3 +229,4 @@ export class SimpleScheduler implements TargetScheduler {
     this.abortController.abort();
   }
 }
+encodeURI;

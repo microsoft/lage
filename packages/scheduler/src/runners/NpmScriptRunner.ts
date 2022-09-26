@@ -1,13 +1,12 @@
 import { existsSync } from "fs";
 import { join } from "path";
-import type { Logger } from "@lage-run/logger";
-import { LogLevel } from "@lage-run/logger";
 import { readFile } from "fs/promises";
 import { spawn } from "child_process";
 import type { TargetCaptureStreams, TargetRunner } from "../types/TargetRunner";
 import type { AbortSignal } from "abort-controller";
 import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";
+import { Logger } from "@lage-run/logger";
 
 export interface NpmScriptRunnerOptions {
   logger: Logger;
@@ -59,8 +58,8 @@ export class NpmScriptRunner implements TargetRunner {
     }
   }
 
-  async run(target: Target, abortSignal?: AbortSignal, captureStreams: TargetCaptureStreams = {}) {
-    const { logger, nodeOptions, npmCmd, taskArgs } = this.options;
+  async run(target: Target, abortSignal?: AbortSignal) {
+    const { nodeOptions, npmCmd, taskArgs, logger } = this.options;
 
     let childProcess: ChildProcess | undefined;
 
@@ -146,22 +145,13 @@ export class NpmScriptRunner implements TargetRunner {
       };
 
       const { pid } = childProcess;
-
       logger.verbose(`Running ${[npmCmd, ...npmRunArgs].join(" ")}, pid: ${pid}`, { target, pid });
 
       let stdout = childProcess.stdout!;
       let stderr = childProcess.stderr!;
 
-      if (captureStreams.stdout) {
-        stdout = stdout.pipe(captureStreams.stdout);
-      }
-
-      if (captureStreams.stderr) {
-        stderr = stderr.pipe(captureStreams.stderr);
-      }
-
-      logger.stream(LogLevel.verbose, stdout, { target, pid });
-      logger.stream(LogLevel.verbose, stderr, { target, pid });
+      stdout.pipe(process.stdout);
+      stderr.pipe(process.stderr);
 
       childProcess.on("exit", handleChildProcessExit);
       childProcess.on("error", () => handleChildProcessExit(1));

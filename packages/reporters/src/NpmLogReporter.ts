@@ -160,6 +160,7 @@ export class NpmLogReporter implements Reporter {
 
   summarize(schedulerRunSummary: SchedulerRunSummary) {
     const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
+
     const { failed, aborted, skipped, success, pending } = targetRunByStatus;
 
     const statusColorFn: {
@@ -177,8 +178,9 @@ export class NpmLogReporter implements Reporter {
       this.print(chalk.cyanBright(`\nSummary`));
 
       this.hr();
-
+      
       for (const wrappedTarget of targetRuns.values()) {
+        
         if (wrappedTarget.target.hidden) {
           continue;
         }
