@@ -28,6 +28,7 @@ export interface SimpleSchedulerOptions {
  * - api target change
  * - api target add / remove
  * - summarize
+ * - figure out the logger by line issue with docusaurus
  */ 
 
 /**
