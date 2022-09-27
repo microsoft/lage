@@ -123,11 +123,9 @@ export class LogReporter implements Reporter {
 
     if (entry?.data?.target) {
       const { packageName, task } = entry.data.target;
-      const pkgColor = getColorForPkg(packageName);
-      const pkgTask = this.options.grouped ? `${pkgColor(packageName)} ${chalk.cyan(task)}` : "";
       const normalizedArgs = normalize(getTaskLogPrefix(packageName ?? "<root>", task), msg);
-      prefix = normalizedArgs.prefix;
-      msg = `${normalizedArgs.message} ${pkgTask}`;
+      prefix = this.options.grouped ? `${normalizedArgs.prefix}` : normalizedArgs.prefix;
+      msg = `${normalizedArgs.message}`;
     }
 
     this.print(`${prefix ? prefix + " " : ""}${msg}`);

@@ -40,7 +40,7 @@ describe("LogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "a task ➔ start 
+      "a task ➔ start
       "
     `);
   });
@@ -64,7 +64,7 @@ describe("LogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "a task :  test message 
+      "a task :  test message
       "
     `);
   });
@@ -106,20 +106,20 @@ describe("LogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "a test ➔ start a test
-      a test :  test message for a#test a test
-      a test :  test message for a#test again a test
-      a test ✓ done - 10.00s a test
+      "a test ➔ start
+      a test :  test message for a#test
+      a test :  test message for a#test again
+      a test ✓ done - 10.00s
       ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-      b build ➔ start b build
-      b build :  test message for b#build b build
-      b build :  test message for b#build again b build
-      b build ✓ done - 30.00s b build
+      b build ➔ start
+      b build :  test message for b#build
+      b build :  test message for b#build again
+      b build ✓ done - 30.00s
       ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-      a build ➔ start a build
-      a build :  test message for a#build a build
-      a build :  test message for a#build again a build
-      a build ✖ fail a build
+      a build ➔ start
+      a build :  test message for a#build
+      a build :  test message for a#build again
+      a build ✖ fail
       ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
       "
     `);
@@ -162,18 +162,18 @@ describe("LogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "a build ➔ start 
-      a test ➔ start 
-      b build ➔ start 
-      a build :  test message for a#build 
-      a test :  test message for a#test 
-      a build :  test message for a#build again 
-      b build :  test message for b#build 
-      a test :  test message for a#test again 
-      b build :  test message for b#build again 
-      a test ✓ done - 10.00s 
-      b build ✓ done - 30.00s 
-      a build ✖ fail 
+      "a build ➔ start
+      a test ➔ start
+      b build ➔ start
+      a build :  test message for a#build
+      a test :  test message for a#test
+      a build :  test message for a#build again
+      b build :  test message for b#build
+      a test :  test message for a#test again
+      b build :  test message for b#build again
+      a test ✓ done - 10.00s
+      b build ✓ done - 30.00s
+      a build ✖ fail
       "
     `);
   });
@@ -215,12 +215,12 @@ describe("LogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      "a build ➔ start 
-      a test ➔ start 
-      b build ➔ start 
-      a test ✓ done - 10.00s 
-      b build ✓ done - 30.00s 
-      a build ✖ fail 
+      "a build ➔ start
+      a test ➔ start
+      b build ➔ start
+      a test ✓ done - 10.00s
+      b build ✓ done - 30.00s
+      a build ✖ fail
       "
     `);
   });
@@ -281,20 +281,20 @@ describe("LogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"a test ➔ start a test
-a test :  test message for a#test a test
-a test :  test message for a#test again a test
-a test ✓ done - 10.00s a test
+"a test ➔ start
+a test :  test message for a#test
+a test :  test message for a#test again
+a test ✓ done - 10.00s
 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-b build ➔ start b build
-b build :  test message for b#build b build
-b build :  test message for b#build again b build
-b build ✓ done - 30.00s b build
+b build ➔ start
+b build :  test message for b#build
+b build :  test message for b#build again
+b build ✓ done - 30.00s
 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-a build ➔ start a build
-a build :  test message for a#build a build
-a build :  test message for a#build again, but look there is an error! a build
-a build ✖ fail a build
+a build ➔ start
+a build :  test message for a#build
+a build :  test message for a#build again, but look there is an error!
+a build ✖ fail
 ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
 
 Summary
