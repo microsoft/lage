@@ -134,6 +134,7 @@ export class TargetGraphBuilder {
      */
     const addDependency = (from: string, to: string) => {
       this.dependencies.push([from, to]);
+      this.targets.get(to)?.dependencies.push(from);
     };
 
     /**

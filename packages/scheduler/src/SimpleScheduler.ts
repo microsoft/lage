@@ -22,6 +22,15 @@ export interface SimpleSchedulerOptions {
 }
 
 /**
+ * TODO FEATURES:
+ * - priorities
+ * - abort signals
+ * - api target change
+ * - api target add / remove
+ * - summarize
+ */ 
+
+/**
  * Simple scheduler that runs all targets in a promise graph using p-graph library.
  *
  * Some characteristics:
@@ -34,13 +43,13 @@ export interface SimpleSchedulerOptions {
  *
  */
 export class SimpleScheduler implements TargetScheduler {
-  wrappedTargets: Map<string, WrappedTarget>;
+  targetRuns: Map<string, WrappedTarget>;
   abortController: AbortController;
   abortSignal: AbortSignal;
   dependencies: [string, string][] = [];
 
   constructor(private options: SimpleSchedulerOptions) {
-    this.wrappedTargets = new Map();
+    this.targetRuns = new Map();
     this.abortController = new AbortController();
     this.abortSignal = this.abortController.signal;
   }
@@ -77,7 +86,7 @@ export class SimpleScheduler implements TargetScheduler {
         pool,
       });
 
-      this.wrappedTargets.set(target.id, wrappedTarget);
+      this.targetRuns.set(target.id, wrappedTarget);
     }
 
     await this.scheduleReadyTargets();
@@ -88,7 +97,7 @@ export class SimpleScheduler implements TargetScheduler {
       duration: process.hrtime(startTime),
       results: {} as any,
       targetRunByStatus: {} as any,
-      targetRuns: {} as any
+      targetRuns: {} as any,
     };
   }
 
@@ -155,22 +164,18 @@ export class SimpleScheduler implements TargetScheduler {
 
   *getReadyTargets() {
     // TODO: implement priorities
-    for (const [id, wrappedTarget] of this.wrappedTargets.entries()) {
+    for (const [id, wrappedTarget] of this.targetRuns.entries()) {
       if (id === getStartTargetId()) {
         continue;
       }
 
       // find all the dependencies for a target
-      const targetDeps = this.dependencies
-        .filter(([_, to]) => {
-          return to === id;
-        })
-        .map(([from]) => from);
+      const targetDeps = wrappedTarget.target.dependencies;
 
       // TODO: implement maxWorker for a certain task type
       // filter all dependencies for those that are "ready"
       const ready = targetDeps.every((dep) => {
-        const fromTarget = this.wrappedTargets.get(dep)!;
+        const fromTarget = this.targetRuns.get(dep)!;
         return fromTarget.status === "success" || fromTarget.status === "skipped" || dep === getStartTargetId();
       });
 
@@ -181,7 +186,7 @@ export class SimpleScheduler implements TargetScheduler {
   }
 
   isAllDone() {
-    for (const t of this.wrappedTargets.values()) {
+    for (const t of this.targetRuns.values()) {
       if (t.status !== "skipped" && t.status !== "success" && t.target.id !== getStartTargetId()) {
         return false;
       }
@@ -198,8 +203,6 @@ export class SimpleScheduler implements TargetScheduler {
     const promises: Promise<any>[] = [];
 
     for (const nextTarget of this.getReadyTargets()) {
-      this.wrappedTargets.get(nextTarget.target.id)!.status = "running";
-
       promises.push(
         nextTarget
           .run()

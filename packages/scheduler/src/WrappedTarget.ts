@@ -121,35 +121,31 @@ export class WrappedTarget implements TargetRun {
   }
 
   captureStream(target: Target, worker: Worker) {
-
-
     const { logger } = this.options;
 
     const stdout = worker.stdout;
     const stderr = worker.stderr;
 
-    const rl = createInterface({
+    const stdoutReadline = createInterface({
       input: stdout,
       crlfDelay: Infinity,
     });
 
-    // const onData = (data: string) => logger.verbose(data, { target });
+    const stderrReadline = createInterface({
+      input: stderr,
+      crlfDelay: Infinity,
+    });
 
-    // stdout.setEncoding("utf-8");
-    // stdout.on("data", onData);
-
-    // stderr.setEncoding("utf-8");
-    // stderr.on("data", onData);
-
-    const onLine = (line) => {
+    const onLine = (line: string) => {
       logger.verbose(line, { target });
-    }
+    };
 
-    rl.on("line", onLine);
+    stdoutReadline.on("line", onLine);
+    stderrReadline.on("line", onLine);
 
     return () => {
-      // stdout.off("data", onData);
-      // stderr.off("data", onData);
+      stdoutReadline.off("line", onLine);
+      stderrReadline.off("line", onLine);
     };
   }
 
@@ -196,19 +192,6 @@ export class WrappedTarget implements TargetRun {
       /**
        * TargetRunner should run() a target. The promise resolves if successful, or rejects otherwise (aborted or failed).
        */
-
-      // // TODO: instead of passing a hash, pass in the stderr/stdout transformer streams
-      // await runner.run(
-      //   target,
-      //   abortSignal,
-      //   hash
-      //     ? {
-      //         stdout: createCachedOutputTransform(target, hash),
-      //         stderr: createCachedOutputTransform(target, hash),
-      //       }
-      //     : undefined
-      // );
-
       let cleanupStreams: () => void;
 
       await pool.exec(
