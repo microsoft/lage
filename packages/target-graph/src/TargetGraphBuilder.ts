@@ -62,7 +62,8 @@ export class TargetGraphBuilder {
       // NOTE: We should force cache inputs to be defined for global targets
       cache: false,
       cwd: this.root,
-      dependencies: dependsOn ?? deps ?? [],
+      dependencies: [],
+      dependents: [],
       inputs,
       outputs,
       priority,
@@ -89,7 +90,8 @@ export class TargetGraphBuilder {
       task,
       cache: cache !== false,
       cwd: path.dirname(info.packageJsonPath),
-      dependencies: dependsOn ?? deps ?? [],
+      dependencies: [],
+      dependents: [],
       inputs,
       outputs,
       priority,
@@ -134,6 +136,7 @@ export class TargetGraphBuilder {
      */
     const addDependency = (from: string, to: string) => {
       this.dependencies.push([from, to]);
+      this.targets.get(from)!.dependents.push(to);
       this.targets.get(to)?.dependencies.push(from);
     };
 
@@ -348,6 +351,30 @@ export class TargetGraphBuilder {
   }
 
   /**
+   * Priorities for a target is actually the MAX of all the priorities of the targets that depend on it.
+   */
+  setupPriorities() {
+    const stack: Target[] = []; 
+
+    // start with the leaves - the children of the all targets
+    for (const target of this.targets.values()) {
+      if (target.dependencies.length === 0) {
+        stack.push(target);
+      }
+    }
+
+    while (stack.length > 0) {
+      const currentTarget = stack.pop()!;
+      const currentPriority = currentTarget.priority;
+
+      for (const dependentId of currentTarget.dependents) {
+        const dependent = this.targets.get(dependentId)!;
+        dependent.priority = Math.max(dependent.priority ?? 0, currentPriority ?? 0);
+      }
+    }
+  }
+
+  /**
    * Builds a scoped target graph for given tasks and packages
    *
    * Steps:
@@ -362,6 +389,7 @@ export class TargetGraphBuilder {
    */
   buildTargetGraph(tasks: string[], scope?: string[]) {
     this.expandDependencies();
+    this.setupPriorities()
 
     const startId = getStartTargetId();
     this.targets.set(startId, {

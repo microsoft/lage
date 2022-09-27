@@ -23,6 +23,11 @@ export interface Target {
   dependencies: string[];
 
   /**
+   * Dependents of the target - these are the targets that depend on this target
+   */
+  dependents: string[];
+
+  /**
    * Any custom priority for the target. A priority of >0 will always be prioritized over the default targets in queue
    */
   priority?: number;
