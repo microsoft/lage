@@ -18,7 +18,7 @@ export function getCacheConfig(cwd: string, cacheOptions: CacheOptions) {
     ...cacheOptions,
     ...envConfig,
     writeRemoteCache: cacheOptions.writeRemoteCache || !!process.env.LAGE_WRITE_REMOTE_CACHE || isRunningFromCI,
-    skipLocalCache: cacheOptions.skipLocalCache ?? isRunningFromCI
+    skipLocalCache: cacheOptions.skipLocalCache ?? isRunningFromCI,
   };
 
   const configWithFallback: CacheOptions = {
