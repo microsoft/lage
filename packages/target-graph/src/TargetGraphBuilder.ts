@@ -354,7 +354,7 @@ export class TargetGraphBuilder {
    * Priorities for a target is actually the MAX of all the priorities of the targets that depend on it.
    */
   setupPriorities() {
-    const stack: Target[] = []; 
+    const stack: Target[] = [];
 
     // start with the leaves - the children of the all targets
     for (const target of this.targets.values()) {
@@ -374,6 +374,13 @@ export class TargetGraphBuilder {
     }
   }
 
+  sortTargetIdsByPriority(targets: Target[]) {
+    return targets
+      .sort((a, b) => {
+        return (b.priority ?? 0) - (a.priority ?? 0);
+      })
+      .map((t) => t.id);
+  }
   /**
    * Builds a scoped target graph for given tasks and packages
    *
@@ -389,7 +396,7 @@ export class TargetGraphBuilder {
    */
   buildTargetGraph(tasks: string[], scope?: string[]) {
     this.expandDependencies();
-    this.setupPriorities()
+    this.setupPriorities();
 
     const startId = getStartTargetId();
     this.targets.set(startId, {
@@ -413,9 +420,12 @@ export class TargetGraphBuilder {
       }
     }
 
+    const targetIdsByPriority = this.sortTargetIdsByPriority([...subGraphTargets.values()]);
+
     return {
       targets: subGraphTargets,
       dependencies: subGraphEdges,
+      targetIdsByPriority,
     };
   }
 }

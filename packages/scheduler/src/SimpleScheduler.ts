@@ -29,7 +29,7 @@ export interface SimpleSchedulerOptions {
  * - api target add / remove
  * - summarize
  * - figure out the logger by line issue with docusaurus
- */ 
+ */
 
 /**
  * Simple scheduler that runs all targets in a promise graph using p-graph library.
@@ -45,6 +45,7 @@ export interface SimpleSchedulerOptions {
  */
 export class SimpleScheduler implements TargetScheduler {
   targetRuns: Map<string, WrappedTarget>;
+  targetIdsByPriority: string[] = [];
   abortController: AbortController;
   abortSignal: AbortSignal;
   dependencies: [string, string][] = [];
@@ -70,11 +71,12 @@ export class SimpleScheduler implements TargetScheduler {
 
     const { continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, pool } = this.options;
 
-    const { dependencies, targets } = targetGraph;
+    const { dependencies, targets, targetIdsByPriority } = targetGraph;
     this.dependencies = dependencies;
+    this.targetIdsByPriority = targetIdsByPriority;
 
     for (const target of targets.values()) {
-      const wrappedTarget = new WrappedTarget({
+      const targetRun = new WrappedTarget({
         target,
         root,
         logger,
@@ -87,7 +89,7 @@ export class SimpleScheduler implements TargetScheduler {
         pool,
       });
 
-      this.targetRuns.set(target.id, wrappedTarget);
+      this.targetRuns.set(target.id, targetRun);
     }
 
     await this.scheduleReadyTargets();
@@ -165,13 +167,13 @@ export class SimpleScheduler implements TargetScheduler {
 
   *getReadyTargets() {
     // TODO: implement priorities
-    for (const [id, wrappedTarget] of this.targetRuns.entries()) {
+    for (const id of this.targetIdsByPriority) {
       if (id === getStartTargetId()) {
         continue;
       }
 
-      // find all the dependencies for a target
-      const targetDeps = wrappedTarget.target.dependencies;
+      const targetRun = this.targetRuns.get(id)!;
+      const targetDeps = targetRun.target.dependencies;
 
       // TODO: implement maxWorker for a certain task type
       // filter all dependencies for those that are "ready"
@@ -180,8 +182,8 @@ export class SimpleScheduler implements TargetScheduler {
         return fromTarget.status === "success" || fromTarget.status === "skipped" || dep === getStartTargetId();
       });
 
-      if (ready && wrappedTarget.status === "pending") {
-        yield wrappedTarget;
+      if (ready && targetRun.status === "pending") {
+        yield targetRun;
       }
     }
   }
