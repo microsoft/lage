@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 19 Sep 2022 19:44:48 GMT and should not be manually modified.
+This log was last generated on Wed, 28 Sep 2022 16:37:28 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.9.0
+
+Wed, 28 Sep 2022 16:37:28 GMT
+
+### Minor changes
+
+- The defaults for CI environments is completely wrong, we need to make sure the defaults are correct for CI so it will write remote cache and skip local download remote cache (kchau@microsoft.com)
 
 ## 1.8.8
 
