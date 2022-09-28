@@ -13,15 +13,15 @@
     ]
   },
   "scripts": {
-    "build": "lage build --scope=!@lage/docs --scope=lage --scope=@lage-run/* --verbose",
+    "build": "lage build --scope=!@lage-run/docs --scope=lage --scope=@lage-run/* --verbose",
     "change": "beachball change",
     "checkchange": "beachball check",
     "release": "beachball publish -y --tag latest",
-    "start": "lage start --scope=!@lage/docs --scope=lage --scope=@lage-run/* --verbose --no-deps",
-    "test": "lage test --scope !@lage/docs --scope=lage --scope=@lage-run/* --verbose",
+    "start": "lage start --scope=!@lage-run/docs --verbose --no-deps --concurrency 100",
+    "test": "lage test --scope !@lage-run/docs --scope=lage --scope=@lage-run/* --verbose",
     "lint": "lage lint",
-    "docs": "yarn workspace @lage/docs start",
-    "docs:build": "yarn workspace @lage/docs build",
+    "docs": "yarn workspace @lage-run/docs start",
+    "docs:build": "yarn workspace @lage-run/docs build",
     "gh-pages": "gh-pages",
     "format": "prettier --config .prettierrc packages/**/*.ts **/*.json --write --ignore-path .gitignore",
     "format:check": "prettier --config .prettierrc packages/**/*.ts **/*.json --check --ignore-path .gitignore"

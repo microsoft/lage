@@ -64,6 +64,7 @@ export class TargetGraphBuilder {
       cwd: this.root,
       dependencies: [],
       dependents: [],
+      depSpecs: [],
       inputs,
       outputs,
       priority,
@@ -90,6 +91,7 @@ export class TargetGraphBuilder {
       task,
       cache: cache !== false,
       cwd: path.dirname(info.packageJsonPath),
+      depSpecs: dependsOn ?? deps ?? [],
       dependencies: [],
       dependents: [],
       inputs,
@@ -162,14 +164,14 @@ export class TargetGraphBuilder {
     const targets = [...this.targets.values()];
 
     for (const target of targets) {
-      const { dependencies, packageName, id: to } = target;
+      const { depSpecs, packageName, id: to } = target;
 
       // Always start with a root node with a special "START_TARGET_ID"
       // because any node could potentially be part of the entry point in building the scoped target subgraph
       this.dependencies.push([getStartTargetId(), to]);
 
       // Skip any targets that have no "deps" specified
-      if (!dependencies || dependencies.length === 0) {
+      if (!depSpecs || depSpecs.length === 0) {
         continue;
       }
 
@@ -186,7 +188,7 @@ export class TargetGraphBuilder {
        *
        * We interpret anything outside of these conditions as invalid
        */
-      for (const dependencyTargetId of dependencies) {
+      for (const dependencyTargetId of depSpecs) {
         if (dependencyTargetId.includes("#")) {
           // id's with a # are package-task dependencies, or global
           // therefore, we must use getPackageAndTask() & getTargetId() to normalize the target id

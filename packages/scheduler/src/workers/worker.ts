@@ -8,12 +8,14 @@ import createLogger from "@lage-run/logger";
 import type { LogLevel } from "@lage-run/logger";
 import { WorkerReporter } from "./WorkerReporter";
 
-function setup(options: { taskArgs: string[]; nodeargs: string; npmClient: string, logLevel: LogLevel }) {
+function setup(options: { taskArgs: string[]; nodeargs: string; npmClient: string; logLevel: LogLevel }) {
   const { taskArgs, nodeargs, npmClient, logLevel } = options;
   const logger = createLogger();
-  logger.addReporter(new WorkerReporter({
-    logLevel
-  }));
+  logger.addReporter(
+    new WorkerReporter({
+      logLevel,
+    })
+  );
 
   // Run Tasks with Scheduler + NpmScriptRunner
   const runners: Record<string, TargetRunner> = {
@@ -23,6 +25,7 @@ function setup(options: { taskArgs: string[]; nodeargs: string; npmClient: strin
       taskArgs,
       npmCmd: findNpmClient(npmClient),
     }),
+    
     // worker: new WorkerRunner({
     //   logger,
     //   workerTargetConfigs: Object.entries(config.pipeline).reduce((workerTargetConfigs, [id, def]) => {
@@ -44,7 +47,6 @@ function setup(options: { taskArgs: string[]; nodeargs: string; npmClient: strin
   };
 }
 
-console.log(workerData);
 const { runnerPicker } = setup(workerData);
 
 async function run(data) {

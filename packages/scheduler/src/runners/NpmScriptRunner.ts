@@ -141,7 +141,7 @@ export class NpmScriptRunner implements TargetRunner {
           return resolve();
         }
 
-        reject();
+        reject(new Error(`NPM Script Runner: ${npmCmd} ${npmRunArgs.join(" ")} exited with code ${code}`));
       };
 
       const { pid } = childProcess;

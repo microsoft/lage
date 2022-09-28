@@ -92,15 +92,43 @@ export class SimpleScheduler implements TargetScheduler {
       this.targetRuns.set(target.id, targetRun);
     }
 
-    await this.scheduleReadyTargets();
-    this.options.pool.close();
+    let results: SchedulerRunResults = "failed";
+    let error: string | undefined;
+    let duration: [number, number] = [0, 0];
+    let targetRunByStatus: TargetRunSummary;
+
+    try {
+      await this.scheduleReadyTargets();
+    } catch (e) {
+      error = e instanceof Error ? e.message : String(e);
+    } finally {
+      duration = process.hrtime(startTime);
+      targetRunByStatus = categorizeTargetRuns([...this.targetRuns.values()]);
+
+      if (
+        targetRunByStatus.failed.length +
+          targetRunByStatus.aborted.length +
+          targetRunByStatus.pending.length +
+          targetRunByStatus.running.length ===
+        0
+      ) {
+        results = "success";
+      }
+    }
+
+    try {
+      await this.scheduleReadyTargets();
+    } finally {
+      this.options.pool.close();
+    }
 
     return {
+      targetRunByStatus,
+      targetRuns: this.targetRuns,
+      duration,
       startTime,
-      duration: process.hrtime(startTime),
-      results: {} as any,
-      targetRunByStatus: {} as any,
-      targetRuns: {} as any,
+      results,
+      error,
     };
   }
 

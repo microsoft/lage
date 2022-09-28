@@ -22,6 +22,7 @@ class WorkerPoolTaskInfo extends AsyncResource {
       worker: Worker;
     }
   ) {
+    
     super("WorkerPoolTaskInfo");
 
     if (options.setup) {

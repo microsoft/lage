@@ -139,23 +139,15 @@ export async function runAction(options: RunOptions, command: Command) {
     pool,
   });
 
-  // const summary = await scheduler.run(root, targetGraph);
-
   const summary = await scheduler.run(root, targetGraph);
 
-  // for (const runner of Object.values(runners)) {
-  //   if (runner.cleanup) {
-  //     await runner.cleanup();
-  //   }
-  // }
+  try {
+    for (const reporter of logger.reporters) {
+      reporter.summarize(summary);
+    }
+  } catch (e) {}
 
-  // try {
-  //   for (const reporter of logger.reporters) {
-  //     reporter.summarize(summary);
-  //   }
-  // } catch (e) {}
-
-  // if (summary.results !== "success") {
-  //   process.exitCode = 1;
-  // }
+  if (summary.results !== "success") {
+    process.exitCode = 1;
+  }
 }

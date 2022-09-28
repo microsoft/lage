@@ -18,6 +18,11 @@ export interface Target {
   packageName?: string;
 
   /**
+   * List of "dependency specs" like "^build", "build", "foo#build"
+   */
+  depSpecs: string[];
+
+  /**
    * Dependencies of the target - these are the targets that must be complete before the target can be complete
    */
   dependencies: string[];
