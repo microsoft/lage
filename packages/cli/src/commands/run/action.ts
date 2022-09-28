@@ -1,18 +1,17 @@
 import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
 import { Command } from "commander";
 import { createProfileReporter } from "./createProfileReporter";
-import { findNpmClient } from "../../workspace/findNpmClient";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
+import { getMaxWorkersPerTask } from "../../config/getMaxWorkersPerTask";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { initializeReporters } from "../../reporters/initialize";
 import { isRunningFromCI } from "../isRunningFromCI";
-import { NpmScriptRunner, SimpleScheduler, WorkerRunner, TargetRunnerPicker } from "@lage-run/scheduler";
+import { SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
+import { WorkerPool } from "@lage-run/worker-threads-pool";
 import createLogger from "@lage-run/logger";
 import type { ReporterInitOptions } from "../../types/LoggerOptions";
-import type { TargetRunner } from "@lage-run/scheduler";
-import { WorkerPool } from "@lage-run/worker-threads-pool";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
@@ -123,8 +122,8 @@ export async function runAction(options: RunOptions, command: Command) {
         nodeArgs: options.nodeargs,
         taskArgs,
         npmClient: config.npmClient,
-        loglevel: options.logLevel
-      }
+        loglevel: options.logLevel,
+      },
     },
   });
 
@@ -137,6 +136,7 @@ export async function runAction(options: RunOptions, command: Command) {
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
     pool,
+    maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}),
   });
 
   const summary = await scheduler.run(root, targetGraph);

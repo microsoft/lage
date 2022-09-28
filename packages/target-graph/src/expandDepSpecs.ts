@@ -15,9 +15,6 @@ export function expandDepSpecs(targets: Map<string, Target>, dependencyMap: Depe
    */
   const addDependency = (from: string, to: string) => {
     dependencies.push([from, to]);
-
-    targets.get(from)!.dependents.push(to);
-    targets.get(to)?.dependencies.push(from);
   };
 
   /**

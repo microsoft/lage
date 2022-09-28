@@ -3,13 +3,15 @@ import { NpmScriptRunner } from "../runners/NpmScriptRunner";
 import { TargetRunnerPicker } from "../runners/TargetRunnerPicker";
 import { TargetRunner } from "../types/TargetRunner";
 import { findNpmClient } from "@lage-run/find-npm-client";
-import { workerData } from "node:worker_threads";
+import { threadId, workerData } from "node:worker_threads";
 import createLogger from "@lage-run/logger";
 import type { LogLevel } from "@lage-run/logger";
 import { WorkerReporter } from "./WorkerReporter";
+import { WorkerRunner } from "../runners/WorkerRunner";
 
 function setup(options: { taskArgs: string[]; nodeargs: string; npmClient: string; logLevel: LogLevel }) {
   const { taskArgs, nodeargs, npmClient, logLevel } = options;
+
   const logger = createLogger();
   logger.addReporter(
     new WorkerReporter({
@@ -25,17 +27,10 @@ function setup(options: { taskArgs: string[]; nodeargs: string; npmClient: strin
       taskArgs,
       npmCmd: findNpmClient(npmClient),
     }),
-    
-    // worker: new WorkerRunner({
-    //   logger,
-    //   workerTargetConfigs: Object.entries(config.pipeline).reduce((workerTargetConfigs, [id, def]) => {
-    //     if (!Array.isArray(def) && def.type === "worker") {
-    //       workerTargetConfigs[id] = def;
-    //     }
 
-    //     return workerTargetConfigs;
-    //   }, {}),
-    // }),
+    worker: new WorkerRunner({
+      logger,
+    }),
   };
 
   const runnerPicker = new TargetRunnerPicker({

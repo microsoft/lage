@@ -1,15 +1,16 @@
 import { AbortController } from "abort-controller";
 import { categorizeTargetRuns } from "./categorizeTargetRuns";
+import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
 import { WrappedTarget } from "./WrappedTarget";
+import os from "node:os";
 
 import type { AbortSignal } from "abort-controller";
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { Logger } from "@lage-run/logger";
 import type { SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "./types/SchedulerRunSummary";
-import { getStartTargetId, TargetGraph } from "@lage-run/target-graph";
+import type { TargetGraph, Target } from "@lage-run/target-graph";
 import type { TargetScheduler } from "./types/TargetScheduler";
 import type { WorkerPool } from "@lage-run/worker-threads-pool";
-import { sortTargetIdsByPriority } from "./sortTargetIdsByPriority";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -20,6 +21,7 @@ export interface SimpleSchedulerOptions {
   shouldCache: boolean;
   shouldResetCache: boolean;
   pool: WorkerPool;
+  maxWorkersPerTask: Map<string, number>;
 }
 
 /**
@@ -45,9 +47,8 @@ export interface SimpleSchedulerOptions {
  *
  */
 export class SimpleScheduler implements TargetScheduler {
-  maxWorkersPerTask: Map<string, number> = new Map();
   targetRuns: Map<string, WrappedTarget> = new Map();
-  targetIdsByPriority: string[] = [];
+  targetsByPriority: Target[] = [];
   abortController: AbortController = new AbortController();
   abortSignal: AbortSignal = this.abortController.signal;
   dependencies: [string, string][] = [];
@@ -71,7 +72,7 @@ export class SimpleScheduler implements TargetScheduler {
 
     const { dependencies, targets } = targetGraph;
     this.dependencies = dependencies;
-    this.targetIdsByPriority = sortTargetIdsByPriority([...targets.values()]);
+    this.targetsByPriority = sortTargetsByPriority([...targets.values()]);
 
     for (const target of targets.values()) {
       const targetRun = new WrappedTarget({
@@ -130,88 +131,60 @@ export class SimpleScheduler implements TargetScheduler {
     };
   }
 
-  // /**
-  //  * The job of the run method is to:
-  //  * 1. Convert the target graph into a promise graph.
-  //  * 2. Create a promise graph of all targets
-  //  * 3. Pass the continueOnError option to the promise graph runner.
-  //  *
-  //  * @param root
-  //  * @param targetGraph
-  //  * @returns
-  //  */
-  // async start(root: string, targetGraph: TargetGraph): Promise<SchedulerRunSummary> {
-  //   const startTime: [number, number] = process.hrtime();
+  onTargetChange(targetId: string) {
+    const queue = [targetId];
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      const targetRun = this.targetRuns.get(current)!;
 
-  //   const { continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, pool } = this.options;
+      if (targetRun.status !== "pending") {
+        targetRun.status = "pending";
+        const dependents = targetRun.target.dependents;
+        for (const dependent of dependents) {
+          queue.push(dependent);
+        }
+      }
+    }
 
-  //   const { dependencies, targets } = targetGraph;
-  //   this.dependencies = dependencies;
+    this.scheduleReadyTargets();
+  }
 
-  //   for (const target of targets.values()) {
-  //     const wrappedTarget = new WrappedTarget({
-  //       target,
-  //       root,
-  //       logger,
-  //       cacheProvider,
-  //       hasher,
-  //       shouldCache,
-  //       shouldResetCache,
-  //       continueOnError,
-  //       abortController: this.abortController,
-  //       pool,
-  //     });
+  getReadyTargets() {
+    const { maxWorkersPerTask, concurrency } = this.options;
 
-  //     this.wrappedTargets.set(target.id, wrappedTarget);
-  //   }
+    const readyTargets: WrappedTarget[] = [];
 
-  //   this.scheduleReadyTargets();
+    const runningTargets = this.targetsByPriority.filter((target) => this.targetRuns.get(target.id)!.status === "running");
+    const runningTargetsCountByTask = {};
 
-  //   return {} as any;
-  // }
+    for (const target of runningTargets) {
+      runningTargetsCountByTask[target.task] =
+        typeof runningTargetsCountByTask[target.task] !== "number" ? 1 : runningTargetsCountByTask[target.task]++;
+    }
 
-  // onTargetChange(targetId: string) {
-  //   const queue = [targetId];
-  //   while (queue.length > 0) {
-  //     const current = queue.shift()!;
-
-  //     const target = this.wrappedTargets.get(current)!;
-
-  //     if (target.status !== "pending") {
-  //       target.status = "pending";
-  //       const dependents = this.dependencies.filter(([from]) => {
-  //         return from === current;
-  //       });
-
-  //       for (const [_, to] of dependents) {
-  //         queue.push(to);
-  //       }
-  //     }
-  //   }
-  //   this.scheduleReadyTargets();
-  // }
-
-  *getReadyTargets() {
-    // TODO: implement priorities
-    for (const id of this.targetIdsByPriority) {
-      if (id === getStartTargetId()) {
+    for (const target of this.targetsByPriority) {
+      if (target.id === getStartTargetId()) {
         continue;
       }
 
-      const targetRun = this.targetRuns.get(id)!;
+      const targetRun = this.targetRuns.get(target.id)!;
       const targetDeps = targetRun.target.dependencies;
 
-      // TODO: implement maxWorker for a certain task type
       // filter all dependencies for those that are "ready"
       const ready = targetDeps.every((dep) => {
         const fromTarget = this.targetRuns.get(dep)!;
         return fromTarget.status === "success" || fromTarget.status === "skipped" || dep === getStartTargetId();
       });
 
-      if (ready && targetRun.status === "pending") {
-        yield targetRun;
+      const maxWorkers = maxWorkersPerTask.get(target.task) ?? concurrency;
+
+      if (ready && targetRun.status === "pending" && (runningTargetsCountByTask[target.task] ?? 0) < maxWorkers) {
+        readyTargets.push(targetRun);
+        runningTargetsCountByTask[target.task] = (runningTargetsCountByTask[target.task] ?? 0) + 1;
       }
     }
+
+    return readyTargets;
   }
 
   isAllDone() {
@@ -224,7 +197,7 @@ export class SimpleScheduler implements TargetScheduler {
     return true;
   }
 
-  scheduleReadyTargets() {
+  async scheduleReadyTargets() {
     if (this.isAllDone()) {
       return;
     }
@@ -251,7 +224,7 @@ export class SimpleScheduler implements TargetScheduler {
       );
     }
 
-    return Promise.all(promises);
+    return await Promise.all(promises);
   }
 
   /**

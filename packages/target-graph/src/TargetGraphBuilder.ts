@@ -61,9 +61,9 @@ export class TargetGraphBuilder {
       // NOTE: We should force cache inputs to be defined for global targets
       cache: false,
       cwd: this.root,
+      depSpecs: dependsOn ?? deps ?? [],
       dependencies: [],
       dependents: [],
-      depSpecs: [],
       inputs,
       outputs,
       priority,
@@ -215,7 +215,6 @@ export class TargetGraphBuilder {
    */
   buildTargetGraph(tasks: string[], scope?: string[]) {
     this.dependencies = expandDepSpecs(this.targets, this.dependencyMap);
-    prioritize(this.targets);
 
     const startId = getStartTargetId();
     this.targets.set(startId, {
@@ -224,20 +223,38 @@ export class TargetGraphBuilder {
       cwd: "",
       label: "Start",
       hidden: true,
+      dependencies: [],
+      dependents: [],
+      depSpecs: [],
     } as Target);
 
     const subGraphEdges = this.createSubGraph(tasks, scope);
     const subGraphTargets: Map<string, Target> = new Map();
 
+    // Delay setting up the "dependents" and "dependencies" of the targets until the subgraph is defined
+    // This will ensure that the only dependencies present in the returned results are from the subgraph
     for (const [from, to] of subGraphEdges) {
       if (this.targets.has(from)) {
-        subGraphTargets.set(from, this.targets.get(from)!);
+        const target = this.targets.get(from)!;
+
+        subGraphTargets.set(from, target);
+
+        target.dependents = target.dependents ?? [];
+        target.dependents.push(to);
       }
 
       if (this.targets.has(to)) {
-        subGraphTargets.set(to, this.targets.get(to)!);
+        const target = this.targets.get(to)!;
+        subGraphTargets.set(to, target);
+
+        target.dependencies = target.dependencies ?? [];
+        target.dependencies.push(from);
       }
     }
+
+    // Add priority to the SUB-GRAPH, because the aggregated priorities are in the context of the final graph
+    // The full graph might produce a different aggregated priority value for a target
+    prioritize(subGraphTargets);
 
     return {
       targets: subGraphTargets,
