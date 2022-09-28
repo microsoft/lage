@@ -130,7 +130,7 @@ export class TargetGraphBuilder {
   /**
    * Expands the dependency graph by adding all transitive dependencies of the given targets.
    */
-  private expandDependencies() {
+  private expandDepSpecs() {
     /**
      * Adds a dependency in the form of [from, to] to the dependency list.
      * @param from
@@ -138,6 +138,7 @@ export class TargetGraphBuilder {
      */
     const addDependency = (from: string, to: string) => {
       this.dependencies.push([from, to]);
+
       this.targets.get(from)!.dependents.push(to);
       this.targets.get(to)?.dependencies.push(from);
     };
@@ -365,6 +366,7 @@ export class TargetGraphBuilder {
       }
     }
 
+    // fill every target with the max priority of its dependents
     while (stack.length > 0) {
       const currentTarget = stack.pop()!;
       const currentPriority = currentTarget.priority;
@@ -397,7 +399,7 @@ export class TargetGraphBuilder {
    * @returns
    */
   buildTargetGraph(tasks: string[], scope?: string[]) {
-    this.expandDependencies();
+    this.expandDepSpecs();
     this.setupPriorities();
 
     const startId = getStartTargetId();
