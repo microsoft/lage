@@ -9,6 +9,7 @@ import type { SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from 
 import { getStartTargetId, TargetGraph } from "@lage-run/target-graph";
 import type { TargetScheduler } from "./types/TargetScheduler";
 import type { WorkerPool } from "@lage-run/worker-threads-pool";
+import { sortTargetIdsByPriority } from "./sortTargetIdsByPriority";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -44,17 +45,14 @@ export interface SimpleSchedulerOptions {
  *
  */
 export class SimpleScheduler implements TargetScheduler {
-  targetRuns: Map<string, WrappedTarget>;
+  maxWorkersPerTask: Map<string, number> = new Map();
+  targetRuns: Map<string, WrappedTarget> = new Map();
   targetIdsByPriority: string[] = [];
-  abortController: AbortController;
-  abortSignal: AbortSignal;
+  abortController: AbortController = new AbortController();
+  abortSignal: AbortSignal = this.abortController.signal;
   dependencies: [string, string][] = [];
 
-  constructor(private options: SimpleSchedulerOptions) {
-    this.targetRuns = new Map();
-    this.abortController = new AbortController();
-    this.abortSignal = this.abortController.signal;
-  }
+  constructor(private options: SimpleSchedulerOptions) {}
 
   /**
    * The job of the run method is to:
@@ -71,9 +69,9 @@ export class SimpleScheduler implements TargetScheduler {
 
     const { continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, pool } = this.options;
 
-    const { dependencies, targets, targetIdsByPriority } = targetGraph;
+    const { dependencies, targets } = targetGraph;
     this.dependencies = dependencies;
-    this.targetIdsByPriority = targetIdsByPriority;
+    this.targetIdsByPriority = sortTargetIdsByPriority([...targets.values()]);
 
     for (const target of targets.values()) {
       const targetRun = new WrappedTarget({

@@ -1,3 +1,4 @@
+import { createInterface } from "readline";
 import { getLageOutputCacheLocation } from "./createCachedOutputTransform";
 import { hrToSeconds } from "./formatDuration";
 import { LogLevel } from "@lage-run/logger";
@@ -11,7 +12,6 @@ import type { TargetHasher } from "@lage-run/cache";
 import type { TargetRun } from "./types/TargetRun";
 import type { TargetStatus } from "./types/TargetStatus";
 import type { Worker } from "worker_threads";
-import { createInterface } from "readline";
 
 export interface WrappedTargetOptions {
   root: string;
