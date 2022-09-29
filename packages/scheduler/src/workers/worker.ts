@@ -8,8 +8,9 @@ import createLogger from "@lage-run/logger";
 import type { LogLevel } from "@lage-run/logger";
 import { WorkerReporter } from "./WorkerReporter";
 import { WorkerRunner } from "../runners/WorkerRunner";
+import {initializeReporters} from ""
 
-function setup(options: { taskArgs: string[]; nodeargs: string; npmClient: string; logLevel: LogLevel }) {
+function setup(options: { taskArgs: string[]; nodeargs: string; npmClient: string; logLevel: LogLevel, reporter: string[] }) {
   const { taskArgs, nodeargs, npmClient, logLevel } = options;
 
   const logger = createLogger();
