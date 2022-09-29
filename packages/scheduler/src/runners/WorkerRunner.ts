@@ -3,7 +3,6 @@ import type { AbortSignal } from "abort-controller";
 import type { Logger } from "@lage-run/logger";
 import type { Target, TargetConfig } from "@lage-run/target-graph";
 import type { TargetRunner } from "../types/TargetRunner";
-import type { Worker } from "worker_threads";
 
 export interface WorkerRunnerOptions {
   logger: Logger;
@@ -55,17 +54,35 @@ export class WorkerRunner implements TargetRunner {
     const scriptFile = target.options?.worker;
 
     logger.verbose(`Running script: ${scriptFile}`, { target });
-    const scriptModule = require(target.options.worker);
 
-    const runFn = typeof scriptModule.default === "function" ? scriptModule.default : scriptModule;
+    try {
+      logger.verbose(`1`, { target });
 
-    // if (target.packageName === "@lage-run/logger") {
-    //   for (var i = 0; i < 100; i++) {
-    //     process.stdout.write("TEST\n");
-    //   }
-    // }
+      const stdout = process.stdout;
+      //stdout.setEncoding("utf-8");
+      const stderr = process.stderr;
+      //stderr.setEncoding("utf-8");
 
-    await runFn({ target });
+      const onData = (data) => {
+        logger.log(LogLevel.verbose, data, { target });
+      };
+
+      stdout.on("data", onData);
+      stderr.on("data", onData);
+
+      const scriptModule = require(target.options.worker);
+
+      const runFn = typeof scriptModule.default === "function" ? scriptModule.default : scriptModule;
+
+      await runFn({ target });
+
+      stdout.off("data", onData);
+      stderr.off("data", onData);
+
+      logger.verbose(`2`, { target });
+    } catch (err) {
+      console.log(String(err));
+    }
   }
 
   cleanup() {}

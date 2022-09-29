@@ -91,6 +91,14 @@ export class WorkerPool extends EventEmitter implements Pool {
     const { script, workerOptions } = this.options;
     const worker = new Worker(script, workerOptions);
 
+    if (worker.stdout) {
+      worker.stdout.pipe(process.stdout);
+    }
+
+    if (worker.stderr) {
+      worker.stderr.pipe(process.stderr);
+    }
+
     const msgHandler = (data) => {
       // In case of success: Call the callback that was passed to `runTask`,
       // remove the `TaskInfo` associated with the Worker, and mark it as free

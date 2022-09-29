@@ -120,37 +120,18 @@ export class WrappedTarget implements TargetRun {
     await cacheProvider.put(hash, target);
   }
 
-  captureStream(target: Target, worker: Worker) {
-    const { logger } = this.options;
+  // captureStream(target: Target, worker: Worker) {
+  //   const stdout = worker.stdout;
+  //   const stderr = worker.stderr;
 
-    const stdout = worker.stdout;
-    const stderr = worker.stderr;
-    const releaseStreamPromise = new Promise<void>((resolve) => {
-      const onData = (data: string) => {
-        if (data.includes("##ENDOFMESSAGE##")) {
-          stdout.off("data", onData);
-          stderr.off("data", onData);
-          data.replace("##ENDOFMESSAGE##", "");
-          
-          console.log("OFF!");
+  //   stdout.pipe(process.stdout);
+  //   stderr.pipe(process.stderr);
 
-          resolve();
-        }
-
-        logger.log(LogLevel.info, data, { target });
-      };
-
-      stdout.setEncoding("utf-8");
-      stdout.on("data", onData);
-
-      stderr.setEncoding("utf-8");
-      stderr.on("data", onData);
-    });
-
-    return () => {
-      return releaseStreamPromise;
-    };
-  }
+  //   return () => {
+  //     stdout.unpipe(process.stdout);
+  //     stderr.unpipe(process.stderr);
+  //   };
+  // }
 
   async run() {
     const { target, logger, shouldCache, abortController, pool } = this.options;
@@ -192,10 +173,16 @@ export class WrappedTarget implements TargetRun {
         return;
       }
 
-     await pool.exec(
+      let releaseStreams = () => {};
+
+      await pool.exec(
         { target },
-        (worker: Worker) => {},
-        () => {}
+        (worker: Worker) => {
+          //releaseStreams = this.captureStream(target, worker);
+        },
+        () => {
+          // releaseStreams();
+        }
       );
 
       if (cacheEnabled) {

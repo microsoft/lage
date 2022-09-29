@@ -4,10 +4,8 @@ export function registerWorker(fn: (data: any) => Promise<void> | void) {
   parentPort?.on("message", async (task) => {
     try {
       const results = await fn(task);
-      process.stdout.write("##ENDOFMESSAGE##");
       parentPort?.postMessage({ err: undefined, results });
     } catch (err) {
-      process.stdout.write("##ENDOFMESSAGE##");
       parentPort?.postMessage({ err, results: undefined });
     }
   });

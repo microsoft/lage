@@ -1,29 +1,31 @@
 import { registerWorker } from "@lage-run/worker-threads-pool";
-import { NpmScriptRunner } from "../runners/NpmScriptRunner";
-import { TargetRunnerPicker } from "../runners/TargetRunnerPicker";
-import { TargetRunner } from "../types/TargetRunner";
+import { NpmScriptRunner } from "@lage-run/scheduler";
+import { TargetRunnerPicker } from "@lage-run/scheduler";
+import type { TargetRunner } from "@lage-run/scheduler";
 import { findNpmClient } from "@lage-run/find-npm-client";
 import { workerData } from "node:worker_threads";
 import createLogger from "@lage-run/logger";
-import type { LogLevel } from "@lage-run/logger";
-import { WorkerReporter } from "./WorkerReporter";
-import { WorkerRunner } from "../runners/WorkerRunner";
-import {initializeReporters} from ""
+import { WorkerRunner } from "@lage-run/scheduler";
+import { initializeReporters } from "@lage-run/reporters";
+import type { ReporterInitOptions } from "@lage-run/reporters";
 
-function setup(options: { taskArgs: string[]; nodeargs: string; npmClient: string; logLevel: LogLevel, reporter: string[] }) {
-  const { taskArgs, nodeargs, npmClient, logLevel } = options;
+interface TargetWorkerDataOptions extends ReporterInitOptions {
+  taskArgs: string[];
+  nodeArg: string;
+  npmClient: string;
+}
+
+function setup(options: TargetWorkerDataOptions) {
+  const { taskArgs, nodeArg, npmClient, logLevel } = options;
 
   const logger = createLogger();
-  logger.addReporter(
-    new WorkerReporter({
-      logLevel,
-    })
-  );
+
+  initializeReporters(logger, options);
 
   const runners: Record<string, TargetRunner> = {
     npmScript: new NpmScriptRunner({
       logger,
-      nodeOptions: nodeargs,
+      nodeOptions: nodeArg,
       taskArgs,
       npmCmd: findNpmClient(npmClient),
     }),

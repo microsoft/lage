@@ -114,15 +114,14 @@ export async function runAction(options: RunOptions, command: Command) {
 
   const pool = new WorkerPool({
     maxWorkers: options.concurrency,
-    script: require.resolve("@lage-run/scheduler/lib/workers/worker.js"),
+    script: require.resolve("./targetWorker"),
     workerOptions: {
       stdout: true,
       stderr: true,
       workerData: {
-        nodeArgs: options.nodeargs,
         taskArgs,
         npmClient: config.npmClient,
-        loglevel: options.logLevel,
+        ...options,
       },
     },
   });
