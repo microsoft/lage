@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Update dependency workspace-tools to ^0.28.0",
+  "packageName": "@lage-run/cache",
+  "email": "email not defined",
+  "dependentChangeType": "patch"
+}
