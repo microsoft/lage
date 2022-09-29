@@ -117,7 +117,7 @@ describe("NpmScriptRunner", () => {
     expect(envEntry.LAGE_TASK).toBe(target.task);
   });
 
-  it("can kill the child process based on abort signal", async () => {
+  it.only("can kill the child process based on abort signal", async () => {
     const logger = new Logger();
 
     const abortController = new AbortController();

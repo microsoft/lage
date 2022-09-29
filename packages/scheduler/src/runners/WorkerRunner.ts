@@ -45,25 +45,6 @@ export class WorkerRunner implements TargetRunner {
 
   constructor(private options: WorkerRunnerOptions) {}
 
-  captureStream(target: Target, worker: Worker) {
-    const { logger } = this.options;
-
-    const stdout = worker.stdout;
-    const stderr = worker.stderr;
-    const onData = (data: string) => logger.log(LogLevel.info, data, { target });
-
-    stdout.setEncoding("utf-8");
-    stdout.on("data", onData);
-
-    stderr.setEncoding("utf-8");
-    stderr.on("data", onData);
-
-    return () => {
-      stdout.off("data", onData);
-      stderr.off("data", onData);
-    };
-  }
-
   async run(target: Target, abortSignal?: AbortSignal) {
     const { logger } = this.options;
 
@@ -75,8 +56,162 @@ export class WorkerRunner implements TargetRunner {
 
     logger.verbose(`Running script: ${scriptFile}`, { target });
     const scriptModule = require(target.options.worker);
+
     const runFn = typeof scriptModule.default === "function" ? scriptModule.default : scriptModule;
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+
+
     await runFn({ target });
+
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+    process.stdout.write("TEST\n");
+
+    
   }
 
   cleanup() {}

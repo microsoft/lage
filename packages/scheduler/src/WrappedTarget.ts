@@ -126,26 +126,17 @@ export class WrappedTarget implements TargetRun {
     const stdout = worker.stdout;
     const stderr = worker.stderr;
 
-    const stdoutReadline = createInterface({
-      input: stdout,
-      crlfDelay: Infinity,
-    });
+    const onData = (data: string) => logger.log(LogLevel.info, data, { target });
 
-    const stderrReadline = createInterface({
-      input: stderr,
-      crlfDelay: Infinity,
-    });
+    stdout.setEncoding("utf-8");
+    stdout.on("data", onData);
 
-    const onLine = (line: string) => {
-      logger.verbose(line, { target });
-    };
-
-    stdoutReadline.on("line", onLine);
-    stderrReadline.on("line", onLine);
+    stderr.setEncoding("utf-8");
+    stderr.on("data", onData);
 
     return () => {
-      stdoutReadline.off("line", onLine);
-      stderrReadline.off("line", onLine);
+      stdout.off("data", onData);
+      stderr.off("data", onData);
     };
   }
 
@@ -200,7 +191,7 @@ export class WrappedTarget implements TargetRun {
           cleanupStreams = this.captureStream(target, worker);
         },
         () => {
-          cleanupStreams();
+          return cleanupStreams();
         },
         abortSignal
       );

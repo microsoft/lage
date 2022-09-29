@@ -59,6 +59,9 @@ export class NpmScriptRunner implements TargetRunner {
   }
 
   async run(target: Target, abortSignal?: AbortSignal) {
+      
+
+
     const { nodeOptions, npmCmd, taskArgs, logger } = this.options;
 
     let childProcess: ChildProcess | undefined;
