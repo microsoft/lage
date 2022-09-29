@@ -10,6 +10,8 @@ function createTarget(packageName: string, task: string) {
     id: `${packageName}#${task}`,
     cwd: `/repo/root/packages/${packageName}`,
     dependencies: [],
+    dependents: [],
+    depSpecs: [],
     packageName,
     task,
     label: `${packageName} - ${task}`,
@@ -68,7 +70,9 @@ describe("JsonReporter", () => {
             "status": "running",
             "target": {
               "cwd": "/repo/root/packages/a",
+              "depSpecs": [],
               "dependencies": [],
+              "dependents": [],
               "id": "a#build",
               "label": "a - build",
               "packageName": "a",
@@ -92,7 +96,9 @@ describe("JsonReporter", () => {
             "status": "running",
             "target": {
               "cwd": "/repo/root/packages/a",
+              "depSpecs": [],
               "dependencies": [],
+              "dependents": [],
               "id": "a#test",
               "label": "a - test",
               "packageName": "a",
@@ -116,7 +122,9 @@ describe("JsonReporter", () => {
             "status": "running",
             "target": {
               "cwd": "/repo/root/packages/b",
+              "depSpecs": [],
               "dependencies": [],
+              "dependents": [],
               "id": "b#build",
               "label": "b - build",
               "packageName": "b",
@@ -132,7 +140,9 @@ describe("JsonReporter", () => {
             "pid": 1,
             "target": {
               "cwd": "/repo/root/packages/a",
+              "depSpecs": [],
               "dependencies": [],
+              "dependents": [],
               "id": "a#build",
               "label": "a - build",
               "packageName": "a",
@@ -148,7 +158,9 @@ describe("JsonReporter", () => {
             "pid": 1,
             "target": {
               "cwd": "/repo/root/packages/a",
+              "depSpecs": [],
               "dependencies": [],
+              "dependents": [],
               "id": "a#test",
               "label": "a - test",
               "packageName": "a",
@@ -164,7 +176,9 @@ describe("JsonReporter", () => {
             "pid": 1,
             "target": {
               "cwd": "/repo/root/packages/a",
+              "depSpecs": [],
               "dependencies": [],
+              "dependents": [],
               "id": "a#build",
               "label": "a - build",
               "packageName": "a",
@@ -180,7 +194,9 @@ describe("JsonReporter", () => {
             "pid": 1,
             "target": {
               "cwd": "/repo/root/packages/b",
+              "depSpecs": [],
               "dependencies": [],
+              "dependents": [],
               "id": "b#build",
               "label": "b - build",
               "packageName": "b",
@@ -196,7 +212,9 @@ describe("JsonReporter", () => {
             "pid": 1,
             "target": {
               "cwd": "/repo/root/packages/a",
+              "depSpecs": [],
               "dependencies": [],
+              "dependents": [],
               "id": "a#test",
               "label": "a - test",
               "packageName": "a",
@@ -212,7 +230,9 @@ describe("JsonReporter", () => {
             "pid": 1,
             "target": {
               "cwd": "/repo/root/packages/b",
+              "depSpecs": [],
               "dependencies": [],
+              "dependents": [],
               "id": "b#build",
               "label": "b - build",
               "packageName": "b",
@@ -236,7 +256,9 @@ describe("JsonReporter", () => {
             "status": "success",
             "target": {
               "cwd": "/repo/root/packages/a",
+              "depSpecs": [],
               "dependencies": [],
+              "dependents": [],
               "id": "a#test",
               "label": "a - test",
               "packageName": "a",
@@ -260,7 +282,9 @@ describe("JsonReporter", () => {
             "status": "success",
             "target": {
               "cwd": "/repo/root/packages/b",
+              "depSpecs": [],
               "dependencies": [],
+              "dependents": [],
               "id": "b#build",
               "label": "b - build",
               "packageName": "b",
@@ -284,7 +308,9 @@ describe("JsonReporter", () => {
             "status": "failed",
             "target": {
               "cwd": "/repo/root/packages/a",
+              "depSpecs": [],
               "dependencies": [],
+              "dependents": [],
               "id": "a#build",
               "label": "a - build",
               "packageName": "a",

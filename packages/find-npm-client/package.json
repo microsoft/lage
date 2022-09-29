@@ -10,8 +10,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "start": "tsc -w --preserveWatchOutput",
-    "test": "jest"
+    "start": "tsc -w --preserveWatchOutput"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "*"

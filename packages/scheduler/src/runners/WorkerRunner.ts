@@ -78,4 +78,6 @@ export class WorkerRunner implements TargetRunner {
     const runFn = typeof scriptModule.default === "function" ? scriptModule.default : scriptModule;
     await runFn({ target });
   }
+
+  cleanup() {}
 }

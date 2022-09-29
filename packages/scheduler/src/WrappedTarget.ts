@@ -2,7 +2,7 @@ import { createInterface } from "readline";
 import { getLageOutputCacheLocation } from "./createCachedOutputTransform";
 import { hrToSeconds } from "./formatDuration";
 import { LogLevel } from "@lage-run/logger";
-import { WorkerPool } from "@lage-run/worker-threads-pool";
+import type { Pool } from "@lage-run/worker-threads-pool";
 import fs from "fs";
 import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
@@ -23,7 +23,7 @@ export interface WrappedTargetOptions {
   shouldResetCache: boolean;
   continueOnError: boolean;
   abortController: AbortController;
-  pool: WorkerPool;
+  pool: Pool;
 }
 
 /**
@@ -75,7 +75,7 @@ export class WrappedTarget implements TargetRun {
       duration: hrToSeconds(this.duration),
     });
 
-    if (!this.options.continueOnError) {
+    if (!this.options.continueOnError && this.options.abortController) {
       this.options.abortController.abort();
     }
   }
@@ -196,12 +196,13 @@ export class WrappedTarget implements TargetRun {
 
       await pool.exec(
         { target },
-        (worker) => {
+        (worker: Worker) => {
           cleanupStreams = this.captureStream(target, worker);
         },
         () => {
           cleanupStreams();
-        }
+        },
+        abortSignal
       );
 
       if (cacheEnabled) {

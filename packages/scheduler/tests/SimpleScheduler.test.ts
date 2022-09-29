@@ -6,6 +6,17 @@ import { SimpleScheduler } from "../src/SimpleScheduler";
 import { getStartTargetId, Target, TargetGraph } from "@lage-run/target-graph";
 import { NoOpRunner } from "../src/runners/NoOpRunner";
 import { TargetRunnerPicker } from "../src/runners/TargetRunnerPicker";
+import { Pool } from "@lage-run/worker-threads-pool";
+
+class InProcPool implements Pool {
+  constructor(private targetRunnerPicker: TargetRunnerPicker) {}
+  exec({ target }: { target: Target }) {
+    return this.targetRunnerPicker.pick(target).run(target);
+  }
+  close() {
+    return Promise.resolve();
+  }
+}
 
 /**
  * Purely manually managed target graph.
@@ -35,7 +46,9 @@ class TestTargetGraph implements TargetGraph {
       packageName,
       task,
       cwd: `packages/${packageName}`,
-      dependencies: [], // this is unused by schedulers
+      dependencies: [],
+      dependents: [],
+      depSpecs: [],
     } as Target);
 
     // auto inject the start target id to each target
@@ -75,16 +88,16 @@ describe("SimpleScheduler", () => {
     const runnerPicker = new TargetRunnerPicker({
       runners: { npmScript: runner },
     });
-
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 1,
       cacheProvider,
       hasher,
-      runnerPicker,
       continueOnError: false,
       shouldCache: true,
       shouldResetCache: false,
+      pool: new InProcPool(runnerPicker),
+      maxWorkersPerTask: new Map(),
     });
 
     // these would normally come from the CLI
@@ -92,7 +105,7 @@ describe("SimpleScheduler", () => {
 
     await scheduler.run(root, targetGraph);
 
-    expect(scheduler.wrappedTargets).toMatchInlineSnapshot(`
+    expect(scheduler.targetRuns).toMatchInlineSnapshot(`
       Map {
         "__start" => {
           "status": "success",
@@ -151,7 +164,8 @@ describe("SimpleScheduler", () => {
       concurrency: 4,
       cacheProvider,
       hasher,
-      runnerPicker,
+      pool: new InProcPool(runnerPicker),
+      maxWorkersPerTask: new Map(),
       continueOnError: false,
       shouldCache: true,
       shouldResetCache: false,
@@ -169,7 +183,7 @@ describe("SimpleScheduler", () => {
 
     await scheduler.run(root, targetGraph);
 
-    const wrappedTargets = scheduler.wrappedTargets;
+    const wrappedTargets = scheduler.targetRuns;
     expect(wrappedTargets.size).toBe(6);
     expect(wrappedTargets.get("d#build")!.status).not.toBe("success");
 
@@ -217,10 +231,11 @@ describe("SimpleScheduler", () => {
       concurrency: 4,
       cacheProvider,
       hasher,
-      runnerPicker,
       continueOnError: true,
       shouldCache: true,
       shouldResetCache: false,
+      maxWorkersPerTask: new Map(),
+      pool: new InProcPool(runnerPicker),
     });
 
     // these would normally come from the CLI
@@ -237,7 +252,7 @@ describe("SimpleScheduler", () => {
 
     await scheduler.run(root, targetGraph);
 
-    const wrappedTargets = scheduler.wrappedTargets;
+    const wrappedTargets = scheduler.targetRuns;
     expect(wrappedTargets.get("d#build")!.status).not.toBe("success");
 
     expect([...wrappedTargets.values()].some((t) => t.status === "aborted")).toBeFalsy();
@@ -284,7 +299,8 @@ describe("SimpleScheduler", () => {
       concurrency: 4,
       cacheProvider,
       hasher,
-      runnerPicker,
+      pool: new InProcPool(runnerPicker),
+      maxWorkersPerTask: new Map(),
       continueOnError: true,
       shouldCache: true,
       shouldResetCache: false,

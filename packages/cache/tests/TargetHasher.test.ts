@@ -27,7 +27,9 @@ describe("BackfillCacheProvider", () => {
     const target: Target = {
       id: "a",
       cwd: path.join(monorepo.root, "packages/a"),
+      depSpecs: [],
       dependencies: [],
+      dependents: [],
       task: "command",
       label: "a - command",
     };

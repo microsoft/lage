@@ -2,7 +2,7 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { readFile } from "fs/promises";
 import { spawn } from "child_process";
-import type { TargetCaptureStreams, TargetRunner } from "../types/TargetRunner";
+import type { TargetRunner } from "../types/TargetRunner";
 import type { AbortSignal } from "abort-controller";
 import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";

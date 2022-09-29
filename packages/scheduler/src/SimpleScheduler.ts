@@ -2,7 +2,6 @@ import { AbortController } from "abort-controller";
 import { categorizeTargetRuns } from "./categorizeTargetRuns";
 import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
 import { WrappedTarget } from "./WrappedTarget";
-import os from "node:os";
 
 import type { AbortSignal } from "abort-controller";
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
@@ -10,7 +9,7 @@ import type { Logger } from "@lage-run/logger";
 import type { SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "./types/SchedulerRunSummary";
 import type { TargetGraph, Target } from "@lage-run/target-graph";
 import type { TargetScheduler } from "./types/TargetScheduler";
-import type { WorkerPool } from "@lage-run/worker-threads-pool";
+import type { Pool } from "@lage-run/worker-threads-pool";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -20,7 +19,7 @@ export interface SimpleSchedulerOptions {
   hasher: TargetHasher;
   shouldCache: boolean;
   shouldResetCache: boolean;
-  pool: WorkerPool;
+  pool: Pool;
   maxWorkersPerTask: Map<string, number>;
 }
 

@@ -18,14 +18,6 @@ describe("WorkerRunner", () => {
 
     const runner = new WorkerRunner({
       logger,
-      workerTargetConfigs: {
-        work: {
-          options: {
-            worker: workerFixture,
-            maxWorkers: 2,
-          },
-        } as TargetConfig,
-      },
     });
 
     const target1 = {
@@ -34,6 +26,8 @@ describe("WorkerRunner", () => {
       packageName: "a",
       cwd: "/repo/dummy/cwd",
       dependencies: [],
+      dependents: [],
+      depSpecs: [],
       label: "a - work",
       type: "worker",
     } as Target;
@@ -44,6 +38,8 @@ describe("WorkerRunner", () => {
       packageName: "b",
       cwd: "/repo/dummy/cwd",
       dependencies: [],
+      dependents: [],
+      depSpecs: [],
       label: "b - work",
       type: "worker",
     } as Target;

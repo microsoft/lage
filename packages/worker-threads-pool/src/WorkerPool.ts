@@ -8,6 +8,8 @@ import { EventEmitter } from "node:events";
 import { Worker } from "node:worker_threads";
 import os from "node:os";
 import type { WorkerOptions } from "node:worker_threads";
+import { Pool } from "./Pool";
+import type { AbortSignal } from "abort-controller";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
@@ -22,7 +24,6 @@ class WorkerPoolTaskInfo extends AsyncResource {
       worker: Worker;
     }
   ) {
-    
     super("WorkerPoolTaskInfo");
 
     if (options.setup) {
@@ -61,7 +62,7 @@ interface QueueItem {
   reject: (reason: unknown) => void;
 }
 
-export class WorkerPool extends EventEmitter {
+export class WorkerPool extends EventEmitter implements Pool {
   workers: Worker[] = [];
   freeWorkers: Worker[] = [];
   queue: QueueItem[] = [];
@@ -126,14 +127,14 @@ export class WorkerPool extends EventEmitter {
     this.emit(kWorkerFreedEvent);
   }
 
-  exec(task: unknown, setup?: (worker: Worker) => void, cleanup?: (worker: Worker) => void) {
+  exec(task: unknown, setup?: (worker: Worker) => void, cleanup?: (worker: Worker) => void, abortSignal?: AbortSignal) {
     return new Promise((resolve, reject) => {
       this.queue.push({ task, resolve, reject, cleanup, setup });
-      this._exec();
+      this._exec(abortSignal);
     });
   }
 
-  _exec() {
+  _exec(abortSignal?: AbortSignal) {
     if (this.freeWorkers.length > 0) {
       const worker = this.freeWorkers.pop();
       const work = this.queue.shift();
