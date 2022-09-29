@@ -133,7 +133,7 @@ export class WrappedTarget implements TargetRun {
           data.replace("##ENDOFMESSAGE##", "");
           
           console.log("OFF!");
-          
+
           resolve();
         }
 
@@ -192,21 +192,11 @@ export class WrappedTarget implements TargetRun {
         return;
       }
 
-      /**
-       * TargetRunner should run() a target. The promise resolves if successful, or rejects otherwise (aborted or failed).
-       */
-      let cleanupStreams = () => {};
-
-      await pool.exec(
+     await pool.exec(
         { target },
-        (worker: Worker) => {
-          cleanupStreams = this.captureStream(target, worker);
-        },
-        () => {},
-        abortSignal
+        (worker: Worker) => {},
+        () => {}
       );
-
-      await cleanupStreams();
 
       if (cacheEnabled) {
         await this.saveCache(hash);

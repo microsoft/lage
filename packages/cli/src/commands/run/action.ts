@@ -5,13 +5,13 @@ import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getMaxWorkersPerTask } from "../../config/getMaxWorkersPerTask";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { initializeReporters } from "../../reporters/initialize";
 import { isRunningFromCI } from "../isRunningFromCI";
 import { SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import { WorkerPool } from "@lage-run/worker-threads-pool";
 import createLogger from "@lage-run/logger";
-import type { ReporterInitOptions } from "../../types/LoggerOptions";
+import { initializeReporters } from "@lage-run/reporters";
+import type { ReporterInitOptions } from "@lage-run/reporters";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
