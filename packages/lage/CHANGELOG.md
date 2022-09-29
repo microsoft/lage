@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 28 Sep 2022 16:37:28 GMT and should not be manually modified.
+This log was last generated on Thu, 29 Sep 2022 21:54:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.9.1
+
+Thu, 29 Sep 2022 21:54:45 GMT
+
+### Patches
+
+- Update dependency workspace-tools to ^0.28.0 (email not defined)
 
 ## 1.9.0
 
