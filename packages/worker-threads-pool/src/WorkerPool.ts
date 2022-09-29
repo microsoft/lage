@@ -9,7 +9,6 @@ import { Worker } from "node:worker_threads";
 import os from "node:os";
 import type { WorkerOptions } from "node:worker_threads";
 import { Pool } from "./Pool";
-import type { AbortSignal } from "abort-controller";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");

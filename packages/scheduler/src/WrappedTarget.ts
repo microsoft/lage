@@ -125,18 +125,30 @@ export class WrappedTarget implements TargetRun {
 
     const stdout = worker.stdout;
     const stderr = worker.stderr;
+    const releaseStreamPromise = new Promise<void>((resolve) => {
+      const onData = (data: string) => {
+        if (data.includes("##ENDOFMESSAGE##")) {
+          stdout.off("data", onData);
+          stderr.off("data", onData);
+          data.replace("##ENDOFMESSAGE##", "");
+          
+          console.log("OFF!");
+          
+          resolve();
+        }
 
-    const onData = (data: string) => logger.log(LogLevel.info, data, { target });
+        logger.log(LogLevel.info, data, { target });
+      };
 
-    stdout.setEncoding("utf-8");
-    stdout.on("data", onData);
+      stdout.setEncoding("utf-8");
+      stdout.on("data", onData);
 
-    stderr.setEncoding("utf-8");
-    stderr.on("data", onData);
+      stderr.setEncoding("utf-8");
+      stderr.on("data", onData);
+    });
 
     return () => {
-      stdout.off("data", onData);
-      stderr.off("data", onData);
+      return releaseStreamPromise;
     };
   }
 
@@ -183,18 +195,18 @@ export class WrappedTarget implements TargetRun {
       /**
        * TargetRunner should run() a target. The promise resolves if successful, or rejects otherwise (aborted or failed).
        */
-      let cleanupStreams: () => void;
+      let cleanupStreams = () => {};
 
       await pool.exec(
         { target },
         (worker: Worker) => {
           cleanupStreams = this.captureStream(target, worker);
         },
-        () => {
-          return cleanupStreams();
-        },
+        () => {},
         abortSignal
       );
+
+      await cleanupStreams();
 
       if (cacheEnabled) {
         await this.saveCache(hash);
