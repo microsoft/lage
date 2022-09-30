@@ -6,7 +6,7 @@ import { logger } from "../logger";
 
 export type RemoteFallbackCacheProviderOptions = Pick<
   CacheOptions,
-  "internalCacheFolder" | "cacheStorageConfig" | "writeRemoteCache" | "skipLocalCache"
+  "internalCacheFolder" | "cacheStorageConfig" | "writeRemoteCache" | "skipLocalCache" | "incrementalCaching"
 >;
 
 /**
@@ -29,7 +29,8 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
       },
       cacheOptions.internalCacheFolder,
       logger,
-      cwd
+      cwd,
+      cacheOptions.incrementalCaching
     );
 
     // Remote providers should have a provider name of something other than "local" OR it is
@@ -45,7 +46,8 @@ export class RemoteFallbackCacheProvider implements ICacheStorage {
         cacheOptions.cacheStorageConfig,
         cacheOptions.internalCacheFolder,
         logger,
-        cwd
+        cwd,
+        cacheOptions.incrementalCaching
       );
     }
   }
