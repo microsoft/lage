@@ -1,10 +1,6 @@
-import { LogLevel } from "@lage-run/logger";
 import type { AbortSignal } from "abort-controller";
-import type { Logger } from "@lage-run/logger";
-import type { Target, TargetConfig } from "@lage-run/target-graph";
+import type { Target } from "@lage-run/target-graph";
 import type { TargetRunner } from "../types/TargetRunner";
-
-export interface WorkerRunnerOptions {}
 
 /**
  * Creates a workerpool per target task definition of "type: worker"
@@ -32,15 +28,19 @@ export interface WorkerRunnerOptions {}
  *
  * ```js
  * // worker.js
- * module.exports = async function lint({ target }) {
- *  // lint the target!
+ * module.exports = async function lint({ target, abortSignal }) {
+ *  if (abortSignal.aborted) {
+ *    return;
+ *  }
+ * 
+ *  // Do work here - but be sure to have a way to abort via the `abortSignal`
  * }
  * ```
  */
 export class WorkerRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
 
-  constructor(private options: WorkerRunnerOptions = {}) {}
+  constructor() {}
 
   async run(target: Target, abortSignal?: AbortSignal) {
     if (!target.options?.worker) {
@@ -50,7 +50,7 @@ export class WorkerRunner implements TargetRunner {
     const scriptFile = target.options?.worker ?? target.options?.script;
     const scriptModule = require(scriptFile);
     const runFn = typeof scriptModule.default === "function" ? scriptModule.default : scriptModule;
-    await runFn({ target });
+    await runFn({ target, abortSignal });
   }
 
   cleanup() {}

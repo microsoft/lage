@@ -3,6 +3,7 @@ import { getPackageAndTask } from "@lage-run/target-graph";
 import { createInterface } from "readline";
 import { EventEmitter } from "events";
 import { Worker } from "worker_threads";
+import { END_WORKER_STREAM_MARKER, START_WORKER_STREAM_MARKER } from "@lage-run/worker-threads-pool/src";
 
 export const captureStreamsEvents = new EventEmitter();
 
@@ -24,12 +25,12 @@ export function captureWorkerStdioStreams(logger: Logger, worker: Worker) {
     let lines: string[] = [];
 
     return (line: string) => {
-      if (line.includes(`## WORKER:START:`)) {
-        targetId = line.replace(`## WORKER:START:`, "");
+      if (line.includes(START_WORKER_STREAM_MARKER)) {
+        targetId = line.replace(START_WORKER_STREAM_MARKER, "");
         lines = [];
         captureStreamsEvents.emit("start", outputType, targetId);
-      } else if (line.includes(`## WORKER:END:`)) {
-        targetId = line.replace(`## WORKER:END:`, "");
+      } else if (line.includes(END_WORKER_STREAM_MARKER)) {
+        targetId = line.replace(END_WORKER_STREAM_MARKER, "");
         captureStreamsEvents.emit("end", outputType, targetId, lines);
       } else {
         const { packageName, task } = getPackageAndTask(targetId);
