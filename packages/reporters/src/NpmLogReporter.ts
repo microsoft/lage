@@ -227,6 +227,6 @@ export class NpmLogReporter implements Reporter {
     const allCacheHits = [...targetRuns.values()].filter((run) => !run.target.hidden).length === skipped.length;
     const allCacheHitText = allCacheHits ? gradient({ r: 237, g: 178, b: 77 }, "cyan")(`All targets skipped!`) : "";
 
-    this.print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
+    this.print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}\n`);
   }
 }

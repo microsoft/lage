@@ -6,10 +6,7 @@ import type { TargetRunner } from "../types/TargetRunner";
 import type { AbortSignal } from "abort-controller";
 import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";
-import { Logger } from "@lage-run/logger";
-
 export interface NpmScriptRunnerOptions {
-  logger: Logger;
   taskArgs: string[];
   nodeOptions: string;
   npmCmd: string;
@@ -84,7 +81,8 @@ export class NpmScriptRunner implements TargetRunner {
         abortSignal.removeEventListener("abort", abortSignalHandler);
         if (childProcess && !childProcess.killed) {
           const pid = childProcess.pid;
-          logger.verbose(`Abort signal detected, attempting to killing process id ${pid}`, { target, pid });
+
+          process.stdout.write(`Abort signal detected, attempting to killing process id ${pid}`);
 
           childProcess.kill("SIGTERM");
 
@@ -148,7 +146,7 @@ export class NpmScriptRunner implements TargetRunner {
       };
 
       const { pid } = childProcess;
-      logger.verbose(`Running ${[npmCmd, ...npmRunArgs].join(" ")}, pid: ${pid}`, { target, pid });
+      process.stdout.write(`Running ${[npmCmd, ...npmRunArgs].join(" ")}, pid: ${pid}\n`);
 
       let stdout = childProcess.stdout!;
       let stderr = childProcess.stderr!;

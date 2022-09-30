@@ -16,24 +16,16 @@ interface TargetWorkerDataOptions extends ReporterInitOptions {
 }
 
 function setup(options: TargetWorkerDataOptions) {
-  const { taskArgs, nodeArg, npmClient, logLevel } = options;
-
-  const logger = createLogger();
-  
-
-  // initializeReporters(logger, options);
+  const { taskArgs, nodeArg, npmClient } = options;
 
   const runners: Record<string, TargetRunner> = {
     npmScript: new NpmScriptRunner({
-      logger,
       nodeOptions: nodeArg,
       taskArgs,
       npmCmd: findNpmClient(npmClient),
     }),
 
-    worker: new WorkerRunner({
-      logger,
-    }),
+    worker: new WorkerRunner({}),
   };
 
   const runnerPicker = new TargetRunnerPicker({
