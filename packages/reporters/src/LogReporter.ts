@@ -4,11 +4,13 @@ import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
 import { LogLevel } from "@lage-run/logger";
 import ansiRegex from "ansi-regex";
 import chalk from "chalk";
+import type { Chalk } from "chalk";
 import gradient from "gradient-string";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler";
 import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
 import type { Writable } from "stream";
+import crypto from "crypto";
 
 const colors = {
   [LogLevel.info]: chalk.white,
@@ -23,10 +25,39 @@ const colors = {
   warn: chalk.yellow,
 };
 
+// Monokai color scheme
+const pkgColors: Chalk[] = [
+  chalk.hex("#e5b567"),
+  chalk.hex("#b4d273"),
+  chalk.hex("#e87d3e"),
+  chalk.hex("#9e86c8"),
+  chalk.hex("#b05279"),
+  chalk.hex("#6c99bb"),
+];
+
+function hashStringToNumber(str: string): number {
+  const hash = crypto.createHash("md5");
+  hash.update(str);
+  const hex = hash.digest("hex").substring(0, 6);
+  return parseInt(hex, 16);
+}
+
+const pkgNameToIndexInPkgColorArray = new Map<string, number>();
+
+function getColorForPkg(pkg: string): Chalk {
+  if (!pkgNameToIndexInPkgColorArray.has(pkg)) {
+    const index = hashStringToNumber(pkg) % pkgColors.length;
+    pkgNameToIndexInPkgColorArray.set(pkg, index);
+  }
+
+  return pkgColors[pkgNameToIndexInPkgColorArray.get(pkg)!];
+}
+
 const stripAnsiRegex = ansiRegex();
 
 function getTaskLogPrefix(pkg: string, task: string) {
-  return `${colors.pkg(pkg)} ${colors.task(task)}`;
+  const pkgColor = getColorForPkg(pkg);
+  return `${pkgColor(pkg)} ${colors.task(task)}`;
 }
 
 function stripAnsi(message: string) {
@@ -44,7 +75,7 @@ function normalize(prefixOrMessage: string, message?: string) {
   }
 }
 
-export class NpmLogReporter implements Reporter {
+export class LogReporter implements Reporter {
   logStream: Writable = process.stdout;
   private logEntries = new Map<string, LogEntry[]>();
   readonly groupedEntries = new Map<string, LogEntry[]>();
@@ -110,7 +141,6 @@ export class NpmLogReporter implements Reporter {
 
     if (isTargetStatusLogEntry(data)) {
       const { hash, duration } = data;
-
       switch (data.status) {
         case "running":
           return this.printEntry(entry, colorFn(`${colors.ok("➔")} start`));
