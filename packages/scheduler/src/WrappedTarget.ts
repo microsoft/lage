@@ -6,12 +6,13 @@ import type { Pool } from "@lage-run/worker-threads-pool";
 import fs from "fs";
 import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
-import type { Logger } from "@lage-run/logger";
-import type { Target } from "@lage-run/target-graph";
+import { Logger } from "@lage-run/logger";
+import { getPackageAndTask, Target } from "@lage-run/target-graph";
 import type { TargetHasher } from "@lage-run/cache";
 import type { TargetRun } from "./types/TargetRun";
 import type { TargetStatus } from "./types/TargetStatus";
 import type { Worker } from "worker_threads";
+import EventEmitter from "events";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -120,20 +121,7 @@ export class WrappedTarget implements TargetRun {
     await cacheProvider.put(hash, target);
   }
 
-  // captureStream(target: Target, worker: Worker) {
-  //   const stdout = worker.stdout;
-  //   const stderr = worker.stderr;
-
-  //   stdout.pipe(process.stdout);
-  //   stderr.pipe(process.stderr);
-
-  //   return () => {
-  //     stdout.unpipe(process.stdout);
-  //     stderr.unpipe(process.stderr);
-  //   };
-  // }
-
-  async run() {
+  async run(captureStreamsEvents?: EventEmitter) {
     const { target, logger, shouldCache, abortController, pool } = this.options;
 
     this.onStart();
@@ -143,6 +131,19 @@ export class WrappedTarget implements TargetRun {
       this.onAbort();
       return;
     }
+
+    const targetStreamPromise = captureStreamsEvents
+      ? new Promise<void>((resolve) => {
+          const onEnd = function (outputType: string, targetId: string) {
+            if (targetId === target.id && outputType === "stdout") {
+              captureStreamsEvents.off("end", onEnd);
+              resolve();
+            }
+          };
+
+          captureStreamsEvents.on("end", onEnd);
+        })
+      : Promise.resolve();
 
     try {
       const { hash, cacheHit } = await this.getCache();
@@ -173,24 +174,16 @@ export class WrappedTarget implements TargetRun {
         return;
       }
 
-      let releaseStreams = () => {};
-
-      await pool.exec(
-        { target },
-        (worker: Worker) => {
-          //releaseStreams = this.captureStream(target, worker);
-        },
-        () => {
-          // releaseStreams();
-        }
-      );
+      await pool.exec({ target });
 
       if (cacheEnabled) {
         await this.saveCache(hash);
       }
 
+      await targetStreamPromise;
       this.onComplete();
     } catch (e) {
+      await targetStreamPromise;
       if (abortSignal.aborted) {
         this.onAbort();
       } else {

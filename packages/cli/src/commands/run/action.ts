@@ -7,11 +7,14 @@ import { getMaxWorkersPerTask } from "../../config/getMaxWorkersPerTask";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { isRunningFromCI } from "../isRunningFromCI";
 import { SimpleScheduler } from "@lage-run/scheduler";
-import { TargetGraphBuilder } from "@lage-run/target-graph";
+import { getPackageAndTask, Target, TargetGraphBuilder } from "@lage-run/target-graph";
 import { WorkerPool } from "@lage-run/worker-threads-pool";
-import createLogger from "@lage-run/logger";
+import createLogger, { Logger, LogLevel, Reporter } from "@lage-run/logger";
 import { initializeReporters } from "@lage-run/reporters";
 import type { ReporterInitOptions } from "@lage-run/reporters";
+import { captureWorkerStdioStreams, captureStreamsEvents } from "./captureWorkerStdioStreams";
+
+import { kWorkerAddedEvent } from "@lage-run/worker-threads-pool";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
@@ -126,6 +129,10 @@ export async function runAction(options: RunOptions, command: Command) {
     },
   });
 
+  pool.on(kWorkerAddedEvent, (worker) => {
+    captureWorkerStdioStreams(logger, worker);
+  });
+
   const scheduler = new SimpleScheduler({
     logger,
     concurrency: options.concurrency,
@@ -136,6 +143,7 @@ export async function runAction(options: RunOptions, command: Command) {
     shouldResetCache: options.resetCache,
     pool,
     maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}),
+    captureStreamsEvents
   });
 
   const summary = await scheduler.run(root, targetGraph);

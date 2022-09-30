@@ -12,6 +12,7 @@ import { Pool } from "./Pool";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
+export const kWorkerAddedEvent = Symbol("kWorkerAddedEvent");
 
 class WorkerPoolTaskInfo extends AsyncResource {
   constructor(
@@ -68,15 +69,10 @@ export class WorkerPool extends EventEmitter implements Pool {
 
   constructor(private options: WorkerPoolOptions) {
     super();
-    const { maxWorkers = os.cpus().length - 1 } = options;
 
     this.workers = [];
     this.freeWorkers = [];
     this.queue = [];
-
-    for (let i = 0; i < maxWorkers; i++) {
-      this.addNewWorker();
-    }
 
     // Any time the kWorkerFreedEvent is emitted, dispatch
     // the next task pending in the queue, if any.
@@ -87,17 +83,19 @@ export class WorkerPool extends EventEmitter implements Pool {
     });
   }
 
+  ensureWorkers() {
+    if (this.workers.length === 0) {
+      const { maxWorkers = os.cpus().length - 1 } = this.options;
+
+      for (let i = 0; i < maxWorkers; i++) {
+        this.addNewWorker();
+      }
+    }
+  }
+
   addNewWorker() {
     const { script, workerOptions } = this.options;
     const worker = new Worker(script, workerOptions);
-
-    if (worker.stdout) {
-      worker.stdout.pipe(process.stdout);
-    }
-
-    if (worker.stderr) {
-      worker.stderr.pipe(process.stderr);
-    }
 
     const msgHandler = (data) => {
       // In case of success: Call the callback that was passed to `runTask`,
@@ -130,11 +128,14 @@ export class WorkerPool extends EventEmitter implements Pool {
     worker.on("error", errHandler);
 
     this.workers.push(worker);
+    this.emit(kWorkerAddedEvent, worker);
+
     this.freeWorkers.push(worker);
     this.emit(kWorkerFreedEvent);
   }
 
   exec(task: unknown, setup?: (worker: Worker) => void, cleanup?: (worker: Worker) => void) {
+    this.ensureWorkers();
     return new Promise((resolve, reject) => {
       this.queue.push({ task, resolve, reject, cleanup, setup });
       this._exec();

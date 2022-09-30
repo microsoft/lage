@@ -19,8 +19,9 @@ function setup(options: TargetWorkerDataOptions) {
   const { taskArgs, nodeArg, npmClient, logLevel } = options;
 
   const logger = createLogger();
+  
 
-  initializeReporters(logger, options);
+  // initializeReporters(logger, options);
 
   const runners: Record<string, TargetRunner> = {
     npmScript: new NpmScriptRunner({
