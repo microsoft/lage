@@ -4,9 +4,9 @@ import { Logger } from "@lage-run/logger";
 import { LogLevel } from "@lage-run/logger";
 import { Target } from "@lage-run/target-graph";
 import { writeFile, mkdir } from "fs/promises";
-import EventEmitter from "events";
+
 import fs from "fs";
-import path from "path";
+
 import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
 import type { Pool } from "@lage-run/worker-threads-pool";
@@ -121,7 +121,7 @@ export class WrappedTarget implements TargetRun {
     await cacheProvider.put(hash, target);
   }
 
-  async run(captureStreamsEvents?: EventEmitter) {
+  async run() {
     const { target, logger, shouldCache, abortController, pool } = this.options;
 
     this.onStart();
@@ -132,24 +132,24 @@ export class WrappedTarget implements TargetRun {
       return;
     }
 
-    const targetStreamPromise = captureStreamsEvents
-      ? new Promise<string>((resolve) => {
-          const ended = { stdout: [], stderr: [] };
+    // const targetStreamPromise = captureStreamsEvents
+    //   ? new Promise<string>((resolve) => {
+    //       const ended = { stdout: [], stderr: [] };
 
-          const onEnd = function (outputType: string, targetId: string, lines: string[]) {
-            if (targetId === target.id) {
-              ended[outputType] = lines;
+    //       const onEnd = function (outputType: string, targetId: string, lines: string[]) {
+    //         if (targetId === target.id) {
+    //           ended[outputType] = lines;
 
-              if (ended.stderr && ended.stdout) {
-                captureStreamsEvents.off("end", onEnd);
-                resolve(ended.stdout.concat(ended.stderr).join("\n"));
-              }
-            }
-          };
+    //           if (ended.stderr && ended.stdout) {
+    //             captureStreamsEvents.off("end", onEnd);
+    //             resolve(ended.stdout.concat(ended.stderr).join("\n"));
+    //           }
+    //         }
+    //       };
 
-          captureStreamsEvents.on("end", onEnd);
-        })
-      : Promise.resolve("");
+    //       captureStreamsEvents.on("end", onEnd);
+    //     })
+    //   : Promise.resolve("");
 
     try {
       const { hash, cacheHit } = await this.getCache();
@@ -180,26 +180,25 @@ export class WrappedTarget implements TargetRun {
         return;
       }
 
-      await pool.exec({ target });
+      let releaseStdout: any;
+      let releaseStderr: any;
+
+      await pool.exec({ target }, (_worker, stdout, stderr) => {
+        releaseStdout = logger.stream(LogLevel.verbose, stdout, { target });
+        releaseStderr = logger.stream(LogLevel.verbose, stderr, { target });
+      }, () => {
+        releaseStdout();
+        releaseStderr();
+      });
 
       if (cacheEnabled) {
         await this.saveCache(hash);
       }
 
-      const output = await targetStreamPromise;
-
-      if (cacheEnabled) {
-        const cachedOutputFile = getLageOutputCacheLocation(this.target, hash ?? "");
-        if (!fs.existsSync(cachedOutputFile)) {
-          await mkdir(path.dirname(cachedOutputFile), { recursive: true });
-          await writeFile(cachedOutputFile, output);
-        }
-      }
-
       this.onComplete();
     } catch (e) {
       // in case of error, we would still want to wait until the targetStreamPromise is resolved
-      await targetStreamPromise;
+      // await targetStreamPromise;
 
       if (abortSignal.aborted) {
         this.onAbort();

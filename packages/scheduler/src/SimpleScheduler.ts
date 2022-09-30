@@ -10,7 +10,6 @@ import type { SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from 
 import type { TargetGraph, Target } from "@lage-run/target-graph";
 import type { TargetScheduler } from "./types/TargetScheduler";
 import type { Pool } from "@lage-run/worker-threads-pool";
-import EventEmitter from "events";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -22,7 +21,6 @@ export interface SimpleSchedulerOptions {
   shouldResetCache: boolean;
   pool: Pool;
   maxWorkersPerTask: Map<string, number>;
-  captureStreamsEvents: EventEmitter;
 }
 
 /**
@@ -199,7 +197,6 @@ export class SimpleScheduler implements TargetScheduler {
   }
 
   async scheduleReadyTargets() {
-    const { captureStreamsEvents } = this.options;
 
     if (this.isAllDone()) {
       return;
@@ -210,7 +207,7 @@ export class SimpleScheduler implements TargetScheduler {
     for (const nextTarget of this.getReadyTargets()) {
       promises.push(
         nextTarget
-          .run(captureStreamsEvents)
+          .run()
           .then(() => {
             return this.scheduleReadyTargets();
           })

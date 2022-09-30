@@ -9,15 +9,20 @@ import { Worker } from "node:worker_threads";
 import os from "node:os";
 import type { WorkerOptions } from "node:worker_threads";
 import { Pool } from "./Pool";
+import { createInterface } from "node:readline";
+import { END_WORKER_STREAM_MARKER, START_WORKER_STREAM_MARKER } from "./stdioStreamMarkers";
+import { createFilteredStreamTransform } from "./createFilteredStreamTransform";
+import { Readable } from "node:stream";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
-export const kWorkerAddedEvent = Symbol("kWorkerAddedEvent");
+const kWorkerCapturedStreamEvents = Symbol("kWorkerCapturedStreamEvents");
+const kWorkerCapturedStreamPromise = Symbol("kWorkerCapturedStreamPromise");
 
 class WorkerPoolTaskInfo extends AsyncResource {
   constructor(
     private options: {
-      setup: (worker: Worker) => void;
+      setup: (worker: Worker, stdout: Readable, stderr: Readable) => void;
       cleanup: (worker: Worker) => void;
       resolve: (value: unknown) => void;
       reject: (reason: unknown) => void;
@@ -27,7 +32,13 @@ class WorkerPoolTaskInfo extends AsyncResource {
     super("WorkerPoolTaskInfo");
 
     if (options.setup) {
-      this.runInAsyncScope(options.setup, null, options.worker);
+      this.runInAsyncScope(
+        options.setup,
+        null,
+        options.worker,
+        options.worker.stdout.pipe(createFilteredStreamTransform()),
+        options.worker.stderr.pipe(createFilteredStreamTransform())
+      );
     }
   }
 
@@ -93,42 +104,86 @@ export class WorkerPool extends EventEmitter implements Pool {
     }
   }
 
+  captureWorkerStdioStreams(worker: Worker) {
+    const capturedStreamEvent = new EventEmitter();
+    worker[kWorkerCapturedStreamEvents] = capturedStreamEvent;
+
+    const stdout = worker.stdout;
+    const stdoutInterface = createInterface({
+      input: stdout,
+      crlfDelay: Infinity,
+    });
+
+    const stderr = worker.stderr;
+    const stderrInterface = createInterface({
+      input: stderr,
+      crlfDelay: Infinity,
+    });
+
+    const lineHandlerFactory = (outputType: string) => {
+      let lines: string[] = [];
+
+      return (line: string) => {
+        if (line.includes(START_WORKER_STREAM_MARKER)) {
+          lines = [];
+        } else if (line.includes(END_WORKER_STREAM_MARKER)) {
+          worker[kWorkerCapturedStreamEvents].emit("end", lines);
+        } else {
+          lines.push(line);
+        }
+      };
+    };
+
+    const stdoutLineHandler = lineHandlerFactory("stdout");
+    const stderrLineHandler = lineHandlerFactory("stderr");
+
+    stdoutInterface.on("line", stdoutLineHandler);
+    stderrInterface.on("line", stderrLineHandler);
+  }
+
   addNewWorker() {
     const { script, workerOptions } = this.options;
-    const worker = new Worker(script, workerOptions);
+    const worker = new Worker(script, { ...workerOptions, stdout: true, stderr: true });
+
+    const capturedStreamEvent = new EventEmitter();
+    worker[kWorkerCapturedStreamEvents] = capturedStreamEvent;
+    this.captureWorkerStdioStreams(worker);
 
     const msgHandler = (data) => {
       // In case of success: Call the callback that was passed to `runTask`,
       // remove the `TaskInfo` associated with the Worker, and mark it as free
       // again.
-      const { err, results } = data;
+      worker[kWorkerCapturedStreamPromise].then(() => {
+        const { err, results } = data;
 
-      worker[kTaskInfo].done(err, results);
-      worker[kTaskInfo] = null;
-      this.freeWorkers.push(worker);
-      this.emit(kWorkerFreedEvent);
+        worker[kTaskInfo].done(err, results);
+        worker[kTaskInfo] = null;
+        this.freeWorkers.push(worker);
+        this.emit(kWorkerFreedEvent);
+      });
     };
 
     worker.on("message", msgHandler);
 
     const errHandler = (err) => {
-      // In case of an uncaught exception: Call the callback that was passed to
-      // `runTask` with the error.
-      if (worker[kTaskInfo]) {
-        worker[kTaskInfo].done(err, null);
-      }
+      worker[kWorkerCapturedStreamPromise].then(() => {
+        // In case of an uncaught exception: Call the callback that was passed to
+        // `runTask` with the error.
+        if (worker[kTaskInfo]) {
+          worker[kTaskInfo].done(err, null);
+        }
 
-      this.emit("error", err);
-      // Remove the worker from the list and start a new Worker to replace the
-      // current one.
-      this.workers.splice(this.workers.indexOf(worker), 1);
-      this.addNewWorker();
+        this.emit("error", err);
+        // Remove the worker from the list and start a new Worker to replace the
+        // current one.
+        this.workers.splice(this.workers.indexOf(worker), 1);
+        this.addNewWorker();
+      });
     };
 
     worker.on("error", errHandler);
 
     this.workers.push(worker);
-    this.emit(kWorkerAddedEvent, worker);
 
     this.freeWorkers.push(worker);
     this.emit(kWorkerFreedEvent);
@@ -150,6 +205,11 @@ export class WorkerPool extends EventEmitter implements Pool {
 
       if (worker) {
         worker[kTaskInfo] = new WorkerPoolTaskInfo({ cleanup, resolve, reject, worker, setup });
+
+        worker[kWorkerCapturedStreamPromise] = new Promise((resolve) => {
+          worker[kWorkerCapturedStreamEvents].on("end", resolve);
+        });
+
         worker.postMessage(task);
       }
     }
