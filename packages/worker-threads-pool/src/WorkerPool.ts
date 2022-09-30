@@ -66,7 +66,7 @@ interface WorkerPoolOptions {
 }
 
 interface QueueItem {
-  setup?: (worker: Worker) => void;
+  setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void;
   cleanup?: (worker: Worker) => void;
   task: unknown;
   resolve: (value?: unknown) => void;
@@ -189,7 +189,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     this.emit(kWorkerFreedEvent);
   }
 
-  exec(task: unknown, setup?: (worker: Worker) => void, cleanup?: (worker: Worker) => void) {
+  exec(task: unknown, setup?: (worker?: Worker, stdout?: Readable, stderr?: Readable) => void, cleanup?: (worker: Worker) => void) {
     this.ensureWorkers();
     return new Promise((resolve, reject) => {
       this.queue.push({ task, resolve, reject, cleanup, setup });
