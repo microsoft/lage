@@ -1,7 +1,7 @@
 import type { Target } from "@lage-run/target-graph";
-import { Transform } from "node:stream";
-import fs from "node:fs";
-import path from "node:path";
+import { Transform } from "stream";
+import fs from "fs";
+import path from "path";
 
 export function getLageOutputCacheLocation(target: Target, hash: string) {
   const outputPath = path.join(target.cwd, "node_modules/.cache/lage/output/");

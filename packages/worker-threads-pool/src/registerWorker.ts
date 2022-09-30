@@ -1,4 +1,4 @@
-import { parentPort } from "node:worker_threads";
+import { parentPort } from "worker_threads";
 
 export function registerWorker(fn: (data: any) => Promise<void> | void) {
   parentPort?.on("message", async (task) => {
