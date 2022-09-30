@@ -2,6 +2,45 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 29 Sep 2022 21:54:45 GMT",
+      "tag": "@lage-run/cli_v0.3.10",
+      "version": "0.3.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "96f43fa9da1e4e8d43e3e1d213b25e344bd35de6",
+            "comment": "Update dependency workspace-tools to ^0.28.0"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.3.6",
+            "commit": "8fc978626144db852c6a908cb0e4bcfebc51f1c2"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.3.4",
+            "commit": "8fc978626144db852c6a908cb0e4bcfebc51f1c2"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.12",
+            "commit": "8fc978626144db852c6a908cb0e4bcfebc51f1c2"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.7",
+            "commit": "8fc978626144db852c6a908cb0e4bcfebc51f1c2"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 21 Sep 2022 23:32:29 GMT",
       "tag": "@lage-run/cli_v0.3.9",
       "version": "0.3.9",

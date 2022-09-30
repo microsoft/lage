@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/target-graph",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Target for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -15,7 +15,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "workspace-tools": "^0.27.0"
+    "workspace-tools": "^0.28.0"
   },
   "devDependencies": {
     "monorepo-scripts": "*"

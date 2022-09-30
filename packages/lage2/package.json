@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/lage",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "main": "dist/main.js",
   "bin": {
     "lage": "dist/lage.js"
@@ -11,7 +11,7 @@
   "devDependencies": {
     "@lage-run/cli": "*",
     "@lage-run/scheduler": "*",
-    "rollup": "2.79.0",
+    "rollup": "2.79.1",
     "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-node-resolve": "13.3.0",
     "@rollup/plugin-json": "4.1.0",

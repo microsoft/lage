@@ -2,6 +2,21 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Thu, 29 Sep 2022 21:48:33 GMT",
+      "tag": "@lage-run/lage_v2.1.9",
+      "version": "2.1.9",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/lage",
+            "commit": "8f4505510189362e1bbc24864a080eb239f427ad",
+            "comment": "Update devDependency rollup to v2.79.1"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 20 Sep 2022 02:32:14 GMT",
       "tag": "@lage-run/lage_v2.1.8",
       "version": "2.1.8",

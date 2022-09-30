@@ -1,7 +1,7 @@
 import { LogLevel } from "@lage-run/logger";
 import { JsonReporter } from "./JsonReporter";
 import { AdoReporter } from "./AdoReporter";
-import { NpmLogReporter } from "./NpmLogReporter";
+import { LogReporter } from "./LogReporter";
 
 export function createReporter({
   reporter = "npmLog",
@@ -21,6 +21,6 @@ export function createReporter({
     case "adoLog":
       return new AdoReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
     default:
-      return new NpmLogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+      return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
   }
 }

@@ -1,6 +1,6 @@
 export { AdoReporter } from "./AdoReporter";
 export { JsonReporter } from "./JsonReporter";
-export { NpmLogReporter } from "./NpmLogReporter";
+export { LogReporter } from "./LogReporter";
 export { ChromeTraceEventsReporter } from "./ChromeTraceEventsReporter";
 
 export { initializeReporters } from "./initialize";

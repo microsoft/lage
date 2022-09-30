@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Mon, 19 Sep 2022 05:03:56 GMT and should not be manually modified.
+This log was last generated on Thu, 29 Sep 2022 21:54:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.4
+
+Thu, 29 Sep 2022 21:54:45 GMT
+
+### Patches
+
+- Update dependency workspace-tools to ^0.28.0 (email not defined)
 
 ## 0.3.3
 

@@ -1,8 +1,24 @@
 # Change Log - lage
 
-This log was last generated on Mon, 19 Sep 2022 19:44:48 GMT and should not be manually modified.
+This log was last generated on Thu, 29 Sep 2022 21:54:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.9.1
+
+Thu, 29 Sep 2022 21:54:45 GMT
+
+### Patches
+
+- Update dependency workspace-tools to ^0.28.0 (email not defined)
+
+## 1.9.0
+
+Wed, 28 Sep 2022 16:37:28 GMT
+
+### Minor changes
+
+- The defaults for CI environments is completely wrong, we need to make sure the defaults are correct for CI so it will write remote cache and skip local download remote cache (kchau@microsoft.com)
 
 ## 1.8.8
 
