@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Thu, 29 Sep 2022 21:54:45 GMT and should not be manually modified.
+This log was last generated on Fri, 30 Sep 2022 16:50:18 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.8
+
+Fri, 30 Sep 2022 16:50:18 GMT
+
+### Patches
+
+- Add colors to the default logger in v2 (phillip.burch@live.com)
 
 ## 0.2.7
 
