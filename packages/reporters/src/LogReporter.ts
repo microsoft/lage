@@ -124,8 +124,8 @@ export class LogReporter implements Reporter {
     if (entry?.data?.target) {
       const { packageName, task } = entry.data.target;
       const normalizedArgs = normalize(getTaskLogPrefix(packageName ?? "<root>", task), msg);
-      prefix = this.options.grouped ? `${normalizedArgs.prefix}` : normalizedArgs.prefix;
-      msg = `${normalizedArgs.message}`;
+      prefix = normalizedArgs.prefix;
+      msg = normalizedArgs.message;
     }
 
     this.print(`${prefix ? prefix + " " : ""}${msg}`);
