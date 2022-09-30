@@ -19,25 +19,28 @@ export function captureWorkerStdioStreams(logger: Logger, worker: Worker) {
     crlfDelay: Infinity,
   });
 
-  const lineHandlerFactory = (outputType) => {
+  const lineHandlerFactory = (outputType: string) => {
     let targetId = "";
+    let lines: string[] = [];
 
     return (line: string) => {
       if (line.includes(`## WORKER:START:`)) {
         targetId = line.replace(`## WORKER:START:`, "");
+        lines = [];
         captureStreamsEvents.emit("start", outputType, targetId);
       } else if (line.includes(`## WORKER:END:`)) {
         targetId = line.replace(`## WORKER:END:`, "");
-        captureStreamsEvents.emit("end", outputType, targetId);
+        captureStreamsEvents.emit("end", outputType, targetId, lines);
       } else {
         const { packageName, task } = getPackageAndTask(targetId);
+        lines.push(line);
         logger.log(LogLevel.verbose, line, { target: { id: targetId, packageName, task } });
       }
     };
   };
 
-  const stdoutLineHandler = lineHandlerFactory('stdout');
-  const stderrLineHandler = lineHandlerFactory('stderr');
+  const stdoutLineHandler = lineHandlerFactory("stdout");
+  const stderrLineHandler = lineHandlerFactory("stderr");
 
   stdoutInterface.on("line", stdoutLineHandler);
   stderrInterface.on("line", stderrLineHandler);

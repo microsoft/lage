@@ -4,6 +4,7 @@ import { hrToSeconds } from "./formatDuration";
 import { LogLevel } from "@lage-run/logger";
 import type { Pool } from "@lage-run/worker-threads-pool";
 import fs from "fs";
+import { writeFile } from "fs/promises";
 import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
 import { Logger } from "@lage-run/logger";
@@ -133,17 +134,23 @@ export class WrappedTarget implements TargetRun {
     }
 
     const targetStreamPromise = captureStreamsEvents
-      ? new Promise<void>((resolve) => {
-          const onEnd = function (outputType: string, targetId: string) {
-            if (targetId === target.id && outputType === "stdout") {
-              captureStreamsEvents.off("end", onEnd);
-              resolve();
+      ? new Promise<string>((resolve) => {
+          const ended = { stdout: [], stderr: [] };
+
+          const onEnd = function (outputType: string, targetId: string, lines: string[]) {
+            if (targetId === target.id) {
+              ended[outputType] = lines;
+
+              if (ended.stderr && ended.stdout) {
+                captureStreamsEvents.off("end", onEnd);
+                resolve(ended.stdout.concat(ended.stderr).join("\n"));
+              }
             }
           };
 
           captureStreamsEvents.on("end", onEnd);
         })
-      : Promise.resolve();
+      : Promise.resolve("");
 
     try {
       const { hash, cacheHit } = await this.getCache();
@@ -180,10 +187,16 @@ export class WrappedTarget implements TargetRun {
         await this.saveCache(hash);
       }
 
-      await targetStreamPromise;
+      const output = await targetStreamPromise;
+      if (cacheEnabled) {
+        const cachedOutputFile = getLageOutputCacheLocation(this.target, hash ?? "");
+        await writeFile(cachedOutputFile, output);
+      }
+
       this.onComplete();
     } catch (e) {
       await targetStreamPromise;
+
       if (abortSignal.aborted) {
         this.onAbort();
       } else {
