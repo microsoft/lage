@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix incremental caching",
+  "packageName": "lage",
+  "email": "rnjuguna@microsoft.com",
+  "dependentChangeType": "patch"
+}
