@@ -1,19 +1,18 @@
-import { createInterface } from "readline";
 import { getLageOutputCacheLocation } from "./createCachedOutputTransform";
 import { hrToSeconds } from "./formatDuration";
+import { Logger } from "@lage-run/logger";
 import { LogLevel } from "@lage-run/logger";
-import type { Pool } from "@lage-run/worker-threads-pool";
+import { Target } from "@lage-run/target-graph";
+import { writeFile, mkdir } from "fs/promises";
+import EventEmitter from "events";
 import fs from "fs";
-import { writeFile } from "fs/promises";
+import path from "path";
 import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
-import { Logger } from "@lage-run/logger";
-import { getPackageAndTask, Target } from "@lage-run/target-graph";
+import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetHasher } from "@lage-run/cache";
 import type { TargetRun } from "./types/TargetRun";
 import type { TargetStatus } from "./types/TargetStatus";
-import type { Worker } from "worker_threads";
-import EventEmitter from "events";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -188,13 +187,18 @@ export class WrappedTarget implements TargetRun {
       }
 
       const output = await targetStreamPromise;
+
       if (cacheEnabled) {
         const cachedOutputFile = getLageOutputCacheLocation(this.target, hash ?? "");
-        await writeFile(cachedOutputFile, output);
+        if (!fs.existsSync(cachedOutputFile)) {
+          await mkdir(path.dirname(cachedOutputFile), { recursive: true });
+          await writeFile(cachedOutputFile, output);
+        }
       }
 
       this.onComplete();
     } catch (e) {
+      // in case of error, we would still want to wait until the targetStreamPromise is resolved
       await targetStreamPromise;
 
       if (abortSignal.aborted) {

@@ -23,7 +23,7 @@ function setup(options: TargetWorkerDataOptions) {
       npmCmd: findNpmClient(npmClient),
     }),
 
-    worker: new WorkerRunner({}),
+    worker: new WorkerRunner(),
   };
 
   const runnerPicker = new TargetRunnerPicker({

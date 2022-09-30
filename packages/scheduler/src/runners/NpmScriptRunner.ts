@@ -56,10 +56,7 @@ export class NpmScriptRunner implements TargetRunner {
   }
 
   async run(target: Target, abortSignal?: AbortSignal) {
-      
-
-
-    const { nodeOptions, npmCmd, taskArgs, logger } = this.options;
+    const { nodeOptions, npmCmd, taskArgs } = this.options;
 
     let childProcess: ChildProcess | undefined;
 
@@ -108,7 +105,7 @@ export class NpmScriptRunner implements TargetRunner {
      */
     const npmRunArgs = this.getNpmArgs(target.task, taskArgs);
     const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter((str) => str).join(" ");
-
+    
     await new Promise<void>((resolve, reject) => {
       childProcess = spawn(npmCmd, npmRunArgs, {
         cwd: target.cwd,
@@ -137,8 +134,9 @@ export class NpmScriptRunner implements TargetRunner {
         childProcess?.stdout?.destroy();
         childProcess?.stderr?.destroy();
         childProcess?.stdin?.destroy();
-
+        
         if (code === 0) {
+          
           return resolve();
         }
 
@@ -146,6 +144,7 @@ export class NpmScriptRunner implements TargetRunner {
       };
 
       const { pid } = childProcess;
+      
       process.stdout.write(`Running ${[npmCmd, ...npmRunArgs].join(" ")}, pid: ${pid}\n`);
 
       let stdout = childProcess.stdout!;

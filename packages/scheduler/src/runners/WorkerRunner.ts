@@ -4,9 +4,7 @@ import type { Logger } from "@lage-run/logger";
 import type { Target, TargetConfig } from "@lage-run/target-graph";
 import type { TargetRunner } from "../types/TargetRunner";
 
-export interface WorkerRunnerOptions {
-  logger: Logger;
-}
+export interface WorkerRunnerOptions {}
 
 /**
  * Creates a workerpool per target task definition of "type: worker"
@@ -42,7 +40,7 @@ export interface WorkerRunnerOptions {
 export class WorkerRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
 
-  constructor(private options: WorkerRunnerOptions) {}
+  constructor(private options: WorkerRunnerOptions = {}) {}
 
   async run(target: Target, abortSignal?: AbortSignal) {
     if (!target.options?.worker) {
