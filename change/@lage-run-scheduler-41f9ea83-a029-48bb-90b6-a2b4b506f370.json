@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "get rid of \"node:\"",
-  "packageName": "@lage-run/scheduler",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

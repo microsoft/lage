@@ -1,8 +1,17 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Thu, 29 Sep 2022 21:54:45 GMT and should not be manually modified.
+This log was last generated on Fri, 30 Sep 2022 23:00:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.7
+
+Fri, 30 Sep 2022 23:00:17 GMT
+
+### Patches
+
+- get rid of "node:" (kchau@microsoft.com)
+- Bump @lage-run/worker-threads-pool to v0.1.3
 
 ## 0.3.6
 
