@@ -6,7 +6,7 @@ import type { Logger } from "@lage-run/logger";
 import type { Target, TargetConfig } from "@lage-run/target-graph";
 import type { TargetRunner } from "../types/TargetRunner";
 import type { Worker } from "worker_threads";
-import { Readable } from "stream";
+import type { Readable } from "stream";
 
 export interface WorkerRunnerOptions {
   logger: Logger;
