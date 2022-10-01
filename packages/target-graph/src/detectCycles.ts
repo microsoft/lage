@@ -1,4 +1,4 @@
-import { Target } from "./types/Target";
+import type { Target } from "./types/Target";
 
 /**
  * Checks for any cycles in the dependency graph, returning `{ hasCycle: false }` if no cycles were detected.
@@ -53,7 +53,7 @@ const searchForCycleDFS = (graph: Map<string, Target>, visitMap: Map<string, boo
   while (stack.length > 0) {
     const current = stack[stack.length - 1];
 
-    console.log(current.node)
+    console.log(current.node);
 
     if (!current.traversing) {
       if (visitMap.has(current.node)) {
