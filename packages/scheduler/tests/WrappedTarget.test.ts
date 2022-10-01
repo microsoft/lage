@@ -13,6 +13,8 @@ function createTarget(packageName: string): Target {
   return {
     cwd: path.resolve(__dirname, "fixtures/package-a"),
     dependencies: [],
+    dependents: [],
+    depSpecs: [],
     label: "",
     id: `${packageName}#build`,
     task: "build",

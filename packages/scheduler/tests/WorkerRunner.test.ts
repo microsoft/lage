@@ -34,6 +34,8 @@ describe("WorkerRunner", () => {
       packageName: "a",
       cwd: "/repo/dummy/cwd",
       dependencies: [],
+      dependents: [],
+      depSpecs: [],
       label: "a - work",
       type: "worker",
     } as Target;
@@ -44,6 +46,8 @@ describe("WorkerRunner", () => {
       packageName: "b",
       cwd: "/repo/dummy/cwd",
       dependencies: [],
+      dependents: [],
+      depSpecs: [],
       label: "b - work",
       type: "worker",
     } as Target;

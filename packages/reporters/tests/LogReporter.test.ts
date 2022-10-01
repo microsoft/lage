@@ -12,6 +12,8 @@ function createTarget(packageName: string, task: string) {
     id: `${packageName}#${task}`,
     cwd: `/repo/root/packages/${packageName}`,
     dependencies: [],
+    dependents: [],
+    depSpecs: [],
     packageName,
     task,
     label: `${packageName} - ${task}`,
