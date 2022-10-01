@@ -9,6 +9,7 @@ export function registerWorker(fn: (data: any) => Promise<void> | void) {
       const results = await fn(task);
       parentPort?.postMessage({ err: undefined, results });
     } catch (err) {
+      
       parentPort?.postMessage({ err, results: undefined });
     } finally {
       process.stdout.write(`${END_WORKER_STREAM_MARKER}\n`);

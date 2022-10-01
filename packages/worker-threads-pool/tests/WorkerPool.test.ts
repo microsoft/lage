@@ -1,14 +1,12 @@
 import { WorkerPool } from "../src/WorkerPool";
 import path from "node:path";
+import { Readable } from "node:stream";
 
 describe("WorkerPool", () => {
   it("should be able to process multiple tasks in parallel", async () => {
     const pool = new WorkerPool({
       maxWorkers: 5,
       script: path.resolve(__dirname, "fixtures", "my-worker.js"),
-      workerOptions: {
-        stdout: true,
-      },
     });
 
     const running: any[] = [];
@@ -36,9 +34,6 @@ describe("WorkerPool", () => {
     const pool = new WorkerPool({
       maxWorkers: 5,
       script: path.resolve(__dirname, "fixtures", "my-bad-worker.js"),
-      workerOptions: {
-        stdout: true,
-      },
     });
 
     const running: any[] = [];
@@ -64,5 +59,21 @@ describe("WorkerPool", () => {
 
     expect(running.length).toBe(numTasks);
     expect(results.length).toBe(numTasks);
+  });
+
+  it("should give the setup() a worker and a set of stdio streams", async () => {
+    const pool = new WorkerPool({
+      maxWorkers: 5,
+      script: path.resolve(__dirname, "fixtures", "my-worker.js"),
+    });
+
+    const setup = jest.fn();
+
+    await pool.exec({ id: 1 }, setup);
+
+    expect(setup).toHaveBeenCalledTimes(1);
+    expect(setup).toHaveBeenCalledWith(expect.anything(), expect.any(Readable), expect.any(Readable));
+
+    pool.close();
   });
 });

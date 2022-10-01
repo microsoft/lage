@@ -36,8 +36,8 @@ class WorkerPoolTaskInfo extends AsyncResource {
         options.setup,
         null,
         options.worker,
-        options.worker.stdout.pipe(createFilteredStreamTransform()),
-        options.worker.stderr.pipe(createFilteredStreamTransform())
+        options.worker["filteredStdout"],
+        options.worker["filteredStderr"]
       );
     }
   }
@@ -66,7 +66,7 @@ interface WorkerPoolOptions {
 }
 
 interface QueueItem {
-  setup?: (worker: Worker) => void;
+  setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void;
   cleanup?: (worker: Worker) => void;
   task: unknown;
   resolve: (value?: unknown) => void;
@@ -84,6 +84,8 @@ export class WorkerPool extends EventEmitter implements Pool {
     this.workers = [];
     this.freeWorkers = [];
     this.queue = [];
+
+    this.ensureWorkers();
 
     // Any time the kWorkerFreedEvent is emitted, dispatch
     // the next task pending in the queue, if any.
@@ -147,7 +149,10 @@ export class WorkerPool extends EventEmitter implements Pool {
 
     const capturedStreamEvent = new EventEmitter();
     worker[kWorkerCapturedStreamEvents] = capturedStreamEvent;
+    worker[kWorkerCapturedStreamPromise] = Promise.resolve();
     this.captureWorkerStdioStreams(worker);
+    worker["filteredStdout"] = worker.stdout.pipe(createFilteredStreamTransform());
+    worker["filteredStderr"] = worker.stderr.pipe(createFilteredStreamTransform());
 
     const msgHandler = (data) => {
       // In case of success: Call the callback that was passed to `runTask`,
@@ -189,8 +194,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     this.emit(kWorkerFreedEvent);
   }
 
-  exec(task: unknown, setup?: (worker: Worker) => void, cleanup?: (worker: Worker) => void) {
-    this.ensureWorkers();
+  exec(task: unknown, setup?: (worker?: Worker, stdout?: Readable, stderr?: Readable) => void, cleanup?: (worker: Worker) => void) {
     return new Promise((resolve, reject) => {
       this.queue.push({ task, resolve, reject, cleanup, setup });
       this._exec();
@@ -206,8 +210,8 @@ export class WorkerPool extends EventEmitter implements Pool {
       if (worker) {
         worker[kTaskInfo] = new WorkerPoolTaskInfo({ cleanup, resolve, reject, worker, setup });
 
-        worker[kWorkerCapturedStreamPromise] = new Promise((resolve) => {
-          worker[kWorkerCapturedStreamEvents].on("end", resolve);
+        worker[kWorkerCapturedStreamPromise] = new Promise<void>((onResolve) => {
+          worker[kWorkerCapturedStreamEvents].once("end", onResolve);
         });
 
         worker.postMessage(task);

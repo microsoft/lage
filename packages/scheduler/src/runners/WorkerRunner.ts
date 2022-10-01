@@ -6,6 +6,7 @@ import type { Logger } from "@lage-run/logger";
 import type { Target, TargetConfig } from "@lage-run/target-graph";
 import type { TargetRunner } from "../types/TargetRunner";
 import type { Worker } from "worker_threads";
+import { Readable } from "stream";
 
 export interface WorkerRunnerOptions {
   logger: Logger;
@@ -104,22 +105,29 @@ export class WorkerRunner implements TargetRunner {
     return this.pools[id];
   }
 
-  captureStream(target: Target, worker: Worker) {
+  captureStream(target: Target, _worker?: Worker, stdout?: Readable, stderr?: Readable) {
     const { logger } = this.options;
 
-    const stdout = worker.stdout;
-    const stderr = worker.stderr;
     const onData = (data: string) => logger.log(LogLevel.info, data, { target });
 
-    stdout.setEncoding("utf-8");
-    stdout.on("data", onData);
+    if (stdout) {
+      stdout.setEncoding("utf-8");
+      stdout.on("data", onData);
+    }
 
-    stderr.setEncoding("utf-8");
-    stderr.on("data", onData);
+    if (stderr) {
+      stderr.setEncoding("utf-8");
+      stderr.on("data", onData);
+    }
 
     return () => {
-      stdout.off("data", onData);
-      stderr.off("data", onData);
+      if (stdout) {
+        stdout.off("data", onData);
+      }
+      
+      if (stderr) {
+        stderr.off("data", onData);
+      }
     };
   }
 
@@ -143,8 +151,8 @@ export class WorkerRunner implements TargetRunner {
 
     await pool.exec(
       { target },
-      (worker) => {
-        cleanupStreams = this.captureStream(target, worker);
+      (worker, stdout, stderr) => {
+        cleanupStreams = this.captureStream(target, worker, stdout, stderr);
       },
       () => {
         cleanupStreams();

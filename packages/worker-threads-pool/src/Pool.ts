@@ -1,4 +1,4 @@
-import { Worker } from "node:cluster";
+import { Worker } from "node:worker_threads";
 import { Readable } from "node:stream";
 
 export interface Pool {
