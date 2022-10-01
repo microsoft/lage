@@ -35,7 +35,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'windows') }}
         run: |
           Add-MpPreference -ExclusionPath ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          Add-MpPreference -ExclusionPath $GITHUB_WORKSPACE
+          Add-MpPreference -ExclusionPath $env:GITHUB_WORKSPACE
         shell: pwsh
 
       - run: yarn
