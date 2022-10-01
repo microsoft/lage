@@ -1,4 +1,4 @@
-const { parentPort } = require("node:worker_threads");
+const { parentPort } = require("worker_threads");
 
 // this is a duplicate of what's found inside the worker-threads-pool registerWorker (can't import it from this .js file)
 const START_WORKER_STREAM_MARKER = "## WORKER:START:";

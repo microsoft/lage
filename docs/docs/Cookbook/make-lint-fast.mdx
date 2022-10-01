@@ -52,7 +52,7 @@ const path = require("path");
 const { ESLint } = require("eslint");
 const { registerWorker } = require("@lage-run/lage");
 const { readFile } = require("fs/promises");
-const { threadId } = require("node:worker_threads");
+const { threadId } = require("worker_threads");
 
 /** this is the workspace root - find it however you want! */
 const PROJECT_ROOT = path.resolve(__dirname, "..");

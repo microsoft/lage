@@ -1,4 +1,4 @@
-import { parentPort } from "node:worker_threads";
+import { parentPort } from "worker_threads";
 import { END_WORKER_STREAM_MARKER, START_WORKER_STREAM_MARKER } from "./stdioStreamMarkers";
 
 export function registerWorker(fn: (data: any) => Promise<void> | void) {

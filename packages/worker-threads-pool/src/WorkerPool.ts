@@ -3,16 +3,16 @@
  * https://nodejs.org/api/async_context.html#using-asyncresource-for-a-worker-thread-pool
  */
 
-import { AsyncResource } from "node:async_hooks";
-import { EventEmitter } from "node:events";
-import { Worker } from "node:worker_threads";
-import os from "node:os";
-import type { WorkerOptions } from "node:worker_threads";
+import { AsyncResource } from "async_hooks";
+import { EventEmitter } from "events";
+import { Worker } from "worker_threads";
+import os from "os";
+import type { WorkerOptions } from "worker_threads";
 import { Pool } from "./Pool";
-import { createInterface } from "node:readline";
+import { createInterface } from "readline";
 import { END_WORKER_STREAM_MARKER, START_WORKER_STREAM_MARKER } from "./stdioStreamMarkers";
 import { createFilteredStreamTransform } from "./createFilteredStreamTransform";
-import { Readable } from "node:stream";
+import { Readable } from "stream";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");

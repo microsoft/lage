@@ -1,6 +1,6 @@
 import { WorkerPool } from "../src/WorkerPool";
-import path from "node:path";
-import { Readable } from "node:stream";
+import path from "path";
+import { Readable } from "stream";
 
 describe("WorkerPool", () => {
   it("should be able to process multiple tasks in parallel", async () => {
