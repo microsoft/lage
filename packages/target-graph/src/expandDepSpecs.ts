@@ -112,7 +112,7 @@ export function expandDepSpecs(targets: Map<string, Target>, dependencyMap: Depe
 }
 
 /** Cached transitive task dependency */
-let cachedTransitiveTaskDependencies: Map<string, "walk-in-progress" | Set<string>> = new Map();
+const cachedTransitiveTaskDependencies: Map<string, "walk-in-progress" | Set<string>> = new Map();
 
 /**
  * Gets a list of package names that are direct or indirect dependencies of rootPackageName in this.graph,
