@@ -1,8 +1,20 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Sat, 01 Oct 2022 15:29:50 GMT and should not be manually modified.
+This log was last generated on Sat, 01 Oct 2022 16:21:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.16
+
+Sat, 01 Oct 2022 16:21:41 GMT
+
+### Patches
+
+- uses the new find-npm-client packge (ken@gizzar.com)
+- Bump @lage-run/scheduler to v0.3.11
+- Bump @lage-run/target-graph to v0.4.1
+- Bump @lage-run/cache to v0.1.15
+- Bump @lage-run/reporters to v0.2.13
 
 ## 0.3.15
 

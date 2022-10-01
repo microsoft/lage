@@ -1,0 +1,20 @@
+{
+  "name": "@lage-run/find-npm-client",
+  "entries": [
+    {
+      "date": "Sat, 01 Oct 2022 16:21:41 GMT",
+      "tag": "@lage-run/find-npm-client_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/find-npm-client",
+            "commit": "8f3016548ae7d9b05d0356a5a52d7602843e9ab2",
+            "comment": "new find-npm-client package"
+          }
+        ]
+      }
+    }
+  ]
+}

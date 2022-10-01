@@ -2,6 +2,45 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Sat, 01 Oct 2022 16:21:41 GMT",
+      "tag": "@lage-run/cli_v0.3.16",
+      "version": "0.3.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "8f3016548ae7d9b05d0356a5a52d7602843e9ab2",
+            "comment": "uses the new find-npm-client packge"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.3.11",
+            "commit": "8f3016548ae7d9b05d0356a5a52d7602843e9ab2"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.4.1",
+            "commit": "8f3016548ae7d9b05d0356a5a52d7602843e9ab2"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.15",
+            "commit": "8f3016548ae7d9b05d0356a5a52d7602843e9ab2"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.13",
+            "commit": "8f3016548ae7d9b05d0356a5a52d7602843e9ab2"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 01 Oct 2022 15:29:50 GMT",
       "tag": "@lage-run/cli_v0.3.15",
       "version": "0.3.15",
