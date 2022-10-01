@@ -1,6 +1,7 @@
 import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
 import { Command } from "commander";
 import { createProfileReporter } from "./createProfileReporter";
+import { detectCycles } from "@lage-run/target-graph";
 import { findNpmClient } from "../../workspace/findNpmClient";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
@@ -83,6 +84,12 @@ export async function runAction(options: RunOptions, command: Command) {
   }
 
   const targetGraph = builder.buildTargetGraph(tasks, packages);
+
+  const cycles = detectCycles(targetGraph.targets);
+  if (cycles.hasCycle) {
+    logger.error("Cycles detected in target graph:\n" + cycles.cycle?.join(" -> "));
+    process.exit(1);
+  }
 
   // Create Cache Provider
 
