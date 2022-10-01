@@ -4,15 +4,15 @@
  */
 
 import { AsyncResource } from "async_hooks";
+import { createFilteredStreamTransform } from "./createFilteredStreamTransform";
+import { createInterface } from "readline";
+import { END_WORKER_STREAM_MARKER, START_WORKER_STREAM_MARKER } from "./stdioStreamMarkers";
 import { EventEmitter } from "events";
 import { Worker } from "worker_threads";
 import os from "os";
+import type { Pool } from "./Pool";
+import type { Readable } from "stream";
 import type { WorkerOptions } from "worker_threads";
-import { Pool } from "./Pool";
-import { createInterface } from "readline";
-import { END_WORKER_STREAM_MARKER, START_WORKER_STREAM_MARKER } from "./stdioStreamMarkers";
-import { createFilteredStreamTransform } from "./createFilteredStreamTransform";
-import { Readable } from "stream";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");

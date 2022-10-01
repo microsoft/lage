@@ -1,5 +1,5 @@
-import { Worker } from "node:worker_threads";
-import { Readable } from "node:stream";
+import type { Worker } from "worker_threads";
+import type { Readable } from "stream";
 
 export interface Pool {
   exec(
