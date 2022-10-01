@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "adds a stdio capture inside workerpool",
+  "packageName": "@lage-run/scheduler",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}
