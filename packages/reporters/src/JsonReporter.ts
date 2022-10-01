@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import { hrToSeconds } from "./formatDuration";
 import type { SchedulerRunSummary } from "@lage-run/scheduler";
 import type { LogEntry, LogLevel, Reporter } from "@lage-run/logger";

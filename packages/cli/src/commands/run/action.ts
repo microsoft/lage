@@ -1,7 +1,7 @@
 import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
 import { Command } from "commander";
 import { createProfileReporter } from "./createProfileReporter";
-import { findNpmClient } from "../../workspace/findNpmClient";
+import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";

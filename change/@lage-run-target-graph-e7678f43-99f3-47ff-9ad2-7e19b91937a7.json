@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fixes to get rid of console.logs",
+  "packageName": "@lage-run/target-graph",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}

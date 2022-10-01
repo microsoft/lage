@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "new find-npm-client package",
+  "packageName": "@lage-run/find-npm-client",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}

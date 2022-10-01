@@ -17,7 +17,7 @@
     "change": "beachball change",
     "checkchange": "beachball check",
     "release": "beachball publish -y --tag latest",
-    "start": "lage start --scope=!docs --verbose",
+    "start": "lage start --scope=!docs --verbose --concurrency 100",
     "test": "lage test --scope=!docs --verbose",
     "lint": "lage lint",
     "docs": "yarn workspace @lage-run/docs start",
