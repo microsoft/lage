@@ -22,7 +22,7 @@ export function detectCycles(targets: Map<string, Target>) {
        * Test whether the sub-graph of this node has cycles.
        */
       const cycle = searchForCycleDFS(targets, visitMap, nodeId);
-      if (cycle.length) {
+      if (cycle.length > 0) {
         return { hasCycle: true, cycle };
       }
     }
@@ -52,6 +52,9 @@ const searchForCycleDFS = (graph: Map<string, Target>, visitMap: Map<string, boo
   const stack: StackElement[] = [{ node: nodeId, traversing: false }];
   while (stack.length > 0) {
     const current = stack[stack.length - 1];
+
+    console.log(current.node)
+
     if (!current.traversing) {
       if (visitMap.has(current.node)) {
         if (visitMap.get(current.node)) {

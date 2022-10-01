@@ -9,6 +9,7 @@ import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMa
 import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target";
 import type { TargetConfig } from "./types/TargetConfig";
+import { detectCycles } from "./detectCycles";
 
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
@@ -250,6 +251,12 @@ export class TargetGraphBuilder {
         target.dependencies = target.dependencies ?? [];
         target.dependencies.push(from);
       }
+    }
+
+    // Ensure we do not have cycles in the subgraph
+    const cycleInfo = detectCycles(this.targets);
+    if (cycleInfo.hasCycle) {
+      throw new Error("Cycles detected in the target graph: " + cycleInfo.cycle!.concat(cycleInfo.cycle![0]).join(" -> "));
     }
 
     // Add priority to the SUB-GRAPH, because the aggregated priorities are in the context of the final graph
