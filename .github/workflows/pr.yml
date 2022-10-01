@@ -31,7 +31,7 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - name: Code Format Check
+      - name: Exclusions
         if: ${{ startsWith(matrix.os, 'windows') }}
         run: |
           Add-MpPreference -ExclusionPath ${{ steps.yarn-cache-dir-path.outputs.dir }}
