@@ -18,9 +18,19 @@ export interface Target {
   packageName?: string;
 
   /**
+   * List of "dependency specs" like "^build", "build", "foo#build"
+   */
+  depSpecs: string[];
+
+  /**
    * Dependencies of the target - these are the targets that must be complete before the target can be complete
    */
   dependencies: string[];
+
+  /**
+   * Dependents of the target - these are the targets that depend on this target
+   */
+  dependents: string[];
 
   /**
    * Any custom priority for the target. A priority of >0 will always be prioritized over the default targets in queue
