@@ -116,7 +116,7 @@ export class WorkerPool extends EventEmitter implements Pool {
       crlfDelay: Infinity,
     });
 
-    const lineHandlerFactory = (outputType: string) => {
+    const lineHandlerFactory = () => {
       let lines: string[] = [];
 
       return (line: string) => {
@@ -130,8 +130,8 @@ export class WorkerPool extends EventEmitter implements Pool {
       };
     };
 
-    const stdoutLineHandler = lineHandlerFactory("stdout");
-    const stderrLineHandler = lineHandlerFactory("stderr");
+    const stdoutLineHandler = lineHandlerFactory();
+    const stderrLineHandler = lineHandlerFactory();
 
     stdoutInterface.on("line", stdoutLineHandler);
     stderrInterface.on("line", stderrLineHandler);
