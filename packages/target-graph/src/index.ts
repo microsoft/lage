@@ -4,4 +4,5 @@ export type { TargetConfig } from "./types/TargetConfig";
 
 export { sortTargetsByPriority } from "./sortTargetsByPriority";
 export { getPackageAndTask, getTargetId, getStartTargetId } from "./targetId";
+export { detectCycles } from "./detectCycles";
 export { TargetGraphBuilder } from "./TargetGraphBuilder";
