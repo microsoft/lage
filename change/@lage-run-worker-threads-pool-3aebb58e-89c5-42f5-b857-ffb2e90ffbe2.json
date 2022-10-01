@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "adds a stdio cpature inside threadpool",
-  "packageName": "@lage-run/worker-threads-pool",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

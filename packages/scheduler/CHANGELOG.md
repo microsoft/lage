@@ -1,8 +1,17 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Fri, 30 Sep 2022 23:00:17 GMT and should not be manually modified.
+This log was last generated on Sat, 01 Oct 2022 05:25:29 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.8
+
+Sat, 01 Oct 2022 05:25:29 GMT
+
+### Patches
+
+- adds a stdio capture inside workerpool (ken@gizzar.com)
+- Bump @lage-run/worker-threads-pool to v0.1.4
 
 ## 0.3.7
 

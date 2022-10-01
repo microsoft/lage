@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Sat, 01 Oct 2022 05:25:29 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.1.4",
+      "version": "0.1.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "e850f24b770908df902212442baa5fb8ba04cf7c",
+            "comment": "adds a stdio cpature inside threadpool"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 30 Sep 2022 23:00:17 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.1.3",
       "version": "0.1.3",

@@ -2,6 +2,27 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Sat, 01 Oct 2022 05:25:29 GMT",
+      "tag": "@lage-run/scheduler_v0.3.8",
+      "version": "0.3.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/scheduler",
+            "commit": "e850f24b770908df902212442baa5fb8ba04cf7c",
+            "comment": "adds a stdio capture inside workerpool"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.1.4",
+            "commit": "e850f24b770908df902212442baa5fb8ba04cf7c"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 30 Sep 2022 23:00:17 GMT",
       "tag": "@lage-run/scheduler_v0.3.7",
       "version": "0.3.7",

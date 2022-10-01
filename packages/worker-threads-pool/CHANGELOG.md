@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Fri, 30 Sep 2022 23:00:17 GMT and should not be manually modified.
+This log was last generated on Sat, 01 Oct 2022 05:25:29 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.4
+
+Sat, 01 Oct 2022 05:25:29 GMT
+
+### Patches
+
+- adds a stdio cpature inside threadpool (ken@gizzar.com)
 
 ## 0.1.3
 
