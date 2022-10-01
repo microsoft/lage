@@ -35,7 +35,9 @@ class TestTargetGraph implements TargetGraph {
       packageName,
       task,
       cwd: `packages/${packageName}`,
-      dependencies: [], // this is unused by schedulers
+      dependencies: [],
+      dependents: [],
+      depSpecs: [],
     } as Target);
 
     // auto inject the start target id to each target
