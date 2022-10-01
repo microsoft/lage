@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "addressing no-console rule",
+  "packageName": "@lage-run/reporters",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}
