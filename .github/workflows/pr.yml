@@ -26,18 +26,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Get yarn cache directory path
-        if: ${{ startsWith(matrix.os, 'windows') }}
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Exclusions
-        if: ${{ startsWith(matrix.os, 'windows') }}
-        run: |
-          Add-MpPreference -ExclusionPath ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          Add-MpPreference -ExclusionPath $env:GITHUB_WORKSPACE
-        shell: pwsh
-
       - run: yarn
 
       - name: Code Format Check
@@ -50,8 +38,8 @@ jobs:
 
       - name: Build, Test (Windows)
         if: ${{ startsWith(matrix.os, 'windows') }}
-        run: yarn lage build test --scope=!@lage-run/lage
+        run: yarn lage build test --scope=!@lage-run/lage --concurrency 2
 
       - name: Build, Test, Lint (Linux)
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
-        run: yarn lage build test lint
+        run: yarn lage build test lint --concurrency 2
