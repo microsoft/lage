@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cache",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Cache for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -15,7 +15,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/target-graph": "^0.3.5",
+    "@lage-run/target-graph": "^0.4.0",
     "@lage-run/logger": "^1.2.0",
     "backfill-config": "^6.3.0",
     "backfill-cache": "^5.6.1",
