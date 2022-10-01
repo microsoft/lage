@@ -35,6 +35,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'windows') }}
         run: |
           Add-MpPreference -ExclusionPath ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        shell: pwsh
 
       - run: yarn
 
