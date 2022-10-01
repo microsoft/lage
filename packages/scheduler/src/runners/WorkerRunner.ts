@@ -124,7 +124,7 @@ export class WorkerRunner implements TargetRunner {
       if (stdout) {
         stdout.off("data", onData);
       }
-      
+
       if (stderr) {
         stderr.off("data", onData);
       }
