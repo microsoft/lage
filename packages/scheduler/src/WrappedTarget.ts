@@ -11,8 +11,7 @@ import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
 import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetHasher } from "@lage-run/cache";
-import type { TargetRun } from "./types/TargetRun";
-import type { TargetStatus } from "./types/TargetStatus";
+import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
 
 export interface WrappedTargetOptions {
   root: string;

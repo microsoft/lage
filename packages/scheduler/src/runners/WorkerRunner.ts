@@ -1,6 +1,6 @@
 import type { AbortSignal } from "abort-controller";
 import type { Target } from "@lage-run/target-graph";
-import type { TargetRunner } from "../types/TargetRunner";
+import type { TargetRunner } from "@lage-run/scheduler-types";
 
 /**
  * Creates a workerpool per target task definition of "type: worker"
@@ -32,7 +32,7 @@ import type { TargetRunner } from "../types/TargetRunner";
  *  if (abortSignal.aborted) {
  *    return;
  *  }
- * 
+ *
  *  // Do work here - but be sure to have a way to abort via the `abortSignal`
  * }
  * ```

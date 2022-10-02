@@ -1,4 +1,4 @@
-import type { TargetStatus } from "@lage-run/scheduler";
+import type { TargetStatus } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 
 export interface TargetStatusEntry {

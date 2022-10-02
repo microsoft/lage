@@ -1,5 +1,4 @@
-import type { TargetRunSummary } from "./types/SchedulerRunSummary";
-import type { TargetRun } from "./types/TargetRun";
+import type { TargetRunSummary, TargetRun } from "@lage-run/scheduler-types";
 
 export function categorizeTargetRuns(targetRuns: TargetRun[]): TargetRunSummary {
   const summary: TargetRunSummary = {

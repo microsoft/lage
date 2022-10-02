@@ -7,7 +7,7 @@ import chalk from "chalk";
 import type { Chalk } from "chalk";
 import gradient from "gradient-string";
 import type { Reporter, LogEntry } from "@lage-run/logger";
-import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler";
+import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
 import type { Writable } from "stream";
 import crypto from "crypto";

@@ -1,11 +1,11 @@
-import { registerWorker } from "@lage-run/worker-threads-pool";
-import { NpmScriptRunner } from "@lage-run/scheduler";
-import { TargetRunnerPicker } from "@lage-run/scheduler";
-import type { TargetRunner } from "@lage-run/scheduler";
 import { findNpmClient } from "@lage-run/find-npm-client";
+import { NpmScriptRunner } from "@lage-run/scheduler";
+import { registerWorker } from "@lage-run/worker-threads-pool";
+import { TargetRunnerPicker } from "@lage-run/scheduler";
 import { workerData } from "node:worker_threads";
 import { WorkerRunner } from "@lage-run/scheduler";
 import type { ReporterInitOptions } from "@lage-run/reporters";
+import type { TargetRunner } from "@lage-run/scheduler-types";
 
 interface TargetWorkerDataOptions extends ReporterInitOptions {
   taskArgs: string[];

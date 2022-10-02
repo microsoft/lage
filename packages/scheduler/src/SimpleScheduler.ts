@@ -6,9 +6,8 @@ import { WrappedTarget } from "./WrappedTarget";
 import type { AbortSignal } from "abort-controller";
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { Logger } from "@lage-run/logger";
-import type { SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "./types/SchedulerRunSummary";
 import type { TargetGraph, Target } from "@lage-run/target-graph";
-import type { TargetScheduler } from "./types/TargetScheduler";
+import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "@lage-run/scheduler-types";
 import type { Pool } from "@lage-run/worker-threads-pool";
 
 export interface SimpleSchedulerOptions {
@@ -24,13 +23,10 @@ export interface SimpleSchedulerOptions {
 }
 
 /**
- * TODO FEATURES:
- * - priorities
- * - abort signals
+ * TODO: watch mode features
  * - api target change
  * - api target add / remove
  * - summarize
- * - figure out the logger by line issue with docusaurus
  */
 
 /**
