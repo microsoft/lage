@@ -1,8 +1,70 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Thu, 29 Sep 2022 21:54:45 GMT and should not be manually modified.
+This log was last generated on Sat, 01 Oct 2022 16:21:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.16
+
+Sat, 01 Oct 2022 16:21:41 GMT
+
+### Patches
+
+- uses the new find-npm-client packge (ken@gizzar.com)
+- Bump @lage-run/scheduler to v0.3.11
+- Bump @lage-run/target-graph to v0.4.1
+- Bump @lage-run/cache to v0.1.15
+- Bump @lage-run/reporters to v0.2.13
+
+## 0.3.15
+
+Sat, 01 Oct 2022 15:29:50 GMT
+
+### Patches
+
+- displays any errors before exiting (from lage itself, not the tasks) (ken@gizzar.com)
+- Bump @lage-run/scheduler to v0.3.10
+- Bump @lage-run/target-graph to v0.4.0
+- Bump @lage-run/cache to v0.1.14
+- Bump @lage-run/reporters to v0.2.12
+
+## 0.3.14
+
+Sat, 01 Oct 2022 06:41:42 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.3.9
+- Bump @lage-run/target-graph to v0.3.5
+- Bump @lage-run/cache to v0.1.13
+- Bump @lage-run/reporters to v0.2.11
+
+## 0.3.13
+
+Sat, 01 Oct 2022 05:25:29 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.3.8
+- Bump @lage-run/reporters to v0.2.10
+
+## 0.3.12
+
+Fri, 30 Sep 2022 23:00:17 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.3.7
+- Bump @lage-run/reporters to v0.2.9
+
+## 0.3.11
+
+Fri, 30 Sep 2022 16:50:18 GMT
+
+### Patches
+
+- Add colors to the default logger in v2 (phillip.burch@live.com)
+- Bump @lage-run/reporters to v0.2.8
 
 ## 0.3.10
 

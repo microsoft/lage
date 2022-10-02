@@ -2,6 +2,120 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Sat, 01 Oct 2022 16:21:41 GMT",
+      "tag": "@lage-run/reporters_v0.2.13",
+      "version": "0.2.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/reporters",
+            "commit": "8f3016548ae7d9b05d0356a5a52d7602843e9ab2",
+            "comment": "addressing no-console rule"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler to v0.3.11",
+            "commit": "8f3016548ae7d9b05d0356a5a52d7602843e9ab2"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.4.1",
+            "commit": "8f3016548ae7d9b05d0356a5a52d7602843e9ab2"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 01 Oct 2022 15:29:50 GMT",
+      "tag": "@lage-run/reporters_v0.2.12",
+      "version": "0.2.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler to v0.3.10",
+            "commit": "35b49b227688d2cf1e55b3c54392d6c89f462542"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.4.0",
+            "commit": "35b49b227688d2cf1e55b3c54392d6c89f462542"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 01 Oct 2022 06:41:42 GMT",
+      "tag": "@lage-run/reporters_v0.2.11",
+      "version": "0.2.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler to v0.3.9",
+            "commit": "94d8266336c210f6adcf6dddd893e9efea20afdb"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.3.5",
+            "commit": "94d8266336c210f6adcf6dddd893e9efea20afdb"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 01 Oct 2022 05:25:29 GMT",
+      "tag": "@lage-run/reporters_v0.2.10",
+      "version": "0.2.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler to v0.3.8",
+            "commit": "e850f24b770908df902212442baa5fb8ba04cf7c"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 30 Sep 2022 23:00:17 GMT",
+      "tag": "@lage-run/reporters_v0.2.9",
+      "version": "0.2.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler to v0.3.7",
+            "commit": "a86ba91c06d5ede0916e84633896324ea30aaf07"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 30 Sep 2022 16:50:18 GMT",
+      "tag": "@lage-run/reporters_v0.2.8",
+      "version": "0.2.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "phillip.burch@live.com",
+            "package": "@lage-run/reporters",
+            "commit": "b19113509faf6f5247f35e8b1ee2c6b5ec664a7a",
+            "comment": "Add colors to the default logger in v2"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 29 Sep 2022 21:54:45 GMT",
       "tag": "@lage-run/reporters_v0.2.7",
       "version": "0.2.7",

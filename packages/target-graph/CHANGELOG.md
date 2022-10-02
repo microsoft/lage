@@ -1,8 +1,32 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Thu, 29 Sep 2022 21:54:45 GMT and should not be manually modified.
+This log was last generated on Sat, 01 Oct 2022 16:21:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.1
+
+Sat, 01 Oct 2022 16:21:41 GMT
+
+### Patches
+
+- fixes to get rid of console.logs (ken@gizzar.com)
+
+## 0.4.0
+
+Sat, 01 Oct 2022 15:29:50 GMT
+
+### Minor changes
+
+- detecting cycles (ken@gizzar.com)
+
+## 0.3.5
+
+Sat, 01 Oct 2022 06:41:42 GMT
+
+### Patches
+
+- adding some prioritize tests (ken@gizzar.com)
 
 ## 0.3.4
 

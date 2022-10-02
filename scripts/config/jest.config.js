@@ -26,4 +26,5 @@ module.exports = {
   transformIgnorePatterns: ["/node_modules/", "\\.pnp\\.[^\\/]+$"],
   watchPathIgnorePatterns: ["/node_modules/"],
   moduleNameMapper,
+  ...(process.env.LAGE_PACKAGE_NAME && { maxWorkers: 1 }),
 };

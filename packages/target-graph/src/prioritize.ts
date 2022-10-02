@@ -21,6 +21,8 @@ export function prioritize(targets: Map<string, Target>) {
     for (const dependentId of currentTarget.dependents) {
       const dependent = targets.get(dependentId)!;
       dependent.priority = Math.max(dependent.priority ?? 0, currentPriority ?? 0);
+
+      stack.push(dependent);
     }
   }
 }

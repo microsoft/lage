@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Thu, 29 Sep 2022 21:54:45 GMT and should not be manually modified.
+This log was last generated on Fri, 30 Sep 2022 18:48:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.9.2
+
+Fri, 30 Sep 2022 18:48:39 GMT
+
+### Patches
+
+- Fix incremental caching (rnjuguna@microsoft.com)
 
 ## 1.9.1
 

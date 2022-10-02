@@ -12,6 +12,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  process.stdout.write(String(err));
+  console.error(err);
   process.exitCode = 1;
 });

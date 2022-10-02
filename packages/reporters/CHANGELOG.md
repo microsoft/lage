@@ -1,8 +1,60 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Thu, 29 Sep 2022 21:54:45 GMT and should not be manually modified.
+This log was last generated on Sat, 01 Oct 2022 16:21:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.13
+
+Sat, 01 Oct 2022 16:21:41 GMT
+
+### Patches
+
+- addressing no-console rule (ken@gizzar.com)
+- Bump @lage-run/scheduler to v0.3.11
+- Bump @lage-run/target-graph to v0.4.1
+
+## 0.2.12
+
+Sat, 01 Oct 2022 15:29:50 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.3.10
+- Bump @lage-run/target-graph to v0.4.0
+
+## 0.2.11
+
+Sat, 01 Oct 2022 06:41:42 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.3.9
+- Bump @lage-run/target-graph to v0.3.5
+
+## 0.2.10
+
+Sat, 01 Oct 2022 05:25:29 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.3.8
+
+## 0.2.9
+
+Fri, 30 Sep 2022 23:00:17 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.3.7
+
+## 0.2.8
+
+Fri, 30 Sep 2022 16:50:18 GMT
+
+### Patches
+
+- Add colors to the default logger in v2 (phillip.burch@live.com)
 
 ## 0.2.7
 

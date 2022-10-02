@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 30 Sep 2022 18:48:39 GMT",
+      "tag": "lage_v1.9.2",
+      "version": "1.9.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "rnjuguna@microsoft.com",
+            "package": "lage",
+            "commit": "2b99edc655b264e548b268045579c0b5f4c4eb8b",
+            "comment": "Fix incremental caching"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 29 Sep 2022 21:54:45 GMT",
       "tag": "lage_v1.9.1",
       "version": "1.9.1",

@@ -3,16 +3,16 @@
  * https://nodejs.org/api/async_context.html#using-asyncresource-for-a-worker-thread-pool
  */
 
-import { AsyncResource } from "node:async_hooks";
-import { EventEmitter } from "node:events";
-import { Worker } from "node:worker_threads";
-import os from "node:os";
-import type { WorkerOptions } from "node:worker_threads";
-import { Pool } from "./Pool";
-import { createInterface } from "node:readline";
-import { END_WORKER_STREAM_MARKER, START_WORKER_STREAM_MARKER } from "./stdioStreamMarkers";
+import { AsyncResource } from "async_hooks";
 import { createFilteredStreamTransform } from "./createFilteredStreamTransform";
-import { Readable } from "node:stream";
+import { createInterface } from "readline";
+import { END_WORKER_STREAM_MARKER, START_WORKER_STREAM_MARKER } from "./stdioStreamMarkers";
+import { EventEmitter } from "events";
+import { Worker } from "worker_threads";
+import os from "os";
+import type { Pool } from "./Pool";
+import type { Readable } from "stream";
+import type { WorkerOptions } from "worker_threads";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
@@ -32,13 +32,7 @@ class WorkerPoolTaskInfo extends AsyncResource {
     super("WorkerPoolTaskInfo");
 
     if (options.setup) {
-      this.runInAsyncScope(
-        options.setup,
-        null,
-        options.worker,
-        options.worker.stdout.pipe(createFilteredStreamTransform()),
-        options.worker.stderr.pipe(createFilteredStreamTransform())
-      );
+      this.runInAsyncScope(options.setup, null, options.worker, options.worker["filteredStdout"], options.worker["filteredStderr"]);
     }
   }
 
@@ -85,6 +79,8 @@ export class WorkerPool extends EventEmitter implements Pool {
     this.freeWorkers = [];
     this.queue = [];
 
+    this.ensureWorkers();
+
     // Any time the kWorkerFreedEvent is emitted, dispatch
     // the next task pending in the queue, if any.
     this.on(kWorkerFreedEvent, () => {
@@ -120,7 +116,7 @@ export class WorkerPool extends EventEmitter implements Pool {
       crlfDelay: Infinity,
     });
 
-    const lineHandlerFactory = (outputType: string) => {
+    const lineHandlerFactory = () => {
       let lines: string[] = [];
 
       return (line: string) => {
@@ -134,8 +130,8 @@ export class WorkerPool extends EventEmitter implements Pool {
       };
     };
 
-    const stdoutLineHandler = lineHandlerFactory("stdout");
-    const stderrLineHandler = lineHandlerFactory("stderr");
+    const stdoutLineHandler = lineHandlerFactory();
+    const stderrLineHandler = lineHandlerFactory();
 
     stdoutInterface.on("line", stdoutLineHandler);
     stderrInterface.on("line", stderrLineHandler);
@@ -147,7 +143,10 @@ export class WorkerPool extends EventEmitter implements Pool {
 
     const capturedStreamEvent = new EventEmitter();
     worker[kWorkerCapturedStreamEvents] = capturedStreamEvent;
+    worker[kWorkerCapturedStreamPromise] = Promise.resolve();
     this.captureWorkerStdioStreams(worker);
+    worker["filteredStdout"] = worker.stdout.pipe(createFilteredStreamTransform());
+    worker["filteredStderr"] = worker.stderr.pipe(createFilteredStreamTransform());
 
     const msgHandler = (data) => {
       // In case of success: Call the callback that was passed to `runTask`,
@@ -190,7 +189,6 @@ export class WorkerPool extends EventEmitter implements Pool {
   }
 
   exec(task: unknown, setup?: (worker?: Worker, stdout?: Readable, stderr?: Readable) => void, cleanup?: (worker: Worker) => void) {
-    this.ensureWorkers();
     return new Promise((resolve, reject) => {
       this.queue.push({ task, resolve, reject, cleanup, setup });
       this._exec();
@@ -206,8 +204,8 @@ export class WorkerPool extends EventEmitter implements Pool {
       if (worker) {
         worker[kTaskInfo] = new WorkerPoolTaskInfo({ cleanup, resolve, reject, worker, setup });
 
-        worker[kWorkerCapturedStreamPromise] = new Promise((resolve) => {
-          worker[kWorkerCapturedStreamEvents].on("end", resolve);
+        worker[kWorkerCapturedStreamPromise] = new Promise<void>((onResolve) => {
+          worker[kWorkerCapturedStreamEvents].once("end", onResolve);
         });
 
         worker.postMessage(task);

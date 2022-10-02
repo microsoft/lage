@@ -7,11 +7,11 @@ export function createFilteredStreamTransform(): Transform {
       let str = chunk.toString();
 
       if (str.includes(START_WORKER_STREAM_MARKER)) {
-        str = str.replace(START_WORKER_STREAM_MARKER + '\n', "");
+        str = str.replace(START_WORKER_STREAM_MARKER + "\n", "");
       }
 
       if (str.includes(END_WORKER_STREAM_MARKER)) {
-        str = str.replace(END_WORKER_STREAM_MARKER + '\n', "");
+        str = str.replace(END_WORKER_STREAM_MARKER + "\n", "");
       }
 
       callback(null, str);
