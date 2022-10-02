@@ -197,7 +197,6 @@ export class SimpleScheduler implements TargetScheduler {
   }
 
   async scheduleReadyTargets() {
-
     if (this.isAllDone()) {
       return;
     }
