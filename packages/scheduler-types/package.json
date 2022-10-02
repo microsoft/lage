@@ -1,7 +1,7 @@
 {
-  "name": "@lage-run/scheduler",
-  "version": "0.3.11",
-  "description": "Scheduler for Lage",
+  "name": "@lage-run/scheduler-types",
+  "version": "0.1.0",
+  "description": "Scheduler types for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
   },
@@ -11,7 +11,6 @@
   "scripts": {
     "build": "monorepo-scripts tsc",
     "start": "monorepo-scripts tsc -w --preserveWatchOutput",
-    "test": "monorepo-scripts jest",
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
@@ -25,7 +24,6 @@
     "workspace-tools": "^0.28.0"
   },
   "devDependencies": {
-    "@lage-run/scheduler-types": "^0.1.0",
     "@lage-run/monorepo-fixture": "*",
     "@types/workerpool": "6.1.0",
     "monorepo-scripts": "*"

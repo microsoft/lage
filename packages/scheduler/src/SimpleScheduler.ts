@@ -6,10 +6,9 @@ import type { AbortSignal } from "abort-controller";
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { Logger } from "@lage-run/logger";
 import type { PGraphNodeMap } from "p-graph";
-import type { SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "./types/SchedulerRunSummary";
+import type { SchedulerRunResults, SchedulerRunSummary, TargetRunSummary, TargetScheduler } from "@lage-run/scheduler-types";
 import type { TargetGraph } from "@lage-run/target-graph";
 import type { TargetRunnerPicker } from "./runners/TargetRunnerPicker";
-import type { TargetScheduler } from "./types/TargetScheduler";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;

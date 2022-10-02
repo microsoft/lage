@@ -1,4 +1,4 @@
-import { TargetStatus } from "@lage-run/scheduler";
+import type { TargetStatus } from "@lage-run/scheduler-types";
 
 export function parseNdJson(ndjson: string) {
   const entries = ndjson.substr(ndjson.indexOf("{"));

@@ -5,7 +5,7 @@ import { LogLevel } from "@lage-run/logger";
 import { LogReporter } from "../src/LogReporter";
 import streams from "memory-streams";
 import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry";
-import { TargetRun } from "@lage-run/scheduler";
+import { TargetRun } from "@lage-run/scheduler-types";
 
 function createTarget(packageName: string, task: string) {
   return {

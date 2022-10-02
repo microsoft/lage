@@ -5,9 +5,7 @@ import type { TargetHasher } from "@lage-run/cache";
 import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
 import type { Target } from "@lage-run/target-graph";
-import type { TargetRun } from "./types/TargetRun";
-import type { TargetRunner } from "./types/TargetRunner";
-import type { TargetStatus } from "./types/TargetStatus";
+import type { TargetRun, TargetRunner, TargetStatus } from "@lage-run/scheduler-types";
 import { createCachedOutputTransform, getLageOutputCacheLocation } from "./createCachedOutputTransform";
 import fs from "fs";
 

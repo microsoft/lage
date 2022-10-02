@@ -5,9 +5,7 @@ import path from "path";
 import AbortController, { AbortSignal } from "abort-controller";
 import { CacheProvider, TargetHasher } from "@lage-run/cache";
 import { Logger } from "@lage-run/logger";
-import { TargetRunner } from "../src/types/TargetRunner";
-import { rejects } from "assert";
-import { createCipheriv } from "crypto";
+import { TargetRunner } from "@lage-run/scheduler-types";
 
 function createTarget(packageName: string): Target {
   return {

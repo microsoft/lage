@@ -11,7 +11,7 @@ import { NpmScriptRunner, SimpleScheduler, WorkerRunner, TargetRunnerPicker } fr
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger from "@lage-run/logger";
 import type { ReporterInitOptions } from "../../types/LoggerOptions";
-import type { TargetRunner } from "@lage-run/scheduler";
+import type { TargetRunner } from "@lage-run/scheduler-types";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
