@@ -2,6 +2,7 @@ import { AbortController } from "abort-controller";
 import { categorizeTargetRuns } from "./categorizeTargetRuns";
 import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
 import { WrappedTarget } from "./WrappedTarget";
+import { WorkerPool } from "@lage-run/worker-threads-pool";
 
 import type { AbortSignal } from "abort-controller";
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
@@ -18,16 +19,11 @@ export interface SimpleSchedulerOptions {
   hasher: TargetHasher;
   shouldCache: boolean;
   shouldResetCache: boolean;
-  pool: Pool;
+  nodeArg: string;
+  taskArgs: string[];
+  npmClient: string;
   maxWorkersPerTask: Map<string, number>;
 }
-
-/**
- * TODO: watch mode features
- * - api target change
- * - api target add / remove
- * - summarize
- */
 
 /**
  * Simple scheduler that runs all targets in a promise graph using p-graph library.
@@ -47,8 +43,23 @@ export class SimpleScheduler implements TargetScheduler {
   abortController: AbortController = new AbortController();
   abortSignal: AbortSignal = this.abortController.signal;
   dependencies: [string, string][] = [];
+  pool: Pool;
 
-  constructor(private options: SimpleSchedulerOptions) {}
+  constructor(private options: SimpleSchedulerOptions) {
+    this.pool = new WorkerPool({
+      maxWorkers: options.concurrency,
+      script: require.resolve("./workers/targetWorker"),
+      workerOptions: {
+        stdout: true,
+        stderr: true,
+        workerData: {
+          nodeArg: options.nodeArg,
+          taskArgs: options.taskArgs,
+          npmClient: options.npmClient,
+        },
+      },
+    });
+  }
 
   /**
    * The job of the run method is to:
@@ -63,7 +74,8 @@ export class SimpleScheduler implements TargetScheduler {
   async run(root: string, targetGraph: TargetGraph): Promise<SchedulerRunSummary> {
     const startTime: [number, number] = process.hrtime();
 
-    const { continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher, pool } = this.options;
+    const { continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher } = this.options;
+    const { pool, abortController } = this;
 
     const { dependencies, targets } = targetGraph;
     this.dependencies = dependencies;
@@ -79,7 +91,7 @@ export class SimpleScheduler implements TargetScheduler {
         shouldCache,
         shouldResetCache,
         continueOnError,
-        abortController: this.abortController,
+        abortController,
         pool,
       });
 
@@ -113,7 +125,7 @@ export class SimpleScheduler implements TargetScheduler {
     try {
       await this.scheduleReadyTargets();
     } finally {
-      this.options.pool.close();
+      this.pool.close();
     }
 
     return {
@@ -126,6 +138,10 @@ export class SimpleScheduler implements TargetScheduler {
     };
   }
 
+  /**
+   * Used by consumers of the scheduler to notify that the inputs to the target has changed
+   * @param targetId 
+   */
   onTargetChange(targetId: string) {
     const queue = [targetId];
     while (queue.length > 0) {

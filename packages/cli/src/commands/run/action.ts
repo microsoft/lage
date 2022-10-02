@@ -9,7 +9,6 @@ import { initializeReporters } from "@lage-run/reporters";
 import { isRunningFromCI } from "../isRunningFromCI";
 import { SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
-import { WorkerPool } from "@lage-run/worker-threads-pool";
 import createLogger from "@lage-run/logger";
 import type { ReporterInitOptions } from "@lage-run/reporters";
 
@@ -32,7 +31,7 @@ interface RunOptions extends ReporterInitOptions {
   continue: boolean;
   cache: boolean;
   resetCache: boolean;
-  nodeargs: string;
+  nodeArg: string;
 }
 
 export async function runAction(options: RunOptions, command: Command) {
@@ -111,20 +110,6 @@ export async function runAction(options: RunOptions, command: Command) {
     cacheKey: config.cacheOptions.cacheKey,
   });
 
-  const pool = new WorkerPool({
-    maxWorkers: options.concurrency,
-    script: require.resolve("./targetWorker"),
-    workerOptions: {
-      stdout: true,
-      stderr: true,
-      workerData: {
-        taskArgs,
-        npmClient: config.npmClient,
-        ...options,
-      },
-    },
-  });
-
   const scheduler = new SimpleScheduler({
     logger,
     concurrency: options.concurrency,
@@ -133,8 +118,10 @@ export async function runAction(options: RunOptions, command: Command) {
     continueOnError: options.continue,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    pool,
     maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}),
+    nodeArg: options.nodeArg,
+    taskArgs,
+    npmClient: config.npmClient,
   });
 
   const summary = await scheduler.run(root, targetGraph);

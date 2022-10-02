@@ -1,9 +1,8 @@
-import { getLageOutputCacheLocation } from "./createCachedOutputTransform";
+import { createCachedOutputTransform, getLageOutputCacheLocation } from "./createCachedOutputTransform";
 import { hrToSeconds } from "./formatDuration";
 import { Logger } from "@lage-run/logger";
 import { LogLevel } from "@lage-run/logger";
 import { Target } from "@lage-run/target-graph";
-import { writeFile, mkdir } from "fs/promises";
 
 import fs from "fs";
 
@@ -131,25 +130,6 @@ export class WrappedTarget implements TargetRun {
       return;
     }
 
-    // const targetStreamPromise = captureStreamsEvents
-    //   ? new Promise<string>((resolve) => {
-    //       const ended = { stdout: [], stderr: [] };
-
-    //       const onEnd = function (outputType: string, targetId: string, lines: string[]) {
-    //         if (targetId === target.id) {
-    //           ended[outputType] = lines;
-
-    //           if (ended.stderr && ended.stdout) {
-    //             captureStreamsEvents.off("end", onEnd);
-    //             resolve(ended.stdout.concat(ended.stderr).join("\n"));
-    //           }
-    //         }
-    //       };
-
-    //       captureStreamsEvents.on("end", onEnd);
-    //     })
-    //   : Promise.resolve("");
-
     try {
       const { hash, cacheHit } = await this.getCache();
 
@@ -183,8 +163,11 @@ export class WrappedTarget implements TargetRun {
       let releaseStderr: any;
 
       await pool.exec({ target }, (_worker, stdout, stderr) => {
-        releaseStdout = logger.stream(LogLevel.verbose, stdout, { target });
-        releaseStderr = logger.stream(LogLevel.verbose, stderr, { target });
+        const cachedStdout = hash ? stdout.pipe(createCachedOutputTransform(target, hash)) : stdout;
+        const cachedStderr = hash ? stdout.pipe(createCachedOutputTransform(target, hash)) : stderr;
+
+        releaseStdout = logger.stream(LogLevel.verbose, cachedStdout, { target });
+        releaseStderr = logger.stream(LogLevel.verbose, cachedStderr, { target });
       }, () => {
         releaseStdout();
         releaseStderr();
@@ -196,9 +179,6 @@ export class WrappedTarget implements TargetRun {
 
       this.onComplete();
     } catch (e) {
-      // in case of error, we would still want to wait until the targetStreamPromise is resolved
-      // await targetStreamPromise;
-
       if (abortSignal.aborted) {
         this.onAbort();
       } else {

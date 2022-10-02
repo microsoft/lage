@@ -1,5 +1,5 @@
-export { TargetRunSummary, SchedulerRunSummary, SchedulerRunResults } from './types/SchedulerRunSummary';
-export { TargetRun } from './types/TargetRun';
-export { TargetRunner } from './types/TargetRunner';
-export { TargetScheduler } from './types/TargetScheduler';
-export { TargetStatus } from './types/TargetStatus';
+export type { TargetRunSummary, SchedulerRunSummary, SchedulerRunResults } from './types/SchedulerRunSummary';
+export type { TargetRun } from './types/TargetRun';
+export type { TargetRunner } from './types/TargetRunner';
+export type { TargetScheduler } from './types/TargetScheduler';
+export type { TargetStatus } from './types/TargetStatus';
