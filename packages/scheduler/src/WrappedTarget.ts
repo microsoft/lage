@@ -182,6 +182,7 @@ export class WrappedTarget implements TargetRun {
           };
 
           const releaseStderrStream = logger.stream(LogLevel.verbose, stderr, { target });
+
           releaseStderr = () => {
             releaseStderrStream();
             stderr.unpipe(bufferStderr.transform);
@@ -198,7 +199,7 @@ export class WrappedTarget implements TargetRun {
         const outputLocation = getLageOutputCacheLocation(this.target, hash);
         const outputPath = path.dirname(outputLocation);
         await mkdir(outputPath, { recursive: true });
-        await writeFile(outputLocation, lines.join("\n"));
+        await writeFile(outputLocation, bufferStdout.buffer + bufferStderr.buffer);
       }
 
       this.onComplete();

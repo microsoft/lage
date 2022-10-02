@@ -1,13 +1,15 @@
 import { Transform } from "stream";
 
 export function bufferTransform() {
-  let buffer = "";
+  let chunks: string[] = [];
 
   return {
-    buffer,
+    get buffer() {
+      return chunks.join("");
+    },
     transform: new Transform({
       transform(chunk, encoding, callback) {
-        buffer += chunk.toString();
+        chunks.push(chunk.toString());
         callback();
       },
     }),
