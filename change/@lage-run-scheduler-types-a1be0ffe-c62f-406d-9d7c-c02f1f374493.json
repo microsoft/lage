@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "factoring out scheduler types to a new package",
+  "packageName": "@lage-run/scheduler-types",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}
