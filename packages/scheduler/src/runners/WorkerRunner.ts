@@ -50,6 +50,7 @@ export class WorkerRunner implements TargetRunner {
     const scriptFile = target.options?.worker ?? target.options?.script;
     const scriptModule = require(scriptFile);
     const runFn = typeof scriptModule.default === "function" ? scriptModule.default : scriptModule;
+
     await runFn({ target, abortSignal });
   }
 
