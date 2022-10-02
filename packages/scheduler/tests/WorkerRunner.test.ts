@@ -16,9 +16,7 @@ describe("WorkerRunner", () => {
 
     logger.addReporter(dummyReporter);
 
-    const runner = new WorkerRunner({
-      logger,
-    });
+    const runner = new WorkerRunner();
 
     const target1 = {
       id: "a#work",

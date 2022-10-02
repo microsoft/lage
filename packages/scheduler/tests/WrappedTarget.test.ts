@@ -5,7 +5,7 @@ import path from "path";
 import AbortController, { AbortSignal } from "abort-controller";
 import { CacheProvider, TargetHasher } from "@lage-run/cache";
 import { Logger } from "@lage-run/logger";
-import { TargetRunner } from "../src/types/TargetRunner";
+import { TargetRunner } from "@lage-run/scheduler-types";
 import { Pool } from "@lage-run/worker-threads-pool";
 
 function createTarget(packageName: string): Target {
@@ -23,8 +23,8 @@ function createTarget(packageName: string): Target {
 
 class InProcPool implements Pool {
   constructor(private runner: TargetRunner) {}
-  exec({ target }: { target: Target }, _setup, _teardown, abortSignal) {
-   return this.runner.run(target, abortSignal);
+  exec({ target }: { target: Target }, _setup, _teardown) {
+   return this.runner.run(target);
   }
   close() {
     return Promise.resolve();

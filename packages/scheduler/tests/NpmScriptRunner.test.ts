@@ -49,12 +49,9 @@ describe("NpmScriptRunner", () => {
   const npmCmd = path.join(__dirname, "fixtures", "fakeNpm" + (os.platform() === "win32" ? ".cmd" : ""));
 
   it("can run a npm script to completion", async () => {
-    const logger = new Logger();
-
     const abortController = new AbortController();
 
     const runner = new NpmScriptRunner({
-      logger,
       nodeOptions: "",
       npmCmd,
       taskArgs: ["--sleep=50"],
@@ -87,7 +84,6 @@ describe("NpmScriptRunner", () => {
     const abortController = new AbortController();
 
     const runner = new NpmScriptRunner({
-      logger,
       nodeOptions: "",
       npmCmd,
       taskArgs: ["--sleep=50"],
@@ -117,13 +113,12 @@ describe("NpmScriptRunner", () => {
     expect(envEntry.LAGE_TASK).toBe(target.task);
   });
 
-  it.only("can kill the child process based on abort signal", async () => {
+  it("can kill the child process based on abort signal", async () => {
     const logger = new Logger();
 
     const abortController = new AbortController();
 
     const runner = new NpmScriptRunner({
-      logger,
       nodeOptions: "",
       npmCmd,
       taskArgs: ["--sleep=50000"],
@@ -148,11 +143,9 @@ describe("NpmScriptRunner", () => {
   });
 
   it("can kill many concurrent child processes based on abort signal", async () => {
-    const logger = new Logger();
     const abortController = new AbortController();
 
     const runner = new NpmScriptRunner({
-      logger,
       nodeOptions: "",
       npmCmd,
       taskArgs: ["--sleep=50000"],
