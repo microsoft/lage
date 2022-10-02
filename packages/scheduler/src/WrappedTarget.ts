@@ -191,7 +191,8 @@ export class WrappedTarget implements TargetRun {
         () => {
           releaseStdout();
           releaseStderr();
-        }
+        },
+        abortSignal
       );
 
       if (cacheEnabled && hash) {
@@ -204,6 +205,8 @@ export class WrappedTarget implements TargetRun {
 
       this.onComplete();
     } catch (e) {
+      logger.error(String(e), { target });
+
       if (abortSignal.aborted) {
         this.onAbort();
       } else {

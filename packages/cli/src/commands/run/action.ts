@@ -126,7 +126,7 @@ export async function runAction(options: RunOptions, command: Command) {
         options: {
           nodeArg: options.nodeArg,
           taskArgs,
-          npmClient: findNpmClient(config.npmClient),
+          npmCmd: findNpmClient(config.npmClient),
         },
       },
       worker: {

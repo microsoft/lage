@@ -13,6 +13,7 @@ import os from "os";
 import type { Pool } from "./Pool";
 import type { Readable } from "stream";
 import type { WorkerOptions } from "worker_threads";
+import type { AbortSignal } from "abort-controller";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
@@ -188,27 +189,36 @@ export class WorkerPool extends EventEmitter implements Pool {
     this.emit(kWorkerFreedEvent);
   }
 
-  exec(task: unknown, setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void, cleanup?: (worker: Worker) => void) {
+  exec(
+    task: unknown,
+    setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void,
+    cleanup?: (worker: Worker) => void,
+    abortSignal?: AbortSignal
+  ) {
     return new Promise((resolve, reject) => {
       this.queue.push({ task, resolve, reject, cleanup, setup });
-      this._exec();
+      this._exec(abortSignal);
     });
   }
 
-  _exec() {
+  _exec(abortSignal?: AbortSignal) {
     if (this.freeWorkers.length > 0) {
       const worker = this.freeWorkers.pop();
       const work = this.queue.shift();
       const { task, resolve, reject, cleanup, setup } = work as any;
 
       if (worker) {
+        abortSignal?.addEventListener("abort", () => {
+          worker.postMessage({ type: "abort" });
+        });
+
         worker[kTaskInfo] = new WorkerPoolTaskInfo({ cleanup, resolve, reject, worker, setup });
 
         worker[kWorkerCapturedStreamPromise] = new Promise<void>((onResolve) => {
           worker[kWorkerCapturedStreamEvents].once("end", onResolve);
         });
 
-        worker.postMessage(task);
+        worker.postMessage({ type: "start", task });
       }
     }
   }
