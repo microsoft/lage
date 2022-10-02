@@ -188,7 +188,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     this.emit(kWorkerFreedEvent);
   }
 
-  exec(task: unknown, setup?: (worker?: Worker, stdout?: Readable, stderr?: Readable) => void, cleanup?: (worker: Worker) => void) {
+  exec(task: unknown, setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void, cleanup?: (worker: Worker) => void) {
     return new Promise((resolve, reject) => {
       this.queue.push({ task, resolve, reject, cleanup, setup });
       this._exec();
