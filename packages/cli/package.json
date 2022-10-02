@@ -17,6 +17,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@lage-run/find-npm-client": "^0.1.1",
     "@lage-run/logger": "^1.2.0",
     "@lage-run/scheduler": "^0.3.11",
     "@lage-run/target-graph": "^0.4.1",

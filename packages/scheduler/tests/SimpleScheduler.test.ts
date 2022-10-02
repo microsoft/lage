@@ -1,17 +1,14 @@
 import { Logger } from "@lage-run/logger";
 import { CacheProvider, TargetHasher } from "@lage-run/cache";
-import type { AbortSignal } from "abort-controller";
-import { TargetRunner } from "../src/types/TargetRunner";
 import { SimpleScheduler } from "../src/SimpleScheduler";
 import { getStartTargetId, Target, TargetGraph } from "@lage-run/target-graph";
-import { NoOpRunner } from "../src/runners/NoOpRunner";
-import { TargetRunnerPicker } from "../src/runners/TargetRunnerPicker";
 import { Pool } from "@lage-run/worker-threads-pool";
+import { TargetRunner } from "@lage-run/scheduler-types";
 
 class InProcPool implements Pool {
-  constructor(private targetRunnerPicker: TargetRunnerPicker) {}
+  constructor(private runner: TargetRunner) {}
   exec({ target }: { target: Target }) {
-    return this.targetRunnerPicker.pick(target).run(target);
+    return this.runner.run(target);
   }
   close() {
     return Promise.resolve();
@@ -84,10 +81,8 @@ describe("SimpleScheduler", () => {
 
     const hasher = new TargetHasher({ root, environmentGlob: [] });
 
-    const runner = NoOpRunner;
-    const runnerPicker = new TargetRunnerPicker({
-      runners: { npmScript: runner },
-    });
+    const runner = new (require("./fixtures/NoOpRunner").NoOpRunner)();
+
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 1,
@@ -96,8 +91,9 @@ describe("SimpleScheduler", () => {
       continueOnError: false,
       shouldCache: true,
       shouldResetCache: false,
-      pool: new InProcPool(runnerPicker),
       maxWorkersPerTask: new Map(),
+      runners: {},
+      pool: new InProcPool(runner),
     });
 
     // these would normally come from the CLI
@@ -136,35 +132,15 @@ describe("SimpleScheduler", () => {
 
     const hasher = new TargetHasher({ root, environmentGlob: [] });
 
-    const runner = {
-      run(target: Target, abortSignal?: AbortSignal) {
-        return new Promise((resolve, reject) => {
-          if (target.packageName === "d") {
-            reject(new Error("oops"));
-          }
-
-          const timeout = setTimeout(() => {
-            resolve();
-          }, 50000);
-
-          abortSignal?.addEventListener("abort", () => {
-            timeout?.unref();
-            reject(new Error("aborted"));
-          });
-        });
-      },
-    } as TargetRunner;
-
-    const runnerPicker = new TargetRunnerPicker({
-      runners: { npmScript: runner },
-    });
+    const runner = new (require("./fixtures/FailOnPackageRunner").FailOnPackageRunner)("d");
 
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 4,
       cacheProvider,
       hasher,
-      pool: new InProcPool(runnerPicker),
+      runners: {},
+      pool: new InProcPool(runner),
       maxWorkersPerTask: new Map(),
       continueOnError: false,
       shouldCache: true,
@@ -202,29 +178,7 @@ describe("SimpleScheduler", () => {
     };
 
     const hasher = new TargetHasher({ root, environmentGlob: [] });
-
-    const runner = {
-      run(target: Target, abortSignal?: AbortSignal) {
-        return new Promise((resolve, reject) => {
-          if (target.packageName === "d") {
-            reject(new Error("oops"));
-          }
-
-          const timeout = setTimeout(() => {
-            resolve();
-          }, 50);
-
-          abortSignal?.addEventListener("abort", () => {
-            timeout?.unref();
-            reject(new Error("aborted"));
-          });
-        });
-      },
-    } as TargetRunner;
-
-    const runnerPicker = new TargetRunnerPicker({
-      runners: { npmScript: runner },
-    });
+    const runner = new (require("./fixtures/FailOnPackageRunner").FailOnPackageRunner)("d");
 
     const scheduler = new SimpleScheduler({
       logger,
@@ -235,7 +189,8 @@ describe("SimpleScheduler", () => {
       shouldCache: true,
       shouldResetCache: false,
       maxWorkersPerTask: new Map(),
-      pool: new InProcPool(runnerPicker),
+      runners: {},
+      pool: new InProcPool(runner),
     });
 
     // these would normally come from the CLI
@@ -271,39 +226,19 @@ describe("SimpleScheduler", () => {
 
     const hasher = new TargetHasher({ root, environmentGlob: [] });
 
-    const runner = {
-      run(target: Target, abortSignal?: AbortSignal) {
-        return new Promise((resolve, reject) => {
-          if (target.packageName === "d") {
-            reject(new Error("oops"));
-          }
-
-          const timeout = setTimeout(() => {
-            resolve();
-          }, 50000);
-
-          abortSignal?.addEventListener("abort", () => {
-            timeout?.unref();
-            reject(new Error("aborted"));
-          });
-        });
-      },
-    } as TargetRunner;
-
-    const runnerPicker = new TargetRunnerPicker({
-      runners: { npmScript: runner },
-    });
+    const runner = new (require("./fixtures/FailOnPackageRunner").FailOnPackageRunner)("d");
 
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 4,
       cacheProvider,
       hasher,
-      pool: new InProcPool(runnerPicker),
       maxWorkersPerTask: new Map(),
       continueOnError: true,
       shouldCache: true,
       shouldResetCache: false,
+      runners: {},
+      pool: new InProcPool(runner),
     });
 
     // these would normally come from the CLI
@@ -327,21 +262,21 @@ describe("SimpleScheduler", () => {
         "error": undefined,
         "results": "failed",
         "targetRunByStatus": {
-          "aborted": [],
-          "failed": [],
-          "pending": [
-            "a#build",
-            "b#build",
-            "c#build",
+          "aborted": [
             "d#build",
             "e#build",
             "f#build",
             "g#build",
           ],
+          "failed": [],
+          "pending": [],
           "running": [],
           "skipped": [],
           "success": [
             "__start",
+            "a#build",
+            "b#build",
+            "c#build",
           ],
         },
         "targetRuns": Map {
@@ -350,31 +285,31 @@ describe("SimpleScheduler", () => {
             "target": "__start",
           },
           "a#build" => {
-            "status": "pending",
+            "status": "success",
             "target": "a#build",
           },
           "b#build" => {
-            "status": "pending",
+            "status": "success",
             "target": "b#build",
           },
           "c#build" => {
-            "status": "pending",
+            "status": "success",
             "target": "c#build",
           },
           "d#build" => {
-            "status": "pending",
+            "status": "aborted",
             "target": "d#build",
           },
           "e#build" => {
-            "status": "pending",
+            "status": "aborted",
             "target": "e#build",
           },
           "f#build" => {
-            "status": "pending",
+            "status": "aborted",
             "target": "f#build",
           },
           "g#build" => {
-            "status": "pending",
+            "status": "aborted",
             "target": "g#build",
           },
         },

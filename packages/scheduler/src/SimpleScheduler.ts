@@ -10,6 +10,7 @@ import type { Logger } from "@lage-run/logger";
 import type { TargetGraph, Target } from "@lage-run/target-graph";
 import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "@lage-run/scheduler-types";
 import type { Pool } from "@lage-run/worker-threads-pool";
+import type { TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -19,10 +20,9 @@ export interface SimpleSchedulerOptions {
   hasher: TargetHasher;
   shouldCache: boolean;
   shouldResetCache: boolean;
-  nodeArg: string;
-  taskArgs: string[];
-  npmClient: string;
+  runners: TargetRunnerPickerOptions;
   maxWorkersPerTask: Map<string, number>;
+  pool?: Pool;  // for testing
 }
 
 /**
@@ -46,16 +46,14 @@ export class SimpleScheduler implements TargetScheduler {
   pool: Pool;
 
   constructor(private options: SimpleSchedulerOptions) {
-    this.pool = new WorkerPool({
+    this.pool = options.pool ?? new WorkerPool({
       maxWorkers: options.concurrency,
       script: require.resolve("./workers/targetWorker"),
       workerOptions: {
         stdout: true,
         stderr: true,
         workerData: {
-          nodeArg: options.nodeArg,
-          taskArgs: options.taskArgs,
-          npmClient: options.npmClient,
+          runners: options.runners,
         },
       },
     });
@@ -80,7 +78,6 @@ export class SimpleScheduler implements TargetScheduler {
     const { dependencies, targets } = targetGraph;
     this.dependencies = dependencies;
     this.targetsByPriority = sortTargetsByPriority([...targets.values()]);
-
     for (const target of targets.values()) {
       const targetRun = new WrappedTarget({
         target,
@@ -94,6 +91,10 @@ export class SimpleScheduler implements TargetScheduler {
         abortController,
         pool,
       });
+
+      if (target.id === getStartTargetId()) {
+        targetRun.status = "success";
+      }
 
       this.targetRuns.set(target.id, targetRun);
     }
@@ -140,7 +141,7 @@ export class SimpleScheduler implements TargetScheduler {
 
   /**
    * Used by consumers of the scheduler to notify that the inputs to the target has changed
-   * @param targetId 
+   * @param targetId
    */
   onTargetChange(targetId: string) {
     const queue = [targetId];

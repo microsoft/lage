@@ -1,10 +1,11 @@
+import path from "path";
 import { getStartTargetId } from "@lage-run/target-graph";
 import { NoOpRunner } from "./NoOpRunner";
 import type { Target } from "@lage-run/target-graph";
 import type { TargetRunner } from "@lage-run/scheduler-types";
 
-interface TargetRunnerPickerOptions {
-  runners: { [key: string]: TargetRunner };
+export interface TargetRunnerPickerOptions {
+  [key: string]: { script: string; options: any };
 }
 
 export class TargetRunnerPicker {
@@ -19,8 +20,23 @@ export class TargetRunnerPicker {
       target.type = "npmScript";
     }
 
-    if (this.options.runners[target.type]) {
-      return this.options.runners[target.type];
+    if (this.options[target.type]) {
+      const config = this.options[target.type];
+      const { script, options } = config;
+
+      const runnerModule = require(script);
+
+      const base = path.basename(script);
+      const runnerName = base.replace(path.extname(base), '');
+
+      const runner =
+        typeof runnerModule[runnerName] === "function"
+          ? runnerModule[runnerName]
+          : runnerModule.default === "function"
+          ? runnerModule.default
+          : runnerModule;
+
+      return new runner(options);
     }
 
     throw new Error(`No runner found for target ${target.id}`);

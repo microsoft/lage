@@ -11,6 +11,7 @@ import { SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger from "@lage-run/logger";
 import type { ReporterInitOptions } from "@lage-run/reporters";
+import { findNpmClient } from "@lage-run/find-npm-client";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
@@ -119,9 +120,21 @@ export async function runAction(options: RunOptions, command: Command) {
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
     maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}),
-    nodeArg: options.nodeArg,
-    taskArgs,
-    npmClient: config.npmClient,
+    runners: {
+      npmScript: {
+        script: require.resolve("@lage-run/scheduler/lib/runners/NpmScriptRunner"),
+        options: {
+          nodeArg: options.nodeArg,
+          taskArgs,
+          npmClient: findNpmClient(config.npmClient),
+        },
+      },
+      worker: {
+        script: require.resolve("@lage-run/scheduler/lib/runners/WorkerRunner"),
+        options: {},
+      },
+      ...config.runners
+    },
   });
 
   const summary = await scheduler.run(root, targetGraph);
