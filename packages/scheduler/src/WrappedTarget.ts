@@ -1,4 +1,4 @@
-import { createCachedOutputTransform, getLageOutputCacheLocation } from "./createCachedOutputTransform";
+import { getLageOutputCacheLocation } from "./getLageOutputCacheLocation";
 import { hrToSeconds } from "./formatDuration";
 import { Logger } from "@lage-run/logger";
 import { LogLevel } from "@lage-run/logger";
