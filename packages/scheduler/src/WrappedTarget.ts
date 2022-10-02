@@ -5,12 +5,15 @@ import { LogLevel } from "@lage-run/logger";
 import { Target } from "@lage-run/target-graph";
 
 import fs from "fs";
+import path from "path";
+import { mkdir, writeFile } from "fs/promises";
 
 import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
 import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetHasher } from "@lage-run/cache";
 import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
+import { bufferTransform } from "./bufferTransform";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -162,19 +165,40 @@ export class WrappedTarget implements TargetRun {
       let releaseStdout: any;
       let releaseStderr: any;
 
-      await pool.exec({ target }, (_worker, stdout, stderr) => {
-        const cachedStdout = hash ? stdout.pipe(createCachedOutputTransform(target, hash)) : stdout;
-        const cachedStderr = hash ? stdout.pipe(createCachedOutputTransform(target, hash)) : stderr;
+      const bufferStdout = bufferTransform();
+      const bufferStderr = bufferTransform();
 
-        releaseStdout = logger.stream(LogLevel.verbose, cachedStdout, { target });
-        releaseStderr = logger.stream(LogLevel.verbose, cachedStderr, { target });
-      }, () => {
-        releaseStdout();
-        releaseStderr();
-      });
+      await pool.exec(
+        { target },
+        (_worker, stdout, stderr) => {
+          stdout.pipe(bufferStdout.transform);
+          stderr.pipe(bufferStderr.transform);
 
-      if (cacheEnabled) {
+          const releaseStdoutStream = logger.stream(LogLevel.verbose, stdout, { target });
+
+          releaseStdout = () => {
+            releaseStdoutStream();
+            stdout.unpipe(bufferStdout.transform);
+          };
+
+          const releaseStderrStream = logger.stream(LogLevel.verbose, stderr, { target });
+          releaseStderr = () => {
+            releaseStderrStream();
+            stderr.unpipe(bufferStderr.transform);
+          };
+        },
+        () => {
+          releaseStdout();
+          releaseStderr();
+        }
+      );
+
+      if (cacheEnabled && hash) {
         await this.saveCache(hash);
+        const outputLocation = getLageOutputCacheLocation(this.target, hash);
+        const outputPath = path.dirname(outputLocation);
+        await mkdir(outputPath, { recursive: true });
+        await writeFile(outputLocation, lines.join("\n"));
       }
 
       this.onComplete();
