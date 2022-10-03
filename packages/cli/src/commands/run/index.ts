@@ -34,7 +34,7 @@ addLoggerOptions(runCommand)
   .option("--skip-local-cache", "skips caching locally (defaults to true in CI environments)", isRunningFromCI)
   .option("--profile [profile]", "writes a run profile into a file that can be processed by Chromium devtool")
   .option(
-    "--nodearg <nodeArg>",
+    "--nodearg|--node-arg <nodeArg>",
     'arguments to be passed to node (e.g. --nodearg="--max_old_space_size=1234 --heap-prof" - set via "NODE_OPTIONS" environment variable'
   )
   .option("--continue", "continues the run even on error")

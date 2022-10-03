@@ -1,6 +1,6 @@
 import { cosmiconfigSync } from "cosmiconfig";
 import { getWorkspaceRoot } from "workspace-tools";
-import { ConfigOptions } from "../types/ConfigOptions";
+import type { ConfigOptions } from "../types/ConfigOptions";
 
 export function getConfig(cwd: string): ConfigOptions {
   // Verify presence of git
@@ -26,6 +26,6 @@ export function getConfig(cwd: string): ConfigOptions {
       "lerna.json",
       "rush.json",
     ],
-    loggerOptions: configResults?.config.loggerOptions ?? {},
+    loggerOptions: configResults?.config.loggerOptions ?? {}
   };
 }
