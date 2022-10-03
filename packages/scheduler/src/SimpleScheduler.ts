@@ -123,9 +123,9 @@ export class SimpleScheduler implements TargetScheduler {
       ) {
         results = "success";
       }
-
-      this.pool.close();
     }
+
+    await this.pool.close();
 
     return {
       targetRunByStatus,
