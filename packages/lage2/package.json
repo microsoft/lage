@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/lage",
-  "version": "2.1.16",
+  "version": "2.1.17",
   "main": "dist/main.js",
   "bin": {
     "lage": "dist/lage.js"

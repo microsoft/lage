@@ -5,7 +5,7 @@ import fs from "fs";
 import path from "path";
 import type { LogEntry, Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler-types";
-import type { TargetStatusEntry, TargetMessageEntry } from './types/TargetLogEntry';
+import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
 import type { Writable } from "stream";
 
 interface TraceEventsObject {

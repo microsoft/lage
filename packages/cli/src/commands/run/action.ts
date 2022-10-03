@@ -1,6 +1,7 @@
 import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
 import { Command } from "commander";
 import { createProfileReporter } from "./createProfileReporter";
+import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getMaxWorkersPerTask } from "../../config/getMaxWorkersPerTask";
@@ -11,7 +12,6 @@ import { SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger from "@lage-run/logger";
 import type { ReporterInitOptions } from "@lage-run/reporters";
-import { findNpmClient } from "@lage-run/find-npm-client";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
