@@ -1,7 +1,7 @@
 import { getStartTargetId } from "@lage-run/target-graph";
 import { NoOpRunner } from "./NoOpRunner";
 import type { Target } from "@lage-run/target-graph";
-import type { TargetRunner } from "../types/TargetRunner";
+import type { TargetRunner } from "@lage-run/scheduler-types";
 
 interface TargetRunnerPickerOptions {
   runners: { [key: string]: TargetRunner };

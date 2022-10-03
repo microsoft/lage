@@ -4,7 +4,7 @@ import type { Logger } from "@lage-run/logger";
 import { LogLevel } from "@lage-run/logger";
 import { readFile } from "fs/promises";
 import { spawn } from "child_process";
-import type { TargetCaptureStreams, TargetRunner } from "../types/TargetRunner";
+import type { TargetCaptureStreams, TargetRunner } from "@lage-run/scheduler-types";
 import type { AbortSignal } from "abort-controller";
 import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";

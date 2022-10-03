@@ -1,7 +1,7 @@
 import { Logger } from "@lage-run/logger";
 import { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { AbortSignal } from "abort-controller";
-import { TargetRunner } from "../src/types/TargetRunner";
+import type { TargetRunner } from "@lage-run/scheduler-types";
 import { SimpleScheduler } from "../src/SimpleScheduler";
 import { getStartTargetId, Target, TargetGraph } from "@lage-run/target-graph";
 import { NoOpRunner } from "../src/runners/NoOpRunner";

@@ -4,7 +4,7 @@ import os from "os";
 import type { AbortSignal } from "abort-controller";
 import type { Logger } from "@lage-run/logger";
 import type { Target, TargetConfig } from "@lage-run/target-graph";
-import type { TargetRunner } from "../types/TargetRunner";
+import type { TargetRunner } from "@lage-run/scheduler-types";
 import type { Worker } from "worker_threads";
 import type { Readable } from "stream";
 
