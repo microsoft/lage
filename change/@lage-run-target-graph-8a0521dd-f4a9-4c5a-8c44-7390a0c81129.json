@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixes prioritization so that it runs fast like p-graph did",
-  "packageName": "@lage-run/target-graph",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
