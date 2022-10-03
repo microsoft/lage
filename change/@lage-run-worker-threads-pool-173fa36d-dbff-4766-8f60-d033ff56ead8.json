@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "adds support for abort signal",
-  "packageName": "@lage-run/worker-threads-pool",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

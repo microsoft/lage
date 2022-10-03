@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Sat, 01 Oct 2022 05:25:29 GMT and should not be manually modified.
+This log was last generated on Mon, 03 Oct 2022 20:41:25 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.5
+
+Mon, 03 Oct 2022 20:41:25 GMT
+
+### Patches
+
+- adds support for abort signal (kchau@microsoft.com)
 
 ## 0.1.4
 

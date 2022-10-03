@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Mon, 03 Oct 2022 20:41:25 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.1.5",
+      "version": "0.1.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "68c7fda6d0c1757b353d406b21223295c9830767",
+            "comment": "adds support for abort signal"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 01 Oct 2022 05:25:29 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.1.4",
       "version": "0.1.4",

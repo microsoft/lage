@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "moved reporters init code in @lage-run/reporters",
-  "packageName": "@lage-run/cli",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
