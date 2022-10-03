@@ -133,19 +133,17 @@ export async function runAction(options: RunOptions, command: Command) {
         script: require.resolve("@lage-run/scheduler/lib/runners/WorkerRunner"),
         options: {},
       },
-      ...config.runners
+      ...config.runners,
     },
   });
 
   const summary = await scheduler.run(root, targetGraph);
 
-  try {
-    for (const reporter of logger.reporters) {
-      reporter.summarize(summary);
-    }
-  } catch (e) {}
-
   if (summary.results !== "success") {
     process.exitCode = 1;
+  }
+
+  for (const reporter of logger.reporters) {
+    reporter.summarize(summary);
   }
 }
