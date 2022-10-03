@@ -1,10 +1,10 @@
 import { Config } from "../types/Config";
-import { cosmiconfigSync } from "cosmiconfig";
+import { cosmiconfig } from "cosmiconfig";
 import { getWorkspaceRoot } from "workspace-tools";
 import { parseArgs, arrifyArgs, getPassThroughArgs, validateInput } from "../args";
 import os from "os";
 
-export function getConfig(cwd: string): Config {
+export async function getConfig(cwd: string): Promise<Config> {
   // Verify presence of git
   const root = getWorkspaceRoot(cwd);
   if (!root) {
@@ -13,7 +13,7 @@ export function getConfig(cwd: string): Config {
 
   // Search for lage.config.js file
   const ConfigModuleName = "lage";
-  const configResults = cosmiconfigSync(ConfigModuleName).search(root || cwd);
+  const configResults = await cosmiconfig(ConfigModuleName).search(root || cwd);
 
   // Parse CLI args
   const parsedArgs = parseArgs();
@@ -24,10 +24,12 @@ export function getConfig(cwd: string): Config {
 
   const command = parsedArgs._;
 
+  const config = await Promise.resolve(configResults?.config);
+  
   // deps should be default true, unless exclusively turned off with '--no-deps' or from config file with "deps: false"
-  let deps = parsedArgs.deps === false ? false : configResults?.config.deps === false ? false : true;
+  let deps = parsedArgs.deps === false ? false : config?.deps === false ? false : true;
 
-  let scope = parsedArgs.scope || configResults?.config.scope || [];
+  let scope = parsedArgs.scope || config?.scope || [];
 
   // the --to arg means that we will not build any of the dependents and limit the scope
   if (parsedArgs.to) {
@@ -36,7 +38,7 @@ export function getConfig(cwd: string): Config {
   }
 
   const dist = parsedArgs.experimentDist || false;
-  const concurrency = parsedArgs.concurrency || configResults?.config.concurrency || os.cpus().length - 1;
+  const concurrency = parsedArgs.concurrency || config?.concurrency || os.cpus().length - 1;
 
   return {
     reporter: parsedArgs.reporter || "npmLog",
@@ -46,25 +48,25 @@ export function getConfig(cwd: string): Config {
     resetCache: parsedArgs.resetCache || false,
     cacheOptions:
       {
-        ...configResults?.config.cacheOptions,
+        ...config?.cacheOptions,
         ...(parsedArgs.cacheKey && { cacheKey: parsedArgs.cacheKey }),
         ...(parsedArgs.skipLocalCache && { skipLocalCache: true }),
       } || {},
     command,
     concurrency,
     deps,
-    ignore: parsedArgs.ignore || configResults?.config.ignore || [],
+    ignore: parsedArgs.ignore || config?.ignore || [],
     node: parsedArgs.node ? arrifyArgs(parsedArgs.node) : [],
-    npmClient: configResults?.config.npmClient || "npm",
-    pipeline: configResults?.config.pipeline || {},
-    priorities: configResults?.config.priorities || [],
+    npmClient: config?.npmClient || "npm",
+    pipeline: config?.pipeline || {},
+    priorities: config?.priorities || [],
     profile: parsedArgs.profile,
     scope,
     since: parsedArgs.since || undefined,
     verbose: parsedArgs.verbose,
     parallel: parsedArgs.parallel,
     only: false,
-    repoWideChanges: configResults?.config.repoWideChanges || [
+    repoWideChanges: config?.repoWideChanges || [
       "lage.config.js",
       "package-lock.json",
       "yarn.lock",
@@ -73,12 +75,12 @@ export function getConfig(cwd: string): Config {
       "rush.json",
     ],
     to: parsedArgs.to || [],
-    continue: parsedArgs.continue || configResults?.config.continue,
+    continue: parsedArgs.continue || config?.continue,
     safeExit: parsedArgs.safeExit,
     includeDependencies: parsedArgs.includeDependencies,
     clear: parsedArgs.clear || false,
     prune: parsedArgs.prune,
     logLevel: parsedArgs.logLevel,
-    loggerOptions: configResults?.config.loggerOptions || {},
+    loggerOptions: config?.loggerOptions || {},
   };
 }

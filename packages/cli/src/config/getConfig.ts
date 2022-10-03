@@ -2,7 +2,7 @@ import { cosmiconfigSync } from "cosmiconfig";
 import { getWorkspaceRoot } from "workspace-tools";
 import type { ConfigOptions } from "../types/ConfigOptions";
 
-export function getConfig(cwd: string): ConfigOptions {
+export async function getConfig(cwd: string): Promise<ConfigOptions> {
   // Verify presence of git
   const root = getWorkspaceRoot(cwd);
   if (!root) {
@@ -12,13 +12,14 @@ export function getConfig(cwd: string): ConfigOptions {
   // Search for lage.config.js file
   const ConfigModuleName = "lage";
   const configResults = cosmiconfigSync(ConfigModuleName).search(root ?? cwd);
+  const config = await Promise.resolve(configResults?.config);
   return {
-    cacheOptions: configResults?.config.cacheOptions ?? {},
-    ignore: configResults?.config.ignore ?? [],
-    npmClient: configResults?.config.npmClient ?? "npm",
-    pipeline: configResults?.config.pipeline ?? {},
-    priorities: configResults?.config.priorities ?? [],
-    repoWideChanges: configResults?.config.repoWideChanges ?? [
+    cacheOptions: config.cacheOptions ?? {},
+    ignore: config.ignore ?? [],
+    npmClient: config.npmClient ?? "npm",
+    pipeline: config.pipeline ?? {},
+    priorities: config.priorities ?? [],
+    repoWideChanges: config.repoWideChanges ?? [
       "lage.config.js",
       "package-lock.json",
       "yarn.lock",
@@ -26,6 +27,6 @@ export function getConfig(cwd: string): ConfigOptions {
       "lerna.json",
       "rush.json",
     ],
-    loggerOptions: configResults?.config.loggerOptions ?? {},
+    loggerOptions: config.loggerOptions ?? {},
   };
 }
