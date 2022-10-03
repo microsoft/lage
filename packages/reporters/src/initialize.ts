@@ -1,5 +1,6 @@
-import { Logger, LogLevel } from "@lage-run/logger";
+import { LogLevel } from "@lage-run/logger";
 import { createReporter } from "./createReporter";
+import type { Logger } from "@lage-run/logger";
 
 export interface ReporterInitOptions {
   reporter: string[] | string;

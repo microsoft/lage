@@ -26,6 +26,6 @@ export function getConfig(cwd: string): ConfigOptions {
       "lerna.json",
       "rush.json",
     ],
-    loggerOptions: configResults?.config.loggerOptions ?? {}
+    loggerOptions: configResults?.config.loggerOptions ?? {},
   };
 }

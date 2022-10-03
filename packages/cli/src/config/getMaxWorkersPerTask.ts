@@ -10,7 +10,7 @@ export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"]) 
       let maxWorkers = 0;
       if (typeof maxWorkerOptions === "string") {
         if (maxWorkerOptions.endsWith("%")) {
-          maxWorkers = Math.floor((os.cpus().length) * (parseInt(maxWorkerOptions, 10) / 100));
+          maxWorkers = Math.floor(os.cpus().length * (parseInt(maxWorkerOptions, 10) / 100));
         } else {
           maxWorkers = parseInt(maxWorkerOptions, 10);
         }
