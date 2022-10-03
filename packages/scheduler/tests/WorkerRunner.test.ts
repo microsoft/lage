@@ -8,14 +8,6 @@ describe("WorkerRunner", () => {
     const workerFixture = path.join(__dirname, "./fixtures/worker.js");
     const logger = new Logger();
 
-    const dummyReporter = {
-      log(entry) {
-        console.log(entry);
-      },
-    } as Reporter;
-
-    logger.addReporter(dummyReporter);
-
     const runner = new WorkerRunner({
       logger,
       workerTargetConfigs: {

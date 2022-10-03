@@ -5,12 +5,12 @@ import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { initializeReporters } from "../../reporters/initialize";
+import { initializeReporters } from "@lage-run/reporters";
 import { isRunningFromCI } from "../isRunningFromCI";
 import { NpmScriptRunner, SimpleScheduler, WorkerRunner, TargetRunnerPicker } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger from "@lage-run/logger";
-import type { ReporterInitOptions } from "../../types/LoggerOptions";
+import type { ReporterInitOptions } from "@lage-run/reporters";
 import type { TargetRunner } from "@lage-run/scheduler-types";
 
 function filterArgsForTasks(args: string[]) {

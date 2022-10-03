@@ -1,10 +1,10 @@
 import { clearCache } from "./clearCache";
 import { Command } from "commander";
 import { getConfig } from "../../config/getConfig";
-import { initializeReporters } from "../../reporters/initialize";
 import { pruneCache } from "./pruneCache";
 import createLogger from "@lage-run/logger";
-import { ReporterInitOptions } from "../../types/LoggerOptions";
+import { initializeReporters } from "@lage-run/reporters";
+import type { ReporterInitOptions } from "@lage-run/reporters";
 
 interface CacheOptions extends ReporterInitOptions {
   prune?: number;

@@ -1,6 +1,6 @@
 import { cosmiconfigSync } from "cosmiconfig";
 import { getWorkspaceRoot } from "workspace-tools";
-import { ConfigOptions } from "../types/ConfigOptions";
+import type { ConfigOptions } from "../types/ConfigOptions";
 
 export function getConfig(cwd: string): ConfigOptions {
   // Verify presence of git

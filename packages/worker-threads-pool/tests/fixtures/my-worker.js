@@ -1,18 +1,31 @@
 const { parentPort } = require("worker_threads");
+const { AbortController } = require("abort-controller");
 
-// this is a duplicate of what's found inside the worker-threads-pool registerWorker (can't import it from this .js file)
 const START_WORKER_STREAM_MARKER = "## WORKER:START:";
 const END_WORKER_STREAM_MARKER = "## WORKER:END:";
+
+parentPort?.on("message", async (message) => {
+  let abortController;
+
+  switch (message.type) {
+    case "start":
+      abortController = new AbortController();
+      return message.task && (await start(message.task, abortController.signal));
+
+    case "abort":
+      return abortController?.abort();
+  }
+});
 
 function fn() {
   return Promise.resolve();
 }
 
-parentPort?.on("message", async (task) => {
+async function start(task, abortSignal) {
   try {
     process.stdout.write(`${START_WORKER_STREAM_MARKER}\n`);
     process.stderr.write(`${START_WORKER_STREAM_MARKER}\n`);
-    const results = await fn(task);
+    const results = await fn(task, abortSignal);
     parentPort?.postMessage({ err: undefined, results });
   } catch (err) {
     parentPort?.postMessage({ err, results: undefined });
@@ -20,4 +33,4 @@ parentPort?.on("message", async (task) => {
     process.stdout.write(`${END_WORKER_STREAM_MARKER}\n`);
     process.stderr.write(`${END_WORKER_STREAM_MARKER}\n`);
   }
-});
+}
