@@ -79,7 +79,7 @@ export class NpmScriptRunner implements TargetRunner {
         if (childProcess && !childProcess.killed) {
           const pid = childProcess.pid;
 
-          process.stdout.write(`Abort signal detected, attempting to killing process id ${pid}`);
+          process.stdout.write(`Abort signal detected, attempting to killing process id ${pid}\n`);
 
           childProcess.kill("SIGTERM");
 
