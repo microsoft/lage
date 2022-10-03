@@ -23,7 +23,7 @@ function createTarget({
     dependencies,
     dependents,
     depSpecs: [],
-    priority: 1,
+    priority,
     cwd: `packages/${packageName}`,
   } as Target;
 }
@@ -33,12 +33,18 @@ describe("prioritize", () => {
     const targets = new Map<string, Target>();
     const edges = [
       ["a#build", "b#build"],
+      ["a#build", "e#build"],
       ["b#build", "c#build"],
       ["c#build", "d#build"],
-      ["_start", "a#lint"],
-      ["_start", "b#lint"],
-      ["_start", "c#lint"],
-      ["_start", "d#lint"],
+      ["_start#x", "a#lint"],
+      ["_start#x", "b#lint"],
+      ["_start#x", "c#lint"],
+      ["_start#x", "d#lint"],
+      ["_start#x", "a#build"],
+      ["_start#x", "b#build"],
+      ["_start#x", "c#build"],
+      ["_start#x", "d#build"],
+      ["_start#x", "e#build"],
     ];
 
     for (const [from, to] of edges) {
@@ -64,23 +70,27 @@ describe("prioritize", () => {
       [
         {
           "id": "a#build",
-          "priority": 10,
+          "priority": 13,
         },
         {
           "id": "b#build",
-          "priority": 10,
+          "priority": 12,
+        },
+        {
+          "id": "e#build",
+          "priority": 1,
         },
         {
           "id": "c#build",
-          "priority": 10,
+          "priority": 11,
         },
         {
           "id": "d#build",
           "priority": 1,
         },
         {
-          "id": "undefined#_start",
-          "priority": 1,
+          "id": "_start#x",
+          "priority": 14,
         },
         {
           "id": "a#lint",
@@ -100,13 +110,5 @@ describe("prioritize", () => {
         },
       ]
     `);
-
-    expect(targets.get("a#build")?.priority).toEqual(10);
-    expect(targets.get("b#build")?.priority).toEqual(10);
-    expect(targets.get("c#build")?.priority).toEqual(10);
-    expect(targets.get("d#build")?.priority).toEqual(1);
-    expect(targets.get("a#lint")?.priority).toEqual(1);
-    expect(targets.get("b#lint")?.priority).toEqual(1);
-    expect(targets.get("c#lint")?.priority).toEqual(1);
   });
 });
