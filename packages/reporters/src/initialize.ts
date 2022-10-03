@@ -9,13 +9,6 @@ export interface ReporterInitOptions {
   logLevel: keyof typeof LogLevel;
 }
 
-export interface ReporterInitOptions {
-  reporter: string[] | string;
-  verbose: boolean;
-  grouped: boolean;
-  logLevel: keyof typeof LogLevel;
-}
-
 export function initializeReporters(logger: Logger, options: ReporterInitOptions) {
   const { reporter, verbose, grouped, logLevel } = options;
   const reporterOptions = Array.isArray(reporter) ? reporter : [reporter];
