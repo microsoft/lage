@@ -19,8 +19,8 @@ describe("WorkerRunner", () => {
       label: "a - work",
       type: "worker",
       options: {
-        worker: workerFixture
-      }
+        worker: workerFixture,
+      },
     } as Target;
 
     const target2 = {
@@ -34,8 +34,8 @@ describe("WorkerRunner", () => {
       label: "b - work",
       type: "worker",
       options: {
-        worker: workerFixture
-      }
+        worker: workerFixture,
+      },
     } as Target;
 
     await Promise.all([runner.run(target1), runner.run(target2)]);

@@ -22,7 +22,7 @@ export interface SimpleSchedulerOptions {
   shouldResetCache: boolean;
   runners: TargetRunnerPickerOptions;
   maxWorkersPerTask: Map<string, number>;
-  pool?: Pool;  // for testing
+  pool?: Pool; // for testing
 }
 
 /**
@@ -46,17 +46,19 @@ export class SimpleScheduler implements TargetScheduler {
   pool: Pool;
 
   constructor(private options: SimpleSchedulerOptions) {
-    this.pool = options.pool ?? new WorkerPool({
-      maxWorkers: options.concurrency,
-      script: require.resolve("./workers/targetWorker"),
-      workerOptions: {
-        stdout: true,
-        stderr: true,
-        workerData: {
-          runners: options.runners,
+    this.pool =
+      options.pool ??
+      new WorkerPool({
+        maxWorkers: options.concurrency,
+        script: require.resolve("./workers/targetWorker"),
+        workerOptions: {
+          stdout: true,
+          stderr: true,
+          workerData: {
+            runners: options.runners,
+          },
         },
-      },
-    });
+      });
   }
 
   /**

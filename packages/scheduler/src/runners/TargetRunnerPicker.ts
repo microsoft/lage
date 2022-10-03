@@ -27,7 +27,7 @@ export class TargetRunnerPicker {
       const runnerModule = require(script);
 
       const base = path.basename(script);
-      const runnerName = base.replace(path.extname(base), '');
+      const runnerName = base.replace(path.extname(base), "");
 
       const runner =
         typeof runnerModule[runnerName] === "function"
