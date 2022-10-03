@@ -17,6 +17,10 @@ function getNewDependsOnMap(pGraphDependencyMap: Map<string, Target>): Map<strin
   return new Map([...pGraphDependencyMap.entries()].map(([key, value]) => [key, new Set(value.dependencies)]));
 }
 
+/**
+ * Topologically sort the nodes in a graph - starting with nodes with no dependencies
+ * @returns a list of ids in order
+ */
 function topologicalSort(targets: Map<string, Target>, nodesWithNoDependencies: string[]): string[] {
   const sortedList: string[] = [];
 
@@ -52,25 +56,32 @@ export function prioritize(targets: Map<string, Target>) {
   const nodeCumulativePriorities = new Map<string, number>();
 
   const nodesWithNoDependencies = getNodesWithNoDependencies(targets);
-  const stack = topologicalSort(targets, nodesWithNoDependencies);
-  while (stack.length > 0) {
-    const currentNodeId = stack.pop()!;
+  const topoSortedNodeIds = topologicalSort(targets, nodesWithNoDependencies);
+
+  /**
+   * What is this loop doing?
+   *
+   * Now that we have topologically sorted the nodes, we examine the each node
+   * and update the cumulative priority of all the nodes that depend on it.
+   */
+  for (const currentNodeId of topoSortedNodeIds) {
     const node = targets.get(currentNodeId)!;
     // The default priority for a node is zero
     const currentNodePriority = node.priority || 0;
 
-    const childrenPriorities = node.dependents.map((childId) => {
+    const childrenPriorities = node.dependencies.map((childId) => {
       const childCumulativePriority = nodeCumulativePriorities.get(childId);
       if (childCumulativePriority === undefined) {
         throw new Error(`Expected to have already computed the cumulative priority for node ${childId}`);
       }
 
-      return childCumulativePriority ?? 0;
+      return childCumulativePriority;
     });
 
     const maxChildCumulativePriority = Math.max(...childrenPriorities, 0);
 
     const result = currentNodePriority + maxChildCumulativePriority;
+
     nodeCumulativePriorities.set(currentNodeId, result);
   }
 
