@@ -22,7 +22,7 @@
     "gradient-string": "^2.0.1"
   },
   "devDependencies": {
-    "@lage-run/scheduler-types": "0.1.0",
+    "@lage-run/scheduler-types": "^0.1.1",
     "memory-streams": "0.1.3"
   },
   "publishConfig": {
