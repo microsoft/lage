@@ -72,8 +72,6 @@ export function prioritize(targets: Map<string, Target>) {
     const childrenPriorities = node.dependencies.map((childId) => {
       const childCumulativePriority = nodeCumulativePriorities.get(childId);
       if (childCumulativePriority === undefined) {
-        console.log(node.id, node.dependencies, childId);
-
         throw new Error(`Expected to have already computed the cumulative priority for node ${childId}`);
       }
 
