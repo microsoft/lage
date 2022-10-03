@@ -123,11 +123,7 @@ export class SimpleScheduler implements TargetScheduler {
       ) {
         results = "success";
       }
-    }
 
-    try {
-      await this.scheduleReadyTargets();
-    } finally {
       this.pool.close();
     }
 
@@ -212,7 +208,7 @@ export class SimpleScheduler implements TargetScheduler {
   }
 
   async scheduleReadyTargets() {
-    if (this.isAllDone()) {
+    if (this.isAllDone() || this.abortSignal.aborted) {
       return;
     }
 

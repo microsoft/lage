@@ -40,19 +40,17 @@ import type { TargetRunner } from "@lage-run/scheduler-types";
 export class WorkerRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
 
-  constructor() {}
-
   async run(target: Target, abortSignal?: AbortSignal) {
     if (!target.options?.worker) {
       throw new Error('WorkerRunner: "worker" configuration is required - e.g. { type: "worker", worker: "./worker.js" }');
     }
 
     const scriptFile = target.options?.worker ?? target.options?.script;
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const scriptModule = require(scriptFile);
     const runFn = typeof scriptModule.default === "function" ? scriptModule.default : scriptModule;
 
     await runFn({ target, abortSignal });
   }
-
-  cleanup() {}
 }

@@ -1,7 +1,7 @@
 import { Transform } from "stream";
 
 export function bufferTransform() {
-  let chunks: string[] = [];
+  const chunks: string[] = [];
 
   return {
     get buffer() {

@@ -24,6 +24,7 @@ export class TargetRunnerPicker {
       const config = this.options[target.type];
       const { script, options } = config;
 
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const runnerModule = require(script);
 
       const base = path.basename(script);

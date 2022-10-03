@@ -146,8 +146,8 @@ export class NpmScriptRunner implements TargetRunner {
 
       process.stdout.write(`Running ${[npmCmd, ...npmRunArgs].join(" ")}, pid: ${pid}\n`);
 
-      let stdout = childProcess.stdout!;
-      let stderr = childProcess.stderr!;
+      const stdout = childProcess.stdout!;
+      const stderr = childProcess.stderr!;
 
       stdout.pipe(process.stdout);
       stderr.pipe(process.stderr);

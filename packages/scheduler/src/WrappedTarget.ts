@@ -1,8 +1,7 @@
+import { bufferTransform } from "./bufferTransform";
 import { getLageOutputCacheLocation } from "./getLageOutputCacheLocation";
 import { hrToSeconds } from "./formatDuration";
-import { Logger } from "@lage-run/logger";
 import { LogLevel } from "@lage-run/logger";
-import { Target } from "@lage-run/target-graph";
 
 import fs from "fs";
 import path from "path";
@@ -13,7 +12,8 @@ import type { CacheProvider } from "@lage-run/cache";
 import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetHasher } from "@lage-run/cache";
 import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
-import { bufferTransform } from "./bufferTransform";
+import type { Target } from "@lage-run/target-graph";
+import type { Logger } from "@lage-run/logger";
 
 export interface WrappedTargetOptions {
   root: string;
