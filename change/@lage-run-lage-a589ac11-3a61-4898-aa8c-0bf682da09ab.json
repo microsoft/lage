@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "deprecating the registerWorker() api with a warning",
+  "packageName": "@lage-run/lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
