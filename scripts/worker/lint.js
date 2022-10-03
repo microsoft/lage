@@ -2,7 +2,7 @@
 const { ESLint } = require("eslint");
 const PROJECT_ROOT = require("path").resolve(__dirname, "..", "..");
 
-const { registerWorker } = require("@lage-run/worker-threads-pool");
+const { registerWorker } = require("lage-npm");
 const { readFile } = require("fs/promises");
 
 const path = require("path");

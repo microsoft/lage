@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Mon, 03 Oct 2022 20:41:25 GMT",
+      "tag": "@lage-run/cli_v0.3.19",
+      "version": "0.3.19",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "68c7fda6d0c1757b353d406b21223295c9830767",
+            "comment": "moved reporters init code in @lage-run/reporters"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.3.14",
+            "commit": "68c7fda6d0c1757b353d406b21223295c9830767"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.16",
+            "commit": "68c7fda6d0c1757b353d406b21223295c9830767"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 03 Oct 2022 19:57:28 GMT",
       "tag": "@lage-run/cli_v0.3.18",
       "version": "0.3.18",

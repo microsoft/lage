@@ -6,16 +6,6 @@ import { WorkerRunner } from "../src/runners/WorkerRunner";
 describe("WorkerRunner", () => {
   it("can create a pool to run worker targets in parallel with worker_thread", async () => {
     const workerFixture = path.join(__dirname, "./fixtures/worker.js");
-    const logger = new Logger();
-
-    const dummyReporter = {
-      log(entry) {
-        console.log(entry);
-      },
-    } as Reporter;
-
-    logger.addReporter(dummyReporter);
-
     const runner = new WorkerRunner();
 
     const target1 = {
