@@ -58,9 +58,9 @@ export function prioritize(targets: Map<string, Target>) {
   const nodesWithNoDependencies = getNodesWithNoDependencies(targets);
   const topoSortedNodeIds = topologicalSort(targets, nodesWithNoDependencies);
 
-  /** 
+  /**
    * What is this loop doing?
-   * 
+   *
    * Now that we have topologically sorted the nodes, we examine the each node
    * and update the cumulative priority of all the nodes that depend on it.
    */
