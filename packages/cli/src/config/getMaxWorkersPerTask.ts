@@ -1,4 +1,4 @@
-import os from "node:os";
+import os from "os";
 import type { ConfigOptions } from "../types/ConfigOptions";
 
 export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"]) {
