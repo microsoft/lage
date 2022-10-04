@@ -28,7 +28,7 @@ jobs:
 
       - name: extract runners variables
         id: extract_runners_variables
-        uses: kenotron/extract-runners-variables
+        uses: kenotron/extract-runners-variables@main
 
       - run: yarn
 
