@@ -15,9 +15,12 @@ const cacheProvider = {
         const paths = [path.relative(root, path.join(cwd, "**"))];
         const restoreKeys = ["lage-"];
 
-        const cacheKey = await cache.restoreCache(paths, hash, restoreKeys);
-
-        console.log(cwd, cacheKey);
+        try {
+          const cacheKey = await cache.restoreCache(paths, hash, restoreKeys);
+          console.log(cwd, cacheKey);
+        } catch (e) {
+          console.error(e);
+        }
 
         return !!cacheKey;
       },
