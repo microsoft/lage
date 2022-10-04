@@ -3,6 +3,7 @@ const path = require("path");
 const { getWorkspaceRoot } = require("workspace-tools");
 
 const root = getWorkspaceRoot(process.cwd());
+console.log(process.env.ACTIONS_CACHE_URL);
 
 const cacheProvider = {
   provider: (_logger, cwd) => {

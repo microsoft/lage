@@ -26,6 +26,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: extract runners variables
+        uses: kenotron/extract-runners-variables@v1
+
       - run: yarn
 
       - name: Code Format Check
