@@ -27,5 +27,6 @@ export function getConfig(cwd: string): ConfigOptions {
       "rush.json",
     ],
     loggerOptions: configResults?.config.loggerOptions ?? {},
+    runners: configResults?.config.runners ?? {},
   };
 }

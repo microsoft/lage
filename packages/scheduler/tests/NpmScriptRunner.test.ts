@@ -49,12 +49,9 @@ describe("NpmScriptRunner", () => {
   const npmCmd = path.join(__dirname, "fixtures", "fakeNpm" + (os.platform() === "win32" ? ".cmd" : ""));
 
   it("can run a npm script to completion", async () => {
-    const logger = new Logger();
-
     const abortController = new AbortController();
 
     const runner = new NpmScriptRunner({
-      logger,
       nodeOptions: "",
       npmCmd,
       taskArgs: ["--sleep=50"],
@@ -72,58 +69,10 @@ describe("NpmScriptRunner", () => {
     expect(exceptionSpy).not.toHaveBeenCalled();
   });
 
-  it("sets up the environment variables relevant to lage", async () => {
-    const logger = new Logger();
-
-    let entries: any[] = [];
-    logger.addReporter({
-      logLevel: LogLevel.verbose,
-      log(entry) {
-        entries.push(entry);
-      },
-      summarize(_ctx) {},
-    } as Reporter);
-
-    const abortController = new AbortController();
-
-    const runner = new NpmScriptRunner({
-      logger,
-      nodeOptions: "",
-      npmCmd,
-      taskArgs: ["--sleep=50"],
-    });
-
-    const target = createTarget("a");
-
-    const exceptionSpy = jest.fn();
-
-    await runner.run(target, abortController.signal).catch(() => exceptionSpy());
-
-    const envEntry = entries
-      .map((entry) => {
-        try {
-          const obj = JSON.parse(entry.msg);
-
-          if (obj.LAGE_PACKAGE_NAME === target.packageName! && obj.LAGE_TASK === target.task) {
-            return obj;
-          }
-        } catch (e) {}
-
-        return undefined;
-      })
-      .filter((entry) => entry !== undefined)[0];
-
-    expect(envEntry.LAGE_PACKAGE_NAME).toBe(target.packageName!);
-    expect(envEntry.LAGE_TASK).toBe(target.task);
-  });
-
   it("can kill the child process based on abort signal", async () => {
-    const logger = new Logger();
-
     const abortController = new AbortController();
 
     const runner = new NpmScriptRunner({
-      logger,
       nodeOptions: "",
       npmCmd,
       taskArgs: ["--sleep=50000"],
@@ -148,11 +97,9 @@ describe("NpmScriptRunner", () => {
   });
 
   it("can kill many concurrent child processes based on abort signal", async () => {
-    const logger = new Logger();
     const abortController = new AbortController();
 
     const runner = new NpmScriptRunner({
-      logger,
       nodeOptions: "",
       npmCmd,
       taskArgs: ["--sleep=50000"],

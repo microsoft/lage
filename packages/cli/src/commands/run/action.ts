@@ -4,14 +4,14 @@ import { createProfileReporter } from "./createProfileReporter";
 import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
+import { getMaxWorkersPerTask } from "../../config/getMaxWorkersPerTask";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { initializeReporters } from "@lage-run/reporters";
 import { isRunningFromCI } from "../isRunningFromCI";
-import { NpmScriptRunner, SimpleScheduler, WorkerRunner, TargetRunnerPicker } from "@lage-run/scheduler";
+import { SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger from "@lage-run/logger";
 import type { ReporterInitOptions } from "@lage-run/reporters";
-import type { TargetRunner } from "@lage-run/scheduler-types";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
@@ -32,7 +32,7 @@ interface RunOptions extends ReporterInitOptions {
   continue: boolean;
   cache: boolean;
   resetCache: boolean;
-  nodeargs: string;
+  nodeArg: string;
 }
 
 export async function runAction(options: RunOptions, command: Command) {
@@ -111,30 +111,6 @@ export async function runAction(options: RunOptions, command: Command) {
     cacheKey: config.cacheOptions.cacheKey,
   });
 
-  // Run Tasks with Scheduler + NpmScriptRunner
-  const runners: Record<string, TargetRunner> = {
-    npmScript: new NpmScriptRunner({
-      logger,
-      nodeOptions: options.nodeargs,
-      taskArgs,
-      npmCmd: findNpmClient(config.npmClient),
-    }),
-    worker: new WorkerRunner({
-      logger,
-      workerTargetConfigs: Object.entries(config.pipeline).reduce((workerTargetConfigs, [id, def]) => {
-        if (!Array.isArray(def) && def.type === "worker") {
-          workerTargetConfigs[id] = def;
-        }
-
-        return workerTargetConfigs;
-      }, {}),
-    }),
-  };
-
-  const runnerPicker = new TargetRunnerPicker({
-    runners,
-  });
-
   const scheduler = new SimpleScheduler({
     logger,
     concurrency: options.concurrency,
@@ -143,22 +119,31 @@ export async function runAction(options: RunOptions, command: Command) {
     continueOnError: options.continue,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    runnerPicker,
+    maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}),
+    runners: {
+      npmScript: {
+        script: require.resolve("@lage-run/scheduler/lib/runners/NpmScriptRunner"),
+        options: {
+          nodeArg: options.nodeArg,
+          taskArgs,
+          npmCmd: findNpmClient(config.npmClient),
+        },
+      },
+      worker: {
+        script: require.resolve("@lage-run/scheduler/lib/runners/WorkerRunner"),
+        options: {},
+      },
+      ...config.runners,
+    },
   });
 
   const summary = await scheduler.run(root, targetGraph);
 
-  for (const runner of Object.values(runners)) {
-    if (runner.cleanup) {
-      await runner.cleanup();
-    }
+  if (summary.results !== "success") {
+    process.exitCode = 1;
   }
 
   for (const reporter of logger.reporters) {
     reporter.summarize(summary);
-  }
-
-  if (summary.results !== "success") {
-    process.exitCode = 1;
   }
 }

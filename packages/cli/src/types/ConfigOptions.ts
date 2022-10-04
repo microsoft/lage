@@ -2,6 +2,7 @@ import { CacheOptions } from "./CacheOptions";
 import { Priority } from "./Priority";
 import { PipelineDefinition } from "./PipelineDefinition";
 import { LoggerOptions } from "./LoggerOptions";
+import { TargetRunnerPickerOptions } from "@lage-run/scheduler/lib/runners/TargetRunnerPicker";
 
 export type NpmClient = "npm" | "yarn" | "pnpm";
 
@@ -43,4 +44,10 @@ export interface ConfigOptions {
    * Options that will be sent to all log reporters.
    */
   loggerOptions: LoggerOptions;
+
+  /**
+   * Custom runners for tasks in the pipeline. The key is the task name, and the value is a configuration describing what would be
+   * passed to the runner constructor.
+   */
+  runners: TargetRunnerPickerOptions;
 }
