@@ -1,13 +1,11 @@
 // @ts-check
 const { ESLint } = require("eslint");
 const PROJECT_ROOT = require("path").resolve(__dirname, "..", "..");
-
-const { registerWorker } = require("lage-npm");
 const { readFile } = require("fs/promises");
 
 const path = require("path");
 
-async function run(data) {
+module.exports = async function run(data) {
   const { target } = data;
   const packageJson = JSON.parse(await readFile(path.join(target.cwd, "package.json"), "utf8"));
 
@@ -41,6 +39,4 @@ async function run(data) {
   if (results.some((r) => r.errorCount > 0)) {
     throw new Error(`Linting failed with errors`);
   }
-}
-
-registerWorker(run);
+};
