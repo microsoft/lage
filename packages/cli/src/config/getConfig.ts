@@ -15,12 +15,12 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
   const results = await configExplorer.search(root ?? cwd);
   const config = results?.config;
   return {
-    cacheOptions: config.cacheOptions ?? {},
-    ignore: config.ignore ?? [],
-    npmClient: config.npmClient ?? "npm",
-    pipeline: config.pipeline ?? {},
-    priorities: config.priorities ?? [],
-    repoWideChanges: config.repoWideChanges ?? [
+    cacheOptions: config?.cacheOptions ?? {},
+    ignore: config?.ignore ?? [],
+    npmClient: config?.npmClient ?? "npm",
+    pipeline: config?.pipeline ?? {},
+    priorities: config?.priorities ?? [],
+    repoWideChanges: config?.repoWideChanges ?? [
       "lage.config.js",
       "package-lock.json",
       "yarn.lock",
@@ -28,7 +28,7 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
       "lerna.json",
       "rush.json",
     ],
-    loggerOptions: config.loggerOptions ?? {},
-    runners: config.runners ?? {},
+    loggerOptions: config?.loggerOptions ?? {},
+    runners: config?.runners ?? {},
   };
 }
