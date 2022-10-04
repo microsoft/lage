@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "actually publish runners and workers",
-  "packageName": "@lage-run/lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

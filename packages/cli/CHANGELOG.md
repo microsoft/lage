@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Tue, 04 Oct 2022 03:38:54 GMT and should not be manually modified.
+This log was last generated on Tue, 04 Oct 2022 15:51:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.1
+
+Tue, 04 Oct 2022 15:51:44 GMT
+
+### Patches
+
+- actually publish runners and workers (kchau@microsoft.com)
 
 ## 0.4.0
 
