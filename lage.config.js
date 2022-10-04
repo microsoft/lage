@@ -17,6 +17,6 @@ module.exports = {
   },
   npmClient: "yarn",
   cacheOptions: {
-    cacheStorageConfig: require("lage-cache-github-actions").default,
+    cacheStorageConfig: require("./scripts/cache/index.js"),
   },
 };
