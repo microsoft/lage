@@ -7993,10 +7993,10 @@ klona@^2.0.5:
     fast-glob "^3.2.11"
     workspace-tools "^0.28.0"
 
-"lage-npm@npm:@lage-run/lage@2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@lage-run/lage/-/lage-2.2.1.tgz#c81d614c03964ee3c2a51db2af440811f29fb597"
-  integrity sha512-7FB0fPzXeXS4zqu+xJneCdQ4DEqWwr22UnM0boJovdOJjWDc2y0g5YkELlqqUBrNvKQQ57cGV30GbEnvstU5AA==
+"lage-npm@npm:@lage-run/lage@2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@lage-run/lage/-/lage-2.2.2.tgz#859605e0ec49b8d8e91a0b8369ebfc5a2579f0af"
+  integrity sha512-dr3Xs3JnLgIdr/J6X8mSalQMIa6w3i/Q5yCEyCNZcaaWFEhLXcjzXnfxW0tClq8uKCehtWERzl5XOJYMVAi3Rg==
 
 latest-version@^5.1.0:
   version "5.1.0"
