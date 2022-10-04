@@ -2,7 +2,6 @@
 const { ESLint } = require("eslint");
 const PROJECT_ROOT = require("path").resolve(__dirname, "..", "..");
 
-const { registerWorker } = require("lage-npm");
 const { readFile } = require("fs/promises");
 
 const path = require("path");
@@ -43,4 +42,4 @@ async function run(data) {
   }
 }
 
-registerWorker(run);
+module.exports = run;
