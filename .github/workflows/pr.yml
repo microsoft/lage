@@ -49,3 +49,6 @@ jobs:
         run: yarn lage build test lint --concurrency 2
         env:
           ACTIONS_CACHE_URL: ${{ steps.extract_runners_variables.outputs.actions_cache_url }}
+          ACTIONS_RUNTIME_TOKEN: ${{ steps.extract_runners_variables.outputs.actions_runtime_token }}
+          ACTIONS_RUNTIME_URL: ${{ steps.extract_runners_variables.outputs.actions_runtime_url }}
+
