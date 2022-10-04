@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Tue, 04 Oct 2022 20:18:09 GMT",
+      "tag": "@lage-run/scheduler_v0.4.1",
+      "version": "0.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "b0ffb4f99190b790fdd62560d97c60cb155fa95a",
+            "comment": "Adds a nicer warning message for workers that isn't compatible"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 04 Oct 2022 03:38:54 GMT",
       "tag": "@lage-run/scheduler_v0.4.0",
       "version": "0.4.0",

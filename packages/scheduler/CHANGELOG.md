@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Tue, 04 Oct 2022 03:38:54 GMT and should not be manually modified.
+This log was last generated on Tue, 04 Oct 2022 20:18:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.1
+
+Tue, 04 Oct 2022 20:18:09 GMT
+
+### Patches
+
+- Adds a nicer warning message for workers that isn't compatible (kchau@microsoft.com)
 
 ## 0.4.0
 

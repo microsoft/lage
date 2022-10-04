@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Adds a nicer warning message for workers that isn't compatible",
-  "packageName": "@lage-run/scheduler",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
