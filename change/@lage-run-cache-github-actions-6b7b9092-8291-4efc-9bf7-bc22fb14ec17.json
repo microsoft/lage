@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "A new custom backfill cache provider for github actions",
-  "packageName": "@lage-run/cache-github-actions",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
