@@ -1,1 +1,1 @@
-export { GithubActionsCacheProvider } from "./GithubActionsCacheProvider";
+export { cacheProvider as default } from "./cacheProvider";
