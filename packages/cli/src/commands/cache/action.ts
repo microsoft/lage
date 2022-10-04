@@ -13,7 +13,7 @@ interface CacheOptions extends ReporterInitOptions {
 
 export async function cacheAction(options: CacheOptions, command: Command) {
   const cwd = process.cwd();
-  const config = getConfig(cwd);
+  const config = await getConfig(cwd);
   const logger = createLogger();
 
   initializeReporters(logger, options);

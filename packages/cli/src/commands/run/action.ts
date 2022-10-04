@@ -37,7 +37,7 @@ interface RunOptions extends ReporterInitOptions {
 
 export async function runAction(options: RunOptions, command: Command) {
   const cwd = process.cwd();
-  const config = getConfig(cwd);
+  const config = await getConfig(cwd);
 
   // Configure logger
   const logger = createLogger();
