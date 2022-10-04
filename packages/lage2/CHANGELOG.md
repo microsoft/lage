@@ -1,8 +1,16 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Tue, 04 Oct 2022 15:51:44 GMT and should not be manually modified.
+This log was last generated on Tue, 04 Oct 2022 16:38:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.2.2
+
+Tue, 04 Oct 2022 16:38:35 GMT
+
+### Patches
+
+- fixing the targetWorker (kchau@microsoft.com)
 
 ## 2.2.1
 
