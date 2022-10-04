@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Uses the new scheduler",
-  "packageName": "@lage-run/lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

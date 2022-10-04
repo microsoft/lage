@@ -2,6 +2,21 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Tue, 04 Oct 2022 03:38:54 GMT",
+      "tag": "@lage-run/lage_v2.2.0",
+      "version": "2.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "34e76ae75fc56a1374115e630a7dfc81b1fa6ead",
+            "comment": "Uses the new scheduler"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 29 Sep 2022 21:48:33 GMT",
       "tag": "@lage-run/lage_v2.1.9",
       "version": "2.1.9",

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Make doubly sure pool is shutdown before showing a summary",
-  "packageName": "@lage-run/worker-threads-pool",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Brand new scheduler (ported p-graph over)",
-  "packageName": "@lage-run/scheduler",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
