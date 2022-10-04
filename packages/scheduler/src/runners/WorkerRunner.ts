@@ -51,6 +51,10 @@ export class WorkerRunner implements TargetRunner {
     const scriptModule = require(scriptFile);
     const runFn = typeof scriptModule.default === "function" ? scriptModule.default : scriptModule;
 
+    if (typeof runFn !== "function") {
+      throw new Error("WorkerRunner: worker script must export a function; you likely need to use `module.exports = function() {...}`");
+    }
+
     await runFn({ target, abortSignal });
   }
 }
