@@ -2,6 +2,9 @@ import cache from "@actions/cache";
 import type { CustomStorageConfig } from "backfill-config";
 import type { Logger } from "backfill-logger";
 import path from "path";
+import { getWorkspaceRoot } from "workspace-tools";
+
+const root = getWorkspaceRoot(process.cwd())!;
 
 const cacheProvider: CustomStorageConfig = {
   provider: (_logger: Logger, cwd: string) => {
@@ -11,11 +14,11 @@ const cacheProvider: CustomStorageConfig = {
           return false;
         }
 
-        const paths = [path.join(cwd, '**')];
+        const paths = [path.relative(root, path.join(cwd, "**"))];
         const restoreKeys = ["lage-"];
-        
+
         const cacheKey = await cache.restoreCache(paths, hash, restoreKeys);
-        
+
         return !!cacheKey;
       },
 
@@ -24,7 +27,7 @@ const cacheProvider: CustomStorageConfig = {
           return;
         }
 
-        const paths = filesToCache.map(files => path.join(cwd, files));
+        const paths = filesToCache.map((files) => path.relative(root, path.join(cwd, files)));
 
         await cache.saveCache(paths, hash);
       },
