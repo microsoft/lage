@@ -27,6 +27,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: extract runners variables
+        id: extract_runners_variables
         uses: kenotron/extract-runners-variables@v1
 
       - run: yarn
@@ -46,3 +47,5 @@ jobs:
       - name: Build, Test, Lint (Linux)
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: yarn lage build test lint --concurrency 2
+        env:
+          ACTIONS_CACHE_URL: ${{ steps.extract_runners_variables.outputs.actions_cache_url }}
