@@ -6,19 +6,7 @@ import { WorkerRunner } from "../src/runners/WorkerRunner";
 describe("WorkerRunner", () => {
   it("can create a pool to run worker targets in parallel with worker_thread", async () => {
     const workerFixture = path.join(__dirname, "./fixtures/worker.js");
-    const logger = new Logger();
-
-    const runner = new WorkerRunner({
-      logger,
-      workerTargetConfigs: {
-        work: {
-          options: {
-            worker: workerFixture,
-            maxWorkers: 2,
-          },
-        } as TargetConfig,
-      },
-    });
+    const runner = new WorkerRunner();
 
     const target1 = {
       id: "a#work",
@@ -30,6 +18,9 @@ describe("WorkerRunner", () => {
       depSpecs: [],
       label: "a - work",
       type: "worker",
+      options: {
+        worker: workerFixture,
+      },
     } as Target;
 
     const target2 = {
@@ -42,9 +33,11 @@ describe("WorkerRunner", () => {
       depSpecs: [],
       label: "b - work",
       type: "worker",
+      options: {
+        worker: workerFixture,
+      },
     } as Target;
 
     await Promise.all([runner.run(target1), runner.run(target2)]);
-    await runner.cleanup();
   });
 });

@@ -1,4 +1,4 @@
-import { cosmiconfigSync } from "cosmiconfig";
+import { cosmiconfig } from "cosmiconfig";
 import { getWorkspaceRoot } from "workspace-tools";
 import type { ConfigOptions } from "../types/ConfigOptions";
 
@@ -11,8 +11,9 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
 
   // Search for lage.config.js file
   const ConfigModuleName = "lage";
-  const configResults = cosmiconfigSync(ConfigModuleName).search(root ?? cwd);
-  const config = await Promise.resolve(configResults?.config);
+  const configExplorer = await cosmiconfig(ConfigModuleName);
+  const results = await configExplorer.search(root ?? cwd);
+  const config = results?.config;
   return {
     cacheOptions: config.cacheOptions ?? {},
     ignore: config.ignore ?? [],
@@ -28,5 +29,6 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
       "rush.json",
     ],
     loggerOptions: config.loggerOptions ?? {},
+    runners: config.runners ?? {},
   };
 }

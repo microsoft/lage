@@ -2,6 +2,33 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Tue, 04 Oct 2022 03:38:54 GMT",
+      "tag": "@lage-run/scheduler_v0.4.0",
+      "version": "0.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "34e76ae75fc56a1374115e630a7dfc81b1fa6ead",
+            "comment": "Brand new scheduler (ported p-graph over)"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.1.6",
+            "commit": "34e76ae75fc56a1374115e630a7dfc81b1fa6ead"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.4",
+            "commit": "34e76ae75fc56a1374115e630a7dfc81b1fa6ead"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 03 Oct 2022 20:41:25 GMT",
       "tag": "@lage-run/scheduler_v0.3.14",
       "version": "0.3.14",

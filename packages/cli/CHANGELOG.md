@@ -1,8 +1,26 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Mon, 03 Oct 2022 20:41:25 GMT and should not be manually modified.
+This log was last generated on Tue, 04 Oct 2022 15:51:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.1
+
+Tue, 04 Oct 2022 15:51:44 GMT
+
+### Patches
+
+- actually publish runners and workers (kchau@microsoft.com)
+
+## 0.4.0
+
+Tue, 04 Oct 2022 03:38:54 GMT
+
+### Minor changes
+
+- Uses the new scheduler (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.4.0
+- Bump @lage-run/reporters to v0.2.17
 
 ## 0.3.19
 

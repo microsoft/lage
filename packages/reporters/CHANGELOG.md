@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Mon, 03 Oct 2022 20:41:25 GMT and should not be manually modified.
+This log was last generated on Tue, 04 Oct 2022 03:38:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.17
+
+Tue, 04 Oct 2022 03:38:54 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.1.4
 
 ## 0.2.16
 

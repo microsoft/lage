@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler-types
 
-This log was last generated on Mon, 03 Oct 2022 20:41:25 GMT and should not be manually modified.
+This log was last generated on Tue, 04 Oct 2022 03:38:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.4
+
+Tue, 04 Oct 2022 03:38:54 GMT
+
+### Patches
+
+- Bump @lage-run/worker-threads-pool to v0.1.6
 
 ## 0.1.3
 

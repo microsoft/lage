@@ -226,7 +226,9 @@ export class WorkerPool extends EventEmitter implements Pool {
   async close() {
     for (const worker of this.workers) {
       worker.removeAllListeners();
-      await worker.terminate();
+      worker.unref();
     }
+
+    await Promise.all(this.workers.map((worker) => worker.terminate()));
   }
 }

@@ -1,11 +1,12 @@
 {
   "name": "@lage-run/lage",
-  "version": "2.1.19",
+  "version": "2.2.2",
   "main": "dist/main.js",
   "bin": {
     "lage": "dist/lage.js"
   },
   "scripts": {
+    "prebuild": "node scripts/prebuild.js",
     "build": "rollup --config ./rollup.config.js"
   },
   "devDependencies": {
@@ -21,7 +22,9 @@
   },
   "files": [
     "dist/lage.js",
-    "dist/lage.js.map"
+    "dist/lage.js.map",
+    "dist/runners/**",
+    "dist/workers/**"
   ],
   "publishConfig": {
     "access": "public"

@@ -2,6 +2,48 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Tue, 04 Oct 2022 15:51:44 GMT",
+      "tag": "@lage-run/cli_v0.4.1",
+      "version": "0.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "91bc0629f6fc8a49784da920328c6c34f1292b85",
+            "comment": "actually publish runners and workers"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 04 Oct 2022 03:38:54 GMT",
+      "tag": "@lage-run/cli_v0.4.0",
+      "version": "0.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "34e76ae75fc56a1374115e630a7dfc81b1fa6ead",
+            "comment": "Uses the new scheduler"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.4.0",
+            "commit": "34e76ae75fc56a1374115e630a7dfc81b1fa6ead"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.17",
+            "commit": "34e76ae75fc56a1374115e630a7dfc81b1fa6ead"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 03 Oct 2022 20:41:25 GMT",
       "tag": "@lage-run/cli_v0.3.19",
       "version": "0.3.19",
