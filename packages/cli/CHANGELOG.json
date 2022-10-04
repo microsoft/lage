@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Tue, 04 Oct 2022 21:39:20 GMT",
+      "tag": "@lage-run/cli_v0.4.3",
+      "version": "0.4.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "255315c234158d3bc8a36c87aae663fb1526db53",
+            "comment": "Support async configs in v2+"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 04 Oct 2022 20:18:09 GMT",
       "tag": "@lage-run/cli_v0.4.2",
       "version": "0.4.2",

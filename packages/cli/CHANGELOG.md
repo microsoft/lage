@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Tue, 04 Oct 2022 20:18:09 GMT and should not be manually modified.
+This log was last generated on Tue, 04 Oct 2022 21:39:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.3
+
+Tue, 04 Oct 2022 21:39:20 GMT
+
+### Patches
+
+- Support async configs in v2+ (kchau@microsoft.com)
 
 ## 0.4.2
 

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Support async configs in v2+",
-  "packageName": "@lage-run/cli",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
