@@ -32,21 +32,21 @@ jobs:
 
       - run: yarn
 
-      - name: Code Format Check
-        if: ${{ startsWith(matrix.os, 'ubuntu') }}
-        run: yarn format:check
+      # - name: Code Format Check
+      #   if: ${{ startsWith(matrix.os, 'ubuntu') }}
+      #   run: yarn format:check
 
-      - name: Check Change Files
-        if: ${{ startsWith(matrix.os, 'ubuntu') }}
-        run: yarn checkchange
+      # - name: Check Change Files
+      #   if: ${{ startsWith(matrix.os, 'ubuntu') }}
+      #   run: yarn checkchange
 
-      - name: Build, Test (Windows)
-        if: ${{ startsWith(matrix.os, 'windows') }}
-        run: yarn lage build test --scope=!@lage-run/lage --concurrency 2
+      # - name: Build, Test (Windows)
+      #   if: ${{ startsWith(matrix.os, 'windows') }}
+      #   run: yarn lage build test --scope=!@lage-run/lage --concurrency 2
 
       - name: Build, Test, Lint (Linux)
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
-        run: yarn lage build test lint --concurrency 2
+        run: yarn lage build test lint --concurrency 2 --skip-local-cache
         env:
           ACTIONS_CACHE_URL: ${{ steps.extract_runners_variables.outputs.actions_cache_url }}
           ACTIONS_RUNTIME_TOKEN: ${{ steps.extract_runners_variables.outputs.actions_runtime_token }}
