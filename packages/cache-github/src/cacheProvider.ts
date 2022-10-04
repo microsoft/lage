@@ -1,6 +1,6 @@
 import cache from "@actions/cache";
-import { CustomStorageConfig } from "backfill-config";
-import { Logger } from "backfill-logger";
+import type { CustomStorageConfig } from "backfill-config";
+import type { Logger } from "backfill-logger";
 
 const cacheProvider: CustomStorageConfig = {
   provider: (_logger: Logger, cwd: string) => {
