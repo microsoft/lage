@@ -122,7 +122,7 @@ export async function runAction(options: RunOptions, command: Command) {
     maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}),
     runners: {
       npmScript: {
-        script: require.resolve("@lage-run/scheduler/lib/runners/NpmScriptRunner"),
+        script: require.resolve("./runners/NpmScriptRunner"),
         options: {
           nodeArg: options.nodeArg,
           taskArgs,
@@ -130,7 +130,7 @@ export async function runAction(options: RunOptions, command: Command) {
         },
       },
       worker: {
-        script: require.resolve("@lage-run/scheduler/lib/runners/WorkerRunner"),
+        script: require.resolve("./runners/WorkerRunner"),
         options: {},
       },
       ...config.runners,
