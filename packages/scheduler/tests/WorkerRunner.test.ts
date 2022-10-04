@@ -39,6 +39,5 @@ describe("WorkerRunner", () => {
     } as Target;
 
     await Promise.all([runner.run(target1), runner.run(target2)]);
-    await runner.cleanup();
   });
 });
