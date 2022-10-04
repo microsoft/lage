@@ -16,4 +16,7 @@ module.exports = {
     start: [],
   },
   npmClient: "yarn",
+  cacheOptions: {
+    cacheStorageConfig: require("lage-cache-github-actions").default,
+  },
 };

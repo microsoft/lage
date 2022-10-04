@@ -7978,10 +7978,25 @@ klona@^2.0.5:
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.5.tgz#d166574d90076395d9963aa7a928fabb8d76afbc"
   integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
 
-"lage-npm@npm:@lage-run/lage@2.1.19":
-  version "2.1.19"
-  resolved "https://registry.yarnpkg.com/@lage-run/lage/-/lage-2.1.19.tgz#343d41edf87dd7ecb90b02dafbf0bf34fc772ddc"
-  integrity sha512-F2PXevGrNi/dBg2nxb47R+Hkku5m6eTkT7SBywHuMI2rAFKgZYZpIiTW2Ex8OkoxZiqZFJ84R8eKfA41UXcZIw==
+"lage-cache-github-actions@npm:@lage-run/cache-github-actions@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@lage-run/cache-github-actions/-/cache-github-actions-0.1.1.tgz#2f79b75560e0a46b3109d3838352e6d03a6469b0"
+  integrity sha512-olTsKHmBiPJRw6j2VD7UZt6sgnVg6lCTfIT3FCu/XJhbjOM1XTuimuiclLgVNXa9G3aG/aPBe5EzXUIxFgMokg==
+  dependencies:
+    "@actions/cache" "^3.0.4"
+    "@lage-run/logger" "^1.2.0"
+    "@lage-run/target-graph" "^0.4.2"
+    backfill-cache "^5.6.1"
+    backfill-config "^6.3.0"
+    backfill-hasher "^6.4.2"
+    backfill-logger "^5.1.3"
+    fast-glob "^3.2.11"
+    workspace-tools "^0.28.0"
+
+"lage-npm@npm:@lage-run/lage@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@lage-run/lage/-/lage-2.2.1.tgz#c81d614c03964ee3c2a51db2af440811f29fb597"
+  integrity sha512-7FB0fPzXeXS4zqu+xJneCdQ4DEqWwr22UnM0boJovdOJjWDc2y0g5YkELlqqUBrNvKQQ57cGV30GbEnvstU5AA==
 
 latest-version@^5.1.0:
   version "5.1.0"
