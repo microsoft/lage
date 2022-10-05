@@ -6,8 +6,18 @@ import path from "path";
 import type { Target } from "@lage-run/target-graph";
 
 describe("RemoteFallbackCacheProvider", () => {
+  const originalCacheProvider = process.env.BACKFILL_CACHE_PROVIDER;
+  const originalCacheProviderOptions = process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
+
   beforeEach(() => {
     _testResetEnvHash();
+    delete process.env.BACKFILL_CACHE_PROVIDER;
+    delete process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
+  });
+
+  afterEach(() => {
+    process.env.BACKFILL_CACHE_PROVIDER = originalCacheProvider;
+    process.env.BACKFILL_CACHE_PROVIDER_OPTIONS = originalCacheProviderOptions;
   });
 
   it("should fetch from local cache first", async () => {
