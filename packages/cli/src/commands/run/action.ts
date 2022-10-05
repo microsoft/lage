@@ -90,7 +90,8 @@ export async function runAction(options: RunOptions, command: Command) {
   logger.verbose("Has remote cache config? " + hasRemoteCacheConfig);
 
   const writeRemoteCache =
-    config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI;
+    hasRemoteCacheConfig &&
+    (config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI);
 
   logger.verbose("If remote cache configured, will write to remote cache? " + writeRemoteCache);
 
