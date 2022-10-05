@@ -84,6 +84,9 @@ export async function runAction(options: RunOptions, command: Command) {
 
   const targetGraph = builder.buildTargetGraph(tasks, packages);
 
+  const hasRemoteCacheConfig =
+    !!config.cacheOptions?.cacheStorageConfig || !!process.env.BACKFILL_CACHE_PROVIDER || !!process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
+
   // Create Cache Provider
   const cacheProvider = new RemoteFallbackCacheProvider({
     root,
@@ -98,9 +101,7 @@ export async function runAction(options: RunOptions, command: Command) {
               ...(config.cacheOptions.internalCacheFolder && { internalCacheFolder: config.cacheOptions.internalCacheFolder }),
             },
           }),
-    remoteCacheProvider: config.cacheOptions?.cacheStorageConfig
-      ? new BackfillCacheProvider({ root, cacheOptions: config.cacheOptions })
-      : undefined,
+    remoteCacheProvider: hasRemoteCacheConfig ? new BackfillCacheProvider({ root, cacheOptions: config.cacheOptions }) : undefined,
     writeRemoteCache:
       config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI,
   });
