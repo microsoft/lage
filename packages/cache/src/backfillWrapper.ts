@@ -30,7 +30,7 @@ export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<Cac
   const envConfig = getEnvConfig(backfillLogger);
   return {
     ...createDefaultConfig(cwd),
-    ...envConfig,
     ...cacheOptions,
+    ...envConfig,
   };
 }
