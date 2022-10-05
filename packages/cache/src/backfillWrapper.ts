@@ -2,10 +2,10 @@
  * Backfill wrappers: some functions that uses the `backfill` library that doesn't require them to be inside a class
  */
 
+import * as os from "os";
 import { createDefaultConfig, getEnvConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
-import { Logger as BackfillLogger } from "backfill-logger";
-import * as os from "os";
+import type { Logger as BackfillLogger } from "backfill-logger";
 import type { CacheOptions } from "./types/CacheOptions";
 
 export function createBackfillLogger() {

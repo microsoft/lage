@@ -24,14 +24,18 @@ describe("backfill-config", () => {
   it("should override environment variables with values given in config parameter", () => {
     process.env.BACKFILL_CACHE_PROVIDER = "azure-blob";
     process.env.BACKFILL_CACHE_PROVIDER_OPTIONS = JSON.stringify({ connectionString: "somestring", container: "somecontainer" });
-    
+
     const dummyLogger = createBackfillLogger();
     const fixture = path.join(__dirname, "fixtures/backfill-config");
-    const config = createBackfillCacheConfig(fixture, {
-      cacheStorageConfig: {
-        provider: "local"
-      }
-    }, dummyLogger);
+    const config = createBackfillCacheConfig(
+      fixture,
+      {
+        cacheStorageConfig: {
+          provider: "local",
+        },
+      },
+      dummyLogger
+    );
 
     expect(config.cacheStorageConfig.provider).toBe("local");
 
