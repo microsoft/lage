@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Tue, 04 Oct 2022 21:39:20 GMT and should not be manually modified.
+This log was last generated on Wed, 05 Oct 2022 03:31:04 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.4
+
+Wed, 05 Oct 2022 03:31:04 GMT
+
+### Patches
+
+- Fixes remote cache configuration for when environment variables are used instead of the config file (ken@gizzar.com)
 
 ## 0.4.3
 

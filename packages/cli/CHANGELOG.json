@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 05 Oct 2022 03:31:04 GMT",
+      "tag": "@lage-run/cli_v0.4.4",
+      "version": "0.4.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "d0c2b6481c1a5c6bc8eb7821ab990c0dd48805ad",
+            "comment": "Fixes remote cache configuration for when environment variables are used instead of the config file"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 04 Oct 2022 21:39:20 GMT",
       "tag": "@lage-run/cli_v0.4.3",
       "version": "0.4.3",
