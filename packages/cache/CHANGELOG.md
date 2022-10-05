@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Mon, 03 Oct 2022 19:57:28 GMT and should not be manually modified.
+This log was last generated on Wed, 05 Oct 2022 20:00:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.17
+
+Wed, 05 Oct 2022 20:00:31 GMT
+
+### Patches
+
+- fixes the backfill config for remote cache (kchau@microsoft.com)
 
 ## 0.1.16
 

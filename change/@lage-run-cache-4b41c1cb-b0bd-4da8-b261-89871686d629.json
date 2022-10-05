@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixes the backfill config for remote cache",
-  "packageName": "@lage-run/cache",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
