@@ -87,6 +87,13 @@ export async function runAction(options: RunOptions, command: Command) {
   const hasRemoteCacheConfig =
     !!config.cacheOptions?.cacheStorageConfig || !!process.env.BACKFILL_CACHE_PROVIDER || !!process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
 
+  logger.verbose("Has remote cache config? " + hasRemoteCacheConfig);
+
+  const writeRemoteCache =
+    config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI;
+
+  logger.verbose("If remote cache configured, will write to remote cache? " + writeRemoteCache);
+
   // Create Cache Provider
   const cacheProvider = new RemoteFallbackCacheProvider({
     root,
@@ -102,8 +109,7 @@ export async function runAction(options: RunOptions, command: Command) {
             },
           }),
     remoteCacheProvider: hasRemoteCacheConfig ? new BackfillCacheProvider({ root, cacheOptions: config.cacheOptions }) : undefined,
-    writeRemoteCache:
-      config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI,
+    writeRemoteCache,
   });
 
   const hasher = new TargetHasher({
