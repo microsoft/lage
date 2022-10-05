@@ -68,6 +68,8 @@ describe("RemoteFallbackCacheProvider", () => {
 
     expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))).toBeTruthy();
 
+    process.stdout.write(JSON.stringify(jsonOutput, null, 2));
+
     repo.cleanup();
   });
 
