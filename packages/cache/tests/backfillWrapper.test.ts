@@ -21,7 +21,7 @@ describe("backfill-config", () => {
     delete process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
   });
 
-  it("should override environment variables with values given in config parameter", () => {
+  it("should let environment variables override values given in config parameter", () => {
     process.env.BACKFILL_CACHE_PROVIDER = "azure-blob";
     process.env.BACKFILL_CACHE_PROVIDER_OPTIONS = JSON.stringify({ connectionString: "somestring", container: "somecontainer" });
 
@@ -37,7 +37,7 @@ describe("backfill-config", () => {
       dummyLogger
     );
 
-    expect(config.cacheStorageConfig.provider).toBe("local");
+    expect(config.cacheStorageConfig.provider).toBe("azure-blob");
 
     delete process.env.BACKFILL_CACHE_PROVIDER;
     delete process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
