@@ -2,6 +2,19 @@ import { Monorepo } from "./mock/monorepo";
 import { parseNdJson } from "./parseNdJson";
 
 describe("RemoteFallbackCacheProvider", () => {
+  const originalCacheProvider = process.env.BACKFILL_CACHE_PROVIDER;
+  const originalCacheProviderOptions = process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
+
+  beforeEach(() => {
+    delete process.env.BACKFILL_CACHE_PROVIDER;
+    delete process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
+  });
+
+  afterEach(() => {
+    process.env.BACKFILL_CACHE_PROVIDER = originalCacheProvider;
+    process.env.BACKFILL_CACHE_PROVIDER_OPTIONS = originalCacheProviderOptions;
+  });
+
   it("should skip local cache population if --skip-local-cache is enabled", () => {
     const repo = new Monorepo("fallback");
 
