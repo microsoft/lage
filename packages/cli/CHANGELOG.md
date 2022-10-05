@@ -1,8 +1,19 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 05 Oct 2022 20:00:31 GMT and should not be manually modified.
+This log was last generated on Wed, 05 Oct 2022 23:59:29 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.6
+
+Wed, 05 Oct 2022 23:59:29 GMT
+
+### Patches
+
+- Remove hack to get support backfill config in pr.yml (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.4.3
+- Bump @lage-run/cache to v0.1.18
+- Bump @lage-run/reporters to v0.2.19
 
 ## 0.4.5
 

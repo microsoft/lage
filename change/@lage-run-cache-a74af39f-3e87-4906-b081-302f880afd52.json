@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "just a fix to which envrionment wins",
-  "packageName": "@lage-run/cache",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

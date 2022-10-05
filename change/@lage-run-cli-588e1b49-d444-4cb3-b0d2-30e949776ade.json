@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Remove hack to get support backfill config in pr.yml",
-  "packageName": "@lage-run/cli",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

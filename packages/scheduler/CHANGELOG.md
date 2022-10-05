@@ -1,8 +1,17 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Wed, 05 Oct 2022 20:00:31 GMT and should not be manually modified.
+This log was last generated on Wed, 05 Oct 2022 23:59:29 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.3
+
+Wed, 05 Oct 2022 23:59:29 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v0.1.18
+- Bump @lage-run/scheduler-types to v0.1.6
 
 ## 0.4.2
 
