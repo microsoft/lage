@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "should only do remote cache if config is there",
+  "packageName": "@lage-run/cache",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
