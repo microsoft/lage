@@ -7,19 +7,6 @@ import path from "path";
 import createLogger from "@lage-run/logger";
 
 describe("BackfillCacheProvider", () => {
-  const origCacheProviderOptions = process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
-  const origCacheProvider = process.env.BACKFILL_CACHE_PROVIDER;
-
-  beforeEach(() => {
-    delete process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
-    delete process.env.BACKFILL_CACHE_PROVIDER;
-  });
-
-  afterEach(() => {
-    process.env.BACKFILL_CACHE_PROVIDER_OPTIONS = origCacheProviderOptions;
-    process.env.BACKFILL_CACHE_PROVIDER = origCacheProvider;
-  });
-
   it("should fetch a cache of the outputs as specified in the outputs folder in target", async () => {
     const logger = createLogger();
     const monorepo = new Monorepo("fetch-cache");
