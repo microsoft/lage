@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 06 Oct 2022 17:46:44 GMT",
+      "tag": "lage_v1.9.2",
+      "version": "1.9.2",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "ef0f70f8f0cae6a8e3d02b917ce35244eea0b232",
+            "comment": "Remove unused build scripts"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 30 Sep 2022 18:48:39 GMT",
       "tag": "lage_v1.9.2",
       "version": "1.9.2",
