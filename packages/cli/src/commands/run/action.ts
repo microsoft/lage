@@ -95,13 +95,14 @@ export async function runAction(options: RunOptions, command: Command) {
       options.skipLocalCache === true
         ? undefined
         : new BackfillCacheProvider({
+            logger,
             root,
             cacheOptions: {
               outputGlob: config.cacheOptions.outputGlob,
               ...(config.cacheOptions.internalCacheFolder && { internalCacheFolder: config.cacheOptions.internalCacheFolder }),
             },
           }),
-    remoteCacheProvider: hasRemoteCacheConfig ? new BackfillCacheProvider({ root, cacheOptions: config.cacheOptions }) : undefined,
+    remoteCacheProvider: hasRemoteCacheConfig ? new BackfillCacheProvider({ logger, root, cacheOptions: config.cacheOptions }) : undefined,
     writeRemoteCache:
       config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI,
   });
