@@ -169,9 +169,11 @@ export class Monorepo {
   }
 
   run(command: string, args?: string[], silent?: boolean) {
+    const { BACKFILL_CACHE_PROVIDER, BACKFILL_CACHE_PROVIDER_OPTIONS, CI, TF_BUILD, ...env } = process.env;
     return execa.sync("yarn", [...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
       extendEnv: false,
+      env,
     });
   }
 
