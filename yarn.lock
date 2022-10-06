@@ -7855,10 +7855,10 @@ klona@^2.0.5:
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.5.tgz#d166574d90076395d9963aa7a928fabb8d76afbc"
   integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
 
-"lage-npm@npm:@lage-run/lage@2.2.11":
-  version "2.2.11"
-  resolved "https://registry.yarnpkg.com/@lage-run/lage/-/lage-2.2.11.tgz#ee56d07f781ccf71ca389f165ce11d0a812760fc"
-  integrity sha512-R1spcKLhDX3IfD6vx9aNZEoHGag03vpDMS+QPS6XMYiO03/8AEu9gO/0EJOyHdcv7hzzqOI3M3ReeNOfRFX2Ew==
+"lage-npm@npm:@lage-run/lage@2.2.13":
+  version "2.2.13"
+  resolved "https://registry.yarnpkg.com/@lage-run/lage/-/lage-2.2.13.tgz#b56d776ce7ce5f846af69f032a535db124871508"
+  integrity sha512-r2p/p+Z5nE7+6rKmRX8hLjrf5GS6m2TVE6vYWpRgzj30ZRUnUDKeRtSr2LneqiCwOEC7x+I/Hw6MT6vLyvE7rQ==
 
 latest-version@^5.1.0:
   version "5.1.0"
