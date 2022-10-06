@@ -4,6 +4,7 @@ import { BackfillCacheProvider, BackfillCacheProviderOptions } from "../src/prov
 import { Monorepo } from "@lage-run/monorepo-fixture";
 import { _testResetEnvHash } from "../src/salt";
 import path from "path";
+import createLogger from "@lage-run/logger";
 
 describe("BackfillCacheProvider", () => {
   const origCacheProviderOptions = process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
@@ -20,6 +21,7 @@ describe("BackfillCacheProvider", () => {
   });
 
   it("should fetch a cache of the outputs as specified in the outputs folder in target", async () => {
+    const logger = createLogger();
     const monorepo = new Monorepo("fetch-cache");
 
     await monorepo.init();
@@ -29,6 +31,7 @@ describe("BackfillCacheProvider", () => {
     await monorepo.linkPackages();
 
     const options: BackfillCacheProviderOptions = {
+      logger,
       root: monorepo.root,
       cacheOptions: {
         outputGlob: ["output.txt"],
@@ -64,6 +67,7 @@ describe("BackfillCacheProvider", () => {
   });
 
   it("should put a cache of the outputs as specified in the outputs folder in target", async () => {
+    const logger = createLogger();
     const monorepo = new Monorepo("put-cache");
 
     await monorepo.init();
@@ -73,6 +77,7 @@ describe("BackfillCacheProvider", () => {
     await monorepo.linkPackages();
 
     const options: BackfillCacheProviderOptions = {
+      logger,
       root: monorepo.root,
       cacheOptions: {
         outputGlob: ["output.txt"],

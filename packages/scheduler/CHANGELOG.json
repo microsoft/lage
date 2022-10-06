@@ -2,6 +2,48 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Thu, 06 Oct 2022 16:07:29 GMT",
+      "tag": "@lage-run/scheduler_v0.4.5",
+      "version": "0.4.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v0.1.19",
+            "commit": "bd449545266b4a823e6e79beb2b75103cc3b3739"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.8",
+            "commit": "bd449545266b4a823e6e79beb2b75103cc3b3739"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 06 Oct 2022 04:37:18 GMT",
+      "tag": "@lage-run/scheduler_v0.4.4",
+      "version": "0.4.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.1.7",
+            "commit": "7356755d5f829c3f3eb0cb9242753d30639a9a3a"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.7",
+            "commit": "7356755d5f829c3f3eb0cb9242753d30639a9a3a"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 05 Oct 2022 23:59:29 GMT",
       "tag": "@lage-run/scheduler_v0.4.3",
       "version": "0.4.3",
