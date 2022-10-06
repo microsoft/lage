@@ -33,6 +33,7 @@ interface RunOptions extends ReporterInitOptions {
   cache: boolean;
   resetCache: boolean;
   nodeargs: string;
+  ignore: string[];
 }
 
 export async function runAction(options: RunOptions, command: Command) {
@@ -66,7 +67,7 @@ export async function runAction(options: RunOptions, command: Command) {
     since: options.since,
     scope: options.scope,
     repoWideChanges: config.repoWideChanges,
-    sinceIgnoreGlobs: config.ignore,
+    sinceIgnoreGlobs: options.ignore.concat(config.ignore),
   });
 
   for (const [id, definition] of Object.entries(config.pipeline)) {

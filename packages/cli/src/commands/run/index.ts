@@ -33,6 +33,7 @@ addLoggerOptions(runCommand)
   .option("--reset-cache", "resets the cache, filling it after a run")
   .option("--skip-local-cache", "skips caching locally (defaults to true in CI environments)", isRunningFromCI)
   .option("--profile [profile]", "writes a run profile into a file that can be processed by Chromium devtool")
+  .option("--ignore <ignore...>","ignores certain files when calculating the scope with `--since`", [])
   .option(
     "--nodearg <nodeArg>",
     'arguments to be passed to node (e.g. --nodearg="--max_old_space_size=1234 --heap-prof" - set via "NODE_OPTIONS" environment variable'
@@ -96,7 +97,11 @@ Show logs as grouped by each target:
 Choosing a different reporter while logging (e.g. nice outputs for Azure DevOps):
 
     $ lage build test lint --reporter=azureDevOps
-  
+
+Ignoring certain files when calculating the scope with --since:
+
+    $ lage build test lint --since origin/master --ignore "package.json" "yarn.lock" "**/.azure-pipelines/**"
+
 `
   );
 
