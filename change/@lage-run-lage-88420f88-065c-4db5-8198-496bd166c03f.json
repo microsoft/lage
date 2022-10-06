@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "actually apply the patch package during postinstall",
-  "packageName": "@lage-run/lage",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

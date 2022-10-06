@@ -2,6 +2,21 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Thu, 06 Oct 2022 18:48:08 GMT",
+      "tag": "@lage-run/lage_v2.2.13",
+      "version": "2.2.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/lage",
+            "commit": "da807ccd5bcee50e3f8c81bb35a3c8962b22bdf2",
+            "comment": "actually apply the patch package during postinstall"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Oct 2022 18:23:12 GMT",
       "tag": "@lage-run/lage_v2.2.12",
       "version": "2.2.12",
