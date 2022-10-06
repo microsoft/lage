@@ -1,8 +1,19 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Thu, 06 Oct 2022 04:37:18 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Oct 2022 16:07:29 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.8
+
+Thu, 06 Oct 2022 16:07:29 GMT
+
+### Patches
+
+- adding logger to the constructor of the backfillCacheProvider usages (ken@gizzar.com)
+- Bump @lage-run/scheduler to v0.4.5
+- Bump @lage-run/cache to v0.1.19
+- Bump @lage-run/reporters to v0.2.21
 
 ## 0.4.7
 

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Wed, 05 Oct 2022 23:59:29 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Oct 2022 16:07:29 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.19
+
+Thu, 06 Oct 2022 16:07:29 GMT
+
+### Patches
+
+- adding a bit more logging to cache puts for "silly" log level (ken@gizzar.com)
 
 ## 0.1.18
 
