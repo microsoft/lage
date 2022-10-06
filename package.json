@@ -26,7 +26,8 @@
     "gh-pages": "gh-pages",
     "format": "prettier --config .prettierrc packages/**/*.ts **/*.json --write --ignore-path .gitignore",
     "format:check": "prettier --config .prettierrc packages/**/*.ts **/*.json --check --ignore-path .gitignore",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "patch-package"
   },
   "devDependencies": {
     "@types/jest": "29.1.2",
