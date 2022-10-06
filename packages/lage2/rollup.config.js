@@ -24,6 +24,7 @@ export default [
         // Since we are produce CJS, let's resolve main first!
         mainFields: ["main", "module"],
         preferBuiltins: true,
+        exportConditions: ["node"],
       }),
       commonjs({
         ignoreDynamicRequires: true,

@@ -34,7 +34,7 @@
     "gh-pages": "4.0.0",
     "husky": "8.0.1",
     "jest": "29.1.2",
-    "lage-npm": "npm:@lage-run/lage@2.2.8",
+    "lage-npm": "npm:@lage-run/lage@2.2.9",
     "lint-staged": "13.0.3",
     "prettier": "2.7.1",
     "ts-jest": "29.0.3",
