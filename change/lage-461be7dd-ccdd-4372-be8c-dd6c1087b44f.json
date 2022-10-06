@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Remove unused build scripts",
+  "packageName": "lage",
+  "email": "elcraig@microsoft.com",
+  "dependentChangeType": "none"
+}
