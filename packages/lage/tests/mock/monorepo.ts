@@ -171,7 +171,7 @@ export class Monorepo {
   run(command: string, args?: string[], silent?: boolean) {
     return execa.sync("yarn", [...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
-      extendEnv: false
+      extendEnv: false,
     });
   }
 
