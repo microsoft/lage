@@ -6,9 +6,10 @@
 import { AsyncResource } from "async_hooks";
 import { createFilteredStreamTransform } from "./createFilteredStreamTransform";
 import { createInterface } from "readline";
-import { END_WORKER_STREAM_MARKER, START_WORKER_STREAM_MARKER } from "./stdioStreamMarkers";
+import { endMarker, startMarker } from "./stdioStreamMarkers";
 import { EventEmitter } from "events";
 import { Worker } from "worker_threads";
+import crypto from "crypto";
 import os from "os";
 import type { Pool } from "./Pool";
 import type { Readable } from "stream";
@@ -17,12 +18,17 @@ import type { AbortSignal } from "abort-controller";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
-const kWorkerCapturedStreamEvents = Symbol("kWorkerCapturedStreamEvents");
-const kWorkerCapturedStreamPromise = Symbol("kWorkerCapturedStreamPromise");
+
+const kWorkerCapturedStdoutResolve = Symbol("kWorkerCapturedStdoutResolve");
+const kWorkerCapturedStderrResolve = Symbol("kWorkerCapturedStderrResolve");
+
+const kWorkerCapturedStdoutPromise = Symbol("kWorkerCapturedStdoutPromise");
+const kWorkerCapturedStderrPromise = Symbol("kWorkerCapturedStderrPromise");
 
 class WorkerPoolTaskInfo extends AsyncResource {
   constructor(
     private options: {
+      id: string;
       setup: (worker: Worker, stdout: Readable, stderr: Readable) => void;
       cleanup: (worker: Worker) => void;
       resolve: (value: unknown) => void;
@@ -35,6 +41,10 @@ class WorkerPoolTaskInfo extends AsyncResource {
     if (options.setup) {
       this.runInAsyncScope(options.setup, null, options.worker, options.worker["filteredStdout"], options.worker["filteredStderr"]);
     }
+  }
+
+  get id() {
+    return this.options.id;
   }
 
   done(err: Error, results: unknown) {
@@ -102,9 +112,6 @@ export class WorkerPool extends EventEmitter implements Pool {
   }
 
   captureWorkerStdioStreams(worker: Worker) {
-    const capturedStreamEvent = new EventEmitter();
-    worker[kWorkerCapturedStreamEvents] = capturedStreamEvent;
-
     const stdout = worker.stdout;
     const stdoutInterface = createInterface({
       input: stdout,
@@ -117,22 +124,28 @@ export class WorkerPool extends EventEmitter implements Pool {
       crlfDelay: Infinity,
     });
 
-    const lineHandlerFactory = () => {
+    const lineHandlerFactory = (outputType: string) => {
       let lines: string[] = [];
+      let resolve: () => void;
 
       return (line: string) => {
-        if (line.includes(START_WORKER_STREAM_MARKER)) {
+        if (line.includes(startMarker(worker[kTaskInfo].id))) {
           lines = [];
-        } else if (line.includes(END_WORKER_STREAM_MARKER)) {
-          worker[kWorkerCapturedStreamEvents].emit("end", lines);
+          if (outputType === "stdout") {
+            resolve = worker[kWorkerCapturedStdoutResolve];
+          } else {
+            resolve = worker[kWorkerCapturedStderrResolve];
+          }
+        } else if (line.includes(endMarker(worker[kTaskInfo].id))) {
+          resolve();
         } else {
           lines.push(line);
         }
       };
     };
 
-    const stdoutLineHandler = lineHandlerFactory();
-    const stderrLineHandler = lineHandlerFactory();
+    const stdoutLineHandler = lineHandlerFactory("stdout");
+    const stderrLineHandler = lineHandlerFactory("stderr");
 
     stdoutInterface.on("line", stdoutLineHandler);
     stderrInterface.on("line", stderrLineHandler);
@@ -142,10 +155,11 @@ export class WorkerPool extends EventEmitter implements Pool {
     const { script, workerOptions } = this.options;
     const worker = new Worker(script, { ...workerOptions, stdout: true, stderr: true });
 
-    const capturedStreamEvent = new EventEmitter();
-    worker[kWorkerCapturedStreamEvents] = capturedStreamEvent;
-    worker[kWorkerCapturedStreamPromise] = Promise.resolve();
+    worker[kWorkerCapturedStderrPromise] = Promise.resolve();
+    worker[kWorkerCapturedStdoutPromise] = Promise.resolve();
+
     this.captureWorkerStdioStreams(worker);
+
     worker["filteredStdout"] = worker.stdout.pipe(createFilteredStreamTransform());
     worker["filteredStderr"] = worker.stderr.pipe(createFilteredStreamTransform());
 
@@ -153,9 +167,8 @@ export class WorkerPool extends EventEmitter implements Pool {
       // In case of success: Call the callback that was passed to `runTask`,
       // remove the `TaskInfo` associated with the Worker, and mark it as free
       // again.
-      worker[kWorkerCapturedStreamPromise].then(() => {
+      Promise.all([worker[kWorkerCapturedStdoutPromise], worker[kWorkerCapturedStderrPromise]]).then(() => {
         const { err, results } = data;
-
         worker[kTaskInfo].done(err, results);
         worker[kTaskInfo] = null;
         this.freeWorkers.push(worker);
@@ -166,7 +179,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     worker.on("message", msgHandler);
 
     const errHandler = (err) => {
-      worker[kWorkerCapturedStreamPromise].then(() => {
+      Promise.all([worker[kWorkerCapturedStdoutPromise], worker[kWorkerCapturedStderrPromise]]).then(() => {
         // In case of an uncaught exception: Call the callback that was passed to
         // `runTask` with the error.
         if (worker[kTaskInfo]) {
@@ -212,13 +225,21 @@ export class WorkerPool extends EventEmitter implements Pool {
           worker.postMessage({ type: "abort" });
         });
 
-        worker[kTaskInfo] = new WorkerPoolTaskInfo({ cleanup, resolve, reject, worker, setup });
+        const id = crypto.randomBytes(32).toString("hex");
 
-        worker[kWorkerCapturedStreamPromise] = new Promise<void>((onResolve) => {
-          worker[kWorkerCapturedStreamEvents].once("end", onResolve);
+        worker[kTaskInfo] = new WorkerPoolTaskInfo({ id, cleanup, resolve, reject, worker, setup });
+
+        // Create a pair of promises that are only resolved when a specific task end marker is detected
+        // in the worker's stdout/stderr streams.
+        worker[kWorkerCapturedStdoutPromise] = new Promise<void>((onResolve) => {
+          worker[kWorkerCapturedStdoutResolve] = onResolve;
         });
 
-        worker.postMessage({ type: "start", task });
+        worker[kWorkerCapturedStderrPromise] = new Promise<void>((onResolve) => {
+          worker[kWorkerCapturedStderrResolve] = onResolve;
+        });
+
+        worker.postMessage({ type: "start", task, id });
       }
     }
   }

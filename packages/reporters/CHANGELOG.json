@@ -2,6 +2,51 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Thu, 06 Oct 2022 04:37:18 GMT",
+      "tag": "@lage-run/reporters_v0.2.20",
+      "version": "0.2.20",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.7",
+            "commit": "7356755d5f829c3f3eb0cb9242753d30639a9a3a"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 05 Oct 2022 23:59:29 GMT",
+      "tag": "@lage-run/reporters_v0.2.19",
+      "version": "0.2.19",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.6",
+            "commit": "8e77866719951e420ec42aa283cce0114cd52684"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 05 Oct 2022 20:00:31 GMT",
+      "tag": "@lage-run/reporters_v0.2.18",
+      "version": "0.2.18",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.5",
+            "commit": "bf12b1a56058649ddcff473c2ffd66d46a9fa09f"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 04 Oct 2022 03:38:54 GMT",
       "tag": "@lage-run/reporters_v0.2.17",
       "version": "0.2.17",

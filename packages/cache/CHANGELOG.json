@@ -2,6 +2,36 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Wed, 05 Oct 2022 23:59:29 GMT",
+      "tag": "@lage-run/cache_v0.1.18",
+      "version": "0.1.18",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "8e77866719951e420ec42aa283cce0114cd52684",
+            "comment": "just a fix to which envrionment wins"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 05 Oct 2022 20:00:31 GMT",
+      "tag": "@lage-run/cache_v0.1.17",
+      "version": "0.1.17",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "bf12b1a56058649ddcff473c2ffd66d46a9fa09f",
+            "comment": "fixes the backfill config for remote cache"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 03 Oct 2022 19:57:28 GMT",
       "tag": "@lage-run/cache_v0.1.16",
       "version": "0.1.16",
