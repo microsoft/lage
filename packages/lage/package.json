@@ -13,15 +13,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "change": "beachball change",
-    "checkchange": "beachball check",
-    "decks:build": "marp -I decks --pdf -o docs/.vuepress/dist/decks",
-    "docs": "vuepress dev docs --host localhost",
-    "docs:build": "vuepress build docs",
-    "gen-typedoc": "ts-node --transpile-only scripts/gen-typedoc.ts",
-    "gh-pages": "gh-pages",
-    "release": "beachball publish -y --tag unstable",
-    "release:docs": "yarn gen-typedoc && yarn docs:build && yarn decks:build && yarn gh-pages -d docs/.vuepress/dist --dotfiles",
+    "decks:build": "npm exec --package=@marp-team/marp-cli -- marp -I ../../decks --pdf -o ../../decks/dist",
     "start": "tsc -w --preserveWatchOutput",
     "test": "jest"
   },
@@ -45,7 +37,6 @@
     "yargs-parser": "^18.1.3"
   },
   "devDependencies": {
-    "@marp-team/marp-cli": "0.23.3",
     "@types/chalk": "2.2.0",
     "@types/cosmiconfig": "6.0.0",
     "@types/execa": "2.0.0",
