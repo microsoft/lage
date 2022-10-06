@@ -13,7 +13,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "decks:build": "npm exec --package=@marp-team/marp-cli -- marp -I ../../decks --pdf -o ../../decks/dist",
     "start": "tsc -w --preserveWatchOutput",
     "test": "jest"
   },
