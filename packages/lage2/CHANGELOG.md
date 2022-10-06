@@ -1,8 +1,16 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Thu, 06 Oct 2022 17:26:31 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Oct 2022 18:23:12 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.2.12
+
+Thu, 06 Oct 2022 18:23:12 GMT
+
+### Patches
+
+- fixes the node-fetch to allow for bundling (ken@gizzar.com)
 
 ## 2.2.11
 

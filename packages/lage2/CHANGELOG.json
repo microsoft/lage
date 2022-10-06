@@ -2,6 +2,21 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Thu, 06 Oct 2022 18:23:12 GMT",
+      "tag": "@lage-run/lage_v2.2.12",
+      "version": "2.2.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/lage",
+            "commit": "75cf8e52e46b4f686d54d49f756d15f2614a9ba1",
+            "comment": "fixes the node-fetch to allow for bundling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Oct 2022 17:26:31 GMT",
       "tag": "@lage-run/lage_v2.2.11",
       "version": "2.2.11",
