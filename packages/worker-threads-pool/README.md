@@ -4,4 +4,3 @@ This is an `worker_threads` based threadpool implementation. We had to implement
 
 It is completely based on the Node.js documentation for `async_hook`:
 https://nodejs.org/api/async_context.html#using-asyncresource-for-a-worker-thread-pool
-

@@ -17,10 +17,10 @@ module.exports = {
     test: ["build"],
     "foo#test": {
       priority: 100,
-      dependsOn: ["build"]
-    }
+      dependsOn: ["build"],
+    },
   },
-}
+};
 ```
 
 ## Legacy (v1 + v2) way of configuring priority
@@ -41,4 +41,3 @@ module.exports = {
 ```
 
 The higher the priority number, the higher the priority. These numbers are relative with each other. Anything that is not listed in the priorities array means they are not prioritized.
-

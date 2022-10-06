@@ -3,5 +3,13 @@
   "semi": true,
   "singleQuote": false,
   "trailingComma": "es5",
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "overrides": [
+    {
+      "files": "*.json5",
+      "options": {
+        "parser": "json"
+      }
+    }
+  ]
 }

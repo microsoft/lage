@@ -7,11 +7,10 @@ module.exports = {
     "@typescript-eslint/consistent-type-exports": "error",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "no-console": "error"
+    "no-console": "error",
   },
   parserOptions: {
     project: "./tsconfig.json",
   },
   root: true,
-  
 };

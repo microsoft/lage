@@ -66,7 +66,6 @@ Sometimes it becomes necessary to manually place a package task dependency on an
 
 In this example, we illustrate a `build` script of `foo` package depends on the `test` script of `bar`. The syntax is `[package]#[task]`.
 
-
 ```json
 // package-a build depends on the output of package-b build.
 {

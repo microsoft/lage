@@ -1,0 +1,12 @@
+*.snap
+.*ignore
+/docs/.docusaurus
+/docs/build/
+/docs/static/
+/change/
+CHANGELOG.*
+lib/
+LICENSE
+node_modules/
+SECURITY.md
+yarn.lock

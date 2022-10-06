@@ -6,17 +6,17 @@ title: Command Line Options
 
 `lage` is meant to be run as a CLI. After installing `lage` inside the repository or globally, you can run the npm scripts from your repository like this:
 
-
-``` 
+```
 $ lage [options] <command>
 ```
 
 ---
+
 ## Run Command
 
 Runs a set of commands in a target graph. The targets are defined by packages and their scripts as defined the package.json files.
 
-Usage: `lage [run] <command1> [command2...commandN] [options]  run commands`
+Usage: `lage [run] <command1> [command2...commandN] [options] run commands`
 
 ### Options
 
@@ -47,7 +47,7 @@ Usage: `lage [run] <command1> [command2...commandN] [options]  run commands`
     $ lage build test lint
 
 #### Concurrency
-  
+
     $ lage build test lint --concurrency=4
 
 #### Filtering by certain packages
@@ -87,6 +87,7 @@ Choosing a different reporter while logging (e.g. nice outputs for Azure DevOps)
     $ lage build test lint --reporter=azureDevOps
 
 ---
+
 ## Cache Command
 
 `lage` by default will skip tasks that it has already done recently. As long as the source file and the command called to `lage` has not changed, those packages will be skipped. Sometimes, this incremental behavior is not desired. You can override the caching behavior by using the `no-cache` argument.
@@ -94,6 +95,7 @@ Choosing a different reporter while logging (e.g. nice outputs for Azure DevOps)
 ```
 $ lage build --no-cache
 ```
+
 ### Options
 
 ```
@@ -120,6 +122,7 @@ $ lage cache --clear
 ```
 
 ---
+
 ## Global Options
 
 These are options that apply to all commands.
@@ -152,7 +155,7 @@ $ lage build --verbose --grouped
 
 ### Reporter
 
-`lage` comes with various kinds of reporters. Reporters take the logged messages of the target runs, format them, and display them. The default one can group messages, and there are ones that would work well with various Continuous Integration systems like Azure DevOps. 
+`lage` comes with various kinds of reporters. Reporters take the logged messages of the target runs, format them, and display them. The default one can group messages, and there are ones that would work well with various Continuous Integration systems like Azure DevOps.
 
 You can pick the reporter by passing the `--reporter` flag:
 
@@ -161,4 +164,3 @@ $ lage build --reporter json
 ```
 
 Available reporters are: `azureDevops`, `json`. By default the log messages are formatted with the "default" reporter.
-

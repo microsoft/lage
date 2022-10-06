@@ -55,7 +55,7 @@ You are now ready to start running all the commands in your repository with `lag
 npm run build
 ```
 
-or 
+or
 
 ```
 yarn build

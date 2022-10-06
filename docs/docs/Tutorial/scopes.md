@@ -14,7 +14,7 @@ A target is an unit of execution in the `lage` graph. Think of it as a tuple of 
 
 ## Scoped builds with all its dependents
 
-By default, `lage` runs tasks on all affected packages within a scope. Packages that changed will affect downstream consumers of the "scope". In this example, the `scope` is set as `a-common-library` - all of its transitive dependents (consumers of the `a-common-library` package) will also have their "build" script be called.   
+By default, `lage` runs tasks on all affected packages within a scope. Packages that changed will affect downstream consumers of the "scope". In this example, the `scope` is set as `a-common-library` - all of its transitive dependents (consumers of the `a-common-library` package) will also have their "build" script be called.
 
 ```
 $ lage build --scope a-common-library
@@ -22,14 +22,13 @@ $ lage build --scope a-common-library
 
 You can use wild card character: `*`. This is particularly helpful when packages are named by group or by scope. For example, `components-*` would match `components-foo` and `components-bar` packages.
 
-
 ```
 $ lage build --scope components-*
 ```
 
-:::note 
+:::note
 
-npm has a concept of [@-scoped packages](https://docs.npmjs.com/cli/v8/using-npm/scope) in the package names. This describes a kind of grouping by an organization as defined by the npm spec. It is a *different* concept than the `lage` scope.
+npm has a concept of [@-scoped packages](https://docs.npmjs.com/cli/v8/using-npm/scope) in the package names. This describes a kind of grouping by an organization as defined by the npm spec. It is a _different_ concept than the `lage` scope.
 
 :::
 

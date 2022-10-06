@@ -1,5 +1,5 @@
-import * as React from 'react';
+import * as React from "react";
 
-export const Section = ({children}) => {
-  return <section className="container md:mx-auto">{children}</section>
-}
+export const Section = ({ children }) => {
+  return <section className="container md:mx-auto">{children}</section>;
+};

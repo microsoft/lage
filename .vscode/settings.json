@@ -1,4 +1,6 @@
 {
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.workingDirectories": ["src", "tests"],
   "typescript.tsdk": "node_modules/typescript/lib"
 }

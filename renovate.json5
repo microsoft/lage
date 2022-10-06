@@ -16,9 +16,7 @@
   "regexManagers": [
     {
       "fileMatch": ["^package.json$"],
-      "matchStrings": [
-        "lage-npm\": \"npm:@lage-run/lage@(?<currentValue>[~^]?\\d+\\.\\d+\\.\\d+)"
-      ],
+      "matchStrings": ["lage-npm\": \"npm:@lage-run/lage@(?<currentValue>[~^]?\\d+\\.\\d+\\.\\d+)"],
       "depNameTemplate": "lage-npm",
       "packageNameTemplate": "@lage-run/lage",
       "datasourceTemplate": "npm",

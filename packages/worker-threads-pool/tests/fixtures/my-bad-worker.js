@@ -4,7 +4,6 @@ const { parentPort } = require("worker_threads");
 const START_WORKER_STREAM_MARKER = "## WORKER:START:";
 const END_WORKER_STREAM_MARKER = "## WORKER:END:";
 
-
 parentPort?.on("message", async (message) => {
   let abortController;
 

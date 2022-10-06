@@ -6,67 +6,27 @@ export const TwoColumns = (props) => {
       <div className="flex items-center md:hidden">
         {props.imageOnTop && props.imageFirst && (
           <div>
-            <>
-              {React.Children.map(
-                props.children,
-                (child, i) => i === 0 && child
-              )}
-            </>
-            <>
-              {React.Children.map(
-                props.children,
-                (child, i) => i === 1 && child
-              )}
-            </>
+            <>{React.Children.map(props.children, (child, i) => i === 0 && child)}</>
+            <>{React.Children.map(props.children, (child, i) => i === 1 && child)}</>
           </div>
         )}
         {props.imageOnTop && !props.imageFirst && (
           <div>
-            <>
-              {React.Children.map(
-                props.children,
-                (child, i) => i === 1 && child
-              )}
-            </>
-            <>
-              {React.Children.map(
-                props.children,
-                (child, i) => i === 0 && child
-              )}
-            </>
+            <>{React.Children.map(props.children, (child, i) => i === 1 && child)}</>
+            <>{React.Children.map(props.children, (child, i) => i === 0 && child)}</>
           </div>
         )}
         {!props.imageOnTop && props.imageFirst && (
           <div>
-            <>
-              {React.Children.map(
-                props.children,
-                (child, i) => i === 1 && child
-              )}
-            </>
-            <>
-              {React.Children.map(
-                props.children,
-                (child, i) => i === 0 && child
-              )}
-            </>
+            <>{React.Children.map(props.children, (child, i) => i === 1 && child)}</>
+            <>{React.Children.map(props.children, (child, i) => i === 0 && child)}</>
           </div>
         )}
 
         {!props.imageOnTop && !props.imageFirst && (
           <div>
-            <>
-              {React.Children.map(
-                props.children,
-                (child, i) => i === 0 && child
-              )}
-            </>
-            <>
-              {React.Children.map(
-                props.children,
-                (child, i) => i === 1 && child
-              )}
-            </>
+            <>{React.Children.map(props.children, (child, i) => i === 0 && child)}</>
+            <>{React.Children.map(props.children, (child, i) => i === 1 && child)}</>
           </div>
         )}
       </div>

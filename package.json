@@ -24,8 +24,8 @@
     "docs": "yarn workspace @lage-run/docs start",
     "docs:build": "yarn workspace @lage-run/docs build",
     "gh-pages": "gh-pages",
-    "format": "prettier --config .prettierrc packages/**/*.ts **/*.json --write --ignore-path .gitignore",
-    "format:check": "prettier --config .prettierrc packages/**/*.ts **/*.json --check --ignore-path .gitignore",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "prepare": "husky install",
     "postinstall": "patch-package"
   },
@@ -44,8 +44,6 @@
     "patch-package": "6.4.7"
   },
   "lint-staged": {
-    "*.gitignore": "prettier --config .prettierrc --write --ignore-path .gitignore",
-    "*.ts": "prettier --config .prettierrc --write --ignore-path .gitignore",
-    "*.json": "prettier --config .prettierrc --write --ignore-path .gitignore"
+    "*": "prettier --write"
   }
 }

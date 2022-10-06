@@ -22,7 +22,7 @@
 
 ::before,
 ::after {
-  --tw-content: '';
+  --tw-content: "";
 }
 
 /*
@@ -40,7 +40,8 @@ html {
   /* 3 */
   tab-size: 4;
   /* 3 */
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   /* 4 */
 }
 
@@ -77,7 +78,7 @@ Add the correct text decoration in Chrome, Edge, and Safari.
 
 abbr:where([title]) {
   -webkit-text-decoration: underline dotted;
-          text-decoration: underline dotted;
+  text-decoration: underline dotted;
 }
 
 /*
@@ -210,9 +211,9 @@ select {
 */
 
 button,
-[type='button'],
-[type='reset'],
-[type='submit'] {
+[type="button"],
+[type="reset"],
+[type="submit"] {
   -webkit-appearance: button;
   /* 1 */
   background-color: transparent;
@@ -259,7 +260,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 2. Correct the outline style in Safari.
 */
 
-[type='search'] {
+[type="search"] {
   -webkit-appearance: textfield;
   /* 1 */
   outline-offset: -2px;
@@ -344,7 +345,8 @@ textarea {
 2. Set the default placeholder color to the user's configured gray 400 color.
 */
 
-input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
   opacity: 1;
   /* 1 */
   color: #9ca3af;
@@ -414,7 +416,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   display: none;
 }
 
-*, ::before, ::after {
+*,
+::before,
+::after {
   --tw-translate-x: 0;
   --tw-translate-y: 0;
   --tw-rotate: 0;
@@ -422,16 +426,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-skew-y: 0;
   --tw-scale-x: 1;
   --tw-scale-y: 1;
-  --tw-pan-x:  ;
-  --tw-pan-y:  ;
-  --tw-pinch-zoom:  ;
+  --tw-pan-x: ;
+  --tw-pan-y: ;
+  --tw-pinch-zoom: ;
   --tw-scroll-snap-strictness: proximity;
-  --tw-ordinal:  ;
-  --tw-slashed-zero:  ;
-  --tw-numeric-figure:  ;
-  --tw-numeric-spacing:  ;
-  --tw-numeric-fraction:  ;
-  --tw-ring-inset:  ;
+  --tw-ordinal: ;
+  --tw-slashed-zero: ;
+  --tw-numeric-figure: ;
+  --tw-numeric-spacing: ;
+  --tw-numeric-fraction: ;
+  --tw-ring-inset: ;
   --tw-ring-offset-width: 0px;
   --tw-ring-offset-color: #fff;
   --tw-ring-color: rgb(59 130 246 / 0.5);
@@ -439,36 +443,36 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-ring-shadow: 0 0 #0000;
   --tw-shadow: 0 0 #0000;
   --tw-shadow-colored: 0 0 #0000;
-  --tw-blur:  ;
-  --tw-brightness:  ;
-  --tw-contrast:  ;
-  --tw-grayscale:  ;
-  --tw-hue-rotate:  ;
-  --tw-invert:  ;
-  --tw-saturate:  ;
-  --tw-sepia:  ;
-  --tw-drop-shadow:  ;
-  --tw-backdrop-blur:  ;
-  --tw-backdrop-brightness:  ;
-  --tw-backdrop-contrast:  ;
-  --tw-backdrop-grayscale:  ;
-  --tw-backdrop-hue-rotate:  ;
-  --tw-backdrop-invert:  ;
-  --tw-backdrop-opacity:  ;
-  --tw-backdrop-saturate:  ;
-  --tw-backdrop-sepia:  ;
+  --tw-blur: ;
+  --tw-brightness: ;
+  --tw-contrast: ;
+  --tw-grayscale: ;
+  --tw-hue-rotate: ;
+  --tw-invert: ;
+  --tw-saturate: ;
+  --tw-sepia: ;
+  --tw-drop-shadow: ;
+  --tw-backdrop-blur: ;
+  --tw-backdrop-brightness: ;
+  --tw-backdrop-contrast: ;
+  --tw-backdrop-grayscale: ;
+  --tw-backdrop-hue-rotate: ;
+  --tw-backdrop-invert: ;
+  --tw-backdrop-opacity: ;
+  --tw-backdrop-saturate: ;
+  --tw-backdrop-sepia: ;
 }
 
 @font-face {
   font-family: "Londrina Solid";
 
-  src: url(../../static/fonts/LondrinaSolid.ttf) format('truetype');
+  src: url(../../static/fonts/LondrinaSolid.ttf) format("truetype");
 }
 
 @font-face {
   font-family: "Bahnschrift";
 
-  src: url(../../static/fonts/Bahnschrift.ttf) format('truetype');
+  src: url(../../static/fonts/Bahnschrift.ttf) format("truetype");
 }
 
 .absolute {
@@ -859,7 +863,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .bg-clip-text {
   -webkit-background-clip: text;
-          background-clip: text;
+  background-clip: text;
 }
 
 .fill-blue-300 {
@@ -1104,8 +1108,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   line-height: 1;
 }
 
-.before\:content-\[\'\201C\'\]::before {
-  --tw-content: '“';
+.before\:content-\[\'\201c\'\]::before {
+  --tw-content: "“";
   content: var(--tw-content);
 }
 
@@ -1136,7 +1140,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .hover\:no-underline:hover {
   -webkit-text-decoration-line: none;
-          text-decoration-line: none;
+  text-decoration-line: none;
 }
 
 .focus\:ring-4:focus {
