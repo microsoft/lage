@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "\u0016Making these corrections so that the dependencies and --no-dependents (dependents option) are correctly parsed and used in the program.",
-  "packageName": "@lage-run/cli",
-  "email": "email not defined",
-  "dependentChangeType": "patch"
-}
