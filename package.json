@@ -20,6 +20,7 @@
     "start": "lage start --scope=!docs --verbose --concurrency 100",
     "test": "lage test --scope=!docs --verbose",
     "lint": "lage lint",
+    "decks:build": "npm exec --package=@marp-team/marp-cli -- marp -I decks --pdf -o decks/dist",
     "docs": "yarn workspace @lage-run/docs start",
     "docs:build": "yarn workspace @lage-run/docs build",
     "gh-pages": "gh-pages",
