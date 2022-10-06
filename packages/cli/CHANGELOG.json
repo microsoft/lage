@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 06 Oct 2022 16:46:54 GMT",
+      "tag": "@lage-run/cli_v0.4.9",
+      "version": "0.4.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "7ad1d9e1e6ed840cf494669eb102580f732a1cd0",
+            "comment": "expose ignore option for since in cli"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Oct 2022 16:07:29 GMT",
       "tag": "@lage-run/cli_v0.4.8",
       "version": "0.4.8",
