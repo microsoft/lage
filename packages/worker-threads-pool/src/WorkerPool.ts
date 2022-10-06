@@ -126,7 +126,7 @@ export class WorkerPool extends EventEmitter implements Pool {
 
     const lineHandlerFactory = (outputType: string) => {
       let lines: string[] = [];
-      let resolve: () => void = () => {};
+      let resolve: () => void;
 
       return (line: string) => {
         if (line.includes(startMarker(worker[kTaskInfo].id))) {

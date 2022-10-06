@@ -1,6 +1,6 @@
 import { parentPort } from "worker_threads";
 import { AbortController } from "abort-controller";
-import { endMarker, END_MARKER_PREFIX, startMarker, START_MARKER_PREFIX } from "./stdioStreamMarkers";
+import { endMarker, startMarker } from "./stdioStreamMarkers";
 import type { AbortSignal } from "abort-controller";
 
 export function registerWorker(fn: (data: any, abortSignal?: AbortSignal) => Promise<void> | void) {
