@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fixes the node-fetch to allow for bundling",
+  "packageName": "@lage-run/lage",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}
