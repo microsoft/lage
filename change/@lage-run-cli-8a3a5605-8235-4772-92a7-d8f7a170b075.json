@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "expose ignore option for since in cli",
-  "packageName": "@lage-run/cli",
-  "email": "email not defined",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Thu, 06 Oct 2022 16:07:29 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Oct 2022 16:46:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.9
+
+Thu, 06 Oct 2022 16:46:54 GMT
+
+### Patches
+
+- expose ignore option for since in cli (email not defined)
 
 ## 0.4.8
 
