@@ -8,6 +8,7 @@ import type { CacheProvider, CacheProviderOptions } from "../types/CacheProvider
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { PackageInfo } from "workspace-tools";
 import type { Target } from "@lage-run/target-graph";
+import type { Logger } from "@lage-run/logger";
 
 const rmdir = promisify(fs.rmdir);
 const rm = promisify(fs.unlink);
@@ -18,6 +19,7 @@ const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
 export interface BackfillCacheProviderOptions {
   root: string;
+  logger: Logger;
   cacheOptions: Partial<CacheProviderOptions>;
 }
 
@@ -49,6 +51,8 @@ export class BackfillCacheProvider implements CacheProvider {
   }
 
   async fetch(hash: string, target: Target): Promise<boolean> {
+    const { logger } = this.options;
+
     if (!hash) {
       return false;
     }
@@ -57,13 +61,23 @@ export class BackfillCacheProvider implements CacheProvider {
 
     try {
       return await cacheStorage.fetch(hash);
-    } catch (e) {
+    } catch (error) {
+      let message;
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else message = String(error);
+
+      logger.silly(`Cache fetch failed: ${message}`, { target });
+
       // backfill fetch can error, but we should simply ignore and continue
       return false;
     }
   }
 
   async put(hash: string, target: Target): Promise<void> {
+    const { logger } = this.options;
+
     if (!hash) {
       return;
     }
@@ -72,7 +86,15 @@ export class BackfillCacheProvider implements CacheProvider {
 
     try {
       await cacheStorage.put(hash, target.outputs ?? this.options.cacheOptions.outputGlob ?? ["**/*"]);
-    } catch (e) {
+    } catch (error) {
+      let message;
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else message = String(error);
+
+      logger.silly(`Cache fetch failed: ${message}`, { target });
+
       // backfill throws an error if outputGlob doesn't match any files, we will skip this error
     }
   }

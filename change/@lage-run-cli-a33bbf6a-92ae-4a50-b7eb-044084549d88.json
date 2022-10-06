@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "adding logger to the constructor of the backfillCacheProvider usages",
+  "packageName": "@lage-run/cli",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}

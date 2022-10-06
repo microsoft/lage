@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "adding a bit more logging to cache puts for \"silly\" log level",
+  "packageName": "@lage-run/cache",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}
