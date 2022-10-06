@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixes stdio streams capturing so the logs belong to the right worker and task",
-  "packageName": "@lage-run/worker-threads-pool",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

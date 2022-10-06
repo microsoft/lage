@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Thu, 06 Oct 2022 04:37:18 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.1.7",
+      "version": "0.1.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "7356755d5f829c3f3eb0cb9242753d30639a9a3a",
+            "comment": "fixes stdio streams capturing so the logs belong to the right worker and task"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 04 Oct 2022 03:38:54 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.1.6",
       "version": "0.1.6",

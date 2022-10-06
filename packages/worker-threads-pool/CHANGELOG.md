@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Tue, 04 Oct 2022 03:38:54 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Oct 2022 04:37:18 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.7
+
+Thu, 06 Oct 2022 04:37:18 GMT
+
+### Patches
+
+- fixes stdio streams capturing so the logs belong to the right worker and task (kchau@microsoft.com)
 
 ## 0.1.6
 
