@@ -27,4 +27,5 @@ module.exports = {
   watchPathIgnorePatterns: ["/node_modules/"],
   moduleNameMapper,
   ...(process.env.LAGE_PACKAGE_NAME && { maxWorkers: 1 }),
+  setupFilesAfterEnv: ["<rootDir>/scripts/config/jest-setup-after-env.js"],
 };
