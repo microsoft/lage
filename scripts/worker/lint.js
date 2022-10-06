@@ -1,18 +1,16 @@
 // @ts-check
 const { ESLint } = require("eslint");
 const PROJECT_ROOT = require("path").resolve(__dirname, "..", "..");
-
-const { registerWorker } = require("@lage-run/worker-threads-pool");
 const { readFile } = require("fs/promises");
 
 const path = require("path");
 
-async function run(data) {
+module.exports = async function run(data) {
   const { target } = data;
   const packageJson = JSON.parse(await readFile(path.join(target.cwd, "package.json"), "utf8"));
 
   if (!packageJson.scripts?.[target.task]) {
-    process.stdout.write(`No script found for ${target.task} in ${target.cwd}\n`);
+    process.stdout.write(`No script found for ${target.task} in ${target.cwd}... skipped`);
     // pass
     return;
   }
@@ -34,11 +32,11 @@ async function run(data) {
   const resultText = await formatter.format(results);
 
   // 4. Output it.
-  process.stdout.write(resultText + "\n");
+  if (resultText) {
+    process.stdout.write(resultText + "\n");
+  }
 
   if (results.some((r) => r.errorCount > 0)) {
     throw new Error(`Linting failed with errors`);
   }
-}
-
-registerWorker(run);
+};

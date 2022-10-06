@@ -2,27 +2,29 @@
 process.env.FORCE_COLOR = "0";
 
 import { LogLevel } from "@lage-run/logger";
-import { NpmLogReporter } from "../src/NpmLogReporter";
+import { LogReporter } from "../src/LogReporter";
 import streams from "memory-streams";
 import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry";
-import { TargetRun } from "@lage-run/scheduler";
+import { TargetRun } from "@lage-run/scheduler-types";
 
 function createTarget(packageName: string, task: string) {
   return {
     id: `${packageName}#${task}`,
     cwd: `/repo/root/packages/${packageName}`,
     dependencies: [],
+    dependents: [],
+    depSpecs: [],
     packageName,
     task,
     label: `${packageName} - ${task}`,
   };
 }
 
-describe("NpmLogReporter", () => {
+describe("LogReporter", () => {
   it("records a target status entry", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.verbose });
+    const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.verbose });
     reporter.logStream = writer;
 
     reporter.log({
@@ -48,7 +50,7 @@ describe("NpmLogReporter", () => {
   it("records a target message entry", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.verbose });
+    const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.verbose });
     reporter.logStream = writer;
 
     reporter.log({
@@ -72,7 +74,7 @@ describe("NpmLogReporter", () => {
   it("groups messages together", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new NpmLogReporter({ grouped: true, logLevel: LogLevel.verbose });
+    const reporter = new LogReporter({ grouped: true, logLevel: LogLevel.verbose });
     reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
@@ -128,7 +130,7 @@ describe("NpmLogReporter", () => {
   it("interweave messages when ungrouped", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.verbose });
+    const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.verbose });
     reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
@@ -181,7 +183,7 @@ describe("NpmLogReporter", () => {
   it("can filter out verbose messages", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new NpmLogReporter({ grouped: false, logLevel: LogLevel.info });
+    const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.info });
     reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");
@@ -228,7 +230,7 @@ describe("NpmLogReporter", () => {
   it("can display a summary of a failure", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new NpmLogReporter({ grouped: true, logLevel: LogLevel.info });
+    const reporter = new LogReporter({ grouped: true, logLevel: LogLevel.info });
     reporter.logStream = writer;
 
     const aBuildTarget = createTarget("a", "build");

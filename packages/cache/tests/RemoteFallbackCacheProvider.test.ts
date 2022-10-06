@@ -39,6 +39,8 @@ describe("RemoteFallbackCacheProvider", () => {
     const target: Target = {
       id: "a",
       cwd: path.join(root, "packages/a"),
+      depSpecs: [],
+      dependents: [],
       dependencies: [],
       task: "command",
       label: "a - command",
@@ -81,6 +83,8 @@ describe("RemoteFallbackCacheProvider", () => {
     const target: Target = {
       id: "a",
       cwd: path.join(root, "packages/a"),
+      depSpecs: [],
+      dependents: [],
       dependencies: [],
       task: "command",
       label: "a - command",
@@ -116,6 +120,8 @@ describe("RemoteFallbackCacheProvider", () => {
     const target: Target = {
       id: "a",
       cwd: path.join(root, "packages/a"),
+      depSpecs: [],
+      dependents: [],
       dependencies: [],
       task: "command",
       label: "a - command",
@@ -158,6 +164,8 @@ describe("RemoteFallbackCacheProvider", () => {
     const target: Target = {
       id: "a",
       cwd: path.join(root, "packages/a"),
+      depSpecs: [],
+      dependents: [],
       dependencies: [],
       task: "command",
       label: "a - command",
@@ -203,6 +211,8 @@ describe("RemoteFallbackCacheProvider", () => {
     const target: Target = {
       id: "a",
       cwd: path.join(root, "packages/a"),
+      depSpecs: [],
+      dependents: [],
       dependencies: [],
       task: "command",
       label: "a - command",
@@ -248,6 +258,8 @@ describe("RemoteFallbackCacheProvider", () => {
     const target: Target = {
       id: "a",
       cwd: path.join(root, "packages/a"),
+      depSpecs: [],
+      dependents: [],
       dependencies: [],
       task: "command",
       label: "a - command",

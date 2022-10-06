@@ -29,7 +29,11 @@ export class BackfillCacheProvider implements CacheProvider {
 
   private getTargetCacheStorageProvider(cwd: string) {
     const { cacheOptions } = this.options;
-    const { cacheStorageConfig, internalCacheFolder, incrementalCaching } = createBackfillCacheConfig(cwd, cacheOptions);
+    const { cacheStorageConfig, internalCacheFolder, incrementalCaching } = createBackfillCacheConfig(
+      cwd,
+      cacheOptions,
+      this.backfillLogger
+    );
 
     return getCacheStorageProvider(
       cacheStorageConfig ?? { provider: "local" },

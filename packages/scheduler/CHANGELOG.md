@@ -1,8 +1,127 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Mon, 19 Sep 2022 05:03:56 GMT and should not be manually modified.
+This log was last generated on Wed, 05 Oct 2022 23:59:29 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.3
+
+Wed, 05 Oct 2022 23:59:29 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v0.1.18
+- Bump @lage-run/scheduler-types to v0.1.6
+
+## 0.4.2
+
+Wed, 05 Oct 2022 20:00:31 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v0.1.17
+- Bump @lage-run/scheduler-types to v0.1.5
+
+## 0.4.1
+
+Tue, 04 Oct 2022 20:18:09 GMT
+
+### Patches
+
+- Adds a nicer warning message for workers that isn't compatible (kchau@microsoft.com)
+
+## 0.4.0
+
+Tue, 04 Oct 2022 03:38:54 GMT
+
+### Minor changes
+
+- Brand new scheduler (ported p-graph over) (kchau@microsoft.com)
+- Bump @lage-run/worker-threads-pool to v0.1.6
+- Bump @lage-run/scheduler-types to v0.1.4
+
+## 0.3.14
+
+Mon, 03 Oct 2022 20:41:25 GMT
+
+### Patches
+
+- Bump @lage-run/worker-threads-pool to v0.1.5
+- Bump @lage-run/scheduler-types to v0.1.3
+
+## 0.3.13
+
+Mon, 03 Oct 2022 19:57:28 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.4.2
+- Bump @lage-run/cache to v0.1.16
+- Bump @lage-run/scheduler-types to v0.1.2
+
+## 0.3.12
+
+Mon, 03 Oct 2022 00:06:54 GMT
+
+### Patches
+
+- factoring out scheduler types to a new package (ken@gizzar.com)
+- Bump @lage-run/scheduler-types to v0.1.1
+
+## 0.3.11
+
+Sat, 01 Oct 2022 16:21:41 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.4.1
+- Bump @lage-run/cache to v0.1.15
+
+## 0.3.10
+
+Sat, 01 Oct 2022 15:29:50 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.4.0
+- Bump @lage-run/cache to v0.1.14
+
+## 0.3.9
+
+Sat, 01 Oct 2022 06:41:42 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.3.5
+- Bump @lage-run/cache to v0.1.13
+
+## 0.3.8
+
+Sat, 01 Oct 2022 05:25:29 GMT
+
+### Patches
+
+- adds a stdio capture inside workerpool (ken@gizzar.com)
+- Bump @lage-run/worker-threads-pool to v0.1.4
+
+## 0.3.7
+
+Fri, 30 Sep 2022 23:00:17 GMT
+
+### Patches
+
+- get rid of "node:" (kchau@microsoft.com)
+- Bump @lage-run/worker-threads-pool to v0.1.3
+
+## 0.3.6
+
+Thu, 29 Sep 2022 21:54:45 GMT
+
+### Patches
+
+- Update dependency workspace-tools to ^0.28.0 (email not defined)
+- Bump @lage-run/target-graph to v0.3.4
+- Bump @lage-run/cache to v0.1.12
 
 ## 0.3.5
 

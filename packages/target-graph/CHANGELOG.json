@@ -2,6 +2,81 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Mon, 03 Oct 2022 19:57:28 GMT",
+      "tag": "@lage-run/target-graph_v0.4.2",
+      "version": "0.4.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "be6ad1619eef73c890d72b1787a9c5bb0b4c7965",
+            "comment": "fixes prioritization so that it runs fast like p-graph did"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 01 Oct 2022 16:21:41 GMT",
+      "tag": "@lage-run/target-graph_v0.4.1",
+      "version": "0.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/target-graph",
+            "commit": "8f3016548ae7d9b05d0356a5a52d7602843e9ab2",
+            "comment": "fixes to get rid of console.logs"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 01 Oct 2022 15:29:50 GMT",
+      "tag": "@lage-run/target-graph_v0.4.0",
+      "version": "0.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/target-graph",
+            "commit": "35b49b227688d2cf1e55b3c54392d6c89f462542",
+            "comment": "detecting cycles"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 01 Oct 2022 06:41:42 GMT",
+      "tag": "@lage-run/target-graph_v0.3.5",
+      "version": "0.3.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/target-graph",
+            "commit": "94d8266336c210f6adcf6dddd893e9efea20afdb",
+            "comment": "adding some prioritize tests"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 29 Sep 2022 21:54:45 GMT",
+      "tag": "@lage-run/target-graph_v0.3.4",
+      "version": "0.3.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "96f43fa9da1e4e8d43e3e1d213b25e344bd35de6",
+            "comment": "Update dependency workspace-tools to ^0.28.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 20 Sep 2022 02:32:14 GMT",
       "tag": "@lage-run/target-graph_v0.3.3",
       "version": "0.3.3",

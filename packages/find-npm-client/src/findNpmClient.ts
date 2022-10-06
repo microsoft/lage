@@ -12,8 +12,11 @@ export function findNpmClient(npmClient: string) {
 }
 
 function findInPath(target: string) {
-  const envPath = process.env.PATH ?? "";
-  const pathExt = process.env.PATHEXT ?? "";
+  const pathEnv = Object.keys(process.env).find((key) => key.toLowerCase() === "path") ?? "PATH";
+  const pathExtEnv = Object.keys(process.env).find((key) => key.toLowerCase() === "pathext") ?? "PATHEXT";
+
+  const envPath = process.env[pathEnv] ?? "";
+  const pathExt = process.env[pathExtEnv] ?? "";
 
   for (const search of envPath.split(path.delimiter)) {
     const found = pathExt

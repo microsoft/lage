@@ -1,8 +1,65 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Mon, 19 Sep 2022 05:03:56 GMT and should not be manually modified.
+This log was last generated on Wed, 05 Oct 2022 23:59:29 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.18
+
+Wed, 05 Oct 2022 23:59:29 GMT
+
+### Patches
+
+- just a fix to which envrionment wins (kchau@microsoft.com)
+
+## 0.1.17
+
+Wed, 05 Oct 2022 20:00:31 GMT
+
+### Patches
+
+- fixes the backfill config for remote cache (kchau@microsoft.com)
+
+## 0.1.16
+
+Mon, 03 Oct 2022 19:57:28 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.4.2
+
+## 0.1.15
+
+Sat, 01 Oct 2022 16:21:41 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.4.1
+
+## 0.1.14
+
+Sat, 01 Oct 2022 15:29:50 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.4.0
+
+## 0.1.13
+
+Sat, 01 Oct 2022 06:41:42 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.3.5
+
+## 0.1.12
+
+Thu, 29 Sep 2022 21:54:45 GMT
+
+### Patches
+
+- Update dependency workspace-tools to ^0.28.0 (email not defined)
+- Bump @lage-run/target-graph to v0.3.4
 
 ## 0.1.11
 

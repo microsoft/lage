@@ -1,8 +1,40 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Sat, 17 Sep 2022 20:20:49 GMT and should not be manually modified.
+This log was last generated on Tue, 04 Oct 2022 03:38:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.6
+
+Tue, 04 Oct 2022 03:38:54 GMT
+
+### Patches
+
+- Make doubly sure pool is shutdown before showing a summary (kchau@microsoft.com)
+
+## 0.1.5
+
+Mon, 03 Oct 2022 20:41:25 GMT
+
+### Patches
+
+- adds support for abort signal (kchau@microsoft.com)
+
+## 0.1.4
+
+Sat, 01 Oct 2022 05:25:29 GMT
+
+### Patches
+
+- adds a stdio cpature inside threadpool (ken@gizzar.com)
+
+## 0.1.3
+
+Fri, 30 Sep 2022 23:00:17 GMT
+
+### Patches
+
+- get rid of "node:" (kchau@microsoft.com)
 
 ## 0.1.2
 

@@ -5,19 +5,30 @@ import path from "path";
 import AbortController, { AbortSignal } from "abort-controller";
 import { CacheProvider, TargetHasher } from "@lage-run/cache";
 import { Logger } from "@lage-run/logger";
-import { TargetRunner } from "../src/types/TargetRunner";
-import { rejects } from "assert";
-import { createCipheriv } from "crypto";
+import { TargetRunner } from "@lage-run/scheduler-types";
+import { Pool } from "@lage-run/worker-threads-pool";
 
 function createTarget(packageName: string): Target {
   return {
     cwd: path.resolve(__dirname, "fixtures/package-a"),
     dependencies: [],
+    dependents: [],
+    depSpecs: [],
     label: "",
     id: `${packageName}#build`,
     task: "build",
     packageName,
   };
+}
+
+class InProcPool implements Pool {
+  constructor(private runner: TargetRunner) {}
+  exec({ target }: { target: Target }, _setup, _teardown, abortSignal?: AbortSignal) {
+    return this.runner.run(target, abortSignal);
+  }
+  close() {
+    return Promise.resolve();
+  }
 }
 
 describe("WrappedTarget", () => {
@@ -37,6 +48,12 @@ describe("WrappedTarget", () => {
 
     const logger = new Logger();
 
+    const runner = {
+      async run(target: Target, abortSignal?: AbortSignal) {
+        // nothing
+      },
+    } as TargetRunner;
+
     const wrappedTarget = new WrappedTarget({
       abortController: new AbortController(),
       cacheProvider,
@@ -47,17 +64,12 @@ describe("WrappedTarget", () => {
       shouldCache: true,
       shouldResetCache: false,
       target: createTarget("a"),
+      pool: new InProcPool(runner),
     });
-
-    const runner = {
-      async run(target: Target, abortSignal?: AbortSignal) {
-        // nothing
-      },
-    } as TargetRunner;
 
     expect(wrappedTarget.status).toBe("pending");
 
-    await wrappedTarget.run(runner);
+    await wrappedTarget.run();
 
     expect(wrappedTarget.status).toBe("success");
   });
@@ -81,6 +93,12 @@ describe("WrappedTarget", () => {
     const fakePackages = ["a", "b", "c", "d", "e", "f", "g", "h"];
     const wrappedTargets: WrappedTarget[] = [];
 
+    const runner = {
+      async run(target: Target, abortSignal?: AbortSignal) {
+        // nothing
+      },
+    } as TargetRunner;
+
     for (const packageName of fakePackages) {
       const wrappedTarget = new WrappedTarget({
         abortController: new AbortController(),
@@ -92,18 +110,13 @@ describe("WrappedTarget", () => {
         shouldCache: true,
         shouldResetCache: false,
         target: createTarget(packageName),
+        pool: new InProcPool(runner),
       });
 
       wrappedTargets.push(wrappedTarget);
     }
 
-    const runner = {
-      async run(target: Target, abortSignal?: AbortSignal) {
-        // nothing
-      },
-    } as TargetRunner;
-
-    const runPromises = wrappedTargets.map((wrappedTarget) => wrappedTarget.run(runner));
+    const runPromises = wrappedTargets.map((wrappedTarget) => wrappedTarget.run());
 
     await Promise.all(runPromises);
 
@@ -133,6 +146,15 @@ describe("WrappedTarget", () => {
     const fakePackages = ["a", "b", "c", "d", "e", "f", "g", "h"];
     const wrappedTargets: WrappedTarget[] = [];
 
+    const runner = {
+      async run(target: Target, abortSignal?: AbortSignal) {
+        // nothing
+        if (target.packageName === "a") {
+          throw oops;
+        }
+      },
+    } as TargetRunner;
+
     for (const packageName of fakePackages) {
       const wrappedTarget = new WrappedTarget({
         abortController: new AbortController(),
@@ -144,6 +166,7 @@ describe("WrappedTarget", () => {
         shouldCache: true,
         shouldResetCache: false,
         target: createTarget(packageName),
+        pool: new InProcPool(runner),
       });
 
       wrappedTargets.push(wrappedTarget);
@@ -151,16 +174,7 @@ describe("WrappedTarget", () => {
 
     const oops = new Error("oops");
 
-    const runner = {
-      async run(target: Target, abortSignal?: AbortSignal) {
-        // nothing
-        if (target.packageName === "a") {
-          throw oops;
-        }
-      },
-    } as TargetRunner;
-
-    const runPromises = wrappedTargets.map((wrappedTarget) => wrappedTarget.run(runner));
+    const runPromises = wrappedTargets.map((wrappedTarget) => wrappedTarget.run());
 
     await expect(Promise.all(runPromises)).rejects.toThrow(oops);
 
@@ -190,22 +204,6 @@ describe("WrappedTarget", () => {
     const fakePackages = ["a", "b", "c", "d", "e", "f", "g", "h"];
     const wrappedTargets: WrappedTarget[] = [];
     const abortController = new AbortController();
-    for (const packageName of fakePackages) {
-      const wrappedTarget = new WrappedTarget({
-        abortController,
-        cacheProvider,
-        continueOnError,
-        hasher,
-        logger,
-        root: process.cwd(),
-        shouldCache: true,
-        shouldResetCache: false,
-        target: createTarget(packageName),
-      });
-
-      wrappedTargets.push(wrappedTarget);
-    }
-
     const oops = new Error("oops");
 
     const runner = {
@@ -219,7 +217,7 @@ describe("WrappedTarget", () => {
             resolve();
           }, 50000);
 
-          abortSignal?.addEventListener("abort", () => {
+          abortSignal!.addEventListener("abort", () => {
             timeout?.unref();
             reject(new Error("aborted"));
           });
@@ -227,11 +225,28 @@ describe("WrappedTarget", () => {
       },
     } as TargetRunner;
 
-    const runPromises = wrappedTargets.map((wrappedTarget) => wrappedTarget.run(runner));
+    for (const packageName of fakePackages) {
+      const wrappedTarget = new WrappedTarget({
+        abortController,
+        cacheProvider,
+        continueOnError,
+        hasher,
+        logger,
+        root: process.cwd(),
+        shouldCache: true,
+        shouldResetCache: false,
+        target: createTarget(packageName),
+        pool: new InProcPool(runner),
+      });
+
+      wrappedTargets.push(wrappedTarget);
+    }
+
+    const runPromises = wrappedTargets.map((wrappedTarget) => wrappedTarget.run());
 
     await expect(Promise.all(runPromises)).rejects.toBe(oops);
 
-    expect(wrappedTargets.some((t) => t.status === "aborted")).toBeTruthy();
+    expect(abortController.signal.aborted).toBeTruthy();
   });
 
   it("should skip the work if cache is hit", async () => {
@@ -252,6 +267,12 @@ describe("WrappedTarget", () => {
 
     const logger = new Logger();
 
+    const runner = {
+      async run(target: Target, abortSignal?: AbortSignal) {
+        // nothing
+      },
+    } as TargetRunner;
+
     const wrappedTarget = new WrappedTarget({
       abortController: new AbortController(),
       cacheProvider,
@@ -262,17 +283,12 @@ describe("WrappedTarget", () => {
       shouldCache: true,
       shouldResetCache: false,
       target: { ...createTarget("a"), cache: true },
+      pool: new InProcPool(runner),
     });
-
-    const runner = {
-      async run(target: Target, abortSignal?: AbortSignal) {
-        // nothing
-      },
-    } as TargetRunner;
 
     expect(wrappedTarget.status).toBe("pending");
 
-    await wrappedTarget.run(runner);
+    await wrappedTarget.run();
 
     expect(wrappedTarget.status).toBe("skipped");
   });

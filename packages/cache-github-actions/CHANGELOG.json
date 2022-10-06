@@ -1,0 +1,20 @@
+{
+  "name": "@lage-run/cache-github-actions",
+  "entries": [
+    {
+      "date": "Tue, 04 Oct 2022 15:57:20 GMT",
+      "tag": "@lage-run/cache-github-actions_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "77aa5d1300e8cb708f8a3ed4b82010a2affc76a7",
+            "comment": "A new custom backfill cache provider for github actions"
+          }
+        ]
+      }
+    }
+  ]
+}

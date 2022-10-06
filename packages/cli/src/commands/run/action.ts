@@ -1,17 +1,17 @@
 import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
 import { Command } from "commander";
 import { createProfileReporter } from "./createProfileReporter";
-import { findNpmClient } from "../../workspace/findNpmClient";
+import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
+import { getMaxWorkersPerTask } from "../../config/getMaxWorkersPerTask";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { initializeReporters } from "../../reporters/initialize";
+import { initializeReporters } from "@lage-run/reporters";
 import { isRunningFromCI } from "../isRunningFromCI";
-import { NpmScriptRunner, SimpleScheduler, WorkerRunner, TargetRunnerPicker } from "@lage-run/scheduler";
+import { SimpleScheduler } from "@lage-run/scheduler";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
 import createLogger from "@lage-run/logger";
-import type { ReporterInitOptions } from "../../types/LoggerOptions";
-import type { TargetRunner } from "@lage-run/scheduler";
+import type { ReporterInitOptions } from "@lage-run/reporters";
 
 function filterArgsForTasks(args: string[]) {
   const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
@@ -32,13 +32,13 @@ interface RunOptions extends ReporterInitOptions {
   continue: boolean;
   cache: boolean;
   resetCache: boolean;
-  nodeargs: string;
+  nodeArg: string;
   ignore: string[];
 }
 
 export async function runAction(options: RunOptions, command: Command) {
   const cwd = process.cwd();
-  const config = getConfig(cwd);
+  const config = await getConfig(cwd);
 
   // Configure logger
   const logger = createLogger();
@@ -85,8 +85,10 @@ export async function runAction(options: RunOptions, command: Command) {
 
   const targetGraph = builder.buildTargetGraph(tasks, packages);
 
-  // Create Cache Provider
+  const hasRemoteCacheConfig =
+    !!config.cacheOptions?.cacheStorageConfig || !!process.env.BACKFILL_CACHE_PROVIDER || !!process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
 
+  // Create Cache Provider
   const cacheProvider = new RemoteFallbackCacheProvider({
     root,
     logger,
@@ -100,9 +102,7 @@ export async function runAction(options: RunOptions, command: Command) {
               ...(config.cacheOptions.internalCacheFolder && { internalCacheFolder: config.cacheOptions.internalCacheFolder }),
             },
           }),
-    remoteCacheProvider: config.cacheOptions?.cacheStorageConfig
-      ? new BackfillCacheProvider({ root, cacheOptions: config.cacheOptions })
-      : undefined,
+    remoteCacheProvider: hasRemoteCacheConfig ? new BackfillCacheProvider({ root, cacheOptions: config.cacheOptions }) : undefined,
     writeRemoteCache:
       config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI,
   });
@@ -113,30 +113,6 @@ export async function runAction(options: RunOptions, command: Command) {
     cacheKey: config.cacheOptions.cacheKey,
   });
 
-  // Run Tasks with Scheduler + NpmScriptRunner
-  const runners: Record<string, TargetRunner> = {
-    npmScript: new NpmScriptRunner({
-      logger,
-      nodeOptions: options.nodeargs,
-      taskArgs,
-      npmCmd: findNpmClient(config.npmClient),
-    }),
-    worker: new WorkerRunner({
-      logger,
-      workerTargetConfigs: Object.entries(config.pipeline).reduce((workerTargetConfigs, [id, def]) => {
-        if (!Array.isArray(def) && def.type === "worker") {
-          workerTargetConfigs[id] = def;
-        }
-
-        return workerTargetConfigs;
-      }, {}),
-    }),
-  };
-
-  const runnerPicker = new TargetRunnerPicker({
-    runners,
-  });
-
   const scheduler = new SimpleScheduler({
     logger,
     concurrency: options.concurrency,
@@ -145,22 +121,31 @@ export async function runAction(options: RunOptions, command: Command) {
     continueOnError: options.continue,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    runnerPicker,
+    maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}),
+    runners: {
+      npmScript: {
+        script: require.resolve("./runners/NpmScriptRunner"),
+        options: {
+          nodeArg: options.nodeArg,
+          taskArgs,
+          npmCmd: findNpmClient(config.npmClient),
+        },
+      },
+      worker: {
+        script: require.resolve("./runners/WorkerRunner"),
+        options: {},
+      },
+      ...config.runners,
+    },
   });
 
   const summary = await scheduler.run(root, targetGraph);
 
-  for (const runner of Object.values(runners)) {
-    if (runner.cleanup) {
-      await runner.cleanup();
-    }
+  if (summary.results !== "success") {
+    process.exitCode = 1;
   }
 
   for (const reporter of logger.reporters) {
     reporter.summarize(summary);
-  }
-
-  if (summary.results !== "success") {
-    process.exitCode = 1;
   }
 }

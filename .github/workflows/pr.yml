@@ -38,8 +38,8 @@ jobs:
 
       - name: Build, Test (Windows)
         if: ${{ startsWith(matrix.os, 'windows') }}
-        run: yarn lage build test --scope=!@lage-run/lage
+        run: yarn lage build test --scope=!@lage-run/lage --concurrency 2
 
       - name: Build, Test, Lint (Linux)
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
-        run: yarn lage build test lint
+        run: yarn lage build test lint --concurrency 2

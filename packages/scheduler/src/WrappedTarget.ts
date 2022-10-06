@@ -1,15 +1,19 @@
+import { bufferTransform } from "./bufferTransform";
+import { getLageOutputCacheLocation } from "./getLageOutputCacheLocation";
 import { hrToSeconds } from "./formatDuration";
-import type { Logger } from "@lage-run/logger";
 import { LogLevel } from "@lage-run/logger";
-import type { TargetHasher } from "@lage-run/cache";
+
+import fs from "fs";
+import path from "path";
+import { mkdir, writeFile } from "fs/promises";
+
 import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
+import type { Pool } from "@lage-run/worker-threads-pool";
+import type { TargetHasher } from "@lage-run/cache";
+import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
-import type { TargetRun } from "./types/TargetRun";
-import type { TargetRunner } from "./types/TargetRunner";
-import type { TargetStatus } from "./types/TargetStatus";
-import { createCachedOutputTransform, getLageOutputCacheLocation } from "./createCachedOutputTransform";
-import fs from "fs";
+import type { Logger } from "@lage-run/logger";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -21,6 +25,7 @@ export interface WrappedTargetOptions {
   shouldResetCache: boolean;
   continueOnError: boolean;
   abortController: AbortController;
+  pool: Pool;
 }
 
 /**
@@ -72,7 +77,7 @@ export class WrappedTarget implements TargetRun {
       duration: hrToSeconds(this.duration),
     });
 
-    if (!this.options.continueOnError) {
+    if (!this.options.continueOnError && this.options.abortController) {
       this.options.abortController.abort();
     }
   }
@@ -117,8 +122,8 @@ export class WrappedTarget implements TargetRun {
     await cacheProvider.put(hash, target);
   }
 
-  async run(runner: TargetRunner) {
-    const { target, logger, shouldCache, abortController } = this.options;
+  async run() {
+    const { target, logger, shouldCache, abortController, pool } = this.options;
 
     this.onStart();
     const abortSignal = abortController.signal;
@@ -157,28 +162,51 @@ export class WrappedTarget implements TargetRun {
         return;
       }
 
-      /**
-       * TargetRunner should run() a target. The promise resolves if successful, or rejects otherwise (aborted or failed).
-       */
+      let releaseStdout: any;
+      let releaseStderr: any;
 
-      // TODO: instead of passing a hash, pass in the stderr/stdout transformer streams
-      await runner.run(
-        target,
-        abortSignal,
-        hash
-          ? {
-              stdout: createCachedOutputTransform(target, hash),
-              stderr: createCachedOutputTransform(target, hash),
-            }
-          : undefined
+      const bufferStdout = bufferTransform();
+      const bufferStderr = bufferTransform();
+
+      await pool.exec(
+        { target },
+        (_worker, stdout, stderr) => {
+          stdout.pipe(bufferStdout.transform);
+          stderr.pipe(bufferStderr.transform);
+
+          const releaseStdoutStream = logger.stream(LogLevel.verbose, stdout, { target });
+
+          releaseStdout = () => {
+            releaseStdoutStream();
+            stdout.unpipe(bufferStdout.transform);
+          };
+
+          const releaseStderrStream = logger.stream(LogLevel.verbose, stderr, { target });
+
+          releaseStderr = () => {
+            releaseStderrStream();
+            stderr.unpipe(bufferStderr.transform);
+          };
+        },
+        () => {
+          releaseStdout();
+          releaseStderr();
+        },
+        abortSignal
       );
 
-      if (cacheEnabled) {
+      if (cacheEnabled && hash) {
         await this.saveCache(hash);
+        const outputLocation = getLageOutputCacheLocation(this.target, hash);
+        const outputPath = path.dirname(outputLocation);
+        await mkdir(outputPath, { recursive: true });
+        await writeFile(outputLocation, bufferStdout.buffer + bufferStderr.buffer);
       }
 
       this.onComplete();
     } catch (e) {
+      logger.error(String(e), { target });
+
       if (abortSignal.aborted) {
         this.onAbort();
       } else {

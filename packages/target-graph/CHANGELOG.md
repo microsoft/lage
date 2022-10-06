@@ -1,8 +1,48 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Mon, 19 Sep 2022 05:03:56 GMT and should not be manually modified.
+This log was last generated on Mon, 03 Oct 2022 19:57:28 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.2
+
+Mon, 03 Oct 2022 19:57:28 GMT
+
+### Patches
+
+- fixes prioritization so that it runs fast like p-graph did (kchau@microsoft.com)
+
+## 0.4.1
+
+Sat, 01 Oct 2022 16:21:41 GMT
+
+### Patches
+
+- fixes to get rid of console.logs (ken@gizzar.com)
+
+## 0.4.0
+
+Sat, 01 Oct 2022 15:29:50 GMT
+
+### Minor changes
+
+- detecting cycles (ken@gizzar.com)
+
+## 0.3.5
+
+Sat, 01 Oct 2022 06:41:42 GMT
+
+### Patches
+
+- adding some prioritize tests (ken@gizzar.com)
+
+## 0.3.4
+
+Thu, 29 Sep 2022 21:54:45 GMT
+
+### Patches
+
+- Update dependency workspace-tools to ^0.28.0 (email not defined)
 
 ## 0.3.3
 

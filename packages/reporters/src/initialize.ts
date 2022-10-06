@@ -1,7 +1,13 @@
-import type { Reporter } from "@lage-run/logger";
-import { Logger, LogLevel } from "@lage-run/logger";
-import { ReporterInitOptions } from "../types/LoggerOptions";
+import { LogLevel } from "@lage-run/logger";
 import { createReporter } from "./createReporter";
+import type { Logger } from "@lage-run/logger";
+
+export interface ReporterInitOptions {
+  reporter: string[] | string;
+  verbose: boolean;
+  grouped: boolean;
+  logLevel: keyof typeof LogLevel;
+}
 
 export function initializeReporters(logger: Logger, options: ReporterInitOptions) {
   const { reporter, verbose, grouped, logLevel } = options;
