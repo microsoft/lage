@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixing the bundle for lage so it uses the right uuid impl",
-  "packageName": "@lage-run/lage",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

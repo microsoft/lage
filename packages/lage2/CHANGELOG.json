@@ -2,6 +2,21 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Thu, 06 Oct 2022 17:26:31 GMT",
+      "tag": "@lage-run/lage_v2.2.11",
+      "version": "2.2.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/lage",
+            "commit": "43b36b8bd613a3be629a7d59501ae3c0930167bf",
+            "comment": "fixing the bundle for lage so it uses the right uuid impl"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 04 Oct 2022 16:38:35 GMT",
       "tag": "@lage-run/lage_v2.2.2",
       "version": "2.2.2",

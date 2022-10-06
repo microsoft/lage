@@ -1,8 +1,16 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Tue, 04 Oct 2022 16:38:35 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Oct 2022 17:26:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.2.11
+
+Thu, 06 Oct 2022 17:26:31 GMT
+
+### Patches
+
+- fixing the bundle for lage so it uses the right uuid impl (ken@gizzar.com)
 
 ## 2.2.2
 
