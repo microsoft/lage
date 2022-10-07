@@ -24,7 +24,8 @@
     "@lage-run/cache": "^0.1.19",
     "@lage-run/reporters": "^0.2.21",
     "commander": "^9.4.0",
-    "workspace-tools": "^0.28.0"
+    "workspace-tools": "^0.28.0",
+    "watchpack": "^2.4.0"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "*"

@@ -5,21 +5,19 @@ import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig } from "../../config/getConfig";
 import { getFilteredPackages } from "../../filter/getFilteredPackages";
 import { getMaxWorkersPerTask } from "../../config/getMaxWorkersPerTask";
-import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { getPackageInfos, getWorkspaceRoot, PackageInfos } from "workspace-tools";
 import { initializeReporters } from "@lage-run/reporters";
 import { isRunningFromCI } from "../isRunningFromCI";
 import { SimpleScheduler } from "@lage-run/scheduler";
-import { TargetGraphBuilder } from "@lage-run/target-graph";
-import createLogger from "@lage-run/logger";
+import { TargetGraph, TargetGraphBuilder } from "@lage-run/target-graph";
+import createLogger, { Logger, Reporter } from "@lage-run/logger";
 import type { ReporterInitOptions } from "@lage-run/reporters";
-
-function filterArgsForTasks(args: string[]) {
-  const optionsPosition = args.findIndex((arg) => arg.startsWith("-"));
-  return {
-    tasks: args.slice(0, optionsPosition === -1 ? undefined : optionsPosition),
-    taskArgs: optionsPosition === -1 ? [] : args.slice(optionsPosition),
-  };
-}
+import { filterArgsForTasks } from "./filterArgsForTasks";
+import { createTargetGraph } from "./createTargetGraph";
+import { createCache } from "./createCacheProvider";
+import { SchedulerRunSummary, TargetScheduler } from "@lage-run/scheduler-types";
+import Watchpack from "watchpack";
+import path from "path";
 
 interface RunOptions extends ReporterInitOptions {
   concurrency: number;
@@ -34,6 +32,7 @@ interface RunOptions extends ReporterInitOptions {
   resetCache: boolean;
   nodeArg: string;
   ignore: string[];
+  watch: boolean;
 }
 
 export async function runAction(options: RunOptions, command: Command) {
@@ -54,64 +53,28 @@ export async function runAction(options: RunOptions, command: Command) {
   const root = getWorkspaceRoot(process.cwd())!;
   const packageInfos = getPackageInfos(root);
 
-  const builder = new TargetGraphBuilder(root, packageInfos);
-
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
-  const packages = getFilteredPackages({
-    root,
+  const targetGraph = createTargetGraph({
     logger,
-    packageInfos,
-    includeDependencies: options.dependencies,
-    includeDependents: options.dependents,
-    since: options.since,
-    scope: options.scope,
+    root,
+    dependencies: options.dependencies,
+    dependents: options.dependents,
+    ignore: options.ignore.concat(config.ignore),
+    pipeline: config.pipeline,
     repoWideChanges: config.repoWideChanges,
-    sinceIgnoreGlobs: options.ignore.concat(config.ignore),
+    scope: options.scope,
+    since: options.since,
+    outputs: config.cacheOptions.outputGlob,
+    tasks,
+    packageInfos,
   });
 
-  for (const [id, definition] of Object.entries(config.pipeline)) {
-    if (Array.isArray(definition)) {
-      builder.addTargetConfig(id, {
-        cache: true,
-        dependsOn: definition,
-        options: {},
-        outputs: config.cacheOptions.outputGlob,
-      });
-    } else {
-      builder.addTargetConfig(id, definition);
-    }
-  }
-
-  const targetGraph = builder.buildTargetGraph(tasks, packages);
-
-  const hasRemoteCacheConfig =
-    !!config.cacheOptions?.cacheStorageConfig || !!process.env.BACKFILL_CACHE_PROVIDER || !!process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
-
-  // Create Cache Provider
-  const cacheProvider = new RemoteFallbackCacheProvider({
+  const { cacheProvider, hasher } = createCache({
     root,
     logger,
-    localCacheProvider:
-      options.skipLocalCache === true
-        ? undefined
-        : new BackfillCacheProvider({
-            logger,
-            root,
-            cacheOptions: {
-              outputGlob: config.cacheOptions.outputGlob,
-              ...(config.cacheOptions.internalCacheFolder && { internalCacheFolder: config.cacheOptions.internalCacheFolder }),
-            },
-          }),
-    remoteCacheProvider: hasRemoteCacheConfig ? new BackfillCacheProvider({ logger, root, cacheOptions: config.cacheOptions }) : undefined,
-    writeRemoteCache:
-      config.cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI,
-  });
-
-  const hasher = new TargetHasher({
-    root,
-    environmentGlob: config.cacheOptions.environmentGlob,
-    cacheKey: config.cacheOptions.cacheKey,
+    cacheOptions: config.cacheOptions,
+    skipLocalCache: options.skipLocalCache,
   });
 
   const scheduler = new SimpleScheduler({
@@ -140,13 +103,77 @@ export async function runAction(options: RunOptions, command: Command) {
     },
   });
 
-  const summary = await scheduler.run(root, targetGraph);
+  if (options.watch) {
+    launchWatch({ logger, scheduler, root, targetGraph, packageInfos });
+  } else {
+    await launchRun({ logger, scheduler, root, targetGraph });
+  }
+}
 
+function launchWatch(options: {
+  logger: Logger;
+  scheduler: TargetScheduler;
+  root: string;
+  targetGraph: TargetGraph;
+  packageInfos: PackageInfos;
+}) {
+  const { logger, scheduler, root, targetGraph, packageInfos } = options;
+
+  logger.info("running scheduler in watch mode");
+
+  // scheduler.run(root, targetGraph);
+
+  var watchpack = new Watchpack({
+    // options:
+    aggregateTimeout: 1000,
+    // fire "aggregated" event when after a change for 1000ms no additional change occurred
+    // aggregated defaults to undefined, which doesn't fire an "aggregated" event
+
+    // poll: true,
+    // poll: true - use polling with the default interval
+    // poll: 10000 - use polling with an interval of 10s
+    // poll defaults to undefined, which prefer native watching methods
+    // Note: enable polling when watching on a network path
+    // When WATCHPACK_POLLING environment variable is set it will override this option
+
+    followSymlinks: true,
+    // true: follows symlinks and watches symlinks and real files
+    //   (This makes sense when symlinks has not been resolved yet, comes with a performance hit)
+    // false (default): watches only specified item they may be real files or symlinks
+    //   (This makes sense when symlinks has already been resolved)
+
+    ignored: ["**/.git", "**/node_modules"],
+    // ignored: "string" - a glob pattern for files or folders that should not be watched
+    // ignored: ["string", "string"] - multiple glob patterns that should be ignored
+    // ignored: /regexp/ - a regular expression for files or folders that should not be watched
+    // ignored: (entry) => boolean - an arbitrary function which must return truthy to ignore an entry
+    // For all cases expect the arbitrary function the path will have path separator normalized to '/'.
+    // All subdirectories are ignored too
+  });
+
+  const directories = Object.values(packageInfos).map((info) => path.join(root, path.dirname(info.packageJsonPath)));
+  watchpack.watch({
+    startTime: Date.now() - 10000,
+    files: directories.map((d) => path.join(d, "src/**/*")),
+  });
+
+  watchpack.on("aggregated", (changes, details) => {
+    logger.info("change detected " + JSON.stringify(changes) + " " + JSON.stringify(details));
+  });
+}
+
+async function launchRun(options: { logger: Logger; scheduler: TargetScheduler; root: string; targetGraph: TargetGraph }) {
+  const { logger, scheduler, root, targetGraph } = options;
+  const summary = await scheduler.run(root, targetGraph);
+  displaySummaryAndExit(summary, logger.reporters);
+}
+
+function displaySummaryAndExit(summary: SchedulerRunSummary, reporters: Reporter[]) {
   if (summary.results !== "success") {
     process.exitCode = 1;
   }
 
-  for (const reporter of logger.reporters) {
+  for (const reporter of reporters) {
     reporter.summarize(summary);
   }
 }
