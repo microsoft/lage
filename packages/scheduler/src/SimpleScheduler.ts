@@ -16,8 +16,8 @@ export interface SimpleSchedulerOptions {
   logger: Logger;
   concurrency: number;
   continueOnError: boolean;
-  cacheProvider: CacheProvider;
-  hasher: TargetHasher;
+  cacheProvider?: CacheProvider;
+  hasher?: TargetHasher;
   shouldCache: boolean;
   shouldResetCache: boolean;
   runners: TargetRunnerPickerOptions;
@@ -44,6 +44,7 @@ export class SimpleScheduler implements TargetScheduler {
   abortSignal: AbortSignal = this.abortController.signal;
   dependencies: [string, string][] = [];
   pool: Pool;
+  runPromise = Promise.resolve() as Promise<any>;
 
   constructor(private options: SimpleSchedulerOptions) {
     this.pool =
@@ -79,6 +80,7 @@ export class SimpleScheduler implements TargetScheduler {
 
     const { dependencies, targets } = targetGraph;
     this.dependencies = dependencies;
+
     this.targetsByPriority = sortTargetsByPriority([...targets.values()]);
     for (const target of targets.values()) {
       const targetRun = new WrappedTarget({
@@ -125,8 +127,6 @@ export class SimpleScheduler implements TargetScheduler {
       }
     }
 
-    await this.pool.close();
-
     return {
       targetRunByStatus,
       targetRuns: this.targetRuns,
@@ -141,7 +141,11 @@ export class SimpleScheduler implements TargetScheduler {
    * Used by consumers of the scheduler to notify that the inputs to the target has changed
    * @param targetId
    */
-  onTargetChange(targetId: string) {
+  async onTargetChange(targetId: string) {
+    this.abortController.abort();
+
+    await this.runPromise;
+
     const queue = [targetId];
     while (queue.length > 0) {
       const current = queue.shift()!;
@@ -156,7 +160,13 @@ export class SimpleScheduler implements TargetScheduler {
       }
     }
 
-    this.scheduleReadyTargets();
+    this.abortController = new AbortController();
+    this.abortSignal = this.abortController.signal;
+    for (const targetRun of this.targetRuns.values()) {
+      targetRun.abortController = this.abortController;
+    }
+
+    this.runPromise = this.scheduleReadyTargets();
   }
 
   getReadyTargets() {
@@ -209,7 +219,7 @@ export class SimpleScheduler implements TargetScheduler {
 
   async scheduleReadyTargets() {
     if (this.isAllDone() || this.abortSignal.aborted) {
-      return;
+      return Promise.resolve();
     }
 
     const promises: Promise<any>[] = [];
@@ -234,7 +244,12 @@ export class SimpleScheduler implements TargetScheduler {
       );
     }
 
-    return await Promise.all(promises);
+    this.runPromise = Promise.all(promises);
+    return this.runPromise;
+  }
+
+  async cleanup() {
+    await this.pool.close();
   }
 
   /**

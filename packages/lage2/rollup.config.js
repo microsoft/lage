@@ -32,6 +32,7 @@ export default [
       json(),
       terser(),
     ],
+    external: ["fsevents"]
   },
   {
     input: "./index.js",

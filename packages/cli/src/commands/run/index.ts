@@ -1,13 +1,13 @@
 import { Command, Option } from "commander";
 import os from "os";
-import { runAction } from "./action";
+import { action } from "./action";
 import { addLoggerOptions } from "../addLoggerOptions";
 import { isRunningFromCI } from "../isRunningFromCI";
 
 const runCommand = new Command("run");
 
 addLoggerOptions(runCommand)
-  .action(runAction)
+  .action(action)
   .option(
     "-c, --concurrency <n>",
     "concurrency",
@@ -43,7 +43,7 @@ addLoggerOptions(runCommand)
     'arguments to be passed to node (e.g. --nodearg="--max_old_space_size=1234 --heap-prof" - set via "NODE_OPTIONS" environment variable'
   )
   .option("--continue", "continues the run even on error")
-
+  .option("--unstable-watch", "runs in watch mode")
   .allowUnknownOption(true)
   .addHelpCommand("[run] command1 [command2...commandN] [options]", "run commands")
   .addHelpText(
