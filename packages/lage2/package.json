@@ -9,6 +9,9 @@
     "prebuild": "node scripts/prebuild.js",
     "build": "rollup --config ./rollup.config.js"
   },
+  "dependencies": {
+    "fsevents": "^2.0.0"
+  },
   "devDependencies": {
     "@lage-run/cli": "*",
     "@lage-run/scheduler": "*",
