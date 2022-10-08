@@ -19,8 +19,8 @@ export interface WrappedTargetOptions {
   root: string;
   target: Target;
   logger: Logger;
-  cacheProvider: CacheProvider;
-  hasher: TargetHasher;
+  cacheProvider?: CacheProvider;
+  hasher?: TargetHasher;
   shouldCache: boolean;
   shouldResetCache: boolean;
   continueOnError: boolean;
@@ -40,6 +40,14 @@ export class WrappedTarget implements TargetRun {
   duration: [number, number] = [0, 0];
   target: Target;
   status: TargetStatus;
+
+  get abortController() {
+    return this.options.abortController;
+  }
+
+  set abortController(abortController: AbortController) {
+    this.options.abortController = abortController;
+  }
 
   constructor(public options: WrappedTargetOptions) {
     this.status = "pending";
@@ -100,23 +108,25 @@ export class WrappedTarget implements TargetRun {
 
     const { target, shouldCache, shouldResetCache } = this.options;
 
-    if (shouldCache && target.cache) {
-      hash = await hasher.hash(target);
+    if (!shouldCache || !target.cache || !cacheProvider || !hasher) {
+      return { hash, cacheHit };
+    }
 
-      if (hash && !shouldResetCache) {
-        cacheHit = await cacheProvider.fetch(hash, target);
-      }
+    hash = await hasher.hash(target);
+
+    if (hash && !shouldResetCache) {
+      cacheHit = await cacheProvider.fetch(hash, target);
     }
 
     return { hash, cacheHit };
   }
 
   async saveCache(hash: string | null) {
-    if (!hash) {
+    const { logger, target, cacheProvider } = this.options;
+    if (!hash || !cacheProvider) {
       return;
     }
 
-    const { logger, target, cacheProvider } = this.options;
     logger.verbose(`hash put ${hash}`, { target });
 
     await cacheProvider.put(hash, target);

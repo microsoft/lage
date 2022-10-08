@@ -28,6 +28,7 @@ export function createCache(options: CreateCacheOptions) {
             cacheOptions: {
               outputGlob: cacheOptions?.outputGlob,
               ...(cacheOptions?.internalCacheFolder && { internalCacheFolder: cacheOptions.internalCacheFolder }),
+              ...(cacheOptions?.incrementalCaching && { incrementalCaching: cacheOptions.incrementalCaching }),
             },
           }),
     remoteCacheProvider: hasRemoteCacheConfig ? new BackfillCacheProvider({ logger, root, cacheOptions: cacheOptions ?? {} }) : undefined,

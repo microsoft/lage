@@ -16,8 +16,8 @@ export interface SimpleSchedulerOptions {
   logger: Logger;
   concurrency: number;
   continueOnError: boolean;
-  cacheProvider: CacheProvider;
-  hasher: TargetHasher;
+  cacheProvider?: CacheProvider;
+  hasher?: TargetHasher;
   shouldCache: boolean;
   shouldResetCache: boolean;
   runners: TargetRunnerPickerOptions;
@@ -150,10 +150,19 @@ export class SimpleScheduler implements TargetScheduler {
       if (targetRun.status !== "pending") {
         targetRun.status = "pending";
         const dependents = targetRun.target.dependents;
+
+        console.log(targetRun.target.dependents);
+
         for (const dependent of dependents) {
           queue.push(dependent);
         }
       }
+    }
+
+    this.abortController = new AbortController();
+    this.abortSignal = this.abortController.signal;
+    for (const targetRun of this.targetRuns.values()) {
+      targetRun.abortController = this.abortController;
     }
 
     this.scheduleReadyTargets();
