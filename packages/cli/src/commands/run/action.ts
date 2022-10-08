@@ -16,11 +16,11 @@ interface RunOptions extends ReporterInitOptions {
   resetCache: boolean;
   nodeArg: string;
   ignore: string[];
-  watch: boolean;
+  unstableWatch: boolean;
 }
 
 export async function action(options: RunOptions, command: Command) {
-  if (options.watch) {
+  if (options.unstableWatch) {
     return watchAction(options, command);
   } else {
     return runAction(options, command);

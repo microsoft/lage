@@ -26,7 +26,6 @@ interface RunOptions extends ReporterInitOptions {
   resetCache: boolean;
   nodeArg: string;
   ignore: string[];
-  watch: boolean;
 }
 
 export async function runAction(options: RunOptions, command: Command) {
