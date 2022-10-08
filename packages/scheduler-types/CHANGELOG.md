@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler-types
 
-This log was last generated on Thu, 06 Oct 2022 16:07:29 GMT and should not be manually modified.
+This log was last generated on Sat, 08 Oct 2022 17:43:37 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.9
+
+Sat, 08 Oct 2022 17:43:37 GMT
+
+### Patches
+
+- adding a watch mode action (ken@gizzar.com)
 
 ## 0.1.8
 

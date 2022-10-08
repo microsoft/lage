@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/scheduler",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Scheduler for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/watchpack": "^2.4.0",
-    "@lage-run/scheduler-types": "^0.1.8",
+    "@lage-run/scheduler-types": "^0.1.9",
     "@lage-run/monorepo-fixture": "*",
     "@types/workerpool": "6.1.0",
     "monorepo-scripts": "*"

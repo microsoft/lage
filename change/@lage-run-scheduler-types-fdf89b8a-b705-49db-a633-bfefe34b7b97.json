@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "adding a watch mode action",
-  "packageName": "@lage-run/scheduler-types",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Thu, 06 Oct 2022 18:48:08 GMT and should not be manually modified.
+This log was last generated on Sat, 08 Oct 2022 17:43:37 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.3.0
+
+Sat, 08 Oct 2022 17:43:37 GMT
+
+### Minor changes
+
+- adding a watch mode action (ken@gizzar.com)
 
 ## 2.2.13
 

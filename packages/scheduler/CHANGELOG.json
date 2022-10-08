@@ -2,6 +2,27 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Sat, 08 Oct 2022 17:43:37 GMT",
+      "tag": "@lage-run/scheduler_v0.4.6",
+      "version": "0.4.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/scheduler",
+            "commit": "1d21a0e79d11f86ec888f4893091940be4f3451b",
+            "comment": "adding a watch mode action"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.9",
+            "commit": "1d21a0e79d11f86ec888f4893091940be4f3451b"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Oct 2022 16:07:29 GMT",
       "tag": "@lage-run/scheduler_v0.4.5",
       "version": "0.4.5",

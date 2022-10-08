@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "adding a watch mode action",
-  "packageName": "@lage-run/lage",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
