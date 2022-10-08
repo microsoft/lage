@@ -3145,7 +3145,7 @@
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.6.tgz#250a7b16c3b91f672a24552ec64678eeb1d3a08d"
   integrity sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==
 
-"@types/watchpack@^2.4.0":
+"@types/watchpack@2.4.0":
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@types/watchpack/-/watchpack-2.4.0.tgz#35c6f8cdb3e82f443a93207856a54c2bfa7e6041"
   integrity sha512-PSAD+o9hezvfUFFzrYB/PO6Je7kwiZ2BSnB3/EZ9le+jTDKB6x5NJ96WWzQz1h/AyGJ/de3/1KpuBTkUFZm77A==
