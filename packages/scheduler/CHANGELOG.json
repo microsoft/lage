@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Sat, 08 Oct 2022 18:44:41 GMT",
+      "tag": "@lage-run/scheduler_v0.4.7",
+      "version": "0.4.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/scheduler",
+            "commit": "a59f3117c0d7085b6eafd7eb62d7bf91bb86354e",
+            "comment": "remove unneeded dep"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 08 Oct 2022 17:43:37 GMT",
       "tag": "@lage-run/scheduler_v0.4.6",
       "version": "0.4.6",

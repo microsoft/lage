@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Sat, 08 Oct 2022 17:43:37 GMT and should not be manually modified.
+This log was last generated on Sat, 08 Oct 2022 18:44:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.7
+
+Sat, 08 Oct 2022 18:44:41 GMT
+
+### Patches
+
+- remove unneeded dep (ken@gizzar.com)
 
 ## 0.4.6
 
