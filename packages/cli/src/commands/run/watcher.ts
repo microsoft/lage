@@ -29,11 +29,18 @@ export function watch(cwd: string): EventEmitter {
     ignored: ["**/node_modules/**", "**/dist/**", "**/build/**", "**/lib/**"],
   });
 
+  let timeoutHandle: NodeJS.Timeout;
+
   // when a change happens, find the package that changed
   watcher.on("change", (filePath) => {
-    console.log("changed, filePath", filePath);
-    const packageName = findPackageByPath(filePath, packageIndex);
-    events.emit("change", packageName);
+    if (timeoutHandle) {
+      clearTimeout(timeoutHandle);
+    }
+
+    timeoutHandle = setTimeout(() => {
+      const packageName = findPackageByPath(filePath, packageIndex);
+      events.emit("change", packageName);
+    }, 200);
   });
 
   return events;

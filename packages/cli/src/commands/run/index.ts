@@ -1,13 +1,13 @@
 import { Command, Option } from "commander";
 import os from "os";
-import { runAction } from "./action";
+import { action } from "./action";
 import { addLoggerOptions } from "../addLoggerOptions";
 import { isRunningFromCI } from "../isRunningFromCI";
 
 const runCommand = new Command("run");
 
 addLoggerOptions(runCommand)
-  .action(runAction)
+  .action(action)
   .option(
     "-c, --concurrency <n>",
     "concurrency",

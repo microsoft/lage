@@ -257,4 +257,8 @@ export class LogReporter implements Reporter {
 
     this.print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
   }
+
+  resetLogEntries() {
+    this.logEntries.clear();
+  }
 }
