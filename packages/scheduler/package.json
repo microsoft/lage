@@ -25,7 +25,6 @@
     "workspace-tools": "^0.28.0"
   },
   "devDependencies": {
-    "@types/watchpack": "^2.4.0",
     "@lage-run/scheduler-types": "^0.1.9",
     "@lage-run/monorepo-fixture": "*",
     "@types/workerpool": "6.1.0",
