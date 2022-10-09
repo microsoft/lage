@@ -6,8 +6,8 @@
     "lage": "dist/lage.js"
   },
   "scripts": {
-    "prebuild": "node scripts/prebuild.js",
-    "build": "rollup --config ./rollup.config.js"
+    "prebundle": "node scripts/prebuild.js",
+    "bundle": "rollup --config ./rollup.config.js"
   },
   "optionalDependencies": {
     "fsevents": "~2.3.2"
