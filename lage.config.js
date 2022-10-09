@@ -20,7 +20,7 @@ module.exports = {
       }
     },
     build: ["^build"],
-    test: ["build"],
+    test: ["^transpile"],
     lint: {
       type: "worker",
       options: {
