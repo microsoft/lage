@@ -4,6 +4,11 @@ const swc = require("@swc/core");
 
 module.exports = async function transpile(data) {
   const { target } = data;
+
+  if (target.packageName.includes("docs")) {
+    return;
+  }
+
   const queue = [target.cwd];
 
   while (queue.length > 0) {
@@ -13,18 +18,15 @@ module.exports = async function transpile(data) {
 
     for (let entry of entries) {
       const fullPath = path.join(dir, entry.name);
-      console.log(fullPath);
 
-      if (entry.isDirectory() && entry.name !== "node_modules" && entry.name !== "lib") {
+      if (entry.isDirectory() && entry.name !== "node_modules" && entry.name !== "lib" && entry.name !== "tests" && entry.name !== "dist") {
         queue.push(fullPath);
       } else if (entry.isFile() && entry.name.endsWith(".ts")) {
-        //const swcOutput = await swc.transformFile(fullPath);
-        const dest = path.dirname(fullPath.replace("/src", "/lib"));
+        const swcOutput = await swc.transformFile(fullPath);
+        const dest = fullPath.replace("/src", "/lib");
 
-        console.log(src, "->", dest);
-
-        // await fs.mkdir(dest, { recursive: true });
-        // await fs.writeFile(fullPath.replace("src", "lib"), swcOutput.code);
+        await fs.mkdir(path.dirname(dest), { recursive: true });
+        await fs.writeFile(dest, swcOutput.code);
       }
     }
   }
