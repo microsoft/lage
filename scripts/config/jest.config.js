@@ -21,7 +21,8 @@ module.exports = {
   testMatch: ["**/?(*.)+(spec|test).ts?(x)"],
   testPathIgnorePatterns: ["/node_modules/"],
   transform: {
-    "^.+\\.tsx?$": ["ts-jest", { tsconfig: { isolatedModules: true } }],
+    // "^.+\\.tsx?$": ["ts-jest", { tsconfig: { isolatedModules: true } }],
+    "^.+\\.tsx?$": ["@swc/jest"],
   },
   transformIgnorePatterns: ["/node_modules/", "\\.pnp\\.[^\\/]+$"],
   watchPathIgnorePatterns: ["/node_modules/"],

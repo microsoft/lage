@@ -1,7 +1,7 @@
 export default function createEdges(file) {
   const edgeType = "smoothstep";
-  const edges = [];
-  var edge = {};
+  const edges: any[] = [];
+  var edge: any = {};
 
   // generating the edges
   file["dependencies"].forEach((dep) => {
@@ -13,6 +13,6 @@ export default function createEdges(file) {
     };
     edges.push(edge);
   });
+
   return edges;
 }
-
