@@ -34,6 +34,9 @@ async function run(data) {
     throw new Error("Could not parse tsconfig.json");
   }
 
+  // for "types," we only generate declaration files
+  parsedCommandLine.options.emitDeclarationOnly = true;
+
   const compilerOptions = parsedCommandLine.options;
 
   // Creating compilation host program
