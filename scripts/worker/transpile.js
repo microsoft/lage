@@ -23,8 +23,7 @@ module.exports = async function transpile(data) {
         queue.push(fullPath);
       } else if (entry.isFile() && entry.name.endsWith(".ts")) {
         const swcOutput = await swc.transformFile(fullPath);
-        const dest = fullPath.replace("/src", "/lib").replace(".ts", ".js");
-
+        const dest = fullPath.replace(/([/\\])src/, "$1lib").replace(".ts", ".js");
         await fs.mkdir(path.dirname(dest), { recursive: true });
         await fs.writeFile(dest, swcOutput.code);
       }
