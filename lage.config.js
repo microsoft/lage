@@ -7,7 +7,6 @@ module.exports = {
     types: {
       type: "worker",
       options: {
-        maxWorkers: 4,
         worker: path.join(__dirname, "scripts/worker/types.js"),
       },
       dependsOn: ["^types"],
@@ -20,11 +19,10 @@ module.exports = {
       }
     },
     build: ["^build"],
-    test: ["^transpile"],
+    test: ["^^transpile"],
     lint: {
       type: "worker",
       options: {
-        maxWorkers: 4,
         worker: path.join(__dirname, "scripts/worker/lint.js"),
       },
     },

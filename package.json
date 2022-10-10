@@ -13,7 +13,7 @@
     ]
   },
   "scripts": {
-    "build": "lage build --scope=!docs --verbose",
+    "build": "lage transpile types --scope=!docs --verbose",
     "change": "beachball change",
     "checkchange": "beachball check",
     "release": "beachball publish -y --tag latest",
