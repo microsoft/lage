@@ -1,4 +1,4 @@
-import { formatDuration, hrToSeconds } from "./formatDuration";
+import { formatDuration, hrtimeDiff, hrToSeconds } from "@lage-run/format-hrtime";
 import { getPackageAndTask } from "@lage-run/target-graph";
 import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
 import { LogLevel } from "@lage-run/logger";
@@ -73,6 +73,11 @@ function normalize(prefixOrMessage: string, message?: string) {
     const message = prefixOrMessage;
     return { prefix, message };
   }
+}
+
+function getQueueDuration(queueTime: [number, number], startTime: [number, number]) {
+  const queueDuration = hrtimeDiff(queueTime, startTime);
+  return formatDuration(hrToSeconds(queueDuration));
 }
 
 export class LogReporter implements Reporter {
@@ -155,7 +160,10 @@ export class LogReporter implements Reporter {
           return this.printEntry(entry, colorFn(`${colors.ok("»")} skip - ${hash!}`));
 
         case "aborted":
-          return this.printEntry(entry, colorFn(`${colors.warn("»")} aborted`));
+          return this.printEntry(entry, colorFn(`${colors.warn("-")} aborted`));
+
+        case "queued":
+          return this.printEntry(entry, colorFn(`${colors.warn("…")} queued`));
       }
     } else {
       return this.printEntry(entry, colorFn(":  " + stripAnsi(entry.msg)));
@@ -201,6 +209,7 @@ export class LogReporter implements Reporter {
       running: chalk.yellow,
       pending: chalk.gray,
       aborted: chalk.red,
+      queued: chalk.magenta,
     };
 
     if (targetRuns.size > 0) {
@@ -215,11 +224,15 @@ export class LogReporter implements Reporter {
 
         const colorFn = statusColorFn[wrappedTarget.status] ?? chalk.white;
         const target = wrappedTarget.target;
+        const hasDurations = !!wrappedTarget.duration && !!wrappedTarget.queueTime;
+        const queueDuration: [number, number] = hasDurations ? hrtimeDiff(wrappedTarget.queueTime, wrappedTarget.startTime) : [0, 0];
 
         this.print(
           `${getTaskLogPrefix(target.packageName || "<root>", target.task)} ${colorFn(
             `${wrappedTarget.status === "running" ? "running - incomplete" : wrappedTarget.status}${
-              wrappedTarget.duration ? `, took ${formatDuration(hrToSeconds(wrappedTarget.duration))}` : ""
+              hasDurations
+                ? `, took ${formatDuration(hrToSeconds(wrappedTarget.duration))}, queued for ${formatDuration(hrToSeconds(queueDuration))}`
+                : ""
             }`
           )}`
         );

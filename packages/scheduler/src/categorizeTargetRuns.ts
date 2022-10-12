@@ -8,6 +8,7 @@ export function categorizeTargetRuns(targetRuns: TargetRun[]): TargetRunSummary 
     success: [],
     running: [],
     pending: [],
+    queued: [],
   };
 
   for (const targetRun of targetRuns) {

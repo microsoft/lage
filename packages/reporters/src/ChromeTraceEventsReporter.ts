@@ -72,7 +72,7 @@ export class ChromeTraceEventsReporter implements Reporter {
 
   log(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
     const data = entry.data;
-    if (isTargetStatusLogEntry(data) && data.status !== "pending" && data.target.id !== getStartTargetId()) {
+    if (isTargetStatusLogEntry(data) && data.status !== "pending" && data.status !== "queued" && data.target.id !== getStartTargetId()) {
       if (data.status === "running") {
         const threadId = this.threads.shift() ?? 0;
         this.targetIdThreadMap.set(data.target.id, threadId);

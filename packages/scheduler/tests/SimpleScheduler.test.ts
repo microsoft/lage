@@ -271,6 +271,7 @@ describe("SimpleScheduler", () => {
             "d#build",
             "g#build",
           ],
+          "queued": [],
           "running": [],
           "skipped": [],
           "success": [
