@@ -201,6 +201,7 @@ export class LogReporter implements Reporter {
       running: chalk.yellow,
       pending: chalk.gray,
       aborted: chalk.red,
+      queued: chalk.magenta,
     };
 
     if (targetRuns.size > 0) {

@@ -1,1 +1,1 @@
-export type TargetStatus = "pending" | "running" | "success" | "failed" | "skipped" | "aborted";
+export type TargetStatus = "pending" | "queued" | "running" | "success" | "failed" | "skipped" | "aborted";

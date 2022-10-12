@@ -36,6 +36,7 @@ export interface WrappedTargetOptions {
  * 4. Continue on error
  */
 export class WrappedTarget implements TargetRun {
+  queueTime: [number, number] = [0, 0];
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
   target: Target;
@@ -52,6 +53,11 @@ export class WrappedTarget implements TargetRun {
   constructor(public options: WrappedTargetOptions) {
     this.status = "pending";
     this.target = options.target;
+  }
+
+  onQueued() {
+    this.status = "queued";
+    this.queueTime = process.hrtime();
   }
 
   onAbort() {
@@ -135,10 +141,12 @@ export class WrappedTarget implements TargetRun {
   async run() {
     const { target, logger, shouldCache, abortController, pool } = this.options;
 
-    this.onStart();
+    this.onQueued();
+
     const abortSignal = abortController.signal;
 
     if (abortSignal.aborted) {
+      this.onStart();
       this.onAbort();
       return;
     }
@@ -147,12 +155,13 @@ export class WrappedTarget implements TargetRun {
       const { hash, cacheHit } = await this.getCache();
 
       const cacheEnabled = target.cache && shouldCache && hash;
-      if (cacheEnabled) {
-        logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`, { target });
-      }
 
       // skip if cache hit!
       if (cacheHit) {
+        this.onStart();
+
+        logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`, { target });
+
         const cachedOutputFile = getLageOutputCacheLocation(this.target, hash ?? "");
 
         if (fs.existsSync(cachedOutputFile)) {
@@ -181,6 +190,12 @@ export class WrappedTarget implements TargetRun {
       await pool.exec(
         { target },
         (_worker, stdout, stderr) => {
+          this.onStart();
+
+          if (cacheEnabled) {
+            logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`, { target });
+          }
+
           stdout.pipe(bufferStdout.transform);
           stderr.pipe(bufferStderr.transform);
 
