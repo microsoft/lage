@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "adds queue time and target status",
+  "packageName": "@lage-run/scheduler-types",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

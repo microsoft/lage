@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "uses the separate package for formatting hrtime",
+  "packageName": "@lage-run/scheduler",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
