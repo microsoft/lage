@@ -1,4 +1,4 @@
-import { formatDuration, hrToSeconds } from "./formatDuration";
+import { formatDuration, hrToSeconds } from "@lage-run/format-hrtime";
 import { getPackageAndTask } from "@lage-run/target-graph";
 import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
 import { LogLevel } from "@lage-run/logger";
@@ -114,7 +114,10 @@ export class AdoReporter implements Reporter {
           return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.ok("»")} skip ${pkgTask} - ${hash!}`)));
 
         case "aborted":
-          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.warn("»")} aborted ${pkgTask}`)));
+          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.warn("-")} aborted ${pkgTask}`)));
+
+        case "queued":
+          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.warn("…")} aborted ${pkgTask}`)));
       }
     } else {
       // this is a generic log
@@ -168,6 +171,7 @@ export class AdoReporter implements Reporter {
       running: chalk.yellow,
       pending: chalk.gray,
       aborted: chalk.red,
+      queued: chalk.magenta,
     };
 
     this.logStream.write(chalk.cyanBright(`##[section]Summary\n`));

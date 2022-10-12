@@ -1,6 +1,6 @@
 import { bufferTransform } from "./bufferTransform";
 import { getLageOutputCacheLocation } from "./getLageOutputCacheLocation";
-import { hrToSeconds } from "./formatDuration";
+import { hrToSeconds } from "@lage-run/format-hrtime";
 import { LogLevel } from "@lage-run/logger";
 
 import fs from "fs";

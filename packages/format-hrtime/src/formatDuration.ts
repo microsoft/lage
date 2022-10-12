@@ -14,3 +14,20 @@ export function hrToSeconds(hrtime: [number, number]) {
   const raw = hrtime[0] + hrtime[1] / 1e9;
   return raw.toFixed(2);
 }
+
+/**
+ * calculates the difference of two hrtime values
+ * @param start
+ * @param end
+ * @returns
+ */
+export function hrtimeDiff(start: [number, number], end: [number, number]): [number, number] {
+  const sec = end[0] - start[0];
+  const nsec = end[1] - start[1];
+
+  if (nsec < 0) {
+    return [sec - 1, 1e9 + nsec];
+  }
+
+  return [sec, nsec];
+}

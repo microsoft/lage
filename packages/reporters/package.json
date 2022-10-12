@@ -18,6 +18,7 @@
     "@lage-run/logger": "^1.2.0",
     "@lage-run/scheduler-types": "^0.1.9",
     "@lage-run/target-graph": "^0.4.2",
+    "@lage-run/format-hrtime": "^0.1.0",
     "chalk": "^4.0.0",
     "ansi-regex": "^5.0.1",
     "gradient-string": "^2.0.1"
