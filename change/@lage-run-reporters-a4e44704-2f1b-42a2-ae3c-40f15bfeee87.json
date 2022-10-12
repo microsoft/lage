@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "use the separate format-hrtime package as well as display queue time separately",
-  "packageName": "@lage-run/reporters",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,18 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Sat, 08 Oct 2022 19:11:01 GMT and should not be manually modified.
+This log was last generated on Wed, 12 Oct 2022 21:07:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.9
+
+Wed, 12 Oct 2022 21:07:14 GMT
+
+### Patches
+
+- uses the separate package for formatting hrtime (kchau@microsoft.com)
+- Bump @lage-run/format-hrtime to v0.1.1
+- Bump @lage-run/scheduler-types to v0.1.10
 
 ## 0.4.8
 

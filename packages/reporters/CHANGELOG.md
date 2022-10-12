@@ -1,8 +1,18 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Sat, 08 Oct 2022 17:43:37 GMT and should not be manually modified.
+This log was last generated on Wed, 12 Oct 2022 21:07:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.23
+
+Wed, 12 Oct 2022 21:07:14 GMT
+
+### Patches
+
+- use the separate format-hrtime package as well as display queue time separately (kchau@microsoft.com)
+- Bump @lage-run/scheduler-types to v0.1.10
+- Bump @lage-run/format-hrtime to v0.1.1
 
 ## 0.2.22
 
