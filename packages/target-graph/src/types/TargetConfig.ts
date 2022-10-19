@@ -51,12 +51,17 @@ export interface TargetConfig {
   cache?: boolean;
 
   /**
-   * Run options for the Target. (e.g. `{ env: ...process.env, colors: true, ... }`)
+   * How many workers to dedicate to this task type
    */
-  options?: Record<string, any>;
+  maxWorkers?: number;
 
   /**
-   * Custom run definition, if left blank, the scheduler will decide which runner to use to fulfill the work for the `Target`
+   * How many shards to split tasks into
    */
-  run?: (target: Target) => Promise<void> | void;
+  shards?: number;
+
+  /**
+   * Run options for the Target Runner. (e.g. `{ env: ...process.env, colors: true, ... }`)
+   */
+  options?: Record<string, any>;
 }
