@@ -60,7 +60,12 @@ describe("NpmScriptRunner", () => {
     const target = createTarget("a");
 
     const exceptionSpy = jest.fn();
-    const runPromise = runner.run(target, abortController.signal).catch(() => exceptionSpy());
+    const runPromise = runner
+      .run({
+        target,
+        abortSignal: abortController.signal,
+      })
+      .catch(() => exceptionSpy());
 
     await waitFor(() => childProcesses.has(getChildProcessKey("a", target.task)));
 
@@ -81,7 +86,12 @@ describe("NpmScriptRunner", () => {
     const target = createTarget("a");
 
     const exceptionSpy = jest.fn();
-    const runPromise = runner.run(target, abortController.signal).catch(() => exceptionSpy());
+    const runPromise = runner
+      .run({
+        target,
+        abortSignal: abortController.signal,
+      })
+      .catch(() => exceptionSpy());
 
     await waitFor(() => childProcesses.has(getChildProcessKey("a", target.task)));
 
@@ -112,9 +122,14 @@ describe("NpmScriptRunner", () => {
     }
 
     let runPromises = fakePackages.map((packageName) =>
-      runner.run(createTarget(packageName), abortController.signal).catch(() => {
-        fakeExceptionSpies[packageName]();
-      })
+      runner
+        .run({
+          target: createTarget(packageName),
+          abortSignal: abortController.signal,
+        })
+        .catch(() => {
+          fakeExceptionSpies[packageName]();
+        })
     );
 
     await waitFor(() =>

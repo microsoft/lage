@@ -24,7 +24,7 @@ function createTarget(packageName: string): Target {
 class InProcPool implements Pool {
   constructor(private runner: TargetRunner) {}
   exec({ target }: { target: Target }, _setup, _teardown, abortSignal?: AbortSignal) {
-    return this.runner.run(target, abortSignal);
+    return this.runner.run({ target, abortSignal });
   }
   close() {
     return Promise.resolve();
@@ -43,13 +43,13 @@ describe("WrappedTarget", () => {
     } as CacheProvider;
 
     const hasher = {
-      hash(target: Target) {},
+      hash(_target: Target) {},
     } as TargetHasher;
 
     const logger = new Logger();
 
     const runner = {
-      async run(target: Target, abortSignal?: AbortSignal) {
+      async run() {
         // nothing
       },
     } as TargetRunner;
@@ -94,7 +94,7 @@ describe("WrappedTarget", () => {
     const wrappedTargets: WrappedTarget[] = [];
 
     const runner = {
-      async run(target: Target, abortSignal?: AbortSignal) {
+      async run() {
         // nothing
       },
     } as TargetRunner;
@@ -147,7 +147,7 @@ describe("WrappedTarget", () => {
     const wrappedTargets: WrappedTarget[] = [];
 
     const runner = {
-      async run(target: Target, abortSignal?: AbortSignal) {
+      async run({ target }) {
         // nothing
         if (target.packageName === "a") {
           throw oops;
@@ -207,7 +207,7 @@ describe("WrappedTarget", () => {
     const oops = new Error("oops");
 
     const runner = {
-      run(target: Target, abortSignal?: AbortSignal) {
+      run({ target, abortSignal }) {
         return new Promise((resolve, reject) => {
           if (target.packageName === "a") {
             reject(oops);
@@ -268,7 +268,7 @@ describe("WrappedTarget", () => {
     const logger = new Logger();
 
     const runner = {
-      async run(target: Target, abortSignal?: AbortSignal) {
+      async run() {
         // nothing
       },
     } as TargetRunner;

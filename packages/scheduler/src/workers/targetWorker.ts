@@ -22,7 +22,10 @@ const { runnerPicker } = setup(workerData);
 
 async function run(data: any, abortSignal?: AbortSignal) {
   const runner = runnerPicker.pick(data.target);
-  await runner.run(data.target, abortSignal);
+  await runner.run({
+    ...data,
+    abortSignal,
+  });
 }
 
 registerWorker(run);

@@ -8,7 +8,7 @@ import { TargetRunner } from "@lage-run/scheduler-types";
 class InProcPool implements Pool {
   constructor(private runner: TargetRunner) {}
   exec({ target }: { target: Target }) {
-    return this.runner.run(target);
+    return this.runner.run({ target });
   }
   close() {
     return Promise.resolve();

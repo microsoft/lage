@@ -6,6 +6,7 @@ import type { TargetRunner } from "@lage-run/scheduler-types";
 import type { AbortSignal } from "abort-controller";
 import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";
+import { TargetRunnerOptions } from "@lage-run/scheduler-types/lib/types/TargetRunner";
 export interface NpmScriptRunnerOptions {
   taskArgs: string[];
   nodeOptions: string;
@@ -55,7 +56,8 @@ export class NpmScriptRunner implements TargetRunner {
     }
   }
 
-  async run(target: Target, abortSignal?: AbortSignal) {
+  async run(runOptions: TargetRunnerOptions) {
+    const { target, abortSignal, shardIndex, shardCount } = runOptions;
     const { nodeOptions, npmCmd, taskArgs } = this.options;
 
     let childProcess: ChildProcess | undefined;
@@ -116,6 +118,8 @@ export class NpmScriptRunner implements TargetRunner {
           ...(npmRunNodeOptions && { NODE_OPTIONS: npmRunNodeOptions }),
           LAGE_PACKAGE_NAME: target.packageName,
           LAGE_TASK: target.task,
+          LAGE_SHARD_INDEX: String(shardIndex ?? 1),
+          LAGE_SHARD_COUNT: String(shardCount ?? 1),
         },
       });
 
