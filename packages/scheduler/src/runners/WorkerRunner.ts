@@ -41,11 +41,11 @@ export class WorkerRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
 
   async run(target: Target, abortSignal?: AbortSignal) {
-    if (!target.options?.worker) {
-      throw new Error('WorkerRunner: "worker" configuration is required - e.g. { type: "worker", worker: "./worker.js" }');
-    }
-
     const scriptFile = target.options?.worker ?? target.options?.script;
+
+    if (!scriptFile) {
+      throw new Error('WorkerRunner: "script" configuration is required - e.g. { type: "worker", script: "./worker.js" }');
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const scriptModule = require(scriptFile);

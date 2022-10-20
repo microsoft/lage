@@ -67,9 +67,11 @@ export class WrappedTarget implements TargetRun {
   }
 
   onStart() {
-    this.status = "running";
-    this.startTime = process.hrtime();
-    this.options.logger.info("running", { target: this.target, status: "running" });
+    if (this.status !== "running") {
+      this.status = "running";
+      this.startTime = process.hrtime();
+      this.options.logger.info("running", { target: this.target, status: "running" });
+    }
   }
 
   onComplete() {
@@ -158,9 +160,9 @@ export class WrappedTarget implements TargetRun {
 
       // skip if cache hit!
       if (cacheHit) {
-        this.onStart();
-
         logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`, { target });
+
+        this.onStart();
 
         const cachedOutputFile = getLageOutputCacheLocation(this.target, hash ?? "");
 
@@ -179,53 +181,27 @@ export class WrappedTarget implements TargetRun {
 
         this.onSkipped(hash);
         return;
+      } else {
+        logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`, { target });
       }
 
-      let releaseStdout: any;
-      let releaseStderr: any;
+      const shardCount = this.target.shards ?? 1;
+      const shardPromises: Promise<{ stdoutBuffer: string; stderrBuffer: string }>[] = [];
+      for (let shardIndex = 1; shardIndex <= shardCount; shardIndex++) {
+        shardPromises.push(this.runShard(shardIndex, shardCount));
+      }
 
-      const bufferStdout = bufferTransform();
-      const bufferStderr = bufferTransform();
-
-      await pool.exec(
-        { target },
-        (_worker, stdout, stderr) => {
-          this.onStart();
-
-          if (cacheEnabled) {
-            logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`, { target });
-          }
-
-          stdout.pipe(bufferStdout.transform);
-          stderr.pipe(bufferStderr.transform);
-
-          const releaseStdoutStream = logger.stream(LogLevel.verbose, stdout, { target });
-
-          releaseStdout = () => {
-            releaseStdoutStream();
-            stdout.unpipe(bufferStdout.transform);
-          };
-
-          const releaseStderrStream = logger.stream(LogLevel.verbose, stderr, { target });
-
-          releaseStderr = () => {
-            releaseStderrStream();
-            stderr.unpipe(bufferStderr.transform);
-          };
-        },
-        () => {
-          releaseStdout();
-          releaseStderr();
-        },
-        abortSignal
-      );
+      const shardResults = await Promise.all(shardPromises);
 
       if (cacheEnabled && hash) {
         await this.saveCache(hash);
         const outputLocation = getLageOutputCacheLocation(this.target, hash);
         const outputPath = path.dirname(outputLocation);
         await mkdir(outputPath, { recursive: true });
-        await writeFile(outputLocation, bufferStdout.buffer + bufferStderr.buffer);
+
+        const output = shardResults.map((result) => `${result.stdoutBuffer}\n${result.stderrBuffer}`).join("");
+
+        await writeFile(outputLocation, output);
       }
 
       this.onComplete();
@@ -240,6 +216,48 @@ export class WrappedTarget implements TargetRun {
 
       throw e;
     }
+  }
+
+  async runShard(shardIndex: number, shardCount: number) {
+    const { target, logger, abortController, pool } = this.options;
+    const abortSignal = abortController.signal;
+
+    let releaseStdout: any;
+    let releaseStderr: any;
+
+    const bufferStdout = bufferTransform();
+    const bufferStderr = bufferTransform();
+
+    await pool.exec(
+      { target, shardIndex, shardCount },
+      (_worker, stdout, stderr) => {
+        this.onStart();
+
+        stdout.pipe(bufferStdout.transform);
+        stderr.pipe(bufferStderr.transform);
+
+        const releaseStdoutStream = logger.stream(LogLevel.verbose, stdout, { target, shardIndex, shardCount });
+
+        releaseStdout = () => {
+          releaseStdoutStream();
+          stdout.unpipe(bufferStdout.transform);
+        };
+
+        const releaseStderrStream = logger.stream(LogLevel.verbose, stderr, { target, shardIndex, shardCount });
+
+        releaseStderr = () => {
+          releaseStderrStream();
+          stderr.unpipe(bufferStderr.transform);
+        };
+      },
+      () => {
+        releaseStdout();
+        releaseStderr();
+      },
+      abortSignal
+    );
+
+    return { stdoutBuffer: bufferStdout.buffer, stderrBuffer: bufferStderr.buffer };
   }
 
   /**
