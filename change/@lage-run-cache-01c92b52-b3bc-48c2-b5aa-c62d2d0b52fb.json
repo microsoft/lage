@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Allows for target specific environmentGlob override",
-  "packageName": "@lage-run/cache",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "promotes maxWorker to be a \"top level\" target config (options are for target runners)",
-  "packageName": "@lage-run/cli",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

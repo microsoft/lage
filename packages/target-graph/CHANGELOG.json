@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Thu, 20 Oct 2022 00:22:27 GMT",
+      "tag": "@lage-run/target-graph_v0.4.3",
+      "version": "0.4.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529",
+            "comment": "introducing maxWorkers, shards, and environmentGlob as target configs (shards is a future feature)"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 03 Oct 2022 19:57:28 GMT",
       "tag": "@lage-run/target-graph_v0.4.2",
       "version": "0.4.2",

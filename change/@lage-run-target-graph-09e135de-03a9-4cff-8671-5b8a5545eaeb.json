@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "introducing maxWorkers, shards, and environmentGlob as target configs (shards is a future feature)",
-  "packageName": "@lage-run/target-graph",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
