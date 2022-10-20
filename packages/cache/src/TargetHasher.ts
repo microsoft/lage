@@ -25,7 +25,7 @@ export class TargetHasher {
 
   async hash(target: Target): Promise<string> {
     const hashKey = await salt(
-      this.options.environmentGlob || ["lage.config.js"],
+      target.environmentGlob ?? this.options.environmentGlob ?? ["lage.config.js"],
       `${target.id}|${JSON.stringify(this.options.cliArgs)}`,
       this.options.root,
       this.options.cacheKey || ""

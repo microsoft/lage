@@ -50,7 +50,7 @@ export class TargetGraphBuilder {
    * @returns a generated global Target
    */
   private createGlobalTarget(id: string, config: TargetConfig): Target {
-    const { options, dependsOn, deps, inputs, outputs, priority } = config;
+    const { options, dependsOn, deps, inputs, outputs, priority, maxWorkers, environmentGlob, shards } = config;
     const { task } = getPackageAndTask(id);
     const targetId = getTargetId(undefined, task);
     return {
@@ -68,6 +68,9 @@ export class TargetGraphBuilder {
       inputs,
       outputs,
       priority,
+      maxWorkers,
+      environmentGlob,
+      shards,
       options,
     };
   }
@@ -80,7 +83,7 @@ export class TargetGraphBuilder {
    * @returns a package task `Target`
    */
   private createPackageTarget(packageName: string, task: string, config: TargetConfig): Target {
-    const { options, dependsOn, deps, cache, inputs, outputs, priority } = config;
+    const { options, dependsOn, deps, cache, inputs, outputs, priority, maxWorkers, environmentGlob, shards } = config;
     const info = this.packageInfos[packageName];
     return {
       id: getTargetId(packageName, task),
@@ -96,6 +99,9 @@ export class TargetGraphBuilder {
       inputs,
       outputs,
       priority,
+      maxWorkers,
+      environmentGlob,
+      shards,
       options,
     };
   }

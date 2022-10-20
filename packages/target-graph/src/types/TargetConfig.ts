@@ -51,6 +51,11 @@ export interface TargetConfig {
   cache?: boolean;
 
   /**
+   * An optional override of environmentGlob for cases when targets that need different patterns
+   */
+  environmentGlob?: string[];
+
+  /**
    * How many workers to dedicate to this task type
    */
   maxWorkers?: number;
