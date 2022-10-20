@@ -51,12 +51,22 @@ export interface TargetConfig {
   cache?: boolean;
 
   /**
-   * Run options for the Target. (e.g. `{ env: ...process.env, colors: true, ... }`)
+   * An optional override of environmentGlob for cases when targets that need different patterns
    */
-  options?: Record<string, any>;
+  environmentGlob?: string[];
 
   /**
-   * Custom run definition, if left blank, the scheduler will decide which runner to use to fulfill the work for the `Target`
+   * How many workers to dedicate to this task type
    */
-  run?: (target: Target) => Promise<void> | void;
+  maxWorkers?: number;
+
+  /**
+   * How many shards to split tasks into
+   */
+  shards?: number;
+
+  /**
+   * Run options for the Target Runner. (e.g. `{ env: ...process.env, colors: true, ... }`)
+   */
+  options?: Record<string, any>;
 }

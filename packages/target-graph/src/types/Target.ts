@@ -53,6 +53,21 @@ export interface Target {
   cache?: boolean;
 
   /**
+   * An optional override of environmentGlob for cases when targets that need different patterns
+   */
+  environmentGlob?: string[];
+
+  /**
+   * How many workers to dedicate to this task type
+   */
+  maxWorkers?: number;
+
+  /**
+   * How many shards to split tasks into
+   */
+  shards?: number;
+
+  /**
    * Run options for the Target
    */
   options?: Record<string, any>;
@@ -61,9 +76,4 @@ export interface Target {
    * Whether the target should be displayed by reporters
    */
   hidden?: boolean;
-
-  /**
-   * Custom run definition, if left blank, the scheduler will decide which runner to use to fulfill the work for the `Target`
-   */
-  run?: (target: Target) => Promise<void> | void;
 }

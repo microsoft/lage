@@ -6,7 +6,7 @@ export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"]) 
 
   for (const [task, taskConfig] of Object.entries(pipelineConfig)) {
     if (!Array.isArray(taskConfig) && !task.includes("#")) {
-      const maxWorkerOptions: string | number = taskConfig.options?.maxWorkers ?? os.cpus().length - 1;
+      const maxWorkerOptions: string | number = taskConfig.maxWorkers ?? taskConfig.options?.maxWorkers ?? os.cpus().length - 1;
       let maxWorkers = 0;
       if (typeof maxWorkerOptions === "string") {
         if (maxWorkerOptions.endsWith("%")) {
