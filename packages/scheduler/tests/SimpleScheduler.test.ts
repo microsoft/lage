@@ -6,6 +6,16 @@ import { Pool } from "@lage-run/worker-threads-pool";
 import { TargetRunner } from "@lage-run/scheduler-types";
 
 class InProcPool implements Pool {
+  constructor(private runner: TargetRunner) {}
+  exec({ target }: { target: Target }) {
+    return this.runner.run(target);
+  }
+  close() {
+    return Promise.resolve();
+  }
+}
+
+class SingleSchedulePool implements Pool {
   count = 0;
   constructor(private runner: TargetRunner, private concurrency: number) {}
   exec({ target }: { target: Target }) {
@@ -101,7 +111,7 @@ describe("SimpleScheduler", () => {
       shouldResetCache: false,
       maxWorkersPerTask: new Map(),
       runners: {},
-      pool: new InProcPool(runner, 1),
+      pool: new InProcPool(runner),
     });
 
     // these would normally come from the CLI
@@ -120,7 +130,7 @@ describe("SimpleScheduler", () => {
           "target": "a#build",
         },
         "b#build" => {
-          "status": "failed",
+          "status": "success",
           "target": "b#build",
         },
       }
@@ -148,7 +158,7 @@ describe("SimpleScheduler", () => {
       cacheProvider,
       hasher,
       runners: {},
-      pool: new InProcPool(runner, 1),
+      pool: new InProcPool(runner),
       maxWorkersPerTask: new Map(),
       continueOnError: false,
       shouldCache: true,
@@ -198,7 +208,7 @@ describe("SimpleScheduler", () => {
       shouldResetCache: false,
       maxWorkersPerTask: new Map(),
       runners: {},
-      pool: new InProcPool(runner, 4),
+      pool: new InProcPool(runner),
     });
 
     // these would normally come from the CLI
@@ -246,7 +256,7 @@ describe("SimpleScheduler", () => {
       shouldCache: true,
       shouldResetCache: false,
       runners: {},
-      pool: new InProcPool(runner, 4),
+      pool: new SingleSchedulePool(runner, 4),
     });
 
     // these would normally come from the CLI
