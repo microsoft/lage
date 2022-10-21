@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@types/jest": "29.1.2",
-    "@types/node": "14.18.31",
+    "@types/node": "14.18.32",
     "beachball": "2.31.4",
     "gh-pages": "4.0.0",
     "husky": "8.0.1",
