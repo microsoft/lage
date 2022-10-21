@@ -99,7 +99,6 @@ export class WorkerPool extends EventEmitter implements Pool {
   ensureWorkers() {
     if (this.workers.length === 0) {
       const { maxWorkers = os.cpus().length - 1 } = this.options;
-
       for (let i = 0; i < maxWorkers; i++) {
         this.addNewWorker();
       }
@@ -203,6 +202,10 @@ export class WorkerPool extends EventEmitter implements Pool {
     cleanup?: (worker: Worker) => void,
     abortSignal?: AbortSignal
   ) {
+    if (abortSignal?.aborted) {
+      return Promise.resolve();
+    }
+
     return new Promise((resolve, reject) => {
       this.queue.push({ task, resolve, reject, cleanup, setup });
       this._exec(abortSignal);

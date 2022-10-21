@@ -6,9 +6,15 @@ import { Pool } from "@lage-run/worker-threads-pool";
 import { TargetRunner } from "@lage-run/scheduler-types";
 
 class InProcPool implements Pool {
-  constructor(private runner: TargetRunner) {}
+  count = 0;
+  constructor(private runner: TargetRunner, private concurrency: number) {}
   exec({ target }: { target: Target }) {
-    return this.runner.run(target);
+    if (this.concurrency > this.count) {
+      this.count++;
+      return this.runner.run(target);
+    }
+
+    return Promise.reject(new Error("Pool is full"));
   }
   close() {
     return Promise.resolve();
@@ -95,7 +101,7 @@ describe("SimpleScheduler", () => {
       shouldResetCache: false,
       maxWorkersPerTask: new Map(),
       runners: {},
-      pool: new InProcPool(runner),
+      pool: new InProcPool(runner, 1),
     });
 
     // these would normally come from the CLI
@@ -114,7 +120,7 @@ describe("SimpleScheduler", () => {
           "target": "a#build",
         },
         "b#build" => {
-          "status": "success",
+          "status": "failed",
           "target": "b#build",
         },
       }
@@ -142,7 +148,7 @@ describe("SimpleScheduler", () => {
       cacheProvider,
       hasher,
       runners: {},
-      pool: new InProcPool(runner),
+      pool: new InProcPool(runner, 1),
       maxWorkersPerTask: new Map(),
       continueOnError: false,
       shouldCache: true,
@@ -192,7 +198,7 @@ describe("SimpleScheduler", () => {
       shouldResetCache: false,
       maxWorkersPerTask: new Map(),
       runners: {},
-      pool: new InProcPool(runner),
+      pool: new InProcPool(runner, 4),
     });
 
     // these would normally come from the CLI
@@ -240,7 +246,7 @@ describe("SimpleScheduler", () => {
       shouldCache: true,
       shouldResetCache: false,
       runners: {},
-      pool: new InProcPool(runner),
+      pool: new InProcPool(runner, 4),
     });
 
     // these would normally come from the CLI
@@ -264,12 +270,13 @@ describe("SimpleScheduler", () => {
         "error": undefined,
         "results": "failed",
         "targetRunByStatus": {
-          "aborted": [],
+          "aborted": [
+            "g#build",
+          ],
           "failed": [],
           "pending": [
             "b#build",
             "d#build",
-            "g#build",
           ],
           "queued": [],
           "running": [],
@@ -312,7 +319,7 @@ describe("SimpleScheduler", () => {
             "target": "f#build",
           },
           "g#build" => {
-            "status": "pending",
+            "status": "aborted",
             "target": "g#build",
           },
         },
