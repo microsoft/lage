@@ -1,60 +1,85 @@
-// Mock "os" module to return 8 CPUs
-jest.mock("os", () => {
-  const os = jest.requireActual("os");
-  return {
-    ...os,
-    cpus: jest.fn(() => [{}, {}, {}, {}, {}, {}, {}, {}]),
-  };
-});
-
 import { getMaxWorkersPerTask } from "../src/config/getMaxWorkersPerTask";
 
 describe("getMaxWorkersPerTask", () => {
   it("parses the pipeline config for maxWorkers", () => {
-    const maxWorkersPerTask = getMaxWorkersPerTask({
-      build: {
-        options: {
-          maxWorkers: "5",
+    const maxWorkersPerTask = getMaxWorkersPerTask(
+      {
+        build: {
+          options: {
+            maxWorkers: 5,
+          },
         },
       },
-    });
+      8
+    );
 
     expect(maxWorkersPerTask.get("build")).toBe(5);
   });
 
   it("parses for percentage", () => {
-    const maxWorkersPerTask = getMaxWorkersPerTask({
-      build: {
-        options: {
-          maxWorkers: "50%",
+    const maxWorkersPerTask = getMaxWorkersPerTask(
+      {
+        build: {
+          options: {
+            maxWorkers: "50%",
+          },
         },
       },
-    });
+      8
+    );
 
     expect(maxWorkersPerTask.get("build")).toBe(4);
   });
 
   it("can handle if a passed-in string isn't a percentage", () => {
-    const maxWorkersPerTask = getMaxWorkersPerTask({
-      build: {
-        options: {
-          maxWorkers: "50",
+    const testAction = () =>
+      getMaxWorkersPerTask(
+        {
+          build: {
+            options: {
+              maxWorkers: "7",
+            },
+          },
         },
-      },
-    });
+        8
+      );
 
-    expect(maxWorkersPerTask.get("build")).toBe(7);
+    expect(testAction).toThrow();
   });
 
   it("can handle non-number-like strings", () => {
-    const maxWorkersPerTask = getMaxWorkersPerTask({
-      build: {
-        options: {
-          maxWorkers: "foo",
+    const testAction = () =>
+      getMaxWorkersPerTask(
+        {
+          build: {
+            options: {
+              maxWorkers: "foo",
+            },
+          },
         },
-      },
-    });
+        8
+      );
 
-    expect(maxWorkersPerTask.get("build")).toBe(7);
+    expect(testAction).toThrow();
+  });
+
+  it("can handle sum of maxWorkers that exceed concurrency", () => {
+    const testAction = () =>
+      getMaxWorkersPerTask(
+        {
+          build: {
+            options: {
+              maxWorkers: 10,
+            },
+          },
+
+          test: {
+            maxWorkers: 20,
+          },
+        },
+        8
+      );
+
+    expect(testAction).toThrow();
   });
 });

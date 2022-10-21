@@ -20,7 +20,7 @@ export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], 
         if (maxWorkerOption.endsWith("%")) {
           maxWorkers = Math.floor(concurrency * (parseInt(maxWorkerOption, 10) / 100));
         } else {
-          maxWorkers = parseInt(maxWorkerOption, 10);
+          throw new Error(`Invalid maxWorkers value: ${maxWorkerOption}`);
         }
       } else {
         maxWorkers = maxWorkerOption;
