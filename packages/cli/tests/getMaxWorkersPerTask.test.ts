@@ -105,4 +105,33 @@ describe("getMaxWorkersPerTask", () => {
 
     expect(testAction).toThrow();
   });
+
+  it("reserves some workers for general pool", () => {
+    const maxWorkersPerTask = getMaxWorkersPerTask(
+      {
+        build: {},
+
+        lint: {
+          maxWorkers: 2,
+        },
+      },
+      2
+    );
+
+    expect(maxWorkersPerTask.get("build")).toBeUndefined();
+    expect(maxWorkersPerTask.get("lint")).toBe(1);
+  });
+
+  it("reserves no workers for general pool, when one task has taken over all the cores", () => {
+    const maxWorkersPerTask = getMaxWorkersPerTask(
+      {
+        lint: {
+          maxWorkers: 2,
+        },
+      },
+      2
+    );
+
+    expect(maxWorkersPerTask.get("lint")).toBe(2);
+  });
 });
