@@ -42,9 +42,8 @@ export function getFilteredPackages(options: {
       includeDependents,
     });
   }
-
   // If since is defined, get changed packages.
-  if (hasSince) {
+  else if (hasSince) {
     try {
       changedPackages = getChangedPackages(root, since, sinceIgnoreGlobs);
     } catch (e) {
@@ -70,9 +69,11 @@ export function getFilteredPackages(options: {
       );
       filteredPackages = [...new Set(filteredPackages.concat(Object.keys(packageInfos)))];
     }
+    return filteredPackages;
+  } else {
+    // If neither scope or since is defined, return all packages
+    return Object.keys(packageInfos);
   }
-
-  return filteredPackages;
 }
 
 function hasRepoChanged(since: string, root: string, environmentGlob: string[], logger: Logger) {
