@@ -1,8 +1,35 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Thu, 20 Oct 2022 00:22:27 GMT and should not be manually modified.
+This log was last generated on Fri, 21 Oct 2022 23:04:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.17
+
+Fri, 21 Oct 2022 23:04:34 GMT
+
+### Patches
+
+- fixing the max worker again - this time we need to account for general pool availability (ken@gizzar.com)
+
+## 0.4.16
+
+Fri, 21 Oct 2022 21:36:38 GMT
+
+### Patches
+
+- pipelines with maxWorker now create separate pools (ken@gizzar.com)
+- Bump @lage-run/scheduler to v0.4.12
+- Bump @lage-run/reporters to v0.2.26
+
+## 0.4.15
+
+Fri, 21 Oct 2022 19:33:09 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.4.11
+- Bump @lage-run/reporters to v0.2.25
 
 ## 0.4.14
 

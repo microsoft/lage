@@ -2,6 +2,69 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 21 Oct 2022 23:04:34 GMT",
+      "tag": "@lage-run/cli_v0.4.17",
+      "version": "0.4.17",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "d93d94b25f3b157dedc555f836b66ee547500cd5",
+            "comment": "fixing the max worker again - this time we need to account for general pool availability"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 Oct 2022 21:36:38 GMT",
+      "tag": "@lage-run/cli_v0.4.16",
+      "version": "0.4.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "735930e09c2fdf476c3f2c56c1c05062401097b8",
+            "comment": "pipelines with maxWorker now create separate pools"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.4.12",
+            "commit": "735930e09c2fdf476c3f2c56c1c05062401097b8"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.26",
+            "commit": "735930e09c2fdf476c3f2c56c1c05062401097b8"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 Oct 2022 19:33:09 GMT",
+      "tag": "@lage-run/cli_v0.4.15",
+      "version": "0.4.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.4.11",
+            "commit": "e702680c6e9fbd423e92b34d7fbb989a3c06e69c"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.25",
+            "commit": "e702680c6e9fbd423e92b34d7fbb989a3c06e69c"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 Oct 2022 00:22:27 GMT",
       "tag": "@lage-run/cli_v0.4.14",
       "version": "0.4.14",

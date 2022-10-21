@@ -1,8 +1,26 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Thu, 20 Oct 2022 00:22:27 GMT and should not be manually modified.
+This log was last generated on Fri, 21 Oct 2022 21:36:38 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.12
+
+Fri, 21 Oct 2022 21:36:38 GMT
+
+### Patches
+
+- uses new AggregatePool (ken@gizzar.com)
+- Bump @lage-run/worker-threads-pool to v0.2.0
+- Bump @lage-run/scheduler-types to v0.1.12
+
+## 0.4.11
+
+Fri, 21 Oct 2022 19:33:09 GMT
+
+### Patches
+
+- fixing ado logger (ken@gizzar.com)
 
 ## 0.4.10
 

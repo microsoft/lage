@@ -1,19 +1,20 @@
 import { Command } from "commander";
-import { createProfileReporter } from "./createProfileReporter";
+import { createCache } from "./createCacheProvider";
+import { createTargetGraph } from "./createTargetGraph";
+import { filterArgsForTasks } from "./filterArgsForTasks";
 import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig } from "../../config/getConfig";
 import { getMaxWorkersPerTask } from "../../config/getMaxWorkersPerTask";
-import { getPackageInfos, getWorkspaceRoot, PackageInfos } from "workspace-tools";
-import { initializeReporters, LogReporter } from "@lage-run/reporters";
+import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { filterPipelineDefinitions } from "./filterPipelineDefinitions";
+import { LogReporter } from "@lage-run/reporters";
 import { SimpleScheduler } from "@lage-run/scheduler";
-import { TargetGraph } from "@lage-run/target-graph";
-import createLogger, { Logger, LogLevel, Reporter } from "@lage-run/logger";
-import type { ReporterInitOptions } from "@lage-run/reporters";
-import { filterArgsForTasks } from "./filterArgsForTasks";
-import { createTargetGraph } from "./createTargetGraph";
-import { createCache } from "./createCacheProvider";
-import { SchedulerRunSummary, TargetScheduler } from "@lage-run/scheduler-types";
 import { watch } from "./watcher";
+
+import createLogger, { LogLevel, Reporter } from "@lage-run/logger";
+
+import type { ReporterInitOptions } from "@lage-run/reporters";
+import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 
 interface RunOptions extends ReporterInitOptions {
   concurrency: number;
@@ -73,6 +74,8 @@ export async function watchAction(options: RunOptions, command: Command) {
     skipLocalCache: false,
   });
 
+  const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
+
   const scheduler = new SimpleScheduler({
     logger,
     concurrency: options.concurrency,
@@ -81,7 +84,7 @@ export async function watchAction(options: RunOptions, command: Command) {
     continueOnError: true,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}),
+    maxWorkersPerTask: getMaxWorkersPerTask(filteredPipeline, options.concurrency),
     runners: {
       npmScript: {
         script: require.resolve("./runners/NpmScriptRunner"),
