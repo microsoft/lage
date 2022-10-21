@@ -79,4 +79,30 @@ describe("getMaxWorkersPerTask", () => {
     // undefined here means the remaining workers just picked up by the AggregatePool (concurrency - maxWorkers)
     expect(maxWorkersPerTask.get("test")).toBeUndefined();
   });
+
+  it("throws if there just aren't enough cores to handle the tasks", () => {
+    const testAction = () =>
+      getMaxWorkersPerTask(
+        {
+          build: {
+            maxWorkers: 1,
+          },
+
+          test: {
+            maxWorkers: 1,
+          },
+
+          lint: {
+            maxWorkers: 1,
+          },
+
+          bundle: {
+            maxWorkers: 1,
+          },
+        },
+        3
+      );
+
+    expect(testAction).toThrow();
+  });
 });
