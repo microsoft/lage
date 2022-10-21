@@ -74,13 +74,6 @@ export async function runAction(options: RunOptions, command: Command) {
 
   logger.verbose(`Running with ${options.concurrency} workers`);
 
-  const filterdPipeline: PipelineDefinition = {};
-  for (const [task, definition] of Object.entries(config.pipeline)) {
-    if (tasks.includes(task)) {
-      filterdPipeline[task] = definition;
-    }
-  }
-
   const scheduler = new SimpleScheduler({
     logger,
     concurrency: options.concurrency,
