@@ -3,13 +3,18 @@ import type { ConfigOptions } from "../types/ConfigOptions";
 export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], concurrency: number) {
   const maxWorkersPerTask = new Map<string, number>();
 
-  let total = 0;
+  let generalPoolCount = 0;
+  let generatelPoolMaxWorkers = 0;
+
+  let dedicatedPoolCount = 0;
+  let dedicatedPoolMaxWorkers = 0;
 
   for (const [task, taskConfig] of Object.entries(pipelineConfig)) {
     if (!Array.isArray(taskConfig) && !task.includes("#")) {
       const maxWorkerOption: number | undefined = taskConfig.maxWorkers ?? taskConfig.options?.maxWorkers;
 
       if (typeof maxWorkerOption === "undefined") {
+        generalPoolCount++;
         continue;
       }
 
@@ -22,15 +27,23 @@ export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], 
       }
 
       maxWorkersPerTask.set(task, maxWorkers);
-      total += maxWorkers;
+      dedicatedPoolCount++;
+      dedicatedPoolMaxWorkers += maxWorkers;
     }
   }
 
+  if (dedicatedPoolCount > 0 && generalPoolCount > 0) {
+    const avgMaxWorkers = dedicatedPoolMaxWorkers / dedicatedPoolCount;
+    generatelPoolMaxWorkers = Math.max(1, Math.floor(avgMaxWorkers * generalPoolCount));
+  }
+
+  const grandTotal = dedicatedPoolMaxWorkers + generatelPoolMaxWorkers;
+
   // try to adjust the maxWorkersPerTask to fit the concurrency
-  if (total > concurrency) {
+  if (grandTotal > concurrency) {
     let newTotal = 0;
     for (const [task, maxWorkers] of maxWorkersPerTask.entries()) {
-      const newMaxWorkers = Math.max(1, Math.floor((maxWorkers / total) * concurrency));
+      const newMaxWorkers = Math.max(1, Math.floor((maxWorkers / grandTotal) * concurrency));
       newTotal += newMaxWorkers;
       maxWorkersPerTask.set(task, newMaxWorkers);
     }
