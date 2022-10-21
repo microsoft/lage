@@ -17,7 +17,7 @@ interface AggregatedPoolOptions {
 
 export class AggregatedPool implements Pool {
   readonly groupedPools: Map<string, WorkerPool> = new Map();
-  readonly defaultPool: WorkerPool;
+  readonly defaultPool: WorkerPool | undefined;
 
   constructor(private options: AggregatedPoolOptions) {
     const { maxWorkers, maxWorkersByGroup, script, workerOptions } = options;
@@ -36,7 +36,10 @@ export class AggregatedPool implements Pool {
     }
 
     const defaultPoolWorkersCount = maxWorkers - totalGroupedWorkers;
-    this.defaultPool = new WorkerPool({ maxWorkers: defaultPoolWorkersCount, workerOptions, script });
+
+    if (defaultPoolWorkersCount > 0) {
+      this.defaultPool = new WorkerPool({ maxWorkers: defaultPoolWorkersCount, workerOptions, script });
+    }
 
     this.options.logger.verbose(
       `Workers pools created:  ${[...maxWorkersByGroup.entries()]
@@ -53,6 +56,11 @@ export class AggregatedPool implements Pool {
   ): Promise<unknown> {
     const group = this.options.groupBy(data);
     const pool = this.groupedPools.get(group) ?? this.defaultPool;
+
+    if (!pool) {
+      throw new Error(`No pool found to be able to run ${group} tasks, try adjusting the maxWorkers & concurrency values`);
+    }
+
     return pool.exec(data, setup, cleanup, abortSignal);
   }
 
