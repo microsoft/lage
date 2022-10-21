@@ -51,7 +51,7 @@ export class SimpleScheduler implements TargetScheduler {
       options.pool ??
       new AggregatedPool({
         maxWorkersByGroup: options.maxWorkersPerTask,
-        groupBy: (target) => target.task,
+        groupBy: ({ target }) => target.task,
         maxWorkers: options.concurrency,
         script: require.resolve("./workers/targetWorker"),
         workerOptions: {

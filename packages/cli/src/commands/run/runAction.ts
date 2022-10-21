@@ -7,11 +7,13 @@ import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { initializeReporters } from "@lage-run/reporters";
 import { SimpleScheduler } from "@lage-run/scheduler";
 import createLogger, { Reporter } from "@lage-run/logger";
-import type { ReporterInitOptions } from "@lage-run/reporters";
 import { filterArgsForTasks } from "./filterArgsForTasks";
 import { createTargetGraph } from "./createTargetGraph";
 import { createCache } from "./createCacheProvider";
-import { SchedulerRunSummary } from "@lage-run/scheduler-types";
+
+import type { ReporterInitOptions } from "@lage-run/reporters";
+import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
+import type { PipelineDefinition } from "../../types/PipelineDefinition";
 
 interface RunOptions extends ReporterInitOptions {
   concurrency: number;
@@ -69,6 +71,15 @@ export async function runAction(options: RunOptions, command: Command) {
     cacheOptions: config.cacheOptions,
     skipLocalCache: options.skipLocalCache,
   });
+
+  logger.verbose(`Running with ${options.concurrency} workers`);
+
+  const filterdPipeline: PipelineDefinition = {};
+  for (const [task, definition] of Object.entries(config.pipeline)) {
+    if (tasks.includes(task)) {
+      filterdPipeline[task] = definition;
+    }
+  }
 
   const scheduler = new SimpleScheduler({
     logger,
