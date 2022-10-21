@@ -1,4 +1,3 @@
-import os from "os";
 import type { ConfigOptions } from "../types/ConfigOptions";
 
 export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], concurrency: number) {
@@ -8,7 +7,7 @@ export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], 
 
   for (const [task, taskConfig] of Object.entries(pipelineConfig)) {
     if (!Array.isArray(taskConfig) && !task.includes("#")) {
-      const maxWorkerOption: string | number | undefined = taskConfig.maxWorkers ?? taskConfig.options?.maxWorkers;
+      const maxWorkerOption: number | undefined = taskConfig.maxWorkers ?? taskConfig.options?.maxWorkers;
 
       if (typeof maxWorkerOption === "undefined") {
         continue;
@@ -16,12 +15,8 @@ export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], 
 
       let maxWorkers: number = 0;
 
-      if (typeof maxWorkerOption === "string") {
-        if (maxWorkerOption.endsWith("%")) {
-          maxWorkers = Math.floor(concurrency * (parseInt(maxWorkerOption, 10) / 100));
-        } else {
-          throw new Error(`Invalid maxWorkers value: ${maxWorkerOption}`);
-        }
+      if (typeof maxWorkerOption !== "number") {
+        throw new Error(`Invalid maxWorkers value: ${maxWorkerOption}`);
       } else {
         maxWorkers = maxWorkerOption;
       }
@@ -31,10 +26,20 @@ export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], 
     }
   }
 
+  // try to adjust the maxWorkersPerTask to fit the concurrency
   if (total > concurrency) {
-    throw new Error(
-      `Total maxWorkers (${total}) configured across all tasks exceeds concurrency (${concurrency}). Hint: use percent of concurrency to configure the maxWorkers like this: { maxWorkers: "50%" }`
-    );
+    let newTotal = 0;
+    for (const [task, maxWorkers] of maxWorkersPerTask.entries()) {
+      const newMaxWorkers = Math.max(1, Math.floor((maxWorkers / total) * concurrency));
+      newTotal += newMaxWorkers;
+      maxWorkersPerTask.set(task, newMaxWorkers);
+    }
+
+    if (newTotal > concurrency) {
+      throw new Error(
+        "Could not adjust maxWorkers per task to fit the concurrency, try reducing the maxWorkers, or increasing the --concurrency CLI argument, or separate the tasks to be run"
+      );
+    }
   }
 
   return maxWorkersPerTask;

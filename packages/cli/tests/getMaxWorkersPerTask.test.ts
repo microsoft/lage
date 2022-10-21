@@ -16,44 +16,13 @@ describe("getMaxWorkersPerTask", () => {
     expect(maxWorkersPerTask.get("build")).toBe(5);
   });
 
-  it("parses for percentage", () => {
-    const maxWorkersPerTask = getMaxWorkersPerTask(
-      {
-        build: {
-          options: {
-            maxWorkers: "50%",
-          },
-        },
-      },
-      8
-    );
-
-    expect(maxWorkersPerTask.get("build")).toBe(4);
-  });
-
-  it("can handle if a passed-in string isn't a percentage", () => {
+  it("disallows any form of strings in the maxWorkers configuration", () => {
     const testAction = () =>
       getMaxWorkersPerTask(
         {
           build: {
             options: {
-              maxWorkers: "7",
-            },
-          },
-        },
-        8
-      );
-
-    expect(testAction).toThrow();
-  });
-
-  it("can handle non-number-like strings", () => {
-    const testAction = () =>
-      getMaxWorkersPerTask(
-        {
-          build: {
-            options: {
-              maxWorkers: "foo",
+              maxWorkers: "50%",
             },
           },
         },
@@ -77,9 +46,37 @@ describe("getMaxWorkersPerTask", () => {
             maxWorkers: 20,
           },
         },
-        8
+        9
       );
 
-    expect(testAction).toThrow();
+    expect(testAction).not.toThrow();
+
+    const maxWorkersPerTask = testAction();
+    expect(maxWorkersPerTask.get("build")).toBe(3);
+    expect(maxWorkersPerTask.get("test")).toBe(6);
+  });
+
+  it("can divide maxWorkers for the remaining tasks", () => {
+    const testAction = () =>
+      getMaxWorkersPerTask(
+        {
+          build: {
+            options: {
+              maxWorkers: 3,
+            },
+          },
+
+          test: {},
+        },
+        9
+      );
+
+    expect(testAction).not.toThrow();
+
+    const maxWorkersPerTask = testAction();
+    expect(maxWorkersPerTask.get("build")).toBe(3);
+
+    // undefined here means the remaining workers just picked up by the AggregatePool (concurrency - maxWorkers)
+    expect(maxWorkersPerTask.get("test")).toBeUndefined();
   });
 });
