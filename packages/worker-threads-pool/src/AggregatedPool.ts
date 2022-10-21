@@ -31,7 +31,7 @@ export class AggregatedPool implements Pool {
 
     if (totalGroupedWorkers > maxWorkers) {
       throw new Error(
-        `Total maxWorkers (${totalGroupedWorkers}) configured across all groups exceeds concurrency (${maxWorkers}). Hint: use percent of concurrency to configure the maxWorkers like this: { maxWorkers: "50%" }`
+        `Total maxWorkers (${totalGroupedWorkers}) configured across all groups exceeds concurrency (${maxWorkers}). Try reducing the maxWorkers, or increasing the --concurrency CLI argument, or separate the tasks to be run`
       );
     }
 
