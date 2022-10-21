@@ -11,10 +11,11 @@ import { EventEmitter } from "events";
 import { Worker } from "worker_threads";
 import crypto from "crypto";
 import os from "os";
-import type { Pool } from "./Pool";
+import type { Pool } from "./types/Pool";
 import type { Readable } from "stream";
-import type { WorkerOptions } from "worker_threads";
+
 import type { AbortSignal } from "abort-controller";
+import type { WorkerPoolOptions } from "./types/WorkerPoolOptions";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
@@ -64,12 +65,6 @@ class WorkerPoolTaskInfo extends AsyncResource {
   }
 }
 
-interface WorkerPoolOptions {
-  maxWorkers?: number;
-  script: string;
-  workerOptions?: WorkerOptions;
-}
-
 interface QueueItem {
   setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void;
   cleanup?: (worker: Worker) => void;
@@ -104,7 +99,6 @@ export class WorkerPool extends EventEmitter implements Pool {
   ensureWorkers() {
     if (this.workers.length === 0) {
       const { maxWorkers = os.cpus().length - 1 } = this.options;
-
       for (let i = 0; i < maxWorkers; i++) {
         this.addNewWorker();
       }
@@ -208,6 +202,10 @@ export class WorkerPool extends EventEmitter implements Pool {
     cleanup?: (worker: Worker) => void,
     abortSignal?: AbortSignal
   ) {
+    if (abortSignal?.aborted) {
+      return Promise.resolve();
+    }
+
     return new Promise((resolve, reject) => {
       this.queue.push({ task, resolve, reject, cleanup, setup });
       this._exec(abortSignal);

@@ -15,6 +15,22 @@ class InProcPool implements Pool {
   }
 }
 
+class SingleSchedulePool implements Pool {
+  count = 0;
+  constructor(private runner: TargetRunner, private concurrency: number) {}
+  exec({ target }: { target: Target }) {
+    if (this.concurrency > this.count) {
+      this.count++;
+      return this.runner.run(target);
+    }
+
+    return Promise.reject(new Error("Pool is full"));
+  }
+  close() {
+    return Promise.resolve();
+  }
+}
+
 /**
  * Purely manually managed target graph.
  * 1. It doesn't gaurantee that the targets' dependencies are the same as the graph's dependencies.
@@ -240,7 +256,7 @@ describe("SimpleScheduler", () => {
       shouldCache: true,
       shouldResetCache: false,
       runners: {},
-      pool: new InProcPool(runner),
+      pool: new SingleSchedulePool(runner, 4),
     });
 
     // these would normally come from the CLI
@@ -264,12 +280,13 @@ describe("SimpleScheduler", () => {
         "error": undefined,
         "results": "failed",
         "targetRunByStatus": {
-          "aborted": [],
+          "aborted": [
+            "g#build",
+          ],
           "failed": [],
           "pending": [
             "b#build",
             "d#build",
-            "g#build",
           ],
           "queued": [],
           "running": [],
@@ -312,7 +329,7 @@ describe("SimpleScheduler", () => {
             "target": "f#build",
           },
           "g#build" => {
-            "status": "pending",
+            "status": "aborted",
             "target": "g#build",
           },
         },
