@@ -1,15 +1,16 @@
 import { Command } from "commander";
+import { createCache } from "./createCacheProvider";
 import { createProfileReporter } from "./createProfileReporter";
+import { createTargetGraph } from "./createTargetGraph";
+import { filterArgsForTasks } from "./filterArgsForTasks";
 import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig } from "../../config/getConfig";
 import { getMaxWorkersPerTask } from "../../config/getMaxWorkersPerTask";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { initializeReporters } from "@lage-run/reporters";
 import { SimpleScheduler } from "@lage-run/scheduler";
+
 import createLogger, { Reporter } from "@lage-run/logger";
-import { filterArgsForTasks } from "./filterArgsForTasks";
-import { createTargetGraph } from "./createTargetGraph";
-import { createCache } from "./createCacheProvider";
 
 import type { ReporterInitOptions } from "@lage-run/reporters";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
@@ -74,6 +75,17 @@ export async function runAction(options: RunOptions, command: Command) {
 
   logger.verbose(`Running with ${options.concurrency} workers`);
 
+  const tasksSet = new Set<string>();
+  for (const target of targetGraph.targets.values()) {
+    tasksSet.add(target.task);
+  }
+  const filteredPipeline: PipelineDefinition = {};
+  for (const [id, pipeline] of Object.entries(config.pipeline ?? {})) {
+    if (tasksSet.has(id)) {
+      filteredPipeline[id] = pipeline;
+    }
+  }
+
   const scheduler = new SimpleScheduler({
     logger,
     concurrency: options.concurrency,
@@ -82,7 +94,7 @@ export async function runAction(options: RunOptions, command: Command) {
     continueOnError: options.continue,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}, options.concurrency),
+    maxWorkersPerTask: getMaxWorkersPerTask(filteredPipeline, options.concurrency),
     runners: {
       npmScript: {
         script: require.resolve("./runners/NpmScriptRunner"),

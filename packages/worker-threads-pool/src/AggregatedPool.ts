@@ -2,6 +2,8 @@ import type { AbortSignal } from "abort-controller";
 import type { Readable } from "stream";
 import type { Worker, WorkerOptions } from "worker_threads";
 import type { Pool } from "./types/Pool";
+import { Logger } from "@lage-run/logger";
+
 import { WorkerPool } from "./WorkerPool";
 
 interface AggregatedPoolOptions {
@@ -10,6 +12,7 @@ interface AggregatedPoolOptions {
   maxWorkers: number;
   script: string;
   workerOptions?: WorkerOptions;
+  logger: Logger;
 }
 
 export class AggregatedPool implements Pool {
@@ -32,7 +35,14 @@ export class AggregatedPool implements Pool {
       );
     }
 
-    this.defaultPool = new WorkerPool({ maxWorkers: maxWorkers - totalGroupedWorkers, workerOptions, script });
+    const defaultPoolWorkersCount = maxWorkers - totalGroupedWorkers;
+    this.defaultPool = new WorkerPool({ maxWorkers: defaultPoolWorkersCount, workerOptions, script });
+
+    this.options.logger.verbose(
+      `Workers pools created:  ${[...maxWorkersByGroup.entries()]
+        .map(([group, count]) => `${group} (${count})`)
+        .join(", ")}, default (${defaultPoolWorkersCount})`
+    );
   }
 
   async exec(
