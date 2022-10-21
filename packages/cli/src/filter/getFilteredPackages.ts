@@ -25,31 +25,54 @@ export function getFilteredPackages(options: {
   // If scoped is defined, get scoped packages
   const hasScopes = Array.isArray(scope) && scope.length > 0;
   let scopedPackages: string[] | undefined = undefined;
+  let filteredPackages: string[] | undefined = undefined;
+  let changedPackages: string[] | undefined = undefined;
+  const hasSince = typeof since !== "undefined";
+
+  // If scope is defined, get scoped packages and return
   if (hasScopes) {
     scopedPackages = getScopedPackages(scope!, packageInfos);
+    // return filteredPackages;
+    return filterPackages({
+      logger,
+      packageInfos,
+      scopedPackages,
+      changedPackages,
+      includeDependencies,
+      includeDependents,
+    });
   }
 
-  const hasSince = typeof since !== "undefined";
-  let changedPackages: string[] | undefined = undefined;
-
-  // Be specific with the changed packages only if no repo-wide changes occurred
-  if (hasSince && !hasRepoChanged(since, root, repoWideChanges, logger)) {
+  // If since is defined, get changed packages.
+  if (hasSince) {
     try {
       changedPackages = getChangedPackages(root, since, sinceIgnoreGlobs);
     } catch (e) {
       logger.warn(`An error in the git command has caused this scope run to include every package\n${e}`);
       // if getChangedPackages throws, we will assume all have changed (using changedPackage = undefined)
     }
+    filteredPackages = filterPackages({
+      logger,
+      packageInfos,
+      scopedPackages,
+      changedPackages,
+      includeDependencies,
+      includeDependents,
+    });
+
+    // If the defined repo-wide changes are detected the get all packages and append to the filtered packages.
+    // This alo ensures that the modified packages are always run first.
+    if (hasRepoChanged(since, root, repoWideChanges, logger)) {
+      logger.verbose(
+        `Repo-wide changes detected, running all packages. The following changed packages and their deps (if specified) will be run first: ${filteredPackages.join(
+          ","
+        )}`
+      );
+      filteredPackages = [...new Set(filteredPackages.concat(Object.keys(packageInfos)))];
+    }
   }
 
-  return filterPackages({
-    logger,
-    packageInfos,
-    scopedPackages,
-    changedPackages,
-    includeDependencies,
-    includeDependents,
-  });
+  return filteredPackages;
 }
 
 function hasRepoChanged(since: string, root: string, environmentGlob: string[], logger: Logger) {
