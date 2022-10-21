@@ -32,18 +32,18 @@ describe("JsonReporter", () => {
     const bBuildTarget = createTarget("b", "build");
 
     const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0] }],
+      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0], queueTime: [0, 0] }],
+      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0], queueTime: [0, 0] }],
+      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0], queueTime: [0, 0] }],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
+      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0], queueTime: [0, 0] }],
+      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0], queueTime: [0, 0] }],
+      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
     ] as [TargetStatusEntry | TargetMessageEntry, string?][];
 
     for (const log of logs) {
@@ -60,6 +60,10 @@ describe("JsonReporter", () => {
         {
           "data": {
             "duration": [
+              0,
+              0,
+            ],
+            "queueTime": [
               0,
               0,
             ],
@@ -89,6 +93,10 @@ describe("JsonReporter", () => {
               0,
               0,
             ],
+            "queueTime": [
+              0,
+              0,
+            ],
             "startTime": [
               1,
               0,
@@ -112,6 +120,10 @@ describe("JsonReporter", () => {
         {
           "data": {
             "duration": [
+              0,
+              0,
+            ],
+            "queueTime": [
               0,
               0,
             ],
@@ -249,6 +261,10 @@ describe("JsonReporter", () => {
               10,
               0,
             ],
+            "queueTime": [
+              0,
+              0,
+            ],
             "startTime": [
               0,
               0,
@@ -275,6 +291,10 @@ describe("JsonReporter", () => {
               30,
               0,
             ],
+            "queueTime": [
+              0,
+              0,
+            ],
             "startTime": [
               2,
               0,
@@ -299,6 +319,10 @@ describe("JsonReporter", () => {
           "data": {
             "duration": [
               60,
+              0,
+            ],
+            "queueTime": [
+              0,
               0,
             ],
             "startTime": [
@@ -338,18 +362,18 @@ describe("JsonReporter", () => {
     const bBuildTarget = createTarget("b", "build");
 
     const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0] }],
+      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0], queueTime: [0, 0] }],
+      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0], queueTime: [0, 0] }],
+      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0], queueTime: [0, 0] }],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
+      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0], queueTime: [0, 0] }],
+      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0], queueTime: [0, 0] }],
+      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
     ] as [TargetStatusEntry | TargetMessageEntry, string?][];
 
     for (const log of logs) {
@@ -375,11 +399,12 @@ describe("JsonReporter", () => {
         running: [],
         aborted: [],
         skipped: [],
+        queued: [],
       },
       targetRuns: new Map([
-        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
-        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0] }],
-        [bBuildTarget.id, { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0] }],
+        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
+        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
+        [bBuildTarget.id, { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
       ]),
     });
 

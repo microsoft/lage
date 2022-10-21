@@ -2,6 +2,69 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Fri, 21 Oct 2022 19:33:09 GMT",
+      "tag": "@lage-run/reporters_v0.2.25",
+      "version": "0.2.25",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/reporters",
+            "commit": "e702680c6e9fbd423e92b34d7fbb989a3c06e69c",
+            "comment": "Fixing Azure DevOps reporter to display grouping correctly"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 20 Oct 2022 00:22:27 GMT",
+      "tag": "@lage-run/reporters_v0.2.24",
+      "version": "0.2.24",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.11",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.4.3",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 12 Oct 2022 21:07:14 GMT",
+      "tag": "@lage-run/reporters_v0.2.23",
+      "version": "0.2.23",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "933546a2096fe5e84132293dd1524ea4beb09ee5",
+            "comment": "use the separate format-hrtime package as well as display queue time separately"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.10",
+            "commit": "933546a2096fe5e84132293dd1524ea4beb09ee5"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/format-hrtime to v0.1.1",
+            "commit": "933546a2096fe5e84132293dd1524ea4beb09ee5"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 08 Oct 2022 17:43:37 GMT",
       "tag": "@lage-run/reporters_v0.2.22",
       "version": "0.2.22",

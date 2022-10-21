@@ -2,6 +2,75 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Fri, 21 Oct 2022 19:33:09 GMT",
+      "tag": "@lage-run/scheduler_v0.4.11",
+      "version": "0.4.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/scheduler",
+            "commit": "e702680c6e9fbd423e92b34d7fbb989a3c06e69c",
+            "comment": "fixing ado logger"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 20 Oct 2022 00:22:27 GMT",
+      "tag": "@lage-run/scheduler_v0.4.10",
+      "version": "0.4.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/target-graph to v0.4.3",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v0.1.20",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.11",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 12 Oct 2022 21:07:14 GMT",
+      "tag": "@lage-run/scheduler_v0.4.9",
+      "version": "0.4.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "933546a2096fe5e84132293dd1524ea4beb09ee5",
+            "comment": "uses the separate package for formatting hrtime"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/format-hrtime to v0.1.1",
+            "commit": "933546a2096fe5e84132293dd1524ea4beb09ee5"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.10",
+            "commit": "933546a2096fe5e84132293dd1524ea4beb09ee5"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 08 Oct 2022 19:11:01 GMT",
       "tag": "@lage-run/scheduler_v0.4.8",
       "version": "0.4.8",

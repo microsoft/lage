@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Thu, 06 Oct 2022 16:07:29 GMT and should not be manually modified.
+This log was last generated on Thu, 20 Oct 2022 00:22:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.20
+
+Thu, 20 Oct 2022 00:22:27 GMT
+
+### Patches
+
+- Allows for target specific environmentGlob override (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.4.3
 
 ## 0.1.19
 
