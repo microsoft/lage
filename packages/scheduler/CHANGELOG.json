@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Fri, 21 Oct 2022 19:33:09 GMT",
+      "tag": "@lage-run/scheduler_v0.4.11",
+      "version": "0.4.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/scheduler",
+            "commit": "e702680c6e9fbd423e92b34d7fbb989a3c06e69c",
+            "comment": "fixing ado logger"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 Oct 2022 00:22:27 GMT",
       "tag": "@lage-run/scheduler_v0.4.10",
       "version": "0.4.10",

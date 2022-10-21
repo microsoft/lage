@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fixing Azure DevOps reporter to display grouping correctly",
-  "packageName": "@lage-run/reporters",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

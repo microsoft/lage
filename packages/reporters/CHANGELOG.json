@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Fri, 21 Oct 2022 19:33:09 GMT",
+      "tag": "@lage-run/reporters_v0.2.25",
+      "version": "0.2.25",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/reporters",
+            "commit": "e702680c6e9fbd423e92b34d7fbb989a3c06e69c",
+            "comment": "Fixing Azure DevOps reporter to display grouping correctly"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 Oct 2022 00:22:27 GMT",
       "tag": "@lage-run/reporters_v0.2.24",
       "version": "0.2.24",

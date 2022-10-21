@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixing ado logger",
-  "packageName": "@lage-run/scheduler",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
