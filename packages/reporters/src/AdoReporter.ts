@@ -72,7 +72,7 @@ export class AdoReporter implements Reporter {
     }
 
     if (this.options.logLevel! >= entry.level) {
-      if (this.options.grouped) {
+      if (this.options.grouped && entry.data?.target) {
         return this.logTargetEntryByGroup(entry);
       }
 
@@ -119,14 +119,15 @@ export class AdoReporter implements Reporter {
         case "queued":
           return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.warn("…")} aborted ${pkgTask}`)));
       }
-    } else {
-      // this is a generic log
+    } else if (entry?.data?.target) {
       const { target } = data;
       const { packageName, task } = target;
       const normalizedArgs = this.options.grouped
         ? normalize(entry.msg)
         : normalize(getTaskLogPrefix(packageName ?? "<root>", task), entry.msg);
       return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn("|  " + normalizedArgs.message)));
+    } else {
+      return this.logStream.write(format(entry.level, "", entry.msg));
     }
   }
 
