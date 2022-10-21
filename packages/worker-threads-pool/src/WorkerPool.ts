@@ -15,7 +15,7 @@ import type { Pool } from "./types/Pool";
 import type { Readable } from "stream";
 
 import type { AbortSignal } from "abort-controller";
-import { WorkerPoolOptions } from "./types/WorkerPoolOptions";
+import type { WorkerPoolOptions } from "./types/WorkerPoolOptions";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
