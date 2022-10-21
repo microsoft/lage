@@ -88,7 +88,7 @@ export class WrappedTarget implements TargetRun {
     this.options.logger.info("failed", {
       target: this.target,
       status: "failed",
-      duration: hrToSeconds(this.duration),
+      duration: this.duration,
     });
 
     if (!this.options.continueOnError && this.options.abortController) {
@@ -102,7 +102,7 @@ export class WrappedTarget implements TargetRun {
     this.options.logger.info(`skipped`, {
       target: this.target,
       status: "skipped",
-      duration: hrToSeconds(this.duration),
+      duration: this.duration,
       hash,
     });
   }
