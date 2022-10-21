@@ -78,7 +78,7 @@ export async function runAction(options: RunOptions, command: Command) {
     continueOnError: options.continue,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}),
+    maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}, options.concurrency),
     runners: {
       npmScript: {
         script: require.resolve("./runners/NpmScriptRunner"),

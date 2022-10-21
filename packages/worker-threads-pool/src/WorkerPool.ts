@@ -11,10 +11,11 @@ import { EventEmitter } from "events";
 import { Worker } from "worker_threads";
 import crypto from "crypto";
 import os from "os";
-import type { Pool } from "./Pool";
+import type { Pool } from "./types/Pool";
 import type { Readable } from "stream";
-import type { WorkerOptions } from "worker_threads";
+
 import type { AbortSignal } from "abort-controller";
+import { WorkerPoolOptions } from "./types/WorkerPoolOptions";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
@@ -62,12 +63,6 @@ class WorkerPoolTaskInfo extends AsyncResource {
 
     this.emitDestroy();
   }
-}
-
-interface WorkerPoolOptions {
-  maxWorkers?: number;
-  script: string;
-  workerOptions?: WorkerOptions;
 }
 
 interface QueueItem {

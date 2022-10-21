@@ -2,7 +2,6 @@ import { AbortController } from "abort-controller";
 import { categorizeTargetRuns } from "./categorizeTargetRuns";
 import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
 import { WrappedTarget } from "./WrappedTarget";
-import { WorkerPool } from "@lage-run/worker-threads-pool";
 
 import type { AbortSignal } from "abort-controller";
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
@@ -11,6 +10,7 @@ import type { TargetGraph, Target } from "@lage-run/target-graph";
 import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "@lage-run/scheduler-types";
 import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker";
+import { AggregatedPool } from "@lage-run/worker-threads-pool";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -49,7 +49,9 @@ export class SimpleScheduler implements TargetScheduler {
   constructor(private options: SimpleSchedulerOptions) {
     this.pool =
       options.pool ??
-      new WorkerPool({
+      new AggregatedPool({
+        maxWorkersByGroup: options.maxWorkersPerTask,
+        groupBy: (target) => target.task,
         maxWorkers: options.concurrency,
         script: require.resolve("./workers/targetWorker"),
         workerOptions: {
@@ -170,8 +172,6 @@ export class SimpleScheduler implements TargetScheduler {
   }
 
   getReadyTargets() {
-    const { maxWorkersPerTask, concurrency } = this.options;
-
     const readyTargets: WrappedTarget[] = [];
 
     const runningTargets = this.targetsByPriority.filter((target) => this.targetRuns.get(target.id)!.status === "running");
@@ -196,9 +196,7 @@ export class SimpleScheduler implements TargetScheduler {
         return fromTarget.status === "success" || fromTarget.status === "skipped" || dep === getStartTargetId();
       });
 
-      const maxWorkers = maxWorkersPerTask.get(target.task) ?? concurrency;
-
-      if (ready && targetRun.status === "pending" && (runningTargetsCountByTask[target.task] ?? 0) < maxWorkers) {
+      if (ready && targetRun.status === "pending") {
         readyTargets.push(targetRun);
         runningTargetsCountByTask[target.task] = (runningTargetsCountByTask[target.task] ?? 0) + 1;
       }

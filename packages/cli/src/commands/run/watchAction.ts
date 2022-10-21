@@ -1,18 +1,16 @@
 import { Command } from "commander";
-import { createProfileReporter } from "./createProfileReporter";
 import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig } from "../../config/getConfig";
 import { getMaxWorkersPerTask } from "../../config/getMaxWorkersPerTask";
-import { getPackageInfos, getWorkspaceRoot, PackageInfos } from "workspace-tools";
-import { initializeReporters, LogReporter } from "@lage-run/reporters";
+import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { LogReporter } from "@lage-run/reporters";
 import { SimpleScheduler } from "@lage-run/scheduler";
-import { TargetGraph } from "@lage-run/target-graph";
-import createLogger, { Logger, LogLevel, Reporter } from "@lage-run/logger";
+import createLogger, { LogLevel, Reporter } from "@lage-run/logger";
 import type { ReporterInitOptions } from "@lage-run/reporters";
 import { filterArgsForTasks } from "./filterArgsForTasks";
 import { createTargetGraph } from "./createTargetGraph";
 import { createCache } from "./createCacheProvider";
-import { SchedulerRunSummary, TargetScheduler } from "@lage-run/scheduler-types";
+import { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import { watch } from "./watcher";
 
 interface RunOptions extends ReporterInitOptions {
@@ -81,7 +79,7 @@ export async function watchAction(options: RunOptions, command: Command) {
     continueOnError: true,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}),
+    maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}, options.concurrency),
     runners: {
       npmScript: {
         script: require.resolve("./runners/NpmScriptRunner"),
