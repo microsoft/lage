@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Creates a new AggregatedPool that abstracts different pools that take on tasks grouped by task name",
-  "packageName": "@lage-run/worker-threads-pool",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

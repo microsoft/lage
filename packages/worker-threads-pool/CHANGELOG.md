@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Thu, 06 Oct 2022 04:37:18 GMT and should not be manually modified.
+This log was last generated on Fri, 21 Oct 2022 21:36:38 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.0
+
+Fri, 21 Oct 2022 21:36:38 GMT
+
+### Minor changes
+
+- Creates a new AggregatedPool that abstracts different pools that take on tasks grouped by task name (ken@gizzar.com)
 
 ## 0.1.7
 

@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Fri, 21 Oct 2022 21:36:38 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "735930e09c2fdf476c3f2c56c1c05062401097b8",
+            "comment": "Creates a new AggregatedPool that abstracts different pools that take on tasks grouped by task name"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Oct 2022 04:37:18 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.1.7",
       "version": "0.1.7",

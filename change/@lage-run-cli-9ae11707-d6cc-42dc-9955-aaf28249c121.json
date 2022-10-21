@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "pipelines with maxWorker now create separate pools",
-  "packageName": "@lage-run/cli",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

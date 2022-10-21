@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "uses new AggregatePool",
-  "packageName": "@lage-run/scheduler",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
