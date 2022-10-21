@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 21 Oct 2022 23:04:34 GMT",
+      "tag": "@lage-run/cli_v0.4.17",
+      "version": "0.4.17",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "d93d94b25f3b157dedc555f836b66ee547500cd5",
+            "comment": "fixing the max worker again - this time we need to account for general pool availability"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 21 Oct 2022 21:36:38 GMT",
       "tag": "@lage-run/cli_v0.4.16",
       "version": "0.4.16",

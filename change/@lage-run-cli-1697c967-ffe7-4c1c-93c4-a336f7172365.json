@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixing the max worker again - this time we need to account for general pool availability",
-  "packageName": "@lage-run/cli",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
