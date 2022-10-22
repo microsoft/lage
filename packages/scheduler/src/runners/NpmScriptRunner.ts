@@ -2,11 +2,10 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { readFile } from "fs/promises";
 import { spawn } from "child_process";
-import type { TargetRunner } from "@lage-run/scheduler-types";
-import type { AbortSignal } from "abort-controller";
+import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
 import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";
-import { TargetRunnerOptions } from "@lage-run/scheduler-types/lib/types/TargetRunner";
+
 export interface NpmScriptRunnerOptions {
   taskArgs: string[];
   nodeOptions: string;

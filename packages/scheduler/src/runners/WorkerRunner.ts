@@ -1,5 +1,4 @@
-import type { TargetRunner } from "@lage-run/scheduler-types";
-import { TargetRunnerOptions } from "@lage-run/scheduler-types/lib/types/TargetRunner";
+import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
 
 /**
  * Creates a workerpool per target task definition of "type: worker"

@@ -1,6 +1,5 @@
 import { bufferTransform } from "./bufferTransform";
 import { getLageOutputCacheLocation } from "./getLageOutputCacheLocation";
-import { hrToSeconds } from "@lage-run/format-hrtime";
 import { LogLevel } from "@lage-run/logger";
 
 import fs from "fs";
@@ -141,7 +140,7 @@ export class WrappedTarget implements TargetRun {
   }
 
   async run() {
-    const { target, logger, shouldCache, abortController, pool } = this.options;
+    const { target, logger, shouldCache, abortController } = this.options;
 
     this.onQueued();
 
