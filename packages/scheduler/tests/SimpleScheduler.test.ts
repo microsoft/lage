@@ -21,7 +21,7 @@ class SingleSchedulePool implements Pool {
   exec({ target }: { target: Target }) {
     if (this.concurrency > this.count) {
       this.count++;
-      return this.runner.run(target);
+      return this.runner.run({ target });
     }
 
     return Promise.reject(new Error("Pool is full"));
