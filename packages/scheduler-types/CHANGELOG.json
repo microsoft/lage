@@ -2,6 +2,33 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Sun, 23 Oct 2022 04:31:57 GMT",
+      "tag": "@lage-run/scheduler-types_v0.1.13",
+      "version": "0.1.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb",
+            "comment": "adds shard support"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.4.4",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/cache to v0.1.21",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 21 Oct 2022 21:36:38 GMT",
       "tag": "@lage-run/scheduler-types_v0.1.12",
       "version": "0.1.12",

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "calculate shard count",
-  "packageName": "@lage-run/target-graph",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

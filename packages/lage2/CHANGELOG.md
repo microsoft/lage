@@ -1,8 +1,16 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Sat, 08 Oct 2022 17:43:37 GMT and should not be manually modified.
+This log was last generated on Sun, 23 Oct 2022 04:31:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.4.0
+
+Sun, 23 Oct 2022 04:31:57 GMT
+
+### Minor changes
+
+- Adds Sharding Support (ken@gizzar.com)
 
 ## 2.3.0
 

@@ -2,6 +2,45 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Sun, 23 Oct 2022 04:31:57 GMT",
+      "tag": "@lage-run/cli_v0.4.18",
+      "version": "0.4.18",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb",
+            "comment": "Adds support for the CLI to configure the maxWorkersPerTask via --max-workers-per-task"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.4.13",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.4.4",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.21",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.27",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 21 Oct 2022 23:04:34 GMT",
       "tag": "@lage-run/cli_v0.4.17",
       "version": "0.4.17",

@@ -1,8 +1,20 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Fri, 21 Oct 2022 23:04:34 GMT and should not be manually modified.
+This log was last generated on Sun, 23 Oct 2022 04:31:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.18
+
+Sun, 23 Oct 2022 04:31:57 GMT
+
+### Patches
+
+- Adds support for the CLI to configure the maxWorkersPerTask via --max-workers-per-task (ken@gizzar.com)
+- Bump @lage-run/scheduler to v0.4.13
+- Bump @lage-run/target-graph to v0.4.4
+- Bump @lage-run/cache to v0.1.21
+- Bump @lage-run/reporters to v0.2.27
 
 ## 0.4.17
 

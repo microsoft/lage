@@ -18,7 +18,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@lage-run/cli": "^0.4.17"
+    "@lage-run/cli": "^0.4.18"
   },
   "devDependencies": {
     "memory-streams": "0.1.3"

@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cli",
-  "version": "0.4.17",
+  "version": "0.4.18",
   "description": "Command Line Interface for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -19,10 +19,10 @@
   "dependencies": {
     "@lage-run/find-npm-client": "^0.1.1",
     "@lage-run/logger": "^1.2.0",
-    "@lage-run/scheduler": "^0.4.12",
-    "@lage-run/target-graph": "^0.4.3",
-    "@lage-run/cache": "^0.1.20",
-    "@lage-run/reporters": "^0.2.26",
+    "@lage-run/scheduler": "^0.4.13",
+    "@lage-run/target-graph": "^0.4.4",
+    "@lage-run/cache": "^0.1.21",
+    "@lage-run/reporters": "^0.2.27",
     "commander": "^9.4.0",
     "workspace-tools": "^0.28.0",
     "chokidar": "3.5.3"

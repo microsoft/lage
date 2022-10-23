@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "adds shard support",
-  "packageName": "@lage-run/scheduler-types",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

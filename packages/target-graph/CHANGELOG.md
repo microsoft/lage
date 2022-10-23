@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Thu, 20 Oct 2022 00:22:27 GMT and should not be manually modified.
+This log was last generated on Sun, 23 Oct 2022 04:31:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.4
+
+Sun, 23 Oct 2022 04:31:57 GMT
+
+### Patches
+
+- calculate shard count (ken@gizzar.com)
 
 ## 0.4.3
 

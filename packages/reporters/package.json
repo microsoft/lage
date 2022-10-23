@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/reporters",
-  "version": "0.2.26",
+  "version": "0.2.27",
   "description": "Log reporters for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@lage-run/logger": "^1.2.0",
-    "@lage-run/scheduler-types": "^0.1.12",
-    "@lage-run/target-graph": "^0.4.3",
+    "@lage-run/scheduler-types": "^0.1.13",
+    "@lage-run/target-graph": "^0.4.4",
     "@lage-run/format-hrtime": "^0.1.1",
     "chalk": "^4.0.0",
     "ansi-regex": "^5.0.1",

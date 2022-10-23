@@ -1,8 +1,18 @@
 # Change Log - @lage-run/scheduler-types
 
-This log was last generated on Fri, 21 Oct 2022 21:36:38 GMT and should not be manually modified.
+This log was last generated on Sun, 23 Oct 2022 04:31:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.13
+
+Sun, 23 Oct 2022 04:31:57 GMT
+
+### Patches
+
+- adds shard support (ken@gizzar.com)
+- Bump @lage-run/target-graph to v0.4.4
+- Bump @lage-run/cache to v0.1.21
 
 ## 0.1.12
 

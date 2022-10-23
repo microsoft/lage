@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Sun, 23 Oct 2022 04:31:57 GMT",
+      "tag": "@lage-run/target-graph_v0.4.4",
+      "version": "0.4.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/target-graph",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb",
+            "comment": "calculate shard count"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 Oct 2022 00:22:27 GMT",
       "tag": "@lage-run/target-graph_v0.4.3",
       "version": "0.4.3",
