@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Adds Sharding Support",
+  "packageName": "@lage-run/lage",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}

@@ -17,6 +17,7 @@ interface RunOptions extends ReporterInitOptions {
   nodeArg: string;
   ignore: string[];
   unstableWatch: boolean;
+  maxWorkersPerTask: string[];
 }
 
 export async function action(options: RunOptions, command: Command) {

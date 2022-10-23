@@ -18,13 +18,19 @@ function createTarget(packageName: string): Target {
     id: `${packageName}#build`,
     task: "build",
     packageName,
+    shards: 1,
   };
 }
 
 class InProcPool implements Pool {
   constructor(private runner: TargetRunner) {}
-  exec({ target }: { target: Target }, _setup, _teardown, abortSignal?: AbortSignal) {
-    return this.runner.run(target, abortSignal);
+  exec(
+    { target, shardIndex, shardCount }: { target: Target; shardIndex: number; shardCount: number },
+    _setup,
+    _teardown,
+    abortSignal?: AbortSignal
+  ) {
+    return this.runner.run({ target, abortSignal, shardIndex, shardCount });
   }
   close() {
     return Promise.resolve();
@@ -43,13 +49,13 @@ describe("WrappedTarget", () => {
     } as CacheProvider;
 
     const hasher = {
-      hash(target: Target) {},
+      hash(_target: Target) {},
     } as TargetHasher;
 
     const logger = new Logger();
 
     const runner = {
-      async run(target: Target, abortSignal?: AbortSignal) {
+      async run() {
         // nothing
       },
     } as TargetRunner;
@@ -94,7 +100,7 @@ describe("WrappedTarget", () => {
     const wrappedTargets: WrappedTarget[] = [];
 
     const runner = {
-      async run(target: Target, abortSignal?: AbortSignal) {
+      async run() {
         // nothing
       },
     } as TargetRunner;
@@ -147,7 +153,7 @@ describe("WrappedTarget", () => {
     const wrappedTargets: WrappedTarget[] = [];
 
     const runner = {
-      async run(target: Target, abortSignal?: AbortSignal) {
+      async run({ target }) {
         // nothing
         if (target.packageName === "a") {
           throw oops;
@@ -207,7 +213,7 @@ describe("WrappedTarget", () => {
     const oops = new Error("oops");
 
     const runner = {
-      run(target: Target, abortSignal?: AbortSignal) {
+      run({ target, abortSignal }) {
         return new Promise((resolve, reject) => {
           if (target.packageName === "a") {
             reject(oops);
@@ -268,7 +274,7 @@ describe("WrappedTarget", () => {
     const logger = new Logger();
 
     const runner = {
-      async run(target: Target, abortSignal?: AbortSignal) {
+      async run() {
         // nothing
       },
     } as TargetRunner;
@@ -291,5 +297,141 @@ describe("WrappedTarget", () => {
     await wrappedTarget.run();
 
     expect(wrappedTarget.status).toBe("skipped");
+  });
+
+  it("will run shards with proper shard counts", async () => {
+    const cacheProvider = {
+      async clear() {},
+      async fetch() {
+        return true;
+      },
+      async purge() {},
+      async put() {},
+    } as CacheProvider;
+
+    const hasher = {
+      async hash(target: Target) {
+        return "xyz";
+      },
+    } as TargetHasher;
+
+    const logger = new Logger();
+
+    const runner = {
+      run: jest.fn().mockResolvedValue(true),
+    } as TargetRunner;
+
+    const wrappedTarget = new WrappedTarget({
+      abortController: new AbortController(),
+      cacheProvider,
+      continueOnError: false,
+      hasher,
+      logger,
+      root: process.cwd(),
+      shouldCache: true,
+      shouldResetCache: false,
+      target: { ...createTarget("a"), cache: false, shards: 10 },
+      pool: new InProcPool(runner),
+    });
+
+    expect(wrappedTarget.status).toBe("pending");
+
+    await wrappedTarget.run();
+
+    expect(runner.run).toHaveBeenCalledTimes(10);
+  });
+
+  it("will skip shards if cached", async () => {
+    const cacheProvider = {
+      async clear() {},
+      async fetch() {
+        return true;
+      },
+      async purge() {},
+      async put() {},
+    } as CacheProvider;
+
+    const hasher = {
+      async hash(target: Target) {
+        return "xyz";
+      },
+    } as TargetHasher;
+
+    const logger = new Logger();
+
+    const runner = {
+      run: jest.fn().mockResolvedValue(true),
+    } as TargetRunner;
+
+    const wrappedTarget = new WrappedTarget({
+      abortController: new AbortController(),
+      cacheProvider,
+      continueOnError: false,
+      hasher,
+      logger,
+      root: process.cwd(),
+      shouldCache: true,
+      shouldResetCache: false,
+      target: { ...createTarget("a"), cache: true, shards: 10 },
+      pool: new InProcPool(runner),
+    });
+
+    expect(wrappedTarget.status).toBe("pending");
+
+    await wrappedTarget.run();
+
+    expect(runner.run).toHaveBeenCalledTimes(0);
+  });
+
+  it("will call the runner with the proper shardIndex and shardCount", async () => {
+    const cacheProvider = {
+      async clear() {},
+      async fetch() {
+        return true;
+      },
+      async purge() {},
+      async put() {},
+    } as CacheProvider;
+
+    const hasher = {
+      async hash(target: Target) {
+        return "xyz";
+      },
+    } as TargetHasher;
+
+    const logger = new Logger();
+
+    const runner = {
+      run: jest.fn().mockResolvedValue(true),
+    } as TargetRunner;
+
+    const target = { ...createTarget("a"), cache: false, shards: 3 };
+    const abortController = new AbortController();
+
+    const wrappedTarget = new WrappedTarget({
+      abortController,
+      cacheProvider,
+      continueOnError: false,
+      hasher,
+      logger,
+      root: process.cwd(),
+      shouldCache: true,
+      shouldResetCache: false,
+      target,
+      pool: new InProcPool(runner),
+    });
+
+    expect(wrappedTarget.status).toBe("pending");
+
+    await wrappedTarget.run();
+
+    const mockedRun = (runner.run as jest.Mock).mock;
+
+    expect(mockedRun.calls[0][0].shardIndex).toBe(1);
+    expect(mockedRun.calls[0][0].shardCount).toBe(3);
+    expect(mockedRun.calls[1][0].shardIndex).toBe(2);
+    expect(mockedRun.calls[1][0].shardCount).toBe(3);
+    expect(mockedRun.calls[2][0].shardIndex).toBe(3);
+    expect(mockedRun.calls[2][0].shardCount).toBe(3);
   });
 });

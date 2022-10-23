@@ -1,6 +1,4 @@
-import type { AbortSignal } from "abort-controller";
-import type { Target } from "@lage-run/target-graph";
-import type { TargetRunner } from "@lage-run/scheduler-types";
+import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
 
 /**
  * Creates a workerpool per target task definition of "type: worker"
@@ -40,12 +38,13 @@ import type { TargetRunner } from "@lage-run/scheduler-types";
 export class WorkerRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
 
-  async run(target: Target, abortSignal?: AbortSignal) {
-    if (!target.options?.worker) {
-      throw new Error('WorkerRunner: "worker" configuration is required - e.g. { type: "worker", worker: "./worker.js" }');
-    }
-
+  async run(runOptions: TargetRunnerOptions) {
+    const { target, abortSignal, shardIndex, shardCount } = runOptions;
     const scriptFile = target.options?.worker ?? target.options?.script;
+
+    if (!scriptFile) {
+      throw new Error('WorkerRunner: "script" configuration is required - e.g. { type: "worker", script: "./worker.js" }');
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const scriptModule = require(scriptFile);
@@ -55,6 +54,6 @@ export class WorkerRunner implements TargetRunner {
       throw new Error("WorkerRunner: worker script must export a function; you likely need to use `module.exports = function() {...}`");
     }
 
-    await runFn({ target, abortSignal });
+    await runFn({ target, abortSignal, shardIndex, shardCount });
   }
 }

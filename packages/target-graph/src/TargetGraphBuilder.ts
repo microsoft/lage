@@ -10,6 +10,7 @@ import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target";
 import type { TargetConfig } from "./types/TargetConfig";
 import { detectCycles } from "./detectCycles";
+import { calculateShardCount } from "./calculateShardCount";
 
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
@@ -53,7 +54,7 @@ export class TargetGraphBuilder {
     const { options, dependsOn, deps, inputs, outputs, priority, maxWorkers, environmentGlob, shards } = config;
     const { task } = getPackageAndTask(id);
     const targetId = getTargetId(undefined, task);
-    return {
+    const target = {
       id: targetId,
       label: targetId,
       type: config.type,
@@ -70,9 +71,13 @@ export class TargetGraphBuilder {
       priority,
       maxWorkers,
       environmentGlob,
-      shards,
       options,
+      shards: 1,
     };
+
+    target.shards = calculateShardCount(target, shards);
+
+    return target;
   }
 
   /**
@@ -85,7 +90,7 @@ export class TargetGraphBuilder {
   private createPackageTarget(packageName: string, task: string, config: TargetConfig): Target {
     const { options, dependsOn, deps, cache, inputs, outputs, priority, maxWorkers, environmentGlob, shards } = config;
     const info = this.packageInfos[packageName];
-    return {
+    const target = {
       id: getTargetId(packageName, task),
       label: `${packageName} - ${task}`,
       type: config.type,
@@ -101,9 +106,13 @@ export class TargetGraphBuilder {
       priority,
       maxWorkers,
       environmentGlob,
-      shards,
+      shards: 1,
       options,
     };
+
+    target.shards = calculateShardCount(target, shards);
+
+    return target;
   }
 
   /**
@@ -231,6 +240,7 @@ export class TargetGraphBuilder {
       dependencies: [],
       dependents: [],
       depSpecs: [],
+      shards: 1,
     } as Target);
 
     const subGraphEdges = this.createSubGraph(tasks, scope);
