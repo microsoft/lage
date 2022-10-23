@@ -184,7 +184,8 @@ export class WrappedTarget implements TargetRun {
         logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`, { target });
       }
 
-      const shardCount = this.target.shards ?? 1;
+      const shardCount = this.target.shards;
+
       const shardPromises: Promise<{ stdoutBuffer: string; stderrBuffer: string }>[] = [];
       for (let shardIndex = 1; shardIndex <= shardCount; shardIndex++) {
         shardPromises.push(this.runShard(shardIndex, shardCount));

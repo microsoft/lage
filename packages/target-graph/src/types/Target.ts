@@ -65,7 +65,7 @@ export interface Target {
   /**
    * How many shards to split tasks into
    */
-  shards?: number;
+  shards: number;
 
   /**
    * Run options for the Target

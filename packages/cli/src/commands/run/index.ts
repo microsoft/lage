@@ -20,6 +20,7 @@ addLoggerOptions(runCommand)
     },
     os.cpus().length - 1
   )
+  .option("--max-workers-per-task <maxWorkersPerTarget...>", "set max worker per task, e.g. --max-workers-per-task build=2 test=4", [])
   // Common Options
   .option("--scope <scope...>", "scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)")
   .option("--no-deps|--no-dependents", "disables running any dependents of the scoped packages")

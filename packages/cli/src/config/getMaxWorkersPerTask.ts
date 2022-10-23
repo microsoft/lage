@@ -57,3 +57,12 @@ export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], 
 
   return maxWorkersPerTask;
 }
+
+export function getMaxWorkersPerTaskFromOptions(maxWorkersPerTask: string[]) {
+  return new Map([
+    ...maxWorkersPerTask.map((setting) => {
+      const [task, maxWorkers] = setting.split(/[=:]/);
+      return [task, parseInt(maxWorkers, 10)] as [string, number];
+    }),
+  ]);
+}

@@ -4,7 +4,7 @@ import { createTargetGraph } from "./createTargetGraph";
 import { filterArgsForTasks } from "./filterArgsForTasks";
 import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig } from "../../config/getConfig";
-import { getMaxWorkersPerTask } from "../../config/getMaxWorkersPerTask";
+import { getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions } from "../../config/getMaxWorkersPerTask";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { filterPipelineDefinitions } from "./filterPipelineDefinitions";
 import { LogReporter } from "@lage-run/reporters";
@@ -18,6 +18,7 @@ import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 
 interface RunOptions extends ReporterInitOptions {
   concurrency: number;
+  maxWorkersPerTask: string[];
   profile: string | boolean | undefined;
   dependencies: boolean;
   dependents: boolean;
@@ -76,6 +77,8 @@ export async function watchAction(options: RunOptions, command: Command) {
 
   const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
 
+  const maxWorkersPerTaskMap = getMaxWorkersPerTaskFromOptions(options.maxWorkersPerTask);
+
   const scheduler = new SimpleScheduler({
     logger,
     concurrency: options.concurrency,
@@ -84,7 +87,7 @@ export async function watchAction(options: RunOptions, command: Command) {
     continueOnError: true,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    maxWorkersPerTask: getMaxWorkersPerTask(filteredPipeline, options.concurrency),
+    maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, options.concurrency), ...maxWorkersPerTaskMap]),
     runners: {
       npmScript: {
         script: require.resolve("./runners/NpmScriptRunner"),
