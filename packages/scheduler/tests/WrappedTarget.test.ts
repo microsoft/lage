@@ -18,6 +18,7 @@ function createTarget(packageName: string): Target {
     id: `${packageName}#build`,
     task: "build",
     packageName,
+    shards: 1,
   };
 }
 
