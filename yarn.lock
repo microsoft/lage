@@ -7849,10 +7849,10 @@ klona@^2.0.5:
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.5.tgz#d166574d90076395d9963aa7a928fabb8d76afbc"
   integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
 
-"lage-npm@npm:@lage-run/lage@2.3.7":
-  version "2.3.7"
-  resolved "https://registry.yarnpkg.com/@lage-run/lage/-/lage-2.3.7.tgz#9da6f0d2d9906969aee9fe19eadf0f02eafb1e1a"
-  integrity sha512-eWOpRkvMexUUMU1E5/R5v+DtkahII3GFBE5b3z0KWuMt+VeeE8Ab0S9TtNRtR5Qw3Lc3hk3AQDDH283NptMPkw==
+"lage-npm@npm:@lage-run/lage@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@lage-run/lage/-/lage-2.4.0.tgz#c8e4250800793af12a18da559c45f0ca595b3104"
+  integrity sha512-7up0Kp6jr2/e2O2B4vLpFT2xbZk44sB518DuBnnw7oJuIf6Wee9bh3VM4MR7ejo5AFVEsirDb1pdQpiqzy+klg==
   optionalDependencies:
     fsevents "~2.3.2"
 
