@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Mon, 24 Oct 2022 21:40:05 GMT",
+      "tag": "@lage-run/cache_v0.1.22",
+      "version": "0.1.22",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "c91040aa0f9d6e804c300e18a1b41295c242fa4e",
+            "comment": "Fixed salt to not have race conditions with env hash calculations"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 23 Oct 2022 04:31:57 GMT",
       "tag": "@lage-run/cache_v0.1.21",
       "version": "0.1.21",
