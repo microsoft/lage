@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Sun, 23 Oct 2022 04:31:57 GMT and should not be manually modified.
+This log was last generated on Mon, 24 Oct 2022 21:40:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.19
+
+Mon, 24 Oct 2022 21:40:05 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.4.14
+- Bump @lage-run/cache to v0.1.22
+- Bump @lage-run/reporters to v0.2.28
 
 ## 0.4.18
 
