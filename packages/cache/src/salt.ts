@@ -26,13 +26,16 @@ function envHashKey(environmentGlobFiles: string[]) {
 }
 
 async function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
+  const key = envHashKey(environmentGlobFiles);
+
   // We want to make sure that we only call getEnvHashOneAtTime one at a time
   // to avoid having many concurrent calls to read files again and again
-  oneAtATime = oneAtATime.then(async () => {
-    const searchResult = getEnvHashOneAtTime(environmentGlobFiles, repoRoot);
-    if (searchResult) {
-      return searchResult;
+  oneAtATime = oneAtATime.then(() => {
+    // we may already have it by time we get to here
+    if (envHashes[key]) {
+      return envHashes[key];
     }
+
     return getEnvHashOneAtTime(environmentGlobFiles, repoRoot);
   });
 
@@ -40,12 +43,6 @@ async function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
 }
 
 async function getEnvHashOneAtTime(environmentGlobFiles: string[], repoRoot: string) {
-  const key = envHashKey(environmentGlobFiles);
-
-  if (envHashes[key]) {
-    return envHashes[key];
-  }
-
   const envHash: string[] = [];
   const newline = /\r\n|\r|\n/g;
   const LF = "\n";
@@ -66,7 +63,9 @@ async function getEnvHashOneAtTime(environmentGlobFiles: string[], repoRoot: str
     envHash.push(hasher.digest("hex"));
   }
 
+  const key = envHashKey(environmentGlobFiles);
   envHashes[key] = envHash;
+
   return envHash;
 }
 
