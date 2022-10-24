@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fixed salt to not have race conditions with env hash calculations",
+  "packageName": "@lage-run/cache",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
