@@ -8,7 +8,8 @@ interface MemoizedEnvHashes {
 }
 
 let envHashes: MemoizedEnvHashes = {};
-// A promise to guarantee the getRepoInfo is done one at a time
+
+// A promise to guarantee the getEnvHashes is done one at a time
 let oneAtATime: Promise<any> = Promise.resolve();
 
 export function _testResetEnvHash() {
