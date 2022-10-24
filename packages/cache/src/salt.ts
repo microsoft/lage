@@ -9,6 +9,9 @@ interface MemoizedEnvHashes {
 
 let envHashes: MemoizedEnvHashes = {};
 
+// A promise to guarantee the getEnvHashes is done one at a time
+let oneAtATime: Promise<any> = Promise.resolve();
+
 export function _testResetEnvHash() {
   envHashes = {};
 }
@@ -25,10 +28,21 @@ function envHashKey(environmentGlobFiles: string[]) {
 async function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
   const key = envHashKey(environmentGlobFiles);
 
-  if (envHashes[key]) {
-    return envHashes[key];
-  }
+  // We want to make sure that we only call getEnvHashOneAtTime one at a time
+  // to avoid having many concurrent calls to read files again and again
+  oneAtATime = oneAtATime.then(() => {
+    // we may already have it by time we get to here
+    if (envHashes[key]) {
+      return envHashes[key];
+    }
 
+    return getEnvHashOneAtTime(environmentGlobFiles, repoRoot);
+  });
+
+  return oneAtATime;
+}
+
+async function getEnvHashOneAtTime(environmentGlobFiles: string[], repoRoot: string) {
   const envHash: string[] = [];
   const newline = /\r\n|\r|\n/g;
   const LF = "\n";
@@ -49,7 +63,9 @@ async function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
     envHash.push(hasher.digest("hex"));
   }
 
+  const key = envHashKey(environmentGlobFiles);
   envHashes[key] = envHash;
+
   return envHash;
 }
 
