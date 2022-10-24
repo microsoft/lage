@@ -8,6 +8,8 @@ interface MemoizedEnvHashes {
 }
 
 let envHashes: MemoizedEnvHashes = {};
+// A promise to guarantee the getRepoInfo is done one at a time
+let oneAtATime: Promise<any> = Promise.resolve();
 
 export function _testResetEnvHash() {
   envHashes = {};
@@ -23,6 +25,20 @@ function envHashKey(environmentGlobFiles: string[]) {
 }
 
 async function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
+  // We want to make sure that we only call getEnvHashOneAtTime one at a time
+  // to avoid having many concurrent calls to read files again and again
+  oneAtATime = oneAtATime.then(async () => {
+    const searchResult = getEnvHashOneAtTime(environmentGlobFiles, repoRoot);
+    if (searchResult) {
+      return searchResult;
+    }
+    return getEnvHashOneAtTime(environmentGlobFiles, repoRoot);
+  });
+
+  return oneAtATime;
+}
+
+async function getEnvHashOneAtTime(environmentGlobFiles: string[], repoRoot: string) {
   const key = envHashKey(environmentGlobFiles);
 
   if (envHashes[key]) {
