@@ -61,11 +61,6 @@ export interface TargetConfig {
   maxWorkers?: number;
 
   /**
-   * How many shards to split tasks into
-   */
-  shards?: number | ((target: Target) => number);
-
-  /**
    * Run options for the Target Runner. (e.g. `{ env: ...process.env, colors: true, ... }`)
    */
   options?: Record<string, any>;

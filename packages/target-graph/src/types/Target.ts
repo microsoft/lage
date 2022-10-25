@@ -63,11 +63,6 @@ export interface Target {
   maxWorkers?: number;
 
   /**
-   * How many shards to split tasks into
-   */
-  shards?: number;
-
-  /**
    * Run options for the Target
    */
   options?: Record<string, any>;
