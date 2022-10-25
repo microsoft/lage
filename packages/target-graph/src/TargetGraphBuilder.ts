@@ -10,7 +10,6 @@ import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target";
 import type { TargetConfig } from "./types/TargetConfig";
 import { detectCycles } from "./detectCycles";
-import { calculateShardCount } from "./calculateShardCount";
 
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
@@ -51,7 +50,7 @@ export class TargetGraphBuilder {
    * @returns a generated global Target
    */
   private createGlobalTarget(id: string, config: TargetConfig): Target {
-    const { options, dependsOn, deps, inputs, outputs, priority, maxWorkers, environmentGlob, shards } = config;
+    const { options, dependsOn, deps, inputs, outputs, priority, maxWorkers, environmentGlob } = config;
     const { task } = getPackageAndTask(id);
     const targetId = getTargetId(undefined, task);
     const target = {
@@ -72,10 +71,7 @@ export class TargetGraphBuilder {
       maxWorkers,
       environmentGlob,
       options,
-      shards: 1,
     };
-
-    target.shards = calculateShardCount(target, shards);
 
     return target;
   }
@@ -88,7 +84,7 @@ export class TargetGraphBuilder {
    * @returns a package task `Target`
    */
   private createPackageTarget(packageName: string, task: string, config: TargetConfig): Target {
-    const { options, dependsOn, deps, cache, inputs, outputs, priority, maxWorkers, environmentGlob, shards } = config;
+    const { options, dependsOn, deps, cache, inputs, outputs, priority, maxWorkers, environmentGlob } = config;
     const info = this.packageInfos[packageName];
     const target = {
       id: getTargetId(packageName, task),
@@ -106,11 +102,8 @@ export class TargetGraphBuilder {
       priority,
       maxWorkers,
       environmentGlob,
-      shards: 1,
       options,
     };
-
-    target.shards = calculateShardCount(target, shards);
 
     return target;
   }
@@ -240,7 +233,6 @@ export class TargetGraphBuilder {
       dependencies: [],
       dependents: [],
       depSpecs: [],
-      shards: 1,
     } as Target);
 
     const subGraphEdges = this.createSubGraph(tasks, scope);

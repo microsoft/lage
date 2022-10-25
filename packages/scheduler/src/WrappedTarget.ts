@@ -184,14 +184,7 @@ export class WrappedTarget implements TargetRun {
         logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`, { target });
       }
 
-      const shardCount = this.target.shards ?? 1;
-
-      const shardPromises: Promise<{ stdoutBuffer: string; stderrBuffer: string }>[] = [];
-      for (let shardIndex = 1; shardIndex <= shardCount; shardIndex++) {
-        shardPromises.push(this.runShard(shardIndex, shardCount));
-      }
-
-      const shardResults = await Promise.all(shardPromises);
+      const result = await this.runInPool();
 
       if (cacheEnabled && hash) {
         await this.saveCache(hash);
@@ -199,7 +192,7 @@ export class WrappedTarget implements TargetRun {
         const outputPath = path.dirname(outputLocation);
         await mkdir(outputPath, { recursive: true });
 
-        const output = shardResults.map((result) => `${result.stdoutBuffer}\n${result.stderrBuffer}`).join("");
+        const output = `${result.stdoutBuffer}\n${result.stderrBuffer}`;
 
         await writeFile(outputLocation, output);
       }
@@ -218,7 +211,7 @@ export class WrappedTarget implements TargetRun {
     }
   }
 
-  async runShard(shardIndex: number, shardCount: number) {
+  private async runInPool() {
     const { target, logger, abortController, pool } = this.options;
     const abortSignal = abortController.signal;
 
@@ -229,21 +222,21 @@ export class WrappedTarget implements TargetRun {
     const bufferStderr = bufferTransform();
 
     await pool.exec(
-      { target, shardIndex, shardCount },
+      { target },
       (_worker, stdout, stderr) => {
         this.onStart();
 
         stdout.pipe(bufferStdout.transform);
         stderr.pipe(bufferStderr.transform);
 
-        const releaseStdoutStream = logger.stream(LogLevel.verbose, stdout, { target, shardIndex, shardCount });
+        const releaseStdoutStream = logger.stream(LogLevel.verbose, stdout, { target });
 
         releaseStdout = () => {
           releaseStdoutStream();
           stdout.unpipe(bufferStdout.transform);
         };
 
-        const releaseStderrStream = logger.stream(LogLevel.verbose, stderr, { target, shardIndex, shardCount });
+        const releaseStderrStream = logger.stream(LogLevel.verbose, stderr, { target });
 
         releaseStderr = () => {
           releaseStderrStream();

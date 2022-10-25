@@ -56,7 +56,7 @@ export class NpmScriptRunner implements TargetRunner {
   }
 
   async run(runOptions: TargetRunnerOptions) {
-    const { target, abortSignal, shardIndex, shardCount } = runOptions;
+    const { target, abortSignal } = runOptions;
     const { nodeOptions, npmCmd, taskArgs } = this.options;
 
     let childProcess: ChildProcess | undefined;
@@ -117,8 +117,6 @@ export class NpmScriptRunner implements TargetRunner {
           ...(npmRunNodeOptions && { NODE_OPTIONS: npmRunNodeOptions }),
           LAGE_PACKAGE_NAME: target.packageName,
           LAGE_TASK: target.task,
-          LAGE_SHARD_INDEX: String(shardIndex ?? 1),
-          LAGE_SHARD_COUNT: String(shardCount ?? 1),
         },
       });
 
