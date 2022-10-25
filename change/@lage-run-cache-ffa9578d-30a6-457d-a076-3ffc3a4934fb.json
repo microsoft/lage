@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "recover the cache check to not bombard with file reads",
-  "packageName": "@lage-run/cache",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

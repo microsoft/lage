@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Tue, 25 Oct 2022 00:06:49 GMT",
+      "tag": "@lage-run/reporters_v0.2.29",
+      "version": "0.2.29",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.15",
+            "commit": "1f0d69225e193de2c9495d9fe7a6e331ea8a3284"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 24 Oct 2022 21:40:05 GMT",
       "tag": "@lage-run/reporters_v0.2.28",
       "version": "0.2.28",

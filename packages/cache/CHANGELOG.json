@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Tue, 25 Oct 2022 00:06:49 GMT",
+      "tag": "@lage-run/cache_v0.1.23",
+      "version": "0.1.23",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "1f0d69225e193de2c9495d9fe7a6e331ea8a3284",
+            "comment": "recover the cache check to not bombard with file reads"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 24 Oct 2022 21:40:05 GMT",
       "tag": "@lage-run/cache_v0.1.22",
       "version": "0.1.22",
