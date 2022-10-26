@@ -3,6 +3,7 @@ import type { AbortSignal } from "abort-controller";
 
 export interface TargetRunnerOptions {
   target: Target;
+  weight: number;
   abortSignal?: AbortSignal;
 }
 

@@ -61,6 +61,16 @@ export interface TargetConfig {
   maxWorkers?: number;
 
   /**
+   * Weight of a target - used to determine the number of "worker slots" to dedicate to a target
+   *
+   * Even if we have workers "free", we might not want to dedicate them to a target that is very heavy (i.e. takes multiple CPU cores).
+   * An example is jest targets that can take up multiple cores with its own worker pool.
+   *
+   * This weight will be "culled" to the max number of workers (concurrency) for the target type. (i.e. maxWorkers above)
+   */
+  weight?: number | ((target: Target, maxWorkers?: number) => number);
+
+  /**
    * Run options for the Target Runner. (e.g. `{ env: ...process.env, colors: true, ... }`)
    */
   options?: Record<string, any>;

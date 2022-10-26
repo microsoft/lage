@@ -39,7 +39,7 @@ export class WorkerRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
 
   async run(runOptions: TargetRunnerOptions) {
-    const { target, abortSignal } = runOptions;
+    const { target, weight, abortSignal } = runOptions;
     const scriptFile = target.options?.worker ?? target.options?.script;
 
     if (!scriptFile) {
@@ -54,6 +54,6 @@ export class WorkerRunner implements TargetRunner {
       throw new Error("WorkerRunner: worker script must export a function; you likely need to use `module.exports = function() {...}`");
     }
 
-    await runFn({ target, abortSignal });
+    await runFn({ target, weight, abortSignal });
   }
 }

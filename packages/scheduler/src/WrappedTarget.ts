@@ -223,6 +223,7 @@ export class WrappedTarget implements TargetRun {
 
     await pool.exec(
       { target },
+      target.weight ?? 1,
       (_worker, stdout, stderr) => {
         this.onStart();
 

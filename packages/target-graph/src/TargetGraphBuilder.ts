@@ -10,6 +10,7 @@ import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target";
 import type { TargetConfig } from "./types/TargetConfig";
 import { detectCycles } from "./detectCycles";
+import { getWeight } from "./getWeight";
 
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
@@ -70,8 +71,11 @@ export class TargetGraphBuilder {
       priority,
       maxWorkers,
       environmentGlob,
+      weight: 1,
       options,
     };
+
+    target.weight = getWeight(target, config.weight, maxWorkers);
 
     return target;
   }
@@ -102,8 +106,11 @@ export class TargetGraphBuilder {
       priority,
       maxWorkers,
       environmentGlob,
+      weight: 1,
       options,
     };
+
+    target.weight = getWeight(target, config.weight, maxWorkers);
 
     return target;
   }
@@ -233,6 +240,7 @@ export class TargetGraphBuilder {
       dependencies: [],
       dependents: [],
       depSpecs: [],
+      weight: 1,
     } as Target);
 
     const subGraphEdges = this.createSubGraph(tasks, scope);

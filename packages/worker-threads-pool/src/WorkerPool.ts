@@ -30,11 +30,12 @@ class WorkerPoolTaskInfo extends AsyncResource {
   constructor(
     private options: {
       id: string;
-      setup: (worker: Worker, stdout: Readable, stderr: Readable) => void;
-      cleanup: (worker: Worker) => void;
+      setup: undefined | ((worker: Worker, stdout: Readable, stderr: Readable) => void);
+      cleanup: undefined | ((worker: Worker) => void);
       resolve: (value: unknown) => void;
       reject: (reason: unknown) => void;
       worker: Worker;
+      weight: number;
     }
   ) {
     super("WorkerPoolTaskInfo");
@@ -46,6 +47,10 @@ class WorkerPoolTaskInfo extends AsyncResource {
 
   get id() {
     return this.options.id;
+  }
+
+  get weight() {
+    return this.options.weight;
   }
 
   done(err: Error, results: unknown) {
@@ -68,7 +73,8 @@ class WorkerPoolTaskInfo extends AsyncResource {
 interface QueueItem {
   setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void;
   cleanup?: (worker: Worker) => void;
-  task: unknown;
+  task: Object;
+  weight: number;
   resolve: (value?: unknown) => void;
   reject: (reason: unknown) => void;
 }
@@ -77,9 +83,14 @@ export class WorkerPool extends EventEmitter implements Pool {
   workers: Worker[] = [];
   freeWorkers: Worker[] = [];
   queue: QueueItem[] = [];
+  maxWorkers: number = 0;
+  availability: number = 0;
 
   constructor(private options: WorkerPoolOptions) {
     super();
+
+    this.maxWorkers = this.options.maxWorkers ?? os.cpus().length - 1;
+    this.availability = this.maxWorkers;
 
     this.workers = [];
     this.freeWorkers = [];
@@ -98,8 +109,7 @@ export class WorkerPool extends EventEmitter implements Pool {
 
   ensureWorkers() {
     if (this.workers.length === 0) {
-      const { maxWorkers = os.cpus().length - 1 } = this.options;
-      for (let i = 0; i < maxWorkers; i++) {
+      for (let i = 0; i < this.maxWorkers; i++) {
         this.addNewWorker();
       }
     }
@@ -163,8 +173,11 @@ export class WorkerPool extends EventEmitter implements Pool {
       // again.
       Promise.all([worker[kWorkerCapturedStdoutPromise], worker[kWorkerCapturedStderrPromise]]).then(() => {
         const { err, results } = data;
+        const weight = worker[kTaskInfo].weight;
         worker[kTaskInfo].done(err, results);
         worker[kTaskInfo] = null;
+
+        this.availability += weight;
         this.freeWorkers.push(worker);
         this.emit(kWorkerFreedEvent);
       });
@@ -177,7 +190,9 @@ export class WorkerPool extends EventEmitter implements Pool {
         // In case of an uncaught exception: Call the callback that was passed to
         // `runTask` with the error.
         if (worker[kTaskInfo]) {
+          const weight = worker[kTaskInfo].weight;
           worker[kTaskInfo].done(err, null);
+          this.availability += weight;
         }
 
         this.emit("error", err);
@@ -197,7 +212,8 @@ export class WorkerPool extends EventEmitter implements Pool {
   }
 
   exec(
-    task: unknown,
+    task: Object,
+    weight: number,
     setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void,
     cleanup?: (worker: Worker) => void,
     abortSignal?: AbortSignal
@@ -206,17 +222,31 @@ export class WorkerPool extends EventEmitter implements Pool {
       return Promise.resolve();
     }
 
+    // cull the weight of the task to be [1, maxWorkers]
+    weight = Math.min(Math.max(1, weight), this.maxWorkers);
+
     return new Promise((resolve, reject) => {
-      this.queue.push({ task, resolve, reject, cleanup, setup });
+      this.queue.push({ task: { ...task, weight }, weight, resolve, reject, cleanup, setup });
       this._exec(abortSignal);
     });
   }
 
   _exec(abortSignal?: AbortSignal) {
+    // find work that will fit the availability of workers
+    const workIndex = this.queue.findIndex((item) => item.weight <= this.availability);
+
+    if (workIndex === -1) {
+      return;
+    }
+
     if (this.freeWorkers.length > 0) {
       const worker = this.freeWorkers.pop();
-      const work = this.queue.shift();
-      const { task, resolve, reject, cleanup, setup } = work as any;
+      const work = this.queue[workIndex];
+
+      this.availability -= work.weight;
+      this.queue.splice(workIndex, 1);
+
+      const { task, resolve, reject, cleanup, setup } = work;
 
       if (worker) {
         abortSignal?.addEventListener("abort", () => {
@@ -225,7 +255,7 @@ export class WorkerPool extends EventEmitter implements Pool {
 
         const id = crypto.randomBytes(32).toString("hex");
 
-        worker[kTaskInfo] = new WorkerPoolTaskInfo({ id, cleanup, resolve, reject, worker, setup });
+        worker[kTaskInfo] = new WorkerPoolTaskInfo({ id, weight: work.weight, cleanup, resolve, reject, worker, setup });
 
         // Create a pair of promises that are only resolved when a specific task end marker is detected
         // in the worker's stdout/stderr streams.
@@ -237,7 +267,7 @@ export class WorkerPool extends EventEmitter implements Pool {
           worker[kWorkerCapturedStderrResolve] = onResolve;
         });
 
-        worker.postMessage({ type: "start", task, id });
+        worker.postMessage({ type: "start", task: { ...task, weight: work.weight }, id });
       }
     }
   }
