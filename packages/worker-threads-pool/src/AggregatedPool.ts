@@ -49,7 +49,7 @@ export class AggregatedPool implements Pool {
   }
 
   async exec(
-    data: Object,
+    data: Record<string, unknown>,
     weight: number,
     setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void,
     cleanup?: (args: any) => void,

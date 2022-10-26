@@ -73,7 +73,7 @@ class WorkerPoolTaskInfo extends AsyncResource {
 interface QueueItem {
   setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void;
   cleanup?: (worker: Worker) => void;
-  task: Object;
+  task: Record<string, unknown>;
   weight: number;
   resolve: (value?: unknown) => void;
   reject: (reason: unknown) => void;
@@ -83,8 +83,8 @@ export class WorkerPool extends EventEmitter implements Pool {
   workers: Worker[] = [];
   freeWorkers: Worker[] = [];
   queue: QueueItem[] = [];
-  maxWorkers: number = 0;
-  availability: number = 0;
+  maxWorkers = 0;
+  availability = 0;
 
   constructor(private options: WorkerPoolOptions) {
     super();
@@ -212,7 +212,7 @@ export class WorkerPool extends EventEmitter implements Pool {
   }
 
   exec(
-    task: Object,
+    task: Record<string, unknown>,
     weight: number,
     setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void,
     cleanup?: (worker: Worker) => void,
