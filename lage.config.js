@@ -13,7 +13,8 @@ module.exports = {
       },
       options: {
         worker: path.join(__dirname, "scripts/worker/jest.js"),
-      }
+      },
+      dependsOn: ["build"]
     },
     lint: {
       type: "worker",
