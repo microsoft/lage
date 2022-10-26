@@ -23,6 +23,9 @@ module.exports = {
       },
     },
     start: [],
+    "@lage-run/docs#test": {
+      type: "npmScript"
+    }
   },
   npmClient: "yarn",
 };
