@@ -28,4 +28,7 @@ module.exports = {
     }
   },
   npmClient: "yarn",
+  cacheOptions: {
+    environmentGlob: ["*.js", "*.json", ".github/**"]
+  }
 };
