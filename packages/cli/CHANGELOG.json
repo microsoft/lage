@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 26 Oct 2022 22:48:35 GMT",
+      "tag": "@lage-run/cli_v0.4.23",
+      "version": "0.4.23",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "d7788f1c921d113f11334474adf362162041f9a6",
+            "comment": "run modified packages and their deps first if running with since option and hitting repoWideChanges"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 Oct 2022 22:01:13 GMT",
       "tag": "@lage-run/cli_v0.4.22",
       "version": "0.4.22",

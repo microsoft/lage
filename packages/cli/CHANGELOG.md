@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 26 Oct 2022 22:01:13 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Oct 2022 22:48:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.23
+
+Wed, 26 Oct 2022 22:48:35 GMT
+
+### Patches
+
+- run modified packages and their deps first if running with since option and hitting repoWideChanges (email not defined)
 
 ## 0.4.22
 
