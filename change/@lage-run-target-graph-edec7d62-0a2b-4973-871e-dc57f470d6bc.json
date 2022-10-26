@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Removing sharded target support: moving in favor of \"weighted target\" instead",
-  "packageName": "@lage-run/target-graph",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

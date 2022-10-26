@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Wed, 26 Oct 2022 00:02:06 GMT",
+      "tag": "@lage-run/target-graph_v0.4.5",
+      "version": "0.4.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96",
+            "comment": "Removing sharded target support: moving in favor of \"weighted target\" instead"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 23 Oct 2022 04:31:57 GMT",
       "tag": "@lage-run/target-graph_v0.4.4",
       "version": "0.4.4",

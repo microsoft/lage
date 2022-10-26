@@ -2,6 +2,39 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Wed, 26 Oct 2022 00:02:06 GMT",
+      "tag": "@lage-run/scheduler_v0.4.16",
+      "version": "0.4.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96",
+            "comment": "removing sharded targets - not the direction to go with jest support"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/target-graph to v0.4.5",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v0.1.24",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.16",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Oct 2022 00:06:49 GMT",
       "tag": "@lage-run/scheduler_v0.4.15",
       "version": "0.4.15",

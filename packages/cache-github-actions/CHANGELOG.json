@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Wed, 26 Oct 2022 00:02:06 GMT",
+      "tag": "@lage-run/cache-github-actions_v0.1.4",
+      "version": "0.1.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache-github-actions",
+            "comment": "Bump @lage-run/target-graph to v0.4.5",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 23 Oct 2022 04:31:57 GMT",
       "tag": "@lage-run/cache-github-actions_v0.1.3",
       "version": "0.1.3",

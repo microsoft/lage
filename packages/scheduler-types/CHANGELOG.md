@@ -1,8 +1,18 @@
 # Change Log - @lage-run/scheduler-types
 
-This log was last generated on Tue, 25 Oct 2022 00:06:49 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Oct 2022 00:02:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.16
+
+Wed, 26 Oct 2022 00:02:06 GMT
+
+### Patches
+
+- removing sharded targets - not the direction to go with jest support (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.4.5
+- Bump @lage-run/cache to v0.1.24
 
 ## 0.1.15
 

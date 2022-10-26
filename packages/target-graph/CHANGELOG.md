@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Sun, 23 Oct 2022 04:31:57 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Oct 2022 00:02:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.5
+
+Wed, 26 Oct 2022 00:02:06 GMT
+
+### Patches
+
+- Removing sharded target support: moving in favor of "weighted target" instead (kchau@microsoft.com)
 
 ## 0.4.4
 
