@@ -2,6 +2,39 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 26 Oct 2022 22:01:13 GMT",
+      "tag": "@lage-run/cli_v0.4.22",
+      "version": "0.4.22",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.0",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.5.0",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.25",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.31",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 Oct 2022 00:02:06 GMT",
       "tag": "@lage-run/cli_v0.4.21",
       "version": "0.4.21",

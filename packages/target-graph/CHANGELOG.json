@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Wed, 26 Oct 2022 22:01:13 GMT",
+      "tag": "@lage-run/target-graph_v0.5.0",
+      "version": "0.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9",
+            "comment": "adds support for weighted targets"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 Oct 2022 00:02:06 GMT",
       "tag": "@lage-run/target-graph_v0.4.5",
       "version": "0.4.5",

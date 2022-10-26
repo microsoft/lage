@@ -2,6 +2,21 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Wed, 26 Oct 2022 22:01:13 GMT",
+      "tag": "@lage-run/lage_v2.5.0",
+      "version": "2.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9",
+            "comment": "Adds the Weighted Target option"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 23 Oct 2022 04:31:57 GMT",
       "tag": "@lage-run/lage_v2.4.0",
       "version": "2.4.0",

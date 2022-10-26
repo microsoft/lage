@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Adds the Weighted Target option",
-  "packageName": "@lage-run/lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

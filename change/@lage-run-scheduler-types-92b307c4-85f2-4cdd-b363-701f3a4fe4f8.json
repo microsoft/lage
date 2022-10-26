@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "adds weight option",
-  "packageName": "@lage-run/scheduler-types",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
