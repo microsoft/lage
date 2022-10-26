@@ -24,7 +24,7 @@ describe("WorkerPool", () => {
 
     expect(pool.workers.length).toBe(5);
 
-    pool.close();
+    await pool.close();
 
     expect(running.length).toBe(numTasks);
     expect(results.length).toBe(numTasks);
@@ -74,6 +74,22 @@ describe("WorkerPool", () => {
     expect(setup).toHaveBeenCalledTimes(1);
     expect(setup).toHaveBeenCalledWith(expect.anything(), expect.any(Readable), expect.any(Readable));
 
-    pool.close();
+    await pool.close();
+  });
+
+  it("take up the availability of a pool with a fully weighted worker", async () => {
+    expect.hasAssertions();
+
+    const pool = new WorkerPool({
+      maxWorkers: 5,
+      script: path.resolve(__dirname, "fixtures", "my-worker.js"),
+    });
+
+    const setup = () => {
+      expect(pool.availability).toBe(0);
+    };
+
+    await pool.exec({ id: 1 }, 5, setup);
+    await pool.close();
   });
 });
