@@ -20,7 +20,7 @@ describe("WorkerPool", () => {
     const range = Array(numTasks)
       .fill(0)
       .map((_, i) => i);
-    const results = await Promise.all(range.map((i) => pool.exec({ id: i }, setup)));
+    const results = await Promise.all(range.map((i) => pool.exec({ id: i }, 1, setup)));
 
     expect(pool.workers.length).toBe(5);
 
@@ -51,7 +51,7 @@ describe("WorkerPool", () => {
     let results: any[] = [];
 
     try {
-      results = await Promise.all(range.map((i) => pool.exec({ id: i }, setup).catch(() => {})));
+      results = await Promise.all(range.map((i) => pool.exec({ id: i }, 1, setup).catch(() => {})));
     } finally {
       pool.close();
     }
@@ -69,7 +69,7 @@ describe("WorkerPool", () => {
 
     const setup = jest.fn();
 
-    await pool.exec({ id: 1 }, setup);
+    await pool.exec({ id: 1 }, 1, setup);
 
     expect(setup).toHaveBeenCalledTimes(1);
     expect(setup).toHaveBeenCalledWith(expect.anything(), expect.any(Readable), expect.any(Readable));
