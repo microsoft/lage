@@ -38,6 +38,6 @@ describe("WorkerRunner", () => {
       },
     } as Target;
 
-    await Promise.all([runner.run({ target: target1 }), runner.run({ target: target2 })]);
+    await Promise.all([runner.run({ target: target1, weight: 1 }), runner.run({ target: target2, weight: 1 })]);
   });
 });

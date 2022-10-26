@@ -23,8 +23,8 @@ function createTarget(packageName: string): Target {
 
 class InProcPool implements Pool {
   constructor(private runner: TargetRunner) {}
-  exec({ target }: { target: Target }, _setup, _teardown, abortSignal?: AbortSignal) {
-    return this.runner.run({ target, abortSignal });
+  exec({ target }: { target: Target; weight: number }, weight, _setup, _teardown, abortSignal?: AbortSignal) {
+    return this.runner.run({ target, weight, abortSignal });
   }
   close() {
     return Promise.resolve();

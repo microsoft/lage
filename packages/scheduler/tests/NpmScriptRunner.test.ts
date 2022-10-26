@@ -63,6 +63,7 @@ describe("NpmScriptRunner", () => {
     const runPromise = runner
       .run({
         target,
+        weight: 1,
         abortSignal: abortController.signal,
       })
       .catch(() => exceptionSpy());
@@ -89,6 +90,7 @@ describe("NpmScriptRunner", () => {
     const runPromise = runner
       .run({
         target,
+        weight: 1,
         abortSignal: abortController.signal,
       })
       .catch(() => exceptionSpy());
@@ -125,6 +127,7 @@ describe("NpmScriptRunner", () => {
       runner
         .run({
           target: createTarget(packageName),
+          weight: 1,
           abortSignal: abortController.signal,
         })
         .catch(() => {
