@@ -63,6 +63,15 @@ export interface Target {
   maxWorkers?: number;
 
   /**
+   * Weight of a target - used to determine the number of "worker slots" to dedicate to a target
+   *
+   * Even if we have workers "free", we might not want to dedicate them to a target that is very heavy (i.e. takes multiple CPU cores).
+   * An example is jest targets that can take up multiple cores with its own worker pool.
+   *
+   */
+  weight?: number;
+
+  /**
    * Run options for the Target
    */
   options?: Record<string, any>;

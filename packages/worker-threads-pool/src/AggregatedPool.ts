@@ -42,14 +42,15 @@ export class AggregatedPool implements Pool {
     }
 
     this.options.logger.verbose(
-      `Workers pools created:  ${[...maxWorkersByGroup.entries()]
+      `Workers pools created:  ${[...maxWorkersByGroup.entries(), ["default", defaultPoolWorkersCount]]
         .map(([group, count]) => `${group} (${count})`)
-        .join(", ")}, default (${defaultPoolWorkersCount})`
+        .join(", ")}`
     );
   }
 
   async exec(
-    data: unknown,
+    data: Record<string, unknown>,
+    weight: number,
     setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void,
     cleanup?: (args: any) => void,
     abortSignal?: AbortSignal
@@ -61,7 +62,7 @@ export class AggregatedPool implements Pool {
       throw new Error(`No pool found to be able to run ${group} tasks, try adjusting the maxWorkers & concurrency values`);
     }
 
-    return pool.exec(data, setup, cleanup, abortSignal);
+    return pool.exec(data, weight, setup, cleanup, abortSignal);
   }
 
   async close(): Promise<unknown> {
