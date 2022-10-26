@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "adds support for weighted targets",
-  "packageName": "@lage-run/target-graph",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

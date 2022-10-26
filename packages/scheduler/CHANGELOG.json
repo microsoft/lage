@@ -2,6 +2,45 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Wed, 26 Oct 2022 22:01:13 GMT",
+      "tag": "@lage-run/scheduler_v0.5.0",
+      "version": "0.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9",
+            "comment": "adds support for weighted targets"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/target-graph to v0.5.0",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v0.1.25",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.3.0",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.0",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 Oct 2022 00:02:06 GMT",
       "tag": "@lage-run/scheduler_v0.4.16",
       "version": "0.4.16",

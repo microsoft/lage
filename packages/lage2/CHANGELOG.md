@@ -1,8 +1,16 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Sun, 23 Oct 2022 04:31:57 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Oct 2022 22:01:13 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.0
+
+Wed, 26 Oct 2022 22:01:13 GMT
+
+### Minor changes
+
+- Adds the Weighted Target option (kchau@microsoft.com)
 
 ## 2.4.0
 

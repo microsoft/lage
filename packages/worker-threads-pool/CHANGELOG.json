@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Wed, 26 Oct 2022 22:01:13 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.3.0",
+      "version": "0.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9",
+            "comment": "adds support for weighted targets"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 21 Oct 2022 21:36:38 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.2.0",
       "version": "0.2.0",

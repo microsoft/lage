@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Fri, 21 Oct 2022 21:36:38 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Oct 2022 22:01:13 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.0
+
+Wed, 26 Oct 2022 22:01:13 GMT
+
+### Minor changes
+
+- adds support for weighted targets (kchau@microsoft.com)
 
 ## 0.2.0
 
