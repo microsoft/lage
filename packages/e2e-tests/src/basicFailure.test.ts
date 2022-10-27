@@ -102,7 +102,7 @@ describe("basic failure case where a dependent target has failed", () => {
 
   it("when a failure happens in `--safe-exit`, be sure to have exit code of !== 0", () => {
     expect.hasAssertions();
-    const repo = new Monorepo("basics");
+    const repo = new Monorepo("basics-safe-exit");
 
     repo.init();
     repo.install();

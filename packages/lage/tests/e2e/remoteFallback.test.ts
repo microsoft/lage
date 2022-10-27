@@ -3,7 +3,7 @@ import { parseNdJson } from "./parseNdJson";
 
 describe("RemoteFallbackCacheProvider", () => {
   it("should skip local cache population if --skip-local-cache is enabled", () => {
-    const repo = new Monorepo("fallback");
+    const repo = new Monorepo("fallback-1");
 
     repo.init();
     repo.setLageConfig(
@@ -58,7 +58,7 @@ describe("RemoteFallbackCacheProvider", () => {
   });
 
   it("should operate with local provider ONLY by default", () => {
-    const repo = new Monorepo("fallback");
+    const repo = new Monorepo("fallback-read-only-1");
 
     repo.init();
     repo.setLageConfig(
@@ -103,7 +103,7 @@ describe("RemoteFallbackCacheProvider", () => {
   });
 
   it("should allow read-only mode when given a remote (or custom) cache config", () => {
-    const repo = new Monorepo("fallback");
+    const repo = new Monorepo("fallback-read-only-custom-config-1");
 
     repo.init();
     repo.setLageConfig(
@@ -157,7 +157,7 @@ describe("RemoteFallbackCacheProvider", () => {
   });
 
   it("should allow read-write mode when given a special environment variable", () => {
-    const repo = new Monorepo("fallback");
+    const repo = new Monorepo("fallback-read-write-env-var-1");
 
     repo.init();
     repo.setLageConfig(
