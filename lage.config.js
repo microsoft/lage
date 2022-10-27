@@ -23,6 +23,9 @@ module.exports = {
       },
     },
     start: [],
+    "@lage-run/e2e-tests#test": {
+      type: "npmScript"
+    },
     "@lage-run/docs#test": {
       type: "npmScript"
     }
