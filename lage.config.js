@@ -27,6 +27,10 @@ module.exports = {
       type: "npmScript",
       dependsOn: ["build"],
     },
+    "lage#test": {
+      type: "npmScript",
+      dependsOn: ["build"],
+    },
     "@lage-run/docs#test": {
       type: "npmScript",
     },
