@@ -6,7 +6,7 @@ describe("transitive task deps test", () => {
   // This test follows the model as documented here:
   // https://microsoft.github.io/lage/guide/levels.html
   it("produces a build graph even when some scripts are missing in package.json", () => {
-    const repo = new Monorepo("transitiveDeps");
+    const repo = new Monorepo("transitiveDeps-1");
 
     repo.init();
     repo.setLageConfig(`module.exports = {
@@ -51,7 +51,7 @@ describe("transitive task deps test", () => {
   });
 
   it("only runs package local dependencies for no-prefix dependencies", () => {
-    const repo = new Monorepo("transitiveDeps-no-prefix");
+    const repo = new Monorepo("transitiveDeps-no-prefix-1");
 
     repo.init();
     repo.setLageConfig(`module.exports = {
@@ -100,7 +100,7 @@ describe("transitive task deps test", () => {
   });
 
   it("only runs direct dependencies for ^ prefix dependencies -- ", () => {
-    const repo = new Monorepo("transitiveDeps-carat-prefix");
+    const repo = new Monorepo("transitiveDeps-carat-prefix-1");
 
     repo.init();
     repo.setLageConfig(`module.exports = {
@@ -151,7 +151,7 @@ describe("transitive task deps test", () => {
   });
 
   it("Runs transitive dependencies for ^^ prefix dependencies", () => {
-    const repo = new Monorepo("transitiveDeps-indirect");
+    const repo = new Monorepo("transitiveDeps-indirect-1");
 
     repo.init();
     repo.setLageConfig(`module.exports = {

@@ -3,7 +3,7 @@ import { parseNdJson } from "./parseNdJson";
 
 describe("basic failure case where a dependent target has failed", () => {
   it("when a failure happens, halts all other targets", () => {
-    const repo = new Monorepo("basics");
+    const repo = new Monorepo("basics-fail-1");
 
     repo.init();
     repo.install();
@@ -38,7 +38,7 @@ describe("basic failure case where a dependent target has failed", () => {
   });
 
   it("when a failure happens in `--continue` mode, halts all other dependent targets but continue to build as much as possible", () => {
-    const repo = new Monorepo("basics");
+    const repo = new Monorepo("basics-fail-continue-1");
 
     repo.init();
     repo.install();
@@ -74,7 +74,7 @@ describe("basic failure case where a dependent target has failed", () => {
 
   it("when a failure happens be sure to have exit code of !== 0", () => {
     expect.hasAssertions();
-    const repo = new Monorepo("basics");
+    const repo = new Monorepo("basics-fail-exit-1");
 
     repo.init();
     repo.install();
@@ -100,7 +100,7 @@ describe("basic failure case where a dependent target has failed", () => {
 
   it("when a failure happens in `--safe-exit`, be sure to have exit code of !== 0", () => {
     expect.hasAssertions();
-    const repo = new Monorepo("basics");
+    const repo = new Monorepo("basic-safe-exit-1");
 
     repo.init();
     repo.install();
