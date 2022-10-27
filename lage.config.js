@@ -14,7 +14,7 @@ module.exports = {
       options: {
         worker: path.join(__dirname, "scripts/worker/jest.js"),
       },
-      dependsOn: ["build"]
+      dependsOn: ["build"],
     },
     lint: {
       type: "worker",
@@ -24,14 +24,15 @@ module.exports = {
     },
     start: [],
     "@lage-run/e2e-tests#test": {
-      type: "npmScript"
+      type: "npmScript",
+      dependsOn: ["build"],
     },
     "@lage-run/docs#test": {
-      type: "npmScript"
-    }
+      type: "npmScript",
+    },
   },
   npmClient: "yarn",
   cacheOptions: {
-    environmentGlob: ["*.js", "*.json", ".github/**"]
-  }
+    environmentGlob: ["*.js", "*.json", ".github/**"],
+  },
 };
