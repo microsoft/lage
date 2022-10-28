@@ -92,4 +92,46 @@ describe("WorkerPool", () => {
     await pool.exec({ id: 1 }, 5, setup);
     await pool.close();
   });
+
+  it("should restart workers when max worker memory limit is hit", async () => {
+    const pool = new WorkerPool({
+      maxWorkers: 1,
+      script: path.resolve(__dirname, "fixtures", "my-5mb-worker.js"), // this worker will consume 5mb of memory each "exec"
+      workerIdleMemoryLimit: 1024 * 1024 * 1, // 1MB
+    });
+
+    await pool.exec({ id: 1 }, 1);
+    await pool.exec({ id: 2 }, 1);
+    await pool.exec({ id: 3 }, 1);
+    await pool.exec({ id: 4 }, 1);
+
+    await pool.close();
+
+    const stats = pool.stats();
+
+    expect(stats.workerRestarts).toBe(3);
+  });
+
+  it("should not restart workers when memory is plenty, and reports the max memory to be portional to the 5mb worker", async () => {
+    const pool = new WorkerPool({
+      maxWorkers: 1,
+      script: path.resolve(__dirname, "fixtures", "my-5mb-worker.js"), // this worker will consume 5mb of memory each "exec"
+      workerIdleMemoryLimit: 1024 * 1024 * 150, // 1MB
+    });
+
+    await pool.exec({ id: 1 }, 1, (_worker, stdout, stderr) => {
+      stdout.pipe(process.stdout);
+      stderr.pipe(process.stderr);
+    });
+    await pool.exec({ id: 2 }, 1);
+    await pool.exec({ id: 3 }, 1);
+    await pool.exec({ id: 4 }, 1);
+
+    await pool.close();
+
+    const stats = pool.stats();
+
+    expect(stats.workerRestarts).toBe(0);
+    expect(stats.maxWorkerMemoryUsage).toBeGreaterThan(1024 * 1024 * 20); // 20mb
+  });
 });
