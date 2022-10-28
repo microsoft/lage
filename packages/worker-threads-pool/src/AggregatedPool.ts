@@ -25,7 +25,12 @@ export class AggregatedPool implements Pool {
 
     let totalGroupedWorkers = 0;
     for (const [group, groupMaxWorkers] of maxWorkersByGroup.entries()) {
-      const pool = new WorkerPool({ maxWorkers: groupMaxWorkers, workerOptions, script });
+      const pool = new WorkerPool({
+        maxWorkers: groupMaxWorkers,
+        workerOptions,
+        script,
+        workerIdleMemoryLimit: options.workerIdleMemoryLimit,
+      });
       this.groupedPools.set(group, pool);
       totalGroupedWorkers += groupMaxWorkers;
     }
@@ -39,7 +44,12 @@ export class AggregatedPool implements Pool {
     const defaultPoolWorkersCount = maxWorkers - totalGroupedWorkers;
 
     if (defaultPoolWorkersCount > 0) {
-      this.defaultPool = new WorkerPool({ maxWorkers: defaultPoolWorkersCount, workerOptions, script });
+      this.defaultPool = new WorkerPool({
+        maxWorkers: defaultPoolWorkersCount,
+        workerOptions,
+        script,
+        workerIdleMemoryLimit: options.workerIdleMemoryLimit,
+      });
     }
 
     this.options.logger.verbose(

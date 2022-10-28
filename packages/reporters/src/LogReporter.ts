@@ -246,7 +246,7 @@ export class LogReporter implements Reporter {
       this.print(
         `worker restarts: ${schedulerRunSummary.workerRestarts}, max worker memory usage: ${formatBytes(
           schedulerRunSummary.maxWorkerMemoryUsage
-        )}}`
+        )}`
       );
     } else {
       this.print("Nothing has been run.");
