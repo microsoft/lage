@@ -48,6 +48,21 @@ export class AggregatedPool implements Pool {
     );
   }
 
+  stats() {
+    const stats = [...this.groupedPools.values(), this.defaultPool].reduce(
+      (acc, pool) => {
+        if (pool) {
+          const poolStats = pool.stats();
+          acc.maxWorkerMemoryUsage = Math.max(acc.maxWorkerMemoryUsage, poolStats.maxWorkerMemoryUsage);
+        }
+        return acc;
+      },
+      { maxWorkerMemoryUsage: 0 }
+    );
+
+    return stats;
+  }
+
   async exec(
     data: Record<string, unknown>,
     weight: number,
@@ -66,6 +81,8 @@ export class AggregatedPool implements Pool {
   }
 
   async close(): Promise<unknown> {
+    this.options.logger.verbose("Max worker memory usage: " + this.stats().maxWorkerMemoryUsage);
+
     const promises = [...this.groupedPools.values(), this.defaultPool].map((pool) => pool?.close());
     return Promise.all(promises);
   }

@@ -11,6 +11,7 @@ import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetR
 import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker";
 import { AggregatedPool } from "@lage-run/worker-threads-pool";
+import { formatBytes } from "./formatBytes";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -221,6 +222,8 @@ export class SimpleScheduler implements TargetScheduler {
       return Promise.resolve();
     }
 
+    this.options.logger.silly(`Max Worker Memory Usage: ${formatBytes(this.pool.stats().maxWorkerMemoryUsage)}`);
+
     const promises: Promise<any>[] = [];
 
     for (const nextTarget of this.getReadyTargets()) {
@@ -248,6 +251,7 @@ export class SimpleScheduler implements TargetScheduler {
   }
 
   async cleanup() {
+    this.options.logger.silly(`Max Worker Memory Usage: ${formatBytes(this.pool.stats().maxWorkerMemoryUsage)}`);
     await this.pool.close();
   }
 
