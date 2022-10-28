@@ -17,7 +17,7 @@ parentPort?.on("message", async (message) => {
       return abortController?.abort();
 
     case "check-memory-usage":
-      parentPort?.postMessage({ memoryUsage: process.memoryUsage() });
+      parentPort?.postMessage({ type: "report-memory-usage", memoryUsage: process.memoryUsage() });
       break;
   }
 });
@@ -31,9 +31,9 @@ async function start(task, abortSignal, id) {
     process.stdout.write(`${START_WORKER_STREAM_MARKER}${id}\n`);
     process.stderr.write(`${START_WORKER_STREAM_MARKER}${id}\n`);
     const results = await fn(task, abortSignal);
-    parentPort?.postMessage({ err: undefined, results });
+    parentPort?.postMessage({ type: "status", err: undefined, results });
   } catch (err) {
-    parentPort?.postMessage({ err, results: undefined });
+    parentPort?.postMessage({ type: "status",err, results: undefined });
   } finally {
     process.stdout.write(`${END_WORKER_STREAM_MARKER}${id}\n`);
     process.stderr.write(`${END_WORKER_STREAM_MARKER}${id}\n`);
