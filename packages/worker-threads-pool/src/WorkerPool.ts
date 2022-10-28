@@ -86,6 +86,7 @@ export class WorkerPool extends EventEmitter implements Pool {
   maxWorkers = 0;
   availability = 0;
   maxWorkerMemoryUsage = 0;
+  workerRestarts = 0;
 
   constructor(private options: WorkerPoolOptions) {
     super();
@@ -111,6 +112,7 @@ export class WorkerPool extends EventEmitter implements Pool {
   stats() {
     return {
       maxWorkerMemoryUsage: this.maxWorkerMemoryUsage,
+      workerRestarts: this.workerRestarts,
     };
   }
 
@@ -299,6 +301,8 @@ export class WorkerPool extends EventEmitter implements Pool {
   }
 
   restartWorker(worker: Worker) {
+    this.workerRestarts++;
+
     worker.terminate();
 
     const freeWorkerIndex = this.freeWorkers.indexOf(worker);

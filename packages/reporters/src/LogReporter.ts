@@ -11,6 +11,7 @@ import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-type
 import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
 import type { Writable } from "stream";
 import crypto from "crypto";
+import { formatBytes } from "./formatBytes";
 
 const colors = {
   [LogLevel.info]: chalk.white,
@@ -240,6 +241,12 @@ export class LogReporter implements Reporter {
 
       this.print(
         `success: ${success.length}, skipped: ${skipped.length}, pending: ${pending.length}, aborted: ${aborted.length}, failed: ${failed.length}`
+      );
+
+      this.print(
+        `worker restarts: ${schedulerRunSummary.workerRestarts}, max worker memory usage: ${formatBytes(
+          schedulerRunSummary.maxWorkerMemoryUsage
+        )}}`
       );
     } else {
       this.print("Nothing has been run.");

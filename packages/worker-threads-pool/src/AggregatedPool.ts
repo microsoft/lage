@@ -13,6 +13,7 @@ interface AggregatedPoolOptions {
   script: string;
   workerOptions?: WorkerOptions;
   logger: Logger;
+  workerIdleMemoryLimit?: number; // in bytes
 }
 
 export class AggregatedPool implements Pool {
@@ -54,10 +55,11 @@ export class AggregatedPool implements Pool {
         if (pool) {
           const poolStats = pool.stats();
           acc.maxWorkerMemoryUsage = Math.max(acc.maxWorkerMemoryUsage, poolStats.maxWorkerMemoryUsage);
+          acc.workerRestarts = acc.workerRestarts + poolStats.workerRestarts;
         }
         return acc;
       },
-      { maxWorkerMemoryUsage: 0 }
+      { maxWorkerMemoryUsage: 0, workerRestarts: 0 }
     );
 
     return stats;

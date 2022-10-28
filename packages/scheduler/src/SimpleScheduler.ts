@@ -24,6 +24,7 @@ export interface SimpleSchedulerOptions {
   runners: TargetRunnerPickerOptions;
   maxWorkersPerTask: Map<string, number>;
   pool?: Pool; // for testing
+  workerIdleMemoryLimit: number; // in bytes
 }
 
 /**
@@ -63,6 +64,7 @@ export class SimpleScheduler implements TargetScheduler {
             runners: options.runners,
           },
         },
+        workerIdleMemoryLimit: options.workerIdleMemoryLimit, // in bytes
       });
   }
 
@@ -131,6 +133,8 @@ export class SimpleScheduler implements TargetScheduler {
       }
     }
 
+    const poolStats = pool.stats();
+
     return {
       targetRunByStatus,
       targetRuns: this.targetRuns,
@@ -138,6 +142,8 @@ export class SimpleScheduler implements TargetScheduler {
       startTime,
       results,
       error,
+      workerRestarts: poolStats.workerRestarts, // number of times a worker was restarted due to memory usage
+      maxWorkerMemoryUsage: poolStats.maxWorkerMemoryUsage, // max memory usage of a worker in bytes
     };
   }
 

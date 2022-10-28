@@ -103,6 +103,7 @@ export async function watchAction(options: RunOptions, command: Command) {
       },
       ...config.runners,
     },
+    workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
   });
 
   // Initial run

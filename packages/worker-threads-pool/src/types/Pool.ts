@@ -4,6 +4,7 @@ import type { AbortSignal } from "abort-controller";
 
 export interface PoolStats {
   maxWorkerMemoryUsage: number; // in bytes
+  workerRestarts: number;
 }
 export interface Pool {
   exec(

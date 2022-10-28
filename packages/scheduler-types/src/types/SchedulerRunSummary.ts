@@ -14,4 +14,6 @@ export interface SchedulerRunSummary {
   duration: [number, number];
   results: SchedulerRunResults;
   error?: string;
+  workerRestarts: number;
+  maxWorkerMemoryUsage: number;
 }
