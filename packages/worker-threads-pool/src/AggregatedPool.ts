@@ -81,8 +81,6 @@ export class AggregatedPool implements Pool {
   }
 
   async close(): Promise<unknown> {
-    this.options.logger.verbose("Max worker memory usage: " + this.stats().maxWorkerMemoryUsage);
-
     const promises = [...this.groupedPools.values(), this.defaultPool].map((pool) => pool?.close());
     return Promise.all(promises);
   }
