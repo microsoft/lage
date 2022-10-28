@@ -15,6 +15,10 @@ parentPort?.on("message", async (message) => {
 
     case "abort":
       return abortController?.abort();
+
+    case "check-memory-usage":
+      parentPort?.postMessage({ memoryUsage: process.memoryUsage() });
+      break;
   }
 });
 
