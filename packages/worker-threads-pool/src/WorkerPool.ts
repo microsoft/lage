@@ -193,7 +193,7 @@ export class WorkerPool extends EventEmitter implements Pool {
       } else if (data.type === "report-memory-usage") {
         this.maxWorkerMemoryUsage = Math.max(this.maxWorkerMemoryUsage, data.memoryUsage);
 
-        let limit = this.options.workerIdleMemoryLimit ?? os.totalmem();
+        const limit = this.options.workerIdleMemoryLimit ?? os.totalmem();
 
         if (limit && data.memoryUsage > limit) {
           this.restartWorker(worker);
