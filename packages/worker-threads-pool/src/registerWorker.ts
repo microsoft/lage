@@ -1,7 +1,9 @@
 import { parentPort } from "worker_threads";
 import { AbortController } from "abort-controller";
 import { endMarker, startMarker } from "./stdioStreamMarkers";
+
 import type { AbortSignal } from "abort-controller";
+import type { MessagePort } from "worker_threads";
 
 export function registerWorker(fn: (data: any, abortSignal?: AbortSignal) => Promise<void> | void) {
   parentPort?.on("message", async (message) => {
@@ -14,6 +16,9 @@ export function registerWorker(fn: (data: any, abortSignal?: AbortSignal) => Pro
 
       case "abort":
         return abortController?.abort();
+
+      case "check-memory-usage":
+        return reportMemory(parentPort!);
     }
   });
 
@@ -22,12 +27,20 @@ export function registerWorker(fn: (data: any, abortSignal?: AbortSignal) => Pro
       process.stdout.write(`${startMarker(workerTaskId)}\n`);
       process.stderr.write(`${startMarker(workerTaskId)}\n`);
       const results = await fn(task, abortSignal);
-      parentPort?.postMessage({ err: undefined, results });
+      parentPort?.postMessage({ type: "status", err: undefined, results });
     } catch (err) {
-      parentPort?.postMessage({ err, results: undefined });
+      parentPort?.postMessage({ type: "status", err, results: undefined });
     } finally {
       process.stdout.write(`${endMarker(workerTaskId)}\n`);
       process.stderr.write(`${endMarker(workerTaskId)}\n`);
     }
+  }
+
+  function reportMemory(port: MessagePort) {
+    const message = {
+      type: "report-memory-usage",
+      memoryUsage: process.memoryUsage().heapUsed,
+    };
+    port.postMessage(message);
   }
 }

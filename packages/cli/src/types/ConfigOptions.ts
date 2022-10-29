@@ -50,4 +50,9 @@ export interface ConfigOptions {
    * passed to the runner constructor.
    */
   runners: TargetRunnerPickerOptions;
+
+  /**
+   * Maximum worker idle memory, this would cause workers to restart if they exceed this limit. This is useful to prevent memory leaks.
+   */
+  workerIdleMemoryLimit: number; // in bytes
 }

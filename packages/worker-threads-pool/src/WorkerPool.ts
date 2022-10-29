@@ -85,6 +85,8 @@ export class WorkerPool extends EventEmitter implements Pool {
   queue: QueueItem[] = [];
   maxWorkers = 0;
   availability = 0;
+  maxWorkerMemoryUsage = 0;
+  workerRestarts = 0;
 
   constructor(private options: WorkerPoolOptions) {
     super();
@@ -105,6 +107,13 @@ export class WorkerPool extends EventEmitter implements Pool {
         this._exec();
       }
     });
+  }
+
+  stats() {
+    return {
+      maxWorkerMemoryUsage: this.maxWorkerMemoryUsage,
+      workerRestarts: this.workerRestarts,
+    };
   }
 
   ensureWorkers() {
@@ -168,19 +177,30 @@ export class WorkerPool extends EventEmitter implements Pool {
     worker["filteredStderr"] = worker.stderr.pipe(createFilteredStreamTransform());
 
     const msgHandler = (data) => {
-      // In case of success: Call the callback that was passed to `runTask`,
-      // remove the `TaskInfo` associated with the Worker, and mark it as free
-      // again.
-      Promise.all([worker[kWorkerCapturedStdoutPromise], worker[kWorkerCapturedStderrPromise]]).then(() => {
-        const { err, results } = data;
-        const weight = worker[kTaskInfo].weight;
-        worker[kTaskInfo].done(err, results);
-        worker[kTaskInfo] = null;
+      if (data.type === "status") {
+        // In case of success: Call the callback that was passed to `runTask`,
+        // remove the `TaskInfo` associated with the Worker, and mark it as free
+        // again.
+        Promise.all([worker[kWorkerCapturedStdoutPromise], worker[kWorkerCapturedStderrPromise]]).then(() => {
+          const { err, results } = data;
+          const weight = worker[kTaskInfo].weight;
+          worker[kTaskInfo].done(err, results);
+          worker[kTaskInfo] = null;
 
-        this.availability += weight;
-        this.freeWorkers.push(worker);
-        this.emit(kWorkerFreedEvent);
-      });
+          this.availability += weight;
+          this.checkMemoryUsage(worker);
+        });
+      } else if (data.type === "report-memory-usage") {
+        this.maxWorkerMemoryUsage = Math.max(this.maxWorkerMemoryUsage, data.memoryUsage);
+
+        const limit = this.options.workerIdleMemoryLimit ?? os.totalmem();
+
+        if (limit && data.memoryUsage > limit) {
+          this.restartWorker(worker);
+        } else {
+          this.freeWorker(worker);
+        }
+      }
     };
 
     worker.on("message", msgHandler);
@@ -196,13 +216,11 @@ export class WorkerPool extends EventEmitter implements Pool {
         }
 
         this.emit("error", err);
-        // Remove the worker from the list and start a new Worker to replace the
-        // current one.
-        this.workers.splice(this.workers.indexOf(worker), 1);
-        this.addNewWorker();
+        this.restartWorker(worker);
       });
     };
 
+    // The 'error' event is emitted if the worker thread throws an uncaught exception. In that case, the worker is terminated.
     worker.on("error", errHandler);
 
     this.workers.push(worker);
@@ -241,6 +259,7 @@ export class WorkerPool extends EventEmitter implements Pool {
 
     if (this.freeWorkers.length > 0) {
       const worker = this.freeWorkers.pop();
+
       const work = this.queue[workIndex];
 
       this.availability -= work.weight;
@@ -270,6 +289,30 @@ export class WorkerPool extends EventEmitter implements Pool {
         worker.postMessage({ type: "start", task: { ...task, weight: work.weight }, id });
       }
     }
+  }
+
+  checkMemoryUsage(worker: Worker) {
+    worker.postMessage({ type: "check-memory-usage" });
+  }
+
+  freeWorker(worker: Worker) {
+    this.freeWorkers.push(worker);
+    this.emit(kWorkerFreedEvent);
+  }
+
+  restartWorker(worker: Worker) {
+    this.workerRestarts++;
+
+    worker.terminate();
+
+    const freeWorkerIndex = this.freeWorkers.indexOf(worker);
+
+    if (freeWorkerIndex !== -1) {
+      this.freeWorkers.splice(freeWorkerIndex, 1); // remove from free workers list
+    }
+
+    this.workers.splice(this.workers.indexOf(worker), 1);
+    this.addNewWorker();
   }
 
   async close() {

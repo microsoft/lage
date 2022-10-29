@@ -2,6 +2,10 @@ import type { Worker } from "worker_threads";
 import type { Readable } from "stream";
 import type { AbortSignal } from "abort-controller";
 
+export interface PoolStats {
+  maxWorkerMemoryUsage: number; // in bytes
+  workerRestarts: number;
+}
 export interface Pool {
   exec(
     data: unknown,
@@ -10,5 +14,8 @@ export interface Pool {
     cleanup?: (args: any) => void,
     abortSignal?: AbortSignal
   ): Promise<unknown>;
+
+  stats(): PoolStats;
+
   close(): Promise<unknown>;
 }

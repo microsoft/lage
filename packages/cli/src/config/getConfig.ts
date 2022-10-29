@@ -1,3 +1,4 @@
+import os from "os";
 import { cosmiconfig } from "cosmiconfig";
 import { getWorkspaceRoot } from "workspace-tools";
 import type { ConfigOptions } from "../types/ConfigOptions";
@@ -30,5 +31,6 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
     ],
     loggerOptions: config?.loggerOptions ?? {},
     runners: config?.runners ?? {},
+    workerIdleMemoryLimit: config?.workerIdleMemoryLimit ?? os.totalmem(), // 0 means no limit
   };
 }

@@ -13,6 +13,7 @@ interface AggregatedPoolOptions {
   script: string;
   workerOptions?: WorkerOptions;
   logger: Logger;
+  workerIdleMemoryLimit?: number; // in bytes
 }
 
 export class AggregatedPool implements Pool {
@@ -24,7 +25,12 @@ export class AggregatedPool implements Pool {
 
     let totalGroupedWorkers = 0;
     for (const [group, groupMaxWorkers] of maxWorkersByGroup.entries()) {
-      const pool = new WorkerPool({ maxWorkers: groupMaxWorkers, workerOptions, script });
+      const pool = new WorkerPool({
+        maxWorkers: groupMaxWorkers,
+        workerOptions,
+        script,
+        workerIdleMemoryLimit: options.workerIdleMemoryLimit,
+      });
       this.groupedPools.set(group, pool);
       totalGroupedWorkers += groupMaxWorkers;
     }
@@ -38,7 +44,12 @@ export class AggregatedPool implements Pool {
     const defaultPoolWorkersCount = maxWorkers - totalGroupedWorkers;
 
     if (defaultPoolWorkersCount > 0) {
-      this.defaultPool = new WorkerPool({ maxWorkers: defaultPoolWorkersCount, workerOptions, script });
+      this.defaultPool = new WorkerPool({
+        maxWorkers: defaultPoolWorkersCount,
+        workerOptions,
+        script,
+        workerIdleMemoryLimit: options.workerIdleMemoryLimit,
+      });
     }
 
     this.options.logger.verbose(
@@ -46,6 +57,22 @@ export class AggregatedPool implements Pool {
         .map(([group, count]) => `${group} (${count})`)
         .join(", ")}`
     );
+  }
+
+  stats() {
+    const stats = [...this.groupedPools.values(), this.defaultPool].reduce(
+      (acc, pool) => {
+        if (pool) {
+          const poolStats = pool.stats();
+          acc.maxWorkerMemoryUsage = Math.max(acc.maxWorkerMemoryUsage, poolStats.maxWorkerMemoryUsage);
+          acc.workerRestarts = acc.workerRestarts + poolStats.workerRestarts;
+        }
+        return acc;
+      },
+      { maxWorkerMemoryUsage: 0, workerRestarts: 0 }
+    );
+
+    return stats;
   }
 
   async exec(

@@ -281,6 +281,8 @@ describe("AdoReporter", () => {
         [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
         [bBuildTarget.id, { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
       ]),
+      maxWorkerMemoryUsage: 0,
+      workerRestarts: 0,
     });
 
     writer.end();

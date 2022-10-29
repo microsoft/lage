@@ -26,6 +26,12 @@ class InProcPool implements Pool {
   exec({ target }: { target: Target; weight: number }, weight, _setup, _teardown, abortSignal?: AbortSignal) {
     return this.runner.run({ target, weight, abortSignal });
   }
+  stats() {
+    return {
+      workerRestarts: 0,
+      maxWorkerMemoryUsage: 0,
+    };
+  }
   close() {
     return Promise.resolve();
   }

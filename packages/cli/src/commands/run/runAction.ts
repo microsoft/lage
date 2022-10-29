@@ -104,6 +104,7 @@ export async function runAction(options: RunOptions, command: Command) {
       },
       ...config.runners,
     },
+    workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
   });
 
   const summary = await scheduler.run(root, targetGraph);
