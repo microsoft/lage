@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Sat, 29 Oct 2022 01:06:17 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.4.0",
+      "version": "0.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "15f4763e0ac29760f813523d3f37b6a5078f4897",
+            "comment": "adds memory limit + restart capability"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 Oct 2022 22:01:13 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.3.0",
       "version": "0.3.0",

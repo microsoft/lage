@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "adds memory information from pool",
-  "packageName": "@lage-run/reporters",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "adds memory limit + restart capability",
-  "packageName": "@lage-run/worker-threads-pool",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

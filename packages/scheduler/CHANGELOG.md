@@ -1,8 +1,18 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Wed, 26 Oct 2022 22:01:13 GMT and should not be manually modified.
+This log was last generated on Sat, 29 Oct 2022 01:06:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.1
+
+Sat, 29 Oct 2022 01:06:17 GMT
+
+### Patches
+
+- account for max worker idle memory limit (kchau@microsoft.com)
+- Bump @lage-run/worker-threads-pool to v0.4.0
+- Bump @lage-run/scheduler-types to v0.2.1
 
 ## 0.5.0
 

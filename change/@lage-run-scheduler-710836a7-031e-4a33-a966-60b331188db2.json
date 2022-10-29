@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "account for max worker idle memory limit",
-  "packageName": "@lage-run/scheduler",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

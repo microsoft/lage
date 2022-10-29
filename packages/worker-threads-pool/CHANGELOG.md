@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Wed, 26 Oct 2022 22:01:13 GMT and should not be manually modified.
+This log was last generated on Sat, 29 Oct 2022 01:06:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.0
+
+Sat, 29 Oct 2022 01:06:17 GMT
+
+### Minor changes
+
+- adds memory limit + restart capability (kchau@microsoft.com)
 
 ## 0.3.0
 

@@ -2,6 +2,33 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Sat, 29 Oct 2022 01:06:17 GMT",
+      "tag": "@lage-run/scheduler_v0.5.1",
+      "version": "0.5.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "15f4763e0ac29760f813523d3f37b6a5078f4897",
+            "comment": "account for max worker idle memory limit"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.4.0",
+            "commit": "15f4763e0ac29760f813523d3f37b6a5078f4897"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.1",
+            "commit": "15f4763e0ac29760f813523d3f37b6a5078f4897"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 Oct 2022 22:01:13 GMT",
       "tag": "@lage-run/scheduler_v0.5.0",
       "version": "0.5.0",

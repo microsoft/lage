@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/scheduler",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Scheduler for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -18,7 +18,7 @@
     "@lage-run/target-graph": "^0.5.0",
     "@lage-run/logger": "^1.2.0",
     "@lage-run/cache": "^0.1.25",
-    "@lage-run/worker-threads-pool": "^0.3.0",
+    "@lage-run/worker-threads-pool": "^0.4.0",
     "@lage-run/format-hrtime": "^0.1.1",
     "p-graph": "^1.1.1",
     "p-profiler": "^0.2.1",
@@ -26,7 +26,7 @@
     "workspace-tools": "^0.28.0"
   },
   "devDependencies": {
-    "@lage-run/scheduler-types": "^0.2.0",
+    "@lage-run/scheduler-types": "^0.2.1",
     "@lage-run/monorepo-fixture": "*",
     "@types/workerpool": "6.1.0",
     "monorepo-scripts": "*"

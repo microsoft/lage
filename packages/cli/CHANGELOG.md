@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 26 Oct 2022 22:48:35 GMT and should not be manually modified.
+This log was last generated on Sat, 29 Oct 2022 01:06:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.24
+
+Sat, 29 Oct 2022 01:06:17 GMT
+
+### Patches
+
+- adds a memory limit param (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.5.1
+- Bump @lage-run/reporters to v0.2.32
 
 ## 0.4.23
 

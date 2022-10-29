@@ -2,6 +2,27 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Sat, 29 Oct 2022 01:06:17 GMT",
+      "tag": "@lage-run/reporters_v0.2.32",
+      "version": "0.2.32",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "15f4763e0ac29760f813523d3f37b6a5078f4897",
+            "comment": "adds memory information from pool"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.1",
+            "commit": "15f4763e0ac29760f813523d3f37b6a5078f4897"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 Oct 2022 22:01:13 GMT",
       "tag": "@lage-run/reporters_v0.2.31",
       "version": "0.2.31",
