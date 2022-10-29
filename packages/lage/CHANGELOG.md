@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Fri, 30 Sep 2022 18:48:39 GMT and should not be manually modified.
+This log was last generated on Sat, 29 Oct 2022 18:42:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.9.3
+
+Sat, 29 Oct 2022 18:42:49 GMT
+
+### Patches
+
+- bump workspace-tools (ken@gizzar.com)
 
 ## 1.9.2
 

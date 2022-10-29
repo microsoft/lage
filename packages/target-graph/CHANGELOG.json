@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Sat, 29 Oct 2022 18:42:49 GMT",
+      "tag": "@lage-run/target-graph_v0.5.1",
+      "version": "0.5.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/target-graph",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38",
+            "comment": "bump workspace-tools"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 Oct 2022 22:01:13 GMT",
       "tag": "@lage-run/target-graph_v0.5.0",
       "version": "0.5.0",

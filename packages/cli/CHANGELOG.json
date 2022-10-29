@@ -2,6 +2,45 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Sat, 29 Oct 2022 18:42:49 GMT",
+      "tag": "@lage-run/cli_v0.4.25",
+      "version": "0.4.25",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38",
+            "comment": "bump workspace-tools"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.2",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.5.1",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.26",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.33",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 29 Oct 2022 01:06:17 GMT",
       "tag": "@lage-run/cli_v0.4.24",
       "version": "0.4.24",

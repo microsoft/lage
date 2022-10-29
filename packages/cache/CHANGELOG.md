@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Wed, 26 Oct 2022 22:01:13 GMT and should not be manually modified.
+This log was last generated on Sat, 29 Oct 2022 18:42:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.26
+
+Sat, 29 Oct 2022 18:42:49 GMT
+
+### Patches
+
+- bump workspace-tools (ken@gizzar.com)
+- Bump @lage-run/target-graph to v0.5.1
 
 ## 0.1.25
 

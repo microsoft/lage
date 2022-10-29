@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sat, 29 Oct 2022 18:42:49 GMT",
+      "tag": "lage_v1.9.3",
+      "version": "1.9.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "lage",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38",
+            "comment": "bump workspace-tools"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Oct 2022 17:46:44 GMT",
       "tag": "lage_v1.9.2",
       "version": "1.9.2",

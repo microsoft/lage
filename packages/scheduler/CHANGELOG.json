@@ -2,6 +2,39 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Sat, 29 Oct 2022 18:42:49 GMT",
+      "tag": "@lage-run/scheduler_v0.5.2",
+      "version": "0.5.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/scheduler",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38",
+            "comment": "bump workspace-tools"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/target-graph to v0.5.1",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v0.1.26",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.2",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 29 Oct 2022 01:06:17 GMT",
       "tag": "@lage-run/scheduler_v0.5.1",
       "version": "0.5.1",
