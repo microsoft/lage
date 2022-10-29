@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "bump workspace-tools",
+  "packageName": "@lage-run/scheduler-types",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "patch"
+}

@@ -45,6 +45,9 @@
     "patch-package": "6.4.7",
     "fast-glob": "3.2.12"
   },
+  "resolutions": {
+    "workspace-tools": "^0.29.0"
+  },
   "lint-staged": {
     "*.gitignore": "prettier --config .prettierrc --write --ignore-path .gitignore",
     "*.ts": "prettier --config .prettierrc --write --ignore-path .gitignore",
