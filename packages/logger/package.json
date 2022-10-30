@@ -22,7 +22,9 @@
     "test": "jest",
     "lint": "monorepo-scripts lint"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "monorepo-scripts": "*"
+  },
   "publishConfig": {
     "access": "public"
   },

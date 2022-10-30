@@ -22,7 +22,7 @@
     "lint": "monorepo-scripts lint"
   },
   "devDependencies": {
-    "@lage-run/monorepo-fixture": "*"
+    "monorepo-scripts": "*"
   },
   "publishConfig": {
     "access": "public"

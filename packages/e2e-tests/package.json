@@ -18,9 +18,11 @@
     "test": "jest"
   },
   "dependencies": {
-    "@lage-run/cli": "^0.4.25"
+    "@lage-run/target-graph": "^0.5.1",
+    "@lage-run/scheduler-types": "^0.2.2"
   },
   "devDependencies": {
-    "memory-streams": "0.1.3"
+    "execa": "6.1.0",
+    "monorepo-scripts": "*"
   }
 }
