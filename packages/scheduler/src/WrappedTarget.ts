@@ -6,7 +6,6 @@ import fs from "fs";
 import path from "path";
 import { mkdir, writeFile } from "fs/promises";
 
-import type { AbortController } from "abort-controller";
 import type { CacheProvider } from "@lage-run/cache";
 import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetHasher } from "@lage-run/cache";

@@ -1,5 +1,4 @@
 import type { Target } from "@lage-run/target-graph";
-import type { AbortSignal } from "abort-controller";
 
 export interface TargetRunnerOptions {
   target: Target;

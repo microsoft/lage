@@ -1,5 +1,5 @@
-import { Monorepo } from "./mock/monorepo";
-import { filterEntry, parseNdJson } from "./parseNdJson";
+import { Monorepo } from "./mock/monorepo.js";
+import { filterEntry, parseNdJson } from "./parseNdJson.js";
 
 describe("basic failure case where a dependent target has failed", () => {
   it("when a failure happens, halts all other targets", () => {

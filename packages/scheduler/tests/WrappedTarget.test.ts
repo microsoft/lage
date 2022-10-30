@@ -2,7 +2,6 @@ import { Target } from "@lage-run/target-graph";
 import { WrappedTarget } from "../src/WrappedTarget";
 
 import path from "path";
-import AbortController, { AbortSignal } from "abort-controller";
 import { CacheProvider, TargetHasher } from "@lage-run/cache";
 import { Logger } from "@lage-run/logger";
 import { TargetRunner } from "@lage-run/scheduler-types";

@@ -1,5 +1,5 @@
-import { Monorepo } from "./mock/monorepo";
-import { parseNdJson } from "./parseNdJson";
+import { Monorepo } from "./mock/monorepo.js";
+import { parseNdJson } from "./parseNdJson.js";
 
 describe("RemoteFallbackCacheProvider", () => {
   it("should skip local cache population if --skip-local-cache is enabled", () => {

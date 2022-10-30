@@ -1,9 +1,7 @@
-import { AbortController } from "abort-controller";
 import { categorizeTargetRuns } from "./categorizeTargetRuns.js";
 import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
 import { WrappedTarget } from "./WrappedTarget.js";
 
-import type { AbortSignal } from "abort-controller";
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { Logger } from "@lage-run/logger";
 import type { TargetGraph, Target } from "@lage-run/target-graph";

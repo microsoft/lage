@@ -46,8 +46,9 @@ async function tsc(data) {
 
   const tsconfigFile = "tsconfig.json";
   const tsconfigJsonFile = path.join(target.cwd, tsconfigFile);
+  const ignoredPackages = ["@lage-run/docs"];
 
-  if (!existsSync(tsconfigJsonFile)) {
+  if (!existsSync(tsconfigJsonFile) || ignoredPackages.includes(target.packageName)) {
     // this package has no tsconfig.json, skipping work!
     return;
   }

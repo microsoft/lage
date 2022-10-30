@@ -2,7 +2,7 @@ import * as os from "os";
 import * as fs from "fs/promises";
 import { existsSync, mkdtempSync } from "fs";
 import * as path from "path";
-import execa from "execa";
+import { execa } from "execa";
 
 export class Monorepo {
   static tmpdir = os.tmpdir();

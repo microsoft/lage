@@ -1,7 +1,9 @@
 import os from "os";
 import fs from "fs";
 import path from "path";
-import execa from "execa";
+import { execaSync } from "execa";
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 export class Monorepo {
   static tmpdir = os.tmpdir();
@@ -18,10 +20,10 @@ export class Monorepo {
 
   init() {
     const options = { cwd: this.root };
-    execa.sync("git", ["init"], options);
-    execa.sync("git", ["config", "user.email", "you@example.com"], options);
-    execa.sync("git", ["config", "user.name", "test user"], options);
-    execa.sync("git", ["config", "commit.gpgsign", "false"], options);
+    execaSync("git", ["init"], options);
+    execaSync("git", ["config", "user.email", "you@example.com"], options);
+    execaSync("git", ["config", "user.name", "test user"], options);
+    execaSync("git", ["config", "commit.gpgsign", "false"], options);
     this.generateRepoFiles();
   }
 
@@ -131,11 +133,11 @@ export class Monorepo {
   }
 
   clone(origin: string) {
-    return execa.sync("git", ["clone", origin], { cwd: this.root });
+    return execaSync("git", ["clone", origin], { cwd: this.root });
   }
 
   push(origin: string, branch: string) {
-    return execa.sync("git", ["push", origin, branch], { cwd: this.root });
+    return execaSync("git", ["push", origin, branch], { cwd: this.root });
   }
 
   commitFiles(files: { [name: string]: string | Object }, options: { executable?: boolean } = {}) {
@@ -160,15 +162,15 @@ export class Monorepo {
       }
     }
 
-    execa.sync("git", ["add", ...Object.keys(files)], {
+    execaSync("git", ["add", ...Object.keys(files)], {
       cwd: this.root,
     });
 
-    execa.sync("git", ["commit", "-m", "commit files"], { cwd: this.root });
+    execaSync("git", ["commit", "-m", "commit files"], { cwd: this.root });
   }
 
   run(command: string, args?: string[], silent?: boolean) {
-    return execa.sync("yarn", [...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
+    return execaSync("yarn", [...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
     });
   }

@@ -1,6 +1,5 @@
 import type { Worker } from "worker_threads";
 import type { Readable } from "stream";
-import type { AbortSignal } from "abort-controller";
 
 export interface PoolStats {
   maxWorkerMemoryUsage: number; // in bytes
