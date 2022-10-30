@@ -1,5 +1,5 @@
-import { TargetConfig } from "@lage-run/target-graph";
-import { ConfigOptions } from "./ConfigOptions";
+import type { TargetConfig } from "@lage-run/target-graph";
+import type { ConfigOptions } from "./ConfigOptions.js";
 
 export interface FactoryArgs {
   cwd: string;

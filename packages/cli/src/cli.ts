@@ -1,7 +1,7 @@
 import { Command } from "commander";
 
-import { runCommand } from "./commands/run";
-import { cacheCommand } from "./commands/cache";
+import { runCommand } from "./commands/run/index.js";
+import { cacheCommand } from "./commands/cache/index.js";
 
 async function main() {
   const program = new Command();
@@ -12,6 +12,7 @@ async function main() {
 }
 
 main().catch((err) => {
+  // eslint-disable-next-line no-console
   console.error(err);
   process.exitCode = 1;
 });

@@ -28,7 +28,7 @@ module.exports = async function run(data) {
     cwd: target.cwd,
   });
 
-  const files = "src/**/*.ts";
+  const files = ["src/**/*.ts", "src/*.ts"];
   const results = await eslint.lintFiles(files);
   const formatter = await eslint.loadFormatter("stylish");
   const resultText = await formatter.format(results);

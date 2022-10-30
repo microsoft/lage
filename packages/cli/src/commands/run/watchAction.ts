@@ -1,17 +1,18 @@
-import { Command } from "commander";
-import { createCache } from "./createCacheProvider";
-import { createTargetGraph } from "./createTargetGraph";
-import { filterArgsForTasks } from "./filterArgsForTasks";
+import type { Command } from "commander";
+import { createCache } from "./createCacheProvider.js";
+import { createTargetGraph } from "./createTargetGraph.js";
+import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { findNpmClient } from "@lage-run/find-npm-client";
-import { getConfig } from "../../config/getConfig";
-import { getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions } from "../../config/getMaxWorkersPerTask";
+import { getConfig } from "../../config/getConfig.js";
+import { getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions } from "../../config/getMaxWorkersPerTask.js";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { filterPipelineDefinitions } from "./filterPipelineDefinitions";
+import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
 import { LogReporter } from "@lage-run/reporters";
 import { SimpleScheduler } from "@lage-run/scheduler";
-import { watch } from "./watcher";
+import { watch } from "./watcher.js";
 
-import createLogger, { LogLevel, Reporter } from "@lage-run/logger";
+import type { Reporter } from "@lage-run/logger";
+import createLogger, { LogLevel } from "@lage-run/logger";
 
 import type { ReporterInitOptions } from "@lage-run/reporters";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";

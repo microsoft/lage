@@ -3,5 +3,5 @@
   "compilerOptions": {
     "outDir": "./lib"
   },
-  "include": ["src/cli.ts", "src/index.ts", "src/commands/**/*.ts"]
+  "include": ["src/**/*.ts", "src/index.ts"]
 }

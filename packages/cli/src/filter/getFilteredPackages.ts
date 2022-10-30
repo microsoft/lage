@@ -1,13 +1,13 @@
+import type { PackageInfos } from "workspace-tools";
 import {
   getScopedPackages,
   getChangedPackages,
   getBranchChanges,
-  PackageInfos,
   getTransitiveDependents,
   getTransitiveDependencies,
 } from "workspace-tools";
 import * as fg from "fast-glob";
-import { Logger } from "@lage-run/logger";
+import type { Logger } from "@lage-run/logger";
 
 export function getFilteredPackages(options: {
   root: string;

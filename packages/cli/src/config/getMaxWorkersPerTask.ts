@@ -1,4 +1,4 @@
-import type { ConfigOptions } from "../types/ConfigOptions";
+import type { ConfigOptions } from "../types/ConfigOptions.js";
 
 export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], concurrency: number) {
   const maxWorkersPerTask = new Map<string, number>();
@@ -18,7 +18,7 @@ export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], 
         continue;
       }
 
-      let maxWorkers: number = 0;
+      let maxWorkers = 0;
 
       if (typeof maxWorkerOption !== "number") {
         throw new Error(`Invalid maxWorkers value: ${maxWorkerOption}`);

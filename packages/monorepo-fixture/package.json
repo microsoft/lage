@@ -7,8 +7,16 @@
     "url": "https://github.com/microsoft/lage"
   },
   "license": "MIT",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    }
+  },
+  "main": "./lib/cjs/index.cjs",
+  "types": "lib/cjs/index.d.ts",
   "scripts": {
     "build": "tsc",
     "start": "tsc -w --preserveWatchOutput",
@@ -18,7 +26,7 @@
     "workspace-tools": "^0.29.0"
   },
   "devDependencies": {
-    "execa": "5.1.1",
+    "execa": "6.1.0",
     "monorepo-scripts": "*"
   }
 }

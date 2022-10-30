@@ -1,5 +1,5 @@
 import type { LogLevel } from "./LogLevel.js";
-import { LogStructuredData } from "./LogStructuredData.js";
+import type { LogStructuredData } from "./LogStructuredData.js";
 
 export interface LogEntry<TLogStructuredData extends LogStructuredData = LogStructuredData> {
   /** a timestamp of when the log event occurred */

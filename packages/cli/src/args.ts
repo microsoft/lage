@@ -1,4 +1,5 @@
-import yargsParser, { Arguments } from "yargs-parser";
+import yargsParser from "yargs-parser";
+import type { Arguments } from "yargs-parser";
 
 export function arrifyArgs(args: { [key: string]: string | string[] }) {
   const argsArray: string[] = [];
@@ -77,7 +78,7 @@ export function getPassThroughArgs(command: string[], args: { [key: string]: str
 
   const filtered: { [key: string]: string | string[] } = {};
 
-  for (let [key, value] of Object.entries(args)) {
+  for (const [key, value] of Object.entries(args)) {
     if (!lageArgs.includes(key)) {
       filtered[key] = value;
     }

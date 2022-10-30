@@ -1,1 +1,1 @@
-export type { ConfigOptions } from "./types/ConfigOptions";
+export type { ConfigOptions } from "./types/ConfigOptions.js";

@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 export function showHelp(msg: string) {
   console.error(msg);
 
