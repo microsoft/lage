@@ -30,7 +30,7 @@ export default [
         ignoreDynamicRequires: true,
       }),
       json(),
-      terser(),
+      // terser(),
     ],
     external: ["fsevents"],
   },
@@ -73,7 +73,7 @@ export default [
         ignoreDynamicRequires: true,
       }),
       json(),
-      terser(),
+      // terser(),
     ],
   },
 ];
