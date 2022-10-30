@@ -5,7 +5,19 @@ const fastGlob = require("fast-glob");
 /** @type {import("@lage-run/cli").ConfigOptions} */
 module.exports = {
   pipeline: {
-    build: ["^build"],
+    transpile: {
+      type: "worker",
+      options: {
+        worker: path.join(__dirname, "scripts/worker/transpile.js"),
+      },
+    },
+    types: {
+      type: "worker",
+      options: {
+        worker: path.join(__dirname, "scripts/worker/types.js"),
+      },
+      dependsOn: ["^types"]
+    },
     test: {
       type: "worker",
       weight: (target) => {
@@ -32,6 +44,13 @@ module.exports = {
       dependsOn: ["build"],
     },
     "@lage-run/docs#test": {
+      type: "npmScript",
+    },
+    "lage#build": {
+      type: "npmScript",
+      dependsOn: ["^build"],
+    },
+    "@lage-run/docs#build": {
       type: "npmScript",
     },
   },
