@@ -11,6 +11,9 @@ import type { TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker.js"
 import { AggregatedPool } from "@lage-run/worker-threads-pool";
 import { formatBytes } from "./formatBytes.js";
 
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
 export interface SimpleSchedulerOptions {
   logger: Logger;
   concurrency: number;

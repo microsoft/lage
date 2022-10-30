@@ -17,6 +17,9 @@ module.exports = async function transpile(data) {
       // if file extension is .ts - you maybe want to include .tsx here as well for repos that have TSX files
       else if (entry.isFile() && entry.name.endsWith(".ts")) {
         const cjsOutput = await swc.transformFile(fullPath, {
+          jsc: {
+            target: "es2020",
+          },
           module: {
             type: "commonjs",
           },
@@ -27,6 +30,9 @@ module.exports = async function transpile(data) {
         await fs.writeFile(cjsDest, cjsOutput.code);
 
         const esmOutput = await swc.transformFile(fullPath, {
+          jsc: {
+            target: "es2020",
+          },
           module: {
             type: "es6",
           },

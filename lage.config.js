@@ -50,6 +50,10 @@ module.exports = {
       type: "npmScript",
       dependsOn: ["^build"],
     },
+    "@lage-run/lage#build": {
+      type: "npmScript",
+      dependsOn: ["^^transpile"]
+    },
     "@lage-run/docs#build": {
       type: "npmScript",
     },

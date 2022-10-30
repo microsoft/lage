@@ -15,6 +15,11 @@
       "types": "./lib/types/index.d.ts",
       "import": "./lib/esm/index.js",
       "require": "./lib/cjs/index.js"
+    },
+    "./lib/cli.js": {
+      "types": "./lib/types/cli.d.ts",
+      "import": "./lib/esm/cli.js",
+      "require": "./lib/cjs/cli.js"
     }
   },
   "main": "./lib/cjs/index.cjs",

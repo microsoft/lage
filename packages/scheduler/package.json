@@ -12,6 +12,11 @@
       "types": "./lib/types/index.d.ts",
       "import": "./lib/esm/index.js",
       "require": "./lib/cjs/index.js"
+    },
+    "./lib/workers/targetWorker.js": {
+      "types": "./lib/types/workers/targetWorker.d.ts",
+      "import": "./lib/esm/workers/targetWorker.js",
+      "require": "./lib/cjs/workers/targetWorker.js"
     }
   },
   "main": "./lib/cjs/index.cjs",

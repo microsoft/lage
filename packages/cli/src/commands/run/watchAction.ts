@@ -17,6 +17,9 @@ import createLogger, { LogLevel } from "@lage-run/logger";
 import type { ReporterInitOptions } from "@lage-run/reporters";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
 interface RunOptions extends ReporterInitOptions {
   concurrency: number;
   maxWorkersPerTask: string[];
