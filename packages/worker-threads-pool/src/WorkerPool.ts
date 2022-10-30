@@ -4,18 +4,18 @@
  */
 
 import { AsyncResource } from "async_hooks";
-import { createFilteredStreamTransform } from "./createFilteredStreamTransform";
+import { createFilteredStreamTransform } from "./createFilteredStreamTransform.js";
 import { createInterface } from "readline";
-import { endMarker, startMarker } from "./stdioStreamMarkers";
+import { endMarker, startMarker } from "./stdioStreamMarkers.js";
 import { EventEmitter } from "events";
 import { Worker } from "worker_threads";
 import crypto from "crypto";
 import os from "os";
-import type { Pool } from "./types/Pool";
+import type { Pool } from "./types/Pool.js";
 import type { Readable } from "stream";
 
 import type { AbortSignal } from "abort-controller";
-import type { WorkerPoolOptions } from "./types/WorkerPoolOptions";
+import type { WorkerPoolOptions } from "./types/WorkerPoolOptions.js";
 
 const kTaskInfo = Symbol("kTaskInfo");
 const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");

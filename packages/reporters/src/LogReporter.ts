@@ -1,6 +1,6 @@
 import { formatDuration, hrtimeDiff, hrToSeconds } from "@lage-run/format-hrtime";
 import { getPackageAndTask } from "@lage-run/target-graph";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
+import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
 import ansiRegex from "ansi-regex";
 import chalk from "chalk";
@@ -8,10 +8,10 @@ import type { Chalk } from "chalk";
 import gradient from "gradient-string";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
-import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
+import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
 import type { Writable } from "stream";
 import crypto from "crypto";
-import { formatBytes } from "./formatBytes";
+import { formatBytes } from "./formatBytes.js";
 
 const colors = {
   [LogLevel.info]: chalk.white,

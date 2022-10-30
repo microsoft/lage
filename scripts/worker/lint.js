@@ -18,7 +18,7 @@ module.exports = async function run(data) {
   const baseConfig = require(path.join(PROJECT_ROOT, "scripts/config/eslintrc.js"));
   baseConfig.parserOptions.project = path.join(target.cwd, "tsconfig.json");
 
-  const shouldFix = process.env.ESLINT_FIX === "true";
+  const shouldFix = process.env.ESLINT_FIX === "true"
 
   const eslint = new ESLint({
     reportUnusedDisableDirectives: "error",
@@ -30,14 +30,11 @@ module.exports = async function run(data) {
 
   const files = "src/**/*.ts";
   const results = await eslint.lintFiles(files);
-
-  if (shouldFix) {
-    process.stdout.write("Fixing lint errors...");
-    await ESLint.outputFixes(results);
-  }
-
   const formatter = await eslint.loadFormatter("stylish");
   const resultText = await formatter.format(results);
+
+  // 3. Modify the files with the fixed code.
+  await ESLint.outputFixes(results);
 
   // 4. Output it.
   if (resultText) {

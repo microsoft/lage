@@ -1,6 +1,6 @@
-import { createBackfillLogger } from "./backfillWrapper";
+import { createBackfillLogger } from "./backfillWrapper.js";
 import { Hasher as BackfillHasher } from "backfill-hasher";
-import { salt } from "./salt";
+import { salt } from "./salt.js";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { Target } from "@lage-run/target-graph";
 

@@ -1,16 +1,16 @@
-import { createDependencyMap } from "workspace-tools/lib/graph/createDependencyMap";
-import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId";
-import { prioritize } from "./prioritize";
-import { expandDepSpecs } from "./expandDepSpecs";
+import { createDependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
+import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId.js";
+import { prioritize } from "./prioritize.js";
+import { expandDepSpecs } from "./expandDepSpecs.js";
 
 import path from "path";
 
-import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap";
+import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
 import type { PackageInfos } from "workspace-tools";
-import type { Target } from "./types/Target";
-import type { TargetConfig } from "./types/TargetConfig";
-import { detectCycles } from "./detectCycles";
-import { getWeight } from "./getWeight";
+import type { Target } from "./types/Target.js";
+import type { TargetConfig } from "./types/TargetConfig.js";
+import { detectCycles } from "./detectCycles.js";
+import { getWeight } from "./getWeight.js";
 
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to

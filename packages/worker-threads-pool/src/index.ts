@@ -1,4 +1,4 @@
-export { registerWorker } from "./registerWorker";
-export { WorkerPool } from "./WorkerPool";
-export { AggregatedPool } from "./AggregatedPool";
-export type { Pool } from "./types/Pool";
+export { registerWorker } from "./registerWorker.js";
+export { WorkerPool } from "./WorkerPool.js";
+export { AggregatedPool } from "./AggregatedPool.js";
+export type { Pool } from "./types/Pool.js";

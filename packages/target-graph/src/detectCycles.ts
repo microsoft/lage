@@ -1,4 +1,4 @@
-import type { Target } from "./types/Target";
+import type { Target } from "./types/Target.js";
 
 /**
  * Checks for any cycles in the dependency graph, returning `{ hasCycle: false }` if no cycles were detected.
