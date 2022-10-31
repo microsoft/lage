@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "adds depcheck and fixes",
+  "packageName": "@lage-run/scheduler-types",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
