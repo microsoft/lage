@@ -28,7 +28,7 @@ module.exports = async function depcheckWorker({ target }) {
 
   if (results.devDependencies.length > 0) {
     hasErrors = true;
-    formattedError += `Unused dependency: \n`;
+    formattedError += `Unused devDependency: \n`;
     for (const dep of results.devDependencies) {
       formattedError += `  ${dep}\n`;
     }

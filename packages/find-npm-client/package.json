@@ -13,7 +13,7 @@
     "start": "tsc -w --preserveWatchOutput"
   },
   "devDependencies": {
-    "@lage-run/monorepo-fixture": "*"
+    "monorepo-scripts": "*"
   },
   "publishConfig": {
     "access": "public"
