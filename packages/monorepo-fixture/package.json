@@ -14,9 +14,6 @@
     "start": "tsc -w --preserveWatchOutput",
     "lint": "monorepo-scripts lint"
   },
-  "dependencies": {
-    "workspace-tools": "^0.29.0"
-  },
   "devDependencies": {
     "execa": "5.1.1",
     "monorepo-scripts": "*"

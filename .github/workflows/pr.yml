@@ -36,6 +36,10 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: yarn checkchange
 
+      - name: Dependency checks
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
+        run: yarn lage depcheck
+
       - name: Build, Test (Windows)
         if: ${{ startsWith(matrix.os, 'windows') }}
         run: yarn lage build test --scope=!@lage-run/lage --concurrency 2 --verbose

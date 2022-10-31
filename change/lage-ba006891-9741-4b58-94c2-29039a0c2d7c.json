@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fixed depcheck issues",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

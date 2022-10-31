@@ -19,16 +19,10 @@
     "@lage-run/logger": "^1.2.0",
     "@lage-run/cache": "^0.1.26",
     "@lage-run/worker-threads-pool": "^0.4.0",
-    "@lage-run/format-hrtime": "^0.1.1",
-    "p-graph": "^1.1.1",
-    "p-profiler": "^0.2.1",
-    "abort-controller": "^3.0.0",
-    "workspace-tools": "^0.29.0"
+    "abort-controller": "^3.0.0"
   },
   "devDependencies": {
     "@lage-run/scheduler-types": "^0.2.2",
-    "@lage-run/monorepo-fixture": "*",
-    "@types/workerpool": "6.1.0",
     "monorepo-scripts": "*"
   },
   "publishConfig": {
