@@ -1,6 +1,15 @@
+const { getWorkspaceRoot } = require("workspace-tools");
+const root = getWorkspaceRoot(process.cwd());
+const path = require("path");
+
 const depcheck = require("depcheck");
 
 module.exports = async function depcheckWorker({ target }) {
+  // ignore the tooling package: monorepo-scripts
+  if (target.packageName === "monorepo-scripts") {
+    return;
+  }
+
   const results = await depcheck(target.cwd, {
     ignoreBinPackage: true,
     ignorePatterns: ["node_modules", "dist", "lib", "build"],
@@ -29,7 +38,7 @@ module.exports = async function depcheckWorker({ target }) {
     hasErrors = true;
     formattedError += `Missing dependency: \n`;
     for (const [key, value] of Object.entries(results.missing)) {
-      formattedError += `  ${key} is used by: ${value.join(", ")}\n`;
+      formattedError += `  ${key} is used by: ${value.map((file) => path.relative(root, file)).join(", ")}\n`;
     }
   }
 
