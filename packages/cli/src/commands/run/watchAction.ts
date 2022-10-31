@@ -99,7 +99,9 @@ export async function watchAction(options: RunOptions, command: Command) {
       },
       worker: {
         script: require.resolve("./runners/WorkerRunner"),
-        options: {},
+        options: {
+          taskArgs,
+        },
       },
       ...config.runners,
     },
