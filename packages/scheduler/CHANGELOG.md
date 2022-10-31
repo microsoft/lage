@@ -1,8 +1,18 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Sat, 29 Oct 2022 18:42:49 GMT and should not be manually modified.
+This log was last generated on Mon, 31 Oct 2022 21:27:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.3
+
+Mon, 31 Oct 2022 21:27:52 GMT
+
+### Patches
+
+- adds depcheck and fixes (kchau@microsoft.com)
+- Bump @lage-run/worker-threads-pool to v0.4.1
+- Bump @lage-run/scheduler-types to v0.2.3
 
 ## 0.5.2
 

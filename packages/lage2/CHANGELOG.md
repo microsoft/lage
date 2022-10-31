@@ -1,8 +1,16 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Wed, 26 Oct 2022 22:01:13 GMT and should not be manually modified.
+This log was last generated on Mon, 31 Oct 2022 21:27:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.4
+
+Mon, 31 Oct 2022 21:27:52 GMT
+
+### Patches
+
+- adds depcheck and fixes (kchau@microsoft.com)
 
 ## 2.5.0
 

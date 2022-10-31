@@ -1,8 +1,20 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Sat, 29 Oct 2022 18:42:49 GMT and should not be manually modified.
+This log was last generated on Mon, 31 Oct 2022 21:27:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.26
+
+Mon, 31 Oct 2022 21:27:52 GMT
+
+### Patches
+
+- adds depcheck and fixes (kchau@microsoft.com)
+- Bump @lage-run/find-npm-client to v0.1.2
+- Bump @lage-run/scheduler to v0.5.3
+- Bump @lage-run/scheduler-types to v0.2.3
+- Bump @lage-run/reporters to v0.2.34
 
 ## 0.4.25
 

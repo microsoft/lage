@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Sat, 29 Oct 2022 18:42:49 GMT and should not be manually modified.
+This log was last generated on Mon, 31 Oct 2022 21:27:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.9.4
+
+Mon, 31 Oct 2022 21:27:52 GMT
+
+### Patches
+
+- Fixed depcheck issues (kchau@microsoft.com)
 
 ## 1.9.3
 

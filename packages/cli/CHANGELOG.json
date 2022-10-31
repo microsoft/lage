@@ -2,6 +2,45 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Mon, 31 Oct 2022 21:27:52 GMT",
+      "tag": "@lage-run/cli_v0.4.26",
+      "version": "0.4.26",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e",
+            "comment": "adds depcheck and fixes"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/find-npm-client to v0.1.2",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.3",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.3",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.34",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 29 Oct 2022 18:42:49 GMT",
       "tag": "@lage-run/cli_v0.4.25",
       "version": "0.4.25",

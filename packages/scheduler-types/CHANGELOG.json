@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Mon, 31 Oct 2022 21:27:52 GMT",
+      "tag": "@lage-run/scheduler-types_v0.2.3",
+      "version": "0.2.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e",
+            "comment": "adds depcheck and fixes"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 29 Oct 2022 18:42:49 GMT",
       "tag": "@lage-run/scheduler-types_v0.2.2",
       "version": "0.2.2",

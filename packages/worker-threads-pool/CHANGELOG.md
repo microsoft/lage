@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Sat, 29 Oct 2022 01:06:17 GMT and should not be manually modified.
+This log was last generated on Mon, 31 Oct 2022 21:27:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.1
+
+Mon, 31 Oct 2022 21:27:52 GMT
+
+### Patches
+
+- adds depcheck and fixes (kchau@microsoft.com)
 
 ## 0.4.0
 
