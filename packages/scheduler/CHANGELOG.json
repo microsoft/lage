@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Mon, 31 Oct 2022 21:56:09 GMT",
+      "tag": "@lage-run/scheduler_v0.5.4",
+      "version": "0.5.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "6d1d50bdb9245688edd0d7b6061bed2b1cdc3fd1",
+            "comment": "adds taskArgs param for worker scripts"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 31 Oct 2022 21:27:52 GMT",
       "tag": "@lage-run/scheduler_v0.5.3",
       "version": "0.5.3",

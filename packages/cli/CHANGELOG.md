@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Mon, 31 Oct 2022 21:27:52 GMT and should not be manually modified.
+This log was last generated on Mon, 31 Oct 2022 21:56:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.27
+
+Mon, 31 Oct 2022 21:56:09 GMT
+
+### Patches
+
+- adds taskArgs param for worker scripts (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.5.4
 
 ## 0.4.26
 
