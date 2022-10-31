@@ -5,8 +5,10 @@ const path = require("path");
 const depcheck = require("depcheck");
 
 module.exports = async function depcheckWorker({ target }) {
+  const ignored = ["monorepo-scripts", "@lage-run/docs"];
+
   // ignore the tooling package: monorepo-scripts
-  if (target.packageName === "monorepo-scripts") {
+  if (ignored.includes(target.packageName)) {
     return;
   }
 
