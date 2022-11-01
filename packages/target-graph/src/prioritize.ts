@@ -1,4 +1,4 @@
-import type { Target } from "./types/Target";
+import type { Target } from "./types/Target.js";
 
 function getNodesWithNoDependencies(targets: Map<string, Target>) {
   const nodesWithNoDependencies: string[] = [];

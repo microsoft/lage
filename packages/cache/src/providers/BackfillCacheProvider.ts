@@ -1,10 +1,10 @@
-import { createBackfillCacheConfig, createBackfillLogger } from "../backfillWrapper";
+import { createBackfillCacheConfig, createBackfillLogger } from "../backfillWrapper.js";
 import { getCacheStorageProvider } from "backfill-cache";
 import { getPackageInfos } from "workspace-tools";
 import { promisify } from "util";
 import * as fs from "fs";
 import * as path from "path";
-import type { CacheProvider, CacheProviderOptions } from "../types/CacheProvider";
+import type { CacheProvider, CacheProviderOptions } from "../types/CacheProvider.js";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { PackageInfo } from "workspace-tools";
 import type { Target } from "@lage-run/target-graph";

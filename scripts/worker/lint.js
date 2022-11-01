@@ -6,7 +6,7 @@ const { readFile } = require("fs/promises");
 const path = require("path");
 
 module.exports = async function run(data) {
-  const { target } = data;
+  const { target, taskArgs } = data;
   const packageJson = JSON.parse(await readFile(path.join(target.cwd, "package.json"), "utf8"));
 
   if (!packageJson.scripts?.[target.task]) {
@@ -18,18 +18,23 @@ module.exports = async function run(data) {
   const baseConfig = require(path.join(PROJECT_ROOT, "scripts/config/eslintrc.js"));
   baseConfig.parserOptions.project = path.join(target.cwd, "tsconfig.json");
 
+  const shouldFix = taskArgs?.includes("--fix");
+
   const eslint = new ESLint({
     reportUnusedDisableDirectives: "error",
     baseConfig,
-    fix: false,
+    fix: shouldFix,
     cache: false,
     cwd: target.cwd,
   });
 
-  const files = "src/**/*.ts";
+  const files = ["src/**/*.ts", "src/*.ts"];
   const results = await eslint.lintFiles(files);
   const formatter = await eslint.loadFormatter("stylish");
   const resultText = await formatter.format(results);
+
+  // 3. Modify the files with the fixed code.
+  await ESLint.outputFixes(results);
 
   // 4. Output it.
   if (resultText) {

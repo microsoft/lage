@@ -14,7 +14,8 @@
   "scripts": {
     "build": "tsc",
     "start": "tsc -w --preserveWatchOutput",
-    "test": "jest"
+    "test": "jest",
+    "lint": "monorepo-scripts lint"
   },
   "dependencies": {
     "@lage-run/find-npm-client": "^0.1.3",

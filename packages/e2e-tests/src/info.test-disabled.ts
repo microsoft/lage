@@ -1,9 +1,9 @@
-import { Monorepo } from "./mock/monorepo";
+import { Monorepo } from "./mock/monorepo.js";
 
 describe("info test", () => {
   it("with json reporter", () => {
     const result = testInfoWithReporter("json");
-    var resultObj = JSON.parse(result);
+    const resultObj = JSON.parse(result);
     // make deterministic
     resultObj.timestamp = 0;
     expect(JSON.stringify(resultObj)).toMatchSnapshot();

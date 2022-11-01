@@ -1,4 +1,4 @@
-import type { CacheProviderOptions } from "./CacheProvider";
+import type { CacheProviderOptions } from "./CacheProvider.js";
 
 export interface CacheOptions extends CacheProviderOptions {
   /**

@@ -1,6 +1,6 @@
 import { parentPort } from "worker_threads";
 import { AbortController } from "abort-controller";
-import { endMarker, startMarker } from "./stdioStreamMarkers";
+import { endMarker, startMarker } from "./stdioStreamMarkers.js";
 
 import type { AbortSignal } from "abort-controller";
 import type { MessagePort } from "worker_threads";

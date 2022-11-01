@@ -1,10 +1,10 @@
 import type { AbortSignal } from "abort-controller";
 import type { Readable } from "stream";
 import type { Worker, WorkerOptions } from "worker_threads";
-import type { Pool } from "./types/Pool";
+import type { Pool } from "./types/Pool.js";
 import type { Logger } from "@lage-run/logger";
 
-import { WorkerPool } from "./WorkerPool";
+import { WorkerPool } from "./WorkerPool.js";
 
 interface AggregatedPoolOptions {
   groupBy: (data: any) => string;

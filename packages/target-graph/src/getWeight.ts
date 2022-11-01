@@ -1,4 +1,4 @@
-import type { Target } from "./types/Target";
+import type { Target } from "./types/Target.js";
 
 export function getWeight(
   target: Target,

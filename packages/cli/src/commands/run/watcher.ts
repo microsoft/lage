@@ -2,7 +2,7 @@ import chokidar from "chokidar";
 
 import path from "path";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import type { PackageInfo, PackageInfos } from "workspace-tools";
+import type { PackageInfos } from "workspace-tools";
 import EventEmitter from "events";
 
 interface PathIndexItem {
@@ -77,6 +77,7 @@ function findPackageByPath(filePath: string, index: PathIndex) {
 
   for (const pathPart of pathParts) {
     if (!pointer[pathPart]) {
+      // eslint-disable-next-line no-console
       console.log(pathPart, filePath);
       break;
     }

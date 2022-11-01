@@ -1,6 +1,6 @@
-import type { Target } from "./types/Target";
-import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap";
-import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId";
+import type { Target } from "./types/Target.js";
+import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
+import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId.js";
 
 /**
  * Expands the dependency graph by adding all transitive dependencies of the given targets.

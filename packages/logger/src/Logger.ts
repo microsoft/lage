@@ -1,6 +1,6 @@
-import type { LogStructuredData } from "./interfaces/LogStructuredData";
-import type { Reporter } from "./interfaces/Reporter";
-import { LogLevel } from "./interfaces/LogLevel";
+import type { LogStructuredData } from "./interfaces/LogStructuredData.js";
+import type { Reporter } from "./interfaces/Reporter.js";
+import { LogLevel } from "./interfaces/LogLevel.js";
 import { createInterface } from "readline";
 
 export class Logger<TLogStructuredData extends LogStructuredData = LogStructuredData> {

@@ -10,7 +10,8 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "start": "tsc -w --preserveWatchOutput"
+    "start": "tsc -w --preserveWatchOutput",
+    "lint": "monorepo-scripts lint"
   },
   "devDependencies": {
     "monorepo-scripts": "*"
