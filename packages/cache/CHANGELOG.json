@@ -2,6 +2,33 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Tue, 01 Nov 2022 22:25:59 GMT",
+      "tag": "@lage-run/cache_v0.1.28",
+      "version": "0.1.28",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd",
+            "comment": "adds import extensions of .js to prepare of esmodule switchover"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.5.3",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/logger to v1.2.2",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 01 Nov 2022 20:43:17 GMT",
       "tag": "@lage-run/cache_v0.1.27",
       "version": "0.1.27",
