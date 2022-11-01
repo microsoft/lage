@@ -36,6 +36,11 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: yarn checkchange
 
+      # @see https://www.npmjs.com/package/syncpack 
+      - name: Check consistent package.json dep versions
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
+        run: yarn syncpack list-mismatches -w
+
       - name: Dependency checks
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: yarn lage depcheck
