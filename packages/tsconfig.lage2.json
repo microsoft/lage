@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "declaration": true,
+    "lib": ["ES2017"],
+    "allowJs": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noUnusedLocals": false,
+    "sourceMap": true,
+    "typeRoots": ["../node_modules/@types", "../types", "node_modules/@types"]
+  }
+}

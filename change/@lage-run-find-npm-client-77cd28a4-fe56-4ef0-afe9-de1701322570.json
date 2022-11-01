@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "cleaning up the tsconfig files",
+  "packageName": "@lage-run/find-npm-client",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

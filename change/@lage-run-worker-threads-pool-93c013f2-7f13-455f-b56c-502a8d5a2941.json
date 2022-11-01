@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "cleaning up the tsconfig files",
+  "packageName": "@lage-run/worker-threads-pool",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
