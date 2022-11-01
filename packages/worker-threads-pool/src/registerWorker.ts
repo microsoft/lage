@@ -1,8 +1,6 @@
 import { parentPort } from "worker_threads";
-import { AbortController } from "abort-controller";
 import { endMarker, startMarker } from "./stdioStreamMarkers.js";
 
-import type { AbortSignal } from "abort-controller";
 import type { MessagePort } from "worker_threads";
 
 export function registerWorker(fn: (data: any, abortSignal?: AbortSignal) => Promise<void> | void) {

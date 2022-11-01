@@ -15,8 +15,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/logger": "^1.2.1",
-    "abort-controller": "^3.0.0"
+    "@lage-run/logger": "^1.2.1"
   },
   "devDependencies": {
     "monorepo-scripts": "*"
