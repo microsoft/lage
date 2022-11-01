@@ -13,8 +13,8 @@
     "fsevents": "~2.3.2"
   },
   "devDependencies": {
-    "@lage-run/cli": "*",
-    "@lage-run/scheduler": "*",
+    "@lage-run/cli": "^0.4.27",
+    "@lage-run/scheduler": "^0.5.4",
     "rollup": "2.79.1",
     "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-node-resolve": "14.1.0",

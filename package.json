@@ -36,14 +36,12 @@
     "beachball": "2.31.4",
     "gh-pages": "4.0.0",
     "husky": "8.0.1",
-    "jest": "29.2.1",
     "lage-npm": "npm:@lage-run/lage@2.5.0",
     "lint-staged": "13.0.3",
     "prettier": "2.7.1",
-    "ts-jest": "29.0.3",
-    "typescript": "4.6.4",
     "patch-package": "6.4.7",
-    "fast-glob": "3.2.12"
+    "fast-glob": "^3.2.11",
+    "syncpack": "^8.3.9"
   },
   "resolutions": {
     "workspace-tools": "^0.29.0"
