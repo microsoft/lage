@@ -34,6 +34,12 @@ module.exports = {
         worker: path.join(__dirname, "scripts/worker/lint.js"),
       },
     },
+    depcheck: {
+      type: "worker",
+      options: {
+        worker: path.join(__dirname, "scripts/worker/depcheck.js"),
+      }
+    },
     start: [],
     "@lage-run/e2e-tests#test": {
       type: "npmScript",

@@ -2,6 +2,36 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 01 Nov 2022 20:12:49 GMT",
+      "tag": "lage_v1.9.5",
+      "version": "1.9.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "2d8af6ca7fa6e842dae1e58b9879e78d46afddc6",
+            "comment": "fixed to use consistent package dep versions"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 31 Oct 2022 21:27:52 GMT",
+      "tag": "lage_v1.9.4",
+      "version": "1.9.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e",
+            "comment": "Fixed depcheck issues"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 29 Oct 2022 18:42:49 GMT",
       "tag": "lage_v1.9.3",
       "version": "1.9.3",

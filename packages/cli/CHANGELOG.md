@@ -1,8 +1,59 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Sat, 29 Oct 2022 18:42:49 GMT and should not be manually modified.
+This log was last generated on Tue, 01 Nov 2022 22:25:59 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.29
+
+Tue, 01 Nov 2022 22:25:59 GMT
+
+### Patches
+
+- adds import extensions of .js to prepare of esmodule switchover (kchau@microsoft.com)
+- Bump @lage-run/find-npm-client to v0.1.4
+- Bump @lage-run/logger to v1.2.2
+- Bump @lage-run/scheduler to v0.5.6
+- Bump @lage-run/scheduler-types to v0.2.5
+- Bump @lage-run/target-graph to v0.5.3
+- Bump @lage-run/cache to v0.1.28
+- Bump @lage-run/reporters to v0.2.36
+
+## 0.4.28
+
+Tue, 01 Nov 2022 20:43:17 GMT
+
+### Patches
+
+- cleaning up the tsconfig files (kchau@microsoft.com)
+- Bump @lage-run/find-npm-client to v0.1.3
+- Bump @lage-run/logger to v1.2.1
+- Bump @lage-run/scheduler to v0.5.5
+- Bump @lage-run/scheduler-types to v0.2.4
+- Bump @lage-run/target-graph to v0.5.2
+- Bump @lage-run/cache to v0.1.27
+- Bump @lage-run/reporters to v0.2.35
+
+## 0.4.27
+
+Mon, 31 Oct 2022 21:56:09 GMT
+
+### Patches
+
+- adds taskArgs param for worker scripts (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.5.4
+
+## 0.4.26
+
+Mon, 31 Oct 2022 21:27:52 GMT
+
+### Patches
+
+- adds depcheck and fixes (kchau@microsoft.com)
+- Bump @lage-run/find-npm-client to v0.1.2
+- Bump @lage-run/scheduler to v0.5.3
+- Bump @lage-run/scheduler-types to v0.2.3
+- Bump @lage-run/reporters to v0.2.34
 
 ## 0.4.25
 

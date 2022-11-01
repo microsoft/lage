@@ -1,5 +1,9 @@
 import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
 
+export interface WorkerRunnerOptions {
+  taskArgs: string[];
+}
+
 /**
  * Creates a workerpool per target task definition of "type: worker"
  *
@@ -38,8 +42,11 @@ import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-type
 export class WorkerRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
 
+  constructor(private options: WorkerRunnerOptions) {}
+
   async run(runOptions: TargetRunnerOptions) {
     const { target, weight, abortSignal } = runOptions;
+    const { taskArgs } = this.options;
     const scriptFile = target.options?.worker ?? target.options?.script;
 
     if (!scriptFile) {
@@ -54,6 +61,6 @@ export class WorkerRunner implements TargetRunner {
       throw new Error("WorkerRunner: worker script must export a function; you likely need to use `module.exports = function() {...}`");
     }
 
-    await runFn({ target, weight, abortSignal });
+    await runFn({ target, weight, taskArgs, abortSignal });
   }
 }

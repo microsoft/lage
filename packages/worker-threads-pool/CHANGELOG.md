@@ -1,8 +1,34 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Sat, 29 Oct 2022 01:06:17 GMT and should not be manually modified.
+This log was last generated on Tue, 01 Nov 2022 22:25:59 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.3
+
+Tue, 01 Nov 2022 22:25:59 GMT
+
+### Patches
+
+- adds import extensions of .js to prepare of esmodule switchover (kchau@microsoft.com)
+- Bump @lage-run/logger to v1.2.2
+
+## 0.4.2
+
+Tue, 01 Nov 2022 20:43:17 GMT
+
+### Patches
+
+- cleaning up the tsconfig files (kchau@microsoft.com)
+- Bump @lage-run/logger to v1.2.1
+
+## 0.4.1
+
+Mon, 31 Oct 2022 21:27:52 GMT
+
+### Patches
+
+- adds depcheck and fixes (kchau@microsoft.com)
 
 ## 0.4.0
 

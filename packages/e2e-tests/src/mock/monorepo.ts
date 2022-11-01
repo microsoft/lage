@@ -140,7 +140,7 @@ export class Monorepo {
     return execaSync("git", ["push", origin, branch], { cwd: this.root });
   }
 
-  commitFiles(files: { [name: string]: string | Object }, options: { executable?: boolean } = {}) {
+  commitFiles(files: { [name: string]: string | Record<string, unknown> }, options: { executable?: boolean } = {}) {
     for (const [file, contents] of Object.entries(files)) {
       let out = "";
       if (typeof contents !== "string") {

@@ -1,8 +1,24 @@
 # Change Log - @lage-run/logger
 
-This log was last generated on Sun, 04 Sep 2022 23:00:20 GMT and should not be manually modified.
+This log was last generated on Tue, 01 Nov 2022 22:25:59 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.2
+
+Tue, 01 Nov 2022 22:25:59 GMT
+
+### Patches
+
+- adds import extensions of .js to prepare of esmodule switchover (kchau@microsoft.com)
+
+## 1.2.1
+
+Tue, 01 Nov 2022 20:43:17 GMT
+
+### Patches
+
+- cleaning up the tsconfig files (kchau@microsoft.com)
 
 ## 1.2.0
 

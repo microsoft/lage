@@ -6,7 +6,9 @@ import { WorkerRunner } from "../src/runners/WorkerRunner";
 describe("WorkerRunner", () => {
   it("can create a pool to run worker targets in parallel with worker_thread", async () => {
     const workerFixture = path.join(__dirname, "./fixtures/worker.js");
-    const runner = new WorkerRunner();
+    const runner = new WorkerRunner({
+      taskArgs: [],
+    });
 
     const target1 = {
       id: "a#work",

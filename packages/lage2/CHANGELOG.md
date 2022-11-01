@@ -1,8 +1,42 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Wed, 26 Oct 2022 22:01:13 GMT and should not be manually modified.
+This log was last generated on Tue, 01 Nov 2022 22:25:59 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.8
+
+Tue, 01 Nov 2022 22:25:59 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.4.29
+- Bump @lage-run/scheduler to v0.5.6
+
+## 2.5.7
+
+Tue, 01 Nov 2022 20:43:17 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.4.28
+- Bump @lage-run/scheduler to v0.5.5
+
+## 2.5.6
+
+Tue, 01 Nov 2022 20:12:49 GMT
+
+### Patches
+
+- fixed to use consistent package dep versions (kchau@microsoft.com)
+
+## 2.5.4
+
+Mon, 31 Oct 2022 21:27:52 GMT
+
+### Patches
+
+- adds depcheck and fixes (kchau@microsoft.com)
 
 ## 2.5.0
 

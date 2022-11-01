@@ -62,8 +62,6 @@ describe("basic failure case where a dependent target has failed", () => {
 
     jsonOutput = parseNdJson(output);
 
-    console.log(repo.root);
-
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "build", "failed"))).toBeTruthy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "test", "success"))).toBeFalsy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "success"))).toBeFalsy();

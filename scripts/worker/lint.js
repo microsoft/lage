@@ -6,7 +6,7 @@ const { readFile } = require("fs/promises");
 const path = require("path");
 
 module.exports = async function run(data) {
-  const { target } = data;
+  const { target, taskArgs } = data;
   const packageJson = JSON.parse(await readFile(path.join(target.cwd, "package.json"), "utf8"));
 
   if (!packageJson.scripts?.[target.task]) {
@@ -18,7 +18,7 @@ module.exports = async function run(data) {
   const baseConfig = require(path.join(PROJECT_ROOT, "scripts/config/eslintrc.js"));
   baseConfig.parserOptions.project = path.join(target.cwd, "tsconfig.json");
 
-  const shouldFix = process.env.ESLINT_FIX === "true"
+  const shouldFix = taskArgs?.includes("--fix");
 
   const eslint = new ESLint({
     reportUnusedDisableDirectives: "error",

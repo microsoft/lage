@@ -2,6 +2,51 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Tue, 01 Nov 2022 22:25:59 GMT",
+      "tag": "@lage-run/cache-github-actions_v0.1.9",
+      "version": "0.1.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd",
+            "comment": "adds import extensions of .js to prepare of esmodule switchover"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 20:43:17 GMT",
+      "tag": "@lage-run/cache-github-actions_v0.1.8",
+      "version": "0.1.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "d93ffd227f46718fafd1062f9107bde2c98d4f37",
+            "comment": "cleaning up the tsconfig files"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 31 Oct 2022 21:27:52 GMT",
+      "tag": "@lage-run/cache-github-actions_v0.1.7",
+      "version": "0.1.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e",
+            "comment": "adds depcheck and fixes"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 29 Oct 2022 18:42:49 GMT",
       "tag": "@lage-run/cache-github-actions_v0.1.6",
       "version": "0.1.6",

@@ -1,5 +1,4 @@
 const { parentPort } = require("worker_threads");
-const { AbortController } = require("abort-controller");
 
 const START_WORKER_STREAM_MARKER = "## WORKER:START:";
 const END_WORKER_STREAM_MARKER = "## WORKER:END:";
