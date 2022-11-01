@@ -1,8 +1,6 @@
 import "child_process";
-import { AbortController } from "abort-controller";
 import { ChildProcess } from "child_process";
 import { getTargetId, Target } from "@lage-run/target-graph";
-import { Logger, LogLevel, Reporter } from "@lage-run/logger";
 import { NpmScriptRunner } from "../src/runners/NpmScriptRunner";
 import { waitFor } from "./waitFor";
 import os from "os";

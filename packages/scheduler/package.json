@@ -18,8 +18,7 @@
     "@lage-run/target-graph": "^0.5.3",
     "@lage-run/logger": "^1.2.2",
     "@lage-run/cache": "^0.1.28",
-    "@lage-run/worker-threads-pool": "^0.4.3",
-    "abort-controller": "^3.0.0"
+    "@lage-run/worker-threads-pool": "^0.4.3"
   },
   "devDependencies": {
     "@lage-run/scheduler-types": "^0.2.5",

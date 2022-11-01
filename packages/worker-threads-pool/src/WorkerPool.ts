@@ -14,7 +14,6 @@ import os from "os";
 import type { Pool } from "./types/Pool.js";
 import type { Readable } from "stream";
 
-import type { AbortSignal } from "abort-controller";
 import type { WorkerPoolOptions } from "./types/WorkerPoolOptions.js";
 
 const kTaskInfo = Symbol("kTaskInfo");
