@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 31 Oct 2022 21:27:52 GMT and should not be manually modified.
+This log was last generated on Tue, 01 Nov 2022 20:12:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.9.5
+
+Tue, 01 Nov 2022 20:12:49 GMT
+
+### Patches
+
+- fixed to use consistent package dep versions (kchau@microsoft.com)
 
 ## 1.9.4
 
