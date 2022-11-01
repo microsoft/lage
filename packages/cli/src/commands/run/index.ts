@@ -1,8 +1,8 @@
-import { Command, Option } from "commander";
+import { Command } from "commander";
 import os from "os";
-import { action } from "./action";
-import { addLoggerOptions } from "../addLoggerOptions";
-import { isRunningFromCI } from "../isRunningFromCI";
+import { action } from "./action.js";
+import { addLoggerOptions } from "../addLoggerOptions.js";
+import { isRunningFromCI } from "../isRunningFromCI.js";
 
 const runCommand = new Command("run");
 

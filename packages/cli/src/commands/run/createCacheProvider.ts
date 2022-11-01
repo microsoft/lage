@@ -1,6 +1,7 @@
-import { BackfillCacheProvider, CacheOptions, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
-import { Logger } from "@lage-run/logger";
-import { isRunningFromCI } from "../isRunningFromCI";
+import type { CacheOptions } from "@lage-run/cache";
+import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
+import type { Logger } from "@lage-run/logger";
+import { isRunningFromCI } from "../isRunningFromCI.js";
 
 interface CreateCacheOptions {
   cacheOptions?: CacheOptions;

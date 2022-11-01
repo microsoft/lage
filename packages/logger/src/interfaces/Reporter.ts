@@ -1,6 +1,6 @@
-import type { LogLevel } from "./LogLevel";
-import type { LogEntry } from "./LogEntry";
-import { LogStructuredData } from "./LogStructuredData";
+import type { LogLevel } from "./LogLevel.js";
+import type { LogEntry } from "./LogEntry.js";
+import type { LogStructuredData } from "./LogStructuredData.js";
 
 export interface Reporter<TLogStructuredData extends LogStructuredData = LogStructuredData> {
   /** log level, use the LogLevel object */

@@ -1,5 +1,5 @@
-import { Monorepo } from "./mock/monorepo";
-import { filterEntry, parseNdJson } from "./parseNdJson";
+import { Monorepo } from "./mock/monorepo.js";
+import { filterEntry, parseNdJson } from "./parseNdJson.js";
 
 describe("basic failure case where a dependent target has failed", () => {
   it("when a failure happens, halts all other targets", () => {
@@ -61,8 +61,6 @@ describe("basic failure case where a dependent target has failed", () => {
     const output = results.stdout + results.stderr;
 
     jsonOutput = parseNdJson(output);
-
-    console.log(repo.root);
 
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "build", "failed"))).toBeTruthy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "test", "success"))).toBeFalsy();

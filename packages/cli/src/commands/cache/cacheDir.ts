@@ -1,4 +1,4 @@
-import fs from "fs";
+import type fs from "fs";
 import path from "path";
 import { rm, unlink } from "fs/promises";
 

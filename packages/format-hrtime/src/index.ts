@@ -1,1 +1,1 @@
-export { formatDuration, hrToSeconds, hrtimeDiff } from "./formatDuration";
+export { formatDuration, hrToSeconds, hrtimeDiff } from "./formatDuration.js";

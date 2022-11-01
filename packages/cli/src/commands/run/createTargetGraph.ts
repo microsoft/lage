@@ -1,9 +1,8 @@
-import { Logger } from "@lage-run/logger";
+import type { Logger } from "@lage-run/logger";
 import { TargetGraphBuilder } from "@lage-run/target-graph";
-import { getPackageInfos, PackageInfos } from "workspace-tools";
-import { getFilteredPackages } from "../../filter/getFilteredPackages";
-import type { PipelineDefinition } from "../../types/PipelineDefinition";
-import { filterArgsForTasks } from "./filterArgsForTasks";
+import type { PackageInfos } from "workspace-tools";
+import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
+import type { PipelineDefinition } from "../../types/PipelineDefinition.js";
 
 interface CreateTargetGraphOptions {
   logger: Logger;
