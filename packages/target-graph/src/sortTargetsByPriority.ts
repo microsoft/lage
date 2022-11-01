@@ -1,4 +1,4 @@
-import type { Target } from "./types/Target";
+import type { Target } from "./types/Target.js";
 
 export function sortTargetsByPriority(targets: Target[]) {
   return targets.sort((a, b) => {

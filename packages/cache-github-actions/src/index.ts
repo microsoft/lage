@@ -1,1 +1,1 @@
-export { cacheProvider as default } from "./cacheProvider";
+export { cacheProvider as default } from "./cacheProvider.js";

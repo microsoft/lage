@@ -1,7 +1,7 @@
 import { AbortController } from "abort-controller";
-import { categorizeTargetRuns } from "./categorizeTargetRuns";
+import { categorizeTargetRuns } from "./categorizeTargetRuns.js";
 import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
-import { WrappedTarget } from "./WrappedTarget";
+import { WrappedTarget } from "./WrappedTarget.js";
 
 import type { AbortSignal } from "abort-controller";
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
@@ -9,9 +9,9 @@ import type { Logger } from "@lage-run/logger";
 import type { TargetGraph, Target } from "@lage-run/target-graph";
 import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "@lage-run/scheduler-types";
 import type { Pool } from "@lage-run/worker-threads-pool";
-import type { TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker";
+import type { TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker.js";
 import { AggregatedPool } from "@lage-run/worker-threads-pool";
-import { formatBytes } from "./formatBytes";
+import { formatBytes } from "./formatBytes.js";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;

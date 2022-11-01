@@ -1,4 +1,4 @@
-import type { Target } from "./Target";
+import type { Target } from "./Target.js";
 
 /**
  * Target configuration - to be used inside `lage.config.js` options.pipeline configurations

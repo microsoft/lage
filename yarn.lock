@@ -5844,6 +5844,14 @@ escape-string-regexp@^4.0.0:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz#14ba83a5d373e3d311e5afca29cf5bfad965bf34"
   integrity sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==
 
+eslint-plugin-file-extension-in-import-ts@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-file-extension-in-import-ts/-/eslint-plugin-file-extension-in-import-ts-1.0.1.tgz#aa1cf3e9771e1395ad2284c9186f00a597e80f42"
+  integrity sha512-3Z24WhVyhA0vxj0xfS1ws+1z49LKivdeb9Bp7SdY36x6UJtJYnyi9L6GNJAjVgFTj8ux8M5wz06h/quSyhTYUg==
+  dependencies:
+    is-core-module "^2.9.0"
+    resolve "^1.22.1"
+
 eslint-scope@5.1.1, eslint-scope@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-5.1.1.tgz#e786e59a66cb92b3f6c1fb0d508aab174848f48c"

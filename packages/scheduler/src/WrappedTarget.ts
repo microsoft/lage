@@ -1,5 +1,5 @@
-import { bufferTransform } from "./bufferTransform";
-import { getLageOutputCacheLocation } from "./getLageOutputCacheLocation";
+import { bufferTransform } from "./bufferTransform.js";
+import { getLageOutputCacheLocation } from "./getLageOutputCacheLocation.js";
 import { LogLevel } from "@lage-run/logger";
 
 import fs from "fs";

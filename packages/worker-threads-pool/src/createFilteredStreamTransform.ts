@@ -1,5 +1,5 @@
 import { Transform } from "stream";
-import { END_MARKER_PREFIX, START_MARKER_PREFIX } from "./stdioStreamMarkers";
+import { END_MARKER_PREFIX, START_MARKER_PREFIX } from "./stdioStreamMarkers.js";
 
 export function createFilteredStreamTransform(): Transform {
   const transform = new Transform({

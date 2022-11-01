@@ -1,4 +1,4 @@
-import type { CacheProvider } from "../types/CacheProvider";
+import type { CacheProvider } from "../types/CacheProvider.js";
 import type { Logger } from "@lage-run/logger";
 import type { Target } from "@lage-run/target-graph";
 

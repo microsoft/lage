@@ -6,7 +6,7 @@ import * as os from "os";
 import { createDefaultConfig, getEnvConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
 import type { Logger as BackfillLogger } from "backfill-logger";
-import type { CacheOptions } from "./types/CacheOptions";
+import type { CacheOptions } from "./types/CacheOptions.js";
 
 export function createBackfillLogger() {
   const stdout = process.stdout;

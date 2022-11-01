@@ -1,6 +1,6 @@
 import path from "path";
 import { getStartTargetId } from "@lage-run/target-graph";
-import { NoOpRunner } from "./NoOpRunner";
+import { NoOpRunner } from "./NoOpRunner.js";
 import type { Target } from "@lage-run/target-graph";
 import type { TargetRunner } from "@lage-run/scheduler-types";
 

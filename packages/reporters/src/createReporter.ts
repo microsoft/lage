@@ -1,7 +1,7 @@
 import { LogLevel } from "@lage-run/logger";
-import { JsonReporter } from "./JsonReporter";
-import { AdoReporter } from "./AdoReporter";
-import { LogReporter } from "./LogReporter";
+import { JsonReporter } from "./JsonReporter.js";
+import { AdoReporter } from "./AdoReporter.js";
+import { LogReporter } from "./LogReporter.js";
 
 export function createReporter({
   reporter = "npmLog",
