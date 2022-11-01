@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "cleaning up the tsconfig files",
-  "packageName": "@lage-run/format-hrtime",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

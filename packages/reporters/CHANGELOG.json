@@ -2,6 +2,45 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Tue, 01 Nov 2022 20:43:17 GMT",
+      "tag": "@lage-run/reporters_v0.2.35",
+      "version": "0.2.35",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "d93ffd227f46718fafd1062f9107bde2c98d4f37",
+            "comment": "cleaning up the tsconfig files"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/logger to v1.2.1",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.4",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.5.2",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/format-hrtime to v0.1.2",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 31 Oct 2022 21:27:52 GMT",
       "tag": "@lage-run/reporters_v0.2.34",
       "version": "0.2.34",

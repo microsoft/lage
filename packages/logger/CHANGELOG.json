@@ -2,6 +2,21 @@
   "name": "@lage-run/logger",
   "entries": [
     {
+      "date": "Tue, 01 Nov 2022 20:43:17 GMT",
+      "tag": "@lage-run/logger_v1.2.1",
+      "version": "1.2.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "d93ffd227f46718fafd1062f9107bde2c98d4f37",
+            "comment": "cleaning up the tsconfig files"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 20 Sep 2022 02:32:14 GMT",
       "tag": "@lage-run/logger_v1.2.0",
       "version": "1.2.0",

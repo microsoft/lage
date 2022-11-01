@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Tue, 01 Nov 2022 20:43:17 GMT",
+      "tag": "@lage-run/cache-github-actions_v0.1.8",
+      "version": "0.1.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "d93ffd227f46718fafd1062f9107bde2c98d4f37",
+            "comment": "cleaning up the tsconfig files"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 31 Oct 2022 21:27:52 GMT",
       "tag": "@lage-run/cache-github-actions_v0.1.7",
       "version": "0.1.7",

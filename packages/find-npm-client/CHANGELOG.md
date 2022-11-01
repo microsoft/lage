@@ -1,8 +1,16 @@
 # Change Log - @lage-run/find-npm-client
 
-This log was last generated on Mon, 31 Oct 2022 21:27:52 GMT and should not be manually modified.
+This log was last generated on Tue, 01 Nov 2022 20:43:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.3
+
+Tue, 01 Nov 2022 20:43:17 GMT
+
+### Patches
+
+- cleaning up the tsconfig files (kchau@microsoft.com)
 
 ## 0.1.2
 
