@@ -34,13 +34,13 @@
     "@types/jest": "29.2.0",
     "@types/node": "14.18.32",
     "beachball": "2.31.4",
+    "fast-glob": "^3.2.11",
     "gh-pages": "4.0.0",
     "husky": "8.0.1",
     "lage-npm": "npm:@lage-run/lage@2.5.0",
     "lint-staged": "13.0.3",
-    "prettier": "2.7.1",
     "patch-package": "6.4.7",
-    "fast-glob": "^3.2.11",
+    "prettier": "2.7.1",
     "syncpack": "^8.3.9"
   },
   "resolutions": {
