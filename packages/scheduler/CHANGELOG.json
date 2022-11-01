@@ -2,6 +2,33 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Tue, 01 Nov 2022 22:48:33 GMT",
+      "tag": "@lage-run/scheduler_v0.5.7",
+      "version": "0.5.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "97b306418acd099a3ed6f3dfc062b513f5fe391c",
+            "comment": "get rid of third party abort-controller impl"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.4.4",
+            "commit": "97b306418acd099a3ed6f3dfc062b513f5fe391c"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.6",
+            "commit": "97b306418acd099a3ed6f3dfc062b513f5fe391c"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 01 Nov 2022 22:25:59 GMT",
       "tag": "@lage-run/scheduler_v0.5.6",
       "version": "0.5.6",

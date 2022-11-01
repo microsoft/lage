@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "get rid of third party abort-controller impl",
-  "packageName": "@lage-run/worker-threads-pool",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

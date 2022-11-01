@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Tue, 01 Nov 2022 22:25:59 GMT and should not be manually modified.
+This log was last generated on Tue, 01 Nov 2022 22:48:33 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.4
+
+Tue, 01 Nov 2022 22:48:33 GMT
+
+### Patches
+
+- get rid of third party abort-controller impl (kchau@microsoft.com)
 
 ## 0.4.3
 

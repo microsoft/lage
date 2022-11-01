@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Tue, 01 Nov 2022 22:48:33 GMT",
+      "tag": "@lage-run/scheduler-types_v0.2.6",
+      "version": "0.2.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "97b306418acd099a3ed6f3dfc062b513f5fe391c",
+            "comment": "get rid of third party abort-controller impl"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 01 Nov 2022 22:25:59 GMT",
       "tag": "@lage-run/scheduler-types_v0.2.5",
       "version": "0.2.5",
