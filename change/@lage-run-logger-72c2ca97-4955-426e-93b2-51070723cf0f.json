@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "adds import extensions of .js to prepare of esmodule switchover",
-  "packageName": "@lage-run/logger",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

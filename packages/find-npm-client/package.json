@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/find-npm-client",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Finds the npm client for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"

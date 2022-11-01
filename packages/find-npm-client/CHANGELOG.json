@@ -2,6 +2,21 @@
   "name": "@lage-run/find-npm-client",
   "entries": [
     {
+      "date": "Tue, 01 Nov 2022 22:25:59 GMT",
+      "tag": "@lage-run/find-npm-client_v0.1.4",
+      "version": "0.1.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/find-npm-client",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd",
+            "comment": "adds import extensions of .js to prepare of esmodule switchover"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 01 Nov 2022 20:43:17 GMT",
       "tag": "@lage-run/find-npm-client_v0.1.3",
       "version": "0.1.3",

@@ -1,8 +1,21 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Tue, 01 Nov 2022 20:43:17 GMT and should not be manually modified.
+This log was last generated on Tue, 01 Nov 2022 22:25:59 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.6
+
+Tue, 01 Nov 2022 22:25:59 GMT
+
+### Patches
+
+- adds import extensions of .js to prepare of esmodule switchover (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.5.3
+- Bump @lage-run/logger to v1.2.2
+- Bump @lage-run/cache to v0.1.28
+- Bump @lage-run/worker-threads-pool to v0.4.3
+- Bump @lage-run/scheduler-types to v0.2.5
 
 ## 0.5.5
 
