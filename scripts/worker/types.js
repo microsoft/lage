@@ -66,7 +66,6 @@ async function tsc(data) {
     throw new Error("Could not parse tsconfig.json");
   }
   const compilerOptions = parsedCommandLine.options;
-  compilerOptions.outDir = path.join(target.cwd, "./lib/types");
   compilerOptions.emitDeclarationOnly = true;
 
   // Creating compilation host program

@@ -25,7 +25,7 @@ module.exports = async function transpile(data) {
           },
         });
 
-        const cjsDest = fullPath.replace(/([/\\])src/, "$1lib/cjs").replace(".ts", ".js");
+        const cjsDest = fullPath.replace(/([/\\])src/, "$1lib").replace(".ts", ".cjs");
         await fs.mkdir(path.dirname(cjsDest), { recursive: true });
         await fs.writeFile(cjsDest, cjsOutput.code);
 
@@ -38,7 +38,7 @@ module.exports = async function transpile(data) {
           },
         });
 
-        const esmDest = fullPath.replace(/([/\\])src/, "$1lib/esm").replace(".ts", ".js");
+        const esmDest = fullPath.replace(/([/\\])src/, "$1lib").replace(".ts", ".js");
         await fs.mkdir(path.dirname(esmDest), { recursive: true });
         await fs.writeFile(esmDest, esmOutput.code);
       }
