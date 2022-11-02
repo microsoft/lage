@@ -219,10 +219,7 @@ describe(getRepoState.name, () => {
       }
       expect(filteredResults.size).toEqual(expectedFiles.size);
     } finally {
-      execSync(`git checkout --force HEAD -- ${TEST_PREFIX}testProject/file1.txt`, {
-        stdio: "ignore",
-        cwd: getRepoRoot(__dirname),
-      });
+      FileSystem.writeFile(testFilePath, "file1.");
     }
   });
 

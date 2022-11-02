@@ -36,6 +36,7 @@ describe("resolveInternalDependencies() for yarn", () => {
     const resolvedDependencies = resolveInternalDependencies(dependencies, workspaces);
 
     expect(resolvedDependencies).toEqual(["package-a"]);
+    await monorepo.cleanup();
   });
 });
 
@@ -65,6 +66,7 @@ describe("resolveInternalDependencies() for pnpm", () => {
     const resolvedDependencies = resolveInternalDependencies(dependencies, workspaces);
 
     expect(resolvedDependencies).toEqual(["package-a"]);
+    await monorepo.cleanup();
   });
 });
 
@@ -95,6 +97,7 @@ describe("resolveInternalDependencies() for rush+pnpm", () => {
     const resolvedDependencies = resolveInternalDependencies(dependencies, workspaces);
 
     expect(resolvedDependencies).toEqual(["package-a"]);
+    await monorepo.cleanup();
   });
 });
 
@@ -124,5 +127,6 @@ describe("resolveInternalDependencies() for rush+yarn", () => {
     const resolvedDependencies = resolveInternalDependencies(dependencies, workspaces);
 
     expect(resolvedDependencies).toEqual(["package-a"]);
+    await monorepo.cleanup();
   });
 });

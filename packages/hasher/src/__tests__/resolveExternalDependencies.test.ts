@@ -66,6 +66,7 @@ describe("resolveExternalDependencies() - yarn", () => {
     const resolvedDependencies = resolveExternalDependencies(allDependencies, workspaces, parsedLockFile);
 
     expect(resolvedDependencies).toEqual(["foo@1.0.0", "bar@^1.0.0"]);
+    await monorepo.cleanup();
   });
 });
 
@@ -85,6 +86,7 @@ describe("resolveExternalDependencies() - pnpm", () => {
     const resolvedDependencies = resolveExternalDependencies(allDependencies, workspaces, parsedLockFile);
 
     expect(resolvedDependencies).toEqual(["once@1.4.0", "wrappy@1.0.2"]);
+    await monorepo.cleanup();
   });
 });
 
@@ -104,6 +106,7 @@ describe("resolveExternalDependencies() - rush+pnpm", () => {
     const resolvedDependencies = resolveExternalDependencies(allDependencies, workspaces, parsedLockFile);
 
     expect(resolvedDependencies).toEqual(["once@1.4.0", "wrappy@1.0.2"]);
+    await monorepo.cleanup();
   });
 });
 
@@ -123,5 +126,6 @@ describe("resolveExternalDependencies() - rush+yarn", () => {
     const resolvedDependencies = resolveExternalDependencies(allDependencies, workspaces, parsedLockFile);
 
     expect(resolvedDependencies).toEqual(["once@1.4.0", "wrappy@1.0.2"]);
+    await monorepo.cleanup();
   });
 });

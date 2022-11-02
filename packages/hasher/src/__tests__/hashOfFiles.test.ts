@@ -32,6 +32,7 @@ describe("generateHashOfFiles()", () => {
     repoInfo = await getRepoInfoNoCache(packageRoot);
     const hashOfPackageWithoutFoo = await generateHashOfFiles(packageRoot, repoInfo);
     expect(hashOfPackage).toEqual(hashOfPackageWithoutFoo);
+    await monorepo.cleanup();
   });
 
   it("is not confused by package names being substring of other packages", async () => {
@@ -50,6 +51,7 @@ describe("generateHashOfFiles()", () => {
     const newHashOfPackageA = await generateHashOfFiles(path.join(packageRoot, "packages", "package-a"), repoInfo);
 
     expect(hashOfPackageA).toEqual(newHashOfPackageA);
+    await monorepo.cleanup();
   });
 
   it("file paths are included in hash", async () => {
@@ -69,6 +71,7 @@ describe("generateHashOfFiles()", () => {
     const hashOfPackageWithBar = await generateHashOfFiles(packageRoot, repoInfo);
 
     expect(hashOfPackageWithFoo).not.toEqual(hashOfPackageWithBar);
+    await monorepo.cleanup();
   });
 
   // This test will be run on Windows and on Linux on the CI
@@ -88,6 +91,7 @@ describe("generateHashOfFiles()", () => {
     const hashOfPackage = await generateHashOfFiles(packageRoot, repoInfo);
 
     expect(hashOfPackage).toEqual("4d4ca2ecc436e1198554f5d03236ea8f956ac0c4");
+    await monorepo.cleanup();
   });
 
   // This test will be run on Windows and on Linux on the CI
@@ -107,6 +111,7 @@ describe("generateHashOfFiles()", () => {
     const hashOfPackage = await generateHashOfFiles(folder, repoInfo);
 
     expect(hashOfPackage).toEqual("438b5f734e6de1ef0eb9114a28ef230a9ff83f54");
+    await monorepo.cleanup();
   });
 
   it("file paths in a monorepo are consistent across platforms (uses fast path)", async () => {
@@ -122,5 +127,6 @@ describe("generateHashOfFiles()", () => {
     const hashOfPackage = await generateHashOfFiles(folder, repoInfo);
 
     expect(hashOfPackage).toEqual("b91634233c6a3768136391c804967bf0e0a6578d");
+    await monorepo.cleanup();
   });
 });
