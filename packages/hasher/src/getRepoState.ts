@@ -25,7 +25,7 @@ export function parseGitLsTree(output: string): Map<string, string> {
   // <mode> <type> <newhash>\t<path>\0
   // 100644 blob a300ccb0b36bd2c85ef18e3c619a2c747f95959e\ttools/prettier-git/prettier-git.js\0
 
-  let last: number = 0;
+  let last = 0;
   let index: number = output.indexOf("\0", last);
   while (index >= 0) {
     const item: string = output.slice(last, index);
@@ -69,7 +69,7 @@ export function parseGitDiffIndex(output: string): Map<string, IFileDiffStatus> 
   // :<oldmode> <newmode> <oldhash> <newhash> <status>\0<path>\0
   // :100644 100644 a300ccb0b36bd2c85ef18e3c619a2c747f95959e 0000000000000000000000000000000000000000 M\0tools/prettier-git/prettier-git.js\0
 
-  let last: number = 0;
+  let last = 0;
   let index: number = output.indexOf("\0", last);
   while (index >= 0) {
     const header: string = output.slice(last, index);
@@ -114,7 +114,7 @@ export function parseGitStatus(output: string): Map<string, boolean> {
   // XY <path>\0
   //  M tools/prettier-git/prettier-git.js\0
 
-  let startOfLine: number = 0;
+  let startOfLine = 0;
   let eolIndex: number = output.indexOf("\0", startOfLine);
   while (eolIndex >= 0) {
     // We passed --no-renames above, so a rename will be a delete of the old location and an add at the new.
@@ -215,8 +215,8 @@ export function applyWorkingTreeState(rootDirectory: string, state: Map<string, 
       throw new Error(`Passed ${filesToHash.length} file paths to Git to hash, but received ${hashes.length} hashes.`);
     }
 
-    const len: number = hashes.length;
-    for (let i: number = 0; i < len; i++) {
+    const len = hashes.length;
+    for (let i = 0; i < len; i++) {
       const hash: string = hashes[i];
       const filePath: string = filesToHash[i];
       state.set(filePath, hash);
@@ -259,7 +259,7 @@ export function getRepoState(cwd: string, gitPath?: string): Map<string, string>
  * @returns A map from the Git file path to the corresponding file change metadata
  * @beta
  */
-export function getRepoChanges(cwd: string, revision: string = "HEAD", gitPath?: string): Map<string, IFileDiffStatus> {
+export function getRepoChanges(cwd: string, revision = "HEAD", gitPath?: string): Map<string, IFileDiffStatus> {
   const rootDirectory: string = getRepoRoot(cwd, gitPath);
 
   const result = execa.sync(
@@ -322,7 +322,7 @@ export function parseGitVersion(gitVersionOutput: string): IGitVersion {
   // - git version 1.2.3.4.5
   // - git version 1.2.3windows.1
   // - git version 1.2.3.windows.1
-  const versionRegex: RegExp = /^git version (\d+)\.(\d+)\.(\d+)/;
+  const versionRegex = /^git version (\d+)\.(\d+)\.(\d+)/;
   const match: RegExpMatchArray | null = versionRegex.exec(gitVersionOutput);
   if (!match) {
     throw new Error(

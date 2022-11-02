@@ -1,10 +1,12 @@
 import crypto from "crypto";
 import path from "path";
-import { resolveInternalDependencies } from "./resolveInternalDependencies";
-import { resolveExternalDependencies, Dependencies } from "./resolveExternalDependencies";
-import { generateHashOfFiles } from "./hashOfFiles";
-import { hashStrings } from "./helpers";
-import { RepoInfo } from "./repoInfo";
+import fs from "fs";
+import { resolveInternalDependencies } from "./resolveInternalDependencies.js";
+import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
+import type { Dependencies } from "./resolveExternalDependencies.js";
+import { generateHashOfFiles } from "./hashOfFiles.js";
+import { hashStrings } from "./helpers.js";
+import type { RepoInfo } from "./repoInfo.js";
 
 export type PackageHashInfo = {
   name: string;
@@ -37,7 +39,7 @@ export async function getPackageHash(packageRoot: string, repoInfo: RepoInfo): P
     return memoization[memoizationKey];
   }
 
-  const { name, dependencies, devDependencies } = require(path.join(packageRoot, "package.json"));
+  const { name, dependencies, devDependencies } = JSON.parse(fs.readFileSync(path.join(packageRoot, "package.json"), "utf-8"));
 
   const allDependencies: Dependencies = {
     ...dependencies,

@@ -1,7 +1,8 @@
-import { WorkspaceInfo, ParsedLock, getWorkspaceRoot, getWorkspaces, parseLockFile } from "workspace-tools";
+import type { WorkspaceInfo, ParsedLock } from "workspace-tools";
+import { getWorkspaceRoot, getWorkspaces, parseLockFile } from "workspace-tools";
 
-import { getPackageDeps } from "./getPackageDeps";
-import { createPackageHashes } from "./createPackageHashes";
+import { getPackageDeps } from "./getPackageDeps.js";
+import { createPackageHashes } from "./createPackageHashes.js";
 
 export interface RepoInfo {
   root: string;

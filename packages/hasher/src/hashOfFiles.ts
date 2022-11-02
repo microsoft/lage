@@ -1,6 +1,6 @@
 import path, { sep } from "path";
-import { hashStrings } from "./helpers";
-import { RepoInfo } from "./repoInfo";
+import { hashStrings } from "./helpers.js";
+import type { RepoInfo } from "./repoInfo.js";
 
 /**
  * Generates a hash string based on files in a package

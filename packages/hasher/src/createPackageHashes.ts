@@ -1,5 +1,5 @@
 import path from "path";
-import { WorkspaceInfo } from "workspace-tools";
+import type { WorkspaceInfo } from "workspace-tools";
 
 export function createPackageHashes(root: string, workspaceInfo: WorkspaceInfo, repoHashes: { [key: string]: string }) {
   /**
@@ -37,7 +37,7 @@ export function createPackageHashes(root: string, workspaceInfo: WorkspaceInfo, 
     const pathParts = entry.split(/[\\/]/);
 
     let node = pathTree;
-    let packagePathParts: string[] = [];
+    const packagePathParts: string[] = [];
 
     for (const part of pathParts) {
       if (node[part]) {

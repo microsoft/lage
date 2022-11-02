@@ -1,7 +1,10 @@
-import { findWorkspacePath, WorkspaceInfo } from "workspace-tools";
-import { PackageHashInfo, getPackageHash, generateHashOfInternalPackages } from "./hashOfPackage";
-import { hashStrings, getPackageRoot } from "./helpers";
-import { RepoInfo, getRepoInfo } from "./repoInfo";
+import type { WorkspaceInfo } from "workspace-tools";
+import { findWorkspacePath } from "workspace-tools";
+import type { PackageHashInfo } from "./hashOfPackage.js";
+import { getPackageHash, generateHashOfInternalPackages } from "./hashOfPackage.js";
+import { hashStrings, getPackageRoot } from "./helpers.js";
+import type { RepoInfo } from "./repoInfo.js";
+import { getRepoInfo } from "./repoInfo.js";
 
 export interface IHasher {
   createPackageHash: (salt: string) => Promise<string>;
@@ -63,4 +66,4 @@ export class Hasher implements IHasher {
   }
 }
 
-export * from "./repoInfo";
+export * from "./repoInfo.js";

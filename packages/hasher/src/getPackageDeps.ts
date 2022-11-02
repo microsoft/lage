@@ -1,6 +1,6 @@
 import * as path from "path";
 
-import { ensureGitMinimumVersion } from "./getRepoState";
+import { ensureGitMinimumVersion } from "./getRepoState.js";
 import execa from "execa";
 
 /**
@@ -49,7 +49,7 @@ export function parseGitLsTree(output: string): Map<string, string> {
     // A line is expected to look like:
     // 100644 blob 3451bccdc831cb43d7a70ed8e628dcf9c7f888c8    src/typings/tsd.d.ts
     // 160000 commit c5880bf5b0c6c1f2e2c43c95beeb8f0a808e8bac  rushstack
-    const gitRegex: RegExp = /([0-9]{6})\s(blob|commit)\s([a-f0-9]{40})\s*(.*)/;
+    const gitRegex = /([0-9]{6})\s(blob|commit)\s([a-f0-9]{40})\s*(.*)/;
 
     // Note: The output of git ls-tree uses \n newlines regardless of OS.
     const outputLines: string[] = output.trim().split("\n");
@@ -75,7 +75,7 @@ export function parseGitLsTree(output: string): Map<string, string> {
 /**
  * Parses the output of the "git status" command
  */
-export function parseGitStatus(output: string, packagePath: string): Map<string, string> {
+export function parseGitStatus(output: string): Map<string, string> {
   const changes: Map<string, string> = new Map<string, string>();
 
   /*
@@ -155,7 +155,7 @@ export function getGitHashForFiles(filesToHash: string[], packagePath: string, g
       throw new Error(`Passed ${filesToHash.length} file paths to Git to hash, but received ${hashes.length} hashes.`);
     }
 
-    for (let i: number = 0; i < hashes.length; i++) {
+    for (let i = 0; i < hashes.length; i++) {
       const hash: string = hashes[i];
       const filePath: string = filesToHash[i];
       changes.set(filePath, hash);
@@ -232,7 +232,7 @@ export function getPackageDeps(packagePath: string = process.cwd(), excludedPath
 
   // Update the checked in hashes with the current repo status
   const gitStatusOutput: string = gitStatus(packagePath, gitPath);
-  const currentlyChangedFiles: Map<string, string> = parseGitStatus(gitStatusOutput, packagePath);
+  const currentlyChangedFiles: Map<string, string> = parseGitStatus(gitStatusOutput);
   const filesToHash: string[] = [];
   const excludedPathSet: Set<string> = new Set<string>(excludedPaths);
   for (const [filename, changeType] of currentlyChangedFiles) {
