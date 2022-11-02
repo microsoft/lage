@@ -1,14 +1,18 @@
 import path from "path";
 import fs from "fs-extra";
 
-import { setupFixture } from "backfill-utils-test";
+import { Monorepo } from "@lage-run/monorepo-fixture";
 
 import { generateHashOfFiles } from "../hashOfFiles";
 import { getRepoInfoNoCache } from "../repoInfo";
 
+const fixturesPath = path.join(__dirname, "..", "__fixtures__");
+
 describe("generateHashOfFiles()", () => {
   it("creates different hashes for different hashes", async () => {
-    const packageRoot = await setupFixture("monorepo");
+    const monorepo = new Monorepo("monorepo");
+    await monorepo.init(path.join(fixturesPath, "monorepo"));
+    const packageRoot = monorepo.root;
     let repoInfo = await getRepoInfoNoCache(packageRoot);
 
     const hashOfPackage = await generateHashOfFiles(packageRoot, repoInfo);
@@ -31,7 +35,9 @@ describe("generateHashOfFiles()", () => {
   });
 
   it("is not confused by package names being substring of other packages", async () => {
-    const packageRoot = await setupFixture("monorepo");
+    const monorepo = new Monorepo("monorepo");
+    await monorepo.init(path.join(fixturesPath, "monorepo"));
+    const packageRoot = monorepo.root;
 
     let repoInfo = await getRepoInfoNoCache(packageRoot);
 
@@ -47,7 +53,9 @@ describe("generateHashOfFiles()", () => {
   });
 
   it("file paths are included in hash", async () => {
-    const packageRoot = await setupFixture("empty");
+    const monorepo = new Monorepo("monorepo");
+    await monorepo.init(path.join(fixturesPath, "empty"));
+    const packageRoot = monorepo.root;
 
     fs.writeFileSync(path.join(packageRoot, "foo.txt"), "bar");
     let repoInfo = await getRepoInfoNoCache(packageRoot);
@@ -65,7 +73,9 @@ describe("generateHashOfFiles()", () => {
 
   // This test will be run on Windows and on Linux on the CI
   it("file paths are consistent across platforms", async () => {
-    const packageRoot = await setupFixture("empty");
+    const monorepo = new Monorepo("monorepo");
+    await monorepo.init(path.join(fixturesPath, "empty"));
+    const packageRoot = monorepo.root;
 
     // Create a folder to make sure we get folder separators as part of the file name
     const folder = path.join(packageRoot, "foo");
@@ -82,7 +92,9 @@ describe("generateHashOfFiles()", () => {
 
   // This test will be run on Windows and on Linux on the CI
   it("file paths in a package not defined in a workspace (malformed monorepo) are consistent across platforms (uses slow path)", async () => {
-    const workspaceRoot = await setupFixture("empty");
+    const monorepo = new Monorepo("monorepo");
+    await monorepo.init(path.join(fixturesPath, "empty"));
+    const workspaceRoot = monorepo.root;
 
     // Create a folder to make sure we get folder separators as part of the file name
     const folder = path.join(workspaceRoot, "packages", "foo");
@@ -98,7 +110,9 @@ describe("generateHashOfFiles()", () => {
   });
 
   it("file paths in a monorepo are consistent across platforms (uses fast path)", async () => {
-    const workspaceRoot = await setupFixture("monorepo");
+    const monorepo = new Monorepo("monorepo");
+    await monorepo.init(path.join(fixturesPath, "monorepo"));
+    const workspaceRoot = monorepo.root;
 
     const folder = path.join(workspaceRoot, "packages", "package-a");
     fs.writeFileSync(path.join(folder, "foo.txt"), "bar");

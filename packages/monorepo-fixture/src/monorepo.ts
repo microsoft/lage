@@ -17,13 +17,23 @@ export class Monorepo {
     this.root = mkdtempSync(path.join(Monorepo.tmpdir, `monorepo-fixture-${name}-`));
   }
 
-  async init() {
+  async init(fixturePath?: string) {
     const options = { cwd: this.root };
+    const cwd = this.root;
     await execa("git", ["init"], options);
     await execa("git", ["config", "user.email", "you@example.com"], options);
     await execa("git", ["config", "user.name", "test user"], options);
     await execa("git", ["config", "commit.gpgsign", "false"], options);
-    await this.generateRepoFiles();
+
+    if (fixturePath) {
+      await fs.mkdir(this.root, { recursive: true });
+      await fs.cp(fixturePath, this.root, { recursive: true });
+
+      execa.sync("git", ["add", "."], { cwd });
+      execa.sync("git", ["commit", "-m", "test"], { cwd });
+    } else {
+      await this.generateRepoFiles();
+    }
   }
 
   async install() {

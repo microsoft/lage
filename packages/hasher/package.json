@@ -20,8 +20,8 @@
     "find-up": "^5.0.0"
   },
   "devDependencies": {
+    "@lage-run/monorepo-fixture": "^0.1.0",
     "monorepo-scripts": "*",
-    "backfill-utils-test": "5.1.2",
     "fs-extra": "10.1.0"
   },
   "publishConfig": {

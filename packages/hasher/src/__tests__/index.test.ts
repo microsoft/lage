@@ -1,14 +1,18 @@
 import path from "path";
 
-import { setupFixture } from "backfill-utils-test";
+import { Monorepo } from "@lage-run/monorepo-fixture";
 
 import { WorkspaceInfo } from "workspace-tools";
 import { PackageHashInfo } from "../hashOfPackage";
 import { Hasher, addToQueue } from "../index";
 
+const fixturesPath = path.join(__dirname, "..", "__fixtures__");
+
 describe("addToQueue", () => {
   const setupAddToQueue = async () => {
-    const packageRoot = await setupFixture("monorepo");
+    const monorepo = new Monorepo("monorepo");
+    await monorepo.init(path.join(fixturesPath, "monorepo"));
+    const packageRoot = monorepo.root;
 
     const packageToAdd = "package-a";
     const packagePath = path.join(packageRoot, "packages", packageToAdd);
@@ -80,7 +84,9 @@ describe("addToQueue", () => {
 
 describe("The main Hasher class", () => {
   const setupFixtureAndReturnHash = async (fixture = "monorepo") => {
-    const packageRoot = await setupFixture(fixture);
+    const monorepo = new Monorepo("monorepo");
+    await monorepo.init(path.join(fixturesPath, fixture));
+    const packageRoot = monorepo.root;
 
     const buildSignature = "yarn build";
 

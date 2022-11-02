@@ -1,0 +1,14 @@
+{
+  "name": "many-dependencies",
+  "license": "MIT",
+  "version": "0.1.0",
+  "dependencies": {
+    "package-2": "*"
+  },
+  "peerDependencies": {
+    "package-4": "*"
+  },
+  "devDependencies": {
+    "package-3": "*"
+  }
+}

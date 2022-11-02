@@ -1,0 +1,9 @@
+{
+  "name": "package-a",
+  "license": "MIT",
+  "version": "0.1.0",
+  "scripts": {
+    "compile": "node node_modules/.bin/copy src/index.ts lib/index.js",
+    "side-effect": "node node_modules/.bin/copy src/index.ts ../DONE"
+  }
+}
