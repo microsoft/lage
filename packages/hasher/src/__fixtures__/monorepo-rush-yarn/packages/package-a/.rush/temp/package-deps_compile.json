@@ -1,0 +1,4 @@
+{
+  "files": {},
+  "arguments": "node node_modules/.bin/copy src/index.ts lib/index.js "
+}

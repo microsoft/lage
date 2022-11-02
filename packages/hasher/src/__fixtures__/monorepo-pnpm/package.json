@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "name": "monorepo-pnpm",
+  "license": "MIT",
+  "version": "0.1.0"
+}

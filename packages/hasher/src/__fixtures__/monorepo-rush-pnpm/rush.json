@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
+
+  "rushVersion": "5.23.2",
+  "pnpmVersion": "4.14.0",
+
+  "projects": [
+    {
+      "packageName": "package-a",
+      "projectFolder": "packages/package-a"
+    },
+    {
+      "packageName": "package-b",
+      "projectFolder": "packages/package-b"
+    }
+  ]
+}
