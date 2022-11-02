@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "switching from require() to import() where possible",
-  "packageName": "@lage-run/cli",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

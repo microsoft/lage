@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Wed, 02 Nov 2022 20:45:00 GMT",
+      "tag": "@lage-run/scheduler_v0.5.9",
+      "version": "0.5.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/scheduler",
+            "commit": "e64f7bfdd1dbd2518a1d5ab8453c0e3bbd9b3077",
+            "comment": "switching from require() to import() where possible"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Nov 2022 06:27:27 GMT",
       "tag": "@lage-run/scheduler_v0.5.8",
       "version": "0.5.8",
