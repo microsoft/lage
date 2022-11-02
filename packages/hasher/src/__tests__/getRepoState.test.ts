@@ -21,16 +21,16 @@ describe(parseGitVersion.name, () => {
 
   it("Rejects invalid git version responses", () => {
     expect(() => parseGitVersion("2.22.0.windows.1")).toThrowErrorMatchingInlineSnapshot(
-      `"While validating the Git installation, the \\"git version\\" command produced unexpected output: \\"2.22.0.windows.1\\""`
+      `"While validating the Git installation, the "git version" command produced unexpected output: "2.22.0.windows.1""`
     );
     expect(() => parseGitVersion("git version 2.30.A")).toThrowErrorMatchingInlineSnapshot(
-      `"While validating the Git installation, the \\"git version\\" command produced unexpected output: \\"git version 2.30.A\\""`
+      `"While validating the Git installation, the "git version" command produced unexpected output: "git version 2.30.A""`
     );
     expect(() => parseGitVersion("git version 2.30")).toThrowErrorMatchingInlineSnapshot(
-      `"While validating the Git installation, the \\"git version\\" command produced unexpected output: \\"git version 2.30\\""`
+      `"While validating the Git installation, the "git version" command produced unexpected output: "git version 2.30""`
     );
     expect(() => parseGitVersion("git version .2.30")).toThrowErrorMatchingInlineSnapshot(
-      `"While validating the Git installation, the \\"git version\\" command produced unexpected output: \\"git version .2.30\\""`
+      `"While validating the Git installation, the "git version" command produced unexpected output: "git version .2.30""`
     );
   });
 });

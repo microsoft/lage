@@ -4,10 +4,11 @@ import { execSync } from "child_process";
 
 import { getPackageDeps, parseGitLsTree, parseGitFilename } from "../getPackageDeps";
 
-const SOURCE_PATH: string = path.join(__dirname).replace(path.join("lib", "test"), path.join("src", "test"));
+const SOURCE_PATH: string = path.join(__dirname).replace(path.join("lib", "__tests__"), path.join("src", "__tests__"));
 
 const TEST_PROJECT_PATH: string = path.join(SOURCE_PATH, "testProject");
 const NESTED_TEST_PROJECT_PATH: string = path.join(SOURCE_PATH, "nestedTestProject");
+
 const FileSystem = {
   writeFile: fs.writeFileSync,
   deleteFile: fs.rmSync,

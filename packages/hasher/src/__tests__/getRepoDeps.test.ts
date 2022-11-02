@@ -4,9 +4,9 @@ import { execSync } from "child_process";
 
 import { getRepoState, parseGitLsTree, getRepoRoot } from "../getRepoState";
 
-const SOURCE_PATH: string = path.join(__dirname).replace(path.join("lib", "test"), path.join("src", "test"));
+const SOURCE_PATH: string = path.join(__dirname).replace(path.join("lib", "__tests__"), path.join("src", "__tests__"));
 
-const TEST_PREFIX: string = `libraries/package-deps-hash/src/test/`;
+const TEST_PREFIX: string = `packages/hasher/src/__tests__/`;
 const TEST_PROJECT_PATH: string = path.join(SOURCE_PATH, "testProject");
 
 const FILTERS: string[] = [`testProject/`, `nestedTestProject/`];
@@ -81,6 +81,7 @@ describe(getRepoState.name, () => {
   it("can parse committed files", () => {
     const results: Map<string, string> = getRepoState(__dirname);
     const filteredResults: Map<string, string> = getRelevantEntries(results);
+
     const expectedFiles: Map<string, string> = new Map(
       Object.entries({
         "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
