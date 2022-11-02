@@ -38,7 +38,7 @@ module.exports = {
       type: "worker",
       options: {
         worker: path.join(__dirname, "scripts/worker/depcheck.js"),
-      }
+      },
     },
     start: [],
     "@lage-run/e2e-tests#test": {
@@ -48,6 +48,13 @@ module.exports = {
     "lage#test": {
       type: "npmScript",
       dependsOn: ["build"],
+    },
+    "@lage-run/hasher#test": {
+      type: "npmScript",
+      dependsOn: ["build"],
+      options: {
+        taskArgs: ["--runInBand"],
+      },
     },
     "@lage-run/docs#test": {
       type: "npmScript",

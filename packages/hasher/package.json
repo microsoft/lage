@@ -1,0 +1,30 @@
+{
+  "name": "@lage-run/hasher",
+  "version": "0.1.0",
+  "description": "Hasher for Lage Targets",
+  "repository": {
+    "url": "https://github.com/microsoft/lage"
+  },
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "monorepo-scripts tsc",
+    "start": "monorepo-scripts tsc -w --preserveWatchOutput",
+    "test": "monorepo-scripts jest",
+    "lint": "monorepo-scripts lint"
+  },
+  "dependencies": {
+    "execa": "5.1.1",
+    "workspace-tools": "0.29.0",
+    "find-up": "^5.0.0"
+  },
+  "devDependencies": {
+    "@lage-run/monorepo-fixture": "^0.1.0",
+    "monorepo-scripts": "*",
+    "fs-extra": "10.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

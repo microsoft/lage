@@ -3093,9 +3093,9 @@
   integrity sha512-yxDeaQIAJlMav7fH5AQqPH1u8YIuhYJXYBzxaQ4PifsU0GDO38MSdmEDeRlIxrKbC6NbEaaEHDanWb+y30U8SQ==
 
 "@types/node@^16.0.0":
-  version "16.18.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.2.tgz#77878acc68c5f6241454008beedd39513bd8e851"
-  integrity sha512-KIGQJyya+opDCFvDSZMNNS899ov5jlNdtN7PypgHWeb8e+5vWISdwTRo/ClsNVlmDihzOGqFyNBDamUs7TQQCA==
+  version "16.18.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.3.tgz#d7f7ba828ad9e540270f01ce00d391c54e6e0abc"
+  integrity sha512-jh6m0QUhIRcZpNv7Z/rpN+ZWXOicUUQbSoWks7Htkbb9IjFQj4kzcX/xFCkjstCj5flMsN8FiSvt+q+Tcs4Llg==
 
 "@types/npmlog@4.1.4":
   version "4.1.4"
@@ -4034,7 +4034,7 @@ backfill-config@^6.3.0:
     fs-extra "^8.1.0"
     pkg-dir "^4.2.0"
 
-backfill-hasher@^6.4.2, backfill-hasher@^6.4.3:
+backfill-hasher@^6.4.3:
   version "6.4.3"
   resolved "https://registry.yarnpkg.com/backfill-hasher/-/backfill-hasher-6.4.3.tgz#45ec2319214a7e25d893629a6f933cad48b71d85"
   integrity sha512-Btijbf5mC96bbFervlUMf5I14V9/bPPUiEFhWYO+XRyxlfbTejpvqzTpCDKEyCR/wMlt3AViAjZ3/UOZ6cMGsg==
@@ -11766,7 +11766,7 @@ word-wrap@^1.2.3:
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
 
-workspace-tools@^0.27.0, workspace-tools@^0.28.0, workspace-tools@^0.29.0:
+workspace-tools@0.29.0, workspace-tools@^0.27.0, workspace-tools@^0.28.0, workspace-tools@^0.29.0:
   version "0.29.0"
   resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.29.0.tgz#c7a8cee69a68350cb17e71569f626397dacbf601"
   integrity sha512-lH7ZLb6BVzf8Nua2MMKfTBbIh+iTBexFRr/OoiXFm8AbNZ8kRL01r+wISnH7vt7lUmuRbod2/6EtyS4koAPpJg==
