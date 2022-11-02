@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "ES2019",
     "module": "CommonJS",
     "moduleResolution": "Node",
     "declaration": true,
-    "lib": ["ES2017"],
+    "lib": ["ES2019"],
     "allowJs": true,
     "strict": true,
     "noImplicitAny": false,
