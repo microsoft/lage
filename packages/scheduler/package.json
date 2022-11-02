@@ -11,9 +11,14 @@
     ".": {
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js"
+    },
+    "./lib/workers/targetWorker.js": {
+      "types": "./lib/workers/targetWorker.d.ts",
+      "import": "./lib/workers/targetWorker.js"
     }
   },
   "main": "lib/index.cjs",
+  "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "monorepo-scripts tsc",

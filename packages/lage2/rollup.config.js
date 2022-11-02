@@ -11,7 +11,7 @@ export default [
       banner: "#!/usr/bin/env node",
       sourcemap: "inline",
       file: "dist/lage.js",
-      format: "cjs",
+      format: "es",
       exports: "auto",
       sourcemap: true,
     },
@@ -22,7 +22,7 @@ export default [
       }),
       nodeResolve({
         // Since we are produce CJS, let's resolve main first!
-        mainFields: ["main", "module"],
+        mainFields: ["module", "main"],
         preferBuiltins: true,
         exportConditions: ["node"],
       }),
@@ -34,46 +34,46 @@ export default [
     ],
     external: ["fsevents"],
   },
-  {
-    input: "./index.js",
-    output: {
-      file: "dist/main.js",
-      format: "cjs",
-      exports: "auto",
-      sourcemap: true,
-    },
-    plugins: [
-      nodeResolve({
-        // Since we are produce CJS, let's resolve main first!
-        mainFields: ["main", "module"],
-        preferBuiltins: true,
-      }),
-      commonjs({
-        ignoreDynamicRequires: true,
-      }),
-      json(),
-      terser(),
-    ],
-  },
-  {
-    input: "@lage-run/scheduler/lib/workers/targetWorker.js",
-    output: {
-      file: "dist/workers/targetWorker.js",
-      format: "cjs",
-      exports: "auto",
-      sourcemap: true,
-    },
-    plugins: [
-      nodeResolve({
-        // Since we are produce CJS, let's resolve main first!
-        mainFields: ["main", "module"],
-        preferBuiltins: true,
-      }),
-      commonjs({
-        ignoreDynamicRequires: true,
-      }),
-      json(),
-      // terser(),
-    ],
-  },
+  // {
+  //   input: "./index.js",
+  //   output: {
+  //     file: "dist/main.js",
+  //     format: "es",
+  //     exports: "auto",
+  //     sourcemap: true,
+  //   },
+  //   plugins: [
+  //     nodeResolve({
+  //       // Since we are produce CJS, let's resolve main first!
+  //       mainFields: ["module", "main"],
+  //       preferBuiltins: true,
+  //     }),
+  //     commonjs({
+  //       ignoreDynamicRequires: true,
+  //     }),
+  //     json(),
+  //     terser(),
+  //   ],
+  // },
+  // {
+  //   input: "@lage-run/scheduler/lib/workers/targetWorker.js",
+  //   output: {
+  //     file: "dist/workers/targetWorker.js",
+  //     format: "es",
+  //     exports: "auto",
+  //     sourcemap: true,
+  //   },
+  //   plugins: [
+  //     nodeResolve({
+  //       // Since we are produce CJS, let's resolve main first!
+  //       mainFields: ["module", "main"],
+  //       preferBuiltins: true,
+  //     }),
+  //     commonjs({
+  //       ignoreDynamicRequires: true,
+  //     }),
+  //     json(),
+  //     // terser(),
+  //   ],
+  // },
 ];
