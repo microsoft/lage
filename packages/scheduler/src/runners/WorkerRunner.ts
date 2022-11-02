@@ -54,7 +54,7 @@ export class WorkerRunner implements TargetRunner {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const scriptModule = require(scriptFile);
+    const scriptModule = await import(scriptFile);
     const runFn = typeof scriptModule.default === "function" ? scriptModule.default : scriptModule;
 
     if (typeof runFn !== "function") {

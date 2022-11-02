@@ -91,7 +91,7 @@ export async function watchAction(options: RunOptions, command: Command) {
     maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, options.concurrency), ...maxWorkersPerTaskMap]),
     runners: {
       npmScript: {
-        script: require.resolve("./runners/NpmScriptRunner"),
+        script: require.resolve("./runners/NpmScriptRunner.js"),
         options: {
           nodeArg: options.nodeArg,
           taskArgs,
@@ -99,7 +99,7 @@ export async function watchAction(options: RunOptions, command: Command) {
         },
       },
       worker: {
-        script: require.resolve("./runners/WorkerRunner"),
+        script: require.resolve("./runners/WorkerRunner.js"),
         options: {
           taskArgs,
         },
