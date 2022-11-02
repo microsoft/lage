@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "adds a hasher package that has very few deps",
-  "packageName": "@lage-run/hasher",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Now uses the @lage-run/hasher package",
-  "packageName": "@lage-run/cache",
-  "email": "ken@gizzar.com",
-  "dependentChangeType": "patch"
-}
