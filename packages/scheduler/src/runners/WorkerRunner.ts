@@ -53,8 +53,7 @@ export class WorkerRunner implements TargetRunner {
       throw new Error('WorkerRunner: "script" configuration is required - e.g. { type: "worker", script: "./worker.js" }');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const scriptModule = require(scriptFile);
+    const scriptModule = await import(scriptFile);
     const runFn = typeof scriptModule.default === "function" ? scriptModule.default : scriptModule;
 
     if (typeof runFn !== "function") {

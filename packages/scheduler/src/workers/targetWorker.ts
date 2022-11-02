@@ -20,7 +20,7 @@ function setup(options: TargetWorkerDataOptions) {
 const { runnerPicker } = setup(workerData);
 
 async function run(data: any, abortSignal?: AbortSignal) {
-  const runner = runnerPicker.pick(data.target);
+  const runner = await runnerPicker.pick(data.target);
   await runner.run({
     ...data,
     abortSignal,

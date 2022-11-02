@@ -7,6 +7,7 @@ module.exports = {
     "@typescript-eslint/consistent-type-exports": "error",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-require-imports": "error",
     "no-console": "error",
     "file-extension-in-import-ts/file-extension-in-import-ts": "error"
   },
