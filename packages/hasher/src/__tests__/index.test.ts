@@ -1,11 +1,10 @@
 import path from "path";
 
-import { Monorepo } from "@lage-run/monorepo-fixture";
-
 import { WorkspaceInfo } from "workspace-tools";
 import { PackageHashInfo } from "../hashOfPackage";
 import { Hasher, addToQueue } from "../index";
 
+import { Monorepo } from "@lage-run/monorepo-fixture";
 const fixturesPath = path.join(__dirname, "..", "__fixtures__");
 
 describe("addToQueue", () => {

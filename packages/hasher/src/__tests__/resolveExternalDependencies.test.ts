@@ -1,8 +1,10 @@
-import { setupFixture } from "backfill-utils-test";
 import { getPnpmWorkspaces, getRushWorkspaces, getYarnWorkspaces, parseLockFile } from "workspace-tools";
 
 import { filterExternalDependencies, resolveExternalDependencies, addToQueue } from "../resolveExternalDependencies";
 import { filterDependenciesInYarnFixture } from "./resolveDependenciesHelper";
+import path from "path";
+import { Monorepo } from "@lage-run/monorepo-fixture";
+const fixturesPath = path.join(__dirname, "..", "__fixtures__");
 
 describe("filterExternalDependencies()", () => {
   it("only lists external dependencies", async () => {
@@ -52,7 +54,10 @@ describe("addToQueue()", () => {
 
 describe("resolveExternalDependencies() - yarn", () => {
   it("given a list of external dependencies and a parsed Lock file, add all dependencies, transitively", async () => {
-    const packageRoot = await setupFixture("monorepo");
+    const monorepo = new Monorepo("monorepo");
+    await monorepo.init(path.join(fixturesPath, "monorepo"));
+    const packageRoot = monorepo.root;
+
     const workspaces = getYarnWorkspaces(packageRoot);
 
     const allDependencies = { "package-a": "1.0.0", foo: "1.0.0" };
@@ -66,7 +71,9 @@ describe("resolveExternalDependencies() - yarn", () => {
 
 describe("resolveExternalDependencies() - pnpm", () => {
   it("given a list of external dependencies and a parsed Lock file, add all dependencies, transitively", async () => {
-    const packageRoot = await setupFixture("monorepo-pnpm");
+    const monorepo = new Monorepo("monorepo");
+    await monorepo.init(path.join(fixturesPath, "monorepo-pnpm"));
+    const packageRoot = monorepo.root;
     const workspaces = getPnpmWorkspaces(packageRoot);
 
     const allDependencies = {
@@ -83,7 +90,9 @@ describe("resolveExternalDependencies() - pnpm", () => {
 
 describe("resolveExternalDependencies() - rush+pnpm", () => {
   it("given a list of external dependencies and a parsed Lock file, add all dependencies, transitively", async () => {
-    const packageRoot = await setupFixture("monorepo-rush-pnpm");
+    const monorepo = new Monorepo("monorepo");
+    await monorepo.init(path.join(fixturesPath, "monorepo-rush-pnpm"));
+    const packageRoot = monorepo.root;
     const workspaces = getRushWorkspaces(packageRoot);
 
     const allDependencies = {
@@ -100,7 +109,9 @@ describe("resolveExternalDependencies() - rush+pnpm", () => {
 
 describe("resolveExternalDependencies() - rush+yarn", () => {
   it("given a list of external dependencies and a parsed Lock file, add all dependencies, transitively", async () => {
-    const packageRoot = await setupFixture("monorepo-rush-yarn");
+    const monorepo = new Monorepo("monorepo");
+    await monorepo.init(path.join(fixturesPath, "monorepo-rush-yarn"));
+    const packageRoot = monorepo.root;
     const workspaces = getRushWorkspaces(packageRoot);
 
     const allDependencies = {
