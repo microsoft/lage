@@ -50,6 +50,6 @@ module.exports = {
   },
   npmClient: "yarn",
   cacheOptions: {
-    environmentGlob: ["*.js", "*.json", ".github/**"],
+    environmentGlob: ["*.js", "*.json", ".github/**", "packages/tsconfig.lage2.json", "patches"],
   },
 };

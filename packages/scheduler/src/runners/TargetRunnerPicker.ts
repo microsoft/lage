@@ -1,6 +1,5 @@
 import path from "path";
 import { getStartTargetId } from "@lage-run/target-graph";
-import { NoOpRunner } from "./NoOpRunner.js";
 import type { Target } from "@lage-run/target-graph";
 import type { TargetRunner } from "@lage-run/scheduler-types";
 
@@ -13,7 +12,7 @@ export class TargetRunnerPicker {
 
   async pick(target: Target): Promise<TargetRunner> {
     if (target.id === getStartTargetId()) {
-      return NoOpRunner;
+      return (await import("./NoOpRunner.js")).NoOpRunner;
     }
 
     if (!target.type) {
