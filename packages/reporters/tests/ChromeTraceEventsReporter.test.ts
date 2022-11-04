@@ -1,6 +1,3 @@
-// For this test, we need have a force color set before any imports
-process.env.FORCE_COLOR = "0";
-
 import { LogLevel } from "@lage-run/logger";
 import { ChromeTraceEventsReporter } from "../src/ChromeTraceEventsReporter";
 import streams from "memory-streams";
