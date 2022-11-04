@@ -13,8 +13,8 @@
     ]
   },
   "scripts": {
-    "build": "lage build --scope=!docs --verbose",
-    "watch": "lage transpile --scope=cli --no-dependents --verbose --unstable-watch",
+    "build": "lage transpile types build bundle --scope=!docs --verbose",
+    "watch": "lage transpile --scope=!docs --verbose --unstable-watch",
     "change": "beachball change",
     "checkchange": "beachball check",
     "release": "beachball publish -y --tag latest",

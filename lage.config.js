@@ -19,7 +19,6 @@ module.exports = {
         worker: path.join(__dirname, "scripts/worker/transpile.js"),
       }
     },
-    build: ["^build"],
     test: {
       type: "worker",
       weight: (target) => {
@@ -51,6 +50,10 @@ module.exports = {
       type: "npmScript",
       dependsOn: ["build"],
     },
+    "@lage-run/lage#bundle": {
+      type: "npmScript",
+      dependsOn: ["^^transpile", "types"]
+    },
     "@lage-run/hasher#test": {
       type: "npmScript",
       dependsOn: ["build"],
@@ -59,6 +62,9 @@ module.exports = {
       },
     },
     "@lage-run/docs#test": {
+      type: "npmScript",
+    },
+    "@lage-run/docs#build": {
       type: "npmScript",
     },
   },

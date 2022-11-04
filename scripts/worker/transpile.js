@@ -22,7 +22,20 @@ module.exports = async function transpile(data) {
       if (entry.isDirectory() && entry.name !== "node_modules" && entry.name !== "lib" && entry.name !== "tests" && entry.name !== "dist") {
         queue.push(fullPath);
       } else if (entry.isFile() && entry.name.endsWith(".ts")) {
-        const swcOutput = await swc.transformFile(fullPath);
+        const swcOutput = await swc.transformFile(fullPath, {
+          jsc: {
+            parser: {
+              "syntax": "typescript",
+              "tsx": false,
+              "dynamicImport": true
+            },
+            target: "es2020",
+          },
+          module: {
+            type: "commonjs",
+            ignoreDynamic: true
+          },
+        });
         const dest = fullPath.replace(/([/\\])src/, "$1lib").replace(".ts", ".js");
         await fs.mkdir(path.dirname(dest), { recursive: true });
         await fs.writeFile(dest, swcOutput.code);
