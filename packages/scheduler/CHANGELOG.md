@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Wed, 02 Nov 2022 20:45:00 GMT and should not be manually modified.
+This log was last generated on Fri, 04 Nov 2022 21:14:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.10
+
+Fri, 04 Nov 2022 21:14:01 GMT
+
+### Patches
+
+- fixed the tsconfig.lage2.json to output node16 moduleRes (kchau@microsoft.com)
 
 ## 0.5.9
 

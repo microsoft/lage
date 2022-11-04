@@ -2,6 +2,33 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Fri, 04 Nov 2022 21:14:01 GMT",
+      "tag": "@lage-run/lage_v2.5.12",
+      "version": "2.5.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "6dba6df4c699c92ca201e91301dfa4aac6344902",
+            "comment": "forcing a single typescript version in the repo"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.4.33",
+            "commit": "6dba6df4c699c92ca201e91301dfa4aac6344902"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.10",
+            "commit": "6dba6df4c699c92ca201e91301dfa4aac6344902"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Nov 2022 20:45:00 GMT",
       "tag": "@lage-run/lage_v2.5.11",
       "version": "2.5.11",

@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Fri, 04 Nov 2022 21:14:01 GMT",
+      "tag": "@lage-run/scheduler_v0.5.10",
+      "version": "0.5.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "6dba6df4c699c92ca201e91301dfa4aac6344902",
+            "comment": "fixed the tsconfig.lage2.json to output node16 moduleRes"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Nov 2022 20:45:00 GMT",
       "tag": "@lage-run/scheduler_v0.5.9",
       "version": "0.5.9",

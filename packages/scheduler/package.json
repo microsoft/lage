@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/scheduler",
-  "version": "0.5.9",
+  "version": "0.5.10",
   "description": "Scheduler for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
