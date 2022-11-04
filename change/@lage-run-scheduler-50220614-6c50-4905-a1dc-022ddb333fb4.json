@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fixed the tsconfig.lage2.json to output node16 moduleRes",
+  "packageName": "@lage-run/scheduler",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
