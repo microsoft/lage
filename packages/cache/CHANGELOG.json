@@ -2,6 +2,198 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Wed, 02 Nov 2022 06:27:27 GMT",
+      "tag": "@lage-run/cache_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cache",
+            "commit": "ffb4fc2cebf1800b4b5d2a353a0d109c17f21dde",
+            "comment": "Now uses the @lage-run/hasher package"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/hasher to v0.1.1",
+            "commit": "ffb4fc2cebf1800b4b5d2a353a0d109c17f21dde"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 22:25:59 GMT",
+      "tag": "@lage-run/cache_v0.1.28",
+      "version": "0.1.28",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd",
+            "comment": "adds import extensions of .js to prepare of esmodule switchover"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.5.3",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/logger to v1.2.2",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 20:43:17 GMT",
+      "tag": "@lage-run/cache_v0.1.27",
+      "version": "0.1.27",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "d93ffd227f46718fafd1062f9107bde2c98d4f37",
+            "comment": "cleaning up the tsconfig files"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.5.2",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/logger to v1.2.1",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 29 Oct 2022 18:42:49 GMT",
+      "tag": "@lage-run/cache_v0.1.26",
+      "version": "0.1.26",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cache",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38",
+            "comment": "bump workspace-tools"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.5.1",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 Oct 2022 22:01:13 GMT",
+      "tag": "@lage-run/cache_v0.1.25",
+      "version": "0.1.25",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.5.0",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 Oct 2022 00:02:06 GMT",
+      "tag": "@lage-run/cache_v0.1.24",
+      "version": "0.1.24",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.4.5",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Oct 2022 00:06:49 GMT",
+      "tag": "@lage-run/cache_v0.1.23",
+      "version": "0.1.23",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "1f0d69225e193de2c9495d9fe7a6e331ea8a3284",
+            "comment": "recover the cache check to not bombard with file reads"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 24 Oct 2022 21:40:05 GMT",
+      "tag": "@lage-run/cache_v0.1.22",
+      "version": "0.1.22",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "c91040aa0f9d6e804c300e18a1b41295c242fa4e",
+            "comment": "Fixed salt to not have race conditions with env hash calculations"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 23 Oct 2022 04:31:57 GMT",
+      "tag": "@lage-run/cache_v0.1.21",
+      "version": "0.1.21",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.4.4",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 20 Oct 2022 00:22:27 GMT",
+      "tag": "@lage-run/cache_v0.1.20",
+      "version": "0.1.20",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529",
+            "comment": "Allows for target specific environmentGlob override"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.4.3",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Oct 2022 16:07:29 GMT",
       "tag": "@lage-run/cache_v0.1.19",
       "version": "0.1.19",

@@ -1,6 +1,6 @@
 import { Command, Option } from "commander";
-import { addLoggerOptions } from "../addLoggerOptions";
-import { cacheAction } from "./action";
+import { addLoggerOptions } from "../addLoggerOptions.js";
+import { cacheAction } from "./action.js";
 
 const cacheCommand = new Command("cache");
 

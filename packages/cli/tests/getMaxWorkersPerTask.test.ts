@@ -1,60 +1,137 @@
-// Mock "os" module to return 8 CPUs
-jest.mock("os", () => {
-  const os = jest.requireActual("os");
-  return {
-    ...os,
-    cpus: jest.fn(() => [{}, {}, {}, {}, {}, {}, {}, {}]),
-  };
-});
-
 import { getMaxWorkersPerTask } from "../src/config/getMaxWorkersPerTask";
 
 describe("getMaxWorkersPerTask", () => {
   it("parses the pipeline config for maxWorkers", () => {
-    const maxWorkersPerTask = getMaxWorkersPerTask({
-      build: {
-        options: {
-          maxWorkers: "5",
+    const maxWorkersPerTask = getMaxWorkersPerTask(
+      {
+        build: {
+          options: {
+            maxWorkers: 5,
+          },
         },
       },
-    });
+      8
+    );
 
     expect(maxWorkersPerTask.get("build")).toBe(5);
   });
 
-  it("parses for percentage", () => {
-    const maxWorkersPerTask = getMaxWorkersPerTask({
-      build: {
-        options: {
-          maxWorkers: "50%",
+  it("disallows any form of strings in the maxWorkers configuration", () => {
+    const testAction = () =>
+      getMaxWorkersPerTask(
+        {
+          build: {
+            options: {
+              maxWorkers: "50%",
+            },
+          },
         },
-      },
-    });
+        8
+      );
 
-    expect(maxWorkersPerTask.get("build")).toBe(4);
+    expect(testAction).toThrow();
   });
 
-  it("can handle if a passed-in string isn't a percentage", () => {
-    const maxWorkersPerTask = getMaxWorkersPerTask({
-      build: {
-        options: {
-          maxWorkers: "50",
-        },
-      },
-    });
+  it("can handle sum of maxWorkers that exceed concurrency", () => {
+    const testAction = () =>
+      getMaxWorkersPerTask(
+        {
+          build: {
+            options: {
+              maxWorkers: 10,
+            },
+          },
 
-    expect(maxWorkersPerTask.get("build")).toBe(7);
+          test: {
+            maxWorkers: 20,
+          },
+        },
+        9
+      );
+
+    expect(testAction).not.toThrow();
+
+    const maxWorkersPerTask = testAction();
+    expect(maxWorkersPerTask.get("build")).toBe(3);
+    expect(maxWorkersPerTask.get("test")).toBe(6);
   });
 
-  it("can handle non-number-like strings", () => {
-    const maxWorkersPerTask = getMaxWorkersPerTask({
-      build: {
-        options: {
-          maxWorkers: "foo",
+  it("can divide maxWorkers for the remaining tasks", () => {
+    const testAction = () =>
+      getMaxWorkersPerTask(
+        {
+          build: {
+            options: {
+              maxWorkers: 3,
+            },
+          },
+
+          test: {},
+        },
+        9
+      );
+
+    expect(testAction).not.toThrow();
+
+    const maxWorkersPerTask = testAction();
+    expect(maxWorkersPerTask.get("build")).toBe(3);
+
+    // undefined here means the remaining workers just picked up by the AggregatePool (concurrency - maxWorkers)
+    expect(maxWorkersPerTask.get("test")).toBeUndefined();
+  });
+
+  it("throws if there just aren't enough cores to handle the tasks", () => {
+    const testAction = () =>
+      getMaxWorkersPerTask(
+        {
+          build: {
+            maxWorkers: 1,
+          },
+
+          test: {
+            maxWorkers: 1,
+          },
+
+          lint: {
+            maxWorkers: 1,
+          },
+
+          bundle: {
+            maxWorkers: 1,
+          },
+        },
+        3
+      );
+
+    expect(testAction).toThrow();
+  });
+
+  it("reserves some workers for general pool", () => {
+    const maxWorkersPerTask = getMaxWorkersPerTask(
+      {
+        build: {},
+
+        lint: {
+          maxWorkers: 2,
         },
       },
-    });
+      2
+    );
 
-    expect(maxWorkersPerTask.get("build")).toBe(7);
+    expect(maxWorkersPerTask.get("build")).toBeUndefined();
+    expect(maxWorkersPerTask.get("lint")).toBe(1);
+  });
+
+  it("reserves no workers for general pool, when one task has taken over all the cores", () => {
+    const maxWorkersPerTask = getMaxWorkersPerTask(
+      {
+        lint: {
+          maxWorkers: 2,
+        },
+      },
+      2
+    );
+
+    expect(maxWorkersPerTask.get("lint")).toBe(2);
   });
 });

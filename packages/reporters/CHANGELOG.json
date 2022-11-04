@@ -2,6 +2,327 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Tue, 01 Nov 2022 22:48:33 GMT",
+      "tag": "@lage-run/reporters_v0.2.37",
+      "version": "0.2.37",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.6",
+            "commit": "97b306418acd099a3ed6f3dfc062b513f5fe391c"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 22:25:59 GMT",
+      "tag": "@lage-run/reporters_v0.2.36",
+      "version": "0.2.36",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd",
+            "comment": "adds import extensions of .js to prepare of esmodule switchover"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/logger to v1.2.2",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.5",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.5.3",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/format-hrtime to v0.1.3",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 20:43:17 GMT",
+      "tag": "@lage-run/reporters_v0.2.35",
+      "version": "0.2.35",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "d93ffd227f46718fafd1062f9107bde2c98d4f37",
+            "comment": "cleaning up the tsconfig files"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/logger to v1.2.1",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.4",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.5.2",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/format-hrtime to v0.1.2",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 31 Oct 2022 21:27:52 GMT",
+      "tag": "@lage-run/reporters_v0.2.34",
+      "version": "0.2.34",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.3",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 29 Oct 2022 18:42:49 GMT",
+      "tag": "@lage-run/reporters_v0.2.33",
+      "version": "0.2.33",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.2",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.5.1",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 29 Oct 2022 01:06:17 GMT",
+      "tag": "@lage-run/reporters_v0.2.32",
+      "version": "0.2.32",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "15f4763e0ac29760f813523d3f37b6a5078f4897",
+            "comment": "adds memory information from pool"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.1",
+            "commit": "15f4763e0ac29760f813523d3f37b6a5078f4897"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 Oct 2022 22:01:13 GMT",
+      "tag": "@lage-run/reporters_v0.2.31",
+      "version": "0.2.31",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.0",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.5.0",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 Oct 2022 00:02:06 GMT",
+      "tag": "@lage-run/reporters_v0.2.30",
+      "version": "0.2.30",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.16",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.4.5",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Oct 2022 00:06:49 GMT",
+      "tag": "@lage-run/reporters_v0.2.29",
+      "version": "0.2.29",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.15",
+            "commit": "1f0d69225e193de2c9495d9fe7a6e331ea8a3284"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 24 Oct 2022 21:40:05 GMT",
+      "tag": "@lage-run/reporters_v0.2.28",
+      "version": "0.2.28",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.14",
+            "commit": "c91040aa0f9d6e804c300e18a1b41295c242fa4e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 23 Oct 2022 04:31:57 GMT",
+      "tag": "@lage-run/reporters_v0.2.27",
+      "version": "0.2.27",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.13",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.4.4",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 Oct 2022 21:36:38 GMT",
+      "tag": "@lage-run/reporters_v0.2.26",
+      "version": "0.2.26",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.12",
+            "commit": "735930e09c2fdf476c3f2c56c1c05062401097b8"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 Oct 2022 19:33:09 GMT",
+      "tag": "@lage-run/reporters_v0.2.25",
+      "version": "0.2.25",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/reporters",
+            "commit": "e702680c6e9fbd423e92b34d7fbb989a3c06e69c",
+            "comment": "Fixing Azure DevOps reporter to display grouping correctly"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 20 Oct 2022 00:22:27 GMT",
+      "tag": "@lage-run/reporters_v0.2.24",
+      "version": "0.2.24",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.11",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.4.3",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 12 Oct 2022 21:07:14 GMT",
+      "tag": "@lage-run/reporters_v0.2.23",
+      "version": "0.2.23",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "933546a2096fe5e84132293dd1524ea4beb09ee5",
+            "comment": "use the separate format-hrtime package as well as display queue time separately"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.1.10",
+            "commit": "933546a2096fe5e84132293dd1524ea4beb09ee5"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/format-hrtime to v0.1.1",
+            "commit": "933546a2096fe5e84132293dd1524ea4beb09ee5"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 08 Oct 2022 17:43:37 GMT",
       "tag": "@lage-run/reporters_v0.2.22",
       "version": "0.2.22",

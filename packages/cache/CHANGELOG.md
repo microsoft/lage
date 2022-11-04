@@ -1,8 +1,95 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Thu, 06 Oct 2022 16:07:29 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Nov 2022 06:27:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.0
+
+Wed, 02 Nov 2022 06:27:27 GMT
+
+### Minor changes
+
+- Now uses the @lage-run/hasher package (ken@gizzar.com)
+- Bump @lage-run/hasher to v0.1.1
+
+## 0.1.28
+
+Tue, 01 Nov 2022 22:25:59 GMT
+
+### Patches
+
+- adds import extensions of .js to prepare of esmodule switchover (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.5.3
+- Bump @lage-run/logger to v1.2.2
+
+## 0.1.27
+
+Tue, 01 Nov 2022 20:43:17 GMT
+
+### Patches
+
+- cleaning up the tsconfig files (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.5.2
+- Bump @lage-run/logger to v1.2.1
+
+## 0.1.26
+
+Sat, 29 Oct 2022 18:42:49 GMT
+
+### Patches
+
+- bump workspace-tools (ken@gizzar.com)
+- Bump @lage-run/target-graph to v0.5.1
+
+## 0.1.25
+
+Wed, 26 Oct 2022 22:01:13 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.5.0
+
+## 0.1.24
+
+Wed, 26 Oct 2022 00:02:06 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.4.5
+
+## 0.1.23
+
+Tue, 25 Oct 2022 00:06:49 GMT
+
+### Patches
+
+- recover the cache check to not bombard with file reads (kchau@microsoft.com)
+
+## 0.1.22
+
+Mon, 24 Oct 2022 21:40:05 GMT
+
+### Patches
+
+- Fixed salt to not have race conditions with env hash calculations (kchau@microsoft.com)
+
+## 0.1.21
+
+Sun, 23 Oct 2022 04:31:57 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.4.4
+
+## 0.1.20
+
+Thu, 20 Oct 2022 00:22:27 GMT
+
+### Patches
+
+- Allows for target specific environmentGlob override (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.4.3
 
 ## 0.1.19
 

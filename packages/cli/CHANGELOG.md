@@ -1,8 +1,219 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Sat, 08 Oct 2022 19:11:01 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Nov 2022 20:45:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.32
+
+Wed, 02 Nov 2022 20:45:00 GMT
+
+### Patches
+
+- switching from require() to import() where possible (ken@gizzar.com)
+- Bump @lage-run/scheduler to v0.5.9
+
+## 0.4.31
+
+Wed, 02 Nov 2022 06:27:27 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.5.8
+- Bump @lage-run/cache to v0.2.0
+
+## 0.4.30
+
+Tue, 01 Nov 2022 22:48:33 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.5.7
+- Bump @lage-run/scheduler-types to v0.2.6
+- Bump @lage-run/reporters to v0.2.37
+
+## 0.4.29
+
+Tue, 01 Nov 2022 22:25:59 GMT
+
+### Patches
+
+- adds import extensions of .js to prepare of esmodule switchover (kchau@microsoft.com)
+- Bump @lage-run/find-npm-client to v0.1.4
+- Bump @lage-run/logger to v1.2.2
+- Bump @lage-run/scheduler to v0.5.6
+- Bump @lage-run/scheduler-types to v0.2.5
+- Bump @lage-run/target-graph to v0.5.3
+- Bump @lage-run/cache to v0.1.28
+- Bump @lage-run/reporters to v0.2.36
+
+## 0.4.28
+
+Tue, 01 Nov 2022 20:43:17 GMT
+
+### Patches
+
+- cleaning up the tsconfig files (kchau@microsoft.com)
+- Bump @lage-run/find-npm-client to v0.1.3
+- Bump @lage-run/logger to v1.2.1
+- Bump @lage-run/scheduler to v0.5.5
+- Bump @lage-run/scheduler-types to v0.2.4
+- Bump @lage-run/target-graph to v0.5.2
+- Bump @lage-run/cache to v0.1.27
+- Bump @lage-run/reporters to v0.2.35
+
+## 0.4.27
+
+Mon, 31 Oct 2022 21:56:09 GMT
+
+### Patches
+
+- adds taskArgs param for worker scripts (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.5.4
+
+## 0.4.26
+
+Mon, 31 Oct 2022 21:27:52 GMT
+
+### Patches
+
+- adds depcheck and fixes (kchau@microsoft.com)
+- Bump @lage-run/find-npm-client to v0.1.2
+- Bump @lage-run/scheduler to v0.5.3
+- Bump @lage-run/scheduler-types to v0.2.3
+- Bump @lage-run/reporters to v0.2.34
+
+## 0.4.25
+
+Sat, 29 Oct 2022 18:42:49 GMT
+
+### Patches
+
+- bump workspace-tools (ken@gizzar.com)
+- Bump @lage-run/scheduler to v0.5.2
+- Bump @lage-run/target-graph to v0.5.1
+- Bump @lage-run/cache to v0.1.26
+- Bump @lage-run/reporters to v0.2.33
+
+## 0.4.24
+
+Sat, 29 Oct 2022 01:06:17 GMT
+
+### Patches
+
+- adds a memory limit param (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.5.1
+- Bump @lage-run/reporters to v0.2.32
+
+## 0.4.23
+
+Wed, 26 Oct 2022 22:48:35 GMT
+
+### Patches
+
+- run modified packages and their deps first if running with since option and hitting repoWideChanges (email not defined)
+
+## 0.4.22
+
+Wed, 26 Oct 2022 22:01:13 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.5.0
+- Bump @lage-run/target-graph to v0.5.0
+- Bump @lage-run/cache to v0.1.25
+- Bump @lage-run/reporters to v0.2.31
+
+## 0.4.21
+
+Wed, 26 Oct 2022 00:02:06 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.4.16
+- Bump @lage-run/target-graph to v0.4.5
+- Bump @lage-run/cache to v0.1.24
+- Bump @lage-run/reporters to v0.2.30
+
+## 0.4.20
+
+Tue, 25 Oct 2022 00:06:49 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.4.15
+- Bump @lage-run/cache to v0.1.23
+- Bump @lage-run/reporters to v0.2.29
+
+## 0.4.19
+
+Mon, 24 Oct 2022 21:40:05 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.4.14
+- Bump @lage-run/cache to v0.1.22
+- Bump @lage-run/reporters to v0.2.28
+
+## 0.4.18
+
+Sun, 23 Oct 2022 04:31:57 GMT
+
+### Patches
+
+- Adds support for the CLI to configure the maxWorkersPerTask via --max-workers-per-task (ken@gizzar.com)
+- Bump @lage-run/scheduler to v0.4.13
+- Bump @lage-run/target-graph to v0.4.4
+- Bump @lage-run/cache to v0.1.21
+- Bump @lage-run/reporters to v0.2.27
+
+## 0.4.17
+
+Fri, 21 Oct 2022 23:04:34 GMT
+
+### Patches
+
+- fixing the max worker again - this time we need to account for general pool availability (ken@gizzar.com)
+
+## 0.4.16
+
+Fri, 21 Oct 2022 21:36:38 GMT
+
+### Patches
+
+- pipelines with maxWorker now create separate pools (ken@gizzar.com)
+- Bump @lage-run/scheduler to v0.4.12
+- Bump @lage-run/reporters to v0.2.26
+
+## 0.4.15
+
+Fri, 21 Oct 2022 19:33:09 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.4.11
+- Bump @lage-run/reporters to v0.2.25
+
+## 0.4.14
+
+Thu, 20 Oct 2022 00:22:27 GMT
+
+### Patches
+
+- promotes maxWorker to be a "top level" target config (options are for target runners) (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.4.10
+- Bump @lage-run/target-graph to v0.4.3
+- Bump @lage-run/cache to v0.1.20
+- Bump @lage-run/reporters to v0.2.24
+
+## 0.4.13
+
+Wed, 12 Oct 2022 21:07:14 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.4.9
+- Bump @lage-run/reporters to v0.2.23
 
 ## 0.4.12
 

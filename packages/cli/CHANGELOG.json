@@ -2,6 +2,612 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 02 Nov 2022 20:45:00 GMT",
+      "tag": "@lage-run/cli_v0.4.32",
+      "version": "0.4.32",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "e64f7bfdd1dbd2518a1d5ab8453c0e3bbd9b3077",
+            "comment": "switching from require() to import() where possible"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.9",
+            "commit": "e64f7bfdd1dbd2518a1d5ab8453c0e3bbd9b3077"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Nov 2022 06:27:27 GMT",
+      "tag": "@lage-run/cli_v0.4.31",
+      "version": "0.4.31",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.8",
+            "commit": "ffb4fc2cebf1800b4b5d2a353a0d109c17f21dde"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.2.0",
+            "commit": "ffb4fc2cebf1800b4b5d2a353a0d109c17f21dde"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 22:48:33 GMT",
+      "tag": "@lage-run/cli_v0.4.30",
+      "version": "0.4.30",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.7",
+            "commit": "97b306418acd099a3ed6f3dfc062b513f5fe391c"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.6",
+            "commit": "97b306418acd099a3ed6f3dfc062b513f5fe391c"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.37",
+            "commit": "97b306418acd099a3ed6f3dfc062b513f5fe391c"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 22:25:59 GMT",
+      "tag": "@lage-run/cli_v0.4.29",
+      "version": "0.4.29",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd",
+            "comment": "adds import extensions of .js to prepare of esmodule switchover"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/find-npm-client to v0.1.4",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/logger to v1.2.2",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.6",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.5",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.5.3",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.28",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.36",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 20:43:17 GMT",
+      "tag": "@lage-run/cli_v0.4.28",
+      "version": "0.4.28",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "d93ffd227f46718fafd1062f9107bde2c98d4f37",
+            "comment": "cleaning up the tsconfig files"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/find-npm-client to v0.1.3",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/logger to v1.2.1",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.5",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.4",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.5.2",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.27",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.35",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 31 Oct 2022 21:56:09 GMT",
+      "tag": "@lage-run/cli_v0.4.27",
+      "version": "0.4.27",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "6d1d50bdb9245688edd0d7b6061bed2b1cdc3fd1",
+            "comment": "adds taskArgs param for worker scripts"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.4",
+            "commit": "6d1d50bdb9245688edd0d7b6061bed2b1cdc3fd1"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 31 Oct 2022 21:27:52 GMT",
+      "tag": "@lage-run/cli_v0.4.26",
+      "version": "0.4.26",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e",
+            "comment": "adds depcheck and fixes"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/find-npm-client to v0.1.2",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.3",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.3",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.34",
+            "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 29 Oct 2022 18:42:49 GMT",
+      "tag": "@lage-run/cli_v0.4.25",
+      "version": "0.4.25",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38",
+            "comment": "bump workspace-tools"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.2",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.5.1",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.26",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.33",
+            "commit": "06a9d752fd2b374615340a39445c51302b566a38"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 29 Oct 2022 01:06:17 GMT",
+      "tag": "@lage-run/cli_v0.4.24",
+      "version": "0.4.24",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "15f4763e0ac29760f813523d3f37b6a5078f4897",
+            "comment": "adds a memory limit param"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.1",
+            "commit": "15f4763e0ac29760f813523d3f37b6a5078f4897"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.32",
+            "commit": "15f4763e0ac29760f813523d3f37b6a5078f4897"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 Oct 2022 22:48:35 GMT",
+      "tag": "@lage-run/cli_v0.4.23",
+      "version": "0.4.23",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "d7788f1c921d113f11334474adf362162041f9a6",
+            "comment": "run modified packages and their deps first if running with since option and hitting repoWideChanges"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 Oct 2022 22:01:13 GMT",
+      "tag": "@lage-run/cli_v0.4.22",
+      "version": "0.4.22",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.0",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.5.0",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.25",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.31",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 Oct 2022 00:02:06 GMT",
+      "tag": "@lage-run/cli_v0.4.21",
+      "version": "0.4.21",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.4.16",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.4.5",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.24",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.30",
+            "commit": "39be59e3821fe06876e31835703c92ba17bceb96"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Oct 2022 00:06:49 GMT",
+      "tag": "@lage-run/cli_v0.4.20",
+      "version": "0.4.20",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.4.15",
+            "commit": "1f0d69225e193de2c9495d9fe7a6e331ea8a3284"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.23",
+            "commit": "1f0d69225e193de2c9495d9fe7a6e331ea8a3284"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.29",
+            "commit": "1f0d69225e193de2c9495d9fe7a6e331ea8a3284"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 24 Oct 2022 21:40:05 GMT",
+      "tag": "@lage-run/cli_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.4.14",
+            "commit": "c91040aa0f9d6e804c300e18a1b41295c242fa4e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.22",
+            "commit": "c91040aa0f9d6e804c300e18a1b41295c242fa4e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.28",
+            "commit": "c91040aa0f9d6e804c300e18a1b41295c242fa4e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 23 Oct 2022 04:31:57 GMT",
+      "tag": "@lage-run/cli_v0.4.18",
+      "version": "0.4.18",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb",
+            "comment": "Adds support for the CLI to configure the maxWorkersPerTask via --max-workers-per-task"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.4.13",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.4.4",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.21",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.27",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 Oct 2022 23:04:34 GMT",
+      "tag": "@lage-run/cli_v0.4.17",
+      "version": "0.4.17",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "d93d94b25f3b157dedc555f836b66ee547500cd5",
+            "comment": "fixing the max worker again - this time we need to account for general pool availability"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 Oct 2022 21:36:38 GMT",
+      "tag": "@lage-run/cli_v0.4.16",
+      "version": "0.4.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/cli",
+            "commit": "735930e09c2fdf476c3f2c56c1c05062401097b8",
+            "comment": "pipelines with maxWorker now create separate pools"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.4.12",
+            "commit": "735930e09c2fdf476c3f2c56c1c05062401097b8"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.26",
+            "commit": "735930e09c2fdf476c3f2c56c1c05062401097b8"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 Oct 2022 19:33:09 GMT",
+      "tag": "@lage-run/cli_v0.4.15",
+      "version": "0.4.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.4.11",
+            "commit": "e702680c6e9fbd423e92b34d7fbb989a3c06e69c"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.25",
+            "commit": "e702680c6e9fbd423e92b34d7fbb989a3c06e69c"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 20 Oct 2022 00:22:27 GMT",
+      "tag": "@lage-run/cli_v0.4.14",
+      "version": "0.4.14",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529",
+            "comment": "promotes maxWorker to be a \"top level\" target config (options are for target runners)"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.4.10",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.4.3",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.1.20",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.24",
+            "commit": "9b6f27c0d2684f5bdcba0591ca2eb323e00c5529"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 12 Oct 2022 21:07:14 GMT",
+      "tag": "@lage-run/cli_v0.4.13",
+      "version": "0.4.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.4.9",
+            "commit": "933546a2096fe5e84132293dd1524ea4beb09ee5"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.23",
+            "commit": "933546a2096fe5e84132293dd1524ea4beb09ee5"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 08 Oct 2022 19:11:01 GMT",
       "tag": "@lage-run/cli_v0.4.12",
       "version": "0.4.12",

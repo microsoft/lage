@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 
-import { hrToSeconds } from "./formatDuration";
+import { hrToSeconds } from "@lage-run/format-hrtime";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { LogEntry, LogLevel, Reporter } from "@lage-run/logger";
-import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
+import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
 
 export class JsonReporter implements Reporter {
   constructor(private options: { logLevel: LogLevel }) {}

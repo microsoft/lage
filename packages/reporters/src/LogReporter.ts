@@ -1,6 +1,6 @@
-import { formatDuration, hrToSeconds } from "./formatDuration";
+import { formatDuration, hrtimeDiff, hrToSeconds } from "@lage-run/format-hrtime";
 import { getPackageAndTask } from "@lage-run/target-graph";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
+import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
 import ansiRegex from "ansi-regex";
 import chalk from "chalk";
@@ -8,9 +8,10 @@ import type { Chalk } from "chalk";
 import gradient from "gradient-string";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
-import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
+import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
 import type { Writable } from "stream";
 import crypto from "crypto";
+import { formatBytes } from "./formatBytes.js";
 
 const colors = {
   [LogLevel.info]: chalk.white,
@@ -73,6 +74,11 @@ function normalize(prefixOrMessage: string, message?: string) {
     const message = prefixOrMessage;
     return { prefix, message };
   }
+}
+
+function getQueueDuration(queueTime: [number, number], startTime: [number, number]) {
+  const queueDuration = hrtimeDiff(queueTime, startTime);
+  return formatDuration(hrToSeconds(queueDuration));
 }
 
 export class LogReporter implements Reporter {
@@ -155,7 +161,10 @@ export class LogReporter implements Reporter {
           return this.printEntry(entry, colorFn(`${colors.ok("»")} skip - ${hash!}`));
 
         case "aborted":
-          return this.printEntry(entry, colorFn(`${colors.warn("»")} aborted`));
+          return this.printEntry(entry, colorFn(`${colors.warn("-")} aborted`));
+
+        case "queued":
+          return this.printEntry(entry, colorFn(`${colors.warn("…")} queued`));
       }
     } else {
       return this.printEntry(entry, colorFn(":  " + stripAnsi(entry.msg)));
@@ -201,6 +210,7 @@ export class LogReporter implements Reporter {
       running: chalk.yellow,
       pending: chalk.gray,
       aborted: chalk.red,
+      queued: chalk.magenta,
     };
 
     if (targetRuns.size > 0) {
@@ -215,11 +225,15 @@ export class LogReporter implements Reporter {
 
         const colorFn = statusColorFn[wrappedTarget.status] ?? chalk.white;
         const target = wrappedTarget.target;
+        const hasDurations = !!wrappedTarget.duration && !!wrappedTarget.queueTime;
+        const queueDuration: [number, number] = hasDurations ? hrtimeDiff(wrappedTarget.queueTime, wrappedTarget.startTime) : [0, 0];
 
         this.print(
           `${getTaskLogPrefix(target.packageName || "<root>", target.task)} ${colorFn(
             `${wrappedTarget.status === "running" ? "running - incomplete" : wrappedTarget.status}${
-              wrappedTarget.duration ? `, took ${formatDuration(hrToSeconds(wrappedTarget.duration))}` : ""
+              hasDurations
+                ? `, took ${formatDuration(hrToSeconds(wrappedTarget.duration))}, queued for ${formatDuration(hrToSeconds(queueDuration))}`
+                : ""
             }`
           )}`
         );
@@ -227,6 +241,12 @@ export class LogReporter implements Reporter {
 
       this.print(
         `success: ${success.length}, skipped: ${skipped.length}, pending: ${pending.length}, aborted: ${aborted.length}, failed: ${failed.length}`
+      );
+
+      this.print(
+        `worker restarts: ${schedulerRunSummary.workerRestarts}, max worker memory usage: ${formatBytes(
+          schedulerRunSummary.maxWorkerMemoryUsage
+        )}`
       );
     } else {
       this.print("Nothing has been run.");

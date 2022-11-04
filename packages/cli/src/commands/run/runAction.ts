@@ -1,20 +1,25 @@
-import { Command } from "commander";
-import { createProfileReporter } from "./createProfileReporter";
+import type { Command } from "commander";
+import { createCache } from "./createCacheProvider.js";
+import { createProfileReporter } from "./createProfileReporter.js";
+import { createTargetGraph } from "./createTargetGraph.js";
+import { filterArgsForTasks } from "./filterArgsForTasks.js";
+import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
 import { findNpmClient } from "@lage-run/find-npm-client";
-import { getConfig } from "../../config/getConfig";
-import { getMaxWorkersPerTask } from "../../config/getMaxWorkersPerTask";
+import { getConfig } from "../../config/getConfig.js";
+import { getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions } from "../../config/getMaxWorkersPerTask.js";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { initializeReporters } from "@lage-run/reporters";
 import { SimpleScheduler } from "@lage-run/scheduler";
-import createLogger, { Reporter } from "@lage-run/logger";
+
+import type { Reporter } from "@lage-run/logger";
+import createLogger from "@lage-run/logger";
+
 import type { ReporterInitOptions } from "@lage-run/reporters";
-import { filterArgsForTasks } from "./filterArgsForTasks";
-import { createTargetGraph } from "./createTargetGraph";
-import { createCache } from "./createCacheProvider";
-import { SchedulerRunSummary } from "@lage-run/scheduler-types";
+import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 
 interface RunOptions extends ReporterInitOptions {
   concurrency: number;
+  maxWorkersPerTask: string[];
   profile: string | boolean | undefined;
   dependencies: boolean;
   dependents: boolean;
@@ -70,6 +75,12 @@ export async function runAction(options: RunOptions, command: Command) {
     skipLocalCache: options.skipLocalCache,
   });
 
+  logger.verbose(`Running with ${options.concurrency} workers`);
+
+  const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
+
+  const maxWorkersPerTaskMap = getMaxWorkersPerTaskFromOptions(options.maxWorkersPerTask);
+
   const scheduler = new SimpleScheduler({
     logger,
     concurrency: options.concurrency,
@@ -78,10 +89,10 @@ export async function runAction(options: RunOptions, command: Command) {
     continueOnError: options.continue,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    maxWorkersPerTask: getMaxWorkersPerTask(config.pipeline ?? {}),
+    maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, options.concurrency), ...maxWorkersPerTaskMap]),
     runners: {
       npmScript: {
-        script: require.resolve("./runners/NpmScriptRunner"),
+        script: require.resolve("./runners/NpmScriptRunner.js"),
         options: {
           nodeArg: options.nodeArg,
           taskArgs,
@@ -89,11 +100,14 @@ export async function runAction(options: RunOptions, command: Command) {
         },
       },
       worker: {
-        script: require.resolve("./runners/WorkerRunner"),
-        options: {},
+        script: require.resolve("./runners/WorkerRunner.js"),
+        options: {
+          taskArgs,
+        },
       },
       ...config.runners,
     },
+    workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
   });
 
   const summary = await scheduler.run(root, targetGraph);

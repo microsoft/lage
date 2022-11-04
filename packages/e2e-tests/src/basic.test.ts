@@ -1,5 +1,5 @@
-import { Monorepo } from "./mock/monorepo";
-import { filterEntry, parseNdJson } from "./parseNdJson";
+import { Monorepo } from "./mock/monorepo.js";
+import { filterEntry, parseNdJson } from "./parseNdJson.js";
 
 describe("basics", () => {
   it("basic test case", () => {

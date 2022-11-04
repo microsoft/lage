@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "forcing a single typescript version in the repo",
+  "packageName": "@lage-run/lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

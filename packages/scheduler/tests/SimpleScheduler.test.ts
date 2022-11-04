@@ -8,7 +8,35 @@ import { TargetRunner } from "@lage-run/scheduler-types";
 class InProcPool implements Pool {
   constructor(private runner: TargetRunner) {}
   exec({ target }: { target: Target }) {
-    return this.runner.run(target);
+    return this.runner.run({ target, weight: 1 });
+  }
+  stats() {
+    return {
+      workerRestarts: 0,
+      maxWorkerMemoryUsage: 0,
+    };
+  }
+  close() {
+    return Promise.resolve();
+  }
+}
+
+class SingleSchedulePool implements Pool {
+  count = 0;
+  constructor(private runner: TargetRunner, private concurrency: number) {}
+  exec({ target }: { target: Target }) {
+    if (this.concurrency > this.count) {
+      this.count++;
+      return this.runner.run({ target, weight: 1 });
+    }
+
+    return Promise.reject(new Error("Pool is full"));
+  }
+  stats() {
+    return {
+      workerRestarts: 0,
+      maxWorkerMemoryUsage: 0,
+    };
   }
   close() {
     return Promise.resolve();
@@ -96,6 +124,7 @@ describe("SimpleScheduler", () => {
       maxWorkersPerTask: new Map(),
       runners: {},
       pool: new InProcPool(runner),
+      workerIdleMemoryLimit: 1024 * 1024 * 1024,
     });
 
     // these would normally come from the CLI
@@ -147,6 +176,7 @@ describe("SimpleScheduler", () => {
       continueOnError: false,
       shouldCache: true,
       shouldResetCache: false,
+      workerIdleMemoryLimit: 1024 * 1024 * 1024,
     });
 
     // these would normally come from the CLI
@@ -193,6 +223,7 @@ describe("SimpleScheduler", () => {
       maxWorkersPerTask: new Map(),
       runners: {},
       pool: new InProcPool(runner),
+      workerIdleMemoryLimit: 1024 * 1024 * 1024,
     });
 
     // these would normally come from the CLI
@@ -240,7 +271,8 @@ describe("SimpleScheduler", () => {
       shouldCache: true,
       shouldResetCache: false,
       runners: {},
-      pool: new InProcPool(runner),
+      pool: new SingleSchedulePool(runner, 4),
+      workerIdleMemoryLimit: 1024 * 1024 * 1024,
     });
 
     // these would normally come from the CLI
@@ -262,15 +294,18 @@ describe("SimpleScheduler", () => {
     expect(dropTiming(summary)).toMatchInlineSnapshot(`
       {
         "error": undefined,
+        "maxWorkerMemoryUsage": 0,
         "results": "failed",
         "targetRunByStatus": {
-          "aborted": [],
+          "aborted": [
+            "g#build",
+          ],
           "failed": [],
           "pending": [
             "b#build",
             "d#build",
-            "g#build",
           ],
+          "queued": [],
           "running": [],
           "skipped": [],
           "success": [
@@ -311,10 +346,11 @@ describe("SimpleScheduler", () => {
             "target": "f#build",
           },
           "g#build" => {
-            "status": "pending",
+            "status": "aborted",
             "target": "g#build",
           },
         },
+        "workerRestarts": 0,
       }
     `);
   });

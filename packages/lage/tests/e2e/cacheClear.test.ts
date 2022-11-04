@@ -9,7 +9,7 @@ const cacheLocation = ".cache/backfill";
 
 describe("Cache clear", () => {
   it("should clear cache when internalCacheFolder is passed", () => {
-    const repo = new Monorepo("cache");
+    const repo = new Monorepo("cache-1");
 
     repo.init();
     repo.setLageConfig(
@@ -62,7 +62,7 @@ describe("Cache clear", () => {
   });
 
   it("should clear cache with the default cache location", () => {
-    const repo = new Monorepo("cache-default");
+    const repo = new Monorepo("cache-default-1");
 
     repo.init();
     repo.setLageConfig(

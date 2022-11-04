@@ -1,4 +1,4 @@
-import { LogLevel } from "@lage-run/logger";
+import type { LogLevel } from "@lage-run/logger";
 
 export interface LoggerOptions {
   disp?: {

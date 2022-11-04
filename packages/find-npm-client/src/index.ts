@@ -1,1 +1,1 @@
-export { findNpmClient } from "./findNpmClient";
+export { findNpmClient } from "./findNpmClient.js";

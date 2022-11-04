@@ -1,6 +1,6 @@
-import { Monorepo } from "./mock/monorepo";
+import { Monorepo } from "./mock/monorepo.js";
 import { getTargetId } from "@lage-run/target-graph";
-import { filterEntry, parseNdJson } from "./parseNdJson";
+import { filterEntry, parseNdJson } from "./parseNdJson.js";
 
 describe("bigapp test", () => {
   // This test follows the model as documented here:

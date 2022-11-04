@@ -1,8 +1,85 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Sat, 08 Oct 2022 17:43:37 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Nov 2022 20:45:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.11
+
+Wed, 02 Nov 2022 20:45:00 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.4.32
+- Bump @lage-run/scheduler to v0.5.9
+
+## 2.5.10
+
+Wed, 02 Nov 2022 06:27:27 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.4.31
+- Bump @lage-run/scheduler to v0.5.8
+
+## 2.5.9
+
+Tue, 01 Nov 2022 22:48:33 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.4.30
+- Bump @lage-run/scheduler to v0.5.7
+
+## 2.5.8
+
+Tue, 01 Nov 2022 22:25:59 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.4.29
+- Bump @lage-run/scheduler to v0.5.6
+
+## 2.5.7
+
+Tue, 01 Nov 2022 20:43:17 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.4.28
+- Bump @lage-run/scheduler to v0.5.5
+
+## 2.5.6
+
+Tue, 01 Nov 2022 20:12:49 GMT
+
+### Patches
+
+- fixed to use consistent package dep versions (kchau@microsoft.com)
+
+## 2.5.4
+
+Mon, 31 Oct 2022 21:27:52 GMT
+
+### Patches
+
+- adds depcheck and fixes (kchau@microsoft.com)
+
+## 2.5.0
+
+Wed, 26 Oct 2022 22:01:13 GMT
+
+### Minor changes
+
+- Adds the Weighted Target option (kchau@microsoft.com)
+
+## 2.4.0
+
+Sun, 23 Oct 2022 04:31:57 GMT
+
+### Minor changes
+
+- Adds Sharding Support (ken@gizzar.com)
 
 ## 2.3.0
 

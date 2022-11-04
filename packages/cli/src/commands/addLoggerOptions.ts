@@ -1,4 +1,5 @@
-import { Command, Option } from "commander";
+import type { Command } from "commander";
+import { Option } from "commander";
 
 export function addLoggerOptions(program: Command) {
   return program

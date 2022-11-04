@@ -1,0 +1,37 @@
+dependencies:
+  "@rush-temp/package-a": "file:projects/package-a.tgz"
+  "@rush-temp/package-b": "file:projects/package-b.tgz"
+  once: 1.4.0
+lockfileVersion: 5.1
+packages:
+  /once/1.4.0:
+    dependencies:
+      wrappy: 1.0.2
+    dev: false
+    resolution:
+      integrity: sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
+  /wrappy/1.0.2:
+    dev: false
+    resolution:
+      integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
+  "file:projects/package-a.tgz":
+    dev: false
+    name: "@rush-temp/package-a"
+    resolution:
+      integrity: sha512-0sPqBQ5dHga1XHbqFOc2tNJiEJjst3Fus5wzKY0e0Mp/LpLzFQ85Ks6sHtDLRmJ7Y+Q7gIUUz7NMGgW3EKG5gA==
+      tarball: "file:projects/package-a.tgz"
+    version: 0.0.0
+  "file:projects/package-b.tgz":
+    dependencies:
+      once: 1.4.0
+    dev: false
+    name: "@rush-temp/package-b"
+    resolution:
+      integrity: sha512-2VlRDgFYQ3ZwWLRMb2BWVk5Lrm4Rj9X45xxB1f7RSV3JQLrfGf0/EbxTuyRK2KqnxwKSAoKP8d2E3CyRbbHa8A==
+      tarball: "file:projects/package-b.tgz"
+    version: 0.0.0
+registry: ""
+specifiers:
+  "@rush-temp/package-a": "file:./projects/package-a.tgz"
+  "@rush-temp/package-b": "file:./projects/package-b.tgz"
+  once: 1.4.0

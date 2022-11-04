@@ -82,18 +82,18 @@ describe("LogReporter", () => {
     const bBuildTarget = createTarget("b", "build");
 
     const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0] }],
+      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0], queueTime: [0, 0] }],
+      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0], queueTime: [0, 0] }],
+      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0], queueTime: [0, 0] }],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
+      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0], queueTime: [0, 0] }],
+      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0], queueTime: [0, 0] }],
+      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
     ] as [TargetStatusEntry | TargetMessageEntry, string?][];
 
     for (const log of logs) {
@@ -138,18 +138,18 @@ describe("LogReporter", () => {
     const bBuildTarget = createTarget("b", "build");
 
     const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0] }],
+      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0], queueTime: [0, 0] }],
+      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0], queueTime: [0, 0] }],
+      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0], queueTime: [0, 0] }],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
+      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0], queueTime: [0, 0] }],
+      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0], queueTime: [0, 0] }],
+      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
     ] as [TargetStatusEntry | TargetMessageEntry, string?][];
 
     for (const log of logs) {
@@ -191,18 +191,18 @@ describe("LogReporter", () => {
     const bBuildTarget = createTarget("b", "build");
 
     const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0] }],
+      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0], queueTime: [0, 0] }],
+      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0], queueTime: [0, 0] }],
+      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0], queueTime: [0, 0] }],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
+      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0], queueTime: [0, 0] }],
+      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0], queueTime: [0, 0] }],
+      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
     ] as [TargetStatusEntry | TargetMessageEntry, string?][];
 
     for (const log of logs) {
@@ -238,18 +238,18 @@ describe("LogReporter", () => {
     const bBuildTarget = createTarget("b", "build");
 
     const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0] }],
+      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0], queueTime: [0, 0] }],
+      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0], queueTime: [0, 0] }],
+      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0], queueTime: [0, 0] }],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build again, but look there is an error!"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
+      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0], queueTime: [0, 0] }],
+      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0], queueTime: [0, 0] }],
+      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
     ] as [TargetStatusEntry | TargetMessageEntry, string?][];
 
     for (const log of logs) {
@@ -272,48 +272,70 @@ describe("LogReporter", () => {
         running: [],
         aborted: [],
         skipped: [],
+        queued: [],
       },
       targetRuns: new Map([
-        [aBuildTarget.id, { target: { hidden: false, packageName: "a", task: "build" }, status: "failed" } as unknown as TargetRun],
-        [aTestTarget.id, { target: { hidden: false, packageName: "a", task: "test" }, status: "success" } as unknown as TargetRun],
-        [bBuildTarget.id, { target: { hidden: false, packageName: "b", task: "build" }, status: "success" } as unknown as TargetRun],
+        [
+          aBuildTarget.id,
+          {
+            target: { hidden: false, packageName: "a", task: "build" },
+            status: "failed",
+          } as TargetRun,
+        ],
+        [
+          aTestTarget.id,
+          {
+            target: { hidden: false, packageName: "a", task: "test" },
+            status: "success",
+          } as TargetRun,
+        ],
+        [
+          bBuildTarget.id,
+          {
+            target: { hidden: false, packageName: "b", task: "build" },
+            status: "success",
+          } as TargetRun,
+        ],
       ]),
+      maxWorkerMemoryUsage: 0,
+      workerRestarts: 0,
     });
 
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-"a test ➔ start
-a test :  test message for a#test
-a test :  test message for a#test again
-a test ✓ done - 10.00s
-┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-b build ➔ start
-b build :  test message for b#build
-b build :  test message for b#build again
-b build ✓ done - 30.00s
-┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-a build ➔ start
-a build :  test message for a#build
-a build :  test message for a#build again, but look there is an error!
-a build ✖ fail
-┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+      "a test ➔ start
+      a test :  test message for a#test
+      a test :  test message for a#test again
+      a test ✓ done - 10.00s
+      ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+      b build ➔ start
+      b build :  test message for b#build
+      b build :  test message for b#build again
+      b build ✓ done - 30.00s
+      ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+      a build ➔ start
+      a build :  test message for a#build
+      a build :  test message for a#build again, but look there is an error!
+      a build ✖ fail
+      ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
 
-Summary
-┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-a build failed
-a test success
-b build success
-success: 2, skipped: 0, pending: 0, aborted: 0, failed: 1
-┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-[a build] ERROR DETECTED
+      Summary
+      ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+      a build failed
+      a test success
+      b build success
+      success: 2, skipped: 0, pending: 0, aborted: 0, failed: 1
+      worker restarts: 0, max worker memory usage: 0.00 MB
+      ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+      [a build] ERROR DETECTED
 
-test message for a#build
-test message for a#build again, but look there is an error!
+      test message for a#build
+      test message for a#build again, but look there is an error!
 
-┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-Took a total of 1m 40.00s to complete. 
-"
-`);
+      ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+      Took a total of 1m 40.00s to complete. 
+      "
+    `);
   });
 });

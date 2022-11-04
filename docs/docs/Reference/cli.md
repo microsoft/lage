@@ -24,7 +24,7 @@ Usage: `lage [run] <command1> [command2...commandN] [options]  run commands`
   --reporter <reporter...>                          reporter (default: "npmLog")
   --log-level <level>                               log level (choices: "info", "warn", "error", "verbose", "silly")
   --verbose                                         verbose output
-  -c, --concurrency <n>                             concurrency (default: 9)
+  -c, --concurrency <n>                             concurrency (default: os.cpus() - 1)
   --scope <scope...>                                scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)
   --no-dependents|--no-deps                         disables running any dependents of the scoped packages
   --dependencies|--include-dependencies             adds the scoped packages dependencies as the "entry points" for the target graph run

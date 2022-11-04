@@ -1,6 +1,6 @@
-import { getCacheDir, removeCacheEntry } from "./cacheDir";
+import { getCacheDir, removeCacheEntry } from "./cacheDir.js";
 import { getWorkspaceRoot, getWorkspaces } from "workspace-tools";
-import { Logger } from "@lage-run/logger";
+import type { Logger } from "@lage-run/logger";
 import { stat } from "fs/promises";
 import fs from "fs";
 import path from "path";

@@ -1,6 +1,6 @@
-import { Command } from "commander";
-import { runAction } from "./runAction";
-import { watchAction } from "./watchAction";
+import type { Command } from "commander";
+import { runAction } from "./runAction.js";
+import { watchAction } from "./watchAction.js";
 import type { ReporterInitOptions } from "@lage-run/reporters";
 
 interface RunOptions extends ReporterInitOptions {
@@ -17,6 +17,7 @@ interface RunOptions extends ReporterInitOptions {
   nodeArg: string;
   ignore: string[];
   unstableWatch: boolean;
+  maxWorkersPerTask: string[];
 }
 
 export async function action(options: RunOptions, command: Command) {

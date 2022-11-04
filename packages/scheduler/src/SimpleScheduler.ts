@@ -1,16 +1,15 @@
-import { AbortController } from "abort-controller";
-import { categorizeTargetRuns } from "./categorizeTargetRuns";
+import { categorizeTargetRuns } from "./categorizeTargetRuns.js";
 import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
-import { WrappedTarget } from "./WrappedTarget";
-import { WorkerPool } from "@lage-run/worker-threads-pool";
+import { WrappedTarget } from "./WrappedTarget.js";
 
-import type { AbortSignal } from "abort-controller";
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { Logger } from "@lage-run/logger";
 import type { TargetGraph, Target } from "@lage-run/target-graph";
 import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "@lage-run/scheduler-types";
 import type { Pool } from "@lage-run/worker-threads-pool";
-import type { TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker";
+import type { TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker.js";
+import { AggregatedPool } from "@lage-run/worker-threads-pool";
+import { formatBytes } from "./formatBytes.js";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -23,6 +22,7 @@ export interface SimpleSchedulerOptions {
   runners: TargetRunnerPickerOptions;
   maxWorkersPerTask: Map<string, number>;
   pool?: Pool; // for testing
+  workerIdleMemoryLimit: number; // in bytes
 }
 
 /**
@@ -49,7 +49,10 @@ export class SimpleScheduler implements TargetScheduler {
   constructor(private options: SimpleSchedulerOptions) {
     this.pool =
       options.pool ??
-      new WorkerPool({
+      new AggregatedPool({
+        logger: options.logger,
+        maxWorkersByGroup: options.maxWorkersPerTask,
+        groupBy: ({ target }) => target.task,
         maxWorkers: options.concurrency,
         script: require.resolve("./workers/targetWorker"),
         workerOptions: {
@@ -59,6 +62,7 @@ export class SimpleScheduler implements TargetScheduler {
             runners: options.runners,
           },
         },
+        workerIdleMemoryLimit: options.workerIdleMemoryLimit, // in bytes
       });
   }
 
@@ -127,6 +131,8 @@ export class SimpleScheduler implements TargetScheduler {
       }
     }
 
+    const poolStats = pool.stats();
+
     return {
       targetRunByStatus,
       targetRuns: this.targetRuns,
@@ -134,6 +140,8 @@ export class SimpleScheduler implements TargetScheduler {
       startTime,
       results,
       error,
+      workerRestarts: poolStats.workerRestarts, // number of times a worker was restarted due to memory usage
+      maxWorkerMemoryUsage: poolStats.maxWorkerMemoryUsage, // max memory usage of a worker in bytes
     };
   }
 
@@ -170,8 +178,6 @@ export class SimpleScheduler implements TargetScheduler {
   }
 
   getReadyTargets() {
-    const { maxWorkersPerTask, concurrency } = this.options;
-
     const readyTargets: WrappedTarget[] = [];
 
     const runningTargets = this.targetsByPriority.filter((target) => this.targetRuns.get(target.id)!.status === "running");
@@ -196,9 +202,7 @@ export class SimpleScheduler implements TargetScheduler {
         return fromTarget.status === "success" || fromTarget.status === "skipped" || dep === getStartTargetId();
       });
 
-      const maxWorkers = maxWorkersPerTask.get(target.task) ?? concurrency;
-
-      if (ready && targetRun.status === "pending" && (runningTargetsCountByTask[target.task] ?? 0) < maxWorkers) {
+      if (ready && targetRun.status === "pending") {
         readyTargets.push(targetRun);
         runningTargetsCountByTask[target.task] = (runningTargetsCountByTask[target.task] ?? 0) + 1;
       }
@@ -221,6 +225,8 @@ export class SimpleScheduler implements TargetScheduler {
     if (this.isAllDone() || this.abortSignal.aborted) {
       return Promise.resolve();
     }
+
+    this.options.logger.silly(`Max Worker Memory Usage: ${formatBytes(this.pool.stats().maxWorkerMemoryUsage)}`);
 
     const promises: Promise<any>[] = [];
 
@@ -249,6 +255,7 @@ export class SimpleScheduler implements TargetScheduler {
   }
 
   async cleanup() {
+    this.options.logger.silly(`Max Worker Memory Usage: ${formatBytes(this.pool.stats().maxWorkerMemoryUsage)}`);
     await this.pool.close();
   }
 

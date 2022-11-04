@@ -1,11 +1,11 @@
 import { getStartTargetId } from "@lage-run/target-graph";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry";
+import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
 import type { LogEntry, Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler-types";
-import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry";
+import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
 import type { Writable } from "stream";
 
 interface TraceEventsObject {
@@ -72,7 +72,7 @@ export class ChromeTraceEventsReporter implements Reporter {
 
   log(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
     const data = entry.data;
-    if (isTargetStatusLogEntry(data) && data.status !== "pending" && data.target.id !== getStartTargetId()) {
+    if (isTargetStatusLogEntry(data) && data.status !== "pending" && data.status !== "queued" && data.target.id !== getStartTargetId()) {
       if (data.status === "running") {
         const threadId = this.threads.shift() ?? 0;
         this.targetIdThreadMap.set(data.target.id, threadId);

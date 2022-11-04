@@ -1,8 +1,6 @@
 import "child_process";
-import { AbortController } from "abort-controller";
 import { ChildProcess } from "child_process";
 import { getTargetId, Target } from "@lage-run/target-graph";
-import { Logger, LogLevel, Reporter } from "@lage-run/logger";
 import { NpmScriptRunner } from "../src/runners/NpmScriptRunner";
 import { waitFor } from "./waitFor";
 import os from "os";
@@ -60,7 +58,13 @@ describe("NpmScriptRunner", () => {
     const target = createTarget("a");
 
     const exceptionSpy = jest.fn();
-    const runPromise = runner.run(target, abortController.signal).catch(() => exceptionSpy());
+    const runPromise = runner
+      .run({
+        target,
+        weight: 1,
+        abortSignal: abortController.signal,
+      })
+      .catch(() => exceptionSpy());
 
     await waitFor(() => childProcesses.has(getChildProcessKey("a", target.task)));
 
@@ -81,7 +85,13 @@ describe("NpmScriptRunner", () => {
     const target = createTarget("a");
 
     const exceptionSpy = jest.fn();
-    const runPromise = runner.run(target, abortController.signal).catch(() => exceptionSpy());
+    const runPromise = runner
+      .run({
+        target,
+        weight: 1,
+        abortSignal: abortController.signal,
+      })
+      .catch(() => exceptionSpy());
 
     await waitFor(() => childProcesses.has(getChildProcessKey("a", target.task)));
 
@@ -112,9 +122,15 @@ describe("NpmScriptRunner", () => {
     }
 
     let runPromises = fakePackages.map((packageName) =>
-      runner.run(createTarget(packageName), abortController.signal).catch(() => {
-        fakeExceptionSpies[packageName]();
-      })
+      runner
+        .run({
+          target: createTarget(packageName),
+          weight: 1,
+          abortSignal: abortController.signal,
+        })
+        .catch(() => {
+          fakeExceptionSpies[packageName]();
+        })
     );
 
     await waitFor(() =>

@@ -1,8 +1,189 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Sat, 08 Oct 2022 19:11:01 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Nov 2022 20:45:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.9
+
+Wed, 02 Nov 2022 20:45:00 GMT
+
+### Patches
+
+- switching from require() to import() where possible (ken@gizzar.com)
+
+## 0.5.8
+
+Wed, 02 Nov 2022 06:27:27 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v0.2.0
+
+## 0.5.7
+
+Tue, 01 Nov 2022 22:48:33 GMT
+
+### Patches
+
+- get rid of third party abort-controller impl (kchau@microsoft.com)
+- Bump @lage-run/worker-threads-pool to v0.4.4
+- Bump @lage-run/scheduler-types to v0.2.6
+
+## 0.5.6
+
+Tue, 01 Nov 2022 22:25:59 GMT
+
+### Patches
+
+- adds import extensions of .js to prepare of esmodule switchover (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.5.3
+- Bump @lage-run/logger to v1.2.2
+- Bump @lage-run/cache to v0.1.28
+- Bump @lage-run/worker-threads-pool to v0.4.3
+- Bump @lage-run/scheduler-types to v0.2.5
+
+## 0.5.5
+
+Tue, 01 Nov 2022 20:43:17 GMT
+
+### Patches
+
+- cleaning up the tsconfig files (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.5.2
+- Bump @lage-run/logger to v1.2.1
+- Bump @lage-run/cache to v0.1.27
+- Bump @lage-run/worker-threads-pool to v0.4.2
+- Bump @lage-run/scheduler-types to v0.2.4
+
+## 0.5.4
+
+Mon, 31 Oct 2022 21:56:09 GMT
+
+### Patches
+
+- adds taskArgs param for worker scripts (kchau@microsoft.com)
+
+## 0.5.3
+
+Mon, 31 Oct 2022 21:27:52 GMT
+
+### Patches
+
+- adds depcheck and fixes (kchau@microsoft.com)
+- Bump @lage-run/worker-threads-pool to v0.4.1
+- Bump @lage-run/scheduler-types to v0.2.3
+
+## 0.5.2
+
+Sat, 29 Oct 2022 18:42:49 GMT
+
+### Patches
+
+- bump workspace-tools (ken@gizzar.com)
+- Bump @lage-run/target-graph to v0.5.1
+- Bump @lage-run/cache to v0.1.26
+- Bump @lage-run/scheduler-types to v0.2.2
+
+## 0.5.1
+
+Sat, 29 Oct 2022 01:06:17 GMT
+
+### Patches
+
+- account for max worker idle memory limit (kchau@microsoft.com)
+- Bump @lage-run/worker-threads-pool to v0.4.0
+- Bump @lage-run/scheduler-types to v0.2.1
+
+## 0.5.0
+
+Wed, 26 Oct 2022 22:01:13 GMT
+
+### Minor changes
+
+- adds support for weighted targets (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.5.0
+- Bump @lage-run/cache to v0.1.25
+- Bump @lage-run/worker-threads-pool to v0.3.0
+- Bump @lage-run/scheduler-types to v0.2.0
+
+## 0.4.16
+
+Wed, 26 Oct 2022 00:02:06 GMT
+
+### Patches
+
+- removing sharded targets - not the direction to go with jest support (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.4.5
+- Bump @lage-run/cache to v0.1.24
+- Bump @lage-run/scheduler-types to v0.1.16
+
+## 0.4.15
+
+Tue, 25 Oct 2022 00:06:49 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v0.1.23
+- Bump @lage-run/scheduler-types to v0.1.15
+
+## 0.4.14
+
+Mon, 24 Oct 2022 21:40:05 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v0.1.22
+- Bump @lage-run/scheduler-types to v0.1.14
+
+## 0.4.13
+
+Sun, 23 Oct 2022 04:31:57 GMT
+
+### Patches
+
+- add shard support (ken@gizzar.com)
+- Bump @lage-run/target-graph to v0.4.4
+- Bump @lage-run/cache to v0.1.21
+- Bump @lage-run/scheduler-types to v0.1.13
+
+## 0.4.12
+
+Fri, 21 Oct 2022 21:36:38 GMT
+
+### Patches
+
+- uses new AggregatePool (ken@gizzar.com)
+- Bump @lage-run/worker-threads-pool to v0.2.0
+- Bump @lage-run/scheduler-types to v0.1.12
+
+## 0.4.11
+
+Fri, 21 Oct 2022 19:33:09 GMT
+
+### Patches
+
+- fixing ado logger (ken@gizzar.com)
+
+## 0.4.10
+
+Thu, 20 Oct 2022 00:22:27 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.4.3
+- Bump @lage-run/cache to v0.1.20
+- Bump @lage-run/scheduler-types to v0.1.11
+
+## 0.4.9
+
+Wed, 12 Oct 2022 21:07:14 GMT
+
+### Patches
+
+- uses the separate package for formatting hrtime (kchau@microsoft.com)
+- Bump @lage-run/format-hrtime to v0.1.1
+- Bump @lage-run/scheduler-types to v0.1.10
 
 ## 0.4.8
 

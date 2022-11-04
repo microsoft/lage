@@ -1,5 +1,5 @@
-import { Monorepo } from "./mock/monorepo";
-import { filterEntry, parseNdJson } from "./parseNdJson";
+import { Monorepo } from "./mock/monorepo.js";
+import { filterEntry, parseNdJson } from "./parseNdJson.js";
 
 describe("basic failure case where a dependent target has failed", () => {
   it("when a failure happens, halts all other targets", () => {
@@ -62,8 +62,6 @@ describe("basic failure case where a dependent target has failed", () => {
 
     jsonOutput = parseNdJson(output);
 
-    console.log(repo.root);
-
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "build", "failed"))).toBeTruthy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "test", "success"))).toBeFalsy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "success"))).toBeFalsy();
@@ -102,7 +100,7 @@ describe("basic failure case where a dependent target has failed", () => {
 
   it("when a failure happens in `--safe-exit`, be sure to have exit code of !== 0", () => {
     expect.hasAssertions();
-    const repo = new Monorepo("basics");
+    const repo = new Monorepo("basics-safe-exit");
 
     repo.init();
     repo.install();

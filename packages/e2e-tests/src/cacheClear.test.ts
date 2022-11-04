@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import { Monorepo } from "./mock/monorepo";
+import { Monorepo } from "./mock/monorepo.js";
 
 const defaultCacheLocation = "node_modules/.cache/backfill";
 const cacheLocation = ".cache/backfill";

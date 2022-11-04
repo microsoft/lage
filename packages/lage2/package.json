@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/lage",
-  "version": "2.3.2",
+  "version": "2.5.11",
   "main": "dist/main.js",
   "bin": {
     "lage": "dist/lage.js"
@@ -13,14 +13,13 @@
     "fsevents": "~2.3.2"
   },
   "devDependencies": {
-    "@lage-run/cli": "*",
-    "@lage-run/scheduler": "*",
+    "@lage-run/cli": "^0.4.32",
+    "@lage-run/scheduler": "^0.5.9",
     "rollup": "2.79.1",
     "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-node-resolve": "14.1.0",
     "@rollup/plugin-json": "4.1.0",
     "@rollup/plugin-alias": "3.1.9",
-    "@rollup/plugin-multi-entry": "4.1.0",
     "rollup-plugin-terser": "7.0.2"
   },
   "files": [

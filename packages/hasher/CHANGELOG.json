@@ -1,0 +1,20 @@
+{
+  "name": "@lage-run/hasher",
+  "entries": [
+    {
+      "date": "Wed, 02 Nov 2022 06:27:27 GMT",
+      "tag": "@lage-run/hasher_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/hasher",
+            "commit": "ffb4fc2cebf1800b4b5d2a353a0d109c17f21dde",
+            "comment": "adds a hasher package that has very few deps"
+          }
+        ]
+      }
+    }
+  ]
+}

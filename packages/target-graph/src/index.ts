@@ -1,8 +1,8 @@
-export type { Target } from "./types/Target";
-export type { TargetGraph } from "./types/TargetGraph";
-export type { TargetConfig } from "./types/TargetConfig";
+export type { Target } from "./types/Target.js";
+export type { TargetGraph } from "./types/TargetGraph.js";
+export type { TargetConfig } from "./types/TargetConfig.js";
 
-export { sortTargetsByPriority } from "./sortTargetsByPriority";
-export { getPackageAndTask, getTargetId, getStartTargetId } from "./targetId";
-export { detectCycles } from "./detectCycles";
-export { TargetGraphBuilder } from "./TargetGraphBuilder";
+export { sortTargetsByPriority } from "./sortTargetsByPriority.js";
+export { getPackageAndTask, getTargetId, getStartTargetId } from "./targetId.js";
+export { detectCycles } from "./detectCycles.js";
+export { TargetGraphBuilder } from "./TargetGraphBuilder.js";

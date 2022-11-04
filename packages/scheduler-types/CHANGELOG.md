@@ -1,8 +1,133 @@
 # Change Log - @lage-run/scheduler-types
 
-This log was last generated on Sat, 08 Oct 2022 17:43:37 GMT and should not be manually modified.
+This log was last generated on Tue, 01 Nov 2022 22:48:33 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.6
+
+Tue, 01 Nov 2022 22:48:33 GMT
+
+### Patches
+
+- get rid of third party abort-controller impl (kchau@microsoft.com)
+
+## 0.2.5
+
+Tue, 01 Nov 2022 22:25:59 GMT
+
+### Patches
+
+- adds import extensions of .js to prepare of esmodule switchover (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.5.3
+
+## 0.2.4
+
+Tue, 01 Nov 2022 20:43:17 GMT
+
+### Patches
+
+- cleaning up the tsconfig files (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.5.2
+
+## 0.2.3
+
+Mon, 31 Oct 2022 21:27:52 GMT
+
+### Patches
+
+- adds depcheck and fixes (kchau@microsoft.com)
+
+## 0.2.2
+
+Sat, 29 Oct 2022 18:42:49 GMT
+
+### Patches
+
+- bump workspace-tools (ken@gizzar.com)
+- Bump @lage-run/target-graph to v0.5.1
+- Bump @lage-run/cache to v0.1.26
+
+## 0.2.1
+
+Sat, 29 Oct 2022 01:06:17 GMT
+
+### Patches
+
+- account for max worker idle memory limit (kchau@microsoft.com)
+- Bump @lage-run/worker-threads-pool to v0.4.0
+
+## 0.2.0
+
+Wed, 26 Oct 2022 22:01:13 GMT
+
+### Minor changes
+
+- adds weight option (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.5.0
+- Bump @lage-run/cache to v0.1.25
+- Bump @lage-run/worker-threads-pool to v0.3.0
+
+## 0.1.16
+
+Wed, 26 Oct 2022 00:02:06 GMT
+
+### Patches
+
+- removing sharded targets - not the direction to go with jest support (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.4.5
+- Bump @lage-run/cache to v0.1.24
+
+## 0.1.15
+
+Tue, 25 Oct 2022 00:06:49 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v0.1.23
+
+## 0.1.14
+
+Mon, 24 Oct 2022 21:40:05 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v0.1.22
+
+## 0.1.13
+
+Sun, 23 Oct 2022 04:31:57 GMT
+
+### Patches
+
+- adds shard support (ken@gizzar.com)
+- Bump @lage-run/target-graph to v0.4.4
+- Bump @lage-run/cache to v0.1.21
+
+## 0.1.12
+
+Fri, 21 Oct 2022 21:36:38 GMT
+
+### Patches
+
+- Bump @lage-run/worker-threads-pool to v0.2.0
+
+## 0.1.11
+
+Thu, 20 Oct 2022 00:22:27 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.4.3
+- Bump @lage-run/cache to v0.1.20
+
+## 0.1.10
+
+Wed, 12 Oct 2022 21:07:14 GMT
+
+### Patches
+
+- adds queue time and target status (kchau@microsoft.com)
 
 ## 0.1.9
 

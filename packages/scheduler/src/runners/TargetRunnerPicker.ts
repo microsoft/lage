@@ -1,6 +1,5 @@
 import path from "path";
 import { getStartTargetId } from "@lage-run/target-graph";
-import { NoOpRunner } from "./NoOpRunner";
 import type { Target } from "@lage-run/target-graph";
 import type { TargetRunner } from "@lage-run/scheduler-types";
 
@@ -11,9 +10,9 @@ export interface TargetRunnerPickerOptions {
 export class TargetRunnerPicker {
   constructor(private options: TargetRunnerPickerOptions) {}
 
-  pick(target: Target): TargetRunner {
+  async pick(target: Target): Promise<TargetRunner> {
     if (target.id === getStartTargetId()) {
-      return NoOpRunner;
+      return (await import("./NoOpRunner.js")).NoOpRunner;
     }
 
     if (!target.type) {
@@ -24,8 +23,7 @@ export class TargetRunnerPicker {
       const config = this.options[target.type];
       const { script, options } = config;
 
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const runnerModule = require(script);
+      const runnerModule = await import(script);
 
       const base = path.basename(script);
       const runnerName = base.replace(path.extname(base), "");

@@ -274,12 +274,15 @@ describe("AdoReporter", () => {
         running: [],
         aborted: [],
         skipped: [],
+        queued: [],
       },
       targetRuns: new Map([
-        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
-        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0] }],
-        [bBuildTarget.id, { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0] }],
+        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
+        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
+        [bBuildTarget.id, { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
       ]),
+      maxWorkerMemoryUsage: 0,
+      workerRestarts: 0,
     });
 
     writer.end();

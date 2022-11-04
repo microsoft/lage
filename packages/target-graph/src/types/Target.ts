@@ -53,6 +53,25 @@ export interface Target {
   cache?: boolean;
 
   /**
+   * An optional override of environmentGlob for cases when targets that need different patterns
+   */
+  environmentGlob?: string[];
+
+  /**
+   * How many workers to dedicate to this task type
+   */
+  maxWorkers?: number;
+
+  /**
+   * Weight of a target - used to determine the number of "worker slots" to dedicate to a target
+   *
+   * Even if we have workers "free", we might not want to dedicate them to a target that is very heavy (i.e. takes multiple CPU cores).
+   * An example is jest targets that can take up multiple cores with its own worker pool.
+   *
+   */
+  weight?: number;
+
+  /**
    * Run options for the Target
    */
   options?: Record<string, any>;
@@ -61,9 +80,4 @@ export interface Target {
    * Whether the target should be displayed by reporters
    */
   hidden?: boolean;
-
-  /**
-   * Custom run definition, if left blank, the scheduler will decide which runner to use to fulfill the work for the `Target`
-   */
-  run?: (target: Target) => Promise<void> | void;
 }

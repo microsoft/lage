@@ -1,8 +1,8 @@
-import { Logger } from "@lage-run/logger";
+import type { Logger } from "@lage-run/logger";
 import { stat } from "fs/promises";
 import fs from "fs";
 import path from "path";
-import { getCacheDir, removeCacheEntry } from "./cacheDir";
+import { getCacheDir, removeCacheEntry } from "./cacheDir.js";
 import { getWorkspaces } from "workspace-tools";
 
 const MS_IN_A_DAY = 1000 * 60 * 60 * 24;

@@ -1,5 +1,5 @@
-import { Monorepo } from "./mock/monorepo";
-import { parseNdJson } from "./parseNdJson";
+import { Monorepo } from "./mock/monorepo.js";
+import { parseNdJson } from "./parseNdJson.js";
 
 describe("RemoteFallbackCacheProvider", () => {
   it("should skip local cache population if --skip-local-cache is enabled", () => {
@@ -59,7 +59,7 @@ describe("RemoteFallbackCacheProvider", () => {
   });
 
   it("should operate with local provider ONLY by default", () => {
-    const repo = new Monorepo("fallback");
+    const repo = new Monorepo("fallback-local-only");
 
     repo.init();
     repo.setLageConfig(
@@ -105,7 +105,7 @@ describe("RemoteFallbackCacheProvider", () => {
   });
 
   it("should allow read-only mode when given a remote (or custom) cache config", () => {
-    const repo = new Monorepo("fallback");
+    const repo = new Monorepo("fallback-read-only");
 
     repo.init();
     repo.setLageConfig(
@@ -160,7 +160,7 @@ describe("RemoteFallbackCacheProvider", () => {
   });
 
   it("should allow read-write mode when given a special environment variable", () => {
-    const repo = new Monorepo("fallback");
+    const repo = new Monorepo("fallback-read-write-env-var");
 
     repo.init();
     repo.setLageConfig(

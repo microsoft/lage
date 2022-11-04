@@ -11,6 +11,8 @@ const moduleNameMapper = Object.values(packages).reduce((acc, { packageJsonPath,
   return acc;
 }, {});
 
+moduleNameMapper["^(\\.{1,2}/.*)\\.js$"] = "$1";
+
 /** @type {import("ts-jest").JestConfigWithTsJest} */
 module.exports = {
   clearMocks: true,
@@ -18,10 +20,11 @@ module.exports = {
   collectCoverageFrom: ["src/**/*.ts", "!src/types/*.ts", "!**/node_modules/**"],
   coverageDirectory: "coverage",
   coverageProvider: "v8",
+  extensionsToTreatAsEsm: [".ts"],
   testMatch: ["**/?(*.)+(spec|test).ts?(x)"],
   testPathIgnorePatterns: ["/node_modules/"],
   transform: {
-    "^.+\\.tsx?$": ["@swc/jest",],
+    "^.+\\.tsx?$": ["@swc/jest"],
   },
   transformIgnorePatterns: ["/node_modules/", "\\.pnp\\.[^\\/]+$"],
   watchPathIgnorePatterns: ["/node_modules/"],

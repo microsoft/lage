@@ -1,5 +1,5 @@
 ---
-title: Make ESLint Fast with Dedicated Workers
+title: Make ESLint Fast
 tags:
   - version 2
 ---
@@ -27,14 +27,11 @@ First, let's change our `lint` task configuration in the pipeline to a "worker" 
 ```js twoslash
 // @filename: lage.config.js
 
-const os = require("os");
-
 module.exports = {
   pipeline: {
     lint: {
       type: "worker",
       options: {
-        maxWorker: os.cpus().length - 1,
         worker: "scripts/eslint-worker.js",
       },
     },
@@ -50,9 +47,7 @@ Then, we implement an `eslint-worker.js` such as this:
 const path = require("path");
 
 const { ESLint } = require("eslint");
-const { registerWorker } = require("@lage-run/lage");
 const { readFile } = require("fs/promises");
-const { threadId } = require("worker_threads");
 
 /** this is the workspace root - find it however you want! */
 const PROJECT_ROOT = path.resolve(__dirname, "..");
@@ -81,14 +76,6 @@ function getEslintInstance() {
 /** Workers should have a run function that gets called per package task */
 async function run(data) {
   const { target } = data;
-  const packageJson = JSON.parse(await readFile(path.join(target.cwd, "package.json"), "utf8"));
-
-  // If you had a package that doesn't use ESLint, you can skip with this condition
-  // Here, we use the "lint" definition inside package.json's scripts key
-  if (!packageJson.scripts?.[target.task]) {
-    process.stdout.write(`No script found for ${target.task} in ${target.cwd}\n`);
-    return;
-  }
 
   const eslint = getEslintInstance();
 
@@ -111,6 +98,6 @@ async function run(data) {
   }
 }
 
-//  Be sure call this to register the worker with `lage`'s worker pool
-registerWorker(run);
+// the module exports is picked up by `lage` to run inside a worker - the module state is preserved from target run to target run
+module.exports = run;
 ```

@@ -2,10 +2,10 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { readFile } from "fs/promises";
 import { spawn } from "child_process";
-import type { TargetRunner } from "@lage-run/scheduler-types";
-import type { AbortSignal } from "abort-controller";
+import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
 import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";
+
 export interface NpmScriptRunnerOptions {
   taskArgs: string[];
   nodeOptions: string;
@@ -55,7 +55,8 @@ export class NpmScriptRunner implements TargetRunner {
     }
   }
 
-  async run(target: Target, abortSignal?: AbortSignal) {
+  async run(runOptions: TargetRunnerOptions) {
+    const { target, weight, abortSignal } = runOptions;
     const { nodeOptions, npmCmd, taskArgs } = this.options;
 
     let childProcess: ChildProcess | undefined;
@@ -116,6 +117,7 @@ export class NpmScriptRunner implements TargetRunner {
           ...(npmRunNodeOptions && { NODE_OPTIONS: npmRunNodeOptions }),
           LAGE_PACKAGE_NAME: target.packageName,
           LAGE_TASK: target.task,
+          LAGE_WEIGHT: String(weight),
         },
       });
 
