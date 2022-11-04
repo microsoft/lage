@@ -32,7 +32,8 @@ export default [
       json(),
       terser(),
     ],
-    external: ["fsevents"]
+    external: ["fsevents"],
+    inlineDynamicImports: true
   },
   {
     input: "./index.js",
@@ -54,6 +55,7 @@ export default [
       json(),
       terser(),
     ],
+    inlineDynamicImports: true
   },
   {
     input: "@lage-run/scheduler/lib/workers/targetWorker.js",
@@ -75,5 +77,6 @@ export default [
       json(),
       terser(),
     ],
+    inlineDynamicImports: true
   },
 ];
