@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "making swc the transpiler of choice",
+  "packageName": "@lage-run/lage",
+  "email": "ken@gizzar.com",
+  "dependentChangeType": "none"
+}
