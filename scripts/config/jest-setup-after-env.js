@@ -1,3 +1,5 @@
+process.env.FORCE_COLOR = "0";
+
 const originalEnv = process.env;
 
 beforeEach(() => {

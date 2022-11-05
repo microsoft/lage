@@ -1,7 +1,7 @@
-import os from "os";
-import fs from "fs";
-import path from "path";
-import execa from "execa";
+import * as os from "os";
+import * as fs from "fs";
+import * as path from "path";
+import * as execa from "execa";
 
 export class Monorepo {
   static tmpdir = os.tmpdir();
@@ -13,7 +13,7 @@ export class Monorepo {
   constructor(private name: string) {
     this.root = fs.mkdtempSync(path.join(Monorepo.tmpdir, `lage-monorepo-${name}-`));
     this.nodeModulesPath = path.join(this.root, "node_modules");
-    this.lagePath = path.join(this.nodeModulesPath, "@lage-run", "cli");
+    this.lagePath = path.join(this.nodeModulesPath, "@lage-run");
   }
 
   init() {
@@ -30,10 +30,18 @@ export class Monorepo {
       fs.mkdirSync(this.nodeModulesPath, { recursive: true });
     }
 
+    const lagePackagePath = path.join(__dirname, "..", "..", "..");
+    const lagePackages = fs
+      .readdirSync(lagePackagePath, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory)
+      .map((dirent) => dirent.name);
+
     // pretends to perform a npm install of lage
     if (!fs.existsSync(this.lagePath)) {
-      fs.mkdirSync(path.dirname(this.lagePath), { recursive: true });
-      fs.symlinkSync(path.join(__dirname, "..", "..", "..", "cli"), this.lagePath, "junction");
+      fs.mkdirSync(this.lagePath, { recursive: true });
+      for (const lagePackage of lagePackages) {
+        fs.symlinkSync(path.join(lagePackagePath, lagePackage), path.join(this.lagePath, lagePackage), "junction");
+      }
     }
   }
 
@@ -69,7 +77,7 @@ export class Monorepo {
   }
 
   generateRepoFiles() {
-    const lagePathBin = `${this.lagePath}/lib/cli.js`;
+    const lagePathBin = `${this.lagePath}/cli/lib/cli.js`;
 
     this.commitFiles({
       "package.json": {
