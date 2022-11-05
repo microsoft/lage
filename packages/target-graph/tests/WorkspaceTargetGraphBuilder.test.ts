@@ -1,5 +1,6 @@
 import type { PackageInfos } from "workspace-tools";
-import { TargetGraphBuilder } from "../src/TargetGraphBuilder";
+import { WorkspaceTargetGraphBuilder } from "../src/WorkspaceTargetGraphBuilder";
+import type { TargetGraph } from "../src/types/TargetGraph";
 
 function createPackageInfo(packages: { [id: string]: string[] }) {
   const packageInfos: PackageInfos = {};
@@ -17,6 +18,20 @@ function createPackageInfo(packages: { [id: string]: string[] }) {
   return packageInfos;
 }
 
+function getGraphFromTargets(targetGraph: TargetGraph) {
+  const graph: [string, string][] = [];
+  for (const target of targetGraph.targets.values()) {
+    for (const dependent of target.dependents) {
+      graph.push([target.id, dependent]);
+    }
+
+    for (const dependencies of target.dependencies) {
+      graph.push([dependencies, target.id]);
+    }
+  }
+  return graph;
+}
+
 describe("target graph builder", () => {
   it("should build a target based on a simple package graph and task graph", () => {
     const root = "/repos/a";
@@ -26,7 +41,7 @@ describe("target graph builder", () => {
       b: [],
     });
 
-    const builder = new TargetGraphBuilder(root, packageInfos);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
     builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
@@ -36,7 +51,7 @@ describe("target graph builder", () => {
     // size is 3, because we also need to account for the root target node (start target ID)
     expect(targetGraph.targets.size).toBe(3);
 
-    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
+    expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
           "__start",
@@ -61,7 +76,7 @@ describe("target graph builder", () => {
       b: [],
     });
 
-    const builder = new TargetGraphBuilder(root, packageInfos);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
     builder.addTargetConfig("test");
     builder.addTargetConfig("lint");
 
@@ -69,7 +84,7 @@ describe("target graph builder", () => {
 
     // includes the pseudo-target for the "start" target
     expect(targetGraph.targets.size).toBe(5);
-    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
+    expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
           "__start",
@@ -100,7 +115,7 @@ describe("target graph builder", () => {
       c: ["b"],
     });
 
-    const builder = new TargetGraphBuilder(root, packageInfos);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
 
     builder.addTargetConfig("build", {
       dependsOn: ["^build"],
@@ -111,7 +126,7 @@ describe("target graph builder", () => {
     });
 
     const targetGraph = builder.buildTargetGraph(["build"]);
-    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
+    expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
           "__start",
@@ -142,7 +157,7 @@ describe("target graph builder", () => {
       c: ["b"],
     });
 
-    const builder = new TargetGraphBuilder(root, packageInfos);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
 
     builder.addTargetConfig("build", {
       dependsOn: ["^build"],
@@ -153,7 +168,7 @@ describe("target graph builder", () => {
     });
 
     const targetGraph = builder.buildTargetGraph(["build"], ["a", "b"]);
-    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
+    expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
           "__start",
@@ -176,7 +191,7 @@ describe("target graph builder", () => {
       c: [],
     });
 
-    const builder = new TargetGraphBuilder(root, packageInfos);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
 
     builder.addTargetConfig("bundle", {
       dependsOn: ["^^transpile"],
@@ -185,7 +200,7 @@ describe("target graph builder", () => {
     builder.addTargetConfig("transpile");
 
     const targetGraph = builder.buildTargetGraph(["bundle"], ["a"]);
-    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
+    expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
           "__start",
@@ -221,7 +236,7 @@ describe("target graph builder", () => {
       common: [],
     });
 
-    const builder = new TargetGraphBuilder(root, packageInfos);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
 
     builder.addTargetConfig("build", {
       dependsOn: ["common#copy", "^build"],
@@ -230,7 +245,7 @@ describe("target graph builder", () => {
     builder.addTargetConfig("common#build");
 
     const targetGraph = builder.buildTargetGraph(["build"]);
-    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
+    expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
           "__start",

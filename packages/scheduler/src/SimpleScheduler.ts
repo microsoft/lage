@@ -42,7 +42,6 @@ export class SimpleScheduler implements TargetScheduler {
   targetsByPriority: Target[] = [];
   abortController: AbortController = new AbortController();
   abortSignal: AbortSignal = this.abortController.signal;
-  dependencies: [string, string][] = [];
   pool: Pool;
   runPromise = Promise.resolve() as Promise<any>;
 
@@ -82,8 +81,7 @@ export class SimpleScheduler implements TargetScheduler {
     const { continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher } = this.options;
     const { pool, abortController } = this;
 
-    const { dependencies, targets } = targetGraph;
-    this.dependencies = dependencies;
+    const { targets } = targetGraph;
 
     this.targetsByPriority = sortTargetsByPriority([...targets.values()]);
     for (const target of targets.values()) {
