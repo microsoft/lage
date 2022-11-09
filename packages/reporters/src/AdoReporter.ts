@@ -1,5 +1,4 @@
 import { formatDuration, hrToSeconds } from "@lage-run/format-hrtime";
-import { getPackageAndTask } from "@lage-run/target-graph";
 import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
 import chalk from "chalk";
@@ -202,15 +201,19 @@ export class AdoReporter implements Reporter {
 
     if (failed && failed.length > 0) {
       for (const targetId of failed) {
-        const { packageName, task } = getPackageAndTask(targetId);
-        const taskLogs = this.logEntries.get(targetId);
+        const target = targetRuns.get(targetId)?.target;
 
-        this.logStream.write(`##[error] [${chalk.magenta(packageName)} ${chalk.cyan(task)}] ${chalk.redBright("ERROR DETECTED")}\n`);
+        if (target) {
+          const { packageName, task } = target;
+          const taskLogs = this.logEntries.get(targetId);
 
-        if (taskLogs) {
-          for (const entry of taskLogs) {
-            // Log each entry separately to prevent truncation
-            this.logStream.write(`##[error] ${entry.msg}\n`);
+          this.logStream.write(`##[error] [${chalk.magenta(packageName)} ${chalk.cyan(task)}] ${chalk.redBright("ERROR DETECTED")}\n`);
+
+          if (taskLogs) {
+            for (const entry of taskLogs) {
+              // Log each entry separately to prevent truncation
+              this.logStream.write(`##[error] ${entry.msg}\n`);
+            }
           }
         }
       }

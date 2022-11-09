@@ -3,6 +3,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
 import alias from "@rollup/plugin-alias";
+import { retainDynamicImport } from "./scripts/retain-dynamic-import-plugin.js";
 
 export default [
   {
@@ -30,10 +31,11 @@ export default [
         ignoreDynamicRequires: true,
       }),
       json(),
+      retainDynamicImport(),
       terser(),
     ],
     external: ["fsevents"],
-    inlineDynamicImports: true
+    inlineDynamicImports: true,
   },
   {
     input: "./index.js",
@@ -55,7 +57,7 @@ export default [
       json(),
       terser(),
     ],
-    inlineDynamicImports: true
+    inlineDynamicImports: true,
   },
   {
     input: "@lage-run/scheduler/lib/workers/targetWorker.js",
@@ -75,8 +77,9 @@ export default [
         ignoreDynamicRequires: true,
       }),
       json(),
+      retainDynamicImport(),
       terser(),
     ],
-    inlineDynamicImports: true
+    inlineDynamicImports: true,
   },
 ];
