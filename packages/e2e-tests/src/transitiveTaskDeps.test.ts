@@ -96,7 +96,7 @@ describe("transitive task deps test", () => {
     expect(indices[getTargetId("b", "transpile")]).toBeUndefined();
     expect(indices[getTargetId("c", "transpile")]).toBeUndefined();
 
-    // repo.cleanup();
+    repo.cleanup();
   });
 
   it("only runs direct dependencies for ^ prefix dependencies -- ", () => {
