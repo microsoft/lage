@@ -14,6 +14,7 @@ export function getTargetId(pkgName: string | undefined, task: string) {
  *
  * If the packageName is //, that means that the task is meant to be run at the repo root level.
  *
+ * @internal
  * @param targetId
  * @returns
  */

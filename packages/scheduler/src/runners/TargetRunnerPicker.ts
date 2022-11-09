@@ -2,6 +2,7 @@ import path from "path";
 import { getStartTargetId } from "@lage-run/target-graph";
 import type { Target } from "@lage-run/target-graph";
 import type { TargetRunner } from "@lage-run/scheduler-types";
+import { pathToFileURL } from "url";
 
 export interface TargetRunnerPickerOptions {
   [key: string]: { script: string; options: any };
@@ -23,7 +24,13 @@ export class TargetRunnerPicker {
       const config = this.options[target.type];
       const { script, options } = config;
 
-      const runnerModule = await import(script);
+      let importScript = script;
+
+      if (!importScript.startsWith("file://")) {
+        importScript = pathToFileURL(importScript).toString();
+      }
+
+      const runnerModule = await import(importScript);
 
       const base = path.basename(script);
       const runnerName = base.replace(path.extname(base), "");

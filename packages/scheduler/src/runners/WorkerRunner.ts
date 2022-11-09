@@ -1,4 +1,5 @@
 import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
+import { pathToFileURL } from "url";
 
 export interface WorkerRunnerOptions {
   taskArgs: string[];
@@ -53,7 +54,13 @@ export class WorkerRunner implements TargetRunner {
       throw new Error('WorkerRunner: "script" configuration is required - e.g. { type: "worker", script: "./worker.js" }');
     }
 
-    const scriptModule = await import(scriptFile);
+    let importScript = scriptFile;
+
+    if (!importScript.startsWith("file://")) {
+      importScript = pathToFileURL(importScript).toString();
+    }
+
+    const scriptModule = await import(importScript);
     const runFn = typeof scriptModule.default === "function" ? scriptModule.default : scriptModule;
 
     if (typeof runFn !== "function") {
