@@ -4,7 +4,6 @@ import { filterEntry, parseNdJson } from "./parseNdJson.js";
 describe("basics", () => {
   it("basic test case", () => {
     const repo = new Monorepo("basics");
-    console.log(repo.root);
 
     repo.init();
     repo.install();
@@ -23,6 +22,6 @@ describe("basics", () => {
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "test", "success"))).toBeTruthy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "lint", "success"))).toBeFalsy();
 
-    // repo.cleanup();
+    repo.cleanup();
   });
 });
