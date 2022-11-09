@@ -1,5 +1,4 @@
 import { formatDuration, hrtimeDiff, hrToSeconds } from "@lage-run/format-hrtime";
-import { getPackageAndTask } from "@lage-run/target-graph";
 import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
 import ansiRegex from "ansi-regex";
@@ -256,19 +255,23 @@ export class LogReporter implements Reporter {
 
     if (failed && failed.length > 0) {
       for (const targetId of failed) {
-        const { packageName, task } = getPackageAndTask(targetId);
-        const failureLogs = this.logEntries.get(targetId);
+        const target = targetRuns.get(targetId)?.target;
 
-        this.print(`[${colors.pkg(packageName ?? "<root>")} ${colors.task(task)}] ${colors[LogLevel.error]("ERROR DETECTED")}`);
+        if (target) {
+          const { packageName, task } = target;
+          const failureLogs = this.logEntries.get(targetId);
 
-        if (failureLogs) {
-          for (const entry of failureLogs) {
-            // Log each entry separately to prevent truncation
-            this.print(entry.msg);
+          this.print(`[${colors.pkg(packageName ?? "<root>")} ${colors.task(task)}] ${colors[LogLevel.error]("ERROR DETECTED")}`);
+
+          if (failureLogs) {
+            for (const entry of failureLogs) {
+              // Log each entry separately to prevent truncation
+              this.print(entry.msg);
+            }
           }
-        }
 
-        this.hr();
+          this.hr();
+        }
       }
     }
 
