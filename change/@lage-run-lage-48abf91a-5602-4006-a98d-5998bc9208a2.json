@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixing real imports with rollup as well as getting rid of getPackageAndTask implementation details",
-  "packageName": "@lage-run/lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

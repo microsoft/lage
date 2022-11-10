@@ -1,8 +1,21 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Fri, 04 Nov 2022 21:14:01 GMT and should not be manually modified.
+This log was last generated on Thu, 10 Nov 2022 20:20:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.34
+
+Thu, 10 Nov 2022 20:20:45 GMT
+
+### Patches
+
+- update api from targetgraphbuilder (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.5.11
+- Bump @lage-run/scheduler-types to v0.2.7
+- Bump @lage-run/target-graph to v0.6.0
+- Bump @lage-run/cache to v0.2.1
+- Bump @lage-run/reporters to v0.2.38
 
 ## 0.4.33
 

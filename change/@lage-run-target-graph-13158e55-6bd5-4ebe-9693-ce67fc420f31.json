@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "marking getPackageAndTask as internal - it was an unintentional export.",
-  "packageName": "@lage-run/target-graph",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

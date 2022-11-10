@@ -1,8 +1,18 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Tue, 01 Nov 2022 22:48:33 GMT and should not be manually modified.
+This log was last generated on Thu, 10 Nov 2022 20:20:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.38
+
+Thu, 10 Nov 2022 20:20:45 GMT
+
+### Patches
+
+- get rid of getPackageAndTask references (kchau@microsoft.com)
+- Bump @lage-run/scheduler-types to v0.2.7
+- Bump @lage-run/target-graph to v0.6.0
 
 ## 0.2.37
 

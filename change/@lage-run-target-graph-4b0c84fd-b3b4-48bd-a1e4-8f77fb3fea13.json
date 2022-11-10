@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "refactoring TargetGraphBuilder to be able to be used as a non-workspace graph builder",
-  "packageName": "@lage-run/target-graph",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

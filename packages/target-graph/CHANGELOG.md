@@ -1,8 +1,20 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Tue, 01 Nov 2022 22:25:59 GMT and should not be manually modified.
+This log was last generated on Thu, 10 Nov 2022 20:20:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.6.0
+
+Thu, 10 Nov 2022 20:20:45 GMT
+
+### Minor changes
+
+- refactoring TargetGraphBuilder to be able to be used as a non-workspace graph builder (kchau@microsoft.com)
+
+### Patches
+
+- marking getPackageAndTask as internal - it was an unintentional export. (kchau@microsoft.com)
 
 ## 0.5.3
 

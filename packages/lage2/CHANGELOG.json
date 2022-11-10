@@ -2,6 +2,41 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Thu, 10 Nov 2022 20:20:45 GMT",
+      "tag": "@lage-run/lage_v2.5.13",
+      "version": "2.5.13",
+      "comments": {
+        "none": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/lage",
+            "commit": "b1a42cb963a5fc680e4c59b1e705acbc964f0804",
+            "comment": "making swc the transpiler of choice"
+          }
+        ],
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "b1a42cb963a5fc680e4c59b1e705acbc964f0804",
+            "comment": "fixing real imports with rollup as well as getting rid of getPackageAndTask implementation details"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.4.34",
+            "commit": "b1a42cb963a5fc680e4c59b1e705acbc964f0804"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.11",
+            "commit": "b1a42cb963a5fc680e4c59b1e705acbc964f0804"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 04 Nov 2022 21:14:01 GMT",
       "tag": "@lage-run/lage_v2.5.12",
       "version": "2.5.12",

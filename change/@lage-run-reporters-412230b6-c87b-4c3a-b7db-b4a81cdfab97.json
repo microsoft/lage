@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "get rid of getPackageAndTask references",
-  "packageName": "@lage-run/reporters",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
