@@ -1,34 +1,52 @@
-import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId.js";
+import { getStartTargetId } from "./targetId.js";
 import { prioritize } from "./prioritize.js";
-
-import path from "path";
+import { detectCycles } from "./detectCycles.js";
 
 import type { Target } from "./types/Target.js";
-import type { TargetConfig } from "./types/TargetConfig.js";
 
 /**
- * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
- * generate a topological graph of targets (package + task) and their dependencies.
+ * Target graph builder
  *
- * Usage:
+ * This class purely deals with the graph structure of targets. Here are the scope of the responsibilities:
+ * 1. add new target
+ * 2. add new dependency
+ * 3. detect cycles
+ * 4. prioritize targets
+ * 5. build sub-graph
+ * 6. build target graph
  *
- * ```typescript
- * const rootDir = process.cwd();
- * const packageInfos = getPackageInfos(rootDir);
- * const builder = new WorkspaceTargetGraphBuilder(rootDir, packageInfos);
- * const targetGraph = builder.buildTargetGraph([...packages], [...tasks]);
- * ```
+ * This class does not deal with:
+ * 1. converting target definition into targets
+ * 2. expanding dependency specs
+ * 3. resolving package paths, etc.
+ *
+ * Example usage:
+ *
+ * const targetFactory = new TargetFactor({...});
+ *
+ * const target1 = targetFactory.createPackageTarget("foo", "build", { ... });
+ * const target2 = targetFactory.createPackageTarget("bar", "build", { ... });
+ *
+ * const builder = new TargetGraphBuilder();
+ * builder.addTarget(target1);
+ * builder.addTarget(target2);
+ * builder.addDependency(target1, target2);
+ *
+ * // builds a target graph (full graph)
+ * const targetGraph = builder.build();
+ *
+ * // builds a sub-graph (partial graph starting with target1)
+ * const subGraph = builder.subgraph([target1.id]);
+ *
  */
 export class TargetGraphBuilder {
   /** A map of targets - used internally for looking up generated targets from the target configurations */
-  private targets: Map<string, Target> = new Map();
+  targets: Map<string, Target> = new Map();
 
   /**
    * Initializes the builder with package infos
-   * @param root the root directory of the workspace
-   * @param packageInfos the package infos for the workspace
    */
-  constructor(private root: string) {
+  constructor() {
     const startId = getStartTargetId();
     this.targets.set(startId, {
       id: startId,
@@ -40,96 +58,92 @@ export class TargetGraphBuilder {
       dependents: [],
       depSpecs: [],
       weight: 1,
+      priority: 0,
     } as Target);
   }
 
-  /**
-   * Creates a global `Target`
-   * @param id
-   * @param config
-   * @returns a generated global Target
-   */
-  addGlobalTarget(id: string, config: TargetConfig): Target {
-    const { options, inputs, outputs, priority, maxWorkers, environmentGlob } = config;
-    const { task } = getPackageAndTask(id);
-    const targetId = getTargetId(undefined, task);
-    const target = {
-      id: targetId,
-      label: targetId,
-      type: config.type,
-      task,
-      // TODO: backfill currently cannot cache global targets!
-      // NOTE: We should force cache inputs to be defined for global targets
-      cache: false,
-      cwd: this.root,
-      depSpecs: [],
-      dependencies: [],
-      dependents: [],
-      inputs,
-      outputs,
-      priority,
-      maxWorkers,
-      environmentGlob,
-      weight: 1,
-      options,
-    };
-
+  addTarget(target: Target) {
     this.targets.set(target.id, target);
     this.addDependency(getStartTargetId(), target.id);
-
     return target;
   }
 
-  /**
-   * Creates a package task `Target`
-   * @param packageName
-   * @param task
-   * @param config
-   * @returns a package task `Target`
-   */
-  addPackageTarget(packageName: string, task: string, config: TargetConfig): Target {
-    const { options, cache, inputs, outputs, priority, maxWorkers, environmentGlob } = config;
-    const cwd = path.relative(this.root, path.dirname(require.resolve(path.join(packageName, "package.json"), { paths: [this.root] })));
-    const target = {
-      id: getTargetId(packageName, task),
-      label: `${packageName} - ${task}`,
-      type: config.type,
-      packageName,
-      task,
-      cache: cache !== false,
-      cwd,
-      depSpecs: [],
-      dependencies: [],
-      dependents: [],
-      inputs,
-      outputs,
-      priority,
-      maxWorkers,
-      environmentGlob,
-      weight: 1,
-      options,
-    };
+  addDependency(dependency: string, dependent: string) {
+    if (this.targets.has(dependent)) {
+      const target = this.targets.get(dependent)!;
 
-    this.targets.set(target.id, target);
-    this.addDependency(getStartTargetId(), target.id);
+      if (!target.dependencies.includes(dependency)) {
+        target.dependencies.push(dependency);
+      }
+    }
 
-    return target;
-  }
+    if (this.targets.has(dependency)) {
+      const target = this.targets.get(dependency)!;
 
-  addDependency(from: string, to: string) {
-    this.targets.get(to)?.dependencies.push(from);
-    this.targets.get(from)?.dependents.push(to);
+      if (!target.dependents.includes(dependent)) {
+        target.dependents.push(dependent);
+      }
+    }
   }
 
   /**
    * Builds a target graph for given tasks and packages
    */
   build() {
+    // Ensure we do not have cycles in the subgraph
+    const cycleInfo = detectCycles(this.targets);
+    if (cycleInfo.hasCycle) {
+      throw new Error("Cycles detected in the target graph: " + cycleInfo.cycle!.concat(cycleInfo.cycle![0]).join(" -> "));
+    }
+
     // The full graph might produce a different aggregated priority value for a target
     prioritize(this.targets);
 
     return {
       targets: this.targets,
     };
+  }
+
+  subgraph(entriesTargetIds: string[]) {
+    const subgraphBuilder = new TargetGraphBuilder();
+    const visited: string[] = [];
+    const queue: string[] = [];
+
+    for (const targetId of entriesTargetIds) {
+      if (this.targets.has(targetId)) {
+        const target = this.targets.get(targetId)!;
+        subgraphBuilder.addTarget({ ...target, dependencies: [], dependents: [] });
+        queue.push(targetId);
+      }
+    }
+
+    while (queue.length > 0) {
+      const targetId = queue.shift()!;
+      if (visited.includes(targetId)) {
+        continue;
+      }
+
+      visited.push(targetId);
+
+      const target = this.targets.get(targetId);
+
+      if (!target) {
+        throw new Error("Subgraph builder failed - target not found: " + targetId);
+      }
+
+      for (const dependency of target.dependencies) {
+        if (dependency !== getStartTargetId()) {
+          if (!subgraphBuilder.targets.has(dependency)) {
+            subgraphBuilder.addTarget({ ...this.targets.get(dependency)!, dependencies: [], dependents: [] });
+          }
+
+          subgraphBuilder.addDependency(dependency, targetId);
+        }
+
+        queue.push(dependency);
+      }
+    }
+
+    return subgraphBuilder.build();
   }
 }

@@ -21,18 +21,15 @@ function createPackageInfo(packages: { [id: string]: string[] }) {
 function getGraphFromTargets(targetGraph: TargetGraph) {
   const graph: [string, string][] = [];
   for (const target of targetGraph.targets.values()) {
-    for (const dependent of target.dependents) {
-      graph.push([target.id, dependent]);
-    }
-
-    for (const dependencies of target.dependencies) {
-      graph.push([dependencies, target.id]);
+    for (const dep of target.dependencies) {
+      graph.push([dep, target.id]);
     }
   }
+
   return graph;
 }
 
-describe("target graph builder", () => {
+describe("workspace target graph builder", () => {
   it("should build a target based on a simple package graph and task graph", () => {
     const root = "/repos/a";
 
@@ -46,7 +43,7 @@ describe("target graph builder", () => {
       dependsOn: ["^build"],
     });
 
-    const targetGraph = builder.buildTargetGraph(["build"]);
+    const targetGraph = builder.build(["build"]);
 
     // size is 3, because we also need to account for the root target node (start target ID)
     expect(targetGraph.targets.size).toBe(3);
@@ -58,12 +55,12 @@ describe("target graph builder", () => {
           "a#build",
         ],
         [
-          "__start",
-          "b#build",
-        ],
-        [
           "b#build",
           "a#build",
+        ],
+        [
+          "__start",
+          "b#build",
         ],
       ]
     `);
@@ -80,7 +77,7 @@ describe("target graph builder", () => {
     builder.addTargetConfig("test");
     builder.addTargetConfig("lint");
 
-    const targetGraph = builder.buildTargetGraph(["test", "lint"]);
+    const targetGraph = builder.build(["test", "lint"]);
 
     // includes the pseudo-target for the "start" target
     expect(targetGraph.targets.size).toBe(5);
@@ -125,7 +122,7 @@ describe("target graph builder", () => {
       dependsOn: [],
     });
 
-    const targetGraph = builder.buildTargetGraph(["build"]);
+    const targetGraph = builder.build(["build"]);
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
@@ -167,7 +164,7 @@ describe("target graph builder", () => {
       dependsOn: [],
     });
 
-    const targetGraph = builder.buildTargetGraph(["build"], ["a", "b"]);
+    const targetGraph = builder.build(["build"], ["a", "b"]);
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
@@ -199,7 +196,7 @@ describe("target graph builder", () => {
 
     builder.addTargetConfig("transpile");
 
-    const targetGraph = builder.buildTargetGraph(["bundle"], ["a"]);
+    const targetGraph = builder.build(["bundle"], ["a"]);
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
@@ -241,10 +238,11 @@ describe("target graph builder", () => {
     builder.addTargetConfig("build", {
       dependsOn: ["common#copy", "^build"],
     });
+
     builder.addTargetConfig("common#copy");
     builder.addTargetConfig("common#build");
 
-    const targetGraph = builder.buildTargetGraph(["build"]);
+    const targetGraph = builder.build(["build"]);
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
@@ -252,28 +250,28 @@ describe("target graph builder", () => {
           "a#build",
         ],
         [
+          "common#copy",
+          "a#build",
+        ],
+        [
           "__start",
           "b#build",
         ],
         [
+          "common#copy",
+          "b#build",
+        ],
+        [
           "__start",
+          "c#build",
+        ],
+        [
+          "common#copy",
           "c#build",
         ],
         [
           "__start",
           "common#build",
-        ],
-        [
-          "common#copy",
-          "a#build",
-        ],
-        [
-          "common#copy",
-          "b#build",
-        ],
-        [
-          "common#copy",
-          "c#build",
         ],
         [
           "__start",
