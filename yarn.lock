@@ -3078,7 +3078,7 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.24.tgz#c37ac69cb2948afb4cef95f424fa0037971a9a5c"
   integrity sha512-yxDeaQIAJlMav7fH5AQqPH1u8YIuhYJXYBzxaQ4PifsU0GDO38MSdmEDeRlIxrKbC6NbEaaEHDanWb+y30U8SQ==
 
-"@types/node@^16.0.0":
+"@types/node@16.18.3":
   version "16.18.3"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.3.tgz#d7f7ba828ad9e540270f01ce00d391c54e6e0abc"
   integrity sha512-jh6m0QUhIRcZpNv7Z/rpN+ZWXOicUUQbSoWks7Htkbb9IjFQj4kzcX/xFCkjstCj5flMsN8FiSvt+q+Tcs4Llg==
@@ -4017,7 +4017,7 @@ backfill-cache@^5.6.1, backfill-cache@^5.6.2:
     p-limit "^3.0.0"
     tar-fs "^2.1.0"
 
-backfill-config@^6.3.0:
+backfill-config@6.3.0, backfill-config@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/backfill-config/-/backfill-config-6.3.0.tgz#bd95115fa7c446162ada80324b9bc820fb9fa9e3"
   integrity sha512-4Pvqe4SIthHmlJi1yEyh8ThdZCh9SbNcf12Dx1TNkLii6um3Ez1P1rruPNQGW8jFtLb5kOWWkTnXPj6OXewXSA==
@@ -6235,7 +6235,7 @@ fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
 
-fast-glob@^3.2.11, fast-glob@^3.2.12, fast-glob@^3.2.9:
+fast-glob@3.2.12, fast-glob@^3.2.11, fast-glob@^3.2.12, fast-glob@^3.2.9:
   version "3.2.12"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.12.tgz#7f39ec99c2e6ab030337142da9e0c18f37afae80"
   integrity sha512-DVj4CQIYYow0BlaelwK1pHl5n5cRSJfM60UA0zK891sVInoPri2Ekj7+e1CT3/3qxXenpI+nBBmQAcJPJgaj4w==
@@ -10879,7 +10879,7 @@ svgo@^2.7.0, svgo@^2.8.0:
     picocolors "^1.0.0"
     stable "^0.1.8"
 
-syncpack@^8.3.9:
+syncpack@8.3.9:
   version "8.3.9"
   resolved "https://registry.yarnpkg.com/syncpack/-/syncpack-8.3.9.tgz#cea13ae5846cc16fddb33b32793d6af12a3637c5"
   integrity sha512-oDaEvgZAoU40WXX4okQ7DiCfVEcO2antl+jV+Av+FbS4Hyh8VoJ8F6HGo2G8eT9H+AyBBM1iDUdbtR1MQRimoQ==
