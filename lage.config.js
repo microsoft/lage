@@ -43,11 +43,11 @@ module.exports = {
     start: [],
     "@lage-run/e2e-tests#test": {
       type: "npmScript",
-      dependsOn: ["build"],
+      dependsOn: ["build", "^^transpile"],
     },
     "lage#test": {
       type: "npmScript",
-      dependsOn: ["build"],
+      dependsOn: ["build", "transpile"],
     },
     "@lage-run/lage#bundle": {
       type: "npmScript",

@@ -9,12 +9,15 @@ export class Monorepo {
 
   root: string;
 
+  lagePath: string;
+
   get nodeModulesPath() {
     return path.join(this.root, "node_modules");
   }
 
   constructor(private name: string) {
     this.root = mkdtempSync(path.join(Monorepo.tmpdir, `monorepo-fixture-${name}-`));
+    this.lagePath = path.join(this.nodeModulesPath, "@lage-run");
   }
 
   async init(fixturePath?: string) {
@@ -42,10 +45,21 @@ export class Monorepo {
     }
 
     // pretends to perform a npm install of lage
-    const lagePath = path.join(this.nodeModulesPath, "lage");
+    if (!existsSync(this.lagePath)) {
+      await fs.symlink(path.join(__dirname, "..", ".."), this.lagePath, "junction");
+    }
 
-    if (!existsSync(lagePath)) {
-      await fs.symlink(path.join(__dirname, "..", ".."), lagePath, "junction");
+    const lagePackagePath = path.join(__dirname, "..", "..", "..");
+    const lagePackages = (await fs.readdir(lagePackagePath, { withFileTypes: true }))
+      .filter((dirent) => dirent.isDirectory)
+      .map((dirent) => dirent.name);
+
+    // pretends to perform a npm install of lage
+    if (!existsSync(this.lagePath)) {
+      await fs.mkdir(this.lagePath, { recursive: true });
+      for (const lagePackage of lagePackages) {
+        await fs.symlink(path.join(lagePackagePath, lagePackage), path.join(this.lagePath, lagePackage), "junction");
+      }
     }
   }
 
