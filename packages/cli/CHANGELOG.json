@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 10 Nov 2022 22:52:47 GMT",
+      "tag": "@lage-run/cli_v0.4.34",
+      "version": "0.4.34",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "64afbef3c57c999e631604cfa2761e0fb85b85b4",
+            "comment": "Pin devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 10 Nov 2022 20:20:45 GMT",
       "tag": "@lage-run/cli_v0.4.34",
       "version": "0.4.34",
