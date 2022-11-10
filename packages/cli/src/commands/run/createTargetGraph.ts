@@ -49,5 +49,5 @@ export function createTargetGraph(options: CreateTargetGraphOptions) {
     }
   }
 
-  return builder.buildTargetGraph(tasks, packages);
+  return builder.build(tasks, packages);
 }
