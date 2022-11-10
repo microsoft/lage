@@ -15,7 +15,6 @@ module.exports = {
     transpile: {
       type: "worker",
       options: {
-        maxWorkers: 4,
         worker: path.join(__dirname, "scripts/worker/transpile.js"),
       }
     },
