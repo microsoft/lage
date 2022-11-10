@@ -1,5 +1,5 @@
 import type { Logger } from "@lage-run/logger";
-import { TargetGraphBuilder } from "@lage-run/target-graph";
+import { WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
 import type { PackageInfos } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import type { PipelineDefinition } from "../../types/PipelineDefinition.js";
@@ -22,7 +22,7 @@ interface CreateTargetGraphOptions {
 export function createTargetGraph(options: CreateTargetGraphOptions) {
   const { logger, root, dependencies, dependents, since, scope, repoWideChanges, ignore, pipeline, outputs, tasks, packageInfos } = options;
 
-  const builder = new TargetGraphBuilder(root, packageInfos);
+  const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
 
   const packages = getFilteredPackages({
     root,
@@ -49,5 +49,5 @@ export function createTargetGraph(options: CreateTargetGraphOptions) {
     }
   }
 
-  return builder.buildTargetGraph(tasks, packages);
+  return builder.build(tasks, packages);
 }

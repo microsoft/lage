@@ -1,270 +1,198 @@
-import type { PackageInfos } from "workspace-tools";
 import { TargetGraphBuilder } from "../src/TargetGraphBuilder";
+import { Target } from "../src/types/Target";
 
-function createPackageInfo(packages: { [id: string]: string[] }) {
-  const packageInfos: PackageInfos = {};
-  Object.keys(packages).forEach((id) => {
-    packageInfos[id] = {
-      packageJsonPath: `/path/to/${id}/package.json`,
-      name: id,
-      version: "1.0.0",
-      dependencies: packages[id].reduce((acc, dep) => {
-        return { ...acc, [dep]: "*" };
-      }, {}),
-    };
-  });
+describe("Target Graph Builder", () => {
+  it("should build a full graph", () => {
+    const target1 = createTarget("a", "build", 1);
+    const target2 = createTarget("b", "build", 1);
 
-  return packageInfos;
-}
+    const builder = new TargetGraphBuilder();
+    builder.addTarget(target1);
+    builder.addTarget(target2);
+    builder.addDependency(target1.id, target2.id);
 
-describe("target graph builder", () => {
-  it("should build a target based on a simple package graph and task graph", () => {
-    const root = "/repos/a";
+    const targetGraph = builder.build();
 
-    const packageInfos = createPackageInfo({
-      a: ["b"],
-      b: [],
-    });
-
-    const builder = new TargetGraphBuilder(root, packageInfos);
-    builder.addTargetConfig("build", {
-      dependsOn: ["^build"],
-    });
-
-    const targetGraph = builder.buildTargetGraph(["build"]);
-
-    // size is 3, because we also need to account for the root target node (start target ID)
-    expect(targetGraph.targets.size).toBe(3);
-
-    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
+    expect(simplify(targetGraph.targets)).toMatchInlineSnapshot(`
       [
-        [
-          "__start",
-          "a#build",
-        ],
-        [
-          "__start",
-          "b#build",
-        ],
-        [
-          "b#build",
-          "a#build",
-        ],
+        {
+          "dependencies": [],
+          "dependents": [
+            "a#build",
+            "b#build",
+          ],
+          "id": "__start",
+          "priority": 0,
+        },
+        {
+          "dependencies": [
+            "__start",
+          ],
+          "dependents": [
+            "b#build",
+          ],
+          "id": "a#build",
+          "priority": 1,
+        },
+        {
+          "dependencies": [
+            "__start",
+            "a#build",
+          ],
+          "dependents": [],
+          "id": "b#build",
+          "priority": 2,
+        },
       ]
     `);
   });
 
-  it("should generate target graphs for tasks that do not depend on each other", () => {
-    const root = "/repos/a";
-    const packageInfos = createPackageInfo({
-      a: ["b"],
-      b: [],
-    });
+  it("should build a subgraph", () => {
+    const target1 = createTarget("a", "build", 1);
+    const target2 = createTarget("b", "build", 1);
+    const target3 = createTarget("c", "build", 1);
+    const target4 = createTarget("d", "build", 1);
 
-    const builder = new TargetGraphBuilder(root, packageInfos);
-    builder.addTargetConfig("test");
-    builder.addTargetConfig("lint");
+    const builder = new TargetGraphBuilder();
+    builder.addTarget(target1);
+    builder.addTarget(target2);
+    builder.addTarget(target3);
+    builder.addTarget(target4);
+    builder.addDependency(target1.id, target2.id);
+    builder.addDependency(target1.id, target3.id);
+    builder.addDependency(target4.id, target1.id);
 
-    const targetGraph = builder.buildTargetGraph(["test", "lint"]);
+    const targetGraph = builder.subgraph(["a#build"]);
 
-    // includes the pseudo-target for the "start" target
-    expect(targetGraph.targets.size).toBe(5);
-    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
+    expect(simplify(targetGraph.targets)).toMatchInlineSnapshot(`
       [
-        [
-          "__start",
-          "a#test",
-        ],
-        [
-          "__start",
-          "b#test",
-        ],
-        [
-          "__start",
-          "a#lint",
-        ],
-        [
-          "__start",
-          "b#lint",
-        ],
+        {
+          "dependencies": [],
+          "dependents": [
+            "a#build",
+            "d#build",
+          ],
+          "id": "__start",
+          "priority": 0,
+        },
+        {
+          "dependencies": [
+            "__start",
+            "d#build",
+          ],
+          "dependents": [],
+          "id": "a#build",
+          "priority": 2,
+        },
+        {
+          "dependencies": [
+            "__start",
+          ],
+          "dependents": [
+            "a#build",
+          ],
+          "id": "d#build",
+          "priority": 1,
+        },
       ]
     `);
   });
 
-  it("should generate targetGraph with some specific package task target dependencies, running against all packages", () => {
-    const root = "/repos/a";
+  it("should build a subgraph with proper priorities", () => {
+    const target1 = createTarget("a", "build", 1);
+    const target2 = createTarget("b", "build", 100);
+    const target3 = createTarget("c", "build", 1);
+    const target4 = createTarget("d", "build", 1);
 
-    const packageInfos = createPackageInfo({
-      a: ["b"],
-      b: [],
-      c: ["b"],
-    });
+    const builder = new TargetGraphBuilder();
+    builder.addTarget(target1);
+    builder.addTarget(target2);
+    builder.addTarget(target3);
+    builder.addTarget(target4);
+    builder.addDependency(target2.id, target1.id);
+    builder.addDependency(target3.id, target1.id);
+    builder.addDependency(target4.id, target1.id);
 
-    const builder = new TargetGraphBuilder(root, packageInfos);
+    const targetGraph = builder.subgraph(["a#build"]);
 
-    builder.addTargetConfig("build", {
-      dependsOn: ["^build"],
-    });
-
-    builder.addTargetConfig("a#build", {
-      dependsOn: [],
-    });
-
-    const targetGraph = builder.buildTargetGraph(["build"]);
-    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
+    expect(simplify(targetGraph.targets)).toMatchInlineSnapshot(`
       [
-        [
-          "__start",
-          "a#build",
-        ],
-        [
-          "__start",
-          "b#build",
-        ],
-        [
-          "__start",
-          "c#build",
-        ],
-        [
-          "b#build",
-          "c#build",
-        ],
-      ]
-    `);
-  });
-
-  it("should generate targetGraph with some specific package task target dependencies, running against a specific package", () => {
-    const root = "/repos/a";
-
-    const packageInfos = createPackageInfo({
-      a: ["b"],
-      b: [],
-      c: ["b"],
-    });
-
-    const builder = new TargetGraphBuilder(root, packageInfos);
-
-    builder.addTargetConfig("build", {
-      dependsOn: ["^build"],
-    });
-
-    builder.addTargetConfig("a#build", {
-      dependsOn: [],
-    });
-
-    const targetGraph = builder.buildTargetGraph(["build"], ["a", "b"]);
-    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
-      [
-        [
-          "__start",
-          "a#build",
-        ],
-        [
-          "__start",
-          "b#build",
-        ],
-      ]
-    `);
-  });
-
-  it("should generate targetGraph with transitive dependencies", () => {
-    const root = "/repos/a";
-
-    const packageInfos = createPackageInfo({
-      a: ["b"],
-      b: ["c"],
-      c: [],
-    });
-
-    const builder = new TargetGraphBuilder(root, packageInfos);
-
-    builder.addTargetConfig("bundle", {
-      dependsOn: ["^^transpile"],
-    });
-
-    builder.addTargetConfig("transpile");
-
-    const targetGraph = builder.buildTargetGraph(["bundle"], ["a"]);
-    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
-      [
-        [
-          "__start",
-          "a#bundle",
-        ],
-        [
-          "b#transpile",
-          "a#bundle",
-        ],
-        [
-          "c#transpile",
-          "a#bundle",
-        ],
-        [
-          "__start",
-          "b#transpile",
-        ],
-        [
-          "__start",
-          "c#transpile",
-        ],
-      ]
-    `);
-  });
-
-  it("should generate target graph for a general task on a specific target", () => {
-    const root = "/repos/a";
-
-    const packageInfos = createPackageInfo({
-      a: [],
-      b: [],
-      c: [],
-      common: [],
-    });
-
-    const builder = new TargetGraphBuilder(root, packageInfos);
-
-    builder.addTargetConfig("build", {
-      dependsOn: ["common#copy", "^build"],
-    });
-    builder.addTargetConfig("common#copy");
-    builder.addTargetConfig("common#build");
-
-    const targetGraph = builder.buildTargetGraph(["build"]);
-    expect(targetGraph.dependencies).toMatchInlineSnapshot(`
-      [
-        [
-          "__start",
-          "a#build",
-        ],
-        [
-          "__start",
-          "b#build",
-        ],
-        [
-          "__start",
-          "c#build",
-        ],
-        [
-          "__start",
-          "common#build",
-        ],
-        [
-          "common#copy",
-          "a#build",
-        ],
-        [
-          "common#copy",
-          "b#build",
-        ],
-        [
-          "common#copy",
-          "c#build",
-        ],
-        [
-          "__start",
-          "common#copy",
-        ],
+        {
+          "dependencies": [],
+          "dependents": [
+            "a#build",
+            "b#build",
+            "c#build",
+            "d#build",
+          ],
+          "id": "__start",
+          "priority": 0,
+        },
+        {
+          "dependencies": [
+            "__start",
+            "b#build",
+            "c#build",
+            "d#build",
+          ],
+          "dependents": [],
+          "id": "a#build",
+          "priority": 101,
+        },
+        {
+          "dependencies": [
+            "__start",
+          ],
+          "dependents": [
+            "a#build",
+          ],
+          "id": "b#build",
+          "priority": 100,
+        },
+        {
+          "dependencies": [
+            "__start",
+          ],
+          "dependents": [
+            "a#build",
+          ],
+          "id": "c#build",
+          "priority": 1,
+        },
+        {
+          "dependencies": [
+            "__start",
+          ],
+          "dependents": [
+            "a#build",
+          ],
+          "id": "d#build",
+          "priority": 1,
+        },
       ]
     `);
   });
 });
+
+function createTarget(packageName: string, task: string, priority: number): Target {
+  return {
+    id: `${packageName}#${task}`,
+    label: `${packageName} - ${task}`,
+    task,
+    packageName,
+    dependencies: [],
+    dependents: [],
+    depSpecs: [],
+    priority,
+    cwd: `packages/${packageName}`,
+  } as Target;
+}
+
+function simplify(targets: Map<string, Target>): any[] {
+  return [...targets.entries()].map(([id, target]) => ({
+    id,
+    dependencies: target.dependencies,
+    dependents: target.dependents,
+    priority: target.priority,
+  }));
+}
