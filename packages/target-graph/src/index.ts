@@ -6,3 +6,5 @@ export { sortTargetsByPriority } from "./sortTargetsByPriority.js";
 export { getTargetId, getStartTargetId } from "./targetId.js";
 export { detectCycles } from "./detectCycles.js";
 export { WorkspaceTargetGraphBuilder } from "./WorkspaceTargetGraphBuilder.js";
+export { TargetGraphBuilder } from "./TargetGraphBuilder.js";
+export { TargetFactory } from "./TargetFactory.js";
