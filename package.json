@@ -39,7 +39,7 @@
     "husky": "8.0.2",
     "lage-npm": "npm:@lage-run/lage@2.5.13",
     "lint-staged": "13.0.3",
-    "patch-package": "6.4.7",
+    "patch-package": "6.5.0",
     "prettier": "2.7.1",
     "syncpack": "8.3.9"
   },
