@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Fri, 11 Nov 2022 07:29:47 GMT",
+      "tag": "@lage-run/cache_v0.2.2",
+      "version": "0.2.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.6.1",
+            "commit": "459d25088a3a391f8b7f02db4f21eb425795ca12"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 11 Nov 2022 06:00:56 GMT",
       "tag": "@lage-run/cache_v0.2.1",
       "version": "0.2.1",

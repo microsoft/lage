@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "adding more exports to let consumers create targets and to use the simpler targetgraph builder",
-  "packageName": "@lage-run/target-graph",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

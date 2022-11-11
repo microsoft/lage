@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Fri, 11 Nov 2022 07:29:47 GMT",
+      "tag": "@lage-run/target-graph_v0.6.1",
+      "version": "0.6.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "459d25088a3a391f8b7f02db4f21eb425795ca12",
+            "comment": "adding more exports to let consumers create targets and to use the simpler targetgraph builder"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 10 Nov 2022 20:20:45 GMT",
       "tag": "@lage-run/target-graph_v0.6.0",
       "version": "0.6.0",

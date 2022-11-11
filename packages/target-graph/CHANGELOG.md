@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Thu, 10 Nov 2022 20:20:45 GMT and should not be manually modified.
+This log was last generated on Fri, 11 Nov 2022 07:29:47 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.6.1
+
+Fri, 11 Nov 2022 07:29:47 GMT
+
+### Patches
+
+- adding more exports to let consumers create targets and to use the simpler targetgraph builder (kchau@microsoft.com)
 
 ## 0.6.0
 
