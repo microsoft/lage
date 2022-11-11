@@ -28,7 +28,7 @@
     "@lage-run/monorepo-fixture": "*",
     "@types/mock-fs": "4.13.1",
     "monorepo-scripts": "*",
-    "mock-fs": "5.1.4"
+    "mock-fs": "5.2.0"
   },
   "publishConfig": {
     "access": "public"

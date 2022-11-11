@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Update devDependency mock-fs to v5.2.0",
+  "packageName": "@lage-run/cache",
+  "email": "email not defined",
+  "dependentChangeType": "none"
+}
