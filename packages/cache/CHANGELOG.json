@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Fri, 11 Nov 2022 06:00:56 GMT",
+      "tag": "@lage-run/cache_v0.2.1",
+      "version": "0.2.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cache",
+            "commit": "b694c168e99cff25d3c38de4a337b6a48ba5eed0",
+            "comment": "Update devDependency mock-fs to v5.2.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 10 Nov 2022 20:20:45 GMT",
       "tag": "@lage-run/cache_v0.2.1",
       "version": "0.2.1",
