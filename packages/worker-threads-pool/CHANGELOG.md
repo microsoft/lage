@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Tue, 01 Nov 2022 22:48:33 GMT and should not be manually modified.
+This log was last generated on Wed, 16 Nov 2022 17:12:24 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.5
+
+Wed, 16 Nov 2022 17:12:24 GMT
+
+### Patches
+
+- adding a handling case for when lines are still being outputted but the worker is freed (kchau@microsoft.com)
 
 ## 0.4.4
 

@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Wed, 16 Nov 2022 17:12:24 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.4.5",
+      "version": "0.4.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "a7a4471aeaa018e40c718ec6bd6611a0ab040765",
+            "comment": "adding a handling case for when lines are still being outputted but the worker is freed"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 01 Nov 2022 22:48:33 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.4.4",
       "version": "0.4.4",

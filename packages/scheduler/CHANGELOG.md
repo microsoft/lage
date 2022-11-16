@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Fri, 11 Nov 2022 07:29:47 GMT and should not be manually modified.
+This log was last generated on Wed, 16 Nov 2022 17:12:24 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.13
+
+Wed, 16 Nov 2022 17:12:24 GMT
+
+### Patches
+
+- Bump @lage-run/worker-threads-pool to v0.4.5
 
 ## 0.5.12
 

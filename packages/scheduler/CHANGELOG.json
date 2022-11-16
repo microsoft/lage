@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Wed, 16 Nov 2022 17:12:24 GMT",
+      "tag": "@lage-run/scheduler_v0.5.13",
+      "version": "0.5.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.4.5",
+            "commit": "a7a4471aeaa018e40c718ec6bd6611a0ab040765"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 11 Nov 2022 07:29:47 GMT",
       "tag": "@lage-run/scheduler_v0.5.12",
       "version": "0.5.12",
