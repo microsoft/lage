@@ -1,7 +1,8 @@
 import type { Readable } from "stream";
-import type { Worker, WorkerOptions } from "worker_threads";
+import type { WorkerOptions } from "worker_threads";
 import type { Pool } from "./types/Pool.js";
 import type { Logger } from "@lage-run/logger";
+import type { IWorker } from "./types/WorkerQueue.js";
 
 import { WorkerPool } from "./WorkerPool.js";
 
@@ -77,7 +78,7 @@ export class AggregatedPool implements Pool {
   async exec(
     data: Record<string, unknown>,
     weight: number,
-    setup?: (worker: Worker, stdout: Readable, stderr: Readable) => void,
+    setup?: (worker: IWorker, stdout: Readable, stderr: Readable) => void,
     cleanup?: (args: any) => void,
     abortSignal?: AbortSignal
   ): Promise<unknown> {
