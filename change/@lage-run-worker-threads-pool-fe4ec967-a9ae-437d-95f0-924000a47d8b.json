@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "adding a handling case for when lines are still being outputted but the worker is freed",
+  "packageName": "@lage-run/worker-threads-pool",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

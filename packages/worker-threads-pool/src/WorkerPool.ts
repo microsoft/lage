@@ -141,6 +141,14 @@ export class WorkerPool extends EventEmitter implements Pool {
       let resolve: () => void;
 
       return (line: string) => {
+        if (!worker[kTaskInfo]) {
+          // Somehow this lineHandler function is called AFTER the worker has been freed.
+          // This can happen if there are stray setTimeout(), etc. with callbacks that outputs some messages in stdout/stderr
+          // In this case, we will ignore the output
+
+          return;
+        }
+
         if (line.includes(startMarker(worker[kTaskInfo].id))) {
           lines = [];
           if (outputType === "stdout") {
