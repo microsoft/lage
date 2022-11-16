@@ -3,7 +3,7 @@ import { createInterface } from "readline";
 import { endMarker, startMarker } from "./stdioStreamMarkers.js";
 import { EventEmitter } from "events";
 import { Readable } from "stream";
-import { TaskInfo } from "./Task.js";
+import { TaskInfo } from "./TaskInfo.js";
 import { Worker } from "worker_threads";
 import crypto from "crypto";
 import os from "os";
@@ -73,6 +73,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
         Promise.all([this.#stdoutInfo.promise, this.#stderrInfo.promise]).then(() => {
           const { err, results } = data;
           if (this.#taskInfo) {
+            this.#taskInfo.abortSignal?.removeEventListener("abort", this.#handleAbort);
             this.#taskInfo.done(err, results);
           }
           this.checkMemoryUsage();
@@ -186,18 +187,20 @@ export class ThreadWorker extends EventEmitter implements IWorker {
     stderrInterface.on("line", stderrLineHandler);
   }
 
+  #handleAbort() {
+    this.#worker.postMessage({ type: "abort" });
+  }
+
   start(work: QueueItem, abortSignal?: AbortSignal) {
     this.status = "busy";
 
     const { task, resolve, reject, cleanup, setup } = work;
 
-    abortSignal?.addEventListener("abort", () => {
-      this.#worker.postMessage({ type: "abort" });
-    });
+    abortSignal?.addEventListener("abort", this.#handleAbort);
 
     const id = crypto.randomBytes(32).toString("hex");
 
-    this.#taskInfo = new TaskInfo({ id, weight: work.weight, cleanup, resolve, reject, worker: this, setup });
+    this.#taskInfo = new TaskInfo({ id, weight: work.weight, cleanup, resolve, reject, worker: this, setup, abortSignal });
 
     // Create a pair of promises that are only resolved when a specific task end marker is detected
     // in the worker's stdout/stderr streams.
@@ -233,8 +236,8 @@ export class ThreadWorker extends EventEmitter implements IWorker {
   }
 
   terminate() {
-    this.#worker.terminate();
     this.#worker.removeAllListeners();
+    this.#worker.terminate();
     this.#worker.unref();
   }
 

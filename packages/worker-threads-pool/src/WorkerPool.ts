@@ -27,7 +27,7 @@ export class WorkerPool extends EventEmitter implements Pool {
 
     this.ensureWorkers();
 
-    // Any time the kWorkerFreedEvent is emitted, dispatch
+    // Any time the workerFreedEvent is emitted, dispatch
     // the next task pending in the queue, if any.
     this.on(workerFreedEvent, () => {
       if (this.queue.length > 0) {
@@ -98,8 +98,9 @@ export class WorkerPool extends EventEmitter implements Pool {
       return;
     }
 
+    // This is to immediate execute tasks if there ARE free workers
+    // If there are no free workers, the "workerFreedEvent" will call this function again to start the task
     const worker = this.workers.find((w) => w.status === "free");
-
     if (worker) {
       const work = this.queue[workIndex];
       this.queue.splice(workIndex, 1);

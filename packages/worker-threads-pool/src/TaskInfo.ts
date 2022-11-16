@@ -10,6 +10,7 @@ export interface TaskInfoOptions {
   reject: (reason: unknown) => void;
   worker: IWorker;
   weight: number;
+  abortSignal?: AbortSignal;
 }
 
 export class TaskInfo extends AsyncResource {
@@ -27,6 +28,10 @@ export class TaskInfo extends AsyncResource {
 
   get weight() {
     return this.options.weight;
+  }
+
+  get abortSignal() {
+    return this.options.abortSignal;
   }
 
   done(err: Error, results: unknown) {
