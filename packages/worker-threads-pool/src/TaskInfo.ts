@@ -1,6 +1,7 @@
+import type { Readable } from "stream";
+import type { IWorker } from "./types/WorkerQueue.js";
+
 import { AsyncResource } from "async_hooks";
-import { Readable } from "stream";
-import { IWorker } from "./types/WorkerQueue.js";
 
 export interface TaskInfoOptions {
   id: string;

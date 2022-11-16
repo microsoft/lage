@@ -1,6 +1,6 @@
 import type { ResourceLimits } from "worker_threads";
-import { Readable } from "stream";
-import EventEmitter from "events";
+import type { Readable } from "stream";
+import type EventEmitter from "events";
 
 export interface QueueItem {
   setup?: (worker: IWorker, stdout: Readable, stderr: Readable) => void;

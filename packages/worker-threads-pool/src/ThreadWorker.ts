@@ -136,7 +136,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
     }
 
     this.status = "free";
-    this.emit(workerFreeEvent, { weight: this.weight });
+    this.emit(workerFreeEvent, { weight });
   }
 
   #captureWorkerStdioStreams(worker: Worker) {

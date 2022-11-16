@@ -1,7 +1,8 @@
 import { EventEmitter } from "events";
-import { IWorker, QueueItem } from "./types/WorkerQueue.js";
 import { ThreadWorker } from "./ThreadWorker.js";
 import os from "os";
+
+import type { IWorker, QueueItem } from "./types/WorkerQueue.js";
 import type { Pool } from "./types/Pool.js";
 import type { Readable } from "stream";
 import type { WorkerPoolOptions } from "./types/WorkerPoolOptions.js";

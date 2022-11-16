@@ -1,5 +1,5 @@
 import type { Readable } from "stream";
-import { IWorker } from "./WorkerQueue";
+import type { IWorker } from "./WorkerQueue.js";
 
 export interface PoolStats {
   maxWorkerMemoryUsage: number; // in bytes

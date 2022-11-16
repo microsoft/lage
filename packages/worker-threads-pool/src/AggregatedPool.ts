@@ -2,9 +2,9 @@ import type { Readable } from "stream";
 import type { WorkerOptions } from "worker_threads";
 import type { Pool } from "./types/Pool.js";
 import type { Logger } from "@lage-run/logger";
+import type { IWorker } from "./types/WorkerQueue.js";
 
 import { WorkerPool } from "./WorkerPool.js";
-import { IWorker } from "./types/WorkerQueue.js";
 
 interface AggregatedPoolOptions {
   groupBy: (data: any) => string;
