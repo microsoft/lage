@@ -48,7 +48,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
     const script = this.script;
     const worker = new Worker(script, { ...workerOptions, stdout: true, stderr: true });
 
-    this.#captureWorkerStdioStreams();
+    this.#captureWorkerStdioStreams(worker);
 
     const filteredStdout = worker.stdout.pipe(createFilteredStreamTransform());
     const filteredStderr = worker.stderr.pipe(createFilteredStreamTransform());
@@ -72,12 +72,10 @@ export class ThreadWorker extends EventEmitter implements IWorker {
         // again.
         Promise.all([this.#stdoutInfo.promise, this.#stderrInfo.promise]).then(() => {
           const { err, results } = data;
-
           if (this.#taskInfo) {
             this.#taskInfo.done(err, results);
-            this.#taskInfo = undefined;
-            this.checkMemoryUsage();
           }
+          this.checkMemoryUsage();
         });
       } else if (data.type === "report-memory-usage") {
         this.maxWorkerMemoryUsage = Math.max(this.maxWorkerMemoryUsage, data.memoryUsage);
@@ -129,23 +127,31 @@ export class ThreadWorker extends EventEmitter implements IWorker {
   }
 
   #ready() {
+    let weight = 1;
+
+    if (this.#taskInfo) {
+      weight = this.#taskInfo.weight;
+      this.#taskInfo = undefined;
+    }
+
     this.status = "free";
-    this.emit(workerFreeEvent);
+    this.emit(workerFreeEvent, { weight: this.weight });
   }
 
-  #captureWorkerStdioStreams() {
-    const stdout = this.#worker.stdout;
+  #captureWorkerStdioStreams(worker: Worker) {
+    const stdout = worker.stdout;
     const stdoutInterface = createInterface({
       input: stdout,
       crlfDelay: Infinity,
     });
 
-    const stderr = this.#worker.stderr;
+    const stderr = worker.stderr;
     const stderrInterface = createInterface({
       input: stderr,
       crlfDelay: Infinity,
     });
 
+    // by the time we have a "line" event, we expect there to have been a this.#taskInfo
     const lineHandlerFactory = (outputType: string) => {
       let lines: string[] = [];
       let resolve: () => void;
@@ -155,7 +161,6 @@ export class ThreadWorker extends EventEmitter implements IWorker {
           // Somehow this lineHandler function is called AFTER the worker has been freed.
           // This can happen if there are stray setTimeout(), etc. with callbacks that outputs some messages in stdout/stderr
           // In this case, we will ignore the output
-
           return;
         }
 

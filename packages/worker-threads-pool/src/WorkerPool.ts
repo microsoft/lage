@@ -13,11 +13,13 @@ export class WorkerPool extends EventEmitter implements Pool {
   freeWorkers: IWorker[] = [];
   queue: QueueItem[] = [];
   maxWorkers = 0;
+  availability = 0;
 
   constructor(private options: WorkerPoolOptions) {
     super();
 
     this.maxWorkers = this.options.maxWorkers ?? os.cpus().length - 1;
+    this.availability = this.maxWorkers;
 
     this.workers = [];
     this.freeWorkers = [];
@@ -32,11 +34,6 @@ export class WorkerPool extends EventEmitter implements Pool {
         this._exec();
       }
     });
-  }
-
-  get availability() {
-    const busyWorkerWeight = this.workers.map((w) => (w.status === "busy" ? w.weight : 0)).reduce((acc, weight) => acc + weight, 0);
-    return this.maxWorkers - busyWorkerWeight;
   }
 
   get workerRestarts() {
@@ -65,7 +62,12 @@ export class WorkerPool extends EventEmitter implements Pool {
   addNewWorker() {
     const { script, workerOptions } = this.options;
     const worker = new ThreadWorker(script, { workerOptions, workerIdleMemoryLimit: this.options.workerIdleMemoryLimit });
-    worker.on("free", () => this.emit(workerFreedEvent));
+    worker.on("free", (data) => {
+      const { weight } = data;
+      this.availability += weight;
+      this.emit(workerFreedEvent);
+    });
+    this.workers.push(worker);
   }
 
   exec(
@@ -101,6 +103,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     if (worker) {
       const work = this.queue[workIndex];
       this.queue.splice(workIndex, 1);
+      this.availability -= work.weight;
       worker.start(work, abortSignal);
     }
   }

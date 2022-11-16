@@ -17,7 +17,7 @@ export class TaskInfo extends AsyncResource {
     super("WorkerPoolTaskInfo");
 
     if (options.setup) {
-      this.runInAsyncScope(options.setup, null, options.worker, options.worker["filteredStdout"], options.worker["filteredStderr"]);
+      this.runInAsyncScope(options.setup, null, options.worker, options.worker.stdout, options.worker.stderr);
     }
   }
 

@@ -1,5 +1,6 @@
 import type { ResourceLimits } from "worker_threads";
 import { Readable } from "stream";
+import EventEmitter from "events";
 
 export interface QueueItem {
   setup?: (worker: IWorker, stdout: Readable, stderr: Readable) => void;
@@ -10,7 +11,7 @@ export interface QueueItem {
   reject: (reason: unknown) => void;
 }
 
-export interface IWorker {
+export interface IWorker extends EventEmitter {
   start(work: QueueItem, abortSignal?: AbortSignal): void;
   stdout: Readable;
   stderr: Readable;
