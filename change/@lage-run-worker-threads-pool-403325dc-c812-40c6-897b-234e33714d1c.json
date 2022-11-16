@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Refactoring the worker threads pool to use proper classes for Worker",
-  "packageName": "@lage-run/worker-threads-pool",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

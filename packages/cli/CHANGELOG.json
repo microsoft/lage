@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 16 Nov 2022 20:07:05 GMT",
+      "tag": "@lage-run/cli_v0.4.37",
+      "version": "0.4.37",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.5.14",
+            "commit": "04f9c13f6f37c7a14a67ab27acaf253ad09bfbd8"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 16 Nov 2022 17:12:24 GMT",
       "tag": "@lage-run/cli_v0.4.36",
       "version": "0.4.36",

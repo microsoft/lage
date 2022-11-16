@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Wed, 16 Nov 2022 20:07:05 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.5.0",
+      "version": "0.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "04f9c13f6f37c7a14a67ab27acaf253ad09bfbd8",
+            "comment": "Refactoring the worker threads pool to use proper classes for Worker"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 16 Nov 2022 17:12:24 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.4.5",
       "version": "0.4.5",

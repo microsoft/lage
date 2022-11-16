@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Wed, 16 Nov 2022 17:12:24 GMT and should not be manually modified.
+This log was last generated on Wed, 16 Nov 2022 20:07:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.0
+
+Wed, 16 Nov 2022 20:07:05 GMT
+
+### Minor changes
+
+- Refactoring the worker threads pool to use proper classes for Worker (kchau@microsoft.com)
 
 ## 0.4.5
 
