@@ -25,6 +25,7 @@ interface RunOptions extends ReporterInitOptions {
   dependents: boolean;
   since: string;
   scope: string[];
+  to: string[];
   skipLocalCache: boolean;
   continue: boolean;
   cache: boolean;
@@ -55,11 +56,11 @@ export async function watchAction(options: RunOptions, command: Command) {
     logger,
     root,
     dependencies: options.dependencies,
-    dependents: options.dependents,
+    dependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
     ignore: options.ignore.concat(config.ignore),
     pipeline: config.pipeline,
     repoWideChanges: config.repoWideChanges,
-    scope: options.scope,
+    scope: (options.scope ?? []).concat(options.to ?? []), // --to is a short hand for --scope + --no-dependents
     since: options.since,
     outputs: config.cacheOptions.outputGlob,
     tasks,
