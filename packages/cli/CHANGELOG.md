@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 16 Nov 2022 20:07:05 GMT and should not be manually modified.
+This log was last generated on Thu, 17 Nov 2022 19:29:51 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.0
+
+Thu, 17 Nov 2022 19:29:51 GMT
+
+### Minor changes
+
+- support "to" flag (kchau@microsoft.com)
 
 ## 0.4.37
 
