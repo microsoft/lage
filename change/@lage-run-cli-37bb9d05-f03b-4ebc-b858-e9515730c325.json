@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "support \"to\" flag",
+  "packageName": "@lage-run/cli",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
