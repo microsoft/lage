@@ -9,6 +9,7 @@ interface RunOptions extends ReporterInitOptions {
   dependencies: boolean;
   dependents: boolean;
   since: string;
+  to: string[];
   scope: string[];
   skipLocalCache: boolean;
   continue: boolean;
