@@ -16,6 +16,7 @@ import createLogger, { LogLevel } from "@lage-run/logger";
 
 import type { ReporterInitOptions } from "@lage-run/reporters";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
+import type { Target } from "@lage-run/target-graph";
 
 interface RunOptions extends ReporterInitOptions {
   concurrency: number;
@@ -128,11 +129,16 @@ export async function watchAction(options: RunOptions, command: Command) {
   const watcher = watch(root);
   watcher.on("change", (packageName) => {
     reporter.resetLogEntries();
+    const targets = new Map<string, Target>();
     for (const target of targetGraph.targets.values()) {
-      if (target.packageName === packageName && scheduler.onTargetChange) {
-        scheduler.onTargetChange(target.id);
+      if (target.packageName === packageName) {
+        targets.set(target.id, target);
       }
     }
+
+    const deltaGraph = { targets };
+
+    scheduler.run(root, deltaGraph, true);
   });
 }
 

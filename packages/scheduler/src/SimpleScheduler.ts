@@ -1,15 +1,15 @@
+import { AggregatedPool } from "@lage-run/worker-threads-pool";
+import { formatBytes } from "./formatBytes.js";
 import { categorizeTargetRuns } from "./categorizeTargetRuns.js";
 import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
 import { WrappedTarget } from "./WrappedTarget.js";
 
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { Logger } from "@lage-run/logger";
-import type { TargetGraph, Target } from "@lage-run/target-graph";
+import type { TargetGraph } from "@lage-run/target-graph";
 import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "@lage-run/scheduler-types";
 import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker.js";
-import { AggregatedPool } from "@lage-run/worker-threads-pool";
-import { formatBytes } from "./formatBytes.js";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -39,10 +39,10 @@ export interface SimpleSchedulerOptions {
  */
 export class SimpleScheduler implements TargetScheduler {
   targetRuns: Map<string, WrappedTarget> = new Map();
-  targetsByPriority: Target[] = [];
   abortController: AbortController = new AbortController();
   abortSignal: AbortSignal = this.abortController.signal;
   pool: Pool;
+
   runPromise = Promise.resolve() as Promise<any>;
 
   constructor(private options: SimpleSchedulerOptions) {
@@ -65,6 +65,10 @@ export class SimpleScheduler implements TargetScheduler {
       });
   }
 
+  getTargetsByPriority() {
+    return sortTargetsByPriority([...this.targetRuns.values()].map((run) => run.target));
+  }
+
   /**
    * The job of the run method is to:
    * 1. Convert the target graph into a promise graph.
@@ -75,7 +79,7 @@ export class SimpleScheduler implements TargetScheduler {
    * @param targetGraph
    * @returns
    */
-  async run(root: string, targetGraph: TargetGraph): Promise<SchedulerRunSummary> {
+  async run(root: string, targetGraph: TargetGraph, shouldRerun = false): Promise<SchedulerRunSummary> {
     const startTime: [number, number] = process.hrtime();
 
     const { continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher } = this.options;
@@ -83,20 +87,34 @@ export class SimpleScheduler implements TargetScheduler {
 
     const { targets } = targetGraph;
 
-    this.targetsByPriority = sortTargetsByPriority([...targets.values()]);
     for (const target of targets.values()) {
-      const targetRun = new WrappedTarget({
-        target,
-        root,
-        logger,
-        cacheProvider,
-        hasher,
-        shouldCache,
-        shouldResetCache,
-        continueOnError,
-        abortController,
-        pool,
-      });
+      let targetRun: WrappedTarget;
+
+      const prevTargetRun = this.targetRuns.get(target.id);
+      if (prevTargetRun) {
+        targetRun = prevTargetRun;
+
+        if (prevTargetRun.successful && shouldRerun) {
+          // this happens when a target has noted to have been changed from the outside, and we need to re-run it
+          this.markTargetAndDependentsPending(target.id);
+        } else if (prevTargetRun.waiting) {
+          // this happens when several run() calls have resulted in this targetRun to be queued
+          targetRun.shouldRerun = true;
+        }
+      } else {
+        targetRun = new WrappedTarget({
+          target,
+          root,
+          logger,
+          cacheProvider,
+          hasher,
+          shouldCache,
+          shouldResetCache,
+          continueOnError,
+          abortController,
+          pool,
+        });
+      }
 
       if (target.id === getStartTargetId()) {
         targetRun.status = "success";
@@ -147,11 +165,7 @@ export class SimpleScheduler implements TargetScheduler {
    * Used by consumers of the scheduler to notify that the inputs to the target has changed
    * @param targetId
    */
-  async onTargetChange(targetId: string) {
-    this.abortController.abort();
-
-    await this.runPromise;
-
+  markTargetAndDependentsPending(targetId) {
     const queue = [targetId];
     while (queue.length > 0) {
       const current = queue.shift()!;
@@ -159,34 +173,19 @@ export class SimpleScheduler implements TargetScheduler {
 
       if (targetRun.status !== "pending") {
         targetRun.status = "pending";
+        targetRun.shouldRerun = true;
         const dependents = targetRun.target.dependents;
         for (const dependent of dependents) {
           queue.push(dependent);
         }
       }
     }
-
-    this.abortController = new AbortController();
-    this.abortSignal = this.abortController.signal;
-    for (const targetRun of this.targetRuns.values()) {
-      targetRun.abortController = this.abortController;
-    }
-
-    this.runPromise = this.scheduleReadyTargets();
   }
 
   getReadyTargets() {
     const readyTargets: WrappedTarget[] = [];
 
-    const runningTargets = this.targetsByPriority.filter((target) => this.targetRuns.get(target.id)!.status === "running");
-    const runningTargetsCountByTask = {};
-
-    for (const target of runningTargets) {
-      runningTargetsCountByTask[target.task] =
-        typeof runningTargetsCountByTask[target.task] !== "number" ? 1 : runningTargetsCountByTask[target.task]++;
-    }
-
-    for (const target of this.targetsByPriority) {
+    for (const target of this.getTargetsByPriority()) {
       if (target.id === getStartTargetId()) {
         continue;
       }
@@ -197,12 +196,11 @@ export class SimpleScheduler implements TargetScheduler {
       // filter all dependencies for those that are "ready"
       const ready = targetDeps.every((dep) => {
         const fromTarget = this.targetRuns.get(dep)!;
-        return fromTarget.status === "success" || fromTarget.status === "skipped" || dep === getStartTargetId();
+        return fromTarget.successful || dep === getStartTargetId();
       });
 
       if (ready && targetRun.status === "pending") {
         readyTargets.push(targetRun);
-        runningTargetsCountByTask[target.task] = (runningTargetsCountByTask[target.task] ?? 0) + 1;
       }
     }
 
@@ -229,27 +227,35 @@ export class SimpleScheduler implements TargetScheduler {
     const promises: Promise<any>[] = [];
 
     for (const nextTarget of this.getReadyTargets()) {
-      promises.push(
-        nextTarget
-          .run()
-          .then(() => {
-            return this.scheduleReadyTargets();
-          })
-          .catch((e) => {
-            // if a continue option is set, this merely records what errors have been encountered
-            // it'll continue down the execution until all the tasks that still works
-            if (this.options?.continueOnError) {
-              return this.scheduleReadyTargets();
-            } else {
-              // immediately reject, if not using "continue" option
-              throw e;
-            }
-          })
-      );
+      const runPromise = this.#generateTargetRunPromise(nextTarget);
+      promises.push(runPromise);
     }
 
-    this.runPromise = Promise.all(promises);
-    return this.runPromise;
+    await Promise.all(promises);
+  }
+
+  async #generateTargetRunPromise(target: WrappedTarget) {
+    if (target.successful && !target.shouldRerun) {
+      return target.result;
+    }
+
+    do {
+      target.shouldRerun = false;
+
+      try {
+        await target.run();
+        await this.scheduleReadyTargets();
+      } catch (e) {
+        // if a continue option is set, this merely records what errors have been encountered
+        // it'll continue down the execution until all the tasks that still works
+        if (this.options?.continueOnError) {
+          return this.scheduleReadyTargets();
+        } else {
+          // immediately reject, if not using "continue" option
+          throw e;
+        }
+      }
+    } while (target.shouldRerun);
   }
 
   async cleanup() {
