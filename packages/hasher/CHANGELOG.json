@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Fri, 18 Nov 2022 19:52:38 GMT",
+      "tag": "@lage-run/hasher_v0.1.2",
+      "version": "0.1.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/hasher",
+            "commit": "0970a6aa757664bd8fa9338982ef6e051500577c",
+            "comment": "Update dependency workspace-tools to v0.29.1"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Nov 2022 06:27:27 GMT",
       "tag": "@lage-run/hasher_v0.1.1",
       "version": "0.1.1",

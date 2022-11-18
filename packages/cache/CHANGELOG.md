@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Fri, 11 Nov 2022 07:29:47 GMT and should not be manually modified.
+This log was last generated on Fri, 18 Nov 2022 19:52:38 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.3
+
+Fri, 18 Nov 2022 19:52:38 GMT
+
+### Patches
+
+- Bump @lage-run/hasher to v0.1.2
 
 ## 0.2.2
 

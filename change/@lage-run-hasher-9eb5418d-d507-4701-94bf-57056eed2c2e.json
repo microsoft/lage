@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update dependency workspace-tools to v0.29.1",
-  "packageName": "@lage-run/hasher",
-  "email": "email not defined",
-  "dependentChangeType": "patch"
-}
