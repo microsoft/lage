@@ -237,28 +237,33 @@ export class SimpleScheduler implements TargetScheduler {
   }
 
   async #generateTargetRunPromise(target: WrappedTarget) {
-    // if (target.result && target.successful && !target.shouldRerun) {
-    //   await target.result;
-    //   await this.scheduleReadyTargets();
-    // }
+    let runError: unknown | undefined;
 
-    do {
-      target.shouldRerun = false;
+    if (target.result && target.successful && !target.shouldRerun) {
+      await target.result;
+    } else {
+      do {
+        target.shouldRerun = false;
 
-      try {
-        await target.run();
-        await this.scheduleReadyTargets();
-      } catch (e) {
-        // if a continue option is set, this merely records what errors have been encountered
-        // it'll continue down the execution until all the tasks that still works
-        if (this.options?.continueOnError) {
-          return this.scheduleReadyTargets();
-        } else {
+        try {
+          await target.run();
+        } catch (e) {
+          runError = e;
+        }
+      } while (target.shouldRerun);
+
+      // if a continue option is set, this merely records what errors have been encountered
+      // it'll continue down the execution until all the tasks that still works
+      if (runError && !this.options?.continueOnError) {
+        if (!this.options?.continueOnError) {
           // immediately reject, if not using "continue" option
-          throw e;
+          throw runError;
         }
       }
-    } while (target.shouldRerun);
+    }
+
+    // finally do another round of scheduling to run next round of targets
+    await this.scheduleReadyTargets();
   }
 
   async cleanup() {
