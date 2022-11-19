@@ -94,12 +94,14 @@ export class SimpleScheduler implements TargetScheduler {
       if (prevTargetRun) {
         targetRun = prevTargetRun;
 
+        // If previous run has been successful, then we may want to rerun
         if (prevTargetRun.successful && shouldRerun) {
-          // this happens when a target has noted to have been changed from the outside, and we need to re-run it
           this.markTargetAndDependentsPending(target.id);
         } else if (prevTargetRun.waiting) {
-          // this happens when several run() calls have resulted in this targetRun to be queued
-          targetRun.shouldRerun = true;
+          targetRun.shouldRerun = shouldRerun;
+        } else if (!prevTargetRun.successful) {
+          // If previous run has failed, we should rerun
+          this.markTargetAndDependentsPending(target.id);
         }
       } else {
         targetRun = new WrappedTarget({
@@ -235,9 +237,10 @@ export class SimpleScheduler implements TargetScheduler {
   }
 
   async #generateTargetRunPromise(target: WrappedTarget) {
-    if (target.successful && !target.shouldRerun) {
-      return target.result;
-    }
+    // if (target.result && target.successful && !target.shouldRerun) {
+    //   await target.result;
+    //   await this.scheduleReadyTargets();
+    // }
 
     do {
       target.shouldRerun = false;

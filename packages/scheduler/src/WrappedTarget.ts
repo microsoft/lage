@@ -40,7 +40,7 @@ export class WrappedTarget implements TargetRun {
   target: Target;
   status: TargetStatus;
 
-  result: Promise<unknown> | undefined;
+  result: Promise<{ stdoutBuffer: string; stderrBuffer: string }> | undefined;
   shouldRerun = false;
 
   get abortController() {
@@ -231,6 +231,10 @@ export class WrappedTarget implements TargetRun {
     const bufferStdout = bufferTransform();
     const bufferStderr = bufferTransform();
 
+    if (!this.shouldRerun && this.result && this.successful) {
+      return this.result;
+    }
+
     this.result = pool.exec(
       { target },
       target.weight ?? 1,
@@ -259,7 +263,7 @@ export class WrappedTarget implements TargetRun {
         releaseStderr();
       },
       abortSignal
-    );
+    ) as Promise<{ stdoutBuffer: string; stderrBuffer: string }>;
 
     await this.result;
 
