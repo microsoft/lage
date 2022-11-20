@@ -42,7 +42,6 @@ export async function watchAction(options: RunOptions, command: Command) {
   // Configure logger
   const logger = createLogger();
   const reporter = new LogReporter({
-    grouped: true,
     logLevel: LogLevel[options.logLevel],
   });
   logger.addReporter(reporter);
@@ -127,7 +126,7 @@ export async function watchAction(options: RunOptions, command: Command) {
 
   // When initial run is done, disable fetching of caches on all targets, keep writing to the cache
   const watcher = watch(root);
-  watcher.on("change", (packageName) => {
+  watcher.on("change", async (packageName) => {
     reporter.resetLogEntries();
     const targets = new Map<string, Target>();
     for (const target of targetGraph.targets.values()) {
@@ -138,7 +137,8 @@ export async function watchAction(options: RunOptions, command: Command) {
 
     const deltaGraph = { targets };
 
-    scheduler.run(root, deltaGraph, true);
+    const summary = await scheduler.run(root, deltaGraph, true);
+    displaySummary(summary, logger.reporters);
   });
 }
 
