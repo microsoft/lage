@@ -40,12 +40,22 @@ export class WrappedTarget implements TargetRun {
   target: Target;
   status: TargetStatus;
 
+  result: Promise<{ stdoutBuffer: string; stderrBuffer: string }> | undefined;
+
   get abortController() {
     return this.options.abortController;
   }
 
   set abortController(abortController: AbortController) {
     this.options.abortController = abortController;
+  }
+
+  get successful() {
+    return this.status === "skipped" || this.status === "success";
+  }
+
+  get waiting() {
+    return this.status === "pending" || this.status === "queued";
   }
 
   constructor(public options: WrappedTargetOptions) {
@@ -220,7 +230,7 @@ export class WrappedTarget implements TargetRun {
     const bufferStdout = bufferTransform();
     const bufferStderr = bufferTransform();
 
-    await pool.exec(
+    this.result = pool.exec(
       { target },
       target.weight ?? 1,
       (_worker, stdout, stderr) => {
@@ -248,7 +258,9 @@ export class WrappedTarget implements TargetRun {
         releaseStderr();
       },
       abortSignal
-    );
+    ) as Promise<{ stdoutBuffer: string; stderrBuffer: string }>;
+
+    await this.result;
 
     return { stdoutBuffer: bufferStdout.buffer, stderrBuffer: bufferStderr.buffer };
   }
