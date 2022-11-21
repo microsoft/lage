@@ -1,8 +1,17 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Fri, 18 Nov 2022 19:52:38 GMT and should not be manually modified.
+This log was last generated on Mon, 21 Nov 2022 06:32:03 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.6.0
+
+Mon, 21 Nov 2022 06:32:03 GMT
+
+### Minor changes
+
+- adding provision for the run() to pay attention to previous and currently running targetRun's (kchau@microsoft.com)
+- Bump @lage-run/scheduler-types to v0.2.9
 
 ## 0.5.15
 

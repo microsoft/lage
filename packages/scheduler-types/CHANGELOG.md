@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler-types
 
-This log was last generated on Fri, 11 Nov 2022 07:29:47 GMT and should not be manually modified.
+This log was last generated on Mon, 21 Nov 2022 06:32:03 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.9
+
+Mon, 21 Nov 2022 06:32:03 GMT
+
+### Patches
+
+- adding a "rerun" flag for "run()" (kchau@microsoft.com)
 
 ## 0.2.8
 

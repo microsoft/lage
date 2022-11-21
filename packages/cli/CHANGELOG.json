@@ -2,6 +2,39 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Mon, 21 Nov 2022 06:32:03 GMT",
+      "tag": "@lage-run/cli_v0.5.2",
+      "version": "0.5.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "aafe75c34b61ed10f11c829a7bb1f5ad86f0b810",
+            "comment": "Fixing the watch mode to use the newer simple scheduler"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.6.0",
+            "commit": "aafe75c34b61ed10f11c829a7bb1f5ad86f0b810"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.9",
+            "commit": "aafe75c34b61ed10f11c829a7bb1f5ad86f0b810"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.40",
+            "commit": "aafe75c34b61ed10f11c829a7bb1f5ad86f0b810"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 18 Nov 2022 19:52:38 GMT",
       "tag": "@lage-run/cli_v0.5.1",
       "version": "0.5.1",

@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Mon, 21 Nov 2022 06:32:03 GMT",
+      "tag": "@lage-run/scheduler-types_v0.2.9",
+      "version": "0.2.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "aafe75c34b61ed10f11c829a7bb1f5ad86f0b810",
+            "comment": "adding a \"rerun\" flag for \"run()\""
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 11 Nov 2022 07:29:47 GMT",
       "tag": "@lage-run/scheduler-types_v0.2.8",
       "version": "0.2.8",

@@ -1,8 +1,19 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Fri, 18 Nov 2022 19:52:38 GMT and should not be manually modified.
+This log was last generated on Mon, 21 Nov 2022 06:32:03 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.2
+
+Mon, 21 Nov 2022 06:32:03 GMT
+
+### Patches
+
+- Fixing the watch mode to use the newer simple scheduler (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.6.0
+- Bump @lage-run/scheduler-types to v0.2.9
+- Bump @lage-run/reporters to v0.2.40
 
 ## 0.5.1
 

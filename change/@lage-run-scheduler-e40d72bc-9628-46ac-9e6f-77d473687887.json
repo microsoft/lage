@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "adding provision for the run() to pay attention to previous and currently running targetRun's",
-  "packageName": "@lage-run/scheduler",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
