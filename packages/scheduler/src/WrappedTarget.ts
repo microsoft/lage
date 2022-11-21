@@ -41,7 +41,6 @@ export class WrappedTarget implements TargetRun {
   status: TargetStatus;
 
   result: Promise<{ stdoutBuffer: string; stderrBuffer: string }> | undefined;
-  shouldRerun = false;
 
   get abortController() {
     return this.options.abortController;
@@ -230,10 +229,6 @@ export class WrappedTarget implements TargetRun {
 
     const bufferStdout = bufferTransform();
     const bufferStderr = bufferTransform();
-
-    if (!this.shouldRerun && this.result && this.successful) {
-      return this.result;
-    }
 
     this.result = pool.exec(
       { target },

@@ -39,6 +39,7 @@ export interface SimpleSchedulerOptions {
  */
 export class SimpleScheduler implements TargetScheduler {
   targetRuns: Map<string, WrappedTarget> = new Map();
+  rerunTargets: Set<string> = new Set();
   abortController: AbortController = new AbortController();
   abortSignal: AbortSignal = this.abortController.signal;
   pool: Pool;
@@ -97,8 +98,8 @@ export class SimpleScheduler implements TargetScheduler {
         // If previous run has been successful, then we may want to rerun
         if (prevTargetRun.successful && shouldRerun) {
           this.markTargetAndDependentsPending(target.id);
-        } else if (prevTargetRun.waiting) {
-          targetRun.shouldRerun = shouldRerun;
+        } else if (prevTargetRun.waiting && shouldRerun) {
+          this.rerunTargets.add(targetRun.target.id);
         } else if (!prevTargetRun.successful) {
           // If previous run has failed, we should rerun
           this.markTargetAndDependentsPending(target.id);
@@ -175,7 +176,7 @@ export class SimpleScheduler implements TargetScheduler {
 
       if (targetRun.status !== "pending") {
         targetRun.status = "pending";
-        targetRun.shouldRerun = true;
+        this.rerunTargets.add(targetRun.target.id);
         const dependents = targetRun.target.dependents;
         for (const dependent of dependents) {
           queue.push(dependent);
@@ -239,18 +240,19 @@ export class SimpleScheduler implements TargetScheduler {
   async #generateTargetRunPromise(target: WrappedTarget) {
     let runError: unknown | undefined;
 
-    if (target.result && target.successful && !target.shouldRerun) {
+    if (target.result && target.successful && !this.rerunTargets.has(target.target.id)) {
       await target.result;
     } else {
+      // This do-while loop only runs again if something causes this target to rerun (asynchronously triggering a re-run)
       do {
-        target.shouldRerun = false;
+        this.rerunTargets.delete(target.target.id);
 
         try {
           await target.run();
         } catch (e) {
           runError = e;
         }
-      } while (target.shouldRerun);
+      } while (this.rerunTargets.has(target.target.id));
 
       // if a continue option is set, this merely records what errors have been encountered
       // it'll continue down the execution until all the tasks that still works
