@@ -39,6 +39,7 @@ export class WrappedTarget implements TargetRun {
   duration: [number, number] = [0, 0];
   target: Target;
   status: TargetStatus;
+  threadId = 0;
 
   result: Promise<{ stdoutBuffer: string; stderrBuffer: string }> | undefined;
 
@@ -233,8 +234,9 @@ export class WrappedTarget implements TargetRun {
     this.result = pool.exec(
       { target },
       target.weight ?? 1,
-      (_worker, stdout, stderr) => {
+      (worker, stdout, stderr) => {
         this.onStart();
+        this.threadId = worker.threadId;
 
         stdout.pipe(bufferStdout.transform);
         stderr.pipe(bufferStderr.transform);

@@ -7,4 +7,5 @@ export interface TargetRun {
   duration: [number, number];
   target: Target;
   status: TargetStatus;
+  threadId: number;
 }
