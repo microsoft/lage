@@ -29,30 +29,6 @@ describe("ChromeTraceEventsReporter", () => {
     const aTestTarget = createTarget("a", "test");
     const bBuildTarget = createTarget("b", "build");
 
-    const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0], queueTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0], queueTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0], queueTime: [0, 0] }],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build again, but look there is an error!"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0], queueTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0], queueTime: [0, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
-    ] as [TargetStatusEntry | TargetMessageEntry, string?][];
-
-    for (const log of logs) {
-      reporter.log({
-        data: log[0],
-        level: "status" in log[0] ? LogLevel.info : LogLevel.verbose,
-        msg: log[1] ?? "",
-        timestamp: 0,
-      });
-    }
-
     reporter.summarize({
       duration: [100, 0],
       startTime: [0, 0],
@@ -67,9 +43,12 @@ describe("ChromeTraceEventsReporter", () => {
         queued: [],
       },
       targetRuns: new Map([
-        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [0, 0], queueTime: [0, 0] }],
-        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [10, 0], startTime: [1, 0], queueTime: [0, 0] }],
-        [bBuildTarget.id, { target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0], queueTime: [0, 0] }],
+        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [0, 0], queueTime: [0, 0], threadId: 1 }],
+        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [10, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 2 }],
+        [
+          bBuildTarget.id,
+          { target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0], queueTime: [0, 0], threadId: 3 },
+        ],
       ]),
       maxWorkerMemoryUsage: 0,
       workerRestarts: 0,
@@ -81,6 +60,15 @@ describe("ChromeTraceEventsReporter", () => {
     expect(writer.toString()).toMatchInlineSnapshot(`
       "{
         "traceEvents": [
+          {
+            "name": "a#build",
+            "cat": "failed",
+            "ph": "X",
+            "ts": 0,
+            "dur": 60000000,
+            "pid": 1,
+            "tid": 1
+          },
           {
             "name": "a#test",
             "cat": "success",
@@ -98,15 +86,6 @@ describe("ChromeTraceEventsReporter", () => {
             "dur": 30000000,
             "pid": 1,
             "tid": 3
-          },
-          {
-            "name": "a#build",
-            "cat": "failed",
-            "ph": "X",
-            "ts": 0,
-            "dur": 60000000,
-            "pid": 1,
-            "tid": 1
           }
         ],
         "displayTimeUnit": "ms"
