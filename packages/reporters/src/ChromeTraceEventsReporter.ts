@@ -1,11 +1,8 @@
-import { getStartTargetId } from "@lage-run/target-graph";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
-import type { LogEntry, Reporter } from "@lage-run/logger";
+import type { Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler-types";
-import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
 import type { Writable } from "stream";
 
 interface TraceEventsObject {

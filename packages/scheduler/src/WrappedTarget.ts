@@ -72,14 +72,14 @@ export class WrappedTarget implements TargetRun {
   onAbort() {
     this.status = "aborted";
     this.duration = process.hrtime(this.startTime);
-    this.options.logger.info("aborted", { target: this.target, status: "aborted" });
+    this.options.logger.info("aborted", { target: this.target, status: "aborted", threadId: this.threadId });
   }
 
   onStart() {
     if (this.status !== "running") {
       this.status = "running";
       this.startTime = process.hrtime();
-      this.options.logger.info("running", { target: this.target, status: "running" });
+      this.options.logger.info("running", { target: this.target, status: "running", threadId: this.threadId });
     }
   }
 
@@ -90,6 +90,7 @@ export class WrappedTarget implements TargetRun {
       target: this.target,
       status: "success",
       duration: this.duration,
+      threadId: this.threadId,
     });
   }
 
@@ -100,6 +101,7 @@ export class WrappedTarget implements TargetRun {
       target: this.target,
       status: "failed",
       duration: this.duration,
+      threadId: this.threadId,
     });
 
     if (!this.options.continueOnError && this.options.abortController) {
@@ -115,6 +117,7 @@ export class WrappedTarget implements TargetRun {
       status: "skipped",
       duration: this.duration,
       hash,
+      threadId: this.threadId,
     });
   }
 
@@ -235,20 +238,20 @@ export class WrappedTarget implements TargetRun {
       { target },
       target.weight ?? 1,
       (worker, stdout, stderr) => {
-        this.onStart();
         this.threadId = worker.threadId;
+        this.onStart();
 
         stdout.pipe(bufferStdout.transform);
         stderr.pipe(bufferStderr.transform);
 
-        const releaseStdoutStream = logger.stream(LogLevel.verbose, stdout, { target });
+        const releaseStdoutStream = logger.stream(LogLevel.verbose, stdout, { target, threadId: this.threadId });
 
         releaseStdout = () => {
           releaseStdoutStream();
           stdout.unpipe(bufferStdout.transform);
         };
 
-        const releaseStderrStream = logger.stream(LogLevel.verbose, stderr, { target });
+        const releaseStderrStream = logger.stream(LogLevel.verbose, stderr, { target, threadId: this.threadId });
 
         releaseStderr = () => {
           releaseStderrStream();

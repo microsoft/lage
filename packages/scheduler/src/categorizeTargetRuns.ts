@@ -1,6 +1,6 @@
 import type { TargetRunSummary, TargetRun } from "@lage-run/scheduler-types";
 
-export function categorizeTargetRuns(targetRuns: TargetRun[]): TargetRunSummary {
+export function categorizeTargetRuns<T extends TargetRun>(targetRuns: IterableIterator<T>): TargetRunSummary {
   const summary: TargetRunSummary = {
     aborted: [],
     failed: [],
