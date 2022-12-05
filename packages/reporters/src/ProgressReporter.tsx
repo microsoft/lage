@@ -13,6 +13,10 @@ interface Progress {
   total: number;
 }
 
+interface ThreadInfo {
+    [threadId: string]: string;
+}
+
 function ProgressStatus(props: { progress: Progress }) {
   const { progress } = props;
 
@@ -43,7 +47,7 @@ function SummaryInfo(props: { summary: SchedulerRunSummary }) {
   const slowestTargetRuns = [...summary.targetRuns.values()].sort((a, b) => parseFloat(hrToSeconds(hrtimeDiff(a.duration, b.duration))));
 
   return (
-    <Box borderStyle="round" borderColor="green" flexDirection="column">
+    <Box flexDirection="column">
       <Text>Summary</Text>
       
       <Text>Slowest targets</Text>
@@ -61,8 +65,10 @@ function SummaryInfo(props: { summary: SchedulerRunSummary }) {
   );
 }
 
-function ReporterApp(props: { logEvent: EventEmitter }) {
-  const [threadInfo, setThreadInfo] = React.useState({});
+
+
+function ReporterApp(props: { logEvent: EventEmitter, concurrency: number }) {
+  const [threadInfo, setThreadInfo] = React.useState<ThreadInfo>({});
   const [progress, setProgress] = React.useState({
     waiting: 0,
     completed: 0,
@@ -122,9 +128,8 @@ function ReporterApp(props: { logEvent: EventEmitter }) {
 export class ProgressReporter implements Reporter {
   logEvent: EventEmitter = new EventEmitter();
 
-  constructor(private options: { logLevel?: LogLevel } = {}) {
-    options.logLevel = options.logLevel || LogLevel.info;
-    render(<ReporterApp logEvent={this.logEvent} />);
+  constructor(private options: { concurrency: number } = { concurrency: 0 }) {
+    render(<ReporterApp logEvent={this.logEvent} concurrency={options.concurrency} />);
   }
 
   log(entry: LogEntry<any>) {

@@ -8,12 +8,14 @@ export function createReporter({
   reporter = "npmLog",
   progress = false,
   grouped = false,
+  concurrency = 0,
   verbose = false,
   logLevel = LogLevel.info,
 }: {
   reporter: string;
   progress?: boolean;
   grouped?: boolean;
+  concurrency?: number;
   verbose?: boolean;
   logLevel?: LogLevel;
 }) {
@@ -25,7 +27,7 @@ export function createReporter({
       return new AdoReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
     default:
       return progress
-        ? new ProgressReporter({ logLevel: LogLevel.verbose })
+        ? new ProgressReporter({ concurrency })
         : new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
   }
 }
