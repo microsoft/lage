@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "adding custom package.json script support",
+  "packageName": "@lage-run/scheduler",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
