@@ -40,6 +40,7 @@ function createTarget(packageName: string): Target {
     id: `${packageName}#build`,
     task: "build",
     packageName,
+    options: {},
   };
 }
 
@@ -56,6 +57,35 @@ describe("NpmScriptRunner", () => {
     });
 
     const target = createTarget("a");
+
+    const exceptionSpy = jest.fn();
+    const runPromise = runner
+      .run({
+        target,
+        weight: 1,
+        abortSignal: abortController.signal,
+      })
+      .catch(() => exceptionSpy());
+
+    await waitFor(() => childProcesses.has(getChildProcessKey("a", target.task)));
+
+    await runPromise;
+
+    expect(exceptionSpy).not.toHaveBeenCalled();
+  });
+
+  it("can run a custom npm script to completion", async () => {
+    const abortController = new AbortController();
+
+    const runner = new NpmScriptRunner({
+      nodeOptions: "",
+      npmCmd,
+      taskArgs: ["--sleep=50"],
+    });
+
+    const target = createTarget("a");
+
+    target.options!.script = "custom";
 
     const exceptionSpy = jest.fn();
     const runPromise = runner

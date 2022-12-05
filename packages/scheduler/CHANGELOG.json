@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Mon, 05 Dec 2022 18:02:35 GMT",
+      "tag": "@lage-run/scheduler_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "347522c6a3d6ec77bee6ace1bbd60a08b42e4513",
+            "comment": "adding custom package.json script support"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 21 Nov 2022 06:32:03 GMT",
       "tag": "@lage-run/scheduler_v0.6.0",
       "version": "0.6.0",

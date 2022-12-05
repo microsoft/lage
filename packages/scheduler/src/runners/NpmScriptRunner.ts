@@ -43,7 +43,7 @@ export class NpmScriptRunner implements TargetRunner {
   }
 
   private async hasNpmScript(target: Target) {
-    const { task } = target;
+    const task = target.options?.script ?? target.task;
     const packageJsonPath = join(target.cwd, "package.json");
     const packageJson = JSON.parse(await readFile(packageJsonPath, "utf8"));
     return packageJson.scripts?.[task];
@@ -58,6 +58,7 @@ export class NpmScriptRunner implements TargetRunner {
   async run(runOptions: TargetRunnerOptions) {
     const { target, weight, abortSignal } = runOptions;
     const { nodeOptions, npmCmd, taskArgs } = this.options;
+    const task = target.options?.script ?? target.task;
 
     let childProcess: ChildProcess | undefined;
 
@@ -104,7 +105,7 @@ export class NpmScriptRunner implements TargetRunner {
     /**
      * Actually spawn the npm client to run the task
      */
-    const npmRunArgs = this.getNpmArgs(target.task, taskArgs);
+    const npmRunArgs = this.getNpmArgs(task, taskArgs);
     const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter((str) => str).join(" ");
 
     await new Promise<void>((resolve, reject) => {
