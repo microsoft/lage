@@ -108,6 +108,7 @@ function ReporterApp(props: { logEvent: EventEmitter, concurrency: number }) {
 
   return (
     <Box flexDirection="column">
+      <Text color="yellow">[warning: this progress reporter is currently in beta and unstable]</Text>
       {summary ? (
         <SummaryInfo summary={summary} />
       ) : (
