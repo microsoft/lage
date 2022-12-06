@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Update devDependency @types/react to v18.0.26",
+  "packageName": "@lage-run/reporters",
+  "email": "renovate@whitesourcesoftware.com",
+  "dependentChangeType": "none"
+}
