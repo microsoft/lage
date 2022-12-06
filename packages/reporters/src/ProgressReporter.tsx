@@ -14,67 +14,96 @@ interface Progress {
 }
 
 interface ThreadInfo {
-    [threadId: string]: string;
+  [threadId: string]: string;
+}
+
+interface SummaryWithLogs {
+  schedulerRunSummary: SchedulerRunSummary;
+  logEntries: Map<string, LogEntry[]>;
 }
 
 function ProgressStatus(props: { progress: Progress }) {
-  const { progress } = props;
+  const { waiting, completed, total } = props.progress;
+  const percentage = total > 0 ? `${((completed / total) * 100).toFixed(2)}%` : "0%";
+
+  const status = `Waiting: ${waiting} | Completed: ${completed} | Total: ${total} | ${percentage}`;
 
   return (
     <Box>
-      <Text>
-        Waiting: {progress.waiting} | Completed: {progress.completed} | Total: {progress.total}{" "}
-        {progress.total > 0 ? `${((progress.completed / progress.total) * 100).toFixed(2)}%` : "0%"}
-      </Text>
+      <Text>{status}</Text>
     </Box>
   );
 }
 
-function ThreadItem(props: { threadId: string; targetId: string }) {
-  const { targetId, threadId } = props;
-
-  return (
-    <Box>
-      <Text>
-        {threadId} - {targetId}
-      </Text>
-    </Box>
-  );
+function ThreadItem(props: { targetId: string }) {
+  const { targetId } = props;
+  return <Box>{targetId ? <Text color="whiteBright">[ {targetId} ]</Text> : <Text color="gray">[ IDLE ]</Text>}</Box>;
 }
 
-function SummaryInfo(props: { summary: SchedulerRunSummary }) {
+function SummaryInfo(props: { summary: SummaryWithLogs }) {
   const { summary } = props;
-  const slowestTargetRuns = [...summary.targetRuns.values()].sort((a, b) => parseFloat(hrToSeconds(hrtimeDiff(a.duration, b.duration))));
+  const { schedulerRunSummary, logEntries } = summary;
+  const { targetRunByStatus, targetRuns, duration } = schedulerRunSummary;
+
+  const slowestTargetRuns = [...targetRuns.values()].sort((a, b) => parseFloat(hrToSeconds(hrtimeDiff(a.duration, b.duration))));
+  const { failed, aborted, skipped, success, pending } = targetRunByStatus;
+
+  const errors =
+    failed && failed.length > 0
+      ? new Map<string, LogEntry<any>[]>(failed.map((targetId) => [targetId, logEntries.get(targetId) || []]))
+      : new Map();
 
   return (
     <Box flexDirection="column">
-      <Text>Summary</Text>
-      
-      <Text>Slowest targets</Text>
-      {slowestTargetRuns
-        .slice(0, 10)
-        .filter((run) => !run.target.hidden)
-        .map((targetRun) => (
-          <Text key={targetRun.target.id}>
-            {targetRun.target.id} - {formatDuration(hrToSeconds(targetRun.duration))}
-          </Text>
-        ))}
+      <Text color="greenBright">Summary</Text>
+      <Newline />
+      <Text color="yellow">Slowest targets</Text>
 
-      <Text>Total time: {formatDuration(hrToSeconds(summary.duration))}</Text>
+      <Box flexDirection="column" marginLeft={2} marginY={1}>
+        {slowestTargetRuns
+          .slice(0, 10)
+          .filter((run) => !run.target.hidden)
+          .map((targetRun) => (
+            <Text key={targetRun.target.id}>
+              {targetRun.target.id} - {formatDuration(hrToSeconds(targetRun.duration))}
+            </Text>
+          ))}
+      </Box>
+
+      {errors.size > 0 ? <ErrorMessages errors={errors} /> : null}
+
+      <Text>{`success: ${success.length}, skipped: ${skipped.length}, pending: ${pending.length}, aborted: ${aborted.length}, failed: ${failed.length}`}</Text>
+      <Text>Took a total of {formatDuration(hrToSeconds(duration))} to complete.</Text>
     </Box>
   );
 }
 
+function ErrorMessages(props: { errors: Map<string, LogEntry<any>[]> }) {
+  const { errors } = props;
 
+  return (
+    <Box flexDirection="column">
+      <Text color="redBright">Errors</Text>
+      <Box flexDirection="column" marginLeft={2} marginY={1}>
+        {[...errors.entries()].map(([targetId, logs]) => (
+          <Box flexDirection="column" key={`errorlogs-${targetId}`} marginBottom={1}>
+            <Text color="cyanBright" underline bold>{targetId}</Text>
+            <Text>{logs.map((entry) => entry.msg).join("\n")}</Text>
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  );
+}
 
-function ReporterApp(props: { logEvent: EventEmitter, concurrency: number }) {
+function ReporterApp(props: { logEvent: EventEmitter; concurrency: number }) {
   const [threadInfo, setThreadInfo] = React.useState<ThreadInfo>({});
   const [progress, setProgress] = React.useState({
     waiting: 0,
     completed: 0,
     total: 0,
   });
-  const [summary, setSummary] = React.useState<SchedulerRunSummary | undefined>();
+  const [summary, setSummary] = React.useState<SummaryWithLogs | undefined>();
 
   const { logEvent } = props;
 
@@ -101,26 +130,34 @@ function ReporterApp(props: { logEvent: EventEmitter, concurrency: number }) {
       setProgress(progress);
     });
 
-    logEvent.on("summary", (summary: SchedulerRunSummary) => {
+    logEvent.on("summary", (summary: SummaryWithLogs) => {
       setSummary(summary);
     });
   }, [logEvent]);
 
+  const idleWorkerDummyThreadInfo = new Array(props.concurrency - Object.keys(threadInfo).length).fill(0);
   return (
     <Box flexDirection="column">
+      <Text>Lage running tasks</Text>
       <Text color="yellow">[warning: this progress reporter is currently in beta and unstable]</Text>
       {summary ? (
         <SummaryInfo summary={summary} />
       ) : (
-        <React.Fragment>
-          {Object.keys(threadInfo).length > 0 ? <Text>Workers</Text> : null}
-          {Object.entries<string>(threadInfo).map(([threadId, targetId]) => {
-            return <ThreadItem key={threadId} threadId={threadId} targetId={targetId} />;
-          })}
-
-          <Newline />
+        <Box flexDirection="column">
+          <Box flexDirection="column" marginLeft={2} marginY={1}>
+            {Object.entries<string>(threadInfo).map(([threadId, targetId]) => {
+              return <ThreadItem key={threadId} targetId={targetId} />;
+            })}
+            {idleWorkerDummyThreadInfo.map((_, index) => {
+              return (
+                <React.Fragment key={`idle-${index}`}>
+                  <ThreadItem targetId={""} />
+                </React.Fragment>
+              );
+            })}
+          </Box>
           <ProgressStatus progress={progress} />
-        </React.Fragment>
+        </Box>
       )}
     </Box>
   );
@@ -128,12 +165,21 @@ function ReporterApp(props: { logEvent: EventEmitter, concurrency: number }) {
 
 export class ProgressReporter implements Reporter {
   logEvent: EventEmitter = new EventEmitter();
+  logEntries = new Map<string, LogEntry[]>();
 
-  constructor(private options: { concurrency: number } = { concurrency: 0 }) {
+  constructor(options: { concurrency: number } = { concurrency: 0 }) {
     render(<ReporterApp logEvent={this.logEvent} concurrency={options.concurrency} />);
   }
 
   log(entry: LogEntry<any>) {
+    // save the logs for errors
+    if (entry.data?.target?.id) {
+      if (!this.logEntries.has(entry.data.target.id)) {
+        this.logEntries.set(entry.data.target.id, []);
+      }
+      this.logEntries.get(entry.data.target.id)!.push(entry);
+    }
+
     // if "hidden", do not even attempt to record or report the entry
     if (entry?.data?.target?.hidden) {
       return;
@@ -149,6 +195,6 @@ export class ProgressReporter implements Reporter {
   }
 
   summarize(schedulerRunSummary: SchedulerRunSummary) {
-    this.logEvent.emit("summary", schedulerRunSummary);
+    this.logEvent.emit("summary", { schedulerRunSummary, logEntries: this.logEntries });
   }
 }
