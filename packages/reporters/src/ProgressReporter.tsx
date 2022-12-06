@@ -135,7 +135,8 @@ function ReporterApp(props: { logEvent: EventEmitter; concurrency: number }) {
     });
   }, [logEvent]);
 
-  const idleWorkerDummyThreadInfo = new Array(props.concurrency - Object.keys(threadInfo).length).fill(0);
+  const arrayGapLength = props.concurrency - Object.keys(threadInfo).length;
+  const idleWorkerDummyThreadInfo = arrayGapLength > 0 ? new Array(arrayGapLength).fill(0) : [];
   return (
     <Box flexDirection="column">
       <Text>Lage running tasks</Text>
