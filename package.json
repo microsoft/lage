@@ -31,7 +31,7 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
-    "@types/jest": "29.2.3",
+    "@types/jest": "29.2.4",
     "@types/node": "16.18.3",
     "beachball": "2.31.5",
     "fast-glob": "3.2.12",
