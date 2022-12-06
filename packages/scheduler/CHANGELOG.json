@@ -2,6 +2,27 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Tue, 06 Dec 2022 00:48:02 GMT",
+      "tag": "@lage-run/scheduler_v0.7.1",
+      "version": "0.7.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "3fa4b9c8aa67cbc2198385e32fa38de123541f09",
+            "comment": "creating the beginnings of a progress reporter - it's in beta"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.2.10",
+            "commit": "3fa4b9c8aa67cbc2198385e32fa38de123541f09"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 05 Dec 2022 18:02:35 GMT",
       "tag": "@lage-run/scheduler_v0.7.0",
       "version": "0.7.0",

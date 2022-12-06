@@ -1,8 +1,18 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Mon, 05 Dec 2022 18:02:35 GMT and should not be manually modified.
+This log was last generated on Tue, 06 Dec 2022 00:48:02 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.21
+
+Tue, 06 Dec 2022 00:48:02 GMT
+
+### Patches
+
+- adding prebuilt yoga as a dep (cry!) (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.5.4
+- Bump @lage-run/scheduler to v0.7.1
 
 ## 2.5.20
 

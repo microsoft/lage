@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "adding prebuilt yoga as a dep (cry!)",
-  "packageName": "@lage-run/lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
