@@ -137,7 +137,7 @@ export class SimpleScheduler implements TargetScheduler {
       error = e instanceof Error ? e.message : String(e);
     } finally {
       duration = process.hrtime(startTime);
-      targetRunByStatus = categorizeTargetRuns([...this.targetRuns.values()]);
+      targetRunByStatus = categorizeTargetRuns(this.targetRuns.values());
 
       if (
         targetRunByStatus.failed.length +
@@ -237,6 +237,23 @@ export class SimpleScheduler implements TargetScheduler {
     await Promise.all(promises);
   }
 
+  logProgress() {
+    const targetRunByStatus = categorizeTargetRuns(this.targetRuns.values());
+    const total = [...this.targetRuns.values()].filter((t) => !t.target.hidden).length;
+
+    this.options.logger.verbose("", {
+      progress: {
+        waiting: targetRunByStatus.pending.length + targetRunByStatus.queued.length,
+        completed:
+          targetRunByStatus.aborted.length +
+          targetRunByStatus.failed.length +
+          targetRunByStatus.skipped.length +
+          targetRunByStatus.success.length,
+        total,
+      },
+    });
+  }
+
   async #generateTargetRunPromise(target: WrappedTarget) {
     let runError: unknown | undefined;
 
@@ -263,6 +280,8 @@ export class SimpleScheduler implements TargetScheduler {
         }
       }
     }
+
+    this.logProgress();
 
     // finally do another round of scheduling to run next round of targets
     await this.scheduleReadyTargets();

@@ -11,12 +11,14 @@ module.exports = {
         worker: path.join(__dirname, "scripts/worker/types.js"),
       },
       dependsOn: ["^types"],
+      outputs: ["lib/**/*.d.ts"]
     },
     transpile: {
       type: "worker",
       options: {
         worker: path.join(__dirname, "scripts/worker/transpile.js"),
-      }
+      },
+      outputs: ["lib/**/*.js"]
     },
     test: {
       type: "worker",

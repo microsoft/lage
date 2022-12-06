@@ -1,11 +1,8 @@
-import { getStartTargetId } from "@lage-run/target-graph";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
-import type { LogEntry, Reporter } from "@lage-run/logger";
+import type { Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler-types";
-import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
 import type { Writable } from "stream";
 
 interface TraceEventsObject {
@@ -70,29 +67,8 @@ export class ChromeTraceEventsReporter implements Reporter {
     this.logStream = fs.createWriteStream(this.outputFile, { flags: "w" });
   }
 
-  log(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
-    const data = entry.data;
-    if (isTargetStatusLogEntry(data) && data.status !== "pending" && data.status !== "queued" && data.target.id !== getStartTargetId()) {
-      if (data.status === "running") {
-        const threadId = this.threads.shift() ?? 0;
-        this.targetIdThreadMap.set(data.target.id, threadId);
-      } else {
-        const threadId = this.targetIdThreadMap.get(data.target.id)!;
-
-        this.events.traceEvents.push({
-          name: data.target.id,
-          cat: "", // to be filled in later in the "summary" step
-          ph: "X",
-          ts: 0, // to be filled in later in the "summary" step
-          dur: hrTimeToMicroseconds(data.duration ?? [0, 1000]), // in microseconds
-          pid: 1,
-          tid: threadId ?? 0,
-        });
-
-        this.threads.unshift(threadId);
-        this.threads.sort((a, b) => a - b);
-      }
-    }
+  log() {
+    // pass
   }
 
   summarize(schedulerRunSummary: SchedulerRunSummary) {
@@ -101,14 +77,26 @@ export class ChromeTraceEventsReporter implements Reporter {
     // categorize events
     const { categorize } = this.options;
 
-    for (const event of this.events.traceEvents) {
-      const targetRun = targetRuns.get(event.name)!;
+    for (const targetRun of targetRuns.values()) {
+      if (targetRun.target.hidden) {
+        continue;
+      }
 
-      event.ts = hrTimeToMicroseconds(targetRun.startTime) - hrTimeToMicroseconds(startTime);
-      event.cat = targetRun?.status ?? "";
+      const event = {
+        name: targetRun.target.id,
+        cat: targetRun.status,
+        ph: "X",
+        ts: hrTimeToMicroseconds(targetRun.startTime) - hrTimeToMicroseconds(startTime), // in microseconds
+        dur: hrTimeToMicroseconds(targetRun.duration ?? [0, 1000]), // in microseconds
+        pid: 1,
+        tid: targetRun.threadId ?? 0,
+      } as CompleteEvent;
+
       if (categorize) {
         event.cat += `,${categorize(targetRun)}`;
       }
+
+      this.events.traceEvents.push(event);
     }
 
     // write events to stream

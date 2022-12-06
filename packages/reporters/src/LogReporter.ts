@@ -119,7 +119,9 @@ export class LogReporter implements Reporter {
     }
 
     // log generic entries (not related to target)
-    return this.print(entry.msg);
+    if (entry.msg) {
+      return this.print(entry.msg);
+    }
   }
 
   private printEntry(entry: LogEntry<any>, message: string) {

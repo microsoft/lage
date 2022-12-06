@@ -21,7 +21,7 @@ module.exports = async function transpile(data) {
 
       if (entry.isDirectory() && entry.name !== "node_modules" && entry.name !== "lib" && entry.name !== "tests" && entry.name !== "dist") {
         queue.push(fullPath);
-      } else if (entry.isFile() && entry.name.endsWith(".ts")) {
+      } else if (entry.isFile() && (entry.name.endsWith(".ts") || entry.name.endsWith(".tsx"))) {
         const swcOutput = await swc.transformFile(fullPath, {
           jsc: {
             parser: {
@@ -36,7 +36,7 @@ module.exports = async function transpile(data) {
             ignoreDynamic: true
           },
         });
-        const dest = fullPath.replace(/([/\\])src/, "$1lib").replace(".ts", ".js");
+        const dest = fullPath.replace(/([/\\])src/, "$1lib").replace(".tsx", ".js").replace(".ts", ".js");
         await fs.mkdir(path.dirname(dest), { recursive: true });
         await fs.writeFile(dest, swcOutput.code);
       }
