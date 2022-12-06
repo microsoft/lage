@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fixes an array length issue",
+  "packageName": "@lage-run/reporters",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
