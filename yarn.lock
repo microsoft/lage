@@ -8153,10 +8153,12 @@ klona@^2.0.5:
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.5.tgz#d166574d90076395d9963aa7a928fabb8d76afbc"
   integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
 
-"lage-npm@npm:@lage-run/lage@2.5.19":
-  version "2.5.19"
-  resolved "https://registry.yarnpkg.com/@lage-run/lage/-/lage-2.5.19.tgz#bd21af88b87a71f9da670f176294df113f9f75b1"
-  integrity sha512-RD8tPALaR+2+tJq/dDW3vqw8/jxjEv7z2YdyyO38Rz7lSKd/vvHOTEKj+CmdVN3X3aQJGTnCu5j9yQeIkCl0ng==
+"lage-npm@npm:@lage-run/lage@2.5.21":
+  version "2.5.21"
+  resolved "https://registry.yarnpkg.com/@lage-run/lage/-/lage-2.5.21.tgz#170d0b4022785454515db7c9ad8df92581ce8ee1"
+  integrity sha512-L1owewRqwioKnk6KZmWM2omPd2sl+zRICOKyimxKPSqkMUSwawwy+6buk2FiitxIdIbEyzJYkVzqTzbJuGCRCA==
+  dependencies:
+    yoga-layout-prebuilt "^1.10.0"
   optionalDependencies:
     fsevents "~2.3.2"
 
