@@ -73,7 +73,6 @@ export function ProgressReporterApp(props: ProgressReporterAppProps) {
   return (
     <Box flexDirection="column">
       <Text>Lage running tasks with {props.concurrency} workers</Text>
-      <Text color="yellow">[warning: this progress reporter is currently in beta and unstable]</Text>
       {summary ? (
         <SummaryInfo summary={summary} />
       ) : (
