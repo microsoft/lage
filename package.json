@@ -40,7 +40,7 @@
     "lage-npm": "npm:@lage-run/lage@2.5.22",
     "lint-staged": "13.1.0",
     "patch-package": "6.5.0",
-    "prettier": "2.8.0",
+    "prettier": "2.8.1",
     "syncpack": "8.4.11"
   },
   "resolutions": {
