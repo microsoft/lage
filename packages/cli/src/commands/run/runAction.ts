@@ -16,6 +16,9 @@ import createLogger from "@lage-run/logger";
 
 import type { ReporterInitOptions } from "@lage-run/reporters";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
+import { getConcurrency } from "../../config/getConcurrency.js";
+import type { TargetGraph } from "@lage-run/target-graph";
+import { NoTargetFoundError } from "../../types/errors.js";
 
 interface RunOptions extends ReporterInitOptions {
   concurrency: number;
@@ -37,14 +40,18 @@ interface RunOptions extends ReporterInitOptions {
 export async function runAction(options: RunOptions, command: Command) {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
+  const concurrency = getConcurrency(options.concurrency, config.concurrency);
 
   // Configure logger
   const logger = createLogger();
 
-  initializeReporters(logger, options);
+  initializeReporters(logger, { ...options, concurrency });
 
   if (options.profile !== undefined) {
-    const reporter = createProfileReporter(options);
+    const reporter = createProfileReporter({
+      concurrency,
+      profile: options.profile,
+    });
     logger.addReporter(reporter);
   }
 
@@ -69,6 +76,8 @@ export async function runAction(options: RunOptions, command: Command) {
     packageInfos,
   });
 
+  validateTargetGraph(targetGraph);
+
   const { cacheProvider, hasher } = createCache({
     root,
     logger,
@@ -76,7 +85,7 @@ export async function runAction(options: RunOptions, command: Command) {
     skipLocalCache: options.skipLocalCache,
   });
 
-  logger.verbose(`Running with ${options.concurrency} workers`);
+  logger.verbose(`Running with ${concurrency} workers`);
 
   const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
 
@@ -84,13 +93,13 @@ export async function runAction(options: RunOptions, command: Command) {
 
   const scheduler = new SimpleScheduler({
     logger,
-    concurrency: options.concurrency,
+    concurrency,
     cacheProvider,
     hasher,
     continueOnError: options.continue,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, options.concurrency), ...maxWorkersPerTaskMap]),
+    maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, concurrency), ...maxWorkersPerTaskMap]),
     runners: {
       npmScript: {
         script: require.resolve("./runners/NpmScriptRunner.js"),
@@ -124,5 +133,12 @@ function displaySummaryAndExit(summary: SchedulerRunSummary, reporters: Reporter
 
   for (const reporter of reporters) {
     reporter.summarize(summary);
+  }
+}
+
+function validateTargetGraph(targetGraph: TargetGraph) {
+  const visibleTargets = Array.from(targetGraph.targets.values()).filter((target) => !target.hidden);
+  if (visibleTargets.length === 0) {
+    throw NoTargetFoundError;
   }
 }

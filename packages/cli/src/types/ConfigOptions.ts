@@ -55,4 +55,9 @@ export interface ConfigOptions {
    * Maximum worker idle memory, this would cause workers to restart if they exceed this limit. This is useful to prevent memory leaks.
    */
   workerIdleMemoryLimit: number; // in bytes
+
+  /**
+   * Maximum number of concurrent tasks to run
+   */
+  concurrency: number;
 }

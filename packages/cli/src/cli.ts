@@ -1,7 +1,8 @@
 import { Command } from "commander";
 
-import { runCommand } from "./commands/run";
-import { cacheCommand } from "./commands/cache";
+import { runCommand } from "./commands/run/index.js";
+import { cacheCommand } from "./commands/cache/index.js";
+import { NoTargetFoundError } from "./types/errors.js";
 
 async function main() {
   const program = new Command();
@@ -12,7 +13,16 @@ async function main() {
 }
 
 main().catch((err) => {
-  // eslint-disable-next-line no-console
-  console.error(err);
+  /* eslint-disable no-console */
+  switch (err) {
+    case NoTargetFoundError:
+      console.log("lage: no targets found that matches the given scope.");
+      break;
+    default:
+      console.error(err);
+      break;
+  }
+  /* eslint-enable no-console */
+
   process.exitCode = 1;
 });

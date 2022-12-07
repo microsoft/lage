@@ -6,11 +6,23 @@ import type { LogEntry, Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 
 export class ProgressReporter implements Reporter {
+  timer: NodeJS.Timeout;
+  startTime: [number, number] = [0, 0];
+
   logEvent: EventEmitter = new EventEmitter();
   logEntries = new Map<string, LogEntry[]>();
 
   constructor(options: { concurrency: number } = { concurrency: 0 }) {
     render(<ProgressReporterApp logEvent={this.logEvent} concurrency={options.concurrency} />);
+    this.timer = setTimeout(this.heartBeat, 1000);
+  }
+
+  heartBeat = () => {
+    this.logEvent.emit("heartbeat", {
+      currentTime: process.hrtime(this.startTime),
+    });
+
+    this.timer = setTimeout(this.heartBeat, 1000);
   }
 
   log(entry: LogEntry<any>) {
@@ -27,6 +39,10 @@ export class ProgressReporter implements Reporter {
       return;
     }
 
+    if (entry.data && entry.data.schedulerRun) {
+      this.startTime = entry.data.schedulerRun.startTime;
+    }
+
     if (entry.data && entry.data.target && typeof entry.data.threadId !== "undefined") {
       this.logEvent.emit("status", entry);
     }
@@ -38,5 +54,6 @@ export class ProgressReporter implements Reporter {
 
   summarize(schedulerRunSummary: SchedulerRunSummary) {
     this.logEvent.emit("summary", { schedulerRunSummary, logEntries: this.logEntries });
+    clearTimeout(this.timer);
   }
 }

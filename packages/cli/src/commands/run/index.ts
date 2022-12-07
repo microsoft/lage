@@ -1,5 +1,4 @@
 import { Command } from "commander";
-import os from "os";
 import { action } from "./action.js";
 import { addLoggerOptions } from "../addLoggerOptions.js";
 import { isRunningFromCI } from "../isRunningFromCI.js";
@@ -8,18 +7,7 @@ const runCommand = new Command("run");
 
 addLoggerOptions(runCommand)
   .action(action)
-  .option(
-    "-c, --concurrency <n>",
-    "concurrency",
-    (value) => {
-      if (value.endsWith("%")) {
-        return (parseInt(value.slice(0, -1)) / 100) * os.cpus().length;
-      } else {
-        return parseInt(value) || os.cpus().length - 1;
-      }
-    },
-    os.cpus().length - 1
-  )
+  .option("-c, --concurrency <n>", "concurrency", (value) => parseInt(value, 10))
   .option("--max-workers-per-task <maxWorkersPerTarget...>", "set max worker per task, e.g. --max-workers-per-task build=2 test=4", [])
   // Common Options
   .option("--scope <scope...>", "scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)")

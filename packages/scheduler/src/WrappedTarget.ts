@@ -237,8 +237,7 @@ export class WrappedTarget implements TargetRun {
     this.result = pool.exec(
       { target },
       target.weight ?? 1,
-      (worker, stdout, stderr) => {
-        this.threadId = worker.threadId;
+      (_worker, stdout, stderr) => {
         this.onStart();
 
         stdout.pipe(bufferStdout.transform);

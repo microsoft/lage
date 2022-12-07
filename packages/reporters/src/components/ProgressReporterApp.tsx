@@ -12,14 +12,26 @@ export interface ProgressReporterAppProps {
   concurrency: number;
 }
 
+function range(len: number) {
+  return Array(len)
+    .fill(0)
+    .map((_, idx) => idx + 1);
+}
+
 export function ProgressReporterApp(props: ProgressReporterAppProps) {
-  const [threadInfo, setThreadInfo] = React.useState<ThreadInfo>({});
+  const initialThreadInfo = range(props.concurrency).reduce((acc, threadId) => {
+    acc[threadId] = "";
+    return acc;
+  }, {});
+
+  const [threadInfo, setThreadInfo] = React.useState<ThreadInfo>(initialThreadInfo);
   const [progress, setProgress] = React.useState({
     waiting: 0,
     completed: 0,
     total: 0,
   });
   const [summary, setSummary] = React.useState<SummaryWithLogs | undefined>();
+  const [currentTime, setCurrentTime] = React.useState<[number, number]>([0, 0]);
 
   const { logEvent } = props;
 
@@ -32,7 +44,7 @@ export function ProgressReporterApp(props: ProgressReporterAppProps) {
           ...threadInfo,
           [threadId]: target.id,
         }));
-      } else if (status === "success" || status === "aborted" || status === "failed") {
+      } else if (status === "success" || status === "aborted" || status === "failed" || status === "skipped") {
         setThreadInfo((threadInfo) => {
           const newThreadInfo = { ...threadInfo };
           newThreadInfo[threadId] = "";
@@ -49,13 +61,18 @@ export function ProgressReporterApp(props: ProgressReporterAppProps) {
     logEvent.on("summary", (summary: SummaryWithLogs) => {
       setSummary(summary);
     });
+
+    logEvent.on("heartbeat", (heartbeat: { currentTime: [number, number] }) => {
+      setCurrentTime(heartbeat.currentTime);
+    });
   }, [logEvent]);
 
   const arrayGapLength = props.concurrency - Object.keys(threadInfo).length;
   const idleWorkerDummyThreadInfo = arrayGapLength > 0 ? new Array(arrayGapLength).fill(0) : [];
+
   return (
     <Box flexDirection="column">
-      <Text>Lage running tasks</Text>
+      <Text>Lage running tasks with {props.concurrency} workers</Text>
       <Text color="yellow">[warning: this progress reporter is currently in beta and unstable]</Text>
       {summary ? (
         <SummaryInfo summary={summary} />
@@ -63,17 +80,17 @@ export function ProgressReporterApp(props: ProgressReporterAppProps) {
         <Box flexDirection="column">
           <Box flexDirection="column" marginLeft={2} marginY={1}>
             {Object.entries<string>(threadInfo).map(([threadId, targetId]) => {
-              return <ThreadItem key={threadId} targetId={targetId} />;
+              return <ThreadItem key={threadId} threadId={threadId} targetId={targetId} />;
             })}
             {idleWorkerDummyThreadInfo.map((_, index) => {
               return (
                 <React.Fragment key={`idle-${index}`}>
-                  <ThreadItem targetId={""} />
+                  <ThreadItem threadId={"?"} targetId={""} />
                 </React.Fragment>
               );
             })}
           </Box>
-          <ProgressStatus progress={progress} />
+          <ProgressStatus progress={progress} currentTime={currentTime} />
         </Box>
       )}
     </Box>

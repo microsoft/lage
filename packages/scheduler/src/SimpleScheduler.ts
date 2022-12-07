@@ -43,6 +43,7 @@ export class SimpleScheduler implements TargetScheduler {
   abortController: AbortController = new AbortController();
   abortSignal: AbortSignal = this.abortController.signal;
   pool: Pool;
+  workerIds: number[];
 
   runPromise = Promise.resolve() as Promise<any>;
 
@@ -64,6 +65,10 @@ export class SimpleScheduler implements TargetScheduler {
         },
         workerIdleMemoryLimit: options.workerIdleMemoryLimit, // in bytes
       });
+
+    this.workerIds = Array(options.concurrency)
+      .fill(0)
+      .map((_, idx) => idx + 1);
   }
 
   getTargetsByPriority() {
@@ -84,6 +89,13 @@ export class SimpleScheduler implements TargetScheduler {
     const startTime: [number, number] = process.hrtime();
 
     const { continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher } = this.options;
+
+    logger.verbose("", {
+      schedulerRun: {
+        startTime,
+      },
+    });
+
     const { pool, abortController } = this;
 
     const { targets } = targetGraph;
@@ -242,6 +254,7 @@ export class SimpleScheduler implements TargetScheduler {
     const total = [...this.targetRuns.values()].filter((t) => !t.target.hidden).length;
 
     this.options.logger.verbose("", {
+      poolStats: this.pool.stats(),
       progress: {
         waiting: targetRunByStatus.pending.length + targetRunByStatus.queued.length,
         completed:
@@ -256,6 +269,9 @@ export class SimpleScheduler implements TargetScheduler {
 
   async #generateTargetRunPromise(target: WrappedTarget) {
     let runError: unknown | undefined;
+
+    const threadId = this.workerIds.shift()!;
+    target.threadId = threadId;
 
     if (target.result && target.successful && !this.rerunTargets.has(target.target.id)) {
       await target.result;
@@ -280,6 +296,9 @@ export class SimpleScheduler implements TargetScheduler {
         }
       }
     }
+
+    this.workerIds.unshift(threadId);
+    this.workerIds.sort();
 
     this.logProgress();
 
