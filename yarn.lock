@@ -4028,10 +4028,10 @@ backfill-cache@^5.6.1, backfill-cache@^5.6.2:
     p-limit "^3.0.0"
     tar-fs "^2.1.0"
 
-backfill-config@6.3.0, backfill-config@^6.3.0:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/backfill-config/-/backfill-config-6.3.0.tgz#bd95115fa7c446162ada80324b9bc820fb9fa9e3"
-  integrity sha512-4Pvqe4SIthHmlJi1yEyh8ThdZCh9SbNcf12Dx1TNkLii6um3Ez1P1rruPNQGW8jFtLb5kOWWkTnXPj6OXewXSA==
+backfill-config@6.3.1, backfill-config@^6.3.0:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/backfill-config/-/backfill-config-6.3.1.tgz#7044e003dd9f5f71e277eef3d0184d213f8c4298"
+  integrity sha512-k+NsMZyinQaKqb/yRUahp2+PwXcRU2SHpOkbXOAHIlqN2qZO78hUfjViBj8YoJ7gcweWY59dP4jdgo6q3nDoEg==
   dependencies:
     backfill-logger "^5.1.3"
     find-up "^5.0.0"
