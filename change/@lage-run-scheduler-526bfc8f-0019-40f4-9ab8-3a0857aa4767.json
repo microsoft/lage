@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "sets the default to progress",
-  "packageName": "@lage-run/scheduler",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
