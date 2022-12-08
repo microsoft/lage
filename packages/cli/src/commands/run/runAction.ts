@@ -35,12 +35,16 @@ interface RunOptions extends ReporterInitOptions {
   resetCache: boolean;
   nodeArg: string;
   ignore: string[];
+  allowNoTargetRuns: boolean;
 }
 
 export async function runAction(options: RunOptions, command: Command) {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
+
+  // Merged options
   const concurrency = getConcurrency(options.concurrency, config.concurrency);
+  const allowNoTargetRuns = options.allowNoTargetRuns || config.allowNoTargetRuns;
 
   // Configure logger
   const logger = createLogger();
@@ -76,7 +80,7 @@ export async function runAction(options: RunOptions, command: Command) {
     packageInfos,
   });
 
-  validateTargetGraph(targetGraph);
+  validateTargetGraph(targetGraph, allowNoTargetRuns);
 
   const { cacheProvider, hasher } = createCache({
     root,
@@ -136,9 +140,9 @@ function displaySummaryAndExit(summary: SchedulerRunSummary, reporters: Reporter
   }
 }
 
-function validateTargetGraph(targetGraph: TargetGraph) {
+function validateTargetGraph(targetGraph: TargetGraph, allowNoTargetRuns: boolean) {
   const visibleTargets = Array.from(targetGraph.targets.values()).filter((target) => !target.hidden);
-  if (visibleTargets.length === 0) {
+  if (visibleTargets.length === 0 && !allowNoTargetRuns) {
     throw NoTargetFoundError;
   }
 }

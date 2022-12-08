@@ -33,5 +33,6 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
     runners: config?.runners ?? {},
     workerIdleMemoryLimit: config?.workerIdleMemoryLimit ?? os.totalmem(), // 0 means no limit,
     concurrency: config?.concurrency ?? os.cpus().length - 1,
+    allowNoTargetRuns: config?.allowNoTargetRuns ?? false,
   };
 }

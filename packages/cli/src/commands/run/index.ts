@@ -15,6 +15,7 @@ addLoggerOptions(runCommand)
   .option("--include-dependencies|--dependencies", 'adds the scoped packages dependencies as the "entry points" for the target graph run')
   .option("--since <since>", "only runs packages that have changed since the given commit, tag, or branch")
   .option("--to <scope...>", "runs up to a package (shorthand for --scope=<scope...> --no-dependents)")
+  .option("--allow-no-target-runs")
 
   // Run Command Options
   .option("--grouped", "groups the logs", false)

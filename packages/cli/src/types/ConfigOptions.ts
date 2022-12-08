@@ -60,4 +60,9 @@ export interface ConfigOptions {
    * Maximum number of concurrent tasks to run
    */
   concurrency: number;
+
+  /**
+   * Allows for no targets run
+   */
+  allowNoTargetRuns: boolean;
 }
