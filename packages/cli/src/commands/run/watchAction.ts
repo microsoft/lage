@@ -17,6 +17,7 @@ import createLogger, { LogLevel } from "@lage-run/logger";
 import type { ReporterInitOptions } from "@lage-run/reporters";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
+import { getConcurrency } from "../../config/getConcurrency.js";
 
 interface RunOptions extends ReporterInitOptions {
   concurrency: number;
@@ -38,6 +39,7 @@ interface RunOptions extends ReporterInitOptions {
 export async function watchAction(options: RunOptions, command: Command) {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
+  const concurrency = getConcurrency(options.concurrency, config.concurrency);
 
   // Configure logger
   const logger = createLogger();
@@ -83,13 +85,13 @@ export async function watchAction(options: RunOptions, command: Command) {
 
   const scheduler = new SimpleScheduler({
     logger,
-    concurrency: options.concurrency,
+    concurrency,
     cacheProvider,
     hasher,
     continueOnError: true,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, options.concurrency), ...maxWorkersPerTaskMap]),
+    maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, concurrency), ...maxWorkersPerTaskMap]),
     runners: {
       npmScript: {
         script: require.resolve("./runners/NpmScriptRunner.js"),

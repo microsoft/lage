@@ -27,12 +27,6 @@ export interface ChromeTraceEventsReporterOptions {
   categorize?: (targetRun?: TargetRun) => string;
 }
 
-function range(len: number) {
-  return Array(len)
-    .fill(0)
-    .map((_, idx) => idx + 1);
-}
-
 function hrTimeToMicroseconds(hr: [number, number]) {
   return hr[0] * 1e6 + hr[1] * 1e-3;
 }
@@ -48,8 +42,6 @@ export class ChromeTraceEventsReporter implements Reporter {
   logStream: Writable;
   consoleLogStream: Writable = process.stdout;
 
-  private threads: number[];
-  private targetIdThreadMap: Map<string, number> = new Map();
   private events: TraceEventsObject = {
     traceEvents: [],
     displayTimeUnit: "ms",
@@ -58,7 +50,6 @@ export class ChromeTraceEventsReporter implements Reporter {
 
   constructor(private options: ChromeTraceEventsReporterOptions) {
     this.outputFile = options.outputFile ?? getTimeBasedFilename("profile");
-    this.threads = range(options.concurrency);
 
     if (!fs.existsSync(path.dirname(this.outputFile))) {
       fs.mkdirSync(path.dirname(this.outputFile), { recursive: true });
@@ -89,7 +80,7 @@ export class ChromeTraceEventsReporter implements Reporter {
         ts: hrTimeToMicroseconds(targetRun.startTime) - hrTimeToMicroseconds(startTime), // in microseconds
         dur: hrTimeToMicroseconds(targetRun.duration ?? [0, 1000]), // in microseconds
         pid: 1,
-        tid: targetRun.threadId ?? 0,
+        tid: targetRun.threadId,
       } as CompleteEvent;
 
       if (categorize) {

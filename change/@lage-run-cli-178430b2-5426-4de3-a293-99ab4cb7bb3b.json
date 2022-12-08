@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "sets the default to progress",
+  "packageName": "@lage-run/cli",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
