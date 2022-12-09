@@ -1,8 +1,24 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Tue, 06 Dec 2022 00:48:02 GMT and should not be manually modified.
+This log was last generated on Thu, 08 Dec 2022 00:49:28 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.43
+
+Thu, 08 Dec 2022 00:49:28 GMT
+
+### Patches
+
+- adding some more niceties to progress reporter (kchau@microsoft.com)
+
+## 0.2.42
+
+Tue, 06 Dec 2022 23:28:12 GMT
+
+### Patches
+
+- fixes an array length issue (kchau@microsoft.com)
 
 ## 0.2.41
 

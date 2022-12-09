@@ -2,6 +2,48 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 08 Dec 2022 00:49:28 GMT",
+      "tag": "@lage-run/cli_v0.5.6",
+      "version": "0.5.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "ad281dfe8b222d949130821828a680d1c3625154",
+            "comment": "sets the default to progress"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.7.2",
+            "commit": "ad281dfe8b222d949130821828a680d1c3625154"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.43",
+            "commit": "ad281dfe8b222d949130821828a680d1c3625154"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 06 Dec 2022 23:28:12 GMT",
+      "tag": "@lage-run/cli_v0.5.5",
+      "version": "0.5.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.2.42",
+            "commit": "d0ad44eb759503c5642badc5210daf5028886a7c"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 06 Dec 2022 00:48:02 GMT",
       "tag": "@lage-run/cli_v0.5.4",
       "version": "0.5.4",

@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/reporters",
-  "version": "0.2.41",
+  "version": "0.2.43",
   "description": "Log reporters for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -26,7 +26,7 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@types/react": "18.0.25",
+    "@types/react": "18.0.26",
     "memory-streams": "0.1.3"
   },
   "publishConfig": {
