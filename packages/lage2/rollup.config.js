@@ -89,6 +89,13 @@ export default [
       file: "dist/index.d.ts",
       format: "es",
     },
-    plugins: [dts()],
+    plugins: [
+      nodeResolve({
+        // Since we are produce CJS, let's resolve main first!
+        mainFields: ["main", "module"],
+        preferBuiltins: true,
+      }),
+      dts(),
+    ],
   },
 ];

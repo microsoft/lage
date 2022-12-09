@@ -2,6 +2,7 @@
   "name": "@lage-run/lage",
   "version": "2.5.23",
   "main": "dist/main.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "lage": "dist/lage.js"
   },
