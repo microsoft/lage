@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Publish an index.d.ts to assist writing configurations",
+  "packageName": "@lage-run/lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
