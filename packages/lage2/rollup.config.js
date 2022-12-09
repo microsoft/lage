@@ -3,6 +3,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
 import alias from "@rollup/plugin-alias";
+import dts from "rollup-plugin-dts";
 import { retainDynamicImport } from "./scripts/retain-dynamic-import-plugin.js";
 
 export default [
@@ -81,5 +82,13 @@ export default [
       terser(),
     ],
     inlineDynamicImports: true,
+  },
+  {
+    input: "@lage-run/cli/lib/index.d.ts",
+    output: {
+      file: "dist/index.d.ts",
+      format: "es",
+    },
+    plugins: [dts()],
   },
 ];

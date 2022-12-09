@@ -4,10 +4,39 @@ const path = require("path");
 const { existsSync } = require("fs");
 
 let oldProgram;
+let compilerHost;
 
 const log = (msg) => {
   process.stdout.write(msg + "\n");
 };
+
+function createCompilerHost(compilerOptions) {
+  if (compilerHost) {
+    return compilerHost;
+  }
+
+  compilerHost = ts.createCompilerHost(compilerOptions);
+  const originalGetSourceFile = compilerHost.getSourceFile;
+
+  /** this cache skips the parsing of sourceFiles */
+  const sourceFiles = new Map();
+  function getSourceFile(fileName, languageVersion, onError, shouldCreateNewSourceFile) {
+    if (sourceFiles.has(fileName)) {
+      return sourceFiles.get(fileName);
+    }
+
+    const sourceFile = originalGetSourceFile(fileName, languageVersion, onError, shouldCreateNewSourceFile);
+
+    sourceFiles.set(fileName, sourceFile);
+
+    return sourceFile;
+  }
+
+  return {
+    ...compilerHost,
+    getSourceFile,
+  };
+}
 
 /**
  * Worker Run() function
@@ -41,7 +70,7 @@ async function run(data) {
 
   // Creating compilation host program
   log(`Creating Host Compiler...`);
-  const compilerHost = ts.createCompilerHost(compilerOptions);
+  compilerHost = compilerHost ?? createCompilerHost(compilerOptions);
 
   const program = ts.createProgram(parsedCommandLine.fileNames, compilerOptions, compilerHost, oldProgram);
   oldProgram = program;
