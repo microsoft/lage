@@ -95,7 +95,12 @@ export default [
         mainFields: ["main", "module"],
         preferBuiltins: true,
       }),
-      dts(),
+      commonjs({
+        ignoreDynamicRequires: true,
+      }),
+      dts({
+        respectExternal: true
+      }),
     ],
   },
 ];
