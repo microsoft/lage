@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Added logging for exit code",
+  "packageName": "lage",
+  "email": "viditmathur@microsoft.com",
+  "dependentChangeType": "patch"
+}
