@@ -61,13 +61,12 @@ export class NpmScriptTask {
       cp.on("exit", handleChildProcessExit);
 
       function handleChildProcessExit(code: number) {
-        logger.verbose(`Exiting ${[npmCmd, ...npmArgs].join(" ")} with exit code ${code}`);
-
         if (code === 0) {
           NpmScriptTask.activeProcesses.delete(cp);
           return resolve();
         }
 
+        logger.verbose(`Exiting ${[npmCmd, ...npmArgs].join(" ")} with exit code ${code}`);
         cp.stdout.destroy();
         cp.stdin.destroy();
         reject();
