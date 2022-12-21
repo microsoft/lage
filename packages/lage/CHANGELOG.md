@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 01 Nov 2022 20:12:49 GMT and should not be manually modified.
+This log was last generated on Wed, 21 Dec 2022 22:10:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.9.6
+
+Wed, 21 Dec 2022 22:10:21 GMT
+
+### Patches
+
+- Added logging for exit code (viditmathur@microsoft.com)
 
 ## 1.9.5
 

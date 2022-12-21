@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 21 Dec 2022 22:10:21 GMT",
+      "tag": "lage_v1.9.6",
+      "version": "1.9.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "viditmathur@microsoft.com",
+            "package": "lage",
+            "commit": "acc23f883d9a9a158f76f5cdd591ea1d85cee7c9",
+            "comment": "Added logging for exit code"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 01 Nov 2022 20:12:49 GMT",
       "tag": "lage_v1.9.5",
       "version": "1.9.5",
