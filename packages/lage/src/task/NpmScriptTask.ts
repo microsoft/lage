@@ -66,6 +66,7 @@ export class NpmScriptTask {
           return resolve();
         }
 
+        logger.verbose(`Exiting ${[npmCmd, ...npmArgs].join(" ")} with exit code ${code}`);
         cp.stdout.destroy();
         cp.stdin.destroy();
         reject();
