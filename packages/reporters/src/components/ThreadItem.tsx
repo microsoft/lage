@@ -1,14 +1,7 @@
 import * as React from "react";
-import { Box, Text } from "ink";
+import { Text } from "ink";
 
-export function ThreadItem(props: { threadId: string | number; targetId: string }) {
-  const { targetId, threadId } = props;
-  return (
-    <Box>
-      <Box width="2">
-        <Text>{threadId}</Text>
-      </Box>
-      {targetId ? <Text color="whiteBright">{targetId} </Text> : <Text color="gray">IDLE</Text>}
-    </Box>
-  );
+export function ThreadItem(props: { targetId: string }) {
+  const { targetId } = props;
+  return targetId ? <Text color="whiteBright">{targetId} </Text> : <Text color="gray">IDLE</Text>;
 }

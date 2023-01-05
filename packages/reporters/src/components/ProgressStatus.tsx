@@ -5,16 +5,13 @@ import { Progress } from "../types/progressBarTypes";
 
 export interface ProgressStatusProps {
   progress: Progress;
-  currentTime: [number, number];
 }
 
 export function ProgressStatus(props: ProgressStatusProps) {
   const { waiting, completed, total } = props.progress;
   const percentage = total > 0 ? `${((completed / total) * 100).toFixed(2)}%` : "0%";
 
-  const status = `Waiting: ${waiting} | Completed: ${completed} | Total: ${total} | ${percentage} | ${formatDuration(
-    hrToSeconds(props.currentTime)
-  )}`;
+  const status = `Waiting: ${waiting} | Completed: ${completed} | Total: ${total} | ${percentage}`;
 
   return (
     <Box>

@@ -7,9 +7,7 @@ export interface Progress {
   total: number;
 }
 
-export interface ThreadInfo {
-  [threadId: string]: string;
-}
+export type ThreadInfo = Set<string>;
 
 export interface SummaryWithLogs {
   schedulerRunSummary: SchedulerRunSummary;
