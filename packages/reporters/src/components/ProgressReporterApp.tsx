@@ -50,7 +50,7 @@ export function ProgressReporterApp(props: ProgressReporterAppProps) {
   }, [logEvent]);
 
   const limit = 16;
-  const hasMore = Object.keys(threadInfo).length > limit;
+  const hasMore = threadInfo.size > limit;
 
   return (
     <Box flexDirection="column">
@@ -64,9 +64,8 @@ export function ProgressReporterApp(props: ProgressReporterAppProps) {
             {[...threadInfo].slice(Math.max(0, threadInfo.size - limit)).map((targetId) => (
               <ThreadItem key={targetId} targetId={targetId} />
             ))}
+            {hasMore && <Text>... (displaying most recent {limit})</Text>}
           </Box>
-
-          {hasMore && <Text>... and {Object.keys(threadInfo).length - limit} more</Text>}
         </Box>
       )}
     </Box>
