@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Thu, 05 Jan 2023 00:40:50 GMT",
+      "tag": "@lage-run/scheduler_v0.7.3",
+      "version": "0.7.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "961843bef658c51312e02498554ad338e467e1a7",
+            "comment": "fixing progress bar to not be a bottleneck"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 08 Dec 2022 00:49:28 GMT",
       "tag": "@lage-run/scheduler_v0.7.2",
       "version": "0.7.2",

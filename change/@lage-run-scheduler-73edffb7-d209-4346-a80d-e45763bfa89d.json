@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixing progress bar to not be a bottleneck",
-  "packageName": "@lage-run/scheduler",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

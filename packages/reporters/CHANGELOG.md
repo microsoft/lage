@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Thu, 08 Dec 2022 00:49:28 GMT and should not be manually modified.
+This log was last generated on Thu, 05 Jan 2023 00:40:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.44
+
+Thu, 05 Jan 2023 00:40:50 GMT
+
+### Patches
+
+- fixing progress bar to not be a bottleneck (kchau@microsoft.com)
 
 ## 0.2.43
 
