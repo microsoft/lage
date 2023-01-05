@@ -25,6 +25,8 @@ export function createReporter({
     case "azureDevops":
     case "adoLog":
       return new AdoReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+    case "old":
+      return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
     default:
       return progress
         ? new ProgressReporter({ concurrency })

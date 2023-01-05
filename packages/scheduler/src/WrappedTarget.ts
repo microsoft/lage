@@ -72,21 +72,21 @@ export class WrappedTarget implements TargetRun {
   onAbort() {
     this.status = "aborted";
     this.duration = process.hrtime(this.startTime);
-    this.options.logger.info("aborted", { target: this.target, status: "aborted", threadId: this.threadId });
+    this.options.logger.info("", { target: this.target, status: "aborted", threadId: this.threadId });
   }
 
-  onStart() {
+  onStart(threadId: number) {
     if (this.status !== "running") {
       this.status = "running";
       this.startTime = process.hrtime();
-      this.options.logger.info("running", { target: this.target, status: "running", threadId: this.threadId });
+      this.options.logger.info("", { target: this.target, status: "running", threadId });
     }
   }
 
   onComplete() {
     this.status = "success";
     this.duration = process.hrtime(this.startTime);
-    this.options.logger.info("success", {
+    this.options.logger.info("", {
       target: this.target,
       status: "success",
       duration: this.duration,
@@ -97,7 +97,7 @@ export class WrappedTarget implements TargetRun {
   onFail() {
     this.status = "failed";
     this.duration = process.hrtime(this.startTime);
-    this.options.logger.info("failed", {
+    this.options.logger.info("", {
       target: this.target,
       status: "failed",
       duration: this.duration,
@@ -112,7 +112,7 @@ export class WrappedTarget implements TargetRun {
   onSkipped(hash: string | null) {
     this.status = "skipped";
     this.duration = process.hrtime(this.startTime);
-    this.options.logger.info(`skipped`, {
+    this.options.logger.info("", {
       target: this.target,
       status: "skipped",
       duration: this.duration,
@@ -160,7 +160,7 @@ export class WrappedTarget implements TargetRun {
     const abortSignal = abortController.signal;
 
     if (abortSignal.aborted) {
-      this.onStart();
+      this.onStart(0);
       this.onAbort();
       return;
     }
@@ -174,7 +174,7 @@ export class WrappedTarget implements TargetRun {
       if (cacheHit) {
         logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`, { target });
 
-        this.onStart();
+        this.onStart(0);
 
         const cachedOutputFile = getLageOutputCacheLocation(this.target, hash ?? "");
 
@@ -237,20 +237,22 @@ export class WrappedTarget implements TargetRun {
     this.result = pool.exec(
       { target },
       target.weight ?? 1,
-      (_worker, stdout, stderr) => {
-        this.onStart();
+      (worker, stdout, stderr) => {
+        const threadId = worker.threadId;
+
+        this.onStart(threadId);
 
         stdout.pipe(bufferStdout.transform);
         stderr.pipe(bufferStderr.transform);
 
-        const releaseStdoutStream = logger.stream(LogLevel.verbose, stdout, { target, threadId: this.threadId });
+        const releaseStdoutStream = logger.stream(LogLevel.verbose, stdout, { target, threadId });
 
         releaseStdout = () => {
           releaseStdoutStream();
           stdout.unpipe(bufferStdout.transform);
         };
 
-        const releaseStderrStream = logger.stream(LogLevel.verbose, stderr, { target, threadId: this.threadId });
+        const releaseStderrStream = logger.stream(LogLevel.verbose, stderr, { target, threadId });
 
         releaseStderr = () => {
           releaseStderrStream();

@@ -12,17 +12,8 @@ export interface ProgressReporterAppProps {
   concurrency: number;
 }
 
-function range(len: number) {
-  return Array(len)
-    .fill(0)
-    .map((_, idx) => idx + 1);
-}
-
 export function ProgressReporterApp(props: ProgressReporterAppProps) {
-  const initialThreadInfo = range(props.concurrency).reduce((acc, threadId) => {
-    acc[threadId] = "";
-    return acc;
-  }, {});
+  const initialThreadInfo: ThreadInfo = new Set();
 
   const [threadInfo, setThreadInfo] = React.useState<ThreadInfo>(initialThreadInfo);
   const [progress, setProgress] = React.useState({
@@ -31,7 +22,6 @@ export function ProgressReporterApp(props: ProgressReporterAppProps) {
     total: 0,
   });
   const [summary, setSummary] = React.useState<SummaryWithLogs | undefined>();
-  const [currentTime, setCurrentTime] = React.useState<[number, number]>([0, 0]);
 
   const { logEvent } = props;
 
@@ -39,17 +29,13 @@ export function ProgressReporterApp(props: ProgressReporterAppProps) {
     logEvent.on("status", (entry: LogEntry<any>) => {
       const { target, threadId, status } = entry.data;
 
-      if (status && status === "running") {
-        setThreadInfo((threadInfo) => ({
-          ...threadInfo,
-          [threadId]: target.id,
-        }));
+      if (status === "running") {
+        setThreadInfo((threadInfo) => new Set(threadInfo).add(target.id));
       } else if (status === "success" || status === "aborted" || status === "failed" || status === "skipped") {
         setThreadInfo((threadInfo) => {
-          const newThreadInfo = { ...threadInfo };
-          newThreadInfo[threadId] = "";
-
-          return newThreadInfo;
+          const newSet = new Set(threadInfo);
+          newSet.delete(target.id);
+          return newSet;
         });
       }
     });
@@ -61,14 +47,10 @@ export function ProgressReporterApp(props: ProgressReporterAppProps) {
     logEvent.on("summary", (summary: SummaryWithLogs) => {
       setSummary(summary);
     });
-
-    logEvent.on("heartbeat", (heartbeat: { currentTime: [number, number] }) => {
-      setCurrentTime(heartbeat.currentTime);
-    });
   }, [logEvent]);
 
-  const arrayGapLength = props.concurrency - Object.keys(threadInfo).length;
-  const idleWorkerDummyThreadInfo = arrayGapLength > 0 ? new Array(arrayGapLength).fill(0) : [];
+  const limit = 16;
+  const hasMore = Object.keys(threadInfo).length > limit;
 
   return (
     <Box flexDirection="column">
@@ -77,19 +59,14 @@ export function ProgressReporterApp(props: ProgressReporterAppProps) {
         <SummaryInfo summary={summary} />
       ) : (
         <Box flexDirection="column">
+          <ProgressStatus progress={progress} />
           <Box flexDirection="column" marginLeft={2} marginY={1}>
-            {Object.entries<string>(threadInfo).map(([threadId, targetId]) => {
-              return <ThreadItem key={threadId} threadId={threadId} targetId={targetId} />;
-            })}
-            {idleWorkerDummyThreadInfo.map((_, index) => {
-              return (
-                <React.Fragment key={`idle-${index}`}>
-                  <ThreadItem threadId={"?"} targetId={""} />
-                </React.Fragment>
-              );
-            })}
+            {[...threadInfo].slice(Math.max(0, threadInfo.size - limit)).map((targetId) => (
+              <ThreadItem key={targetId} targetId={targetId} />
+            ))}
           </Box>
-          <ProgressStatus progress={progress} currentTime={currentTime} />
+
+          {hasMore && <Text>... and {Object.keys(threadInfo).length - limit} more</Text>}
         </Box>
       )}
     </Box>
