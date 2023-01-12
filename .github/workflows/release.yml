@@ -8,6 +8,9 @@ on:
   push:
     branches: [master, stable]
 
+permissions:
+  contents: write
+
 # Only run one release at a time to avoid duplicate attempts to publish particular versions.
 # To avoid backups after multiple pushes in rapid succession, the prerelease job below emulates
 # batching (which github actions don't support) by skipping the release job if a newer run is pending.
