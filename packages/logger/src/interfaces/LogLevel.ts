@@ -6,4 +6,4 @@ export const LogLevel = {
   silly: 50,
 } as const;
 
-export type LogLevel = typeof LogLevel[keyof typeof LogLevel];
+export type LogLevel = (typeof LogLevel)[keyof typeof LogLevel];
