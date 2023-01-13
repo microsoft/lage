@@ -1,5 +1,5 @@
 {
-  "name": "lage-monorepo",
+  "name": "@lage-run/lage-monorepo",
   "private": true,
   "repository": {
     "type": "git",
