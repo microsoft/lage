@@ -21,7 +21,7 @@ export function hrToSeconds(hrtime: [number, number]) {
  * @param end
  * @returns
  */
-export function hrtimeDiff(start: [number, number], end: [number, number]): [number, number] {
+export function hrtimeDiff(start: [number, number] = [0, 0], end: [number, number] = [0, 0]): [number, number] {
   const sec = end[0] - start[0];
   const nsec = end[1] - start[1];
 
