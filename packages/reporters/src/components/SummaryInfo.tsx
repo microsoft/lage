@@ -2,6 +2,7 @@ import { formatDuration, hrtimeDiff, hrToSeconds } from '@lage-run/format-hrtime
 import { LogEntry } from '@lage-run/logger';
 import { Box, Newline, Text } from 'ink';
 import * as React from 'react';
+import { slowestTargetRuns } from '../slowestTargetRuns';
 import type { SummaryWithLogs } from '../types/progressBarTypes';
 import { ErrorMessages } from './ErrorMessages';
 
@@ -14,7 +15,8 @@ export function SummaryInfo(props: SummaryInfoProps) {
   const { schedulerRunSummary, logEntries } = summary;
   const { targetRunByStatus, targetRuns, duration } = schedulerRunSummary;
 
-  const slowestTargetRuns = [...targetRuns.values()].sort((a, b) => parseFloat(hrToSeconds(hrtimeDiff(a.duration, b.duration))));
+  const slowestTargets = slowestTargetRuns([...targetRuns.values()]);
+  
   const { failed, aborted, skipped, success, pending } = targetRunByStatus;
 
   const errors =
@@ -29,7 +31,7 @@ export function SummaryInfo(props: SummaryInfoProps) {
       <Text color="yellow">Slowest targets</Text>
 
       <Box flexDirection="column" marginLeft={2} marginY={1}>
-        {slowestTargetRuns
+        {slowestTargets
           .slice(0, 10)
           .filter((run) => !run.target.hidden)
           .map((targetRun) => (

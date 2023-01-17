@@ -19,9 +19,20 @@ export async function cacheAction(options: CacheOptions, command: Command) {
   initializeReporters(logger, options);
 
   if (options.clear) {
-    return await clearCache(process.cwd(), config.cacheOptions.internalCacheFolder, logger);
+    return await clearCache({
+      cwd: process.cwd(),
+      internalCacheFolder: config.cacheOptions.internalCacheFolder,
+      logger,
+      concurrency: options.concurrency,
+    });
   } else if (options.prune) {
-    return await pruneCache(options.prune, process.cwd(), config.cacheOptions.internalCacheFolder, logger);
+    return await pruneCache({
+      pruneDays: options.prune,
+      cwd: process.cwd(),
+      internalCacheFolder: config.cacheOptions.internalCacheFolder,
+      logger,
+      concurrency: options.concurrency,
+    });
   }
 
   command.help();

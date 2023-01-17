@@ -11,6 +11,7 @@ import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEnt
 import type { Writable } from "stream";
 import crypto from "crypto";
 import { formatBytes } from "./formatBytes.js";
+import { slowestTargetRuns } from "./slowestTargetRuns.js";
 
 const colors = {
   [LogLevel.info]: chalk.white,
@@ -219,7 +220,9 @@ export class LogReporter implements Reporter {
 
       this.hr();
 
-      for (const wrappedTarget of targetRuns.values()) {
+      const slowestTargets = slowestTargetRuns([...targetRuns.values()]);
+
+      for (const wrappedTarget of slowestTargets) {
         if (wrappedTarget.target.hidden) {
           continue;
         }
