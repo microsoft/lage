@@ -3,13 +3,14 @@ import { formatBytes } from "./formatBytes.js";
 import { categorizeTargetRuns } from "./categorizeTargetRuns.js";
 import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
 import { WrappedTarget } from "./WrappedTarget.js";
+import { TargetRunnerPicker } from "./runners/TargetRunnerPicker.js";
 
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { Logger } from "@lage-run/logger";
 import type { TargetGraph } from "@lage-run/target-graph";
 import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "@lage-run/scheduler-types";
 import type { Pool } from "@lage-run/worker-threads-pool";
-import { TargetRunnerPicker, TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker.js";
+import type { TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker.js";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;

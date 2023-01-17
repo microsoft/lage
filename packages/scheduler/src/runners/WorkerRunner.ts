@@ -1,5 +1,5 @@
 import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
-import { Target } from "@lage-run/target-graph";
+import type { Target } from "@lage-run/target-graph";
 import { pathToFileURL } from "url";
 
 export interface WorkerRunnerOptions {

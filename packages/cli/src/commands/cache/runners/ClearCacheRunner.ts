@@ -1,8 +1,8 @@
-import { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
+import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
 import fs from "fs";
 import path from "path";
 import { stat } from "fs/promises";
-import { removeCacheEntry } from "../cacheDir";
+import { removeCacheEntry } from "../cacheDir.js";
 
 export class ClearCacheRunner implements TargetRunner {
   async shouldRun() {
@@ -10,9 +10,6 @@ export class ClearCacheRunner implements TargetRunner {
   }
   async run(runOptions: TargetRunnerOptions): Promise<void> {
     const { target } = runOptions;
-
-    console.log("Clearing cache for " + target.packageName);
-
     const { clearPaths } = target.options!;
 
     for (const cachePath of clearPaths) {

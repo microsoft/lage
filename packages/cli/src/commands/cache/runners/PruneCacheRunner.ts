@@ -1,8 +1,8 @@
-import { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
+import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
 import fs from "fs";
 import path from "path";
 import { stat } from "fs/promises";
-import { removeCacheEntry } from "../cacheDir";
+import { removeCacheEntry } from "../cacheDir.js";
 
 const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
@@ -12,9 +12,6 @@ export class PruneCacheRunner implements TargetRunner {
   }
   async run(runOptions: TargetRunnerOptions): Promise<void> {
     const { target } = runOptions;
-
-    console.log("Pruning cache for " + target.packageName);
-
     const { clearPaths, prunePeriod, now } = target.options!;
 
     for (const cachePath of clearPaths) {
