@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 18 Jan 2023 19:11:10 GMT and should not be manually modified.
+This log was last generated on Wed, 18 Jan 2023 23:27:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.6.2
+
+Wed, 18 Jan 2023 23:27:05 GMT
+
+### Patches
+
+- get rid of any imports not from node built-ins for these runners (kchau@microsoft.com)
 
 ## 0.6.1
 
