@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 18 Jan 2023 19:11:10 GMT",
+      "tag": "@lage-run/cli_v0.6.1",
+      "version": "0.6.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "876eca11217aa53b9f0fa7c79b6258c44c730595",
+            "comment": "making sure the cache tasks are returning promises"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 18 Jan 2023 18:18:35 GMT",
       "tag": "@lage-run/cli_v0.6.0",
       "version": "0.6.0",
