@@ -261,6 +261,10 @@ describe("SimpleScheduler", () => {
         "results": "failed",
         "targetRunByStatus": {
           "aborted": [
+            "a#build",
+            "c#build",
+            "e#build",
+            "f#build",
             "g#build",
           ],
           "failed": [],
@@ -273,10 +277,6 @@ describe("SimpleScheduler", () => {
           "skipped": [],
           "success": [
             "__start",
-            "a#build",
-            "c#build",
-            "e#build",
-            "f#build",
           ],
         },
         "targetRuns": Map {
@@ -285,7 +285,7 @@ describe("SimpleScheduler", () => {
             "target": "__start",
           },
           "a#build" => {
-            "status": "success",
+            "status": "aborted",
             "target": "a#build",
           },
           "b#build" => {
@@ -293,7 +293,7 @@ describe("SimpleScheduler", () => {
             "target": "b#build",
           },
           "c#build" => {
-            "status": "success",
+            "status": "aborted",
             "target": "c#build",
           },
           "d#build" => {
@@ -301,11 +301,11 @@ describe("SimpleScheduler", () => {
             "target": "d#build",
           },
           "e#build" => {
-            "status": "success",
+            "status": "aborted",
             "target": "e#build",
           },
           "f#build" => {
-            "status": "success",
+            "status": "aborted",
             "target": "f#build",
           },
           "g#build" => {

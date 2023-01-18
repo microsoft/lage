@@ -34,6 +34,9 @@ describe("SimpleScheduler watch mode", () => {
     const hasher = new TargetHasher({ root, environmentGlob: [] });
 
     const runner: TargetRunner = {
+      async shouldRun() {
+        return true;
+      },
       run: jest.fn(),
     };
 
@@ -80,6 +83,9 @@ describe("SimpleScheduler watch mode", () => {
     const hasher = new TargetHasher({ root, environmentGlob: [] });
 
     const runner: TargetRunner = {
+      async shouldRun() {
+        return true;
+      },
       run: jest.fn(),
     };
 

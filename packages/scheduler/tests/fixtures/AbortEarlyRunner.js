@@ -3,6 +3,10 @@ class AbortEarlyRunner {
     this.failPackage = packageName;
   }
 
+  async shouldRun() {
+    return true;
+  }
+
   run(target, abortSignal) {
     return new Promise((resolve, reject) => {
       if (target.packageName === this.failPackage) {

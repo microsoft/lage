@@ -3,6 +3,7 @@ import { formatBytes } from "./formatBytes.js";
 import { categorizeTargetRuns } from "./categorizeTargetRuns.js";
 import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
 import { WrappedTarget } from "./WrappedTarget.js";
+import { TargetRunnerPicker } from "./runners/TargetRunnerPicker.js";
 
 import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { Logger } from "@lage-run/logger";
@@ -43,6 +44,7 @@ export class SimpleScheduler implements TargetScheduler {
   abortController: AbortController = new AbortController();
   abortSignal: AbortSignal = this.abortController.signal;
   pool: Pool;
+  runnerPicker: TargetRunnerPicker;
 
   runPromise = Promise.resolve() as Promise<any>;
 
@@ -64,6 +66,8 @@ export class SimpleScheduler implements TargetScheduler {
         },
         workerIdleMemoryLimit: options.workerIdleMemoryLimit, // in bytes
       });
+
+    this.runnerPicker = new TargetRunnerPicker(options.runners);
   }
 
   getTargetsByPriority() {
@@ -193,28 +197,33 @@ export class SimpleScheduler implements TargetScheduler {
   }
 
   getReadyTargets() {
-    const readyTargets: WrappedTarget[] = [];
+    const readyTargets: Set<WrappedTarget> = new Set();
 
     for (const target of this.getTargetsByPriority()) {
+      // Skip the start target
       if (target.id === getStartTargetId()) {
         continue;
       }
 
       const targetRun = this.targetRuns.get(target.id)!;
-      const targetDeps = targetRun.target.dependencies;
 
-      // filter all dependencies for those that are "ready"
-      const ready = targetDeps.every((dep) => {
-        const fromTarget = this.targetRuns.get(dep)!;
-        return fromTarget.successful || dep === getStartTargetId();
-      });
+      // If the target is already running, then we can't run it again
+      if (targetRun.status === "pending") {
+        const targetDeps = targetRun.target.dependencies;
 
-      if (ready && targetRun.status === "pending") {
-        readyTargets.push(targetRun);
+        // Target is only ready when all its deps are "successful" or that it is a root target
+        const ready = targetDeps.every((dep) => {
+          const fromTarget = this.targetRuns.get(dep)!;
+          return fromTarget.successful || dep === getStartTargetId();
+        });
+
+        if (ready) {
+          readyTargets.add(targetRun);
+        }
       }
     }
 
-    return readyTargets;
+    return [...readyTargets];
   }
 
   isAllDone() {
@@ -271,9 +280,23 @@ export class SimpleScheduler implements TargetScheduler {
       // This do-while loop only runs again if something causes this target to rerun (asynchronously triggering a re-run)
       do {
         this.rerunTargets.delete(target.target.id);
+        target.onQueued();
 
         try {
-          await target.run();
+          let shouldRun = true;
+
+          try {
+            const runner = await this.runnerPicker.pick(target.target);
+            shouldRun = await runner.shouldRun(target.target);
+          } catch (e) {
+            // pass - default to run anyway
+          }
+
+          if (shouldRun) {
+            await target.run();
+          } else {
+            target.status = "skipped";
+          }
         } catch (e) {
           runError = e;
         }

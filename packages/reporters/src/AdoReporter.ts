@@ -6,6 +6,7 @@ import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
 import type { Writable } from "stream";
+import { slowestTargetRuns } from "./slowestTargetRuns.js";
 
 const colors = {
   [LogLevel.info]: chalk.white,
@@ -177,7 +178,9 @@ export class AdoReporter implements Reporter {
     this.logStream.write(chalk.cyanBright(`##[section]Summary\n`));
 
     if (targetRuns.size > 0) {
-      for (const wrappedTarget of targetRuns.values()) {
+      const slowestTargets = slowestTargetRuns([...targetRuns.values()]);
+
+      for (const wrappedTarget of slowestTargets) {
         const colorFn = statusColorFn[wrappedTarget.status];
         const target = wrappedTarget.target;
 

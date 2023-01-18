@@ -1,36 +1,81 @@
 import type { Logger } from "@lage-run/logger";
-import { stat } from "fs/promises";
-import fs from "fs";
 import path from "path";
-import { getCacheDir, removeCacheEntry } from "./cacheDir.js";
-import { getWorkspaces } from "workspace-tools";
+import { getCacheDir } from "./cacheDir.js";
+import { getWorkspaceRoot, getWorkspaces } from "workspace-tools";
+import { getConfig } from "../../config/getConfig.js";
+import { getConcurrency } from "../../config/getConcurrency.js";
+import { TargetGraphBuilder } from "@lage-run/target-graph";
+import { SimpleScheduler } from "@lage-run/scheduler";
 
-const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
+export interface PruneCacheOptions {
+  cwd: string;
+  internalCacheFolder: string;
+  logger: Logger;
+  concurrency: number;
+  pruneDays: number;
+}
 
-export async function pruneCache(pruneDays: number, cwd: string, internalCacheFolder: string, logger: Logger) {
+export async function pruneCache(options: PruneCacheOptions) {
+  const { logger, cwd, pruneDays, internalCacheFolder } = options;
+
+  const config = await getConfig(cwd);
+  const workspaceRoot = getWorkspaceRoot(cwd);
+  const concurrency = getConcurrency(options.concurrency, config.concurrency);
+
+  if (!workspaceRoot) {
+    return;
+  }
+
+  const graphBuilder = new TargetGraphBuilder();
+  const workspaces = getWorkspaces(workspaceRoot);
+
   const prunePeriod = pruneDays || 30;
   const now = new Date().getTime();
-  const workspaces = getWorkspaces(cwd);
+
   for (const workspace of workspaces) {
-    logger.info(`prune cache for ${workspace.name} older than ${prunePeriod} days`);
     const cachePath = getCacheDir(workspace.path, internalCacheFolder);
     const logOutputCachePath = path.join(workspace.path, "node_modules/.cache/lage/output/");
 
-    await Promise.all([prunePath(cachePath, prunePeriod, now), prunePath(logOutputCachePath, prunePeriod, now)]);
+    graphBuilder.addTarget({
+      packageName: workspace.name,
+      cwd: workspace.path,
+      dependencies: [],
+      dependents: [],
+      id: `${workspace.name}#pruneCache`,
+      label: `Pruning Cache for ${workspace.name}`,
+      task: "pruneCache",
+      type: "worker",
+      depSpecs: [],
+      options: {
+        clearPaths: [cachePath, logOutputCachePath],
+        now,
+        prunePeriod,
+      },
+    });
   }
-}
 
-async function prunePath(cachePath: string, days: number, now: number) {
-  if (fs.existsSync(cachePath)) {
-    const entries = fs.readdirSync(cachePath);
+  const graph = graphBuilder.build();
 
-    for (const entry of entries) {
-      const entryPath = path.join(cachePath, entry);
-      const entryStat = await stat(entryPath);
+  const scheduler = new SimpleScheduler({
+    logger,
+    concurrency,
+    continueOnError: true,
+    shouldCache: false,
+    shouldResetCache: false,
+    maxWorkersPerTask: new Map(),
+    runners: {
+      worker: {
+        script: require.resolve("./runners/PruneCacheRunner.js"),
+        options: {},
+      },
+    },
+    workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
+  });
 
-      if (now - entryStat.mtime.getTime() > days * MS_IN_A_DAY) {
-        await removeCacheEntry(entryPath, entryStat);
-      }
-    }
-  }
+  const summary = await scheduler.run(workspaceRoot, graph);
+  await scheduler.cleanup();
+
+  logger.reporters.forEach((reporter) => {
+    reporter.summarize(summary);
+  });
 }

@@ -1,4 +1,5 @@
 import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
+import type { Target } from "@lage-run/target-graph";
 import { pathToFileURL } from "url";
 
 export interface WorkerRunnerOptions {
@@ -45,9 +46,36 @@ export class WorkerRunner implements TargetRunner {
 
   constructor(private options: WorkerRunnerOptions) {}
 
+  async shouldRun(target: Target): Promise<boolean> {
+    const scriptModule = await this.getScriptModule(target);
+
+    if (typeof scriptModule.shouldRun === "function") {
+      return await scriptModule.shouldRun(target);
+    }
+
+    return true;
+  }
+
   async run(runOptions: TargetRunnerOptions) {
     const { target, weight, abortSignal } = runOptions;
     const { taskArgs } = this.options;
+
+    const scriptModule = await this.getScriptModule(target);
+    const runFn =
+      typeof scriptModule.run === "function"
+        ? scriptModule.run
+        : typeof scriptModule.default === "function"
+        ? scriptModule.default
+        : scriptModule;
+
+    if (typeof runFn !== "function") {
+      throw new Error("WorkerRunner: worker script must export a function; you likely need to use `module.exports = function() {...}`");
+    }
+
+    await runFn({ target, weight, taskArgs, abortSignal });
+  }
+
+  async getScriptModule(target: Target) {
     const scriptFile = target.options?.worker ?? target.options?.script;
 
     if (!scriptFile) {
@@ -60,13 +88,6 @@ export class WorkerRunner implements TargetRunner {
       importScript = pathToFileURL(importScript).toString();
     }
 
-    const scriptModule = await import(importScript);
-    const runFn = typeof scriptModule.default === "function" ? scriptModule.default : scriptModule;
-
-    if (typeof runFn !== "function") {
-      throw new Error("WorkerRunner: worker script must export a function; you likely need to use `module.exports = function() {...}`");
-    }
-
-    await runFn({ target, weight, taskArgs, abortSignal });
+    return await import(importScript);
   }
 }

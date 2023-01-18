@@ -155,8 +155,6 @@ export class WrappedTarget implements TargetRun {
   async run() {
     const { target, logger, shouldCache, abortController } = this.options;
 
-    this.onQueued();
-
     const abortSignal = abortController.signal;
 
     if (abortSignal.aborted) {

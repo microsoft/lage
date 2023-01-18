@@ -46,7 +46,7 @@ export class NpmScriptRunner implements TargetRunner {
     const task = target.options?.script ?? target.task;
     const packageJsonPath = join(target.cwd, "package.json");
     const packageJson = JSON.parse(await readFile(packageJsonPath, "utf8"));
-    return packageJson.scripts?.[task];
+    return !!packageJson.scripts?.[task];
   }
 
   private validateOptions(options: NpmScriptRunnerOptions) {
@@ -55,17 +55,17 @@ export class NpmScriptRunner implements TargetRunner {
     }
   }
 
+  async shouldRun(target: Target) {
+    // By convention, do not run anything if there is no script for this task defined in package.json (counts as "success")
+    return await this.hasNpmScript(target);
+  }
+
   async run(runOptions: TargetRunnerOptions) {
     const { target, weight, abortSignal } = runOptions;
     const { nodeOptions, npmCmd, taskArgs } = this.options;
     const task = target.options?.script ?? target.task;
 
     let childProcess: ChildProcess | undefined;
-
-    // By convention, do not run anything if there is no script for this task defined in package.json (counts as "success")
-    if (!(await this.hasNpmScript(target))) {
-      return;
-    }
 
     /**
      * Handling abort signal from the abort controller. Gracefully kills the process,

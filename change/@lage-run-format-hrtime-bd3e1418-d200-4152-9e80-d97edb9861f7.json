@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "handle empty case for hrtimeDiffs",
+  "packageName": "@lage-run/format-hrtime",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
