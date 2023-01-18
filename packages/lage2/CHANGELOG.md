@@ -1,8 +1,16 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Wed, 18 Jan 2023 19:11:10 GMT and should not be manually modified.
+This log was last generated on Wed, 18 Jan 2023 21:35:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.27
+
+Wed, 18 Jan 2023 21:35:06 GMT
+
+### Patches
+
+- fixing missing files in the bundle (kchau@microsoft.com)
 
 ## 2.5.26
 

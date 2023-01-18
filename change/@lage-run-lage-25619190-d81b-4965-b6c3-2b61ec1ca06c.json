@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixing missing files in the bundle",
-  "packageName": "@lage-run/lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

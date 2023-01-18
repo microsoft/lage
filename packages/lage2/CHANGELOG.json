@@ -2,6 +2,21 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Wed, 18 Jan 2023 21:35:06 GMT",
+      "tag": "@lage-run/lage_v2.5.27",
+      "version": "2.5.27",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "81e5511c85d07edf41367564b0b7e01d76511709",
+            "comment": "fixing missing files in the bundle"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 18 Jan 2023 19:11:10 GMT",
       "tag": "@lage-run/lage_v2.5.26",
       "version": "2.5.26",
