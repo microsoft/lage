@@ -1,8 +1,7 @@
 import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
 import fs from "fs";
 import path from "path";
-import { stat } from "fs/promises";
-import { removeCacheEntry } from "../cacheDir.js";
+import { rm, stat, unlink } from "fs/promises";
 
 const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
@@ -28,5 +27,13 @@ export class PruneCacheRunner implements TargetRunner {
         }
       }
     }
+  }
+}
+
+async function removeCacheEntry(entryPath: string, entryStat: fs.Stats) {
+  if (entryStat.isDirectory()) {
+    return rm(entryPath, { recursive: true });
+  } else {
+    return unlink(entryPath);
   }
 }

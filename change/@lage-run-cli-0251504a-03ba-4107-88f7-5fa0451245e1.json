@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "get rid of any imports not from node built-ins for these runners",
+  "packageName": "@lage-run/cli",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
