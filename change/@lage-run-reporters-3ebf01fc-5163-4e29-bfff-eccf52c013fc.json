@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Using lage for prune and clear on cache and get reporter in shape for ADO",
-  "packageName": "@lage-run/reporters",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

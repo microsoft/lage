@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Wed, 18 Jan 2023 18:18:35 GMT",
+      "tag": "@lage-run/scheduler-types_v0.3.0",
+      "version": "0.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "71b5b1452ee25148a637894d1bf99cf1cc6a80a7",
+            "comment": "Using lage for prune and clear on cache and get reporter in shape for ADO"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 06 Dec 2022 00:48:02 GMT",
       "tag": "@lage-run/scheduler-types_v0.2.10",
       "version": "0.2.10",

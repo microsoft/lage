@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/format-hrtime",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "hrtime formatter for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"

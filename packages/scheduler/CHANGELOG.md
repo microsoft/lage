@@ -1,8 +1,17 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Thu, 05 Jan 2023 00:40:50 GMT and should not be manually modified.
+This log was last generated on Wed, 18 Jan 2023 18:18:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.0
+
+Wed, 18 Jan 2023 18:18:35 GMT
+
+### Minor changes
+
+- Using lage for prune and clear on cache and get reporter in shape for ADO (kchau@microsoft.com)
+- Bump @lage-run/scheduler-types to v0.3.0
 
 ## 0.7.3
 

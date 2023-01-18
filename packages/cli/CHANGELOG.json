@@ -2,6 +2,39 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 18 Jan 2023 18:18:35 GMT",
+      "tag": "@lage-run/cli_v0.6.0",
+      "version": "0.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "71b5b1452ee25148a637894d1bf99cf1cc6a80a7",
+            "comment": "Using lage for prune and clear on cache and get reporter in shape for ADO"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.8.0",
+            "commit": "71b5b1452ee25148a637894d1bf99cf1cc6a80a7"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.0",
+            "commit": "71b5b1452ee25148a637894d1bf99cf1cc6a80a7"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v0.3.0",
+            "commit": "71b5b1452ee25148a637894d1bf99cf1cc6a80a7"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 05 Jan 2023 00:40:50 GMT",
       "tag": "@lage-run/cli_v0.5.7",
       "version": "0.5.7",
