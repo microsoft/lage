@@ -54,6 +54,9 @@ describe("WrappedTarget", () => {
     const logger = new Logger();
 
     const runner = {
+      async shouldRun() {
+        return true;
+      },
       async run() {
         // nothing
       },
@@ -99,6 +102,9 @@ describe("WrappedTarget", () => {
     const wrappedTargets: WrappedTarget[] = [];
 
     const runner = {
+      async shouldRun() {
+        return true;
+      },
       async run() {
         // nothing
       },
@@ -273,6 +279,9 @@ describe("WrappedTarget", () => {
     const logger = new Logger();
 
     const runner = {
+      async shouldRun() {
+        return true;
+      },
       async run() {
         // nothing
       },

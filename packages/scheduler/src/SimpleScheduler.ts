@@ -283,9 +283,14 @@ export class SimpleScheduler implements TargetScheduler {
         target.onQueued();
 
         try {
-          const runner = await this.runnerPicker.pick(target.target);
+          let shouldRun = true;
 
-          const shouldRun = await runner.shouldRun(target.target);
+          try {
+            const runner = await this.runnerPicker.pick(target.target);
+            shouldRun = await runner.shouldRun(target.target);
+          } catch (e) {
+            // pass - default to run anyway
+          }
 
           if (shouldRun) {
             await target.run();
