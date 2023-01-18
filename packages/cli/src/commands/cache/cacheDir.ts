@@ -9,8 +9,8 @@ export function getCacheDir(workspace: string, internalCacheFolder: string) {
 
 export async function removeCacheEntry(entryPath: string, entryStat: fs.Stats) {
   if (entryStat.isDirectory()) {
-    rm(entryPath, { recursive: true });
+    return rm(entryPath, { recursive: true });
   } else {
-    unlink(entryPath);
+    return unlink(entryPath);
   }
 }
