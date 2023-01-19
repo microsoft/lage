@@ -16,7 +16,6 @@ describe("transitive task deps test", () => {
         "test": ["bundle"]
       }
     }`);
-    repo.install();
 
     repo.addPackage("a", [], {
       build: "echo a:build",
@@ -25,7 +24,7 @@ describe("transitive task deps test", () => {
     repo.addPackage("b", [], {
       build: "echo b:build",
     });
-    repo.linkPackages();
+    repo.install();
 
     const results = repo.run("test");
 
@@ -60,7 +59,6 @@ describe("transitive task deps test", () => {
         transpile: []
       },
     }`);
-    repo.install();
 
     repo.addPackage("a", ["b"], {
       bundle: "echo a:bundle",
@@ -72,7 +70,7 @@ describe("transitive task deps test", () => {
     repo.addPackage("c", [], {
       transpile: "echo c:transpile",
     });
-    repo.linkPackages();
+    repo.install();
 
     const results = repo.run("bundle", ["--scope", "a"]);
 
@@ -109,7 +107,6 @@ describe("transitive task deps test", () => {
         transpile: []
       },
     }`);
-    repo.install();
 
     repo.addPackage("a", ["b"], {
       bundle: "echo a:bundle",
@@ -121,7 +118,7 @@ describe("transitive task deps test", () => {
     repo.addPackage("c", [], {
       transpile: "echo c:transpile",
     });
-    repo.linkPackages();
+    repo.install();
 
     const results = repo.run("bundle", ["--scope", "a"]);
 
@@ -172,7 +169,6 @@ describe("transitive task deps test", () => {
         }
       ],
     }`);
-    repo.install();
 
     repo.addPackage("a", ["b"], {
       bundle: "echo a:bundle",
@@ -184,7 +180,7 @@ describe("transitive task deps test", () => {
     repo.addPackage("c", [], {
       transpile: "echo c:transpile",
     });
-    repo.linkPackages();
+    repo.install();
 
     const results = repo.run("bundle", ["--scope", "a"]);
 

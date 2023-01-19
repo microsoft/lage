@@ -31,8 +31,6 @@ describe("RemoteFallbackCacheProvider", () => {
       };`
     );
 
-    repo.install();
-
     repo.addPackage("a", [], {
       build: "echo a:build",
       test: "echo a:test",
@@ -40,7 +38,7 @@ describe("RemoteFallbackCacheProvider", () => {
     repo.addPackage("b", [], {
       build: "echo b:build",
     });
-    repo.linkPackages();
+    repo.install();
 
     const results = repo.run("test", ["--skip-local-cache"]);
 
@@ -77,8 +75,6 @@ describe("RemoteFallbackCacheProvider", () => {
       };`
     );
 
-    repo.install();
-
     repo.addPackage("a", [], {
       build: "echo a:build",
       test: "echo a:test",
@@ -86,7 +82,7 @@ describe("RemoteFallbackCacheProvider", () => {
     repo.addPackage("b", [], {
       build: "echo b:build",
     });
-    repo.linkPackages();
+    repo.install();
 
     const results = repo.run("test", ["--verbose"]);
 
@@ -132,8 +128,6 @@ describe("RemoteFallbackCacheProvider", () => {
       };`
     );
 
-    repo.install();
-
     repo.addPackage("a", [], {
       build: "echo a:build",
       test: "echo a:test",
@@ -141,7 +135,7 @@ describe("RemoteFallbackCacheProvider", () => {
     repo.addPackage("b", [], {
       build: "echo b:build",
     });
-    repo.linkPackages();
+    repo.install();
 
     const results = repo.run("test", ["--log-level", "silly"]);
 
@@ -188,8 +182,6 @@ describe("RemoteFallbackCacheProvider", () => {
       };`
     );
 
-    repo.install();
-
     repo.addPackage("a", [], {
       build: "echo a:build",
       test: "echo a:test",
@@ -197,7 +189,7 @@ describe("RemoteFallbackCacheProvider", () => {
     repo.addPackage("b", [], {
       build: "echo b:build",
     });
-    repo.linkPackages();
+    repo.install();
 
     const results = repo.run("test", ["--log-level", "silly"]);
 

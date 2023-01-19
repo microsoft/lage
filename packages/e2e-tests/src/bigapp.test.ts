@@ -9,7 +9,6 @@ describe("bigapp test", () => {
     const repo = new Monorepo("bigapp");
 
     repo.init();
-    repo.install();
 
     repo.addPackage("FooApp1", ["FooCore"]);
     repo.addPackage("FooApp2", ["FooCore"]);
@@ -17,7 +16,8 @@ describe("bigapp test", () => {
     repo.addPackage("BarPage", ["BarCore"]);
     repo.addPackage("BarCore", ["BuildTool"]);
     repo.addPackage("BuildTool");
-    repo.linkPackages();
+
+    repo.install();
 
     const results = repo.run("test");
     const output = results.stdout + results.stderr;
