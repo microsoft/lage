@@ -2,6 +2,21 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Thu, 19 Jan 2023 00:34:19 GMT",
+      "tag": "@lage-run/lage_v2.5.29",
+      "version": "2.5.29",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "96448520cdb6f15206cd35b6187025d0be634083",
+            "comment": "bundling of lage needs to fix the weird punycode/ thing"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 18 Jan 2023 23:27:05 GMT",
       "tag": "@lage-run/lage_v2.5.28",
       "version": "2.5.28",

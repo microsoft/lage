@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "bundling of lage needs to fix the weird punycode/ thing",
-  "packageName": "@lage-run/lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

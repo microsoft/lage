@@ -1,8 +1,16 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Wed, 18 Jan 2023 23:27:05 GMT and should not be manually modified.
+This log was last generated on Thu, 19 Jan 2023 00:34:19 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.29
+
+Thu, 19 Jan 2023 00:34:19 GMT
+
+### Patches
+
+- bundling of lage needs to fix the weird punycode/ thing (kchau@microsoft.com)
 
 ## 2.5.28
 
