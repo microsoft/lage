@@ -45,7 +45,7 @@ module.exports = {
     start: [],
     "@lage-run/e2e-tests#test": {
       type: "npmScript",
-      dependsOn: ["build", "^^transpile"],
+      dependsOn: ["build", "^^transpile", "@lage-run/lage#bundle"],
     },
     "lage#test": {
       type: "npmScript",
