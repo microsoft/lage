@@ -19,7 +19,10 @@ export default [
     plugins: [
       alias({
         // Added this entry to guard against readable-stream's WEIRD import of "string_decoder/" (present in v3.x)
-        entries: [{ find: "string_decoder/", replacement: "string_decoder" }],
+        entries: [
+          { find: "string_decoder/", replacement: "string_decoder" },
+          { find: "punycode/", replacement: "punycode" }
+        ],
       }),
       nodeResolve({
         // Since we are produce CJS, let's resolve main first!

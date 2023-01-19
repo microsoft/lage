@@ -25,8 +25,6 @@ describe("Cache clear", () => {
       };`
     );
 
-    repo.install();
-
     repo.addPackage("a", [], {
       build: "echo a:build",
       test: "echo a:test",
@@ -34,7 +32,7 @@ describe("Cache clear", () => {
     repo.addPackage("b", [], {
       build: "echo b:build",
     });
-    repo.linkPackages();
+    repo.install();
 
     // Run build so we get a cache folder
     repo.run("build");
@@ -75,8 +73,6 @@ describe("Cache clear", () => {
       };`
     );
 
-    repo.install();
-
     repo.addPackage("a", [], {
       build: "echo a:build",
       test: "echo a:test",
@@ -84,7 +80,7 @@ describe("Cache clear", () => {
     repo.addPackage("b", [], {
       build: "echo b:build",
     });
-    repo.linkPackages();
+    repo.install();
 
     // Run build so we get a cache folder
     repo.run("build");

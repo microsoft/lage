@@ -6,14 +6,13 @@ describe("basic failure case where a dependent target has failed", () => {
     const repo = new Monorepo("basics-failure-halt-all");
 
     repo.init();
-    repo.install();
 
     repo.addPackage("a", ["b"]);
     repo.addPackage("b", [], {
       build: 'node -e "process.exit(1);"',
     });
     repo.addPackage("c");
-    repo.linkPackages();
+    repo.install();
 
     let jsonOutput: any[] = [];
     let results: any;
@@ -41,14 +40,13 @@ describe("basic failure case where a dependent target has failed", () => {
     const repo = new Monorepo("basics-failure-continue");
 
     repo.init();
-    repo.install();
 
     repo.addPackage("a", ["b"]);
     repo.addPackage("b", [], {
       build: 'node -e "process.exit(1);"',
     });
     repo.addPackage("c");
-    repo.linkPackages();
+    repo.install();
 
     let jsonOutput: any[] = [];
     let results: any;
@@ -77,7 +75,6 @@ describe("basic failure case where a dependent target has failed", () => {
     const repo = new Monorepo("basics-failure-exit-code");
 
     repo.init();
-    repo.install();
 
     repo.addPackage("a", ["b"]);
     repo.addPackage("b", [], {
@@ -86,7 +83,7 @@ describe("basic failure case where a dependent target has failed", () => {
     repo.addPackage("c");
     repo.addPackage("d");
     repo.addPackage("e");
-    repo.linkPackages();
+    repo.install();
 
     try {
       repo.run("test");
@@ -103,7 +100,6 @@ describe("basic failure case where a dependent target has failed", () => {
     const repo = new Monorepo("basics-safe-exit");
 
     repo.init();
-    repo.install();
 
     repo.addPackage("a", ["b"]);
     repo.addPackage("b", [], {
@@ -112,7 +108,7 @@ describe("basic failure case where a dependent target has failed", () => {
     repo.addPackage("c");
     repo.addPackage("d");
     repo.addPackage("e");
-    repo.linkPackages();
+    repo.install();
 
     try {
       repo.run("test", ["--safe-exit"]);
