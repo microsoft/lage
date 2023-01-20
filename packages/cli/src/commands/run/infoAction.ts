@@ -9,6 +9,7 @@ import { JsonReporter } from "@lage-run/reporters";
 import createLogger, { LogLevel } from "@lage-run/logger";
 
 import type { ReporterInitOptions } from "@lage-run/reporters";
+import { getStartTargetId } from "@lage-run/target-graph";
 
 interface RunOptions extends ReporterInitOptions {
   dependencies: boolean;
@@ -63,6 +64,13 @@ export async function infoAction(options: RunOptions, command: Command) {
   const info = {};
 
   for (const target of targets.values()) {
+    if (target.id === getStartTargetId()) {
+      continue;
+    }
+
+    const startIdIndex = target.dependencies.indexOf(getStartTargetId());
+    target.dependencies.splice(startIdIndex, 1);
+
     info[target.id] = {
       ...target,
       hash: await hasher.hash(target),
