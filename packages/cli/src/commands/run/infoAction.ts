@@ -37,7 +37,7 @@ export async function infoAction(options: RunOptions, command: Command) {
   // Configure logger
   const logger = createLogger();
   const reporter = new JsonReporter({
-    logLevel: LogLevel[options.logLevel],
+    logLevel: LogLevel.info,
   });
   logger.addReporter(reporter);
 
@@ -76,10 +76,8 @@ export async function infoAction(options: RunOptions, command: Command) {
 
   for (const target of targets.values()) {
     logger.info("", {
-      data: {
-        target,
-        hash: await hasher.hash(target),
-      },
+      target,
+      hash: await hasher.hash(target),
     });
   }
 }
