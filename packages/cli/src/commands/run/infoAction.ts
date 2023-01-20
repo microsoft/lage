@@ -62,7 +62,7 @@ export async function infoAction(options: RunOptions, command: Command) {
     packageInfos,
   });
 
-  // Make sure we do not attempt writeRemoteCache in watch mode
+  // Make sure we do not attempt writeRemoteCache in info mode
   config.cacheOptions.writeRemoteCache = false;
 
   const { hasher } = createCache({
