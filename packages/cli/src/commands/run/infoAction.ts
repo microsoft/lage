@@ -26,7 +26,6 @@ export async function infoAction(options: RunOptions, command: Command) {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
 
-  // Configure logger (just a dummy one)
   const logger = createLogger();
 
   // Build Target Graph
@@ -61,7 +60,6 @@ export async function infoAction(options: RunOptions, command: Command) {
   });
 
   const { targets } = targetGraph;
-  const info = {};
 
   for (const target of targets.values()) {
     if (target.id === getStartTargetId()) {
@@ -71,11 +69,11 @@ export async function infoAction(options: RunOptions, command: Command) {
     const startIdIndex = target.dependencies.indexOf(getStartTargetId());
     target.dependencies.splice(startIdIndex, 1);
 
-    info[target.id] = {
-      ...target,
-      hash: await hasher.hash(target),
-    };
+    process.stdout.write(
+      `${JSON.stringify({
+        ...target,
+        hash: await hasher.hash(target),
+      })}\n`
+    );
   }
-
-  process.stdout.write(`${JSON.stringify(info, null, 2)}\n`);
 }
