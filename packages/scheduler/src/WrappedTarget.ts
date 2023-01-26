@@ -124,7 +124,8 @@ export class WrappedTarget implements TargetRun {
 
   async getCache() {
     const { cacheProvider, hasher } = this.options;
-    let hash: string | undefined;
+
+    let hash: string | undefined = undefined;
     let cacheHit = false;
 
     const { target, shouldCache, shouldResetCache } = this.options;
