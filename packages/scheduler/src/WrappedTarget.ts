@@ -77,6 +77,7 @@ export class WrappedTarget implements TargetRun {
 
   onStart(threadId: number) {
     if (this.status !== "running") {
+      this.threadId = threadId;
       this.status = "running";
       this.startTime = process.hrtime();
       this.options.logger.info("", { target: this.target, status: "running", threadId });
@@ -109,7 +110,7 @@ export class WrappedTarget implements TargetRun {
     }
   }
 
-  onSkipped(hash: string | null) {
+  onSkipped(hash?: string | undefined) {
     this.status = "skipped";
     this.duration = process.hrtime(this.startTime);
     this.options.logger.info("", {
@@ -123,7 +124,7 @@ export class WrappedTarget implements TargetRun {
 
   async getCache() {
     const { cacheProvider, hasher } = this.options;
-    let hash: string | null = null;
+    let hash: string | undefined;
     let cacheHit = false;
 
     const { target, shouldCache, shouldResetCache } = this.options;

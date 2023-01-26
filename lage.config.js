@@ -71,6 +71,6 @@ module.exports = {
   },
   npmClient: "yarn",
   cacheOptions: {
-    environmentGlob: ["*.js", "*.json", ".github/**", "packages/tsconfig.lage2.json", "patches"],
+    environmentGlob: ["beachball.config.js", "lage.config.js", "package.json", "renovate.json5", ".github/**", "packages/tsconfig.lage2.json", "patches"],
   },
 };
