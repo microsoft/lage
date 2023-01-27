@@ -1,38 +1,32 @@
-import { Command } from "commander";
+import { Command, Option } from "commander";
 import { action } from "./action.js";
 import { addLoggerOptions } from "../addLoggerOptions.js";
 import { isRunningFromCI } from "../isRunningFromCI.js";
+import { addFilterOptions } from "../addFilterOptions.js";
 
 const runCommand = new Command("run");
 
-addLoggerOptions(runCommand)
+addFilterOptions(addLoggerOptions(runCommand))
   .action(action)
   .option("-c, --concurrency <n>", "concurrency", (value) => parseInt(value, 10))
   .option("--max-workers-per-task <maxWorkersPerTarget...>", "set max worker per task, e.g. --max-workers-per-task build=2 test=4", [])
-  // Common Options
-  .option("--scope <scope...>", "scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)")
-  .option("--no-deps|--no-dependents", "disables running any dependents of the scoped packages")
-  .option("--include-dependencies|--dependencies", 'adds the scoped packages dependencies as the "entry points" for the target graph run')
-  .option("--since <since>", "only runs packages that have changed since the given commit, tag, or branch")
-  .option("--to <scope...>", "runs up to a package (shorthand for --scope=<scope...> --no-dependents)")
-  .option("--allow-no-target-runs")
 
   // Run Command Options
-  .option("--grouped", "groups the logs", false)
   .option("--no-cache", "disables the cache")
   .option("--reset-cache", "resets the cache, filling it after a run")
   .option("--skip-local-cache", "skips caching locally (defaults to true in CI environments)", isRunningFromCI)
   .option("--profile [profile]", "writes a run profile into a file that can be processed by Chromium devtool")
   .option(
-    "--ignore <ignore...>",
-    "ignores files when calculating the scope with `--since` in addition to the files specified in lage.config",
-    []
-  )
-  .option(
     "--nodearg|--node-arg <nodeArg>",
     'arguments to be passed to node (e.g. --nodearg="--max_old_space_size=1234 --heap-prof" - set via "NODE_OPTIONS" environment variable'
   )
   .option("--continue", "continues the run even on error")
+  .addOption(
+    new Option(
+      "--info",
+      "outputs information about a run action, suitable for calculating shards or as an input for another task runner"
+    ).conflicts("unstableWatch")
+  )
   .option("--unstable-watch", "runs in watch mode")
   .allowUnknownOption(true)
   .addHelpCommand("[run] command1 [command2...commandN] [options]", "run commands")
