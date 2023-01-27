@@ -83,3 +83,46 @@ exports[`info command basic info test case 1`] = `
   },
 ]
 `;
+
+exports[`info command scoped info test case 1`] = `
+[
+  {
+    "cache": true,
+    "cwd": "/some/path/to/b",
+    "depSpecs": [
+      "build",
+    ],
+    "dependencies": [
+      "b#build",
+    ],
+    "dependents": [],
+    "hash": "5a9536691284014e65dd9fffd8a60552c0a5d43a",
+    "id": "b#test",
+    "label": "b - test",
+    "options": {},
+    "packageName": "b",
+    "priority": 0,
+    "task": "test",
+    "weight": 1,
+  },
+  {
+    "cache": true,
+    "cwd": "/some/path/to/b",
+    "depSpecs": [
+      "^build",
+    ],
+    "dependencies": [],
+    "dependents": [
+      "b#test",
+    ],
+    "hash": "95ce59ba59bc59830855743a779d2cb50d069c33",
+    "id": "b#build",
+    "label": "b - build",
+    "options": {},
+    "packageName": "b",
+    "priority": 0,
+    "task": "build",
+    "weight": 1,
+  },
+]
+`;
