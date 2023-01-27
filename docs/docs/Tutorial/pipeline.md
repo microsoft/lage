@@ -62,7 +62,7 @@ Sometimes tasks declared in the `pipeline` are not present in all packages' `pac
 
 ### Specific package tasks
 
-Sometimes it becomes necessary to manually place a package task dependency on another package task. This can occur especially in repos that are just coming off of a lerna or rush repository where the tasks are traditionally run in separate phases. Sometimes assumptions were made in those repositories that are not expressable in the simple task pipeline configuration as seen above. For thoes cases, simply place those alongside with the rest of the pipeline configuration.
+Sometimes it becomes necessary to manually place a package task dependency on another package task. This can occur especially in repos that are just coming off of a lerna or rush repository where the tasks are traditionally run in separate phases. Sometimes assumptions were made in those repositories that are not expressable in the simple task pipeline configuration as seen above. For those cases, simply place those alongside with the rest of the pipeline configuration.
 
 In this example, we illustrate a `build` script of `foo` package depends on the `test` script of `bar`. The syntax is `[package]#[task]`.
 

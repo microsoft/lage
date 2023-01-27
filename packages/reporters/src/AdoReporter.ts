@@ -126,7 +126,7 @@ export class AdoReporter implements Reporter {
         ? normalize(entry.msg)
         : normalize(getTaskLogPrefix(packageName ?? "<root>", task), entry.msg);
       return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn("|  " + normalizedArgs.message)));
-    } else {
+    } else if (entry?.msg.trim() !== "") {
       return this.logStream.write(format(entry.level, "", entry.msg));
     }
   }

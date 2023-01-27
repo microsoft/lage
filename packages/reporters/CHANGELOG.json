@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Fri, 27 Jan 2023 00:28:15 GMT",
+      "tag": "@lage-run/reporters_v0.3.1",
+      "version": "0.3.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "b0f0b5a7773a71c111799f3a3b0a48a7824b838b",
+            "comment": "fixing profiler so that it will load correctly in the tracing UI"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 18 Jan 2023 18:18:35 GMT",
       "tag": "@lage-run/reporters_v0.3.0",
       "version": "0.3.0",
