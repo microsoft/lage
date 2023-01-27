@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Wed, 18 Jan 2023 18:18:35 GMT and should not be manually modified.
+This log was last generated on Fri, 27 Jan 2023 00:28:15 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.1
+
+Fri, 27 Jan 2023 00:28:15 GMT
+
+### Patches
+
+- fixing profiler so that it will load correctly in the tracing UI (kchau@microsoft.com)
 
 ## 0.8.0
 

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixing profiler so that it will load correctly in the tracing UI",
-  "packageName": "@lage-run/scheduler",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
