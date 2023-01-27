@@ -313,6 +313,7 @@ describe("AdoReporter", () => {
       ##[error] test message for a#build
       ##[error] test message for a#build again, but look there is an error!
       ##[error] 
+      ##vso[task.logissue type=error]Your build failed on the following packages => [a build], find the error logs above with the prefix '##[error]!'
       INFO:  Took a total of 1m 40.00s to complete
       "
     `);
