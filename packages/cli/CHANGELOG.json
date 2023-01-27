@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 27 Jan 2023 20:50:27 GMT",
+      "tag": "@lage-run/cli_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "2d6b70f69754030e144521409d3d5d6704746612",
+            "comment": "adding an info flag for run"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 27 Jan 2023 20:02:06 GMT",
       "tag": "@lage-run/cli_v0.6.4",
       "version": "0.6.4",

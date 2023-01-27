@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/lage",
-  "version": "2.5.31",
+  "version": "2.5.32",
   "main": "dist/main.js",
   "bin": {
     "lage": "dist/lage.js"
@@ -16,7 +16,7 @@
     "fsevents": "~2.3.2"
   },
   "devDependencies": {
-    "@lage-run/cli": "^0.6.4",
+    "@lage-run/cli": "^0.7.0",
     "@lage-run/scheduler": "^0.8.1",
     "rollup": "2.79.1",
     "@rollup/plugin-commonjs": "22.0.2",

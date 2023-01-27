@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "adding an info flag for run",
-  "packageName": "@lage-run/cli",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
