@@ -32,7 +32,7 @@ export async function infoAction(options: RunOptions, command: Command) {
   const root = getWorkspaceRoot(process.cwd())!;
   const packageInfos = getPackageInfos(root);
 
-  const { tasks } = filterArgsForTasks(command.args);
+  const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
   const targetGraph = createTargetGraph({
     logger,
@@ -57,6 +57,7 @@ export async function infoAction(options: RunOptions, command: Command) {
     logger,
     cacheOptions: config.cacheOptions,
     skipLocalCache: false,
+    cliArgs: taskArgs,
   });
 
   const { targets } = targetGraph;

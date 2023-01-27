@@ -1,0 +1,22 @@
+import { Monorepo } from "./mock/monorepo.js";
+import { filterEntry, parseNdJson } from "./parseNdJson.js";
+
+describe("info command", () => {
+  it("basic info test case", () => {
+    const repo = new Monorepo("basics-info");
+
+    repo.init();
+    repo.addPackage("a", ["b"]);
+    repo.addPackage("b");
+
+    repo.install();
+
+    const results = repo.run("test", ["--info"]);
+    const output = results.stdout + results.stderr;
+    const jsonOutput = parseNdJson(output);
+
+    expect(jsonOutput).toMatchSnapshot();
+
+    repo.cleanup();
+  });
+});
