@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`info command basic info test case 1`] = `
+[
+  {
+    "cache": true,
+    "cwd": "/some/path/to/a",
+    "depSpecs": [
+      "build",
+    ],
+    "dependencies": [
+      "a#build",
+    ],
+    "dependents": [],
+    "hash": "47c840184f599036508d2fe6970e53e5241ac73f",
+    "id": "a#test",
+    "label": "a - test",
+    "options": {},
+    "packageName": "a",
+    "priority": 0,
+    "task": "test",
+    "weight": 1,
+  },
+  {
+    "cache": true,
+    "cwd": "/some/path/to/b",
+    "depSpecs": [
+      "build",
+    ],
+    "dependencies": [
+      "b#build",
+    ],
+    "dependents": [],
+    "hash": "5a9536691284014e65dd9fffd8a60552c0a5d43a",
+    "id": "b#test",
+    "label": "b - test",
+    "options": {},
+    "packageName": "b",
+    "priority": 0,
+    "task": "test",
+    "weight": 1,
+  },
+  {
+    "cache": true,
+    "cwd": "/some/path/to/a",
+    "depSpecs": [
+      "^build",
+    ],
+    "dependencies": [
+      "b#build",
+    ],
+    "dependents": [
+      "a#test",
+    ],
+    "hash": "ed53172d402c3e6a65320e54a4e376bab9caa4e4",
+    "id": "a#build",
+    "label": "a - build",
+    "options": {},
+    "packageName": "a",
+    "priority": 0,
+    "task": "build",
+    "weight": 1,
+  },
+  {
+    "cache": true,
+    "cwd": "/some/path/to/b",
+    "depSpecs": [
+      "^build",
+    ],
+    "dependencies": [],
+    "dependents": [
+      "b#test",
+      "a#build",
+    ],
+    "hash": "95ce59ba59bc59830855743a779d2cb50d069c33",
+    "id": "b#build",
+    "label": "b - build",
+    "options": {},
+    "packageName": "b",
+    "priority": 0,
+    "task": "build",
+    "weight": 1,
+  },
+]
+`;

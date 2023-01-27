@@ -15,7 +15,7 @@ describe("info command", () => {
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
 
-    expect(jsonOutput).toMatchSnapshot();
+    expect(jsonOutput.map((entry) => ({ ...entry, cwd: `/some/path/to/${entry.packageName}` }))).toMatchSnapshot();
 
     repo.cleanup();
   });
