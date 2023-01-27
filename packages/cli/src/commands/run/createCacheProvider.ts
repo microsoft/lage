@@ -8,10 +8,11 @@ interface CreateCacheOptions {
   logger: Logger;
   root: string;
   skipLocalCache: boolean;
+  cliArgs: string[];
 }
 
 export function createCache(options: CreateCacheOptions) {
-  const { cacheOptions, logger, root, skipLocalCache } = options;
+  const { cacheOptions, logger, root, skipLocalCache, cliArgs } = options;
 
   const hasRemoteCacheConfig =
     !!cacheOptions?.cacheStorageConfig || !!process.env.BACKFILL_CACHE_PROVIDER || !!process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
@@ -41,6 +42,7 @@ export function createCache(options: CreateCacheOptions) {
     root,
     environmentGlob: cacheOptions?.environmentGlob ?? [],
     cacheKey: cacheOptions?.cacheKey,
+    cliArgs,
   });
 
   return { cacheProvider, hasher };
