@@ -77,6 +77,7 @@ export async function watchAction(options: RunOptions, command: Command) {
     logger,
     cacheOptions: config.cacheOptions,
     skipLocalCache: false,
+    cliArgs: taskArgs,
   });
 
   const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);

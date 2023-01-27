@@ -87,6 +87,7 @@ export async function runAction(options: RunOptions, command: Command) {
     logger,
     cacheOptions: config.cacheOptions,
     skipLocalCache: options.skipLocalCache,
+    cliArgs: taskArgs,
   });
 
   logger.verbose(`Running with ${concurrency} workers`);
