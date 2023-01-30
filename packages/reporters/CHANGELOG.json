@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Mon, 30 Jan 2023 17:26:59 GMT",
+      "tag": "@lage-run/reporters_v0.3.2",
+      "version": "0.3.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "felescoto95@hotmail.com",
+            "package": "@lage-run/reporters",
+            "commit": "226876f3dcc8a16fdf323e714cc9a4cbed088303",
+            "comment": "Add task error summary to ADO reporter"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 27 Jan 2023 00:28:15 GMT",
       "tag": "@lage-run/reporters_v0.3.1",
       "version": "0.3.1",
