@@ -203,12 +203,16 @@ export class AdoReporter implements Reporter {
     }
 
     if (failed && failed.length > 0) {
+      let packagesMessage = `##vso[task.logissue type=error]Your build failed on the following packages => `;
+
       for (const targetId of failed) {
         const target = targetRuns.get(targetId)?.target;
 
         if (target) {
           const { packageName, task } = target;
           const taskLogs = this.logEntries.get(targetId);
+
+          packagesMessage += `[${packageName} ${task}], `;
 
           this.logStream.write(`##[error] [${chalk.magenta(packageName)} ${chalk.cyan(task)}] ${chalk.redBright("ERROR DETECTED")}\n`);
 
@@ -220,6 +224,9 @@ export class AdoReporter implements Reporter {
           }
         }
       }
+
+      packagesMessage += "find the error logs above with the prefix '##[error]!'\n";
+      this.logStream.write(packagesMessage);
     }
 
     this.logStream.write(format(LogLevel.info, "", `Took a total of ${formatDuration(hrToSeconds(duration))} to complete`));
