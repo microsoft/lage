@@ -4,11 +4,9 @@ import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { getConfig } from "../../config/getConfig.js";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { JsonReporter } from "@lage-run/reporters";
+import createLogger from "@lage-run/logger";
 
-import createLogger, { LogLevel } from "@lage-run/logger";
-
-import type { ReporterInitOptions } from "@lage-run/reporters";
+import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import { getStartTargetId } from "@lage-run/target-graph";
 
 interface RunOptions extends ReporterInitOptions {

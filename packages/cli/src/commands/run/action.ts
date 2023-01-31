@@ -2,7 +2,7 @@ import { infoAction } from "./infoAction.js";
 import { runAction } from "./runAction.js";
 import { watchAction } from "./watchAction.js";
 import type { Command } from "commander";
-import type { ReporterInitOptions } from "@lage-run/reporters";
+import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 
 interface RunOptions extends ReporterInitOptions {
   concurrency: number;

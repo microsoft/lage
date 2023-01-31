@@ -8,13 +8,13 @@ import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig } from "../../config/getConfig.js";
 import { getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions } from "../../config/getMaxWorkersPerTask.js";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
-import { initializeReporters } from "@lage-run/reporters";
+import { initializeReporters } from "../initializeReporters.js";
 import { SimpleScheduler } from "@lage-run/scheduler";
 
 import type { Reporter } from "@lage-run/logger";
 import createLogger from "@lage-run/logger";
 
-import type { ReporterInitOptions } from "@lage-run/reporters";
+import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import { getConcurrency } from "../../config/getConcurrency.js";
 import type { TargetGraph } from "@lage-run/target-graph";
@@ -50,14 +50,6 @@ export async function runAction(options: RunOptions, command: Command) {
   const logger = createLogger();
 
   initializeReporters(logger, { ...options, concurrency });
-
-  if (options.profile !== undefined) {
-    const reporter = createProfileReporter({
-      concurrency,
-      profile: options.profile,
-    });
-    logger.addReporter(reporter);
-  }
 
   // Build Target Graph
   const root = getWorkspaceRoot(process.cwd())!;
