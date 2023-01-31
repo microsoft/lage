@@ -47,6 +47,7 @@ export class Monorepo {
           test: `node ${this.yarnPath} lage test --reporter json --log-level silly`,
           lint: `node ${this.yarnPath} lage lint --reporter json --log-level silly`,
           clear: `node ${this.yarnPath} lage cache --clear --reporter json --log-level silly`,
+          extra: `node ${this.yarnPath} lage extra --clear --reporter json --log-level silly`,
         },
         devDependencies: {
           "@lage-run/lage": path.resolve(__dirname, "..", "..", "..", "lage2"),
@@ -56,7 +57,8 @@ export class Monorepo {
         pipeline: {
           build: ['^build'],
           test: ['build'],
-          lint: []
+          lint: [],
+          extra: []
         }
       };`,
       ".gitignore": "node_modules",
@@ -74,6 +76,7 @@ export class Monorepo {
       [`packages/${name}/build.js`]: `console.log('building ${name}');`,
       [`packages/${name}/test.js`]: `console.log('building ${name}');`,
       [`packages/${name}/lint.js`]: `console.log('linting ${name}');`,
+      [`packages/${name}/extra.js`]: `console.log('extra ${name}');`,
       [`packages/${name}/package.json`]: {
         name,
         version: "0.1.0",

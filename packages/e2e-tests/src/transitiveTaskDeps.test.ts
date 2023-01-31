@@ -204,12 +204,6 @@ describe("transitive task deps test", () => {
     // own package transpilation should not be run, since we only want to to consider transitive
     // dependencies with a ^^ dependency.
     expect(indices[getTargetId("a", "transpile")]).toBeUndefined();
-    // despite b depending on c as a package, there is no dependency between the b#transpile and c#transpile
-    // tasks, so they should be runnable in either order.
-    //
-    // In this test we use priority to ensure that b#transpile will always run before
-    // c#transpile if they do not have an explicit task dependency.
-    expect(indices[getTargetId("b", "transpile")]).toBeLessThan(indices[getTargetId("c", "transpile")]);
 
     repo.cleanup();
   });

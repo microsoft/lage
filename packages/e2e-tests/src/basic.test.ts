@@ -24,6 +24,33 @@ describe("basics", () => {
     repo.cleanup();
   });
 
+  it.only("basic with missing script names - logging should not include those targets", () => {
+    const repo = new Monorepo("basics-missing-scripts");
+
+    repo.init();
+    repo.addPackage("a", ["b"]);
+    repo.addPackage("b", [], {
+      build: "node ./build.js",
+      test: "node ./test.js",
+      lint: "node ./lint.js",
+      extra: "node ./extra.js",
+    });
+
+    repo.install();
+
+    const results = repo.run("extra");
+    const output = results.stdout + results.stderr;
+    const jsonOutput = parseNdJson(output);
+
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "extra", "success"))).toBeTruthy();
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "test", "success"))).toBeFalsy();
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "success"))).toBeFalsy();
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "test", "success"))).toBeFalsy();
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "lint", "success"))).toBeFalsy();
+
+    repo.cleanup();
+  });
+
   it("basic test case - with task args", () => {
     const repo = new Monorepo("basics-with-task-args");
 

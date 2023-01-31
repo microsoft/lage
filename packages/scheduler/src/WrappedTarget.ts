@@ -111,15 +111,21 @@ export class WrappedTarget implements TargetRun {
   }
 
   onSkipped(hash?: string | undefined) {
+    if (this.startTime[0] !== 0 && this.startTime[1] !== 0) {
+      this.duration = process.hrtime(this.startTime);
+    }
+
     this.status = "skipped";
-    this.duration = process.hrtime(this.startTime);
-    this.options.logger.info("", {
-      target: this.target,
-      status: "skipped",
-      duration: this.duration,
-      hash,
-      threadId: this.threadId,
-    });
+
+    if (hash) {
+      this.options.logger.info("", {
+        target: this.target,
+        status: "skipped",
+        duration: this.duration,
+        hash,
+        threadId: this.threadId,
+      });
+    }
   }
 
   async getCache() {

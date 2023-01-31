@@ -295,7 +295,6 @@ export class SimpleScheduler implements TargetScheduler {
           if (shouldRun) {
             await target.run();
           } else {
-            target.onStart(0);
             target.onSkipped();
           }
         } catch (e) {
