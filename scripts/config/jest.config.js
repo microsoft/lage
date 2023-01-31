@@ -28,6 +28,9 @@ module.exports = {
       "ts-jest",
       {
         isolatedModules: true,
+        tsconfig: {
+          jsx: "react",
+        },
       },
     ],
   },

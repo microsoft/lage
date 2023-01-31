@@ -1,6 +1,5 @@
 import type { Command } from "commander";
 import { createCache } from "./createCacheProvider.js";
-import { createProfileReporter } from "./createProfileReporter.js";
 import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
