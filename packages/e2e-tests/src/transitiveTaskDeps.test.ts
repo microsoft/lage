@@ -182,7 +182,7 @@ describe("transitive task deps test", () => {
     });
     repo.install();
 
-    const results = repo.run("bundle", ["--scope", "a"]);
+    const results = repo.run("bundle", ["--scope", "a", "--concurrency", "1"]);
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
