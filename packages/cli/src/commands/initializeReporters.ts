@@ -1,6 +1,6 @@
 import { createReporter } from "./createReporter.js";
 import type { Logger } from "@lage-run/logger";
-import { ReporterInitOptions } from "../types/ReporterInitOptions.js";
+import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
 
 export function initializeReporters(logger: Logger, options: ReporterInitOptions) {
   const { reporter } = options;

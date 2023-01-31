@@ -1,6 +1,6 @@
 import { LogLevel } from "@lage-run/logger";
 import { JsonReporter, AdoReporter, LogReporter, ProgressReporter, ChromeTraceEventsReporter } from "@lage-run/reporters";
-import { ReporterInitOptions } from "../types/ReporterInitOptions";
+import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
 
 export function createReporter(reporter: string, options: ReporterInitOptions) {
   const { verbose, grouped, logLevel: logLevelName, concurrency, profile } = options;
