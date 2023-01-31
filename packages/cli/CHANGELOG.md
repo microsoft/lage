@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Mon, 30 Jan 2023 17:26:59 GMT and should not be manually modified.
+This log was last generated on Tue, 31 Jan 2023 18:24:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.7.2
+
+Tue, 31 Jan 2023 18:24:39 GMT
+
+### Patches
+
+- switch back to old log reporter when "verbose" or "grouped" are used (kchau@microsoft.com)
+- Bump @lage-run/reporters to v1.0.0
 
 ## 0.7.1
 

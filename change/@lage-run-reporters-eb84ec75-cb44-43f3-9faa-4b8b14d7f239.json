@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "removed the initialize reporter and create reporter APIs (please just instantiate them yourself!)",
-  "packageName": "@lage-run/reporters",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

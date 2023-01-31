@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cli",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Command Line Interface for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -24,7 +24,7 @@
     "@lage-run/scheduler-types": "^0.3.0",
     "@lage-run/target-graph": "^0.6.1",
     "@lage-run/cache": "^0.2.3",
-    "@lage-run/reporters": "^0.3.2",
+    "@lage-run/reporters": "^1.0.0",
     "commander": "^9.4.0",
     "workspace-tools": "^0.29.0",
     "chokidar": "3.5.3",

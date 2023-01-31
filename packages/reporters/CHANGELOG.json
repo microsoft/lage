@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Tue, 31 Jan 2023 18:24:39 GMT",
+      "tag": "@lage-run/reporters_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "major": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "ac2bf4264854e06e86236a54421374b2c2602f7b",
+            "comment": "removed the initialize reporter and create reporter APIs (please just instantiate them yourself!)"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 30 Jan 2023 17:26:59 GMT",
       "tag": "@lage-run/reporters_v0.3.2",
       "version": "0.3.2",

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "switch back to old log reporter when \"verbose\" or \"grouped\" are used",
-  "packageName": "@lage-run/cli",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
