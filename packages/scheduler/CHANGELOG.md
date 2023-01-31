@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Fri, 27 Jan 2023 00:28:15 GMT and should not be manually modified.
+This log was last generated on Tue, 31 Jan 2023 23:54:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.2
+
+Tue, 31 Jan 2023 23:54:49 GMT
+
+### Patches
+
+- fixed reporter to not log target status when it should not run at all (kchau@microsoft.com)
 
 ## 0.8.1
 
