@@ -14,7 +14,7 @@ import { watch } from "./watcher.js";
 import type { Reporter } from "@lage-run/logger";
 import createLogger, { LogLevel } from "@lage-run/logger";
 
-import type { ReporterInitOptions } from "@lage-run/reporters";
+import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 import { getConcurrency } from "../../config/getConcurrency.js";

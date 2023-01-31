@@ -3,8 +3,8 @@ import type { Command } from "commander";
 import { getConfig } from "../../config/getConfig.js";
 import { pruneCache } from "./pruneCache.js";
 import createLogger from "@lage-run/logger";
-import { initializeReporters } from "@lage-run/reporters";
-import type { ReporterInitOptions } from "@lage-run/reporters";
+import { initializeReporters } from "../initializeReporters.js";
+import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 
 interface CacheOptions extends ReporterInitOptions {
   prune?: number;
