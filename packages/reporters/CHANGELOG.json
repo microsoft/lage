@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Wed, 01 Feb 2023 20:45:02 GMT",
+      "tag": "@lage-run/reporters_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/reporters",
+            "commit": "5ffef3f6aed35b9478dc6c3d3d886ebd287fed3e",
+            "comment": "Update devDependency @types/react to v18.0.27"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 31 Jan 2023 18:24:39 GMT",
       "tag": "@lage-run/reporters_v1.0.0",
       "version": "1.0.0",
