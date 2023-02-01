@@ -4122,10 +4122,10 @@ batch@0.6.1:
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
   integrity sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==
 
-beachball@2.31.6:
-  version "2.31.6"
-  resolved "https://registry.yarnpkg.com/beachball/-/beachball-2.31.6.tgz#2bf8211551f302f3205d74dda4f8482569956935"
-  integrity sha512-9EnqjF3ojAX+HZH0R+BuDCIkvSnnS28gNqFxcs6PHV5t+GzVhkO0j1FzsVC+tVAiMh43b8Em9xx28597wePf7Q==
+beachball@2.31.7:
+  version "2.31.7"
+  resolved "https://registry.yarnpkg.com/beachball/-/beachball-2.31.7.tgz#512e57e519ab8bf665e6ad23c71c51cfa127b582"
+  integrity sha512-mwi+bVJFmdI52kirevxpWS7f1uJexcjjVczaQBu97vC/5n9x2yRcnOy7IRrGGlt2p1ml+zqeq+yOXbkFeM2Ang==
   dependencies:
     cosmiconfig "^7.0.0"
     execa "^5.0.0"
