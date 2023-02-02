@@ -1,6 +1,5 @@
 import createLogger from "@lage-run/logger";
-import type { Command } from "commander";
-import { getPackageInfos, getWorkspaceRoot, PackageInfos } from "workspace-tools";
+import { getPackageInfos, getWorkspaceRoot, type PackageInfos } from "workspace-tools";
 import { getConfig } from "../../config/getConfig.js";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import type { FilterOptions } from "../../types/FilterOptions.js";
@@ -9,7 +8,7 @@ interface AffectedOptions extends FilterOptions {
   outputFormat?: "json" | "graph" | "default";
 }
 
-export async function affectedAction(options: AffectedOptions, command: Command) {
+export async function affectedAction(options: AffectedOptions) {
   const { dependencies, dependents, since, scope, ignore, outputFormat } = options;
 
   const cwd = process.cwd();
@@ -46,6 +45,7 @@ export async function affectedAction(options: AffectedOptions, command: Command)
       break;
   }
 
+  // eslint-disable-next-line no-console
   console.log(output);
 }
 

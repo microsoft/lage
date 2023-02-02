@@ -1,4 +1,4 @@
-import { Command, Option } from "commander";
+import { Command } from "commander";
 import { addFilterOptions } from "../addFilterOptions.js";
 import { affectedAction } from "./action.js";
 

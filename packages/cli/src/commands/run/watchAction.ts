@@ -18,7 +18,7 @@ import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 import { getConcurrency } from "../../config/getConcurrency.js";
-import { FilterOptions } from "../../types/FilterOptions.js";
+import type { FilterOptions } from "../../types/FilterOptions.js";
 
 interface RunOptions extends ReporterInitOptions, FilterOptions {
   concurrency: number;
