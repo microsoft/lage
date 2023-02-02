@@ -18,22 +18,18 @@ import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 import { getConcurrency } from "../../config/getConcurrency.js";
+import { FilterOptions } from "../../types/FilterOptions.js";
 
-interface RunOptions extends ReporterInitOptions {
+interface RunOptions extends ReporterInitOptions, FilterOptions {
   concurrency: number;
   maxWorkersPerTask: string[];
   profile: string | boolean | undefined;
-  dependencies: boolean;
-  dependents: boolean;
-  since: string;
-  scope: string[];
-  to: string[];
   skipLocalCache: boolean;
   continue: boolean;
   cache: boolean;
   resetCache: boolean;
   nodeArg: string;
-  ignore: string[];
+  allowNoTargetRuns: boolean;
 }
 
 export async function watchAction(options: RunOptions, command: Command) {

@@ -21,6 +21,7 @@ addFilterOptions(addLoggerOptions(runCommand))
     'arguments to be passed to node (e.g. --nodearg="--max_old_space_size=1234 --heap-prof" - set via "NODE_OPTIONS" environment variable'
   )
   .option("--continue", "continues the run even on error")
+  .option("--allow-no-target-runs")
   .addOption(
     new Option(
       "--info",

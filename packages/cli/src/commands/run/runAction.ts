@@ -14,26 +14,21 @@ import type { Reporter } from "@lage-run/logger";
 import createLogger from "@lage-run/logger";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
+import type { FilterOptions } from "../../types/FilterOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import { getConcurrency } from "../../config/getConcurrency.js";
 import type { TargetGraph } from "@lage-run/target-graph";
 import { NoTargetFoundError } from "../../types/errors.js";
 
-interface RunOptions extends ReporterInitOptions {
+interface RunOptions extends ReporterInitOptions, FilterOptions {
   concurrency: number;
   maxWorkersPerTask: string[];
   profile: string | boolean | undefined;
-  dependencies: boolean;
-  dependents: boolean;
-  since: string;
-  scope: string[];
-  to: string[];
   skipLocalCache: boolean;
   continue: boolean;
   cache: boolean;
   resetCache: boolean;
   nodeArg: string;
-  ignore: string[];
   allowNoTargetRuns: boolean;
 }
 
