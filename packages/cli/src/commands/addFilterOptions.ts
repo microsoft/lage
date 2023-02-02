@@ -11,6 +11,5 @@ export function addFilterOptions(program: Command) {
       "--ignore <ignore...>",
       "ignores files when calculating the scope with `--since` in addition to the files specified in lage.config",
       []
-    )
-    .option("--allow-no-target-runs");
+    );
 }
