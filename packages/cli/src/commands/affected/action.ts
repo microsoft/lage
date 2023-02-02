@@ -78,7 +78,7 @@ function renderGraph(props: { packages: string[]; packageInfos: PackageInfos }) 
 
   return `
 digraph affected {
-  ${adjacencies.map((entry) => `"${entry[0]}" -> "${entry[1]}"`).join("\n")}
+${adjacencies.map((entry) => `  "${entry[0]}" -> "${entry[1]}"`).join("\n")}
 }  
 `;
 }
