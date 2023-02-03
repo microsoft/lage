@@ -2,6 +2,27 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Fri, 03 Feb 2023 00:20:10 GMT",
+      "tag": "@lage-run/lage_v2.6.0",
+      "version": "2.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "9772c8f6e81edac6a8ae1b4a4c26b1cb8c0986b0",
+            "comment": "add affected command"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.8.0",
+            "commit": "9772c8f6e81edac6a8ae1b4a4c26b1cb8c0986b0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 31 Jan 2023 23:54:49 GMT",
       "tag": "@lage-run/lage_v2.5.35",
       "version": "2.5.35",

@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 03 Feb 2023 00:20:10 GMT",
+      "tag": "@lage-run/cli_v0.8.0",
+      "version": "0.8.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "9772c8f6e81edac6a8ae1b4a4c26b1cb8c0986b0",
+            "comment": "adding an affected command"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 31 Jan 2023 23:54:49 GMT",
       "tag": "@lage-run/cli_v0.7.3",
       "version": "0.7.3",

@@ -1,8 +1,17 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Tue, 31 Jan 2023 23:54:49 GMT and should not be manually modified.
+This log was last generated on Fri, 03 Feb 2023 00:20:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.0
+
+Fri, 03 Feb 2023 00:20:10 GMT
+
+### Minor changes
+
+- add affected command (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.8.0
 
 ## 2.5.35
 
