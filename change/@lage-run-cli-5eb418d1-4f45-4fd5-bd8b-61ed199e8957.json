@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixing up some logger options to set up proper conflicts",
-  "packageName": "@lage-run/cli",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

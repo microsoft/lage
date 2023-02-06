@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cli",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Command Line Interface for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"

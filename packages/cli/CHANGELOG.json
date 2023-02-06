@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Mon, 06 Feb 2023 23:42:51 GMT",
+      "tag": "@lage-run/cli_v0.8.1",
+      "version": "0.8.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "f3d37c7c751b57cba8f2197036b69ce67436af3f",
+            "comment": "fixing up some logger options to set up proper conflicts"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 03 Feb 2023 00:20:10 GMT",
       "tag": "@lage-run/cli_v0.8.0",
       "version": "0.8.0",
