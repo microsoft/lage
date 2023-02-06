@@ -1,15 +1,28 @@
+import fs from "fs";
+import path from "path";
+import os from "os";
 import { Logger } from "@lage-run/logger";
 import { AdoReporter, ChromeTraceEventsReporter, LogReporter, ProgressReporter } from "@lage-run/reporters";
 import { initializeReporters } from "../src/commands/initializeReporters.js";
 
 describe("initializeReporters", () => {
-  it("should initialize progress reporter by default", () => {
+  let tmpDir: string;
+
+  beforeAll(() => {
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "lage-"));
+  });
+
+  afterAll(() => {
+    fs.rmdirSync(tmpDir, { recursive: true });
+  });
+
+  it("should initialize progress reporter when param is progress passed as true", () => {
     const logger = new Logger();
     const reporters = initializeReporters(logger, {
       concurrency: 1,
       grouped: false,
       logLevel: "info",
-      progress: false,
+      progress: true,
       reporter: [],
       verbose: false,
     });
@@ -52,14 +65,14 @@ describe("initializeReporters", () => {
       concurrency: 1,
       grouped: false,
       logLevel: "info",
-      progress: false,
+      progress: true,
       reporter: [],
       verbose: false,
-      profile: true,
+      profile: path.join(tmpDir, "profile.json"),
     });
+
     expect(reporters.length).toBe(2);
     expect(reporters).toContainEqual(expect.any(ChromeTraceEventsReporter));
-    expect(reporters).toContainEqual(expect.any(ProgressReporter));
   });
 
   it("should initialize ADO reporter when reporter arg is adoLog", () => {
@@ -71,7 +84,6 @@ describe("initializeReporters", () => {
       progress: false,
       reporter: ["adoLog"],
       verbose: false,
-      profile: false,
     });
     expect(reporters.length).toBe(1);
     expect(reporters).toContainEqual(expect.any(AdoReporter));

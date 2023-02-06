@@ -84,7 +84,7 @@ describe("RemoteFallbackCacheProvider", () => {
     });
     repo.install();
 
-    const results = repo.run("test", ["--verbose"]);
+    const results = repo.run("test");
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
