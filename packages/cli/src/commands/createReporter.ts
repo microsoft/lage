@@ -6,7 +6,7 @@ export function createReporter(reporter: string, options: ReporterInitOptions) {
   const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress } = options;
   const logLevel = LogLevel[logLevelName];
 
-  if (progress && !(verbose || grouped)) {
+  if (progress && !(verbose || grouped || profile)) {
     return new ProgressReporter({ concurrency });
   }
 
