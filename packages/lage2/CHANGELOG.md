@@ -1,8 +1,16 @@
 # Change Log - @lage-run/lage
 
-This log was last generated on Tue, 07 Feb 2023 17:54:05 GMT and should not be manually modified.
+This log was last generated on Tue, 07 Feb 2023 18:11:30 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.4
+
+Tue, 07 Feb 2023 18:11:30 GMT
+
+### Patches
+
+- again (kchau@microsoft.com)
 
 ## 2.6.3
 
