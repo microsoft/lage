@@ -28,3 +28,16 @@ yarn add -D lage
 ```
 
 Read up on how to [get started quickly](https://microsoft.github.io/lage/docs/Quick%20Start) in the docs!
+
+## New Node.js API @lage-run scoped packages
+
+* `@lage-run/cache`: `backfill` based cache layer that adds the capability of remote fallback (from a cloud storage, such as Azure Blob Storage)
+* `@lage-run/find-npm-client`: finds the right npm binary (Windows, macOS, and Linux compatible)
+* `@lage-run/format-hrtime`: calculates diffs and formats high-resolution time as given by `process.hrtime()`
+* `@lage-run/haser`: a high performance repo-wide source code hasher
+* `@lage-run/logger`: generic library that logs structured data to various `reporters`
+* `@lage-run/reporters`: actually outputs the log stream to some format like JSON, Chromium Traces, and even the new interactive lage UI
+* `@lage-run/scheduler`: a typed work scheduler that understands how to schedule work according to a `target-graph`
+* `@lage-run/target-graph`: a graph representation between of packages and their tasks; with utilities to caculate subgraphs
+* `@lage-run/worker-threads-pool`: a typed `worker_threads` pool implementation that includes the ability to associate stdout of each task given to workers
+
