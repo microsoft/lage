@@ -1,7 +1,0 @@
-{
-  "name": "package-a",
-  "scripts": {
-    "build": "echo hello",
-    "custom": "echo custom"
-  }
-}

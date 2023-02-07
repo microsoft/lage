@@ -7,24 +7,18 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*",
-      "docs",
+      "packages/lage",
       "scripts"
     ]
   },
   "scripts": {
-    "build": "lage transpile types build bundle --scope=!docs --verbose",
-    "watch": "lage transpile --scope=!docs --verbose --unstable-watch",
-    "change": "beachball change",
-    "checkchange": "beachball check",
-    "release": "beachball publish -y --tag latest",
-    "start": "lage start --scope=!docs --verbose --concurrency 100",
-    "test": "lage test --scope=!docs --verbose",
+    "build": "lage transpile build",
+    "watch": "lage transpile --unstable-watch",
+    "change": "beachball change -b origin/v1",
+    "checkchange": "beachball check -b origin/v1",
+    "release": "beachball publish -y --tag v1",
+    "test": "lage test",
     "lint": "lage lint",
-    "decks:build": "npm exec --package=@marp-team/marp-cli -- marp -I decks --pdf -o decks/dist",
-    "docs": "yarn workspace @lage-run/docs start",
-    "docs:build": "yarn workspace @lage-run/docs build",
-    "gh-pages": "gh-pages",
     "format": "prettier --config .prettierrc packages/**/*.ts **/*.json --write --ignore-path .gitignore",
     "format:check": "prettier --config .prettierrc packages/**/*.ts **/*.json --check --ignore-path .gitignore",
     "prepare": "husky install",

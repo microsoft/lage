@@ -1,3 +1,6 @@
+> **Note**
+> This branch is the version 1.x of lage
+
 # lage
 
 Documentation is here: https://microsoft.github.io/lage/
