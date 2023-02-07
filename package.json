@@ -7,18 +7,18 @@
   },
   "workspaces": {
     "packages": [
-      "packages/lage",
+      "packages/*",
       "scripts"
     ]
   },
   "scripts": {
-    "build": "lage transpile build",
-    "watch": "lage transpile --unstable-watch",
+    "build": "lage build --verbose",
+    "watch": "lage build --verbose --unstable-watch",
     "change": "beachball change -b origin/v1",
     "checkchange": "beachball check -b origin/v1",
     "release": "beachball publish -y --tag v1",
-    "test": "lage test",
-    "lint": "lage lint",
+    "test": "lage test --verbose",
+    "lint": "lage lint --verbose",
     "format": "prettier --config .prettierrc packages/**/*.ts **/*.json --write --ignore-path .gitignore",
     "format:check": "prettier --config .prettierrc packages/**/*.ts **/*.json --check --ignore-path .gitignore",
     "prepare": "husky install",
