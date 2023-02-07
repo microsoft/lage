@@ -2,7 +2,6 @@
 
 Lage version 2 is now available at dist-tag `@latest`, featuring significant updates and improvements that make this release truly unique:
 
-New Features:
 
 * `worker_threads` based worker pool to manage the parallel targets
 * new `worker` target runner that can keep state from task to task to speed up TypeScript, ESLint, etc.
