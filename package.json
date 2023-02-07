@@ -8,22 +8,22 @@
   "workspaces": {
     "packages": [
       "packages/*",
-      "docs",
       "scripts"
     ]
   },
   "scripts": {
-    "build": "lage transpile types build bundle --scope=!docs --verbose",
-    "watch": "lage transpile --scope=!docs --verbose --unstable-watch",
+    "build": "lage transpile types build bundle",
+    "watch": "lage transpile --verbose --unstable-watch",
     "change": "beachball change",
     "checkchange": "beachball check",
     "release": "beachball publish -y --tag latest",
-    "start": "lage start --scope=!docs --verbose --concurrency 100",
-    "test": "lage test --scope=!docs --verbose",
+    "test": "lage test --verbose",
     "lint": "lage lint",
     "decks:build": "npm exec --package=@marp-team/marp-cli -- marp -I decks --pdf -o decks/dist",
-    "docs": "yarn workspace @lage-run/docs start",
-    "docs:build": "yarn workspace @lage-run/docs build",
+    "docs": "yarn --cwd docs start",
+    "docs:install": "yarn --cwd docs",
+    "docs:build": "yarn --cwd docs build",
+    "docs:test": "yarn --cwd docs build",
     "gh-pages": "gh-pages",
     "format": "prettier --config .prettierrc packages/**/*.ts **/*.json --write --ignore-path .gitignore",
     "format:check": "prettier --config .prettierrc packages/**/*.ts **/*.json --check --ignore-path .gitignore",

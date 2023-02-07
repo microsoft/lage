@@ -1,6 +1,6 @@
 # lage
 
-Full documentation is here: https://microsoft.github.io/lage/
+The documentation for `lage` currently located in [the /docs-beta path](https://github.com/microsoft/lage/tree/master/docs-beta/docs)
 
 ## Overview
 
@@ -49,7 +49,6 @@ $ lage test
 ```
 
 `lage` will detect that you need to run `build` steps before `test`s are run.
-
 
 
 # Contributing

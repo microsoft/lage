@@ -1,30 +1,671 @@
 {
-  "name": "lage",
+  "name": "@lage-run/lage",
   "entries": [
     {
-      "date": "Wed, 21 Dec 2022 22:10:21 GMT",
-      "tag": "lage_v1.9.6",
-      "version": "1.9.6",
+      "date": "Tue, 07 Feb 2023 18:11:30 GMT",
+      "tag": "@lage-run/lage_v2.6.4",
+      "version": "2.6.4",
       "comments": {
         "patch": [
           {
-            "author": "viditmathur@microsoft.com",
-            "package": "lage",
-            "commit": "acc23f883d9a9a158f76f5cdd591ea1d85cee7c9",
-            "comment": "Added logging for exit code"
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "94d24ea0023caac29df5df69453fd78ff632ee7b",
+            "comment": "again"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 07 Feb 2023 17:54:05 GMT",
+      "tag": "@lage-run/lage_v2.6.3",
+      "version": "2.6.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "5c716e7c3163715a95bf7eb83d062426843fd73e",
+            "comment": "trying to fix the release again, github action quit halfway into process"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 07 Feb 2023 17:31:22 GMT",
+      "tag": "@lage-run/lage_v2.6.2",
+      "version": "2.6.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "314fe0913100e4feb1971c116712d9d9849dc5b8",
+            "comment": "fixes a publish error"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 06 Feb 2023 23:42:51 GMT",
+      "tag": "@lage-run/lage_v2.6.1",
+      "version": "2.6.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.8.1",
+            "commit": "f3d37c7c751b57cba8f2197036b69ce67436af3f"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 03 Feb 2023 00:20:10 GMT",
+      "tag": "@lage-run/lage_v2.6.0",
+      "version": "2.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "9772c8f6e81edac6a8ae1b4a4c26b1cb8c0986b0",
+            "comment": "add affected command"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.8.0",
+            "commit": "9772c8f6e81edac6a8ae1b4a4c26b1cb8c0986b0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 31 Jan 2023 23:54:49 GMT",
+      "tag": "@lage-run/lage_v2.5.35",
+      "version": "2.5.35",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.7.3",
+            "commit": "9340358c80d388e0d56b40d1fdb965e1b4e20454"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.8.2",
+            "commit": "9340358c80d388e0d56b40d1fdb965e1b4e20454"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 31 Jan 2023 18:24:39 GMT",
+      "tag": "@lage-run/lage_v2.5.34",
+      "version": "2.5.34",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.7.2",
+            "commit": "ac2bf4264854e06e86236a54421374b2c2602f7b"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 30 Jan 2023 17:26:59 GMT",
+      "tag": "@lage-run/lage_v2.5.33",
+      "version": "2.5.33",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.7.1",
+            "commit": "226876f3dcc8a16fdf323e714cc9a4cbed088303"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 27 Jan 2023 20:50:27 GMT",
+      "tag": "@lage-run/lage_v2.5.32",
+      "version": "2.5.32",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.7.0",
+            "commit": "2d6b70f69754030e144521409d3d5d6704746612"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 27 Jan 2023 20:02:06 GMT",
+      "tag": "@lage-run/lage_v2.5.31",
+      "version": "2.5.31",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.6.4",
+            "commit": "597b0e8ad233f460a0d16e0996079fa97bd9de14"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 27 Jan 2023 00:28:15 GMT",
+      "tag": "@lage-run/lage_v2.5.30",
+      "version": "2.5.30",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.6.3",
+            "commit": "b0f0b5a7773a71c111799f3a3b0a48a7824b838b"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.8.1",
+            "commit": "b0f0b5a7773a71c111799f3a3b0a48a7824b838b"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 19 Jan 2023 00:34:19 GMT",
+      "tag": "@lage-run/lage_v2.5.29",
+      "version": "2.5.29",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "96448520cdb6f15206cd35b6187025d0be634083",
+            "comment": "bundling of lage needs to fix the weird punycode/ thing"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Jan 2023 23:27:05 GMT",
+      "tag": "@lage-run/lage_v2.5.28",
+      "version": "2.5.28",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.6.2",
+            "commit": "a81971fa10a5b39552f79e062e120808302580ce"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Jan 2023 21:35:06 GMT",
+      "tag": "@lage-run/lage_v2.5.27",
+      "version": "2.5.27",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "81e5511c85d07edf41367564b0b7e01d76511709",
+            "comment": "fixing missing files in the bundle"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Jan 2023 19:11:10 GMT",
+      "tag": "@lage-run/lage_v2.5.26",
+      "version": "2.5.26",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.6.1",
+            "commit": "876eca11217aa53b9f0fa7c79b6258c44c730595"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Jan 2023 18:18:35 GMT",
+      "tag": "@lage-run/lage_v2.5.25",
+      "version": "2.5.25",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.6.0",
+            "commit": "71b5b1452ee25148a637894d1bf99cf1cc6a80a7"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.8.0",
+            "commit": "71b5b1452ee25148a637894d1bf99cf1cc6a80a7"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 05 Jan 2023 00:40:50 GMT",
+      "tag": "@lage-run/lage_v2.5.24",
+      "version": "2.5.24",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.5.7",
+            "commit": "961843bef658c51312e02498554ad338e467e1a7"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.7.3",
+            "commit": "961843bef658c51312e02498554ad338e467e1a7"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 08 Dec 2022 00:49:28 GMT",
+      "tag": "@lage-run/lage_v2.5.23",
+      "version": "2.5.23",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.5.6",
+            "commit": "ad281dfe8b222d949130821828a680d1c3625154"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.7.2",
+            "commit": "ad281dfe8b222d949130821828a680d1c3625154"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 06 Dec 2022 23:28:12 GMT",
+      "tag": "@lage-run/lage_v2.5.22",
+      "version": "2.5.22",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.5.5",
+            "commit": "d0ad44eb759503c5642badc5210daf5028886a7c"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 06 Dec 2022 00:48:02 GMT",
+      "tag": "@lage-run/lage_v2.5.21",
+      "version": "2.5.21",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "3fa4b9c8aa67cbc2198385e32fa38de123541f09",
+            "comment": "adding prebuilt yoga as a dep (cry!)"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.5.4",
+            "commit": "3fa4b9c8aa67cbc2198385e32fa38de123541f09"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.7.1",
+            "commit": "3fa4b9c8aa67cbc2198385e32fa38de123541f09"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 05 Dec 2022 18:02:35 GMT",
+      "tag": "@lage-run/lage_v2.5.20",
+      "version": "2.5.20",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.5.3",
+            "commit": "347522c6a3d6ec77bee6ace1bbd60a08b42e4513"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.7.0",
+            "commit": "347522c6a3d6ec77bee6ace1bbd60a08b42e4513"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 21 Nov 2022 06:32:03 GMT",
+      "tag": "@lage-run/lage_v2.5.19",
+      "version": "2.5.19",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.5.2",
+            "commit": "aafe75c34b61ed10f11c829a7bb1f5ad86f0b810"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.6.0",
+            "commit": "aafe75c34b61ed10f11c829a7bb1f5ad86f0b810"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 18 Nov 2022 19:52:38 GMT",
+      "tag": "@lage-run/lage_v2.5.18",
+      "version": "2.5.18",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.5.1",
+            "commit": "0970a6aa757664bd8fa9338982ef6e051500577c"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.15",
+            "commit": "0970a6aa757664bd8fa9338982ef6e051500577c"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 17 Nov 2022 19:29:51 GMT",
+      "tag": "@lage-run/lage_v2.5.17",
+      "version": "2.5.17",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.5.0",
+            "commit": "240efb10733a9daac53475fa1000ddfc5ae81a42"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 16 Nov 2022 20:07:05 GMT",
+      "tag": "@lage-run/lage_v2.5.16",
+      "version": "2.5.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.4.37",
+            "commit": "04f9c13f6f37c7a14a67ab27acaf253ad09bfbd8"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.14",
+            "commit": "04f9c13f6f37c7a14a67ab27acaf253ad09bfbd8"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 16 Nov 2022 17:12:24 GMT",
+      "tag": "@lage-run/lage_v2.5.15",
+      "version": "2.5.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.4.36",
+            "commit": "a7a4471aeaa018e40c718ec6bd6611a0ab040765"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.13",
+            "commit": "a7a4471aeaa018e40c718ec6bd6611a0ab040765"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 11 Nov 2022 07:29:47 GMT",
+      "tag": "@lage-run/lage_v2.5.14",
+      "version": "2.5.14",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.4.35",
+            "commit": "459d25088a3a391f8b7f02db4f21eb425795ca12"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.12",
+            "commit": "459d25088a3a391f8b7f02db4f21eb425795ca12"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 10 Nov 2022 20:20:45 GMT",
+      "tag": "@lage-run/lage_v2.5.13",
+      "version": "2.5.13",
+      "comments": {
+        "none": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/lage",
+            "commit": "b1a42cb963a5fc680e4c59b1e705acbc964f0804",
+            "comment": "making swc the transpiler of choice"
+          }
+        ],
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "b1a42cb963a5fc680e4c59b1e705acbc964f0804",
+            "comment": "fixing real imports with rollup as well as getting rid of getPackageAndTask implementation details"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.4.34",
+            "commit": "b1a42cb963a5fc680e4c59b1e705acbc964f0804"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.11",
+            "commit": "b1a42cb963a5fc680e4c59b1e705acbc964f0804"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 04 Nov 2022 21:14:01 GMT",
+      "tag": "@lage-run/lage_v2.5.12",
+      "version": "2.5.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "6dba6df4c699c92ca201e91301dfa4aac6344902",
+            "comment": "forcing a single typescript version in the repo"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.4.33",
+            "commit": "6dba6df4c699c92ca201e91301dfa4aac6344902"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.10",
+            "commit": "6dba6df4c699c92ca201e91301dfa4aac6344902"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Nov 2022 20:45:00 GMT",
+      "tag": "@lage-run/lage_v2.5.11",
+      "version": "2.5.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.4.32",
+            "commit": "e64f7bfdd1dbd2518a1d5ab8453c0e3bbd9b3077"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.9",
+            "commit": "e64f7bfdd1dbd2518a1d5ab8453c0e3bbd9b3077"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Nov 2022 06:27:27 GMT",
+      "tag": "@lage-run/lage_v2.5.10",
+      "version": "2.5.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.4.31",
+            "commit": "ffb4fc2cebf1800b4b5d2a353a0d109c17f21dde"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.8",
+            "commit": "ffb4fc2cebf1800b4b5d2a353a0d109c17f21dde"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 22:48:33 GMT",
+      "tag": "@lage-run/lage_v2.5.9",
+      "version": "2.5.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.4.30",
+            "commit": "97b306418acd099a3ed6f3dfc062b513f5fe391c"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.7",
+            "commit": "97b306418acd099a3ed6f3dfc062b513f5fe391c"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 22:25:59 GMT",
+      "tag": "@lage-run/lage_v2.5.8",
+      "version": "2.5.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.4.29",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.6",
+            "commit": "1664f38eca34da2d51b6a581c92caba5fc51e5fd"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 20:43:17 GMT",
+      "tag": "@lage-run/lage_v2.5.7",
+      "version": "2.5.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.4.28",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.5.5",
+            "commit": "92379d166d2abb696a1080ff3865bb6828f67b03"
           }
         ]
       }
     },
     {
       "date": "Tue, 01 Nov 2022 20:12:49 GMT",
-      "tag": "lage_v1.9.5",
-      "version": "1.9.5",
+      "tag": "@lage-run/lage_v2.5.6",
+      "version": "2.5.6",
       "comments": {
         "patch": [
           {
             "author": "kchau@microsoft.com",
-            "package": "lage",
+            "package": "@lage-run/lage",
             "commit": "2d8af6ca7fa6e842dae1e58b9879e78d46afddc6",
             "comment": "fixed to use consistent package dep versions"
           }
@@ -33,103 +674,178 @@
     },
     {
       "date": "Mon, 31 Oct 2022 21:27:52 GMT",
-      "tag": "lage_v1.9.4",
-      "version": "1.9.4",
+      "tag": "@lage-run/lage_v2.5.4",
+      "version": "2.5.4",
       "comments": {
         "patch": [
           {
             "author": "kchau@microsoft.com",
-            "package": "lage",
+            "package": "@lage-run/lage",
             "commit": "e8946dc08fb76dc616d61f3b67b0ca99e15d9a7e",
-            "comment": "Fixed depcheck issues"
+            "comment": "adds depcheck and fixes"
           }
         ]
       }
     },
     {
-      "date": "Sat, 29 Oct 2022 18:42:49 GMT",
-      "tag": "lage_v1.9.3",
-      "version": "1.9.3",
-      "comments": {
-        "patch": [
-          {
-            "author": "ken@gizzar.com",
-            "package": "lage",
-            "commit": "06a9d752fd2b374615340a39445c51302b566a38",
-            "comment": "bump workspace-tools"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 06 Oct 2022 17:46:44 GMT",
-      "tag": "lage_v1.9.2",
-      "version": "1.9.2",
-      "comments": {
-        "none": [
-          {
-            "author": "elcraig@microsoft.com",
-            "package": "lage",
-            "commit": "ef0f70f8f0cae6a8e3d02b917ce35244eea0b232",
-            "comment": "Remove unused build scripts"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 30 Sep 2022 18:48:39 GMT",
-      "tag": "lage_v1.9.2",
-      "version": "1.9.2",
-      "comments": {
-        "patch": [
-          {
-            "author": "rnjuguna@microsoft.com",
-            "package": "lage",
-            "commit": "2b99edc655b264e548b268045579c0b5f4c4eb8b",
-            "comment": "Fix incremental caching"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 29 Sep 2022 21:54:45 GMT",
-      "tag": "lage_v1.9.1",
-      "version": "1.9.1",
-      "comments": {
-        "patch": [
-          {
-            "author": "email not defined",
-            "package": "lage",
-            "commit": "96f43fa9da1e4e8d43e3e1d213b25e344bd35de6",
-            "comment": "Update dependency workspace-tools to ^0.28.0"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 28 Sep 2022 16:37:28 GMT",
-      "tag": "lage_v1.9.0",
-      "version": "1.9.0",
+      "date": "Wed, 26 Oct 2022 22:01:13 GMT",
+      "tag": "@lage-run/lage_v2.5.0",
+      "version": "2.5.0",
       "comments": {
         "minor": [
           {
             "author": "kchau@microsoft.com",
-            "package": "lage",
-            "commit": "888a1aa34a214790f5ce43f68033358bb193e6cd",
-            "comment": "The defaults for CI environments is completely wrong, we need to make sure the defaults are correct for CI so it will write remote cache and skip local download remote cache"
+            "package": "@lage-run/lage",
+            "commit": "d4f959e1c46d50725f556f92917f1a1cf3ee0bd9",
+            "comment": "Adds the Weighted Target option"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 23 Oct 2022 04:31:57 GMT",
+      "tag": "@lage-run/lage_v2.4.0",
+      "version": "2.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/lage",
+            "commit": "6ad9b723b65f6ef6b45aa156eb406344de8299eb",
+            "comment": "Adds Sharding Support"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 08 Oct 2022 17:43:37 GMT",
+      "tag": "@lage-run/lage_v2.3.0",
+      "version": "2.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/lage",
+            "commit": "1d21a0e79d11f86ec888f4893091940be4f3451b",
+            "comment": "adding a watch mode action"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 06 Oct 2022 18:48:08 GMT",
+      "tag": "@lage-run/lage_v2.2.13",
+      "version": "2.2.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/lage",
+            "commit": "da807ccd5bcee50e3f8c81bb35a3c8962b22bdf2",
+            "comment": "actually apply the patch package during postinstall"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 06 Oct 2022 18:23:12 GMT",
+      "tag": "@lage-run/lage_v2.2.12",
+      "version": "2.2.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/lage",
+            "commit": "75cf8e52e46b4f686d54d49f756d15f2614a9ba1",
+            "comment": "fixes the node-fetch to allow for bundling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 06 Oct 2022 17:26:31 GMT",
+      "tag": "@lage-run/lage_v2.2.11",
+      "version": "2.2.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "@lage-run/lage",
+            "commit": "43b36b8bd613a3be629a7d59501ae3c0930167bf",
+            "comment": "fixing the bundle for lage so it uses the right uuid impl"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 04 Oct 2022 16:38:35 GMT",
+      "tag": "@lage-run/lage_v2.2.2",
+      "version": "2.2.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "7bc1a8f0c6a13e1b501e2fb9a2bf6afedad55749",
+            "comment": "fixing the targetWorker"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 04 Oct 2022 15:51:44 GMT",
+      "tag": "@lage-run/lage_v2.2.1",
+      "version": "2.2.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "91bc0629f6fc8a49784da920328c6c34f1292b85",
+            "comment": "actually publish runners and workers"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 04 Oct 2022 03:38:54 GMT",
+      "tag": "@lage-run/lage_v2.2.0",
+      "version": "2.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "34e76ae75fc56a1374115e630a7dfc81b1fa6ead",
+            "comment": "Uses the new scheduler"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 29 Sep 2022 21:48:33 GMT",
+      "tag": "@lage-run/lage_v2.1.9",
+      "version": "2.1.9",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/lage",
+            "commit": "8f4505510189362e1bbc24864a080eb239f427ad",
+            "comment": "Update devDependency rollup to v2.79.1"
           }
         ]
       }
     },
     {
       "date": "Tue, 20 Sep 2022 02:32:14 GMT",
-      "tag": "lage_v1.8.8",
-      "version": "1.8.8",
+      "tag": "@lage-run/lage_v2.1.8",
+      "version": "2.1.8",
       "comments": {
         "none": [
           {
             "author": "elcraig@microsoft.com",
-            "package": "lage",
+            "package": "@lage-run/lage",
             "commit": "8193ad27df772d312844bfc4cc3ea43297e18098",
             "comment": "Hoist widely-used devDependencies to the repo root"
           }
@@ -137,179 +853,122 @@
       }
     },
     {
-      "date": "Mon, 19 Sep 2022 19:44:48 GMT",
-      "tag": "lage_v1.8.8",
-      "version": "1.8.8",
-      "comments": {
-        "patch": [
-          {
-            "author": "33559264+nemanjatesic@users.noreply.github.com",
-            "package": "lage",
-            "commit": "4970b3ae806ce82b79fdb14d24ed63ee10d869ef",
-            "comment": "Added random color for package output"
-          }
-        ]
-      }
-    },
-    {
       "date": "Mon, 19 Sep 2022 05:03:56 GMT",
-      "tag": "lage_v1.8.7",
-      "version": "1.8.7",
+      "tag": "@lage-run/lage_v2.1.8",
+      "version": "2.1.8",
       "comments": {
         "patch": [
           {
-            "author": "ken@gizzar.com",
-            "package": "lage",
-            "commit": "3fb1614f94f3cac4b7c9bd81d04ec0fc6d1807e6",
-            "comment": "fix unused var"
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.3.8",
+            "commit": "3fb1614f94f3cac4b7c9bd81d04ec0fc6d1807e6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.3.5",
+            "commit": "3fb1614f94f3cac4b7c9bd81d04ec0fc6d1807e6"
           }
         ]
       }
     },
     {
-      "date": "Sat, 17 Sep 2022 02:37:06 GMT",
-      "tag": "lage_v1.8.6",
-      "version": "1.8.6",
+      "date": "Mon, 19 Sep 2022 03:33:34 GMT",
+      "tag": "@lage-run/lage_v2.1.7",
+      "version": "2.1.7",
       "comments": {
-        "none": [
+        "patch": [
           {
-            "author": "email not defined",
-            "package": "lage",
-            "commit": "49237608a4dd44608c33578809c3fc87df657c29",
-            "comment": "Update devDependency beachball to v2.30.2"
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.3.7",
+            "commit": "47cb83f6d6ab7abb0f21d8d72068b34335804707"
           }
         ]
       }
     },
     {
-      "date": "Sat, 17 Sep 2022 02:11:00 GMT",
-      "tag": "lage_v1.8.6",
-      "version": "1.8.6",
+      "date": "Sat, 17 Sep 2022 20:20:49 GMT",
+      "tag": "@lage-run/lage_v2.1.6",
+      "version": "2.1.6",
       "comments": {
         "patch": [
           {
-            "author": "email not defined",
-            "package": "lage",
-            "commit": "75e04107cab3038247a70784d22aae87f43e6ddc",
-            "comment": "Update dependency execa to v5"
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.3.6",
+            "commit": "425dc73ad81ce184a80ec2efcc10aecb0c569b40"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.3.4",
+            "commit": "425dc73ad81ce184a80ec2efcc10aecb0c569b40"
           }
         ]
       }
     },
     {
       "date": "Sat, 17 Sep 2022 01:09:34 GMT",
-      "tag": "lage_v1.8.5",
-      "version": "1.8.5",
+      "tag": "@lage-run/lage_v2.1.5",
+      "version": "2.1.5",
       "comments": {
         "patch": [
           {
-            "author": "email not defined",
-            "package": "lage",
-            "commit": "f972817afd8d234b31c013290e1a7bc952e7bf61",
-            "comment": "Update dependency workspace-tools to ^0.27.0"
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.3.5",
+            "commit": "f972817afd8d234b31c013290e1a7bc952e7bf61"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.3.3",
+            "commit": "f972817afd8d234b31c013290e1a7bc952e7bf61"
           }
         ]
       }
     },
     {
-      "date": "Sat, 17 Sep 2022 00:05:30 GMT",
-      "tag": "lage_v1.8.4",
-      "version": "1.8.4",
+      "date": "Fri, 16 Sep 2022 23:51:28 GMT",
+      "tag": "@lage-run/lage_v2.1.4",
+      "version": "2.1.4",
       "comments": {
-        "patch": [
+        "none": [
           {
-            "author": "email not defined",
-            "package": "lage",
-            "commit": "047fbe82177b45863ae551840c1ed37221df59cc",
-            "comment": "Update dependency cosmiconfig to v7 (support `lagerc.cjs` and `lage.config.cjs`)"
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/lage",
+            "commit": "60d4571bde1c50c284a96e11a1a1a13da944e681",
+            "comment": "Update devDependency rollup to v2.79.0"
           }
         ]
       }
     },
     {
       "date": "Fri, 16 Sep 2022 23:45:26 GMT",
-      "tag": "lage_v1.8.3",
-      "version": "1.8.3",
+      "tag": "@lage-run/lage_v2.1.4",
+      "version": "2.1.4",
       "comments": {
         "patch": [
           {
-            "author": "elcraig@microsoft.com",
-            "package": "lage",
-            "commit": "9712fbe4c78c803822302d8a83ace2bc7f7c923e",
-            "comment": "Remove unused and non-exported path utilities"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 16 Sep 2022 23:37:14 GMT",
-      "tag": "lage_v1.8.2",
-      "version": "1.8.2",
-      "comments": {
-        "patch": [
-          {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "9d9570be7ca46df5e105bdc4060e3dbe518f097a",
-            "comment": "Update dependency mermaid to v9 [SECURITY]"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 16 Sep 2022 20:12:14 GMT",
-      "tag": "lage_v1.8.1",
-      "version": "1.8.1",
-      "comments": {
-        "none": [
-          {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "486f2bf2ecaa0a3bf963d3e3e7df9a92697ecdc9",
-            "comment": "Update devDependency gh-pages to v4"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 16 Sep 2022 20:06:10 GMT",
-      "tag": "lage_v1.8.1",
-      "version": "1.8.1",
-      "comments": {
-        "none": [
-          {
-            "author": "email not defined",
-            "package": "lage",
-            "commit": "4cc6afee8a8b0eeabd5e36f764615860baca6de4",
-            "comment": "Update devDependency @types/node to v14.18.29"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 16 Sep 2022 03:59:54 GMT",
-      "tag": "lage_v1.8.1",
-      "version": "1.8.1",
-      "comments": {
-        "none": [
-          {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "feb30c988cd07f121e217f9825758af844b18b77",
-            "comment": "Update jest monorepo to v29"
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.3.4",
+            "commit": "477ff6d797932af16f65c2f117dfdfb4aaa2c264"
           }
         ]
       }
     },
     {
       "date": "Fri, 16 Sep 2022 01:59:38 GMT",
-      "tag": "lage_v1.8.1",
-      "version": "1.8.1",
+      "tag": "@lage-run/lage_v2.1.3",
+      "version": "2.1.3",
       "comments": {
         "none": [
           {
             "author": "email not defined",
-            "package": "lage",
+            "package": "@lage-run/lage",
             "commit": "7bb3cfa39ca17144915a94233b46ba67e284788f",
             "comment": "Pin devDependencies"
           }
@@ -317,2298 +976,163 @@
       }
     },
     {
-      "date": "Wed, 31 Aug 2022 19:31:26 GMT",
-      "tag": "lage_v1.8.0",
-      "version": "1.8.0",
-      "comments": {
-        "minor": [
-          {
-            "author": "kchau@microsoft.com",
-            "package": "lage",
-            "commit": "2bced4ff1337ac476a1e95c86b0a077b2c942216",
-            "comment": "Get rid of experimental distributed mode"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 25 Aug 2022 19:01:34 GMT",
-      "tag": "lage_v1.7.9",
-      "version": "1.7.9",
+      "date": "Fri, 16 Sep 2022 01:32:24 GMT",
+      "tag": "@lage-run/lage_v2.1.3",
+      "version": "2.1.3",
       "comments": {
         "patch": [
           {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "9f99ae972fdf5740a5b78e494bfb984536767d1b",
-            "comment": "Update dependency beachball to v2.30.1"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 24 Aug 2022 22:26:03 GMT",
-      "tag": "lage_v1.7.8",
-      "version": "1.7.8",
-      "comments": {
-        "patch": [
-          {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "ae1468bf230ea12b1910214d0ce394da75675d09",
-            "comment": "Update dependency @types/node to v14.18.26"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 24 Aug 2022 16:23:48 GMT",
-      "tag": "lage_v1.7.7",
-      "version": "1.7.7",
-      "comments": {
-        "patch": [
-          {
-            "author": "mhuan13@gmail.com",
-            "package": "lage",
-            "commit": "70f7aecc6b7f7418d4df17e0db21fea2be143601",
-            "comment": "update backfill & backfill-hasher"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 24 Aug 2022 15:22:38 GMT",
-      "tag": "lage_v1.7.6",
-      "version": "1.7.6",
-      "comments": {
-        "patch": [
-          {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "d97182fb8480c7249b4ddd4f9d8c85010d93aa85",
-            "comment": "Update dependency workspace-tools to ^0.26.0"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 23 Aug 2022 07:53:50 GMT",
-      "tag": "lage_v1.7.5",
-      "version": "1.7.5",
-      "comments": {
-        "patch": [
-          {
-            "author": "ken@gizzar.com",
-            "package": "lage",
-            "commit": "8fb3883281416a778e6528038a6b1d63749ae2dd",
-            "comment": "Updated @types/node to ^14.0.0"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 09 Aug 2022 21:16:28 GMT",
-      "tag": "lage_v1.7.3",
-      "version": "1.7.3",
-      "comments": {
-        "patch": [
-          {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "6dc38b30d19b0cba7e2609d3681e4e55c4fd6238",
-            "comment": "Update dependency beachball to v2.26.0"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 21 Jul 2022 19:19:28 GMT",
-      "tag": "lage_v1.7.2",
-      "version": "1.7.2",
-      "comments": {
-        "none": [
-          {
-            "author": "bkocak1@villanova.edu",
-            "package": "lage",
-            "commit": "f64e5cc8cd2da5173dde9d3a536e14668dbd6a8e",
-            "comment": "formatting with prettier"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 19 Jul 2022 21:14:57 GMT",
-      "tag": "lage_v1.7.2",
-      "version": "1.7.2",
-      "comments": {
-        "patch": [
-          {
-            "author": "pushkargupta@microsoft.com",
-            "package": "lage",
-            "commit": "13ee1037646069bc36e42baf33bbcf5579040bc0",
-            "comment": {
-              "title": "Lage Concurrency",
-              "value": "assigned the default concurrency to os.cpus().length - 1"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "date": "Sat, 16 Jul 2022 02:57:37 GMT",
-      "tag": "lage_v1.7.1",
-      "version": "1.7.1",
-      "comments": {
-        "none": [
-          {
-            "author": "ken@gizzar.com",
-            "package": "lage",
-            "commit": "fe9ed19e94ecf2f5942376123d30bfb462d1f47a",
-            "comment": "updating per prettier"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 15 Jul 2022 17:10:04 GMT",
-      "tag": "lage_v1.7.1",
-      "version": "1.7.1",
-      "comments": {
-        "patch": [
-          {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "f14b727c5430e87cc2ad3e468b554ee75e21c291",
-            "comment": "Update dependency workspace-tools to ^0.23.0"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 Jul 2022 16:08:30 GMT",
-      "tag": "lage_v1.7.0",
-      "version": "1.7.0",
-      "comments": {
-        "minor": [
-          {
-            "author": "kyleehrlich@microsoft.com",
-            "package": "lage",
-            "commit": "b3d6f30845394a70654f277705b3b9c452a1a3a1",
-            "comment": "Replace stdio handler with nodejs readline interfaces to fix handling when log lines span multiple chunks"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 11 Jul 2022 23:22:39 GMT",
-      "tag": "lage_v1.6.11",
-      "version": "1.6.11",
-      "comments": {
-        "patch": [
-          {
-            "author": "branth@microsoft.com",
-            "package": "lage",
-            "commit": "1e8baeb9602fe433406eceb9441f54a751f8a8e0",
-            "comment": "Ensure cache --clear respects internalCacheFolder when it's passed in"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 01 Jul 2022 21:16:36 GMT",
-      "tag": "lage_v1.6.10",
-      "version": "1.6.10",
-      "comments": {
-        "patch": [
-          {
-            "author": "email not defined",
-            "package": "lage",
-            "commit": "d7e83738af4d2ae1e32530fe283aa2b98e5d4c54",
-            "comment": "Update dependency watchpack to v1.7.5"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 01 Jul 2022 16:37:19 GMT",
-      "tag": "lage_v1.6.9",
-      "version": "1.6.9",
-      "comments": {
-        "patch": [
-          {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "c9d0beeee78e55f39581cec827f34510a0f4323f",
-            "comment": "Update dependency mermaid to v8.14.0"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 01 Jul 2022 16:27:14 GMT",
-      "tag": "lage_v1.6.8",
-      "version": "1.6.8",
-      "comments": {
-        "patch": [
-          {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "f58725c19af9e8e102597d3b19dc8af3e8c47fea",
-            "comment": "Update dependency @marp-team/marp-cli to v0.23.3"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 01 Jul 2022 16:25:11 GMT",
-      "tag": "lage_v1.6.7",
-      "version": "1.6.7",
-      "comments": {
-        "patch": [
-          {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "3cee217a37ec7d80a90f9434f39826e758bbdd2a",
-            "comment": "Update dependency @types/node to v12.20.55"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 01 Jul 2022 16:15:39 GMT",
-      "tag": "lage_v1.6.6",
-      "version": "1.6.6",
-      "comments": {
-        "patch": [
-          {
-            "author": "email not defined",
-            "package": "lage",
-            "commit": "7ecee913b1cd4e6427aeb2c5f6f1e0e1f3225713",
-            "comment": "Pin dependencies"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 01 Jul 2022 16:11:45 GMT",
-      "tag": "lage_v1.6.5",
-      "version": "1.6.5",
-      "comments": {
-        "patch": [
-          {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "d849123a63fd58a413980f4be7937dddf40d3bc2",
-            "comment": "Update dependency workspace-tools to ^0.21.0"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 01 Jul 2022 16:00:40 GMT",
-      "tag": "lage_v1.6.4",
-      "version": "1.6.4",
-      "comments": {
-        "patch": [
-          {
-            "author": "renovate@whitesourcesoftware.com",
-            "package": "lage",
-            "commit": "7faf63185c15faadb10a40895b301e1588587b6d",
-            "comment": "Update dependency beachball to v2.23.0"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 01 Jul 2022 15:42:50 GMT",
-      "tag": "lage_v1.6.3",
-      "version": "1.6.3",
-      "comments": {
-        "patch": [
-          {
-            "author": "kchau@microsoft.com",
-            "package": "lage",
-            "comment": "adding real renovate config, publishing 1.x to latest again",
-            "commit": "ee4b292649346c858731355f91071e153843bbca"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 14 Jun 2022 20:51:18 GMT",
-      "tag": "lage_v1.6.2",
-      "version": "1.6.2",
-      "comments": {
-        "patch": [
-          {
-            "author": "nobody@users.noreply.github.com",
-            "package": "lage",
-            "comment": "Dependabot bumps dependencies: workspace-tools",
-            "commit": "e8745eb4396c35a954d897346ac2c416125f214f"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 10 Jun 2022 19:39:32 GMT",
-      "tag": "lage_v1.6.1",
-      "version": "1.6.1",
-      "comments": {
-        "patch": [
-          {
-            "author": "kchau@microsoft.com",
-            "package": "lage",
-            "comment": "Fast path on hash calculations for Windows as well",
-            "commit": "f6de97771dcd98ade351c7204aa3f742957886d8"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 10 Jun 2022 18:43:25 GMT",
-      "tag": "lage_v1.6.0",
-      "version": "1.6.0",
-      "comments": {
-        "minor": [
-          {
-            "author": "kchau@microsoft.com",
-            "package": "lage",
-            "comment": "Bumping backfill - minor lage bump because it is significant in its dep change behavior",
-            "commit": "6e4672a9a4e2f4aa6246792ef11ea99445ee1c62"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 25 May 2022 20:06:36 GMT",
-      "tag": "lage_v1.5.2",
-      "version": "1.5.2",
-      "comments": {
-        "patch": [
-          {
-            "author": "ken@gizzar.com",
-            "package": "lage",
-            "comment": "Moving to a monorepo. This will be a test publish",
-            "commit": "c0d69c29e1ac1f315e1f91139ec1c4bde15561dd"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 14 Mar 2022 22:04:24 GMT",
-      "tag": "lage_v1.5.1",
-      "version": "1.5.1",
-      "comments": {
-        "none": [
-          {
-            "author": "elcraig@microsoft.com",
-            "package": "lage",
-            "comment": "Dedupe yarn.lock and switch to stable node types version",
-            "commit": "6181444865fa052b6d196d56d65fa32a2771de38"
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.3.3",
+            "commit": "b509683b29885c254d2ffa3c18d60cba20371f90"
           },
           {
-            "author": "kchau@microsoft.com",
-            "package": "lage",
-            "comment": "adding changes in github action workflows to accommodate the rename",
-            "commit": "6181444865fa052b6d196d56d65fa32a2771de38"
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.3.2",
+            "commit": "b509683b29885c254d2ffa3c18d60cba20371f90"
           }
         ]
       }
     },
     {
-      "date": "Thu, 03 Mar 2022 22:42:29 GMT",
-      "tag": "lage_v1.5.1",
-      "version": "1.5.1",
+      "date": "Thu, 15 Sep 2022 20:42:32 GMT",
+      "tag": "@lage-run/lage_v2.1.2",
+      "version": "2.1.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.3.2",
+            "commit": "e7104949d95cc2f280953bef79757c903ab4d9cb"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 06 Sep 2022 20:10:16 GMT",
+      "tag": "@lage-run/lage_v2.1.1",
+      "version": "2.1.1",
       "comments": {
         "patch": [
           {
             "author": "kchau@microsoft.com",
-            "package": "lage",
-            "comment": "Adding new note about unstable branch",
-            "commit": "5125b1cf98d36768eee6f1072311a6081cf1922c"
+            "package": "@lage-run/lage",
+            "commit": "f349df7d144cbe2a575c6dc7cc34fd30c1ccf035",
+            "comment": "Fixes the bundle output to be with code!"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.3.1",
+            "commit": "f349df7d144cbe2a575c6dc7cc34fd30c1ccf035"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.3.1",
+            "commit": "f349df7d144cbe2a575c6dc7cc34fd30c1ccf035"
           }
         ]
       }
     },
     {
-      "date": "Sat, 29 Jan 2022 00:08:10 GMT",
-      "tag": "lage_v1.5.0",
-      "version": "1.5.0",
+      "date": "Sun, 04 Sep 2022 23:00:20 GMT",
+      "tag": "@lage-run/lage_v2.1.0",
+      "version": "2.1.0",
       "comments": {
         "minor": [
-          {
-            "author": "kchau@microsoft.com",
-            "package": "lage",
-            "comment": "adding a flag to turn off local cache population",
-            "commit": "fff2953a947309f81f56a5ba5fa5cc7e3005cb95"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 13 Jan 2022 22:54:47 GMT",
-      "tag": "lage_v1.4.0",
-      "version": "1.4.0",
-      "comments": {
-        "minor": [
-          {
-            "author": "dannyvv@microsoft.com",
-            "package": "lage",
-            "comment": "Add dgml reporter",
-            "commit": "9f707dc61160e35cf5d06168d56f68caf292466a"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 13 Jan 2022 20:05:57 GMT",
-      "tag": "lage_v1.3.1",
-      "version": "1.3.1",
-      "comments": {
-        "patch": [
-          {
-            "author": "kchau@microsoft.com",
-            "package": "lage",
-            "comment": "bump backfill",
-            "commit": "ba89d20630ef783b6535111dbcabe833d466dedb"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 07 Jan 2022 21:55:18 GMT",
-      "tag": "lage_v1.3.0",
-      "version": "1.3.0",
-      "comments": {
-        "minor": [
-          {
-            "author": "kchau@microsoft.com",
-            "package": "lage",
-            "comment": "speeding up by bumping backfill & workspace-tools. now supports npm 7",
-            "commit": "48de07b8d01b1be7a00b13e0f099231e9cc768c4"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 03 Jan 2022 23:13:44 GMT",
-      "tag": "lage_v1.2.0",
-      "version": "1.2.0",
-      "comments": {
-        "minor": [
-          {
-            "author": "mhuan13@gmail.com",
-            "package": "lage",
-            "comment": "Allow explicit parralel scheduling of transitive dependencies with ^^ prefix",
-            "commit": "c3c1c7378f5fdc1e77fbe1aad38627d5d23a8d30"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Sat, 04 Dec 2021 00:24:11 GMT",
-      "tag": "lage_v1.1.4",
-      "version": "1.1.4",
-      "comments": {
-        "patch": [
           {
             "author": "ken@gizzar.com",
-            "package": "lage",
-            "comment": "fixes the tasks that have the package in its id",
-            "commit": "95affe7fc481d92940dd7b9f11a40051fc320865"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 02 Dec 2021 22:25:07 GMT",
-      "tag": "lage_v1.1.3",
-      "version": "1.1.3",
-      "comments": {
-        "none": [
-          {
-            "author": "4123478+tido64@users.noreply.github.com",
-            "package": "lage",
-            "comment": "Disable GPG signing in tests to ensure it won't fail",
-            "commit": "8198557e7a36803d736ae3b5c816166389ba30a7"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 02 Dec 2021 20:21:01 GMT",
-      "tag": "lage_v1.1.3",
-      "version": "1.1.3",
-      "comments": {
-        "patch": [
-          {
-            "author": "elcraig@microsoft.com",
-            "package": "lage",
-            "comment": "Prevent truncation of error summary logs",
-            "commit": "defd554aa2e4a330f865b41b78792a35a831ea64"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 01 Dec 2021 19:18:41 GMT",
-      "tag": "lage_v1.1.2",
-      "version": "1.1.2",
-      "comments": {
-        "patch": [
-          {
-            "author": "4123478+tido64@users.noreply.github.com",
-            "package": "lage",
-            "comment": "Fix Lage overwriting Backfill defaults when no options are set",
-            "commit": "77d0ae43fc6c42814eef28092becca758925ed6d"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 22 Oct 2021 17:48:34 GMT",
-      "tag": "lage_v1.1.1",
-      "version": "1.1.1",
-      "comments": {
-        "patch": [
-          {
-            "author": "dzearing@microsoft.com",
-            "package": "lage",
-            "comment": "Updating to TypeScript 4.4.",
-            "commit": "3d07bd27715358c590f17a5d897a1221f2094109"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 18 Oct 2021 22:55:57 GMT",
-      "tag": "lage_v1.1.0",
-      "version": "1.1.0",
-      "comments": {
-        "minor": [
-          {
-            "author": "kchau@microsoft.com",
-            "package": "lage",
-            "comment": "distributed lage",
-            "commit": "f58a47beb0922958034f1ed82b578b039296ea94"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 Oct 2021 20:33:09 GMT",
-      "tag": "lage_v1.0.0",
-      "version": "1.0.0",
-      "comments": {
-        "major": [
-          {
-            "author": "kchau@microsoft.com",
-            "package": "lage",
-            "comment": "New feature: adds a local fallback mechanism for accessing remote cache",
-            "commit": "bd4c49bb9e29fa3b22d2b0611a068f2981dd80a4"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 23 Sep 2021 17:32:03 GMT",
-      "tag": "lage_v0.33.0",
-      "version": "0.33.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "add ado reporter",
-            "author": "cheruiyotbryan@gmail.com",
-            "commit": "cfb5e5aca31b2cb2719e8110eed434939ff156bd",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 21 Sep 2021 23:20:14 GMT",
-      "tag": "lage_v0.32.5",
-      "version": "0.32.5",
-      "comments": {
-        "patch": [
-          {
-            "comment": "Improve logging of cache fetch errors",
-            "author": "elcraig@microsoft.com",
-            "commit": "0aab60f20abc258d978e25d13d18c62ccdea4457",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 16 Sep 2021 19:43:57 GMT",
-      "tag": "lage_v0.32.4",
-      "version": "0.32.4",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixes the process.exitCode = 1 to happen before any other errors",
-            "author": "kchau@microsoft.com",
-            "commit": "ffe273c8bd00cb316724b086ca2822569958c58a",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 14 Sep 2021 20:24:31 GMT",
-      "tag": "lage_v0.32.3",
-      "version": "0.32.3",
-      "comments": {
-        "patch": [
-          {
-            "comment": "swap to jest to get watch mode for test, getting wrapped target to actually fail",
-            "author": "kchau@microsoft.com",
-            "commit": "3419ad046898f4d223682246c0995a2048975114",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Sat, 04 Sep 2021 03:08:09 GMT",
-      "tag": "lage_v0.32.2",
-      "version": "0.32.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "make sure to allow loose mode for task deps",
-            "author": "kchau@microsoft.com",
-            "commit": "54edb78c695537d3d8d9fe788b741cd450ac8cdf",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 10 Aug 2021 16:48:42 GMT",
-      "tag": "lage_v0.32.1",
-      "version": "0.32.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "make sure to filter out targets that do not exist for packages",
-            "author": "kchau@microsoft.com",
-            "commit": "3056366b7acf84c26578886caa0d69c410721268",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 30 Jul 2021 00:15:54 GMT",
-      "tag": "lage_v0.32.0",
-      "version": "0.32.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "Internal changes to support for more config.pipeline types",
-            "author": "kchau@microsoft.com",
-            "commit": "6d6c6be3180ab10938b08a941fb4ed0e9ffa0394",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 29 Jul 2021 16:47:03 GMT",
-      "tag": "lage_v0.31.1",
-      "version": "0.31.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "Fix: handle 'fs' errors while saving profile: forcing lage to fail",
-            "author": "nickykalu@microsoft.com",
-            "commit": "d3f33d4c027baf81f2bb498f648e2d51f26186ca",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 12 Jul 2021 23:42:06 GMT",
-      "tag": "lage_v0.31.0",
-      "version": "0.31.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "fixing publish",
-            "author": "kchau@microsoft.com",
-            "commit": "dccaf39ee10dce4d08f05a82da8630cc4d0b636d",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 11 Jun 2021 22:59:59 GMT",
-      "tag": "lage_v0.30.0",
-      "version": "0.30.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "bump deps and add types as output",
-            "author": "kchau@microsoft.com",
-            "commit": "c8eded225575178bc66914cd12b764f42efe03ef",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 04 May 2021 07:38:15 GMT",
-      "tag": "lage_v0.29.3",
-      "version": "0.29.3",
-      "comments": {
-        "patch": [
-          {
-            "comment": "chore(upgrade): update task-scheduler package",
-            "author": "cheruiyotbryan@gmail.com",
-            "commit": "f6822a9ec7dc779a423271d43c07001554c9fe1c",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 29 Apr 2021 05:28:49 GMT",
-      "tag": "lage_v0.29.2",
-      "version": "0.29.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "Bump backfill to ^6.1.5",
-            "author": "ronald.ndirangu@gmail.com",
-            "commit": "349ca5f39c016b69b26c4930a8330958b35e7179",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 23 Apr 2021 23:56:05 GMT",
-      "tag": "lage_v0.29.1",
-      "version": "0.29.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "bumps a bunch of deps",
-            "author": "kchau@microsoft.com",
-            "commit": "1e169c953ff58b8c8a67808d34c8076aedd0ecc2",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 05 Feb 2021 20:20:01 GMT",
-      "tag": "lage_v0.29.0",
-      "version": "0.29.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "adding a cache-key option to allow different custom build env affect cache hash manually",
-            "author": "kchau@microsoft.com",
-            "commit": "9026374f4960b1c3837e125c75c1874840f61ea6",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 27 Jan 2021 21:02:32 GMT",
-      "tag": "lage_v0.28.0",
-      "version": "0.28.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "Adding new logger options",
-            "author": "fecamina@microsoft.com",
-            "commit": "8cce330353e850b70979cc76d9b61a02fba5390d",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 26 Jan 2021 09:52:23 GMT",
-      "tag": "lage_v0.27.1",
-      "version": "0.27.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "chore: Bump workspace-tools to ^0.10.3",
-            "author": "oliver.kuruma@gmail.com",
-            "commit": "b72cefc1d0b793c0095509004643c28280d86b28",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 06 Jan 2021 19:15:51 GMT",
-      "tag": "lage_v0.27.0",
-      "version": "0.27.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "adding a cache clear and prune feature",
-            "author": "kchau@microsoft.com",
-            "commit": "d5ddcd16917bb08775641bfd895935027ee80252",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 05 Jan 2021 10:41:22 GMT",
-      "tag": "lage_v0.26.3",
-      "version": "0.26.3",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fix: Use Node version for the hash salt",
-            "author": "oliver.kuruma@gmail.com",
-            "commit": "78a2ea2bff1e8e7e136705c094233711fc493128",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 30 Nov 2020 19:57:05 GMT",
-      "tag": "lage_v0.26.2",
-      "version": "0.26.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "increase max buffer to 500MB and fail-fast on other git issues in workspace-tools",
-            "author": "kchau@microsoft.com",
-            "commit": "b65d3709862cf28d5e106a5569766f7e0fe41881",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 16 Nov 2020 23:08:23 GMT",
-      "tag": "lage_v0.26.1",
-      "version": "0.26.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "refactor: Create npm script task config",
-            "author": "oliver.kuruma@gmail.com",
-            "commit": "304e12233efc79e149836cb9b95dad01243accb3",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 16 Nov 2020 23:03:30 GMT",
-      "tag": "lage_v0.26.0",
-      "version": "0.26.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "feat: Add --include-dependencies option",
-            "author": "oliver.kuruma@gmail.com",
-            "commit": "6e97202a5323c5b473a2ccd07b089826e3141380",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 16 Nov 2020 12:28:34 GMT",
-      "tag": "lage_v0.25.0",
-      "version": "0.25.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "feat: Add --safe-exit option",
-            "author": "oliver.kuruma@gmail.com",
-            "commit": "b339e368313b7aabff62b6b03cdc6616eb9a72de",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 22 Oct 2020 22:44:30 GMT",
-      "tag": "lage_v0.24.0",
-      "version": "0.24.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "adding a feature to let the job to run as far as it can before failing",
-            "author": "kchau@microsoft.com",
-            "commit": "f3fe3082170ddbf563e52dcff28e5d4fcce510c1",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 20 Oct 2020 00:08:10 GMT",
-      "tag": "lage_v0.23.0",
-      "version": "0.23.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "adding an ability to deal with unknown commands",
-            "author": "kchau@microsoft.com",
-            "commit": "7f039c828f3fd430c6b3fcf09ad8da9f7fd06292",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 19 Oct 2020 22:01:22 GMT",
-      "tag": "lage_v0.22.1",
-      "version": "0.22.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "have the errors appear more prominently",
-            "author": "kchau@microsoft.com",
-            "commit": "9a18dc41177bb97b6db10c6d16a4cd2cba0924b4",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 19 Oct 2020 21:25:12 GMT",
-      "tag": "lage_v0.22.0",
-      "version": "0.22.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "provide a way to write out profile data to custom path",
-            "author": "kchau@microsoft.com",
-            "commit": "6694976dedf90a9c6869529bf6ae95d66f5d8ba2",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 19 Oct 2020 20:42:00 GMT",
-      "tag": "lage_v0.21.1",
-      "version": "0.21.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "bumps workspace-tools and cleaned up deps a bit",
-            "author": "kchau@microsoft.com",
-            "commit": "59f651aa7f111458fdb3c9799305a909ec926def",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 19 Oct 2020 19:52:06 GMT",
-      "tag": "lage_v0.21.0",
-      "version": "0.21.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "adding a sigterm -> sigkill strategy for killing active processes",
-            "author": "kchau@microsoft.com",
-            "commit": "02351318e3d8e4ee508c41346cfb4a772e26074e",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 19 Oct 2020 16:39:05 GMT",
-      "tag": "lage_v0.20.0",
-      "version": "0.20.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "Use getWorkspaceRoot to determine where the root of the Lage project is.",
-            "author": "dannyvv@microsoft.com",
-            "commit": "12f6efa3ebfb59bd60aa87872247dd4b9e7bbdd1",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 15 Oct 2020 00:45:11 GMT",
-      "tag": "lage_v0.19.12",
-      "version": "0.19.12",
-      "comments": {
-        "patch": [
-          {
-            "comment": "make sure the exit code is 1 if a cycle is detected",
-            "author": "kchau@microsoft.com",
-            "commit": "45de129914e791ca4d0557251024524729b66063",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 12 Oct 2020 18:50:15 GMT",
-      "tag": "lage_v0.19.11",
-      "version": "0.19.11",
-      "comments": {
-        "patch": [
-          {
-            "comment": "Include full stacks with error messages",
-            "author": "elcraig@microsoft.com",
-            "commit": "78eb53a89d0e95e63b002db6d370198d65331484",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 08 Oct 2020 00:13:55 GMT",
-      "tag": "lage_v0.19.10",
-      "version": "0.19.10",
-      "comments": {
-        "patch": [
-          {
-            "comment": "adding renovate",
-            "author": "kchau@microsoft.com",
-            "commit": "bdd0a5a1fc3169bd8baa30940548a9904b70cff5",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 05 Oct 2020 20:09:57 GMT",
-      "tag": "lage_v0.19.9",
-      "version": "0.19.9",
-      "comments": {
-        "patch": [
-          {
-            "comment": "bumps task-scheduler",
-            "author": "kchau@microsoft.com",
-            "commit": "397c668910f3f8d639e76b33c7839547da2c3ac1",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 15 Sep 2020 17:54:15 GMT",
-      "tag": "lage_v0.19.8",
-      "version": "0.19.8",
-      "comments": {
-        "patch": [
-          {
-            "comment": "bumps the workspace-tools",
-            "author": "kchau@microsoft.com",
-            "commit": "82617b3a0cb5fc53bd450dd7152a01cfe0831e8a",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 15 Sep 2020 01:37:39 GMT",
-      "tag": "lage_v0.19.7",
-      "version": "0.19.7",
-      "comments": {
-        "patch": [
-          {
-            "comment": "adding cli options",
-            "author": "kchau@microsoft.com",
-            "commit": "e7ee08b63782abe145c047829ed80ab51985eb77",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 26 Aug 2020 20:50:03 GMT",
-      "tag": "lage_v0.19.6",
-      "version": "0.19.6",
-      "comments": {
-        "patch": [
-          {
-            "comment": "bump task-scheduler to handle no-deps case",
-            "author": "kchau@microsoft.com",
-            "commit": "ef0d7739f6cfa609355018c8dc50c45b15b2da5b",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 20 Aug 2020 00:46:19 GMT",
-      "tag": "lage_v0.19.5",
-      "version": "0.19.5",
-      "comments": {
-        "patch": [
-          {
-            "comment": "Make sure repowidechanges setting is separate from cache hash calculation",
-            "author": "kchau@microsoft.com",
-            "commit": "71569351b30c4e4728725c188df663d3bb51c0c7",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 20 Aug 2020 00:31:59 GMT",
-      "tag": "lage_v0.19.4",
-      "version": "0.19.4",
-      "comments": {
-        "patch": [
-          {
-            "comment": "make sure repo wide changes are respected for build scoping",
-            "author": "kchau@microsoft.com",
-            "commit": "5426a6f11985f78556b4287bce565c562ddecc19",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 19 Aug 2020 23:35:01 GMT",
-      "tag": "lage_v0.19.3",
-      "version": "0.19.3",
-      "comments": {
-        "patch": [
-          {
-            "comment": "Fixing the issue with scope & since getting incorrect filtered package results (#66)",
-            "author": "kchau@microsoft.com",
-            "commit": "439f2100f9480b344522f5f28230696c299af994",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Sun, 16 Aug 2020 16:35:11 GMT",
-      "tag": "lage_v0.19.2",
-      "version": "0.19.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixed the delimiter to use something uncommon",
-            "author": "kchau@microsoft.com",
-            "commit": "2e435e1dba7f6fda957ca54431e95d4391cf7512",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Sun, 16 Aug 2020 16:24:19 GMT",
-      "tag": "lage_v0.19.1",
-      "version": "0.19.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixed the case to not over build",
-            "author": "kchau@microsoft.com",
-            "commit": "a07e1584afad55c6d20b185d5bd15a59b797af66",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 14 Aug 2020 18:52:50 GMT",
-      "tag": "lage_v0.19.0",
-      "version": "0.19.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "Adds a way to specify individual package task dependency",
-            "author": "kchau@microsoft.com",
-            "commit": "00ca6e99c4506aafe708e5b9e8deb7bb75ad715e",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 13 Aug 2020 19:16:47 GMT",
-      "tag": "lage_v0.18.0",
-      "version": "0.18.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "adds an info command that lists out the package task dep graph",
-            "author": "kchau@microsoft.com",
-            "commit": "0f907163bd8199894276dedb8e5dc95ec8cbac5f",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Sun, 09 Aug 2020 03:51:50 GMT",
-      "tag": "lage_v0.17.5",
-      "version": "0.17.5",
-      "comments": {
-        "patch": [
-          {
-            "comment": "bump workspace-tools",
-            "author": "kchau@microsoft.com",
-            "commit": "3bebd031a1ff4ebc787d4d01a4ebd94f06bff379",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 07 Aug 2020 02:03:25 GMT",
-      "tag": "lage_v0.17.4",
-      "version": "0.17.4",
-      "comments": {
-        "patch": [
-          {
-            "comment": "making the logging of skipped tasks to report correct times",
-            "author": "kchau@microsoft.com",
-            "commit": "0e7333aad7e3fc19a4c2c66ade1cdce378defc30",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 06 Aug 2020 20:03:11 GMT",
-      "tag": "lage_v0.17.3",
-      "version": "0.17.3",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixing up the logs for cache hashes",
-            "author": "kchau@microsoft.com",
-            "commit": "c540b35c033d60f11d92c5aa98d2ebf5b628535b",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 06 Aug 2020 18:22:32 GMT",
-      "tag": "lage_v0.17.2",
-      "version": "0.17.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "Fixing logs when errors happen",
-            "author": "kchau@microsoft.com",
-            "commit": "05692a9e3147ae05364846751763177218c07e16",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 06 Aug 2020 01:26:51 GMT",
-      "tag": "lage_v0.17.1",
-      "version": "0.17.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fix new passthrough args for CliOptions",
-            "author": "kchau@microsoft.com",
-            "commit": "c5b3743d6feae5c703db2e690f1278f5ca15c1f1",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 06 Aug 2020 00:03:45 GMT",
-      "tag": "lage_v0.17.0",
-      "version": "0.17.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "Changing the logger to allow json mode and adding real e2e tests for orders",
-            "author": "kchau@microsoft.com",
-            "commit": "2599523e22de5116ce1a724a77089c358b8bd842",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 05 Aug 2020 19:15:40 GMT",
-      "tag": "lage_v0.16.1",
-      "version": "0.16.1",
-      "comments": {
-        "none": [
-          {
-            "comment": "adding basics e2e",
-            "author": "kchau@microsoft.com",
-            "commit": "a178ed337f954388eed253633534c3ec8a340770",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 24 Jul 2020 19:34:33 GMT",
-      "tag": "lage_v0.16.1",
-      "version": "0.16.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "Compatible changes to make docs show up better",
-            "author": "kchau@microsoft.com",
-            "commit": "f7a39984771ee0e48ddebfff27b3397f88d2f588",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 23 Jul 2020 00:11:11 GMT",
-      "tag": "lage_v0.16.0",
-      "version": "0.16.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "adding an init interface",
-            "author": "kchau@microsoft.com",
-            "commit": "09dad4b529f687b1b83a5e41b2c49bed10f87e06",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 17 Jul 2020 20:33:49 GMT",
-      "tag": "lage_v0.15.4",
-      "version": "0.15.4",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixes args",
-            "author": "kchau@microsoft.com",
-            "commit": "e3eaa1931db8fd3398b7c953fcc9b9a3606cd2c1",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 17 Jul 2020 19:31:44 GMT",
-      "tag": "lage_v0.15.3",
-      "version": "0.15.3",
-      "comments": {
-        "patch": [
-          {
-            "comment": "bump workspace tools to get new preferred workspace manager",
-            "author": "kchau@microsoft.com",
-            "commit": "1114a2d28dd61623b28aafd4228e8c1345ba5489",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 15 Jul 2020 19:52:24 GMT",
-      "tag": "lage_v0.15.2",
-      "version": "0.15.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "Increase default concurrency to os.cpus().length",
-            "author": "1581488+christiango@users.noreply.github.com",
-            "commit": "768ed1b31a7a8e5a259c108bad135e2e02ad2383",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 15 Jul 2020 19:01:09 GMT",
-      "tag": "lage_v0.15.1",
-      "version": "0.15.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fix default case with no priorities set",
-            "author": "kchau@microsoft.com",
-            "commit": "10ce6aa2c604760f9cc9e29d89f053b570d3d175",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 15 Jul 2020 16:36:28 GMT",
-      "tag": "lage_v0.15.0",
-      "version": "0.15.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "Add support for task prioritization",
-            "author": "1581488+christiango@users.noreply.github.com",
-            "commit": "1932c31d021b64ad7bfb2a7b43da61d9e24211c9",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 14 Jul 2020 16:59:05 GMT",
-      "tag": "lage_v0.14.0",
-      "version": "0.14.0",
-      "comments": {
-        "none": [
-          {
-            "comment": "Remove unused imports",
-            "author": "1581488+christiango@users.noreply.github.com",
-            "commit": "17df32552d158969c49824e2768c8c99ef4892e7",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 13 Jul 2020 23:09:45 GMT",
-      "tag": "lage_v0.14.0",
-      "version": "0.14.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "adding a --only for picking certain tasks",
-            "author": "kchau@microsoft.com",
-            "commit": "0a207bcb662898bd1791eef1bc2c8e928a4797fa",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 10 Jul 2020 18:11:23 GMT",
-      "tag": "lage_v0.13.5",
-      "version": "0.13.5",
-      "comments": {
-        "patch": [
-          {
-            "comment": "Move profiler output to the system tmp dir",
-            "author": "feescoto@microsoft.com",
-            "commit": "a410ee8956fc36cd24a47dae71cef84a496a9991",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 29 Jun 2020 21:04:38 GMT",
-      "tag": "lage_v0.13.4",
-      "version": "0.13.4",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixed a bug where an exception thrown from getPackageDeps will affect how things are cached",
-            "author": "kchau@microsoft.com",
-            "commit": "a4673ffddad82dc3b2bbbed87d5d6288a75a0e7c",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 19 Jun 2020 18:49:29 GMT",
-      "tag": "lage_v0.13.3",
-      "version": "0.13.3",
-      "comments": {
-        "patch": [
-          {
-            "comment": "adding scoped packages back into the transitive providers",
-            "author": "kchau@microsoft.com",
-            "commit": "8f66d475c0893dbc529cbfe8614ee556acd245fd",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 19 Jun 2020 18:08:51 GMT",
-      "tag": "lage_v0.13.2",
-      "version": "0.13.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixing the intersection calculate with the differnce between transitive consumers and providers",
-            "author": "kchau@microsoft.com",
-            "commit": "b1f0537c81d409f2ad9de8d3543a838e42a868d7",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 18 Jun 2020 23:47:16 GMT",
-      "tag": "lage_v0.13.1",
-      "version": "0.13.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "making filterpackage do intersection rather than union. adding tests",
-            "author": "kchau@microsoft.com",
-            "commit": "f0df0511789cbe4cdf57d538cb25e69ce48f2fd4",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 18 Jun 2020 19:56:16 GMT",
-      "tag": "lage_v0.13.0",
-      "version": "0.13.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "adding a environment variable LAGE_PACKAGE_NAME like Lerna",
-            "author": "kchau@microsoft.com",
-            "commit": "0077ad04f5a4342cb0e7f9e54d02a995b562460d",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 17 Jun 2020 19:41:31 GMT",
-      "tag": "lage_v0.12.5",
-      "version": "0.12.5",
-      "comments": {
-        "patch": [
-          {
-            "comment": "Bump task-scheduler to make the graph respect tasks with no deps",
-            "author": "kchau@microsoft.com",
-            "commit": "b211a9f80f2b966360ea5334eb36d6950c3cdaaf",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 16 Jun 2020 22:07:08 GMT",
-      "tag": "lage_v0.12.4",
-      "version": "0.12.4",
-      "comments": {
-        "patch": [
-          {
-            "comment": "adding a resetCache flag to resave cache if something went awry",
-            "author": "kchau@microsoft.com",
-            "commit": "3f0b69d4cd4887606f302ce4c4165aea82386a42",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 15 Jun 2020 20:13:31 GMT",
-      "tag": "lage_v0.12.3",
-      "version": "0.12.3",
-      "comments": {
-        "patch": [
-          {
-            "comment": "unphantomify backfill",
-            "author": "kchau@microsoft.com",
-            "commit": "e9d526a15063854f7d1ebd64204e3264b3ac62c8",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 11 Jun 2020 00:14:19 GMT",
-      "tag": "lage_v0.12.2",
-      "version": "0.12.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "include os.platform in the hash",
-            "author": "kchau@microsoft.com",
-            "commit": "116e0d8610b74018fb1fbec57f98fc3f97ca9ab3",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 09 Jun 2020 19:51:48 GMT",
-      "tag": "lage_v0.12.1",
-      "version": "0.12.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "get rid of all newline characters in a line",
-            "author": "kchau@microsoft.com",
-            "commit": "fa0d59b9298bc22ee37d1775cb75a5f508de7b40",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 09 Jun 2020 04:44:04 GMT",
-      "tag": "lage_v0.12.0",
-      "version": "0.12.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "need to handle the close signal as well as exit",
-            "author": "kchau@microsoft.com",
-            "commit": "8b4fc2da7ded08fcded3cabb5ae15dc2c0b8a48e",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 08 Jun 2020 23:47:43 GMT",
-      "tag": "lage_v0.11.2",
-      "version": "0.11.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixed a bug with the since flag so that an empty is defaulted to origin/master",
-            "author": "kchau@microsoft.com",
-            "commit": "6857a5c19d48d57c0842073828dba1572713f020",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 08 Jun 2020 23:46:49 GMT",
-      "tag": "lage_v0.11.1",
-      "version": "0.11.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "bump websocket-extensions",
-            "author": "kchau@microsoft.com",
-            "commit": "aacd88554d2f1ce6abffffb1b34b95cf1f7c7283",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Sun, 07 Jun 2020 17:56:33 GMT",
-      "tag": "lage_v0.11.0",
-      "version": "0.11.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "salt with environmentGlob",
-            "author": "kchau@microsoft.com",
-            "commit": "f4695b75fbaa39afd92b0ef1c80fcba3c9897bcb",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Sat, 06 Jun 2020 19:33:34 GMT",
-      "tag": "lage_v0.10.1",
-      "version": "0.10.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "bump backfill",
-            "author": "kchau@microsoft.com",
-            "commit": "e17bdde5a17c2e7d6441fd2cc748074694538480",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 05 Jun 2020 23:31:46 GMT",
-      "tag": "lage_v0.10.0",
-      "version": "0.10.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "per task caching",
-            "author": "kchau@microsoft.com",
-            "commit": "30f09e11d59ef6e290d3e3e64591011e19be6eb0",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 05 Jun 2020 16:33:19 GMT",
-      "tag": "lage_v0.9.2",
-      "version": "0.9.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixing hash!",
-            "author": "kchau@microsoft.com",
-            "commit": "3af3bb886d744289c31eb47c6c27609672a11010",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 04 Jun 2020 17:04:06 GMT",
-      "tag": "lage_v0.9.1",
-      "version": "0.9.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixed the ignore param so that it works!",
-            "author": "kchau@microsoft.com",
-            "commit": "8b33420b0fe7a52f0aa3a66a54cdc32a288f6218",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 04 Jun 2020 00:21:21 GMT",
-      "tag": "lage_v0.9.0",
-      "version": "0.9.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "refactored internally to use @microsoft/task-scheduler",
-            "author": "kchau@microsoft.com",
-            "commit": "e6d61ef5dfd9e5a992614129253f7cf0f0de947e",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 28 May 2020 23:14:00 GMT",
-      "tag": "lage_v0.8.2",
-      "version": "0.8.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "refactor to reduce the scope of what gets run in a scoped run",
-            "author": "kchau@microsoft.com",
-            "commit": "a2644e81704259dd8a88b6d2754eaf4e1df4888f",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Thu, 28 May 2020 19:07:51 GMT",
-      "tag": "lage_v0.8.1",
-      "version": "0.8.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "internal refactoring for discoverTaskDeps",
-            "author": "kchau@microsoft.com",
-            "commit": "0b0b28f6f1bfa1d077b0c3399601ee10907c036d",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 26 May 2020 18:54:57 GMT",
-      "tag": "lage_v0.8.0",
-      "version": "0.8.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "add support for running command with different npm clients",
-            "author": "kchau@microsoft.com",
-            "commit": "a336a53f938e2f19b952b395414cc5cdd9657466",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Tue, 26 May 2020 00:18:08 GMT",
-      "tag": "lage_v0.7.2",
-      "version": "0.7.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "change to p-profiler instead of @lerna/profiler",
-            "author": "kchau@microsoft.com",
-            "commit": "423d7fe55e088360effbfa366318cac0ca07abb0",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 25 May 2020 19:49:21 GMT",
-      "tag": "lage_v0.7.1",
-      "version": "0.7.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixing the correct check for typeof since",
-            "author": "kchau@microsoft.com",
-            "commit": "a30ee71429e4539bb7603c514aa2608cfe2b2377",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 25 May 2020 18:26:19 GMT",
-      "tag": "lage_v0.7.0",
-      "version": "0.7.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "adding handling for multiple args",
-            "author": "kchau@microsoft.com",
-            "commit": "da2d6f6bb564855c9ac56b3bdfde393b584bc986",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Sun, 24 May 2020 23:10:13 GMT",
-      "tag": "lage_v0.6.2",
-      "version": "0.6.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "make sure no outputglob match do not crash",
-            "author": "kchau@microsoft.com",
-            "commit": "567ad6bb6c5ba9a32b7f08a47c3ca90ab0d84b9c",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Sun, 24 May 2020 22:01:39 GMT",
-      "tag": "lage_v0.6.1",
-      "version": "0.6.1",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fix cache directory",
-            "author": "kchau@microsoft.com",
-            "commit": "fa607abd64033d6cb259c5281156db83d01efb60",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Sun, 24 May 2020 04:36:58 GMT",
-      "tag": "lage_v0.6.0",
-      "version": "0.6.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "adding cacheOptions to lage.config.js",
-            "author": "kchau@microsoft.com",
-            "commit": "236fdf92fa086f858e3b30c622e584a33f014f01",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Sat, 23 May 2020 23:20:06 GMT",
-      "tag": "lage_v0.5.0",
-      "version": "0.5.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "adding a --since feature",
-            "author": "kchau@microsoft.com",
-            "commit": "471c088aa02847313819670a24bcd945a31cac76",
-            "package": "lage"
-          }
-        ],
-        "patch": [
-          {
-            "comment": "add support for untracked and unstaged files for --since",
-            "author": "kchau@microsoft.com",
-            "commit": "471c088aa02847313819670a24bcd945a31cac76",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 22 May 2020 20:39:55 GMT",
-      "tag": "lage_v0.4.9",
-      "version": "0.4.9",
-      "comments": {
-        "patch": [
-          {
-            "comment": "bumping backfill",
-            "author": "kchau@microsoft.com",
-            "commit": "f736dd206e77c7c6234c9a6fb5fc8d5e7cdc96ea",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 18 May 2020 23:19:09 GMT",
-      "tag": "lage_v0.4.8",
-      "version": "0.4.8",
-      "comments": {
-        "patch": [
-          {
-            "comment": "adds link to repo from npm package metadata",
-            "author": "kchau@microsoft.com",
-            "commit": "caa82e9201093b3ef0761329baff338a92be3565",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 18 May 2020 16:25:15 GMT",
-      "tag": "lage_v0.4.7",
-      "version": "0.4.7",
-      "comments": {
-        "patch": [
-          {
-            "comment": "update backfill to latest",
-            "author": "kchau@microsoft.com",
-            "commit": "74758ecbd8c72565e10f8c41684719fd09f762c4",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Mon, 18 May 2020 16:25:09 GMT",
-      "tag": "lage_v0.4.7",
-      "version": "0.4.7",
-      "comments": {
-        "patch": [
-          {
-            "comment": "update backfill to latest",
-            "author": "kchau@microsoft.com",
-            "commit": "74758ecbd8c72565e10f8c41684719fd09f762c4",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 23:30:10 GMT",
-      "tag": "lage_v0.4.6",
-      "version": "0.4.6",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixing up npm cmd call so it's platform independent",
-            "author": "kchau@microsoft.com",
-            "commit": "4d7cdb84d605e8a898efea6f263786b4fd20dec9",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 23:30:04 GMT",
-      "tag": "lage_v0.4.6",
-      "version": "0.4.6",
-      "comments": {
-        "patch": [
-          {
-            "comment": "fixing up npm cmd call so it's platform independent",
-            "author": "kchau@microsoft.com",
-            "commit": "4d7cdb84d605e8a898efea6f263786b4fd20dec9",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 22:42:02 GMT",
-      "tag": "lage_v0.4.5",
-      "version": "0.4.5",
-      "comments": {
-        "patch": [
-          {
-            "comment": "more event listeners",
-            "author": "kchau@microsoft.com",
-            "commit": "3a4d16d7e49f63ec7304e5520ff2d42082c7d1a0",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 22:41:56 GMT",
-      "tag": "lage_v0.4.5",
-      "version": "0.4.5",
-      "comments": {
-        "patch": [
-          {
-            "comment": "more event listeners",
-            "author": "kchau@microsoft.com",
-            "commit": "3a4d16d7e49f63ec7304e5520ff2d42082c7d1a0",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 18:47:23 GMT",
-      "tag": "lage_v0.4.4",
-      "version": "0.4.4",
-      "comments": {
-        "patch": [
-          {
-            "comment": "allow tasks with no deps to run as well",
-            "author": "kchau@microsoft.com",
-            "commit": "446a56a95b97f048967565eb19f093d09fb15cd1",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 18:47:15 GMT",
-      "tag": "lage_v0.4.4",
-      "version": "0.4.4",
-      "comments": {
-        "patch": [
-          {
-            "comment": "allow tasks with no deps to run as well",
-            "author": "kchau@microsoft.com",
-            "commit": "446a56a95b97f048967565eb19f093d09fb15cd1",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 16:37:33 GMT",
-      "tag": "lage_v0.4.3",
-      "version": "0.4.3",
-      "comments": {
-        "patch": [
-          {
-            "comment": "truly respects the profile flag",
-            "author": "kchau@microsoft.com",
-            "commit": "2b8ff2e0edd4c41bf42e529a6935bd3798ff68ab",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 16:37:26 GMT",
-      "tag": "lage_v0.4.3",
-      "version": "0.4.3",
-      "comments": {
-        "patch": [
+            "package": "@lage-run/lage",
+            "commit": "21bc0d3c799d654d236aa994e8e98ac5c250567c",
+            "comment": "Supports workers as a new target type"
+          },
           {
-            "comment": "truly respects the profile flag",
-            "author": "kchau@microsoft.com",
-            "commit": "2b8ff2e0edd4c41bf42e529a6935bd3798ff68ab",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 16:28:31 GMT",
-      "tag": "lage_v0.4.2",
-      "version": "0.4.2",
-      "comments": {
-        "patch": [
-          {
-            "comment": "added option to do profiling or not",
-            "author": "kchau@microsoft.com",
-            "commit": "c97bbc12ec78fd771555e8d5ca8e724a81fb40ec",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 16:28:24 GMT",
-      "tag": "lage_v0.4.2",
-      "version": "0.4.2",
-      "comments": {
-        "patch": [
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.3.0",
+            "commit": "21bc0d3c799d654d236aa994e8e98ac5c250567c"
+          },
           {
-            "comment": "added option to do profiling or not",
-            "author": "kchau@microsoft.com",
-            "commit": "c97bbc12ec78fd771555e8d5ca8e724a81fb40ec",
-            "package": "lage"
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/scheduler to v0.3.0",
+            "commit": "21bc0d3c799d654d236aa994e8e98ac5c250567c"
           }
         ]
       }
     },
     {
-      "date": "Wed, 13 May 2020 01:58:36 GMT",
-      "tag": "lage_v0.4.1",
-      "version": "0.4.1",
+      "date": "Sat, 27 Aug 2022 00:12:13 GMT",
+      "tag": "@lage-run/lage_v2.0.4",
+      "version": "2.0.4",
       "comments": {
         "patch": [
           {
-            "comment": "added usage stuff",
             "author": "kchau@microsoft.com",
-            "commit": "f3a38f646f77488406dacc4d65f6097a1608de23",
-            "package": "lage"
+            "package": "@lage-run/lage",
+            "commit": "796bdf0551975d37a1c4f104c910c02d39cdec9a",
+            "comment": "Fixed to use mainfield of main first instead of module."
           }
         ]
       }
     },
     {
-      "date": "Wed, 13 May 2020 01:58:30 GMT",
-      "tag": "lage_v0.4.1",
-      "version": "0.4.1",
+      "date": "Fri, 26 Aug 2022 23:05:53 GMT",
+      "tag": "@lage-run/lage_v2.0.3",
+      "version": "2.0.3",
       "comments": {
         "patch": [
-          {
-            "comment": "added usage stuff",
-            "author": "kchau@microsoft.com",
-            "commit": "f3a38f646f77488406dacc4d65f6097a1608de23",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 01:55:26 GMT",
-      "tag": "lage_v0.4.0",
-      "version": "0.4.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "better logging",
-            "author": "kchau@microsoft.com",
-            "commit": "11d6d5576e2f79c1fa9d45cfee45eb48132ab835",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 01:55:19 GMT",
-      "tag": "lage_v0.4.0",
-      "version": "0.4.0",
-      "comments": {
-        "minor": [
-          {
-            "comment": "better logging",
-            "author": "kchau@microsoft.com",
-            "commit": "11d6d5576e2f79c1fa9d45cfee45eb48132ab835",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 01:33:46 GMT",
-      "tag": "lage_v0.3.0",
-      "version": "0.3.0",
-      "comments": {
-        "minor": [
           {
-            "comment": "adding verbose logging",
             "author": "kchau@microsoft.com",
-            "commit": "d982c9c511420c1a936deeedbb1db6a6d6fe4f51",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 01:33:40 GMT",
-      "tag": "lage_v0.3.0",
-      "version": "0.3.0",
-      "comments": {
-        "minor": [
+            "package": "@lage-run/lage",
+            "commit": "753fa9544a994b6f90c9f1355483484bd855f583",
+            "comment": "Fixes the bundle errors caused by readable-stream's weird import syntax"
+          },
           {
-            "comment": "adding verbose logging",
-            "author": "kchau@microsoft.com",
-            "commit": "d982c9c511420c1a936deeedbb1db6a6d6fe4f51",
-            "package": "lage"
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.2.4",
+            "commit": "753fa9544a994b6f90c9f1355483484bd855f583"
           }
         ]
       }
     },
     {
-      "date": "Wed, 13 May 2020 01:23:45 GMT",
-      "tag": "lage_v0.2.1",
-      "version": "0.2.1",
+      "date": "Fri, 26 Aug 2022 06:34:51 GMT",
+      "tag": "@lage-run/lage_v2.0.2",
+      "version": "2.0.2",
       "comments": {
         "patch": [
           {
-            "comment": "fixes the binary script",
-            "author": "kchau@microsoft.com",
-            "commit": "a70613e7fe0f2e901d9af7ed6ac597898f1c451f",
-            "package": "lage"
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.2.3",
+            "commit": "8b797903e36d31d9fbd4cc813166073e05872fd6"
           }
         ]
       }
     },
     {
-      "date": "Wed, 13 May 2020 01:23:37 GMT",
-      "tag": "lage_v0.2.1",
-      "version": "0.2.1",
+      "date": "Thu, 25 Aug 2022 20:06:40 GMT",
+      "tag": "@lage-run/lage_v2.0.1",
+      "version": "2.0.1",
       "comments": {
         "patch": [
-          {
-            "comment": "fixes the binary script",
-            "author": "kchau@microsoft.com",
-            "commit": "a70613e7fe0f2e901d9af7ed6ac597898f1c451f",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 01:14:27 GMT",
-      "tag": "lage_v0.2.0",
-      "version": "0.2.0",
-      "comments": {
-        "minor": [
           {
-            "comment": "updated with latest and greatest backfill",
             "author": "kchau@microsoft.com",
-            "commit": "bc784ccaeaf9e61ed9adb9ef268c899f2ea48440",
-            "package": "lage"
-          }
-        ]
-      }
-    },
-    {
-      "date": "Wed, 13 May 2020 01:14:21 GMT",
-      "tag": "lage_v0.2.0",
-      "version": "0.2.0",
-      "comments": {
-        "minor": [
+            "package": "@lage-run/lage",
+            "commit": "4ee91529498d9601050df121f3b9a3db634ae068",
+            "comment": "first release of the 2.0.x series"
+          },
           {
-            "comment": "updated with latest and greatest backfill",
-            "author": "kchau@microsoft.com",
-            "commit": "bc784ccaeaf9e61ed9adb9ef268c899f2ea48440",
-            "package": "lage"
+            "author": "beachball",
+            "package": "@lage-run/lage",
+            "comment": "Bump @lage-run/cli to v0.2.2",
+            "commit": "4ee91529498d9601050df121f3b9a3db634ae068"
           }
         ]
       }

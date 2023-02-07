@@ -6,7 +6,10 @@ name: Release
 on:
   workflow_dispatch:
   push:
-    branches: [master, stable]
+    branches:
+      - master
+    paths-ignore:
+      - "docs/**"
 
 permissions:
   contents: write
