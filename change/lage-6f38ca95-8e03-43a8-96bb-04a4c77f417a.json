@@ -1,6 +1,6 @@
 {
-  "type": "patch",
-  "comment": "Promoting v2 to be the @latest tag for npmjs",
+  "type": "major",
+  "comment": "Promoting v2 to be the @latest tag for npmjs, see [RELEASE.md]",
   "packageName": "lage",
   "email": "kchau@microsoft.com",
   "dependentChangeType": "patch"

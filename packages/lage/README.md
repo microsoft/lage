@@ -2,6 +2,8 @@
 
 The documentation for `lage` currently located in [the /docs-beta path](https://github.com/microsoft/lage/tree/master/docs-beta/docs)
 
+This is the lateset release of lage. Please see [RELEASE.md] for more details of new features!
+
 ## Overview
 
 Your JS repo has gotten large enough that you have turned to using a tool to help you manage multiple packages inside a repository. That's great! However, you realized quickly that the tasks defined inside the workspace have to be run in package dependency order.

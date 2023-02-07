@@ -1,6 +1,6 @@
 {
   "name": "lage",
-  "version": "2.6.4",
+  "version": "1.9.6",
   "main": "dist/main.js",
   "bin": {
     "lage": "dist/lage.js"
