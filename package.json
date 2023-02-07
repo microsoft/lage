@@ -37,7 +37,7 @@
     "fast-glob": "3.2.12",
     "gh-pages": "4.0.0",
     "husky": "8.0.3",
-    "lage-npm": "npm:@lage-run/lage@2.5.32",
+    "lage-npm": "npm:@lage-run/lage@2.6.4",
     "lint-staged": "13.1.0",
     "patch-package": "6.5.1",
     "prettier": "2.8.3",
