@@ -2,8 +2,10 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [master]
-    paths: [docs/**]
+    branches: 
+      - master
+    paths: 
+      - "docs/**"
 
 permissions:
   contents: write
@@ -17,7 +19,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          cache: yarn
       - name: Build website
         working-directory: docs
         run: |

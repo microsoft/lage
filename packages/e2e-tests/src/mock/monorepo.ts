@@ -50,7 +50,7 @@ export class Monorepo {
           extra: `node ${this.yarnPath} lage extra --clear --reporter json --log-level silly`,
         },
         devDependencies: {
-          "@lage-run/lage": path.resolve(__dirname, "..", "..", "..", "lage2"),
+          lage: path.resolve(__dirname, "..", "..", "..", "lage"),
         },
       },
       "lage.config.js": `module.exports = {

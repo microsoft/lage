@@ -2,8 +2,10 @@ name: Test deployment
 
 on:
   pull_request:
-    branches: [master]
-    paths: [docs/**]
+    branches: 
+      - master
+    paths: 
+      - "docs/**"
 
 jobs:
   test-deploy:
@@ -14,7 +16,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          cache: yarn
       - name: Test build
         working-directory: docs
         run: |

@@ -5,7 +5,10 @@ name: PR
 
 on:
   pull_request:
-    branches: [master, stable]
+    branches: 
+      - master
+    paths-ignore:
+      - "docs/**"
 
 jobs:
   build:
@@ -34,7 +37,7 @@ jobs:
       - name: Check Change Files
         run: yarn checkchange
 
-      # @see https://www.npmjs.com/package/syncpack 
+      # @see https://www.npmjs.com/package/syncpack
       - name: Check consistent package.json dep versions
         run: yarn syncpack list-mismatches -w
 
