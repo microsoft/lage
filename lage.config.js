@@ -5,7 +5,7 @@ const fastGlob = require("fast-glob");
 /** @type {import("@lage-run/cli/src/types/ConfigOptions").ConfigOptions} */
 module.exports = {
   pipeline: {
-    bundle: ["^^transpile", "types"],
+    "lage#bundle": ["^^transpile", "types"],
     types: {
       type: "worker",
       options: {
