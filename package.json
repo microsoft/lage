@@ -41,7 +41,7 @@
     "lint-staged": "13.1.0",
     "patch-package": "6.5.1",
     "prettier": "2.8.3",
-    "syncpack": "8.4.11"
+    "syncpack": "8.5.14"
   },
   "resolutions": {
     "workspace-tools": "^0.29.0",
