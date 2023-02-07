@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "trying to fix the release again, github action quit halfway into process",
-  "packageName": "@lage-run/lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
