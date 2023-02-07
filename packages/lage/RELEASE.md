@@ -1,6 +1,6 @@
 # Release v2.0.0
 
-Version 2 of lage is finally arriving at the dist-tag of @latest! There had been many, many changes under the hood to make this release truly unique. Here are some of the highlights:
+Lage version 2 is now available at dist-tag `@latest`, featuring significant updates and improvements that make this release truly unique:
 
 New Features:
 
