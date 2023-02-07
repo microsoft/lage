@@ -61,7 +61,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn
-      - run: yarn lage transpile types build test lint bundle
+      - run: yarn lage transpile types build test lint bundle --concurrency 2 --verbose
       - run: |
           git config user.email "kchau@microsoft.com"
           git config user.name "Ken Chau"
