@@ -2,6 +2,21 @@
   "name": "@lage-run/lage",
   "entries": [
     {
+      "date": "Tue, 07 Feb 2023 17:31:22 GMT",
+      "tag": "@lage-run/lage_v2.6.2",
+      "version": "2.6.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/lage",
+            "commit": "314fe0913100e4feb1971c116712d9d9849dc5b8",
+            "comment": "fixes a publish error"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 06 Feb 2023 23:42:51 GMT",
       "tag": "@lage-run/lage_v2.6.1",
       "version": "2.6.1",
