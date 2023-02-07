@@ -1,0 +1,32 @@
+{
+  "name": "lage",
+  "entries": [
+    {
+      "date": "Tue, 07 Feb 2023 23:52:48 GMT",
+      "tag": "lage_v2.0.0",
+      "version": "2.0.0",
+      "comments": {
+        "major": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "d7bf00acf2e7bda7d3e3478b6ef60db0d32ba243",
+            "comment": "Promoting v2 to be the @latest tag for npmjs, see [RELEASE.md]"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.8.2",
+            "commit": "d7bf00acf2e7bda7d3e3478b6ef60db0d32ba243"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v0.8.3",
+            "commit": "d7bf00acf2e7bda7d3e3478b6ef60db0d32ba243"
+          }
+        ]
+      }
+    }
+  ]
+}

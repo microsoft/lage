@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "migrating to V2",
-  "packageName": "@lage-run/scheduler",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

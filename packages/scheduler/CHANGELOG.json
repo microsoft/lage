@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Tue, 07 Feb 2023 23:52:48 GMT",
+      "tag": "@lage-run/scheduler_v0.8.3",
+      "version": "0.8.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "d7bf00acf2e7bda7d3e3478b6ef60db0d32ba243",
+            "comment": "migrating to V2"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 31 Jan 2023 23:54:49 GMT",
       "tag": "@lage-run/scheduler_v0.8.2",
       "version": "0.8.2",

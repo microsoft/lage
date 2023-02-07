@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Tue, 31 Jan 2023 23:54:49 GMT and should not be manually modified.
+This log was last generated on Tue, 07 Feb 2023 23:52:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.3
+
+Tue, 07 Feb 2023 23:52:48 GMT
+
+### Patches
+
+- migrating to V2 (kchau@microsoft.com)
 
 ## 0.8.2
 
