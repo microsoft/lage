@@ -3474,10 +3474,10 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-"lage-npm@npm:@lage-run/lage@2.6.4":
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/@lage-run/lage/-/lage-2.6.4.tgz#9d86e310055ba7858b392a43ba3dbfd8ca63345a"
-  integrity sha512-07xfyU0t7Meg4cO2ofGpYjEfo8nELepUJJetc5isr3Bw0/uRdceAF4rpEtaeTWswdaBJMW76TVyLKaY70/Pekw==
+"lage-npm@npm:lage@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/lage/-/lage-2.0.0.tgz#937cc00ae1bf1ffcad34dd1523bb55536564b507"
+  integrity sha512-1SMXYSU4f2UUS9n0ByxdHVKebyjxUMybkRGTx+svwBE+UA0U+5ZhGxYA9uvey5IQ1DJ0mTqs+kOgLq6LwfJ7Uw==
   dependencies:
     yoga-layout-prebuilt "^1.10.0"
   optionalDependencies:
