@@ -14,8 +14,8 @@
     "write-heading-ids": "docusaurus write-heading-ids"
   },
   "dependencies": {
-    "@docusaurus/core": "2.3.0",
-    "@docusaurus/preset-classic": "2.3.0",
+    "@docusaurus/core": "2.3.1",
+    "@docusaurus/preset-classic": "2.3.1",
     "docusaurus-preset-shiki-twoslash": "^1.1.38",
     "@cmfcmf/docusaurus-search-local": "^0.11.0",
     "@mdx-js/react": "^1.6.21",
@@ -29,7 +29,7 @@
     "tailwindcss": "^3.1.8"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "2.3.0",
+    "@docusaurus/module-type-aliases": "2.3.1",
     "@tsconfig/docusaurus": "1.0.6",
     "identity-obj-proxy": "3.0.0"
   },
