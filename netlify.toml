@@ -2,3 +2,7 @@
   from = "/"
   to = "/lage"
   status = 301
+
+[build]
+  base = "docs/"
+  publish = "build/"
