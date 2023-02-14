@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Tue, 14 Feb 2023 19:17:08 GMT",
+      "tag": "@lage-run/reporters_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/reporters",
+            "commit": "not available",
+            "comment": "Update devDependency @types/react to v18.0.28"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Feb 2023 19:13:59 GMT",
       "tag": "@lage-run/reporters_v1.0.0",
       "version": "1.0.0",
