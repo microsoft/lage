@@ -23,10 +23,10 @@
     {
       "fileMatch": ["^package.json$"],
       "matchStrings": [
-        "lage-npm\": \"npm:@lage-run/lage@(?<currentValue>[~^]?\\d+\\.\\d+\\.\\d+)"
+        "lage-npm\": \"lage@(?<currentValue>[~^]?\\d+\\.\\d+\\.\\d+)"
       ],
       "depNameTemplate": "lage-npm",
-      "packageNameTemplate": "@lage-run/lage",
+      "packageNameTemplate": "lage",
       "datasourceTemplate": "npm",
       "depTypeTemplate": "devDependencies"
     }
