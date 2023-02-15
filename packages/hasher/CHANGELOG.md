@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Fri, 18 Nov 2022 19:52:38 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Feb 2023 16:51:15 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.3
+
+Wed, 15 Feb 2023 16:51:15 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.30.0 (renovate@whitesourcesoftware.com)
 
 ## 0.1.2
 
