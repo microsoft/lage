@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "execa": "5.1.1",
-    "workspace-tools": "0.29.1",
+    "workspace-tools": "0.30.0",
     "find-up": "^5.0.0"
   },
   "devDependencies": {

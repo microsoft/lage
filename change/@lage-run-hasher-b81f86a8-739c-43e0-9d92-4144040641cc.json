@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Update dependency workspace-tools to v0.30.0",
+  "packageName": "@lage-run/hasher",
+  "email": "renovate@whitesourcesoftware.com",
+  "dependentChangeType": "patch"
+}
