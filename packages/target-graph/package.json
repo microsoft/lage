@@ -15,7 +15,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "workspace-tools": "^0.29.0"
+    "workspace-tools": "^0.30.0"
   },
   "devDependencies": {
     "monorepo-scripts": "*"
