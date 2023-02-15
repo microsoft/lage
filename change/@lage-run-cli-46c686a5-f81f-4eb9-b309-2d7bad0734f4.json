@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "bumping workspace-tools to latest to support yarn 3",
-  "packageName": "@lage-run/cli",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

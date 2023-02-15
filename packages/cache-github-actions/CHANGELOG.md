@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache-github-actions
 
-This log was last generated on Tue, 01 Nov 2022 22:25:59 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Feb 2023 16:47:12 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.10
+
+Wed, 15 Feb 2023 16:47:12 GMT
+
+### Patches
+
+- bumping workspace-tools to latest to support yarn 3 (kchau@microsoft.com)
 
 ## 0.1.9
 

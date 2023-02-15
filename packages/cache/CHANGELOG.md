@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Fri, 18 Nov 2022 19:52:38 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Feb 2023 16:47:12 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.4
+
+Wed, 15 Feb 2023 16:47:12 GMT
+
+### Patches
+
+- bumping workspace-tools to latest to support yarn 3 (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.6.2
 
 ## 0.2.3
 

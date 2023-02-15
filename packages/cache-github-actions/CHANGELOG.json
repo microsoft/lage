@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Wed, 15 Feb 2023 16:47:12 GMT",
+      "tag": "@lage-run/cache-github-actions_v0.1.10",
+      "version": "0.1.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "d66a3b4811f36290a0499d9199948c84c8049728",
+            "comment": "bumping workspace-tools to latest to support yarn 3"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 01 Nov 2022 22:25:59 GMT",
       "tag": "@lage-run/cache-github-actions_v0.1.9",
       "version": "0.1.9",

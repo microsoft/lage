@@ -1,8 +1,21 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Tue, 07 Feb 2023 23:52:48 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Feb 2023 16:47:12 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.3
+
+Wed, 15 Feb 2023 16:47:12 GMT
+
+### Patches
+
+- bumping workspace-tools to latest to support yarn 3 (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.8.4
+- Bump @lage-run/scheduler-types to v0.3.1
+- Bump @lage-run/target-graph to v0.6.2
+- Bump @lage-run/cache to v0.2.4
+- Bump @lage-run/reporters to v1.0.1
 
 ## 0.8.2
 
