@@ -28,25 +28,19 @@ export class BackfillCacheProvider implements CacheProvider {
    * logger for backfill
    */
   private backfillLogger: BackfillLogger;
+  private cacheDirectory: string;
 
-  private getTargetCacheStorageProvider(cwd: string) {
+  private getTargetCacheStorageProvider(cwd: string, hash: string) {
     const { cacheOptions } = this.options;
-    const { cacheStorageConfig, internalCacheFolder, incrementalCaching } = createBackfillCacheConfig(
-      cwd,
-      cacheOptions,
-      this.backfillLogger
-    );
+    const { cacheStorageConfig, incrementalCaching } = createBackfillCacheConfig(cwd, cacheOptions, this.backfillLogger);
 
-    return getCacheStorageProvider(
-      cacheStorageConfig ?? { provider: "local" },
-      internalCacheFolder,
-      this.backfillLogger,
-      cwd,
-      incrementalCaching
-    );
+    const cachePath = this.getCachePath(cwd, hash);
+
+    return getCacheStorageProvider(cacheStorageConfig ?? { provider: "local" }, cachePath, this.backfillLogger, cwd, incrementalCaching);
   }
 
   constructor(private options: BackfillCacheProviderOptions) {
+    this.cacheDirectory = path.join(options.root, "node_modules/.lage/cache");
     this.backfillLogger = createBackfillLogger();
   }
 
@@ -57,7 +51,7 @@ export class BackfillCacheProvider implements CacheProvider {
       return false;
     }
 
-    const cacheStorage = this.getTargetCacheStorageProvider(target.cwd);
+    const cacheStorage = this.getTargetCacheStorageProvider(target.cwd, hash);
 
     try {
       return await cacheStorage.fetch(hash);
@@ -82,7 +76,7 @@ export class BackfillCacheProvider implements CacheProvider {
       return;
     }
 
-    const cacheStorage = this.getTargetCacheStorageProvider(target.cwd);
+    const cacheStorage = this.getTargetCacheStorageProvider(target.cwd, hash);
 
     try {
       await cacheStorage.put(hash, target.outputs ?? this.options.cacheOptions.outputGlob ?? ["**/*"]);
@@ -100,18 +94,15 @@ export class BackfillCacheProvider implements CacheProvider {
   }
 
   async clear(): Promise<void> {
-    const allPackages = getPackageInfos(this.options.root);
-    for (const info of Object.values(allPackages)) {
-      const cachePath = getCachePath(info, this.options.cacheOptions.internalCacheFolder);
+    const cachePath = this.cacheDirectory;
 
-      if (fs.existsSync(cachePath)) {
-        const entries = await readdir(cachePath);
-        for (const entry of entries) {
-          const entryPath = path.join(cachePath, entry);
-          const entryStat = await stat(entryPath);
+    if (fs.existsSync(cachePath)) {
+      const entries = await readdir(cachePath);
+      for (const entry of entries) {
+        const entryPath = path.join(cachePath, entry);
+        const entryStat = await stat(entryPath);
 
-          await removeCache(entryPath, entryStat);
-        }
+        await removeCache(entryPath, entryStat);
       }
     }
   }
@@ -121,7 +112,7 @@ export class BackfillCacheProvider implements CacheProvider {
     const now = new Date();
     const allPackages = getPackageInfos(this.options.root);
     for (const info of Object.values(allPackages)) {
-      const cachePath = getCachePath(info, this.options.cacheOptions.internalCacheFolder);
+      const cachePath = this.cacheDirectory;
 
       if (fs.existsSync(cachePath)) {
         const entries = await readdir(cachePath);
@@ -137,10 +128,11 @@ export class BackfillCacheProvider implements CacheProvider {
       }
     }
   }
-}
 
-function getCachePath(info: PackageInfo, internalCacheFolder?: string) {
-  return path.resolve(path.dirname(info.packageJsonPath), internalCacheFolder ?? "node_modules/.cache/backfill");
+  getCachePath(packagePath: string, hash: string) {
+    const relativePath = path.relative(packagePath, path.join(this.cacheDirectory, hash.substring(0, 4)));
+    return relativePath;
+  }
 }
 
 async function removeCache(cachePath: string, entryStat: fs.Stats) {
