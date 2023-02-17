@@ -1,12 +1,13 @@
 import EventEmitter from "events";
 import type { LogEntry, Reporter } from "@lage-run/logger";
-import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
+import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 
 import fs from "fs";
 import path from "path";
 
-// @ts-ignore
+// @ts-ignore Ignoring ESM in CJS errors here, but still importing the types to be used
 import type { TaskReporter as TaskReporterType, TaskReporterTask } from "@ms-cloudpack/task-reporter";
+import { Target } from "@lage-run/target-graph";
 
 export class ProgressReporter implements Reporter {
   startTime: [number, number] = [0, 0];
@@ -14,17 +15,17 @@ export class ProgressReporter implements Reporter {
   logEvent: EventEmitter = new EventEmitter();
   logEntries = new Map<string, LogEntry[]>();
 
-  taskReporter: TaskReporterType | undefined;
+  taskReporter: Promise<TaskReporterType>;
   tasks: Map<string, TaskReporterTask> = new Map();
 
   constructor(private options: { concurrency: number; version: string } = { concurrency: 0, version: "0.0.0" }) {
-    
+    this.taskReporter = this.createTaskReporter();
   }
 
-  async reporter() {
-    if (!this.taskReporter) {
-      const TaskReporter = (await import("@ms-cloudpack/task-reporter")).TaskReporter;
-      this.taskReporter = new TaskReporter({
+  createTaskReporter() {
+    return import("@ms-cloudpack/task-reporter").then((taskReporterModule) => {
+      const TaskReporter = taskReporterModule.TaskReporter;
+      return new TaskReporter({
         productName: "lage",
         version: this.options.version,
         showCompleted: true,
@@ -41,9 +42,7 @@ export class ProgressReporter implements Reporter {
         showTaskDetails: true,
         showTaskExtended: true,
       });
-    }
-
-    return this.taskReporter;
+    });
   }
 
   log(entry: LogEntry<any>) {
@@ -64,16 +63,47 @@ export class ProgressReporter implements Reporter {
       this.startTime = entry.data.schedulerRun.startTime;
     }
 
-    if (entry.data && entry.data.status) {
-      this.logEvent.emit("status", entry.data);
-    }
+    if (entry.data && entry.data.status && entry.data.target) {
+      const target: Target = entry.data.target;
+      const status: TargetStatus = entry.data.status;
 
-    // if (entry.data && entry.data.progress) {
-    //   this.logEvent.emit("progress", entry.data.progress);
-    // }
+      const report = async () => {
+        const reporterTask = this.tasks.has(target.id) ? this.tasks.get(target.id) : (await this.taskReporter).addTask(target.label, true);
+        switch (status) {
+          case "running":
+            reporterTask?.start();
+            break;
+
+          case "success":
+            reporterTask?.complete({ status: "complete" });
+            break;
+
+          case "aborted":
+            reporterTask?.complete({ status: "abort" });
+            break;
+
+          case "skipped":
+            reporterTask?.complete({ status: "skip" });
+            break;
+
+          case "failed":
+            reporterTask?.complete({ status: "fail" });
+            break;
+        }
+      };
+
+      // async, fire & forget here
+      report();
+    }
   }
 
   summarize(schedulerRunSummary: SchedulerRunSummary) {
-    this.logEvent.emit("summary", { schedulerRunSummary, logEntries: this.logEntries });
+    const summarizeAsync = async () => {
+      const reporter = await this.taskReporter;
+      reporter.complete(schedulerRunSummary.results);
+    };
+
+    // async, fire & forget
+    summarizeAsync();
   }
 }
