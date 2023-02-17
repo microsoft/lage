@@ -40,7 +40,7 @@
     {
       "groupName": "lage core deps",
       "matchPackagePrefixes": ["backfill-"],
-      "matchPackageNames": ["backfill", "workspace-tools", "p-graph", "p-profiler"],
+      "matchPackageNames": ["backfill", "workspace-tools", "p-graph", "p-profiler", "@ms-cloudpack/task-reporter"],
       "matchUpdateTypes": ["major", "minor", "patch", "bump"],
       "dependencyDashboardApproval": false
     },

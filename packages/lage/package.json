@@ -9,9 +9,6 @@
     "prebundle": "node scripts/prebuild.js",
     "bundle": "rollup --config ./rollup.config.js"
   },
-  "dependencies": {
-    "yoga-layout-prebuilt": "^1.10.0"
-  },
   "optionalDependencies": {
     "fsevents": "~2.3.2"
   },
