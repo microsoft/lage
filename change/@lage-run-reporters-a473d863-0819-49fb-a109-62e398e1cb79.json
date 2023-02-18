@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "ChromeTraceEventsReporter: Hide skipped tasks from the profile",
-  "packageName": "@lage-run/reporters",
-  "email": "felescoto95@hotmail.com",
-  "dependentChangeType": "patch"
-}

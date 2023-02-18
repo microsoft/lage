@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Sat, 18 Feb 2023 00:40:18 GMT",
+      "tag": "@lage-run/reporters_v1.0.2",
+      "version": "1.0.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "felescoto95@hotmail.com",
+            "package": "@lage-run/reporters",
+            "commit": "75247c3e9172dc763c5253cf94014b99ac2f4fc4",
+            "comment": "ChromeTraceEventsReporter: Hide skipped tasks from the profile"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Feb 2023 16:47:12 GMT",
       "tag": "@lage-run/reporters_v1.0.1",
       "version": "1.0.1",

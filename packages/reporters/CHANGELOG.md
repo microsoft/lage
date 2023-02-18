@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Wed, 15 Feb 2023 16:47:12 GMT and should not be manually modified.
+This log was last generated on Sat, 18 Feb 2023 00:40:18 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.2
+
+Sat, 18 Feb 2023 00:40:18 GMT
+
+### Patches
+
+- ChromeTraceEventsReporter: Hide skipped tasks from the profile (felescoto95@hotmail.com)
 
 ## 1.0.1
 

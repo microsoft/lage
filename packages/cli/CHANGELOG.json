@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Sat, 18 Feb 2023 00:40:18 GMT",
+      "tag": "@lage-run/cli_v0.8.5",
+      "version": "0.8.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.0.2",
+            "commit": "af1a17202ac0f94d79961130288c9935fdff9fbc"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Feb 2023 16:51:15 GMT",
       "tag": "@lage-run/cli_v0.8.4",
       "version": "0.8.4",
