@@ -3,3 +3,5 @@ export { RemoteFallbackCacheProvider } from "./providers/RemoteFallbackCacheProv
 export { TargetHasher } from "./TargetHasher.js";
 export type { CacheOptions } from "./types/CacheOptions.js";
 export type { CacheProvider } from "./types/CacheProvider.js";
+
+export { getCacheDirectory, getLogsCacheDirectory, getCacheDirectoryRoot } from "./getCacheDirectory.js";
