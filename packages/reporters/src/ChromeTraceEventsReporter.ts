@@ -69,7 +69,9 @@ export class ChromeTraceEventsReporter implements Reporter {
     const { categorize } = this.options;
 
     for (const targetRun of targetRuns.values()) {
-      if (targetRun.target.hidden) {
+      // Skip hidden targets because those should be hidden by reporters.
+      // Hiding as well skipped targets to avoid polluting the profile.
+      if (targetRun.target.hidden || targetRun.status === "skipped") {
         continue;
       }
 
