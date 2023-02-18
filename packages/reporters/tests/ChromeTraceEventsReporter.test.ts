@@ -62,7 +62,7 @@ describe("ChromeTraceEventsReporter", () => {
         "traceEvents": [
           {
             "name": "a#build",
-            "cat": "failed",
+            "cat": "failed#build",
             "ph": "X",
             "ts": 0,
             "dur": 60000000,
@@ -71,7 +71,7 @@ describe("ChromeTraceEventsReporter", () => {
           },
           {
             "name": "a#test",
-            "cat": "success",
+            "cat": "success#test",
             "ph": "X",
             "ts": 1000000,
             "dur": 10000000,
@@ -80,7 +80,7 @@ describe("ChromeTraceEventsReporter", () => {
           },
           {
             "name": "b#build",
-            "cat": "success",
+            "cat": "success#build",
             "ph": "X",
             "ts": 2000000,
             "dur": 30000000,

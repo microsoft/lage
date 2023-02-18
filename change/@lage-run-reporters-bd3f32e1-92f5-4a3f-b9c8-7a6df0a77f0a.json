@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "ChromeTraceEventsReporter: Add task name to category",
+  "packageName": "@lage-run/reporters",
+  "email": "felescoto95@hotmail.com",
+  "dependentChangeType": "patch"
+}
