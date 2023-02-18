@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Sat, 18 Feb 2023 00:40:18 GMT and should not be manually modified.
+This log was last generated on Sat, 18 Feb 2023 00:43:33 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.3
+
+Sat, 18 Feb 2023 00:43:33 GMT
+
+### Patches
+
+- ChromeTraceEventsReporter: Add task name to category (felescoto95@hotmail.com)
 
 ## 1.0.2
 

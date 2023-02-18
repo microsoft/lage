@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Sat, 18 Feb 2023 00:43:33 GMT",
+      "tag": "@lage-run/reporters_v1.0.3",
+      "version": "1.0.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "felescoto95@hotmail.com",
+            "package": "@lage-run/reporters",
+            "commit": "d6b4b81f694ee20c10f2521dd3058547699562c4",
+            "comment": "ChromeTraceEventsReporter: Add task name to category"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 18 Feb 2023 00:40:18 GMT",
       "tag": "@lage-run/reporters_v1.0.2",
       "version": "1.0.2",
