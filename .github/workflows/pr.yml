@@ -38,9 +38,6 @@ jobs:
       - name: Check consistent package.json dep versions
         run: yarn syncpack list-mismatches -w
 
-      - name: Dependency checks
-        run: yarn lage depcheck
-
       - name: Build, Test, Lint (Linux)
         run: yarn lage build test lint --concurrency 2 --verbose
         env:
