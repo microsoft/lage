@@ -48,7 +48,6 @@
     "typescript": "^4.8.4"
   },
   "lint-staged": {
-    "*.gitignore": "prettier --config .prettierrc --write --ignore-path .gitignore",
     "*.ts": "prettier --config .prettierrc --write --ignore-path .gitignore",
     "*.json": "prettier --config .prettierrc --write --ignore-path .gitignore"
   }

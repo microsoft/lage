@@ -5,8 +5,7 @@ name: PR
 
 on:
   pull_request:
-    branches: 
-      - master
+    branches: [master, v1]
 # Ignoring the docs prevents PRs touching only docs from succeeding.
 # Also, the docs do have a build step which must succeed for overall builds to succeed.
 #    paths-ignore:
