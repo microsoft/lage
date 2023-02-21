@@ -14,9 +14,9 @@
   "scripts": {
     "build": "lage build --verbose",
     "watch": "lage build --verbose --unstable-watch",
-    "change": "beachball change -b origin/v1",
-    "checkchange": "beachball check -b origin/v1",
-    "release": "beachball publish -y --tag v1",
+    "change": "beachball change",
+    "checkchange": "beachball check",
+    "release": "beachball publish -y",
     "test": "lage test --verbose",
     "lint": "lage lint --verbose",
     "format": "prettier --config .prettierrc packages/**/*.ts **/*.json --write --ignore-path .gitignore",
@@ -28,7 +28,6 @@
     "@types/jest": "29.4.0",
     "@types/node": "16.18.3",
     "beachball": "2.31.7",
-    "fast-glob": "3.2.12",
     "gh-pages": "4.0.0",
     "husky": "8.0.3",
     "lage-npm": "npm:@lage-run/lage@2.6.4",
@@ -42,7 +41,6 @@
     "typescript": "^4.8.4"
   },
   "lint-staged": {
-    "*.gitignore": "prettier --config .prettierrc --write --ignore-path .gitignore",
     "*.ts": "prettier --config .prettierrc --write --ignore-path .gitignore",
     "*.json": "prettier --config .prettierrc --write --ignore-path .gitignore"
   }

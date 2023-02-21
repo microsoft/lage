@@ -9,3 +9,4 @@ coverage
 .idea/
 **/.docusaurus/
 profile*.json
+docs/build
