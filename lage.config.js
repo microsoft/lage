@@ -1,11 +1,9 @@
 // @ts-check
-const path = require("path");
-
 module.exports = {
   pipeline: {
-    build: [],
-    test: [],
-    lint: [],
+    build: ["^build"],
+    test: ["build"],
+    lint: ["build"],
   },
   npmClient: "yarn",
   cacheOptions: {
