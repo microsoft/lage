@@ -9,9 +9,9 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "monorepo-scripts tsc",
-    "start": "monorepo-scripts tsc -w --preserveWatchOutput",
-    "test": "monorepo-scripts jest",
+    "build": "tsc",
+    "start": "tsc -w --preserveWatchOutput",
+    "test": "jest",
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {

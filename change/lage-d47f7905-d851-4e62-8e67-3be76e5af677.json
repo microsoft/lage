@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "centralized the cache directory",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

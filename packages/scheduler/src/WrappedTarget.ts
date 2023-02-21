@@ -182,7 +182,7 @@ export class WrappedTarget implements TargetRun {
 
         this.onStart(0);
 
-        const cachedOutputFile = getLageOutputCacheLocation(this.target, hash ?? "");
+        const cachedOutputFile = getLageOutputCacheLocation(this.options.root, hash ?? "");
 
         if (fs.existsSync(cachedOutputFile)) {
           const cachedOutput = fs.createReadStream(cachedOutputFile, "utf8");
@@ -207,7 +207,7 @@ export class WrappedTarget implements TargetRun {
 
       if (cacheEnabled && hash) {
         await this.saveCache(hash);
-        const outputLocation = getLageOutputCacheLocation(this.target, hash);
+        const outputLocation = getLageOutputCacheLocation(this.options.root, hash);
         const outputPath = path.dirname(outputLocation);
         await mkdir(outputPath, { recursive: true });
 

@@ -1,17 +1,16 @@
 import { createBackfillCacheConfig, createBackfillLogger } from "../backfillWrapper.js";
 import { getCacheStorageProvider } from "backfill-cache";
-import { getPackageInfos } from "workspace-tools";
 import { promisify } from "util";
 import * as fs from "fs";
 import * as path from "path";
 import type { CacheProvider, CacheProviderOptions } from "../types/CacheProvider.js";
 import type { Logger as BackfillLogger } from "backfill-logger";
-import type { PackageInfo } from "workspace-tools";
 import type { Target } from "@lage-run/target-graph";
 import type { Logger } from "@lage-run/logger";
+import { getCacheDirectory, getCacheDirectoryRoot } from "../getCacheDirectory.js";
+import { chunkPromise } from "../chunkPromise.js";
 
-const rmdir = promisify(fs.rmdir);
-const rm = promisify(fs.unlink);
+const rm = promisify(fs.rm);
 const readdir = promisify(fs.readdir);
 const stat = promisify(fs.stat);
 
@@ -29,21 +28,13 @@ export class BackfillCacheProvider implements CacheProvider {
    */
   private backfillLogger: BackfillLogger;
 
-  private getTargetCacheStorageProvider(cwd: string) {
+  private getTargetCacheStorageProvider(cwd: string, hash: string) {
     const { cacheOptions } = this.options;
-    const { cacheStorageConfig, internalCacheFolder, incrementalCaching } = createBackfillCacheConfig(
-      cwd,
-      cacheOptions,
-      this.backfillLogger
-    );
+    const { cacheStorageConfig, incrementalCaching } = createBackfillCacheConfig(cwd, cacheOptions, this.backfillLogger);
 
-    return getCacheStorageProvider(
-      cacheStorageConfig ?? { provider: "local" },
-      internalCacheFolder,
-      this.backfillLogger,
-      cwd,
-      incrementalCaching
-    );
+    const cachePath = this.getCachePath(cwd, hash);
+
+    return getCacheStorageProvider(cacheStorageConfig ?? { provider: "local" }, cachePath, this.backfillLogger, cwd, incrementalCaching);
   }
 
   constructor(private options: BackfillCacheProviderOptions) {
@@ -57,7 +48,7 @@ export class BackfillCacheProvider implements CacheProvider {
       return false;
     }
 
-    const cacheStorage = this.getTargetCacheStorageProvider(target.cwd);
+    const cacheStorage = this.getTargetCacheStorageProvider(target.cwd, hash);
 
     try {
       return await cacheStorage.fetch(hash);
@@ -82,7 +73,7 @@ export class BackfillCacheProvider implements CacheProvider {
       return;
     }
 
-    const cacheStorage = this.getTargetCacheStorageProvider(target.cwd);
+    const cacheStorage = this.getTargetCacheStorageProvider(target.cwd, hash);
 
     try {
       await cacheStorage.put(hash, target.outputs ?? this.options.cacheOptions.outputGlob ?? ["**/*"]);
@@ -99,54 +90,51 @@ export class BackfillCacheProvider implements CacheProvider {
     }
   }
 
-  async clear(): Promise<void> {
-    const allPackages = getPackageInfos(this.options.root);
-    for (const info of Object.values(allPackages)) {
-      const cachePath = getCachePath(info, this.options.cacheOptions.internalCacheFolder);
+  async clear(concurrency = 10): Promise<void> {
+    return this.purge(0, concurrency);
+  }
 
-      if (fs.existsSync(cachePath)) {
-        const entries = await readdir(cachePath);
-        for (const entry of entries) {
-          const entryPath = path.join(cachePath, entry);
-          const entryStat = await stat(entryPath);
+  async purge(prunePeriod = 30, concurrency = 10): Promise<void> {
+    const now = new Date();
 
-          await removeCache(entryPath, entryStat);
+    const cacheTypes = ["cache", "logs"];
+    const entries: string[] = [];
+
+    for (const cacheType of cacheTypes) {
+      const cacheTypeDirectory = path.join(getCacheDirectoryRoot(this.options.root), cacheType);
+      if (fs.existsSync(cacheTypeDirectory)) {
+        const hashPrefixes = await readdir(cacheTypeDirectory);
+        for (const prefix of hashPrefixes) {
+          const cachePath = path.join(cacheTypeDirectory, prefix);
+          entries.push(cachePath);
         }
       }
     }
-  }
 
-  async purge(sinceDays: number): Promise<void> {
-    const prunePeriod = sinceDays || 30;
-    const now = new Date();
-    const allPackages = getPackageInfos(this.options.root);
-    for (const info of Object.values(allPackages)) {
-      const cachePath = getCachePath(info, this.options.cacheOptions.internalCacheFolder);
-
-      if (fs.existsSync(cachePath)) {
-        const entries = await readdir(cachePath);
-
-        for (const entry of entries) {
-          const entryPath = path.join(cachePath, entry);
+    await chunkPromise(
+      entries.map((entry) => {
+        return async () => {
+          const entryPath = entry;
           const entryStat = await stat(entryPath);
 
           if (now.getTime() - entryStat.mtime.getTime() > prunePeriod * MS_IN_A_DAY) {
             await removeCache(entryPath, entryStat);
           }
-        }
-      }
-    }
+        };
+      }),
+      concurrency
+    );
   }
-}
 
-function getCachePath(info: PackageInfo, internalCacheFolder?: string) {
-  return path.resolve(path.dirname(info.packageJsonPath), internalCacheFolder ?? "node_modules/.cache/backfill");
+  getCachePath(packagePath: string, hash: string) {
+    return path.relative(packagePath, getCacheDirectory(this.options.root, hash));
+  }
 }
 
 async function removeCache(cachePath: string, entryStat: fs.Stats) {
   if (entryStat.isDirectory()) {
-    rmdir(cachePath, { recursive: true });
+    return rm(cachePath, { recursive: true });
   } else {
-    rm(cachePath);
+    return rm(cachePath);
   }
 }

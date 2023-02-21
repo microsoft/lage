@@ -17,8 +17,13 @@ export function createReporter(reporter: string, options: ReporterInitOptions) {
     case "azureDevops":
     case "adoLog":
       return new AdoReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+
+    case "npmLog":
+    case "old":
+      return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+
     default:
-      if (progress && !(verbose || grouped)) {
+      if (progress && !(logLevel >= LogLevel.verbose || verbose || grouped)) {
         return new ProgressReporter({ concurrency });
       }
 
