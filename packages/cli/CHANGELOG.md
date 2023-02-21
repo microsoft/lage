@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Sat, 18 Feb 2023 00:43:33 GMT and should not be manually modified.
+This log was last generated on Tue, 21 Feb 2023 21:30:37 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.0
+
+Tue, 21 Feb 2023 21:30:37 GMT
+
+### Minor changes
+
+- cache directory to be centralized (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.9.0
+- Bump @lage-run/cache to v0.3.0
 
 ## 0.8.6
 

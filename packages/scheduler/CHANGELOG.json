@@ -2,6 +2,27 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Tue, 21 Feb 2023 21:30:37 GMT",
+      "tag": "@lage-run/scheduler_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "d7a8a3fa2bcf434c59bea26d5964dd7235998ad2",
+            "comment": "cache directory to be centralized"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v0.3.0",
+            "commit": "d7a8a3fa2bcf434c59bea26d5964dd7235998ad2"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Feb 2023 16:51:15 GMT",
       "tag": "@lage-run/scheduler_v0.8.5",
       "version": "0.8.5",

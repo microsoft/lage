@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "cache directory to be centralized",
-  "packageName": "@lage-run/scheduler",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

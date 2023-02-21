@@ -2,6 +2,33 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 21 Feb 2023 21:30:37 GMT",
+      "tag": "lage_v2.1.0",
+      "version": "2.1.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "d7a8a3fa2bcf434c59bea26d5964dd7235998ad2",
+            "comment": "centralized the cache directory"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.9.0",
+            "commit": "d7a8a3fa2bcf434c59bea26d5964dd7235998ad2"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v0.9.0",
+            "commit": "d7a8a3fa2bcf434c59bea26d5964dd7235998ad2"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 18 Feb 2023 00:43:33 GMT",
       "tag": "lage_v2.0.4",
       "version": "2.0.4",

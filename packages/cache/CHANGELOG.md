@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Wed, 15 Feb 2023 16:51:15 GMT and should not be manually modified.
+This log was last generated on Tue, 21 Feb 2023 21:30:37 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.0
+
+Tue, 21 Feb 2023 21:30:37 GMT
+
+### Minor changes
+
+- cache directory to be centralized (kchau@microsoft.com)
 
 ## 0.2.5
 
