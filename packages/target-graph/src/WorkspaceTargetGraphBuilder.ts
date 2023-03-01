@@ -97,11 +97,19 @@ export class WorkspaceTargetGraphBuilder {
     for (const task of tasks) {
       if (scope) {
         for (const packageName of scope) {
-          subGraphEntries.push(getTargetId(packageName, task));
+          const packageInfo = this.packageInfos[packageName];
+          // Do not add a package to the subgraph if the package does not have the task
+          if (packageInfo.scripts && packageInfo.scripts[task]) {
+            subGraphEntries.push(getTargetId(packageName, task));
+          }
         }
       } else {
         for (const packageName of Object.keys(this.packageInfos)) {
-          subGraphEntries.push(getTargetId(packageName, task));
+          const packageInfo = this.packageInfos[packageName];
+          // Do not add a package to the subgraph if the package does not have the task
+          if (packageInfo.scripts && packageInfo.scripts[task]) {
+            subGraphEntries.push(getTargetId(packageName, task));
+          }
         }
       }
     }
