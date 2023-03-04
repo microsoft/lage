@@ -11,6 +11,15 @@ export interface TargetHasherOptions {
   cliArgs?: string[];
 }
 
+function sortObject<T>(unordered: Record<string, T>): Record<string, T> {
+  return Object.keys(unordered)
+    .sort((a, b) => a.localeCompare(b))
+    .reduce((obj, key) => {
+      obj[key] = unordered[key];
+      return obj;
+    }, {});
+}
+
 /**
  * TargetHasher is a class that can be used to generate a hash of a target.
  *
@@ -34,7 +43,12 @@ export class TargetHasher {
         throw new Error("Root-level targets must have `inputs` defined if it has cache enabled.");
       }
 
-      return hashStrings(Object.values(hashGlobGit(target.inputs, { cwd: root, gitignore: false }) ?? {}).push(hashKey));
+      const hashes = hashGlobGit(target.inputs, { cwd: root, gitignore: false }) ?? {};
+      const sortedHashMap = sortObject(hashes);
+      const sortedHashes = Object.values(sortedHashMap);
+      sortedHashes.push(hashKey);
+
+      return hashStrings(sortedHashes);
     }
 
     const hasher = new LageHasher(target.cwd);
