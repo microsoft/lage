@@ -51,14 +51,14 @@ export class TargetFactory {
 
   createGlobalTarget(id: string, config: TargetConfig): Target {
     const { root } = this.options;
-    const { options, deps, dependsOn, inputs, outputs, priority, maxWorkers, environmentGlob, weight } = config;
+    const { options, deps, dependsOn, cache, inputs, outputs, priority, maxWorkers, environmentGlob, weight } = config;
     const { task } = getPackageAndTask(id);
     const target = {
       id,
       label: id,
       type: config.type,
       task,
-      cache: false,
+      cache: cache !== false,
       cwd: root,
       depSpecs: dependsOn ?? deps ?? [],
       dependencies: [],
