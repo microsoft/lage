@@ -1,5 +1,5 @@
 import { hashGlobGit } from "glob-hasher";
-import { hashStrings } from "./hashStrings";
+import { hashStrings } from "./hashStrings.js";
 
 interface MemoizedEnvHashes {
   [key: string]: string[];
