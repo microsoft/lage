@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "allows global script cache",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
