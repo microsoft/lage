@@ -50,10 +50,14 @@ async function getEnvHash(environmentGlobFiles: string[], repoRoot: string): Pro
 }
 
 function getEnvHashOneAtTime(environmentGlobFiles: string[], repoRoot: string) {
-  const hashes = hashGlobGit(environmentGlobFiles, { cwd: repoRoot, gitignore: false })!;
-
-  const sortedHashes = sortObject(hashes);
   const key = envHashKey(environmentGlobFiles);
+  if (environmentGlobFiles.length === 0) {
+    envHashes[key] = [];
+    return envHashes[key];
+  }
+
+  const hashes = hashGlobGit(environmentGlobFiles, { cwd: repoRoot, gitignore: false })!;
+  const sortedHashes = sortObject(hashes);
 
   envHashes[key] = Object.values(sortedHashes);
 

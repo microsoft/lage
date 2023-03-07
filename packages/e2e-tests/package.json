@@ -23,6 +23,7 @@
     "@lage-run/cli": "^0.9.0",
     "@lage-run/target-graph": "^0.6.2",
     "@lage-run/scheduler-types": "^0.3.1",
-    "execa": "5.1.1"
+    "execa": "5.1.1",
+    "glob-hasher": "1.1.1"
   }
 }

@@ -10,7 +10,8 @@
     "bundle": "rollup --config ./rollup.config.js"
   },
   "dependencies": {
-    "yoga-layout-prebuilt": "^1.10.0"
+    "yoga-layout-prebuilt": "^1.10.0",
+    "glob-hasher": "1.1.1"
   },
   "optionalDependencies": {
     "fsevents": "~2.3.2"
@@ -23,8 +24,7 @@
     "@rollup/plugin-node-resolve": "14.1.0",
     "@rollup/plugin-json": "4.1.0",
     "@rollup/plugin-alias": "3.1.9",
-    "rollup-plugin-terser": "7.0.2",
-    "glob-hasher": "1.1.1"
+    "rollup-plugin-terser": "7.0.2"
   },
   "files": [
     "dist/lage.js",

@@ -24,7 +24,7 @@ describe("basics", () => {
     repo.cleanup();
   });
 
-  it.only("basic with missing script names - logging should not include those targets", () => {
+  it("basic with missing script names - logging should not include those targets", () => {
     const repo = new Monorepo("basics-missing-scripts");
 
     repo.init();
