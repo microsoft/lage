@@ -1,7 +1,8 @@
 import { hashGlobGit } from "glob-hasher";
 import crypto from "crypto";
-import { resolveInternalDependencies } from "./resolveInternalDependencies";
-import { resolveExternalDependencies } from "./resolveExternalDependencies";
+import { RepoInfo } from "./repoInfo";
+import { generateHashOfInternalPackages, getPackageHash, PackageHashInfo } from "./hashOfPackage";
+import { findWorkspacePath, WorkspaceInfo } from "workspace-tools";
 
 function hashStrings(strings: string | string[]): string {
   const hasher = crypto.createHash("sha1");
@@ -22,61 +23,72 @@ function sortObject<T>(unordered: Record<string, T>): Record<string, T> {
     }, {});
 }
 
-interface HashOptions {
+export interface HashOptions {
   cwd: string;
   inputs: string[];
   gitignore: boolean;
-  environmentGlobs?: string[];
   salt: string;
+  repoInfo: RepoInfo;
+}
+
+function isDone(done: PackageHashInfo[], packageName: string): boolean {
+  return Boolean(done.find(({ name }) => name === packageName));
+}
+
+function isInQueue(queue: string[], packagePath: string): boolean {
+  return queue.indexOf(packagePath) >= 0;
+}
+
+export function addToQueue(dependencyNames: string[], queue: string[], done: PackageHashInfo[], workspaces: WorkspaceInfo): void {
+  dependencyNames.forEach((name) => {
+    const dependencyPath = findWorkspacePath(workspaces, name);
+
+    if (dependencyPath) {
+      if (!isDone(done, name) && !isInQueue(queue, dependencyPath)) {
+        queue.push(dependencyPath);
+      }
+    }
+  });
 }
 
 export class Hasher {
-  constructor(private root: string) {}
-
   public async hashPackage(options: HashOptions): Promise<string> {
-    const { workspaceInfo, parsedLock } = repoInfo;
-    const { name, dependencies, devDependencies } = JSON.parse(fs.readFileSync(path.join(packageRoot, "package.json"), "utf-8"));
+    const { repoInfo, cwd, salt } = options;
+    const { workspaceInfo } = repoInfo;
 
-    const allDependencies = {
-      ...dependencies,
-      ...devDependencies,
-    };
+    const queue = [cwd];
+    const done: PackageHashInfo[] = [];
 
-    const internalDependencies = resolveInternalDependencies(allDependencies, workspaceInfo);
-    const externalDeoendencies = resolveExternalDependencies(allDependencies, workspaceInfo, parsedLock);
+    while (queue.length > 0) {
+      const packageRoot = queue.shift();
 
-    const resolvedDependencies = [...internalDependencies, ...externalDeoendencies];
+      if (!packageRoot) {
+        continue;
+      }
 
-    const filesHash = await generateHashOfFiles(packageRoot, repoInfo);
-    const dependenciesHash = hashStrings(resolvedDependencies);
+      const packageHash = await getPackageHash(packageRoot, repoInfo);
+
+      addToQueue(packageHash.internalDependencies, queue, done, workspaceInfo);
+
+      done.push(packageHash);
+    }
+
+    const internalPackagesHash = generateHashOfInternalPackages(done);
+    const buildCommandHash = hashStrings(salt);
+    const combinedHash = hashStrings([internalPackagesHash, buildCommandHash]);
+
+    return combinedHash;
   }
 
-  public async hashFiles(cwd: string, files: string[], options: HashOptions): Promise<string> {
-    const hashes = hashGlobGit(files, { cwd, gitignore: options ? options.gitignore : true }) ?? {};
+  public async hashFiles(options: HashOptions): Promise<string> {
+    const { gitignore, inputs, salt, cwd } = options;
+    const hashes = hashGlobGit(inputs, { cwd, gitignore }) ?? {};
 
     const sortedHashMap = sortObject(hashes);
     const sortedHashes = Object.values(sortedHashMap);
 
-    this.#addSalt(sortedHashes, options);
+    const buildCommandHash = hashStrings(salt);
 
-    return hashStrings(sortedHashes);
-  }
-
-  #addSalt(hashes: string[], options: HashOptions): string[] {
-    if (options.environmentGlobs) {
-      const envHashes = hashGlobGit(options.environmentGlobs, { cwd: this.root, gitignore: false });
-
-      if (envHashes) {
-        const sortedEnvHashMap = sortObject(envHashes);
-        const sortedEnvHashes = Object.values(sortedEnvHashMap);
-        for (const hash of sortedEnvHashes) {
-          hashes.push(hash);
-        }
-      }
-    }
-
-    hashes.push(options.salt);
-
-    return hashes;
+    return hashStrings(sortedHashes.concat(buildCommandHash));
   }
 }

@@ -125,7 +125,6 @@ export async function gitStatus(path: string, gitPath?: string): Promise<string>
 }
 
 export async function gitHash(cwd: string, files?: string[], gitPath?: string) {
-  console.time("gitHash");
   const indexHashes = await gitIndexHashes(cwd, gitPath);
   const filesToHash: string[] = [];
 
@@ -161,6 +160,6 @@ export async function gitHash(cwd: string, files?: string[], gitPath?: string) {
   for (const [filename, hash] of fileHashes) {
     result.set(filename, hash);
   }
-  console.timeEnd("gitHash");
+
   return result;
 }
