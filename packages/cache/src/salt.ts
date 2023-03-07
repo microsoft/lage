@@ -1,4 +1,3 @@
-import * as crypto from "crypto";
 import { hashGlobGit } from "glob-hasher";
 import { hashStrings } from "./hashStrings";
 

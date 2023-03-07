@@ -36,8 +36,13 @@ export class Hasher implements IHasher {
   constructor(private packageRoot: string) {}
 
   public async createPackageHash(salt: string): Promise<string> {
+    console.time("bootstrap " + this.packageRoot);
     const packageRoot = await getPackageRoot(this.packageRoot);
+
+    console.time("getRepoInfo " + this.packageRoot);
     this.repoInfo = await getRepoInfo(packageRoot);
+    console.timeEnd("getRepoInfo " + this.packageRoot);
+    console.timeEnd("bootstrap " + this.packageRoot);
 
     const { workspaceInfo } = this.repoInfo;
 
@@ -67,3 +72,4 @@ export class Hasher implements IHasher {
 }
 
 export * from "./repoInfo.js";
+export { gitHash } from "./gitHash.js";

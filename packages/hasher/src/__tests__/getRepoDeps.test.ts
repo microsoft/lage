@@ -2,7 +2,7 @@ import * as path from "path";
 import * as fs from "fs";
 import { execSync } from "child_process";
 
-import { getRepoState, parseGitLsTree, getRepoRoot } from "../getRepoState";
+import { getRepoState, parseGitLsTree, getRepoRoot } from "../ensureGitMinimumVersion";
 
 const SOURCE_PATH: string = path.join(__dirname).replace(path.join("lib", "__tests__"), path.join("src", "__tests__"));
 

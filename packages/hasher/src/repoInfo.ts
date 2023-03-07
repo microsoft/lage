@@ -34,7 +34,7 @@ export async function getRepoInfoNoCache(cwd: string) {
   }
 
   // Assuming the package-deps-hash package returns a map of files to hashes that are unordered
-  const unorderedRepoHashes = Object.fromEntries(getPackageDeps(root));
+  const unorderedRepoHashes = Object.fromEntries(await getPackageDeps(root));
 
   // Sorting repoHash by key because we want to consistent hashing based on the order of the files
   const repoHashes = Object.keys(unorderedRepoHashes)

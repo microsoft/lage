@@ -1,4 +1,4 @@
-import { parseGitStatus, parseGitVersion } from "../getRepoState";
+import { parseGitVersion } from "../ensureGitMinimumVersion";
 
 describe(parseGitVersion.name, () => {
   it("Can parse valid git version responses", () => {
@@ -32,55 +32,5 @@ describe(parseGitVersion.name, () => {
     expect(() => parseGitVersion("git version .2.30")).toThrowErrorMatchingInlineSnapshot(
       `"While validating the Git installation, the "git version" command produced unexpected output: "git version .2.30""`
     );
-  });
-});
-
-describe(parseGitStatus.name, () => {
-  it("Finds index entries", () => {
-    const files: string[] = [`A.ts`, `B.ts`, `C.ts`];
-    const input: string = [`A  ${files[0]}`, `D  ${files[1]}`, `M  ${files[2]}`, ""].join("\0");
-
-    const result: Map<string, boolean> = parseGitStatus(input);
-
-    expect(result.size).toEqual(3);
-    expect(result.get(files[0])).toEqual(true);
-    expect(result.get(files[1])).toEqual(false);
-    expect(result.get(files[2])).toEqual(true);
-  });
-
-  it("Finds working tree entries", () => {
-    const files: string[] = [`A.ts`, `B.ts`, `C.ts`];
-    const input: string = [` A ${files[0]}`, ` D ${files[1]}`, ` M ${files[2]}`, ""].join("\0");
-
-    const result: Map<string, boolean> = parseGitStatus(input);
-
-    expect(result.size).toEqual(3);
-    expect(result.get(files[0])).toEqual(true);
-    expect(result.get(files[1])).toEqual(false);
-    expect(result.get(files[2])).toEqual(true);
-  });
-
-  it("Can handle untracked files", () => {
-    const files: string[] = [`A.ts`, `B.ts`, `C.ts`];
-    const input: string = [`?? ${files[0]}`, `?? ${files[1]}`, `?? ${files[2]}`, ""].join("\0");
-
-    const result: Map<string, boolean> = parseGitStatus(input);
-
-    expect(result.size).toEqual(3);
-    expect(result.get(files[0])).toEqual(true);
-    expect(result.get(files[1])).toEqual(true);
-    expect(result.get(files[2])).toEqual(true);
-  });
-
-  it("Can handle files modified in both index and working tree", () => {
-    const files: string[] = [`A.ts`, `B.ts`, `C.ts`];
-    const input: string = [`D  ${files[0]}`, `AD ${files[1]}`, `DA ${files[2]}`, ""].join("\0");
-
-    const result: Map<string, boolean> = parseGitStatus(input);
-
-    expect(result.size).toEqual(3);
-    expect(result.get(files[0])).toEqual(false);
-    expect(result.get(files[1])).toEqual(false);
-    expect(result.get(files[2])).toEqual(true);
   });
 });
