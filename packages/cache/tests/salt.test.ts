@@ -1,13 +1,21 @@
-import mockFs from "mock-fs";
+import fs from "fs";
+import os from "os";
+import path from "path";
+
 import { salt, _testResetEnvHash } from "../src/salt";
+
+function mockFs(contents: Record<string, string>) {
+  const tmpDir = fs.mkdtempSync(os.tmpdir() + path.sep);
+  for (const [filename, content] of Object.entries(contents)) {
+    fs.writeFileSync(path.join(tmpDir, filename), content);
+  }
+
+  return { cwd: tmpDir, cleanup: () => fs.rmdirSync(tmpDir, { recursive: true }) };
+}
 
 describe("salt", () => {
   beforeEach(() => {
     _testResetEnvHash();
-  });
-
-  afterEach(() => {
-    mockFs.restore();
   });
 
   it("should generate the same salt for the same files each time even with env-hash cache reset", async () => {
@@ -16,15 +24,15 @@ describe("salt", () => {
       "test.txt": "test text",
     };
 
-    mockFs(contents);
-    const contentsSalt = await salt(["test.txt"], "command", process.cwd());
-    mockFs.restore();
+    const dir = mockFs(contents);
+    const contentsSalt = await salt(["test.txt"], "command", dir.cwd);
+    dir.cleanup();
 
     _testResetEnvHash();
 
-    mockFs(contents);
-    const newContentsSalt = await salt(["test.txt"], "command", process.cwd());
-    mockFs.restore();
+    const dir2 = mockFs(contents);
+    const newContentsSalt = await salt(["test.txt"], "command", dir2.cwd);
+    dir2.cleanup();
 
     expect(contentsSalt).toBe(newContentsSalt);
   });
@@ -35,18 +43,19 @@ describe("salt", () => {
       "test.txt": "test text",
     };
 
-    mockFs(contents);
-    const contentsSalt = await salt(["test.txt"], "command", process.cwd());
-    mockFs.restore();
+    const dir = mockFs(contents);
+    const contentsSalt = await salt(["test.txt"], "command", dir.cwd);
+    dir.cleanup();
 
     _testResetEnvHash();
 
-    mockFs({
+    const dir2 = mockFs({
       ...contents,
       "test.txt": "test text 2",
     });
-    const contentsSaltChanged = await salt(["test.txt"], "command", process.cwd());
-    mockFs.restore();
+
+    const contentsSaltChanged = await salt(["test.txt"], "command", dir2.cwd);
+    dir2.cleanup();
 
     expect(contentsSalt).not.toBe(contentsSaltChanged);
   });
@@ -57,15 +66,15 @@ describe("salt", () => {
       "test.txt": "test text",
     };
 
-    mockFs(contents);
-    const contentsSalt = await salt(["test.txt"], "command", process.cwd());
-    mockFs.restore();
+    const dir = mockFs(contents);
+    const contentsSalt = await salt(["test.txt"], "command", dir.cwd);
+    dir.cleanup();
 
     _testResetEnvHash();
 
-    mockFs(contents);
-    const newSalt = await salt(["test.txt"], "command2", process.cwd());
-    mockFs.restore();
+    const dir2 = mockFs(contents);
+    const newSalt = await salt(["test.txt"], "command2", dir2.cwd);
+    dir2.cleanup();
 
     expect(contentsSalt).not.toBe(newSalt);
   });
@@ -76,15 +85,15 @@ describe("salt", () => {
       "test.txt": "test text",
     };
 
-    mockFs(contents);
-    const contentsSalt = await salt(["test.txt"], "command", process.cwd(), "custom1");
-    mockFs.restore();
+    const dir = mockFs(contents);
+    const contentsSalt = await salt(["test.txt"], "command", dir.cwd, "custom1");
+    dir.cleanup();
 
     _testResetEnvHash();
 
-    mockFs(contents);
-    const newSalt = await salt(["test.txt"], "command", process.cwd(), "custom2");
-    mockFs.restore();
+    const dir2 = mockFs(contents);
+    const newSalt = await salt(["test.txt"], "command", dir2.cwd, "custom2");
+    dir2.cleanup();
 
     expect(contentsSalt).not.toBe(newSalt);
   });
@@ -95,9 +104,9 @@ describe("salt", () => {
       "test.txt": "test text",
     };
 
-    mockFs(contents);
-    const contentsSalt = await salt([], "command", process.cwd());
-    mockFs.restore();
+    const dir = mockFs(contents);
+    const contentsSalt = await salt([], "command", dir.cwd);
+    dir.cleanup();
 
     expect(contentsSalt).not.toBeUndefined();
   });

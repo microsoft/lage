@@ -32,7 +32,7 @@ function sortObject(unordered: Record<string, unknown>) {
     }, {});
 }
 
-async function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
+async function getEnvHash(environmentGlobFiles: string[], repoRoot: string): Promise<string[]> {
   const key = envHashKey(environmentGlobFiles);
 
   // We want to make sure that we only call getEnvHashOneAtTime one at a time
@@ -49,14 +49,13 @@ async function getEnvHash(environmentGlobFiles: string[], repoRoot: string) {
   return oneAtATime;
 }
 
-async function getEnvHashOneAtTime(environmentGlobFiles: string[], repoRoot: string) {
-  const envHash: string[] = [];
-
+function getEnvHashOneAtTime(environmentGlobFiles: string[], repoRoot: string) {
   const hashes = hashGlobGit(environmentGlobFiles, { cwd: repoRoot, gitignore: false })!;
+
   const sortedHashes = sortObject(hashes);
   const key = envHashKey(environmentGlobFiles);
 
   envHashes[key] = Object.values(sortedHashes);
 
-  return envHash;
+  return envHashes[key];
 }
