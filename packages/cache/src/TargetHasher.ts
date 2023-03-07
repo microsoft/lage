@@ -1,7 +1,7 @@
-import { Hasher as LageHasher, gitHash } from "@lage-run/hasher";
+import { Hasher as LageHasher } from "@lage-run/hasher";
 import { salt } from "./salt.js";
 import type { Target } from "@lage-run/target-graph";
-import { glob, hashGlobGit } from "glob-hasher";
+import { hashGlobGit } from "glob-hasher";
 import { hashStrings } from "./hashStrings.js";
 
 export interface TargetHasherOptions {
