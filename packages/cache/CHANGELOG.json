@@ -2,6 +2,27 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Wed, 08 Mar 2023 17:35:28 GMT",
+      "tag": "@lage-run/cache_v0.4.1",
+      "version": "0.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "dfce517d96aacaa7d2e145c18a67e8b7cff00da8",
+            "comment": "deleted unused sortObjects"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/hasher to v0.2.1",
+            "commit": "dfce517d96aacaa7d2e145c18a67e8b7cff00da8"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Mar 2023 00:05:27 GMT",
       "tag": "@lage-run/cache_v0.4.0",
       "version": "0.4.0",

@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Wed, 08 Mar 2023 17:35:28 GMT",
+      "tag": "@lage-run/hasher_v0.2.1",
+      "version": "0.2.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "dfce517d96aacaa7d2e145c18a67e8b7cff00da8",
+            "comment": "deleted unused sortObjects"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Mar 2023 00:05:27 GMT",
       "tag": "@lage-run/hasher_v0.2.0",
       "version": "0.2.0",

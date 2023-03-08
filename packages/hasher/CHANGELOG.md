@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Wed, 08 Mar 2023 00:05:27 GMT and should not be manually modified.
+This log was last generated on Wed, 08 Mar 2023 17:35:28 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.1
+
+Wed, 08 Mar 2023 17:35:28 GMT
+
+### Patches
+
+- deleted unused sortObjects (kchau@microsoft.com)
 
 ## 0.2.0
 
