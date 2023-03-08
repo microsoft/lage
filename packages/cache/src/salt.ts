@@ -23,15 +23,6 @@ function envHashKey(environmentGlobFiles: string[]) {
   return environmentGlobFiles.sort().join("|");
 }
 
-function sortObject(unordered: Record<string, unknown>) {
-  return Object.keys(unordered)
-    .sort((a, b) => a.localeCompare(b))
-    .reduce((obj, key) => {
-      obj[key] = unordered[key];
-      return obj;
-    }, {});
-}
-
 async function getEnvHash(environmentGlobFiles: string[], repoRoot: string): Promise<string[]> {
   const key = envHashKey(environmentGlobFiles);
 
@@ -57,9 +48,8 @@ function getEnvHashOneAtTime(environmentGlobFiles: string[], repoRoot: string) {
   }
 
   const hashes = hashGlobGit(environmentGlobFiles, { cwd: repoRoot, gitignore: false })!;
-  const sortedHashes = sortObject(hashes);
 
-  envHashes[key] = Object.values(sortedHashes);
+  envHashes[key] = Object.values(hashes);
 
   return envHashes[key];
 }
