@@ -1,8 +1,18 @@
 # Change Log - lage
 
-This log was last generated on Tue, 21 Feb 2023 21:30:37 GMT and should not be manually modified.
+This log was last generated on Wed, 08 Mar 2023 00:05:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.2.0
+
+Wed, 08 Mar 2023 00:05:27 GMT
+
+### Minor changes
+
+- allows global script cache (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.9.1
+- Bump @lage-run/scheduler to v0.9.1
 
 ## 2.1.0
 

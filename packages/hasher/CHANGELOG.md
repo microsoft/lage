@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Wed, 15 Feb 2023 16:51:15 GMT and should not be manually modified.
+This log was last generated on Wed, 08 Mar 2023 00:05:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.0
+
+Wed, 08 Mar 2023 00:05:27 GMT
+
+### Minor changes
+
+- allows global script cache (kchau@microsoft.com)
 
 ## 0.1.3
 

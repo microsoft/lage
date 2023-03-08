@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Wed, 15 Feb 2023 16:47:12 GMT and should not be manually modified.
+This log was last generated on Wed, 08 Mar 2023 00:05:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.7.0
+
+Wed, 08 Mar 2023 00:05:27 GMT
+
+### Minor changes
+
+- allows global script cache (kchau@microsoft.com)
 
 ## 0.6.2
 

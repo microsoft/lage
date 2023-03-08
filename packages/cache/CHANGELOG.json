@@ -2,6 +2,33 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Wed, 08 Mar 2023 00:05:27 GMT",
+      "tag": "@lage-run/cache_v0.4.0",
+      "version": "0.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "e2eb2c00d1b23e2c65943e9c64134c14e04f985f",
+            "comment": "allows global script cache"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/hasher to v0.2.0",
+            "commit": "e2eb2c00d1b23e2c65943e9c64134c14e04f985f"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.7.0",
+            "commit": "e2eb2c00d1b23e2c65943e9c64134c14e04f985f"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 21 Feb 2023 21:30:37 GMT",
       "tag": "@lage-run/cache_v0.3.0",
       "version": "0.3.0",

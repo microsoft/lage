@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Tue, 21 Feb 2023 21:30:37 GMT and should not be manually modified.
+This log was last generated on Wed, 08 Mar 2023 00:05:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.0
+
+Wed, 08 Mar 2023 00:05:27 GMT
+
+### Minor changes
+
+- allows global script cache (kchau@microsoft.com)
+- Bump @lage-run/hasher to v0.2.0
+- Bump @lage-run/target-graph to v0.7.0
 
 ## 0.3.0
 

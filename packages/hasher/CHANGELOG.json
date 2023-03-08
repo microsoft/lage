@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Wed, 08 Mar 2023 00:05:27 GMT",
+      "tag": "@lage-run/hasher_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "e2eb2c00d1b23e2c65943e9c64134c14e04f985f",
+            "comment": "allows global script cache"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 21 Feb 2023 21:30:37 GMT",
       "tag": "@lage-run/hasher_v0.1.3",
       "version": "0.1.3",
