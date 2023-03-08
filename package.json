@@ -50,5 +50,6 @@
   "lint-staged": {
     "*.ts": "prettier --config .prettierrc --write --ignore-path .gitignore",
     "*.json": "prettier --config .prettierrc --write --ignore-path .gitignore"
-  }
+  },
+  "packageManager": "yarn@3.4.1"
 }

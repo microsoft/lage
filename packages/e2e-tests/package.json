@@ -19,11 +19,11 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "monorepo-scripts": "*",
     "@lage-run/cli": "^0.9.2",
-    "@lage-run/target-graph": "^0.7.0",
     "@lage-run/scheduler-types": "^0.3.2",
+    "@lage-run/target-graph": "^0.7.0",
     "execa": "5.1.1",
-    "glob-hasher": "1.1.1"
+    "glob-hasher": "1.1.1",
+    "monorepo-scripts": "*"
   }
 }
