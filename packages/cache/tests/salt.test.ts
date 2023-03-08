@@ -110,4 +110,17 @@ describe("salt", () => {
 
     expect(contentsSalt).not.toBeUndefined();
   });
+
+  it("should show the same sha1 (snapshot test)", async () => {
+    const contents = {
+      "test.txt": "test text",
+      "lage.config.js": 'module.exports = { environmentGlob: ["test.txt"] }',
+    };
+
+    const dir = mockFs(contents);
+    const contentsSalt = await salt([], "command", dir.cwd);
+    dir.cleanup();
+
+    expect(contentsSalt).toMatchInlineSnapshot(`"1925f793093581c47a5c6b2e414506b1cbae280d"`);
+  });
 });

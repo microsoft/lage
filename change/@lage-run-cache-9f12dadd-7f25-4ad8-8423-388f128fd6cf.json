@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "deleted unused sortObjects",
+  "packageName": "@lage-run/cache",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
