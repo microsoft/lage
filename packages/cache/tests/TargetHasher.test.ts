@@ -35,7 +35,9 @@ describe("BackfillCacheProvider", () => {
     };
 
     const hash = await new TargetHasher(options).hash(target);
-    await expect(hash).toMatchInlineSnapshot(`"b6ab40b8acf59d71451c845ca9ba7dd468777b26"`);
+    // This hash is dependent on the underlying hash algorithm. The last change here was due to us switching from sha1 to git hash.
+    // git hash is sha1("blob {byte count}\0{content}")
+    await expect(hash).toMatchInlineSnapshot(`"03577ca79ad4a10f67831e169f58f0aff9eefa74"`);
     await monorepo.cleanup();
   });
 });

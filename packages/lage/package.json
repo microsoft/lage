@@ -10,7 +10,8 @@
     "bundle": "rollup --config ./rollup.config.js"
   },
   "dependencies": {
-    "yoga-layout-prebuilt": "^1.10.0"
+    "yoga-layout-prebuilt": "^1.10.0",
+    "glob-hasher": "1.1.1"
   },
   "optionalDependencies": {
     "fsevents": "~2.3.2"

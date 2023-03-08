@@ -1128,13 +1128,6 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.5.tgz#1001cc5e6a3704b83c236027e77f2f58ea010f40"
   integrity sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==
 
-"@types/mock-fs@4.13.1":
-  version "4.13.1"
-  resolved "https://registry.yarnpkg.com/@types/mock-fs/-/mock-fs-4.13.1.tgz#9201554ceb23671badbfa8ac3f1fa9e0706305be"
-  integrity sha512-m6nFAJ3lBSnqbvDZioawRvpLXSaPyn52Srf7OfzjubYbYX8MTUdIgDxQl0wEapm4m/pNYSd9TXocpQ0TvZFlYA==
-  dependencies:
-    "@types/node" "*"
-
 "@types/node-fetch@^2.5.0":
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.6.2.tgz#d1a9c5fd049d9415dce61571557104dec3ec81da"
@@ -2625,6 +2618,42 @@ git-url-parse@^13.0.0:
   dependencies:
     git-up "^7.0.0"
 
+glob-hasher-darwin-arm64@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/glob-hasher-darwin-arm64/-/glob-hasher-darwin-arm64-1.1.1.tgz#625f6bf445b441ef3d733298869a7620d32c38bb"
+  integrity sha512-Zx2WB81BZ+5TDemdM5l8UjW94Css8YQmSBQfnvG2lqdmnfWZ8upaaK1uHrUyQ9XbQotDpjais7xC92GU+PzOpw==
+
+glob-hasher-darwin-x64@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/glob-hasher-darwin-x64/-/glob-hasher-darwin-x64-1.1.1.tgz#0126f3bc153db7a708c0c58a4103c3c0064b20fe"
+  integrity sha512-U8xVbnPnOIL7nyiUnnOiyz9hpZS7UEsZbBn8F2705QmtOPazoe9zcvJnzcLp5G9OUQ4lMQoZsBVPIXrVtsxHUA==
+
+glob-hasher-linux-x64-gnu@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/glob-hasher-linux-x64-gnu/-/glob-hasher-linux-x64-gnu-1.1.1.tgz#1fd5d8501e5636953778ad3ab206378d2438488f"
+  integrity sha512-u/IkNXy4OruR9eukkNTKnY3E+QgCIpVUAKi41dMjFfRH6OPisWNWPy8yb4ouKR6xPyRT9kTzbtJoYb72CcZOBw==
+
+glob-hasher-win32-arm64-msvc@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/glob-hasher-win32-arm64-msvc/-/glob-hasher-win32-arm64-msvc-1.1.1.tgz#867fcec657d57e0709360d12b47594ba334c9b5c"
+  integrity sha512-4GCuvDDoMwdbYl83T/cJM8sYjrP2dY1IPqFOTEMBiOAoFuoLuk9vMvUF5GqYqa/gPUU9q2lhZorrxH+NZZBiaw==
+
+glob-hasher-win32-x64-msvc@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/glob-hasher-win32-x64-msvc/-/glob-hasher-win32-x64-msvc-1.1.1.tgz#c79bec37c3038cd8c87be33930a2c0648ed3d087"
+  integrity sha512-qJCm1Zfr8I5eNRuYK32oDshiuybJCSqQ95Spharv9Ns0yl8BPzh6VmXUHSPV2RZnUmzZr6KzAvAceQJ6n6pXfg==
+
+glob-hasher@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/glob-hasher/-/glob-hasher-1.1.1.tgz#a5d64acbdbe32ad65f3770a66b5da1f093f35b57"
+  integrity sha512-N/YHEuUUlKIMGp2J2IfjI967o0t6ZaOq4IlyEzjFAqbE8M7zdFOK1dIZ5cTYVY3JEyVI2ffR8Tuo1neinF43eA==
+  optionalDependencies:
+    glob-hasher-darwin-arm64 "1.1.1"
+    glob-hasher-darwin-x64 "1.1.1"
+    glob-hasher-linux-x64-gnu "1.1.1"
+    glob-hasher-win32-arm64-msvc "1.1.1"
+    glob-hasher-win32-x64-msvc "1.1.1"
+
 glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
@@ -3711,11 +3740,6 @@ mkdirp-classic@^0.5.2:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/mkdirp-classic/-/mkdirp-classic-0.5.3.tgz#fa10c9115cc6d8865be221ba47ee9bed78601113"
   integrity sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==
-
-mock-fs@5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-5.2.0.tgz#3502a9499c84c0a1218ee4bf92ae5bf2ea9b2b5e"
-  integrity sha512-2dF2R6YMSZbpip1V1WHKGLNjr/k48uQClqMVb5H3MOvwc9qhYis3/IWbj02qIg/Y8MDXKFF4c5v0rxx2o6xTZw==
 
 ms@2.1.2:
   version "2.1.2"

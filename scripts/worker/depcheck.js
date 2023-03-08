@@ -15,7 +15,7 @@ module.exports = async function depcheckWorker({ target }) {
   const results = await depcheck(target.cwd, {
     ignoreBinPackage: true,
     ignorePatterns: ["node_modules", "dist", "lib", "build"],
-    ignoreMatches: ["yoga-layout-prebuilt"]
+    ignoreMatches: ["yoga-layout-prebuilt", "glob-hasher"]
   });
 
   let hasErrors = false;
