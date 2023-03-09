@@ -3,6 +3,7 @@ import type { Target } from "./types/Target.js";
 
 import { getPackageAndTask, getTargetId } from "./targetId.js";
 import { getWeight } from "./getWeight.js";
+import { getPackageInfos, PackageInfos } from "workspace-tools";
 
 export interface TargetFactoryOptions {
   root: string;
@@ -10,7 +11,28 @@ export interface TargetFactoryOptions {
 }
 
 export class TargetFactory {
-  constructor(private options: TargetFactoryOptions) {}
+  packageScripts = new Set<string>();
+
+  constructor(private options: TargetFactoryOptions) {
+    const packageInfos = getPackageInfos(options.root);
+    for (const info of Object.values(packageInfos)) {
+      for (const scriptName of Object.keys(info.scripts ?? {})) {
+        this.packageScripts.add(scriptName);
+      }
+    }
+  }
+
+  getTargetType(task: string, config: TargetConfig) {
+    if (!config.type) {
+      if (this.packageScripts.has(task)) {
+        return "npmScript";
+      } else {
+        return "noOp";
+      }
+    }
+
+    return config.type;
+  }
 
   /**
    * Creates a package task `Target`
@@ -27,7 +49,7 @@ export class TargetFactory {
     const target = {
       id: getTargetId(packageName, task),
       label: `${packageName} - ${task}`,
-      type: config.type,
+      type: this.getTargetType(task, config),
       packageName,
       task,
       cache: cache !== false,
@@ -56,7 +78,7 @@ export class TargetFactory {
     const target = {
       id,
       label: id,
-      type: config.type,
+      type: this.getTargetType(task, config),
       task,
       cache: cache !== false,
       cwd: root,
