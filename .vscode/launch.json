@@ -16,7 +16,7 @@
       "request": "launch",
       "name": "Jest",
       "skipFiles": ["<node_internals>/**"],
-      "program": "node_modules/jest/bin/jest.js",
+      "program": "scripts/node_modules/jest/bin/jest.js",
       "outFiles": ["${workspaceFolder}/**/*.js"],
       "args": ["--runInBand", "${fileBasenameNoExtension}"],
       "sourceMaps": true
