@@ -32,26 +32,31 @@ module.exports = {
       options: {
         worker: path.join(__dirname, "scripts/worker/jest.js"),
       },
+      outputs: [],
       dependsOn: ["build"],
     },
     lint: {
       type: "worker",
+      outputs: [],
       options: {
         worker: path.join(__dirname, "scripts/worker/lint.js"),
       },
     },
     depcheck: {
       type: "worker",
+      outputs: [],
       options: {
         worker: path.join(__dirname, "scripts/worker/depcheck.js"),
       },
     },
     "@lage-run/e2e-tests#test": {
       type: "npmScript",
+      outputs: [],
       dependsOn: ["^^transpile", "lage#bundle"],
     },
     "@lage-run/hasher#test": {
       type: "npmScript",
+      outputs: [],
       dependsOn: ["transpile"],
       options: {
         taskArgs: ["--runInBand"],
