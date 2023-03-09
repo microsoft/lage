@@ -27,7 +27,7 @@ export class TargetFactory {
       if (this.packageScripts.has(task)) {
         return "npmScript";
       } else {
-        return "noOp";
+        return "noop";
       }
     }
 
@@ -46,10 +46,12 @@ export class TargetFactory {
     const { options, deps, dependsOn, cache, inputs, outputs, priority, maxWorkers, environmentGlob, weight } = config;
     const cwd = resolve(packageName);
 
+    const targetType = this.getTargetType(task, config);
+
     const target = {
       id: getTargetId(packageName, task),
       label: `${packageName} - ${task}`,
-      type: this.getTargetType(task, config),
+      type: targetType,
       packageName,
       task,
       cache: cache !== false,
@@ -58,7 +60,7 @@ export class TargetFactory {
       dependencies: [],
       dependents: [],
       inputs,
-      outputs,
+      outputs: targetType === "noop" ? [] : config.outputs,
       priority,
       maxWorkers,
       environmentGlob,

@@ -104,6 +104,10 @@ export async function watchAction(options: RunOptions, command: Command) {
           taskArgs,
         },
       },
+      noop: {
+        script: require.resolve("./runners/NoOpRunner.js"),
+        options: {},
+      },
       ...config.runners,
     },
     workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes

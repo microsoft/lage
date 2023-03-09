@@ -13,7 +13,7 @@ export class TargetRunnerPicker {
 
   async pick(target: Target): Promise<TargetRunner> {
     if (target.id === getStartTargetId()) {
-      return (await import("./NoOpRunner.js")).NoOpRunner;
+      return new (await import("./NoOpRunner.js")).NoOpRunner();
     }
 
     if (!target.type) {
