@@ -58,9 +58,6 @@ module.exports = {
       type: "npmScript",
       outputs: [],
       dependsOn: ["transpile"],
-      options: {
-        taskArgs: ["--runInBand"],
-      },
     },
   },
   npmClient: "yarn",

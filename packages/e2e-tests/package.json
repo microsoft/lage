@@ -15,7 +15,7 @@
   "scripts": {
     "build": "tsc",
     "start": "tsc -w --preserveWatchOutput",
-    "test": "jest",
+    "test": "monorepo-scripts jest",
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
