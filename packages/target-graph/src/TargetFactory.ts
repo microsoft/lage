@@ -7,6 +7,7 @@ import { getPackageInfos, PackageInfos } from "workspace-tools";
 
 export interface TargetFactoryOptions {
   root: string;
+  packageInfos: PackageInfos;
   resolve(packageName: string): string;
 }
 
@@ -14,7 +15,7 @@ export class TargetFactory {
   packageScripts = new Set<string>();
 
   constructor(private options: TargetFactoryOptions) {
-    const packageInfos = getPackageInfos(options.root);
+    const { packageInfos } = options;
     for (const info of Object.values(packageInfos)) {
       for (const scriptName of Object.keys(info.scripts ?? {})) {
         this.packageScripts.add(scriptName);

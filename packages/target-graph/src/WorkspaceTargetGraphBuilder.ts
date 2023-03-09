@@ -40,9 +40,14 @@ export class WorkspaceTargetGraphBuilder {
     this.dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
     this.graphBuilder = new TargetGraphBuilder();
     this.targetFactory = new TargetFactory({
-      root: root,
+      root,
+      packageInfos,
       resolve(packageName: string) {
-        return path.dirname(packageInfos[packageName].packageJsonPath);
+        try {
+          return path.dirname(packageInfos[packageName].packageJsonPath);
+        } catch (e) {
+          throw new Error(`Cannot open package.json file for ${packageName}`);
+        }
       },
     });
   }
