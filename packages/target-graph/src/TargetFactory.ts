@@ -1,9 +1,9 @@
 import type { TargetConfig } from "./types/TargetConfig.js";
 import type { Target } from "./types/Target.js";
+import type { PackageInfos } from "workspace-tools";
 
 import { getPackageAndTask, getTargetId } from "./targetId.js";
 import { getWeight } from "./getWeight.js";
-import { getPackageInfos, PackageInfos } from "workspace-tools";
 
 export interface TargetFactoryOptions {
   root: string;
@@ -44,7 +44,7 @@ export class TargetFactory {
    */
   createPackageTarget(packageName: string, task: string, config: TargetConfig): Target {
     const { resolve } = this.options;
-    const { options, deps, dependsOn, cache, inputs, outputs, priority, maxWorkers, environmentGlob, weight } = config;
+    const { options, deps, dependsOn, cache, inputs, priority, maxWorkers, environmentGlob, weight } = config;
     const cwd = resolve(packageName);
 
     const targetType = this.getTargetType(task, config);
