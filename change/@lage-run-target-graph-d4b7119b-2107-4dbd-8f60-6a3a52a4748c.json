@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "adding the ability to have a NoOp Task",
+  "packageName": "@lage-run/target-graph",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
