@@ -1,8 +1,21 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 08 Mar 2023 17:35:28 GMT and should not be manually modified.
+This log was last generated on Fri, 10 Mar 2023 01:25:03 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.10.0
+
+Fri, 10 Mar 2023 01:25:03 GMT
+
+### Minor changes
+
+- adding the ability to have a NoOp Task (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.10.0
+- Bump @lage-run/scheduler-types to v0.3.3
+- Bump @lage-run/target-graph to v0.8.0
+- Bump @lage-run/cache to v0.4.2
+- Bump @lage-run/reporters to v1.0.5
 
 ## 0.9.2
 

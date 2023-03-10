@@ -2,6 +2,51 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 10 Mar 2023 01:25:03 GMT",
+      "tag": "@lage-run/cli_v0.10.0",
+      "version": "0.10.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "5fd1b1eb7f87917f3abec9e99b240d38846eea09",
+            "comment": "adding the ability to have a NoOp Task"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.10.0",
+            "commit": "5fd1b1eb7f87917f3abec9e99b240d38846eea09"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.3",
+            "commit": "5fd1b1eb7f87917f3abec9e99b240d38846eea09"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.8.0",
+            "commit": "5fd1b1eb7f87917f3abec9e99b240d38846eea09"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.4.2",
+            "commit": "5fd1b1eb7f87917f3abec9e99b240d38846eea09"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.0.5",
+            "commit": "5fd1b1eb7f87917f3abec9e99b240d38846eea09"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Mar 2023 17:35:28 GMT",
       "tag": "@lage-run/cli_v0.9.2",
       "version": "0.9.2",

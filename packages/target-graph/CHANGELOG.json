@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Fri, 10 Mar 2023 01:25:03 GMT",
+      "tag": "@lage-run/target-graph_v0.8.0",
+      "version": "0.8.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "5fd1b1eb7f87917f3abec9e99b240d38846eea09",
+            "comment": "adding the ability to have a NoOp Task"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Mar 2023 00:05:27 GMT",
       "tag": "@lage-run/target-graph_v0.7.0",
       "version": "0.7.0",

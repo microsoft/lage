@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "adding the ability to have a NoOp Task",
-  "packageName": "@lage-run/cli",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
