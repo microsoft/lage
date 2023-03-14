@@ -89,8 +89,13 @@ Wed, 15 Feb 2023 16:47:12 GMT
 
 Tue, 07 Feb 2023 23:52:48 GMT
 
-### Major changes
+### Breaking changes
 
-- Promoting v2 to be the @latest tag for npmjs, see [RELEASE.md] (kchau@microsoft.com)
-- Bump @lage-run/cli to v0.8.2
-- Bump @lage-run/scheduler to v0.8.3
+- Lage v2 requires **Node 16** or passing the `--experimental-abortcontroller` flag in Node 14.
+- `lage` now will automatically write remote cache if the typical environment variable is set (e.g. `CI` or `TF_BUILD`)
+- `info` command is not implemented yet
+- `graph` command is not implemented yet
+
+### Features
+
+See the [release notes](./RELEASE.md) and [migration guide](https://microsoft.github.io/lage/docs/Cookbook/migration) for more information about what's new in v2.
