@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "adding support to directly run global task without deps",
+  "packageName": "@lage-run/target-graph",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

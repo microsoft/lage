@@ -280,4 +280,119 @@ describe("workspace target graph builder", () => {
       ]
     `);
   });
+
+  it("should build a target graph with global task as a dependency", () => {
+    const root = "/repos/a";
+
+    const packageInfos = createPackageInfo({
+      a: ["b"],
+      b: [],
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
+    builder.addTargetConfig("build", {
+      dependsOn: ["^build", "#global:task"],
+    });
+
+    builder.addTargetConfig("#global:task", {
+      dependsOn: [],
+    });
+
+    const targetGraph = builder.build(["build"]);
+
+    expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
+      [
+        [
+          "__start",
+          "a#build",
+        ],
+        [
+          "b#build",
+          "a#build",
+        ],
+        [
+          "#global:task",
+          "a#build",
+        ],
+        [
+          "__start",
+          "b#build",
+        ],
+        [
+          "#global:task",
+          "b#build",
+        ],
+        [
+          "__start",
+          "#global:task",
+        ],
+      ]
+    `);
+  });
+
+  it("should build a target graph with global task on its own", () => {
+    const root = "/repos/a";
+
+    const packageInfos = createPackageInfo({
+      a: ["b"],
+      b: [],
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
+    builder.addTargetConfig("build", {
+      dependsOn: ["^build", "#global:task"],
+    });
+
+    builder.addTargetConfig("#global:task", {
+      dependsOn: [],
+    });
+
+    const targetGraph = builder.build(["global:task"]);
+
+    expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
+      [
+        [
+          "__start",
+          "#global:task",
+        ],
+      ]
+    `);
+  });
+
+  it("should build a target graph without including global task", () => {
+    const root = "/repos/a";
+
+    const packageInfos = createPackageInfo({
+      a: ["b"],
+      b: [],
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
+    builder.addTargetConfig("build", {
+      dependsOn: ["^build"],
+    });
+
+    builder.addTargetConfig("#global:task", {
+      dependsOn: [],
+    });
+
+    const targetGraph = builder.build(["build"]);
+
+    expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
+      [
+        [
+          "__start",
+          "a#build",
+        ],
+        [
+          "b#build",
+          "a#build",
+        ],
+        [
+          "__start",
+          "b#build",
+        ],
+      ]
+    `);
+  });
 });
