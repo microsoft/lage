@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 14 Mar 2023 19:28:57 GMT",
+      "tag": "lage_v2.2.3",
+      "version": "2.2.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "497be1efa81f1e94f159a45ea4335b1851ecef95",
+            "comment": "Add note about Node 16 requirement to release notes"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Mar 2023 00:28:38 GMT",
       "tag": "lage_v2.2.3",
       "version": "2.2.3",

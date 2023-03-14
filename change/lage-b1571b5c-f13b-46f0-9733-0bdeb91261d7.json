@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Add note about Node 16 requirement to release notes",
-  "packageName": "lage",
-  "email": "elcraig@microsoft.com",
-  "dependentChangeType": "none"
-}
