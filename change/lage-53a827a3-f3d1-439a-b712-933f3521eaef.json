@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add bundled config types to lage package",
+  "packageName": "lage",
+  "email": "elcraig@microsoft.com",
+  "dependentChangeType": "patch"
+}
