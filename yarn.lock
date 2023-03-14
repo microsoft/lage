@@ -3508,10 +3508,10 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-"lage-npm@npm:lage@2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/lage/-/lage-2.2.1.tgz#55c2db402976a09ebe48eab9709bb6eb8621403d"
-  integrity sha512-WpWt7tmjqEZwxv+Q0QeYBZexxKGKVSQN915SfAc8iKUSkrbNfJ4uVlJrPhP05B7Dt5rZ/Vtqtq6SC5EVHNbaJw==
+"lage-npm@npm:lage@2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/lage/-/lage-2.2.3.tgz#3baa56c8f171d67d32b68d6c4ca38cd9bea3e64c"
+  integrity sha512-D9YpKISztYutaUdq4LQ9UEOa7N066WzwORVlVLlXcL9KdwDLvAaoxSg5QPTFZcefr7kspWqXMXy0Hz/kRkHo7Q==
   dependencies:
     glob-hasher "1.1.1"
     yoga-layout-prebuilt "^1.10.0"
