@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Fri, 10 Mar 2023 01:25:03 GMT and should not be manually modified.
+This log was last generated on Tue, 14 Mar 2023 00:28:38 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.1
+
+Tue, 14 Mar 2023 00:28:38 GMT
+
+### Patches
+
+- adding support to directly run global task without deps (kchau@microsoft.com)
 
 ## 0.8.0
 

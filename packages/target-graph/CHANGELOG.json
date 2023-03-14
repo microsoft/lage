@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Tue, 14 Mar 2023 00:28:38 GMT",
+      "tag": "@lage-run/target-graph_v0.8.1",
+      "version": "0.8.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "c5fc57309aaa493758f646cbfe02dc84f679675e",
+            "comment": "adding support to directly run global task without deps"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 10 Mar 2023 01:25:03 GMT",
       "tag": "@lage-run/target-graph_v0.8.0",
       "version": "0.8.0",

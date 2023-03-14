@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Tue, 14 Mar 2023 00:28:38 GMT",
+      "tag": "@lage-run/cache_v0.4.3",
+      "version": "0.4.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.8.1",
+            "commit": "c5fc57309aaa493758f646cbfe02dc84f679675e"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 10 Mar 2023 01:25:03 GMT",
       "tag": "@lage-run/cache_v0.4.2",
       "version": "0.4.2",

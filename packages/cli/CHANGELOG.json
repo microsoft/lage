@@ -2,6 +2,45 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Tue, 14 Mar 2023 00:28:38 GMT",
+      "tag": "@lage-run/cli_v0.10.1",
+      "version": "0.10.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.10.1",
+            "commit": "c5fc57309aaa493758f646cbfe02dc84f679675e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.4",
+            "commit": "c5fc57309aaa493758f646cbfe02dc84f679675e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.8.1",
+            "commit": "c5fc57309aaa493758f646cbfe02dc84f679675e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.4.3",
+            "commit": "c5fc57309aaa493758f646cbfe02dc84f679675e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.0.6",
+            "commit": "c5fc57309aaa493758f646cbfe02dc84f679675e"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 10 Mar 2023 01:25:03 GMT",
       "tag": "@lage-run/cli_v0.10.0",
       "version": "0.10.0",
