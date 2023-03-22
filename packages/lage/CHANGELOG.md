@@ -1,8 +1,17 @@
 # Change Log - lage
 
-This log was last generated on Tue, 14 Mar 2023 00:28:38 GMT and should not be manually modified.
+This log was last generated on Wed, 22 Mar 2023 17:26:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.3.0
+
+Wed, 22 Mar 2023 17:26:54 GMT
+
+### Minor changes
+
+- Add bundled config types to lage package (elcraig@microsoft.com)
+- Bump @lage-run/cli to v0.11.0
 
 ## 2.2.3
 

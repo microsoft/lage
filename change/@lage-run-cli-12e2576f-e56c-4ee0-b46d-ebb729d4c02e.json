@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Export more types used by the config",
-  "packageName": "@lage-run/cli",
-  "email": "elcraig@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 22 Mar 2023 17:26:54 GMT",
+      "tag": "@lage-run/cli_v0.11.0",
+      "version": "0.11.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "fad4d8a6cb9d1204f6b83f6ab2f7f0205529df2e",
+            "comment": "Export more types used by the config"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Mar 2023 00:28:38 GMT",
       "tag": "@lage-run/cli_v0.10.1",
       "version": "0.10.1",

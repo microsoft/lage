@@ -2,6 +2,27 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 22 Mar 2023 17:26:54 GMT",
+      "tag": "lage_v2.3.0",
+      "version": "2.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "fad4d8a6cb9d1204f6b83f6ab2f7f0205529df2e",
+            "comment": "Add bundled config types to lage package"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.11.0",
+            "commit": "7fe897adcea0dadf94154661cb2dfe5d3c531175"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Mar 2023 19:28:57 GMT",
       "tag": "lage_v2.2.3",
       "version": "2.2.3",
