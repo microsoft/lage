@@ -183,14 +183,17 @@ export class SimpleScheduler implements TargetScheduler {
     const queue = [targetId];
     while (queue.length > 0) {
       const current = queue.shift()!;
-      const targetRun = this.targetRuns.get(current)!;
 
-      if (targetRun.status !== "pending") {
-        targetRun.status = "pending";
-        this.rerunTargets.add(targetRun.target.id);
-        const dependents = targetRun.target.dependents;
-        for (const dependent of dependents) {
-          queue.push(dependent);
+      if (this.targetRuns.has(current)) {
+        const targetRun = this.targetRuns.get(current)!;
+
+        if (targetRun.status !== "pending") {
+          targetRun.status = "pending";
+          this.rerunTargets.add(targetRun.target.id);
+          const dependents = targetRun.target.dependents;
+          for (const dependent of dependents) {
+            queue.push(dependent);
+          }
         }
       }
     }
