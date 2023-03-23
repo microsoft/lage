@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Tue, 14 Mar 2023 00:28:38 GMT and should not be manually modified.
+This log was last generated on Thu, 23 Mar 2023 19:32:03 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.10.2
+
+Thu, 23 Mar 2023 19:32:03 GMT
+
+### Patches
+
+- Making SimpleScheduler more resilient to re-run requests that maybe come from target-graphs that are changing (kchau@microsoft.com)
 
 ## 0.10.1
 
