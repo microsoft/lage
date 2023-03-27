@@ -47,7 +47,7 @@ function getEnvHashOneAtTime(environmentGlobFiles: string[], repoRoot: string) {
     return envHashes[key];
   }
 
-  const hashes = hashGlobGit(environmentGlobFiles, { cwd: repoRoot, gitignore: false })!;
+  const hashes = hashGlobGit(environmentGlobFiles, { cwd: repoRoot, gitignore: true })!;
 
   envHashes[key] = Object.values(hashes);
 
