@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cache",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "description": "Cache for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"

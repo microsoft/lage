@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Mon, 27 Mar 2023 18:00:15 GMT",
+      "tag": "@lage-run/cache_v0.5.0",
+      "version": "0.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "6a0593b1ef9f7d16e69eb57ee1bc71b8613fd1d8",
+            "comment": "gitignore to be respected again in the envglob - this causes major perf regression otherwise"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Mar 2023 00:28:38 GMT",
       "tag": "@lage-run/cache_v0.4.3",
       "version": "0.4.3",

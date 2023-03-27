@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Tue, 14 Mar 2023 00:28:38 GMT and should not be manually modified.
+This log was last generated on Mon, 27 Mar 2023 18:00:15 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.0
+
+Mon, 27 Mar 2023 18:00:15 GMT
+
+### Minor changes
+
+- gitignore to be respected again in the envglob - this causes major perf regression otherwise (kchau@microsoft.com)
 
 ## 0.4.3
 

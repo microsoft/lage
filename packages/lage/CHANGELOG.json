@@ -2,6 +2,27 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 27 Mar 2023 18:00:15 GMT",
+      "tag": "lage_v2.3.2",
+      "version": "2.3.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.11.2",
+            "commit": "6a0593b1ef9f7d16e69eb57ee1bc71b8613fd1d8"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v0.10.3",
+            "commit": "6a0593b1ef9f7d16e69eb57ee1bc71b8613fd1d8"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 23 Mar 2023 19:32:03 GMT",
       "tag": "lage_v2.3.1",
       "version": "2.3.1",

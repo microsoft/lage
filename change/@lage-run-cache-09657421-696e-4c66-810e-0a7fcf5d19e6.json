@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "gitignore to be respected again in the envglob - this causes major perf regression otherwise",
-  "packageName": "@lage-run/cache",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
