@@ -3,11 +3,12 @@ import * as fs from "fs";
 import { execSync } from "child_process";
 
 import { getPackageDeps, parseGitLsTree, parseGitFilename } from "../getPackageDeps";
+import { Monorepo } from "@lage-run/monorepo-fixture";
 
-const SOURCE_PATH: string = path.join(__dirname).replace(path.join("lib", "__tests__"), path.join("src", "__tests__"));
+const SOURCE_PATH: string = path.join(__dirname, "..", "__fixtures__");
 
-const TEST_PROJECT_PATH: string = path.join(SOURCE_PATH, "testProject");
-const NESTED_TEST_PROJECT_PATH: string = path.join(SOURCE_PATH, "nestedTestProject");
+const TEST_PROJECT_PATH: string = path.join(SOURCE_PATH, "test-project");
+const NESTED_TEST_PROJECT_PATH: string = path.join(SOURCE_PATH, "nested-test-project");
 
 const FileSystem = {
   writeFile: fs.writeFileSync,
@@ -71,8 +72,11 @@ describe(parseGitLsTree.name, () => {
 });
 
 describe(getPackageDeps.name, () => {
-  it("can parse committed file", () => {
-    const results: Map<string, string> = getPackageDeps(TEST_PROJECT_PATH);
+  it("can parse committed file", async () => {
+    const monorepo = new Monorepo("parse-commited-file");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const results: Map<string, string> = getPackageDeps(monorepo.root);
     const expectedFiles: { [key: string]: string } = {
       "file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
       "file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
@@ -84,8 +88,11 @@ describe(getPackageDeps.name, () => {
     filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
   });
 
-  it("can handle files in subfolders", () => {
-    const results: Map<string, string> = getPackageDeps(NESTED_TEST_PROJECT_PATH);
+  it("can handle files in subfolders", async () => {
+    const monorepo = new Monorepo("files-in-subfolders");
+    await monorepo.init(NESTED_TEST_PROJECT_PATH);
+
+    const results: Map<string, string> = getPackageDeps(monorepo.root);
     const expectedFiles: { [key: string]: string } = {
       "src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
       "package.json": "18a1e415e56220fa5122428a4ef8eb8874756576",
@@ -95,12 +102,15 @@ describe(getPackageDeps.name, () => {
     filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
   });
 
-  it("can handle adding one file", () => {
-    const tempFilePath: string = path.join(TEST_PROJECT_PATH, "a.txt");
+  it("can handle adding one file", async () => {
+    const monorepo = new Monorepo("add-one-file");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const tempFilePath: string = path.join(monorepo.root, "a.txt");
 
     FileSystem.writeFile(tempFilePath, "a");
 
-    const results: Map<string, string> = getPackageDeps(TEST_PROJECT_PATH);
+    const results: Map<string, string> = getPackageDeps(monorepo.root);
     try {
       const expectedFiles: { [key: string]: string } = {
         "a.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
@@ -117,14 +127,17 @@ describe(getPackageDeps.name, () => {
     }
   });
 
-  it("can handle adding two files", () => {
-    const tempFilePath1: string = path.join(TEST_PROJECT_PATH, "a.txt");
-    const tempFilePath2: string = path.join(TEST_PROJECT_PATH, "b.txt");
+  it("can handle adding two files", async () => {
+    const monorepo = new Monorepo("add-two-files");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const tempFilePath1: string = path.join(monorepo.root, "a.txt");
+    const tempFilePath2: string = path.join(monorepo.root, "b.txt");
 
     FileSystem.writeFile(tempFilePath1, "a");
     FileSystem.writeFile(tempFilePath2, "a");
 
-    const results: Map<string, string> = getPackageDeps(TEST_PROJECT_PATH);
+    const results: Map<string, string> = getPackageDeps(monorepo.root);
     try {
       const expectedFiles: { [key: string]: string } = {
         "a.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
@@ -143,12 +156,15 @@ describe(getPackageDeps.name, () => {
     }
   });
 
-  it("can handle removing one file", () => {
-    const testFilePath: string = path.join(TEST_PROJECT_PATH, "file1.txt");
+  it("can handle removing one file", async () => {
+    const monorepo = new Monorepo("remove-one-file");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const testFilePath: string = path.join(monorepo.root, "file1.txt");
 
     FileSystem.deleteFile(testFilePath);
 
-    const results: Map<string, string> = getPackageDeps(TEST_PROJECT_PATH);
+    const results: Map<string, string> = getPackageDeps(monorepo.root);
     try {
       const expectedFiles: { [key: string]: string } = {
         "file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
@@ -163,12 +179,15 @@ describe(getPackageDeps.name, () => {
     }
   });
 
-  it("can handle changing one file", () => {
-    const testFilePath: string = path.join(TEST_PROJECT_PATH, "file1.txt");
+  it("can handle changing one file", async () => {
+    const monorepo = new Monorepo("change-one-file");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const testFilePath: string = path.join(monorepo.root, "file1.txt");
 
     FileSystem.writeFile(testFilePath, "abc");
 
-    const results: Map<string, string> = getPackageDeps(TEST_PROJECT_PATH);
+    const results: Map<string, string> = getPackageDeps(monorepo.root);
     try {
       const expectedFiles: { [key: string]: string } = {
         "file1.txt": "f2ba8f84ab5c1bce84a7b441cb1959cfc7093b7f",
@@ -184,8 +203,11 @@ describe(getPackageDeps.name, () => {
     }
   });
 
-  it("can exclude a committed file", () => {
-    const results: Map<string, string> = getPackageDeps(TEST_PROJECT_PATH, ["file1.txt", "file  2.txt", "file蝴蝶.txt"]);
+  it("can exclude a committed file", async () => {
+    const monorepo = new Monorepo("exclude-comitted-file");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const results: Map<string, string> = getPackageDeps(monorepo.root, ["file1.txt", "file  2.txt", "file蝴蝶.txt"]);
 
     const expectedFiles: { [key: string]: string } = {
       "package.json": "18a1e415e56220fa5122428a4ef8eb8874756576",
@@ -195,12 +217,15 @@ describe(getPackageDeps.name, () => {
     filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
   });
 
-  it("can exclude an added file", () => {
-    const tempFilePath: string = path.join(TEST_PROJECT_PATH, "a.txt");
+  it("can exclude an added file", async () => {
+    const monorepo = new Monorepo("exclude-added-file");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const tempFilePath: string = path.join(monorepo.root, "a.txt");
 
     FileSystem.writeFile(tempFilePath, "a");
 
-    const results: Map<string, string> = getPackageDeps(TEST_PROJECT_PATH, ["a.txt"]);
+    const results: Map<string, string> = getPackageDeps(monorepo.root, ["a.txt"]);
     try {
       const expectedFiles: { [key: string]: string } = {
         "file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
@@ -218,12 +243,15 @@ describe(getPackageDeps.name, () => {
     }
   });
 
-  it("can handle a filename with spaces", () => {
-    const tempFilePath: string = path.join(TEST_PROJECT_PATH, "a file.txt");
+  it("can handle a filename with spaces", async () => {
+    const monorepo = new Monorepo("filename-with-spaces");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const tempFilePath: string = path.join(monorepo.root, "a file.txt");
 
     FileSystem.writeFile(tempFilePath, "a");
 
-    const results: Map<string, string> = getPackageDeps(TEST_PROJECT_PATH);
+    const results: Map<string, string> = getPackageDeps(monorepo.root);
     try {
       const expectedFiles: { [key: string]: string } = {
         "file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
@@ -242,12 +270,15 @@ describe(getPackageDeps.name, () => {
     }
   });
 
-  it("can handle a filename with multiple spaces", () => {
-    const tempFilePath: string = path.join(TEST_PROJECT_PATH, "a  file name.txt");
+  it("can handle a filename with multiple spaces", async () => {
+    const monorepo = new Monorepo("filename-multiple-spaces");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const tempFilePath: string = path.join(monorepo.root, "a  file name.txt");
 
     FileSystem.writeFile(tempFilePath, "a");
 
-    const results: Map<string, string> = getPackageDeps(TEST_PROJECT_PATH);
+    const results: Map<string, string> = getPackageDeps(monorepo.root);
     try {
       const expectedFiles: { [key: string]: string } = {
         "file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
@@ -266,36 +297,15 @@ describe(getPackageDeps.name, () => {
     }
   });
 
-  it("can handle a filename with non-standard characters", () => {
-    const tempFilePath: string = path.join(TEST_PROJECT_PATH, "newFile批把.txt");
+  it("can handle a filename with non-standard characters", async () => {
+    const monorepo = new Monorepo("non-standard-characters");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const tempFilePath: string = path.join(monorepo.root, "newFile批把.txt");
 
     FileSystem.writeFile(tempFilePath, "a");
 
-    const results: Map<string, string> = getPackageDeps(TEST_PROJECT_PATH);
-    try {
-      const expectedFiles: { [key: string]: string } = {
-        "file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-        "file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-        "file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-        "newFile批把.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-        "package.json": "18a1e415e56220fa5122428a4ef8eb8874756576",
-      };
-      const filePaths: string[] = Array.from(results.keys()).sort();
-
-      expect(filePaths).toHaveLength(Object.keys(expectedFiles).length);
-
-      filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
-    } finally {
-      FileSystem.deleteFile(tempFilePath);
-    }
-  });
-
-  it("can handle a filename with non-standard characters", () => {
-    const tempFilePath: string = path.join(TEST_PROJECT_PATH, "newFile批把.txt");
-
-    FileSystem.writeFile(tempFilePath, "a");
-
-    const results: Map<string, string> = getPackageDeps(TEST_PROJECT_PATH);
+    const results: Map<string, string> = getPackageDeps(monorepo.root);
     try {
       const expectedFiles: { [key: string]: string } = {
         "file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",

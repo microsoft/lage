@@ -1,15 +1,16 @@
 import * as path from "path";
 import * as fs from "fs";
 import { execSync } from "child_process";
+import { Monorepo } from "@lage-run/monorepo-fixture";
 
 import { getRepoState, parseGitLsTree, getRepoRoot } from "../getRepoState";
 
-const SOURCE_PATH: string = path.join(__dirname).replace(path.join("lib", "__tests__"), path.join("src", "__tests__"));
+const SOURCE_PATH = path.join(__dirname, "..", "__fixtures__");
 
-const TEST_PREFIX: string = `packages/hasher/src/__tests__/`;
-const TEST_PROJECT_PATH: string = path.join(SOURCE_PATH, "testProject");
+const TEST_PREFIX = `packages/hasher/src/__tests__/`;
+const TEST_PROJECT_PATH = path.join(SOURCE_PATH, "test-project");
 
-const FILTERS: string[] = [`testProject/`, `nestedTestProject/`];
+const FILTERS = [`test-project/`, `nested-test-project/`];
 const FileSystem = {
   writeFile: fs.writeFileSync,
   deleteFile: fs.rmSync,
@@ -79,17 +80,17 @@ describe(parseGitLsTree.name, () => {
 
 describe(getRepoState.name, () => {
   it("can parse committed files", () => {
-    const results: Map<string, string> = getRepoState(__dirname);
+    const results: Map<string, string> = getRepoState(SOURCE_PATH);
     const filteredResults: Map<string, string> = getRelevantEntries(results);
 
     const expectedFiles: Map<string, string> = new Map(
       Object.entries({
-        "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-        [`nestedTestProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
-        "testProject/file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-        "testProject/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-        "testProject/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-        [`testProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+        "nested-test-project/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+        [`nested-test-project/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+        "test-project/file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+        "test-project/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
+        "test-project/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
+        [`test-project/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
       })
     );
 
@@ -104,19 +105,19 @@ describe(getRepoState.name, () => {
 
     FileSystem.writeFile(tempFilePath, "a");
 
-    const results: Map<string, string> = getRepoState(__dirname);
+    const results: Map<string, string> = getRepoState(SOURCE_PATH);
     const filteredResults: Map<string, string> = getRelevantEntries(results);
 
     try {
       const expectedFiles: Map<string, string> = new Map(
         Object.entries({
-          "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          [`nestedTestProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
-          "testProject/a.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-          "testProject/file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          "testProject/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-          "testProject/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-          [`testProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "nested-test-project/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+          [`nested-test-project/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "test-project/a.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
+          "test-project/file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+          "test-project/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
+          "test-project/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
+          [`test-project/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
         })
       );
 
@@ -136,20 +137,20 @@ describe(getRepoState.name, () => {
     FileSystem.writeFile(tempFilePath1, "a");
     FileSystem.writeFile(tempFilePath2, "a");
 
-    const results: Map<string, string> = getRepoState(__dirname);
+    const results: Map<string, string> = getRepoState(SOURCE_PATH);
     const filteredResults: Map<string, string> = getRelevantEntries(results);
 
     try {
       const expectedFiles: Map<string, string> = new Map(
         Object.entries({
-          "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          [`nestedTestProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
-          "testProject/a.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-          "testProject/b.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-          "testProject/file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          "testProject/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-          "testProject/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-          [`testProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "nested-test-project/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+          [`nested-test-project/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "test-project/a.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
+          "test-project/b.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
+          "test-project/file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+          "test-project/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
+          "test-project/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
+          [`test-project/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
         })
       );
 
@@ -174,11 +175,11 @@ describe(getRepoState.name, () => {
     try {
       const expectedFiles: Map<string, string> = new Map(
         Object.entries({
-          "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          [`nestedTestProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
-          "testProject/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-          "testProject/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-          [`testProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "nested-test-project/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+          [`nested-test-project/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "test-project/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
+          "test-project/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
+          [`test-project/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
         })
       );
 
@@ -187,30 +188,33 @@ describe(getRepoState.name, () => {
       }
       expect(filteredResults.size).toEqual(expectedFiles.size);
     } finally {
-      execSync(`git checkout --force HEAD -- ${TEST_PREFIX}testProject/file1.txt`, {
+      execSync(`git checkout --force HEAD -- ${TEST_PREFIX}test-project/file1.txt`, {
         stdio: "ignore",
         cwd: getRepoRoot(__dirname),
       });
     }
   });
 
-  it("can handle changing one file", () => {
-    const testFilePath: string = path.join(TEST_PROJECT_PATH, "file1.txt");
+  it("can handle changing one file", async () => {
+    const monorepo = new Monorepo("change-one-file");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const testFilePath: string = path.join(monorepo.root, "file1.txt");
 
     FileSystem.writeFile(testFilePath, "abc");
 
-    const results: Map<string, string> = getRepoState(__dirname);
+    const results: Map<string, string> = getRepoState(monorepo.root);
     const filteredResults: Map<string, string> = getRelevantEntries(results);
 
     try {
       const expectedFiles: Map<string, string> = new Map(
         Object.entries({
-          "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          [`nestedTestProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
-          "testProject/file1.txt": "f2ba8f84ab5c1bce84a7b441cb1959cfc7093b7f",
-          "testProject/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-          "testProject/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-          [`testProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "nested-test-project/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+          [`nested-test-project/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "test-project/file1.txt": "f2ba8f84ab5c1bce84a7b441cb1959cfc7093b7f",
+          "test-project/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
+          "test-project/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
+          [`test-project/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
         })
       );
 
@@ -238,15 +242,15 @@ describe(getRepoState.name, () => {
     try {
       const expectedFiles: Map<string, string> = new Map(
         Object.entries({
-          "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          [`nestedTestProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
-          "testProject/a file.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-          "testProject/a  file name.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-          "testProject/file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          "testProject/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-          "testProject/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-          "testProject/newFile批把.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-          [`testProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "nested-test-project/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+          [`nested-test-project/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "test-project/a file.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
+          "test-project/a  file name.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
+          "test-project/file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+          "test-project/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
+          "test-project/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
+          "test-project/newFile批把.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
+          [`test-project/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
         })
       );
 
