@@ -1,7 +1,6 @@
 import type { Logger } from "@lage-run/logger";
 import { getWorkspaceRoot } from "workspace-tools";
-import { getConfig } from "../../config/getConfig.js";
-import { getConcurrency } from "../../config/getConcurrency.js";
+import { getConfig, getConcurrency } from "@lage-run/config";
 import { BackfillCacheProvider } from "@lage-run/cache";
 
 export interface PruneCacheOptions {

@@ -1,6 +1,6 @@
 import createLogger from "@lage-run/logger";
 import { getPackageInfos, getWorkspaceRoot, type PackageInfos } from "workspace-tools";
-import { getConfig } from "../../config/getConfig.js";
+import { getConfig } from "@lage-run/config";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import type { FilterOptions } from "../../types/FilterOptions.js";
 

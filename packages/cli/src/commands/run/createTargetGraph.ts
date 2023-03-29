@@ -2,7 +2,7 @@ import type { Logger } from "@lage-run/logger";
 import { WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
 import type { PackageInfos } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
-import type { PipelineDefinition } from "../../types/PipelineDefinition.js";
+import type { PipelineDefinition } from "@lage-run/config";
 
 interface CreateTargetGraphOptions {
   logger: Logger;

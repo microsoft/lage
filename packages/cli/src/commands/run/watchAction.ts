@@ -3,8 +3,7 @@ import { createCache } from "./createCacheProvider.js";
 import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { findNpmClient } from "@lage-run/find-npm-client";
-import { getConfig } from "../../config/getConfig.js";
-import { getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions } from "../../config/getMaxWorkersPerTask.js";
+import { getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions, getConcurrency } from "@lage-run/config";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
 import { LogReporter } from "@lage-run/reporters";
@@ -17,7 +16,6 @@ import createLogger, { LogLevel } from "@lage-run/logger";
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
-import { getConcurrency } from "../../config/getConcurrency.js";
 import type { FilterOptions } from "../../types/FilterOptions.js";
 
 interface RunOptions extends ReporterInitOptions, FilterOptions {
