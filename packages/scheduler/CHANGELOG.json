@@ -2,6 +2,33 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Wed, 29 Mar 2023 22:41:49 GMT",
+      "tag": "@lage-run/scheduler_v0.10.5",
+      "version": "0.10.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "ec458f83e5adb784019efaa06f902ec75f85990c",
+            "comment": "moving config to its own package"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.5.1",
+            "commit": "ec458f83e5adb784019efaa06f902ec75f85990c"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.5",
+            "commit": "ec458f83e5adb784019efaa06f902ec75f85990c"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 29 Mar 2023 20:02:40 GMT",
       "tag": "@lage-run/scheduler_v0.10.4",
       "version": "0.10.4",

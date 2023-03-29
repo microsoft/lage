@@ -1,8 +1,17 @@
 # Change Log - lage
 
-This log was last generated on Wed, 29 Mar 2023 20:02:40 GMT and should not be manually modified.
+This log was last generated on Wed, 29 Mar 2023 22:41:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.3.4
+
+Wed, 29 Mar 2023 22:41:49 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.11.4
+- Bump @lage-run/scheduler to v0.10.5
 
 ## 2.3.3
 
