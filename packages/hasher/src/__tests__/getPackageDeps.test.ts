@@ -100,6 +100,8 @@ describe(getPackageDeps.name, () => {
     const filePaths: string[] = Array.from(results.keys()).sort();
 
     filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
+
+    await monorepo.cleanup();
   });
 
   it("can handle adding one file", async () => {
@@ -124,6 +126,7 @@ describe(getPackageDeps.name, () => {
       filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
     } finally {
       FileSystem.deleteFile(tempFilePath);
+      await monorepo.cleanup();
     }
   });
 
@@ -153,6 +156,7 @@ describe(getPackageDeps.name, () => {
     } finally {
       FileSystem.deleteFile(tempFilePath1);
       FileSystem.deleteFile(tempFilePath2);
+      await monorepo.cleanup();
     }
   });
 
@@ -176,6 +180,7 @@ describe(getPackageDeps.name, () => {
       filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
     } finally {
       execSync(`git checkout ${testFilePath}`, { stdio: "ignore" });
+      await monorepo.cleanup();
     }
   });
 
@@ -200,6 +205,7 @@ describe(getPackageDeps.name, () => {
       filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
     } finally {
       execSync(`git checkout ${testFilePath}`, { stdio: "ignore" });
+      await monorepo.cleanup();
     }
   });
 
@@ -215,6 +221,7 @@ describe(getPackageDeps.name, () => {
     const filePaths: string[] = Array.from(results.keys()).sort();
 
     filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
+    await monorepo.cleanup();
   });
 
   it("can exclude an added file", async () => {
@@ -240,6 +247,7 @@ describe(getPackageDeps.name, () => {
       filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
     } finally {
       FileSystem.deleteFile(tempFilePath);
+      await monorepo.cleanup();
     }
   });
 
@@ -267,6 +275,7 @@ describe(getPackageDeps.name, () => {
       filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
     } finally {
       FileSystem.deleteFile(tempFilePath);
+      await monorepo.cleanup();
     }
   });
 
@@ -294,6 +303,7 @@ describe(getPackageDeps.name, () => {
       filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
     } finally {
       FileSystem.deleteFile(tempFilePath);
+      await monorepo.cleanup();
     }
   });
 
@@ -321,6 +331,7 @@ describe(getPackageDeps.name, () => {
       filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
     } finally {
       FileSystem.deleteFile(tempFilePath);
+      await monorepo.cleanup();
     }
   });
 });
