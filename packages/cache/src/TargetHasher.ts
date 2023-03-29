@@ -1,9 +1,8 @@
-import { getRepoInfo, Hasher as LageHasher, RepoInfo } from "@lage-run/hasher";
+import { getRepoInfo, Hasher as LageHasher, type RepoInfo } from "@lage-run/hasher";
 import { salt } from "./salt.js";
 import type { Target } from "@lage-run/target-graph";
 import { hash } from "glob-hasher";
 import fg from "fast-glob";
-import path from "path";
 import { hashStrings } from "./hashStrings.js";
 
 export interface TargetHasherOptions {
