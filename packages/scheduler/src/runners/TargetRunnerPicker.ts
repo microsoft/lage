@@ -1,12 +1,8 @@
 import path from "path";
 import { getStartTargetId } from "@lage-run/target-graph";
 import type { Target } from "@lage-run/target-graph";
-import type { TargetRunner } from "@lage-run/scheduler-types";
+import type { TargetRunner, TargetRunnerPickerOptions } from "@lage-run/scheduler-types";
 import { pathToFileURL } from "url";
-
-export interface TargetRunnerPickerOptions {
-  [key: string]: { script: string; options: any };
-}
 
 export class TargetRunnerPicker {
   constructor(private options: TargetRunnerPickerOptions) {}

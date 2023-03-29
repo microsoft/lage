@@ -2,7 +2,7 @@ import type { Command } from "commander";
 import { createCache } from "./createCacheProvider.js";
 import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
-import { getConfig } from "../../config/getConfig.js";
+import { getConfig } from "@lage-run/config";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import createLogger from "@lage-run/logger";
 

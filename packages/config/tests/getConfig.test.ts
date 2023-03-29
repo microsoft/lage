@@ -1,4 +1,4 @@
-import { getConfig } from "../src/config/getConfig";
+import { getConfig } from "../src/getConfig";
 import path from "path";
 
 describe("getConfig", () => {

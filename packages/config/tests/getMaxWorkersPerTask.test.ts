@@ -1,4 +1,4 @@
-import { getMaxWorkersPerTask } from "../src/config/getMaxWorkersPerTask";
+import { getMaxWorkersPerTask } from "../src/getMaxWorkersPerTask";
 
 describe("getMaxWorkersPerTask", () => {
   it("parses the pipeline config for maxWorkers", () => {

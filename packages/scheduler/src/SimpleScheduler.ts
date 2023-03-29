@@ -10,7 +10,7 @@ import type { Logger } from "@lage-run/logger";
 import type { TargetGraph } from "@lage-run/target-graph";
 import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "@lage-run/scheduler-types";
 import type { Pool } from "@lage-run/worker-threads-pool";
-import type { TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker.js";
+import type { TargetRunnerPickerOptions } from "@lage-run/scheduler-types";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;

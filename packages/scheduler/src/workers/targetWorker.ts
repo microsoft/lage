@@ -1,14 +1,15 @@
 import { registerWorker } from "@lage-run/worker-threads-pool";
 import { TargetRunnerPicker } from "../runners/TargetRunnerPicker.js";
 import { workerData } from "worker_threads";
-import type { TargetRunnerPickerOptions } from "../runners/TargetRunnerPicker.js";
+import type { TargetRunnerPickerOptions } from "@lage-run/scheduler-types";
 
 interface TargetWorkerDataOptions {
   runners: TargetRunnerPickerOptions;
+  root: string;
 }
 
 function setup(options: TargetWorkerDataOptions) {
-  const { runners } = options;
+  const { runners, root } = options;
 
   const runnerPicker = new TargetRunnerPicker(runners);
 
