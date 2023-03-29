@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "moving back to fast-glob for globbing, as it was more accurate",
+  "packageName": "@lage-run/hasher",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
