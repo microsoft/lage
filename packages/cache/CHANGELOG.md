@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Mon, 27 Mar 2023 18:00:15 GMT and should not be manually modified.
+This log was last generated on Wed, 29 Mar 2023 20:02:40 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.1
+
+Wed, 29 Mar 2023 20:02:40 GMT
+
+### Patches
+
+- moving back to fast-glob for globbing, as it was more accurate (kchau@microsoft.com)
+- Bump @lage-run/hasher to v0.2.2
 
 ## 0.5.0
 

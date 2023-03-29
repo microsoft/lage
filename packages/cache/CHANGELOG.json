@@ -2,6 +2,27 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Wed, 29 Mar 2023 20:02:40 GMT",
+      "tag": "@lage-run/cache_v0.5.1",
+      "version": "0.5.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "3554c6c3bc2226933a819fd1123ada422848d7d4",
+            "comment": "moving back to fast-glob for globbing, as it was more accurate"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/hasher to v0.2.2",
+            "commit": "3554c6c3bc2226933a819fd1123ada422848d7d4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 27 Mar 2023 18:00:15 GMT",
       "tag": "@lage-run/cache_v0.5.0",
       "version": "0.5.0",
