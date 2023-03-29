@@ -1,5 +1,6 @@
-import { hashGlobGit } from "glob-hasher";
+import { hash } from "glob-hasher";
 import { hashStrings } from "./hashStrings.js";
+import fg from "fast-glob";
 
 interface MemoizedEnvHashes {
   [key: string]: string[];
@@ -28,7 +29,7 @@ async function getEnvHash(environmentGlobFiles: string[], repoRoot: string): Pro
 
   // We want to make sure that we only call getEnvHashOneAtTime one at a time
   // to avoid having many concurrent calls to read files again and again
-  oneAtATime = oneAtATime.then(() => {
+  oneAtATime = oneAtATime.then(async () => {
     // we may already have it by time we get to here
     if (envHashes[key]) {
       return envHashes[key];
@@ -40,16 +41,17 @@ async function getEnvHash(environmentGlobFiles: string[], repoRoot: string): Pro
   return oneAtATime;
 }
 
-function getEnvHashOneAtTime(environmentGlobFiles: string[], repoRoot: string) {
+async function getEnvHashOneAtTime(environmentGlobFiles: string[], root: string) {
   const key = envHashKey(environmentGlobFiles);
   if (environmentGlobFiles.length === 0) {
     envHashes[key] = [];
     return envHashes[key];
   }
 
-  const hashes = hashGlobGit(environmentGlobFiles, { cwd: repoRoot, gitignore: true })!;
+  const files = await fg(environmentGlobFiles, { cwd: root });
+  const fileFashes = hash(files, { cwd: root }) ?? {};
 
-  envHashes[key] = Object.values(hashes);
+  envHashes[key] = Object.values(fileFashes);
 
   return envHashes[key];
 }
