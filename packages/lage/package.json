@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "yoga-layout-prebuilt": "^1.10.0",
-    "glob-hasher": "1.1.1"
+    "glob-hasher": "1.2.1"
   },
   "optionalDependencies": {
     "fsevents": "~2.3.2"
