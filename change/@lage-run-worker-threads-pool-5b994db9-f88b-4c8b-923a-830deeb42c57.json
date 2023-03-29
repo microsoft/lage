@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "moving config to its own package",
-  "packageName": "@lage-run/worker-threads-pool",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

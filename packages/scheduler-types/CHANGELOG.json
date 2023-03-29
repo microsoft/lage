@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Wed, 29 Mar 2023 22:41:49 GMT",
+      "tag": "@lage-run/scheduler-types_v0.3.5",
+      "version": "0.3.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "ec458f83e5adb784019efaa06f902ec75f85990c",
+            "comment": "moving config to its own package"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Mar 2023 00:28:38 GMT",
       "tag": "@lage-run/scheduler-types_v0.3.4",
       "version": "0.3.4",

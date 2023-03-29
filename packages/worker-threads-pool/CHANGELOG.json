@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Wed, 29 Mar 2023 22:41:49 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.5.1",
+      "version": "0.5.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "ec458f83e5adb784019efaa06f902ec75f85990c",
+            "comment": "moving config to its own package"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 16 Nov 2022 20:07:05 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.5.0",
       "version": "0.5.0",

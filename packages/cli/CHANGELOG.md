@@ -1,8 +1,20 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 29 Mar 2023 20:02:40 GMT and should not be manually modified.
+This log was last generated on Wed, 29 Mar 2023 22:41:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.11.4
+
+Wed, 29 Mar 2023 22:41:49 GMT
+
+### Patches
+
+- moving config to its own package (kchau@microsoft.com)
+- Bump @lage-run/config to v0.1.1
+- Bump @lage-run/scheduler to v0.10.5
+- Bump @lage-run/scheduler-types to v0.3.5
+- Bump @lage-run/reporters to v1.0.7
 
 ## 0.11.3
 
