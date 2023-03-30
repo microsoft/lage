@@ -2,8 +2,6 @@ import { Logger } from "@lage-run/logger";
 import { CacheProvider, TargetHasher } from "@lage-run/cache";
 import { SimpleScheduler } from "../src/SimpleScheduler";
 import { getStartTargetId, Target, TargetGraph } from "@lage-run/target-graph";
-import { Pool } from "@lage-run/worker-threads-pool";
-import { TargetRunner } from "@lage-run/scheduler-types";
 import { InProcPool, SingleSchedulePool } from "./fixtures/pools";
 
 /**
@@ -65,27 +63,21 @@ describe("SimpleScheduler", () => {
     const root = "/root-of-repo";
     const logger = new Logger();
 
-    const cacheProvider: CacheProvider = {
-      clear: jest.fn(),
-      fetch: jest.fn(),
-      put: jest.fn(),
-      purge: jest.fn(),
-    };
-
-    const hasher = new TargetHasher({ root, environmentGlob: [] });
-
     const runner = new (require("./fixtures/NoOpRunner").NoOpRunner)();
 
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 1,
-      cacheProvider,
-      hasher,
       continueOnError: false,
       shouldCache: true,
       shouldResetCache: false,
       maxWorkersPerTask: new Map(),
-      runners: {},
+      workerData: {
+        root,
+        taskArgs: [],
+        skipLocalCache: false,
+        runners: {},
+      },
       pool: new InProcPool(runner),
       workerIdleMemoryLimit: 1024 * 1024 * 1024,
     });
@@ -117,23 +109,17 @@ describe("SimpleScheduler", () => {
     const root = "/root-of-repo";
     const logger = new Logger();
 
-    const cacheProvider: CacheProvider = {
-      clear: jest.fn(),
-      fetch: jest.fn(),
-      put: jest.fn(),
-      purge: jest.fn(),
-    };
-
-    const hasher = new TargetHasher({ root, environmentGlob: [] });
-
     const runner = new (require("./fixtures/FailOnPackageRunner").FailOnPackageRunner)("d");
 
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 1,
-      cacheProvider,
-      hasher,
-      runners: {},
+      workerData: {
+        root,
+        taskArgs: [],
+        skipLocalCache: false,
+        runners: {},
+      },
       pool: new InProcPool(runner),
       maxWorkersPerTask: new Map(),
       continueOnError: false,
@@ -165,26 +151,21 @@ describe("SimpleScheduler", () => {
     const root = "/root-of-repo";
     const logger = new Logger();
 
-    const cacheProvider: CacheProvider = {
-      clear: jest.fn(),
-      fetch: jest.fn(),
-      put: jest.fn(),
-      purge: jest.fn(),
-    };
-
-    const hasher = new TargetHasher({ root, environmentGlob: [] });
     const runner = new (require("./fixtures/FailOnPackageRunner").FailOnPackageRunner)("d");
 
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 4,
-      cacheProvider,
-      hasher,
       continueOnError: true,
       shouldCache: true,
       shouldResetCache: false,
       maxWorkersPerTask: new Map(),
-      runners: {},
+      workerData: {
+        root,
+        taskArgs: [],
+        skipLocalCache: false,
+        runners: {},
+      },
       pool: new InProcPool(runner),
       workerIdleMemoryLimit: 1024 * 1024 * 1024,
     });
@@ -213,27 +194,21 @@ describe("SimpleScheduler", () => {
     const root = "/root-of-repo";
     const logger = new Logger();
 
-    const cacheProvider: CacheProvider = {
-      clear: jest.fn(),
-      fetch: jest.fn(),
-      put: jest.fn(),
-      purge: jest.fn(),
-    };
-
-    const hasher = new TargetHasher({ root, environmentGlob: [] });
-
     const runner = new (require("./fixtures/FailOnPackageRunner").FailOnPackageRunner)("d");
 
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 4,
-      cacheProvider,
-      hasher,
+      workerData: {
+        root,
+        taskArgs: [],
+        skipLocalCache: false,
+        runners: {},
+      },
       maxWorkersPerTask: new Map(),
       continueOnError: true,
       shouldCache: true,
       shouldResetCache: false,
-      runners: {},
       pool: new SingleSchedulePool(runner, 4),
       workerIdleMemoryLimit: 1024 * 1024 * 1024,
     });
