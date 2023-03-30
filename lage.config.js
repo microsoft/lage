@@ -47,13 +47,6 @@ module.exports = {
       type: "npmScript",
       dependsOn: ["^^transpile", "lage#bundle"],
     },
-    "@lage-run/hasher#test": {
-      type: "npmScript",
-      dependsOn: ["transpile"],
-      options: {
-        taskArgs: ["--runInBand"],
-      },
-    },
   },
   npmClient: "yarn",
   cacheOptions: {

@@ -1,34 +1,18 @@
 import * as path from "path";
 import * as fs from "fs";
 import { execSync } from "child_process";
+import { Monorepo } from "@lage-run/monorepo-fixture";
 
 import { getRepoState, parseGitLsTree, getRepoRoot } from "../getRepoState";
 
-const SOURCE_PATH: string = path.join(__dirname).replace(path.join("lib", "__tests__"), path.join("src", "__tests__"));
+const SOURCE_PATH = path.resolve(__dirname, "..", "__fixtures__");
 
-const TEST_PREFIX: string = `packages/hasher/src/__tests__/`;
-const TEST_PROJECT_PATH: string = path.join(SOURCE_PATH, "testProject");
+const TEST_PROJECT_PATH = path.resolve(SOURCE_PATH, "test-project");
 
-const FILTERS: string[] = [`testProject/`, `nestedTestProject/`];
 const FileSystem = {
   writeFile: fs.writeFileSync,
   deleteFile: fs.rmSync,
 };
-
-function getRelevantEntries(results: Map<string, string>): Map<string, string> {
-  const relevantResults: Map<string, string> = new Map();
-  for (const [key, hash] of results) {
-    if (key.startsWith(TEST_PREFIX)) {
-      const partialKey: string = key.slice(TEST_PREFIX.length);
-      for (const filter of FILTERS) {
-        if (partialKey.startsWith(filter)) {
-          relevantResults.set(partialKey, hash);
-        }
-      }
-    }
-  }
-  return relevantResults;
-}
 
 describe(getRepoRoot.name, () => {
   it(`returns the correct directory`, () => {
@@ -78,186 +62,181 @@ describe(parseGitLsTree.name, () => {
 });
 
 describe(getRepoState.name, () => {
-  it("can parse committed files", () => {
-    const results: Map<string, string> = getRepoState(__dirname);
-    const filteredResults: Map<string, string> = getRelevantEntries(results);
+  it("can parse committed files", async () => {
+    const monorepo = new Monorepo("comitted-files");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const results: Map<string, string> = getRepoState(monorepo.root);
 
     const expectedFiles: Map<string, string> = new Map(
       Object.entries({
-        "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-        [`nestedTestProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
-        "testProject/file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-        "testProject/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-        "testProject/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-        [`testProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+        "file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+        "file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
+        "file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
+        "package.json": "18a1e415e56220fa5122428a4ef8eb8874756576",
       })
     );
 
     for (const [filePath, hash] of expectedFiles) {
-      expect(filteredResults.get(filePath)).toEqual(hash);
+      expect(results.get(filePath)).toEqual(hash);
     }
-    expect(filteredResults.size).toEqual(expectedFiles.size);
+    expect(results.size).toEqual(expectedFiles.size);
+
+    await monorepo.cleanup();
   });
 
-  it("can handle adding one file", () => {
-    const tempFilePath: string = path.join(TEST_PROJECT_PATH, "a.txt");
+  it("can handle adding one file", async () => {
+    const monorepo = new Monorepo("add-one-file");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const tempFilePath: string = path.join(monorepo.root, "a.txt");
 
     FileSystem.writeFile(tempFilePath, "a");
 
-    const results: Map<string, string> = getRepoState(__dirname);
-    const filteredResults: Map<string, string> = getRelevantEntries(results);
+    const results: Map<string, string> = getRepoState(monorepo.root);
 
     try {
       const expectedFiles: Map<string, string> = new Map(
         Object.entries({
-          "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          [`nestedTestProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
-          "testProject/a.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-          "testProject/file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          "testProject/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-          "testProject/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-          [`testProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "a.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
+          "file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+          "file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
+          "file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
+          "package.json": "18a1e415e56220fa5122428a4ef8eb8874756576",
         })
       );
 
       for (const [filePath, hash] of expectedFiles) {
-        expect(filteredResults.get(filePath)).toEqual(hash);
+        expect(results.get(filePath)).toEqual(hash);
       }
-      expect(filteredResults.size).toEqual(expectedFiles.size);
+      expect(results.size).toEqual(expectedFiles.size);
     } finally {
-      FileSystem.deleteFile(tempFilePath);
+      await monorepo.cleanup();
     }
   });
 
-  it("can handle adding two files", () => {
-    const tempFilePath1: string = path.join(TEST_PROJECT_PATH, "a.txt");
-    const tempFilePath2: string = path.join(TEST_PROJECT_PATH, "b.txt");
+  it("can handle adding two files", async () => {
+    const monorepo = new Monorepo("add-two-file");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const tempFilePath1: string = path.join(monorepo.root, "a.txt");
+    const tempFilePath2: string = path.join(monorepo.root, "b.txt");
 
     FileSystem.writeFile(tempFilePath1, "a");
     FileSystem.writeFile(tempFilePath2, "a");
 
-    const results: Map<string, string> = getRepoState(__dirname);
-    const filteredResults: Map<string, string> = getRelevantEntries(results);
+    const results: Map<string, string> = getRepoState(monorepo.root);
 
     try {
       const expectedFiles: Map<string, string> = new Map(
         Object.entries({
-          "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          [`nestedTestProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
-          "testProject/a.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-          "testProject/b.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-          "testProject/file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          "testProject/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-          "testProject/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-          [`testProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "a.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
+          "b.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
+          "file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+          "file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
+          "file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
+          "package.json": "18a1e415e56220fa5122428a4ef8eb8874756576",
         })
       );
 
       for (const [filePath, hash] of expectedFiles) {
-        expect(filteredResults.get(filePath)).toEqual(hash);
+        expect(results.get(filePath)).toEqual(hash);
       }
-      expect(filteredResults.size).toEqual(expectedFiles.size);
+      expect(results.size).toEqual(expectedFiles.size);
     } finally {
-      FileSystem.deleteFile(tempFilePath1);
-      FileSystem.deleteFile(tempFilePath2);
+      await monorepo.cleanup();
     }
   });
 
-  it("can handle removing one file", () => {
-    const testFilePath: string = path.join(TEST_PROJECT_PATH, "file1.txt");
+  it("can handle removing one file", async () => {
+    const monorepo = new Monorepo("remove-one-file");
+    await monorepo.init(TEST_PROJECT_PATH);
+    const testFilePath: string = path.join(monorepo.root, "file1.txt");
 
     FileSystem.deleteFile(testFilePath);
 
-    const results: Map<string, string> = getRepoState(__dirname);
-    const filteredResults: Map<string, string> = getRelevantEntries(results);
+    const results: Map<string, string> = getRepoState(monorepo.root);
 
     try {
       const expectedFiles: Map<string, string> = new Map(
         Object.entries({
-          "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          [`nestedTestProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
-          "testProject/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-          "testProject/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-          [`testProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
+          "file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
+          "package.json": "18a1e415e56220fa5122428a4ef8eb8874756576",
         })
       );
 
       for (const [filePath, hash] of expectedFiles) {
-        expect(filteredResults.get(filePath)).toEqual(hash);
+        expect(results.get(filePath)).toEqual(hash);
       }
-      expect(filteredResults.size).toEqual(expectedFiles.size);
+      expect(results.size).toEqual(expectedFiles.size);
     } finally {
-      execSync(`git checkout --force HEAD -- ${TEST_PREFIX}testProject/file1.txt`, {
-        stdio: "ignore",
-        cwd: getRepoRoot(__dirname),
-      });
+      await monorepo.cleanup();
     }
   });
 
-  it("can handle changing one file", () => {
-    const testFilePath: string = path.join(TEST_PROJECT_PATH, "file1.txt");
+  it("can handle changing one file", async () => {
+    const monorepo = new Monorepo("change-one-file");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const testFilePath: string = path.join(monorepo.root, "file1.txt");
 
     FileSystem.writeFile(testFilePath, "abc");
 
-    const results: Map<string, string> = getRepoState(__dirname);
-    const filteredResults: Map<string, string> = getRelevantEntries(results);
+    const results: Map<string, string> = getRepoState(monorepo.root);
 
     try {
       const expectedFiles: Map<string, string> = new Map(
         Object.entries({
-          "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          [`nestedTestProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
-          "testProject/file1.txt": "f2ba8f84ab5c1bce84a7b441cb1959cfc7093b7f",
-          "testProject/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-          "testProject/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-          [`testProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "file1.txt": "f2ba8f84ab5c1bce84a7b441cb1959cfc7093b7f",
+          "file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
+          "file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
+          "package.json": "18a1e415e56220fa5122428a4ef8eb8874756576",
         })
       );
 
       for (const [filePath, hash] of expectedFiles) {
-        expect(filteredResults.get(filePath)).toEqual(hash);
+        expect(results.get(filePath)).toEqual(hash);
       }
-      expect(filteredResults.size).toEqual(expectedFiles.size);
+      expect(results.size).toEqual(expectedFiles.size);
     } finally {
-      FileSystem.writeFile(testFilePath, "file1.");
+      await monorepo.cleanup();
     }
   });
 
-  it("can handle uncommitted filenames with spaces and non-ASCII characters", () => {
-    const tempFilePath1: string = path.join(TEST_PROJECT_PATH, "a file.txt");
-    const tempFilePath2: string = path.join(TEST_PROJECT_PATH, "a  file name.txt");
-    const tempFilePath3: string = path.join(TEST_PROJECT_PATH, "newFile批把.txt");
+  it("can handle uncommitted filenames with spaces and non-ASCII characters", async () => {
+    const monorepo = new Monorepo("uncommitted-filenames-with-spaces-and-non-ascii-characters");
+    await monorepo.init(TEST_PROJECT_PATH);
+
+    const tempFilePath1: string = path.join(monorepo.root, "a file.txt");
+    const tempFilePath2: string = path.join(monorepo.root, "a  file name.txt");
+    const tempFilePath3: string = path.join(monorepo.root, "newFile批把.txt");
 
     FileSystem.writeFile(tempFilePath1, "a");
     FileSystem.writeFile(tempFilePath2, "a");
     FileSystem.writeFile(tempFilePath3, "a");
 
-    const results: Map<string, string> = getRepoState(__dirname);
-    const filteredResults: Map<string, string> = getRelevantEntries(results);
+    const results: Map<string, string> = getRepoState(monorepo.root);
 
     try {
       const expectedFiles: Map<string, string> = new Map(
         Object.entries({
-          "nestedTestProject/src/file 1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          [`nestedTestProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
-          "testProject/a file.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-          "testProject/a  file name.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-          "testProject/file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
-          "testProject/file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
-          "testProject/file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
-          "testProject/newFile批把.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
-          [`testProject/package.json`]: "18a1e415e56220fa5122428a4ef8eb8874756576",
+          "a file.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
+          "a  file name.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
+          "file1.txt": "c7b2f707ac99ca522f965210a7b6b0b109863f34",
+          "file  2.txt": "a385f754ec4fede884a4864d090064d9aeef8ccb",
+          "file蝴蝶.txt": "ae814af81e16cb2ae8c57503c77e2cab6b5462ba",
+          "newFile批把.txt": "2e65efe2a145dda7ee51d1741299f848e5bf752e",
+          "package.json": "18a1e415e56220fa5122428a4ef8eb8874756576",
         })
       );
 
       for (const [filePath, hash] of expectedFiles) {
-        expect(filteredResults.get(filePath)).toEqual(hash);
+        expect(results.get(filePath)).toEqual(hash);
       }
-      expect(filteredResults.size).toEqual(expectedFiles.size);
+      expect(results.size).toEqual(expectedFiles.size);
     } finally {
-      FileSystem.deleteFile(tempFilePath1);
-      FileSystem.deleteFile(tempFilePath2);
-      FileSystem.deleteFile(tempFilePath3);
+      await monorepo.cleanup();
     }
   });
 });
