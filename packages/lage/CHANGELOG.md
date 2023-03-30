@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 29 Mar 2023 22:41:49 GMT and should not be manually modified.
+This log was last generated on Thu, 30 Mar 2023 17:59:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.3.5
+
+Thu, 30 Mar 2023 17:59:50 GMT
+
+### Patches
+
+- sync deps of glob-hasher (kchau@microsoft.com)
 
 ## 2.3.4
 

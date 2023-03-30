@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 30 Mar 2023 17:59:50 GMT",
+      "tag": "lage_v2.3.5",
+      "version": "2.3.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "18ad3d14c61d527d581b6e323247208b4dc0f249",
+            "comment": "sync deps of glob-hasher"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 29 Mar 2023 22:41:49 GMT",
       "tag": "lage_v2.3.4",
       "version": "2.3.4",
