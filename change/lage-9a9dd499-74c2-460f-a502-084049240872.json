@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "sync deps of glob-hasher",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
