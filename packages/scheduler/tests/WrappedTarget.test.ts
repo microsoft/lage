@@ -36,6 +36,26 @@ class InProcPool implements Pool {
   }
 }
 
+class SkippyInProcPool implements Pool {
+  constructor(private runner: TargetRunner) {}
+  exec({ target }: { target: Target; weight: number }, weight, _setup, _teardown, abortSignal?: AbortSignal): Promise<any> {
+    this.runner.run({ target, weight, abortSignal });
+    return Promise.resolve({
+      skipped: true,
+      hash: "1234",
+    });
+  }
+  stats() {
+    return {
+      workerRestarts: 0,
+      maxWorkerMemoryUsage: 0,
+    };
+  }
+  close() {
+    return Promise.resolve();
+  }
+}
+
 describe("WrappedTarget", () => {
   it("should be able to run a target to completion", async () => {
     const logger = new Logger();
@@ -215,7 +235,7 @@ describe("WrappedTarget", () => {
       root: process.cwd(),
       shouldCache: true,
       target: { ...createTarget("a"), cache: true },
-      pool: new InProcPool(runner),
+      pool: new SkippyInProcPool(runner),
     });
 
     expect(wrappedTarget.status).toBe("pending");

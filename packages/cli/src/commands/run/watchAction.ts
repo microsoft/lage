@@ -1,5 +1,4 @@
 import type { Command } from "commander";
-import { createCache } from "./createCacheProvider.js";
 import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { findNpmClient } from "@lage-run/find-npm-client";
@@ -66,14 +65,6 @@ export async function watchAction(options: RunOptions, command: Command) {
   // Make sure we do not attempt writeRemoteCache in watch mode
   config.cacheOptions.writeRemoteCache = false;
 
-  const { cacheProvider, hasher } = createCache({
-    root,
-    logger,
-    cacheOptions: config.cacheOptions,
-    skipLocalCache: false,
-    cliArgs: taskArgs,
-  });
-
   const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
 
   const maxWorkersPerTaskMap = getMaxWorkersPerTaskFromOptions(options.maxWorkersPerTask);
@@ -81,8 +72,6 @@ export async function watchAction(options: RunOptions, command: Command) {
   const scheduler = new SimpleScheduler({
     logger,
     concurrency,
-    cacheProvider,
-    hasher,
     continueOnError: true,
     workerData: {
       root,
@@ -126,8 +115,6 @@ export async function watchAction(options: RunOptions, command: Command) {
   // Disables cache for subsequent runs
   // TODO: support updating hasher + write-only local cacheProvider for subsequent runs
   for (const targetRun of scheduler.targetRuns.values()) {
-    targetRun.options.cacheProvider = undefined;
-    targetRun.options.hasher = undefined;
     targetRun.options.shouldCache = false;
   }
 
