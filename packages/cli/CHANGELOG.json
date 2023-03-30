@@ -2,6 +2,27 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 30 Mar 2023 23:46:52 GMT",
+      "tag": "@lage-run/cli_v0.12.0",
+      "version": "0.12.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "41360ccbd7433afe537342c4c815b1e02bc9c9b8",
+            "comment": "moved caching to happen inside workers"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.11.0",
+            "commit": "41360ccbd7433afe537342c4c815b1e02bc9c9b8"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 29 Mar 2023 22:41:49 GMT",
       "tag": "@lage-run/cli_v0.11.4",
       "version": "0.11.4",

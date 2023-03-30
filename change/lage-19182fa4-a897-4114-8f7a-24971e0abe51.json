@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "moved caching to happen inside workers",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Wed, 29 Mar 2023 22:41:49 GMT and should not be manually modified.
+This log was last generated on Thu, 30 Mar 2023 23:46:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.6.0
+
+Thu, 30 Mar 2023 23:46:52 GMT
+
+### Minor changes
+
+- moved caching to happen inside workers (kchau@microsoft.com)
 
 ## 0.5.1
 

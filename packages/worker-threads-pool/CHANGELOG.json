@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Thu, 30 Mar 2023 23:46:52 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.6.0",
+      "version": "0.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "41360ccbd7433afe537342c4c815b1e02bc9c9b8",
+            "comment": "moved caching to happen inside workers"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 29 Mar 2023 22:41:49 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.5.1",
       "version": "0.5.1",
