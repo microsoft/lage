@@ -59,6 +59,6 @@ export async function infoAction(options: RunOptions, command: Command) {
     const startIdIndex = target.dependencies.indexOf(getStartTargetId());
     target.dependencies.splice(startIdIndex, 1);
 
-    process.stdout.write(`${JSON.stringify({ target })}\n`);
+    process.stdout.write(`${JSON.stringify(target)}\n`);
   }
 }
