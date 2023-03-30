@@ -1,5 +1,4 @@
 import type { Command } from "commander";
-import { createCache } from "./createCacheProvider.js";
 import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { getConfig } from "@lage-run/config";
@@ -50,14 +49,6 @@ export async function infoAction(options: RunOptions, command: Command) {
   // Make sure we do not attempt writeRemoteCache in info mode
   config.cacheOptions.writeRemoteCache = false;
 
-  const { hasher } = createCache({
-    root,
-    logger,
-    cacheOptions: config.cacheOptions,
-    skipLocalCache: false,
-    cliArgs: taskArgs,
-  });
-
   const { targets } = targetGraph;
 
   for (const target of targets.values()) {
@@ -68,11 +59,6 @@ export async function infoAction(options: RunOptions, command: Command) {
     const startIdIndex = target.dependencies.indexOf(getStartTargetId());
     target.dependencies.splice(startIdIndex, 1);
 
-    process.stdout.write(
-      `${JSON.stringify({
-        ...target,
-        hash: await hasher.hash(target),
-      })}\n`
-    );
+    process.stdout.write(`${JSON.stringify({ target })}\n`);
   }
 }
