@@ -6,9 +6,7 @@ import fs from "fs";
 import path from "path";
 import { mkdir, writeFile } from "fs/promises";
 
-import type { CacheProvider } from "@lage-run/cache";
 import type { Pool } from "@lage-run/worker-threads-pool";
-import type { TargetHasher } from "@lage-run/cache";
 import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 import type { Logger } from "@lage-run/logger";
@@ -17,10 +15,7 @@ export interface WrappedTargetOptions {
   root: string;
   target: Target;
   logger: Logger;
-  cacheProvider?: CacheProvider;
-  hasher?: TargetHasher;
   shouldCache: boolean;
-  shouldResetCache: boolean;
   continueOnError: boolean;
   abortController: AbortController;
   pool: Pool;
@@ -135,38 +130,6 @@ export class WrappedTarget implements TargetRun {
     }
   }
 
-  async getCache() {
-    const { cacheProvider, hasher } = this.options;
-
-    let hash: string | undefined = undefined;
-    let cacheHit = false;
-
-    const { target, shouldCache, shouldResetCache } = this.options;
-
-    if (!shouldCache || !target.cache || !cacheProvider || !hasher) {
-      return { hash, cacheHit };
-    }
-
-    hash = await hasher.hash(target);
-
-    if (hash && !shouldResetCache) {
-      cacheHit = await cacheProvider.fetch(hash, target);
-    }
-
-    return { hash, cacheHit };
-  }
-
-  async saveCache(hash: string | null) {
-    const { logger, target, cacheProvider } = this.options;
-    if (!hash || !cacheProvider) {
-      return;
-    }
-
-    logger.verbose(`hash put ${hash}`, { target });
-
-    await cacheProvider.put(hash, target);
-  }
-
   async run() {
     const { target, logger, shouldCache, abortController } = this.options;
 
@@ -190,11 +153,12 @@ export class WrappedTarget implements TargetRun {
         const output = `${result.stdoutBuffer}\n${result.stderrBuffer}`;
 
         await writeFile(outputLocation, output);
+
+        this.options.logger.verbose(`>> Saved cache - ${result.hash}`, { target });
       }
 
       if (result.skipped) {
         const { hash } = result;
-        logger.verbose(`hash: ${hash}`, { target });
 
         const cachedOutputFile = getLageOutputCacheLocation(this.options.root, hash ?? "");
 
@@ -211,7 +175,7 @@ export class WrappedTarget implements TargetRun {
           });
         }
 
-        this.onSkipped();
+        this.onSkipped(hash);
       } else {
         this.onComplete();
       }

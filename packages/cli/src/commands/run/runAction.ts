@@ -66,14 +66,6 @@ export async function runAction(options: RunOptions, command: Command) {
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);
 
-  const { cacheProvider, hasher } = createCache({
-    root,
-    logger,
-    cacheOptions: config.cacheOptions,
-    skipLocalCache: options.skipLocalCache,
-    cliArgs: taskArgs,
-  });
-
   logger.verbose(`Running with ${concurrency} workers`);
 
   const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
@@ -83,8 +75,6 @@ export async function runAction(options: RunOptions, command: Command) {
   const scheduler = new SimpleScheduler({
     logger,
     concurrency,
-    cacheProvider,
-    hasher,
     continueOnError: options.continue,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
