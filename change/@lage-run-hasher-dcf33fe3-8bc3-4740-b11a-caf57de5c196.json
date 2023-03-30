@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "updated hasher tests not to depend on order",
-  "packageName": "@lage-run/hasher",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "none"
-}
