@@ -2,7 +2,7 @@ import { createCache } from "../cache/createCacheProvider.js";
 import { getConfig } from "@lage-run/config";
 import { registerWorker } from "@lage-run/worker-threads-pool";
 import { TargetRunnerPicker } from "../runners/TargetRunnerPicker.js";
-import { workerData } from "worker_threads";
+import { parentPort, workerData } from "worker_threads";
 import createLogger from "@lage-run/logger";
 
 import type { Target } from "@lage-run/target-graph";
@@ -23,6 +23,12 @@ async function setup(options: TargetWorkerDataOptions) {
   const config = await getConfig(root);
 
   const logger = createLogger();
+  logger.addReporter({
+    log(entry) {
+      parentPort!.postMessage({ type: "log", ...entry });
+    },
+    summarize() {},
+  });
 
   const { cacheProvider, hasher } = createCache({
     root,

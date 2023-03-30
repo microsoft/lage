@@ -1,6 +1,6 @@
 import { bufferTransform } from "./bufferTransform.js";
 import { getLageOutputCacheLocation } from "./getLageOutputCacheLocation.js";
-import { LogLevel } from "@lage-run/logger";
+import { LogEntry, LogLevel } from "@lage-run/logger";
 
 import fs from "fs";
 import path from "path";
@@ -202,10 +202,20 @@ export class WrappedTarget implements TargetRun {
     const bufferStdout = bufferTransform();
     const bufferStderr = bufferTransform();
 
+    let logHandler: (data: LogEntry<any> & { type: string }) => void;
+
     this.result = pool.exec(
       { target },
       target.weight ?? 1,
       (worker, stdout, stderr) => {
+        logHandler = (data) => {
+          if (data.type === "log") {
+            logger.log(data.level, data.msg, { target, threadId: worker.threadId });
+          }
+        };
+
+        worker.on("message", logHandler);
+
         const threadId = worker.threadId;
 
         this.onStart(threadId);
@@ -227,7 +237,8 @@ export class WrappedTarget implements TargetRun {
           stderr.unpipe(bufferStderr.transform);
         };
       },
-      () => {
+      (worker) => {
+        worker.off("message", logHandler);
         releaseStdout();
         releaseStderr();
       },
