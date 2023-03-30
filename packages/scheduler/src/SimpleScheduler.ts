@@ -20,7 +20,12 @@ export interface SimpleSchedulerOptions {
   hasher?: TargetHasher;
   shouldCache: boolean;
   shouldResetCache: boolean;
-  runners: TargetRunnerPickerOptions;
+  workerData: {
+    runners: TargetRunnerPickerOptions;
+    root: string;
+    taskArgs: string[];
+    skipLocalCache?: boolean;
+  };
   maxWorkersPerTask: Map<string, number>;
   pool?: Pool; // for testing
   workerIdleMemoryLimit: number; // in bytes
@@ -60,14 +65,12 @@ export class SimpleScheduler implements TargetScheduler {
         workerOptions: {
           stdout: true,
           stderr: true,
-          workerData: {
-            runners: options.runners,
-          },
+          workerData: { ...options.workerData, shouldCache: options.shouldCache, shouldResetCache: options.shouldResetCache },
         },
         workerIdleMemoryLimit: options.workerIdleMemoryLimit, // in bytes
       });
 
-    this.runnerPicker = new TargetRunnerPicker(options.runners);
+    this.runnerPicker = new TargetRunnerPicker(options.workerData.runners);
   }
 
   getTargetsByPriority() {

@@ -21,7 +21,7 @@ export default [
         // Added this entry to guard against readable-stream's WEIRD import of "string_decoder/" (present in v3.x)
         entries: [
           { find: "string_decoder/", replacement: "string_decoder" },
-          { find: "punycode/", replacement: "punycode" }
+          { find: "punycode/", replacement: "punycode" },
         ],
       }),
       nodeResolve({
@@ -83,6 +83,7 @@ export default [
       retainDynamicImport(),
       terser(),
     ],
+    external: ["fsevents", "yoga-layout-prebuilt", "glob-hasher"],
     inlineDynamicImports: true,
   },
 ];

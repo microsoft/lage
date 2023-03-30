@@ -84,30 +84,36 @@ export async function watchAction(options: RunOptions, command: Command) {
     cacheProvider,
     hasher,
     continueOnError: true,
+    workerData: {
+      root,
+      taskArgs,
+      skipLocalCache: options.skipLocalCache,
+      runners: {
+        npmScript: {
+          script: require.resolve("./runners/NpmScriptRunner.js"),
+          options: {
+            nodeArg: options.nodeArg,
+            taskArgs,
+            npmCmd: findNpmClient(config.npmClient),
+          },
+        },
+        worker: {
+          script: require.resolve("./runners/WorkerRunner.js"),
+          options: {
+            taskArgs,
+          },
+        },
+        noop: {
+          script: require.resolve("./runners/NoOpRunner.js"),
+          options: {},
+        },
+        ...config.runners,
+      },
+    },
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
     maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, concurrency), ...maxWorkersPerTaskMap]),
-    runners: {
-      npmScript: {
-        script: require.resolve("./runners/NpmScriptRunner.js"),
-        options: {
-          nodeArg: options.nodeArg,
-          taskArgs,
-          npmCmd: findNpmClient(config.npmClient),
-        },
-      },
-      worker: {
-        script: require.resolve("./runners/WorkerRunner.js"),
-        options: {
-          taskArgs,
-        },
-      },
-      noop: {
-        script: require.resolve("./runners/NoOpRunner.js"),
-        options: {},
-      },
-      ...config.runners,
-    },
+
     workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
   });
 

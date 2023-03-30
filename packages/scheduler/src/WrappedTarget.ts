@@ -26,6 +26,13 @@ export interface WrappedTargetOptions {
   pool: Pool;
 }
 
+interface WorkerResult {
+  stdoutBuffer: string;
+  stderrBuffer: string;
+  skipped: boolean;
+  hash: string;
+}
+
 /**
  * Wraps a target with additional functionality:
  * 1. Caching
@@ -41,7 +48,7 @@ export class WrappedTarget implements TargetRun {
   status: TargetStatus;
   threadId = 0;
 
-  result: Promise<{ stdoutBuffer: string; stderrBuffer: string }> | undefined;
+  result: Promise<WorkerResult> | undefined;
 
   get abortController() {
     return this.options.abortController;
@@ -172,15 +179,22 @@ export class WrappedTarget implements TargetRun {
     }
 
     try {
-      const { hash, cacheHit } = await this.getCache();
+      const result = await this.runInPool();
+      const cacheEnabled = target.cache && shouldCache && result.hash;
+      // Save output if cache is enabled & cache is hit
+      if (!result.skipped && cacheEnabled) {
+        const outputLocation = getLageOutputCacheLocation(this.options.root, result.hash);
+        const outputPath = path.dirname(outputLocation);
+        await mkdir(outputPath, { recursive: true });
 
-      const cacheEnabled = target.cache && shouldCache && hash;
+        const output = `${result.stdoutBuffer}\n${result.stderrBuffer}`;
 
-      // skip if cache hit!
-      if (cacheHit) {
-        logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`, { target });
+        await writeFile(outputLocation, output);
+      }
 
-        this.onStart(0);
+      if (result.skipped) {
+        const { hash } = result;
+        logger.verbose(`hash: ${hash}`, { target });
 
         const cachedOutputFile = getLageOutputCacheLocation(this.options.root, hash ?? "");
 
@@ -197,26 +211,10 @@ export class WrappedTarget implements TargetRun {
           });
         }
 
-        this.onSkipped(hash);
-        return;
+        this.onSkipped();
       } else {
-        logger.verbose(`hash: ${hash}, cache hit? ${cacheHit}`, { target });
+        this.onComplete();
       }
-
-      const result = await this.runInPool();
-
-      if (cacheEnabled && hash) {
-        await this.saveCache(hash);
-        const outputLocation = getLageOutputCacheLocation(this.options.root, hash);
-        const outputPath = path.dirname(outputLocation);
-        await mkdir(outputPath, { recursive: true });
-
-        const output = `${result.stdoutBuffer}\n${result.stderrBuffer}`;
-
-        await writeFile(outputLocation, output);
-      }
-
-      this.onComplete();
     } catch (e) {
       logger.error(String(e), { target });
 
@@ -270,11 +268,11 @@ export class WrappedTarget implements TargetRun {
         releaseStderr();
       },
       abortSignal
-    ) as Promise<{ stdoutBuffer: string; stderrBuffer: string }>;
+    ) as Promise<WorkerResult>;
 
-    await this.result;
+    const result = await this.result;
 
-    return { stdoutBuffer: bufferStdout.buffer, stderrBuffer: bufferStderr.buffer };
+    return { stdoutBuffer: bufferStdout.buffer, stderrBuffer: bufferStderr.buffer, skipped: result?.skipped, hash: result?.hash };
   }
 
   /**

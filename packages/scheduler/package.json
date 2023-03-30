@@ -18,6 +18,7 @@
     "@lage-run/target-graph": "^0.8.1",
     "@lage-run/logger": "^1.2.2",
     "@lage-run/cache": "^0.5.1",
+    "@lage-run/config": "^0.1.1",
     "@lage-run/worker-threads-pool": "^0.5.1"
   },
   "devDependencies": {
