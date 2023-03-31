@@ -2,11 +2,9 @@ import EventEmitter from "events";
 import type { LogEntry, Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 
-import fs from "fs";
-import path from "path";
-
 // @ts-ignore Ignoring ESM in CJS errors here, but still importing the types to be used
-import type { TaskReporter as TaskReporterType, TaskReporterTask } from "@ms-cloudpack/task-reporter";
+// import type { TaskReporter as TaskReporterType, TaskReporterTask } from "@ms-cloudpack/task-reporter";
+import * as taskReporter from "@ms-cloudpack/task-reporter";
 import { Target } from "@lage-run/target-graph";
 
 export class ProgressReporter implements Reporter {
@@ -15,34 +13,34 @@ export class ProgressReporter implements Reporter {
   logEvent: EventEmitter = new EventEmitter();
   logEntries = new Map<string, LogEntry[]>();
 
-  taskReporter: Promise<TaskReporterType>;
-  tasks: Map<string, TaskReporterTask> = new Map();
+  taskReporter: taskReporter.TaskReporter;
+  tasks: Map<string, taskReporter.TaskReporterTask> = new Map();
 
   constructor(private options: { concurrency: number; version: string } = { concurrency: 0, version: "0.0.0" }) {
     this.taskReporter = this.createTaskReporter();
   }
 
   createTaskReporter() {
-    return import("@ms-cloudpack/task-reporter").then((taskReporterModule) => {
-      const TaskReporter = taskReporterModule.TaskReporter;
-      return new TaskReporter({
-        productName: "lage",
-        version: this.options.version,
-        showCompleted: true,
-        showConsoleDebug: true,
-        showConsoleError: true,
-        showConsoleInfo: true,
-        showConsoleLog: true,
-        showConsoleWarn: true,
-        showErrors: true,
-        showPending: true,
-        showProgress: true,
-        showStarted: true,
-        showSummary: true,
-        showTaskDetails: true,
-        showTaskExtended: true,
-      });
+    // return import("@ms-cloudpack/task-reporter").then((taskReporterModule) => {
+    //   const TaskReporter = taskReporterModule.TaskReporter;
+    return new taskReporter.TaskReporter({
+      productName: "lage",
+      version: this.options.version,
+      showCompleted: true,
+      showConsoleDebug: true,
+      showConsoleError: true,
+      showConsoleInfo: true,
+      showConsoleLog: true,
+      showConsoleWarn: true,
+      showErrors: true,
+      showPending: true,
+      showProgress: true,
+      showStarted: true,
+      showSummary: true,
+      showTaskDetails: true,
+      showTaskExtended: true,
     });
+    // });
   }
 
   log(entry: LogEntry<any>) {
