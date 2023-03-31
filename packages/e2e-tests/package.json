@@ -20,9 +20,10 @@
   },
   "dependencies": {
     "monorepo-scripts": "*",
-    "@lage-run/cli": "^0.8.4",
-    "@lage-run/target-graph": "^0.6.2",
-    "@lage-run/scheduler-types": "^0.3.1",
-    "execa": "5.1.1"
+    "@lage-run/cli": "^0.12.0",
+    "@lage-run/target-graph": "^0.8.1",
+    "@lage-run/scheduler-types": "^0.3.5",
+    "execa": "5.1.1",
+    "glob-hasher": "1.2.1"
   }
 }

@@ -1,16 +1,39 @@
 import type { TargetConfig } from "./types/TargetConfig.js";
 import type { Target } from "./types/Target.js";
+import type { PackageInfos } from "workspace-tools";
 
 import { getPackageAndTask, getTargetId } from "./targetId.js";
 import { getWeight } from "./getWeight.js";
 
 export interface TargetFactoryOptions {
   root: string;
+  packageInfos: PackageInfos;
   resolve(packageName: string): string;
 }
 
 export class TargetFactory {
-  constructor(private options: TargetFactoryOptions) {}
+  packageScripts = new Set<string>();
+
+  constructor(private options: TargetFactoryOptions) {
+    const { packageInfos } = options;
+    for (const info of Object.values(packageInfos)) {
+      for (const scriptName of Object.keys(info.scripts ?? {})) {
+        this.packageScripts.add(scriptName);
+      }
+    }
+  }
+
+  getTargetType(task: string, config: TargetConfig) {
+    if (!config.type) {
+      if (this.packageScripts.has(task)) {
+        return "npmScript";
+      } else {
+        return "noop";
+      }
+    }
+
+    return config.type;
+  }
 
   /**
    * Creates a package task `Target`
@@ -21,13 +44,15 @@ export class TargetFactory {
    */
   createPackageTarget(packageName: string, task: string, config: TargetConfig): Target {
     const { resolve } = this.options;
-    const { options, deps, dependsOn, cache, inputs, outputs, priority, maxWorkers, environmentGlob, weight } = config;
+    const { options, deps, dependsOn, cache, inputs, priority, maxWorkers, environmentGlob, weight } = config;
     const cwd = resolve(packageName);
+
+    const targetType = this.getTargetType(task, config);
 
     const target = {
       id: getTargetId(packageName, task),
       label: `${packageName} - ${task}`,
-      type: config.type,
+      type: targetType,
       packageName,
       task,
       cache: cache !== false,
@@ -36,7 +61,7 @@ export class TargetFactory {
       dependencies: [],
       dependents: [],
       inputs,
-      outputs,
+      outputs: targetType === "noop" ? [] : config.outputs,
       priority,
       maxWorkers,
       environmentGlob,
@@ -51,14 +76,14 @@ export class TargetFactory {
 
   createGlobalTarget(id: string, config: TargetConfig): Target {
     const { root } = this.options;
-    const { options, deps, dependsOn, inputs, outputs, priority, maxWorkers, environmentGlob, weight } = config;
+    const { options, deps, dependsOn, cache, inputs, outputs, priority, maxWorkers, environmentGlob, weight } = config;
     const { task } = getPackageAndTask(id);
     const target = {
       id,
       label: id,
-      type: config.type,
+      type: this.getTargetType(task, config),
       task,
-      cache: false,
+      cache: cache !== false,
       cwd: root,
       depSpecs: dependsOn ?? deps ?? [],
       dependencies: [],

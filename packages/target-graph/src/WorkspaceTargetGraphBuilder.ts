@@ -31,6 +31,8 @@ export class WorkspaceTargetGraphBuilder {
 
   private targetFactory: TargetFactory;
 
+  private hasRootTarget = false;
+
   /**
    * Initializes the builder with package infos
    * @param root the root directory of the workspace
@@ -40,9 +42,14 @@ export class WorkspaceTargetGraphBuilder {
     this.dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
     this.graphBuilder = new TargetGraphBuilder();
     this.targetFactory = new TargetFactory({
-      root: root,
+      root,
+      packageInfos,
       resolve(packageName: string) {
-        return path.dirname(packageInfos[packageName].packageJsonPath);
+        try {
+          return path.dirname(packageInfos[packageName].packageJsonPath);
+        } catch (e) {
+          throw new Error(`Cannot open package.json file for ${packageName}`);
+        }
       },
     });
   }
@@ -58,6 +65,7 @@ export class WorkspaceTargetGraphBuilder {
     if (id.startsWith("//") || id.startsWith("#")) {
       const target = this.targetFactory.createGlobalTarget(id, config);
       this.graphBuilder.addTarget(target);
+      this.hasRootTarget = true;
     } else if (id.includes("#")) {
       const { packageName, task } = getPackageAndTask(id);
       const target = this.targetFactory.createPackageTarget(packageName!, task, config);
@@ -94,6 +102,7 @@ export class WorkspaceTargetGraphBuilder {
     }
 
     const subGraphEntries: string[] = [];
+
     for (const task of tasks) {
       if (scope) {
         for (const packageName of scope) {
@@ -102,6 +111,13 @@ export class WorkspaceTargetGraphBuilder {
       } else {
         for (const packageName of Object.keys(this.packageInfos)) {
           subGraphEntries.push(getTargetId(packageName, task));
+        }
+      }
+
+      if (this.hasRootTarget) {
+        const globalTargetId = getTargetId(undefined, task);
+        if (this.graphBuilder.targets.has(globalTargetId)) {
+          subGraphEntries.push(globalTargetId);
         }
       }
     }

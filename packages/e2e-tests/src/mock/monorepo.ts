@@ -3,12 +3,25 @@ import * as fs from "fs";
 import * as path from "path";
 import * as execa from "execa";
 
+import { glob } from "glob-hasher";
+
 export class Monorepo {
   static tmpdir = os.tmpdir();
 
   root: string;
   nodeModulesPath: string;
   yarnPath: string;
+
+  static externalPackageJsonGlobs = [
+    "node_modules/yoga-layout-prebuilt/package.json",
+    "node_modules/glob-hasher/package.json",
+    "node_modules/glob-hasher-*/package.json",
+  ];
+
+  static externalPackageJsons = glob(Monorepo.externalPackageJsonGlobs, {
+    cwd: path.join(__dirname, "..", "..", "..", ".."),
+    gitignore: false,
+  })!;
 
   constructor(private name: string) {
     this.root = fs.mkdtempSync(path.join(Monorepo.tmpdir, `lage-monorepo-${name}-`));
@@ -26,8 +39,11 @@ export class Monorepo {
   }
 
   install() {
-    const yogaPath = path.dirname(require.resolve("yoga-layout-prebuilt/package.json"));
-    fs.cpSync(yogaPath, path.join(this.root, "node_modules/yoga-layout-prebuilt"), { recursive: true });
+    for (const packagePath of Monorepo.externalPackageJsons.map((p) => path.dirname(p))) {
+      const name = JSON.parse(fs.readFileSync(path.join(packagePath, "package.json"), "utf-8")).name;
+      fs.cpSync(packagePath, path.join(this.root, "node_modules", name), { recursive: true });
+    }
+
     fs.cpSync(path.join(__dirname, "..", "..", "yarn"), path.dirname(this.yarnPath), { recursive: true });
     execa.sync("node", [this.yarnPath, "install"], { cwd: this.root });
   }

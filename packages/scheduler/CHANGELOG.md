@@ -1,8 +1,99 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Wed, 15 Feb 2023 16:51:15 GMT and should not be manually modified.
+This log was last generated on Thu, 30 Mar 2023 23:46:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.11.0
+
+Thu, 30 Mar 2023 23:46:52 GMT
+
+### Minor changes
+
+- moved caching to happen inside workers (kchau@microsoft.com)
+- Bump @lage-run/worker-threads-pool to v0.6.0
+
+## 0.10.5
+
+Wed, 29 Mar 2023 22:41:49 GMT
+
+### Patches
+
+- moving config to its own package (kchau@microsoft.com)
+- Bump @lage-run/worker-threads-pool to v0.5.1
+- Bump @lage-run/scheduler-types to v0.3.5
+
+## 0.10.4
+
+Wed, 29 Mar 2023 20:02:40 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v0.5.1
+
+## 0.10.3
+
+Mon, 27 Mar 2023 18:00:15 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v0.5.0
+
+## 0.10.2
+
+Thu, 23 Mar 2023 19:32:03 GMT
+
+### Patches
+
+- Making SimpleScheduler more resilient to re-run requests that maybe come from target-graphs that are changing (kchau@microsoft.com)
+
+## 0.10.1
+
+Tue, 14 Mar 2023 00:28:38 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.8.1
+- Bump @lage-run/cache to v0.4.3
+- Bump @lage-run/scheduler-types to v0.3.4
+
+## 0.10.0
+
+Fri, 10 Mar 2023 01:25:03 GMT
+
+### Minor changes
+
+- adding the ability to have a NoOp Task (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.8.0
+- Bump @lage-run/cache to v0.4.2
+- Bump @lage-run/scheduler-types to v0.3.3
+
+## 0.9.2
+
+Wed, 08 Mar 2023 17:35:28 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v0.4.1
+
+## 0.9.1
+
+Wed, 08 Mar 2023 00:05:27 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.7.0
+- Bump @lage-run/cache to v0.4.0
+- Bump @lage-run/scheduler-types to v0.3.2
+
+## 0.9.0
+
+Tue, 21 Feb 2023 21:30:37 GMT
+
+### Minor changes
+
+- cache directory to be centralized (kchau@microsoft.com)
+- Bump @lage-run/cache to v0.3.0
 
 ## 0.8.5
 

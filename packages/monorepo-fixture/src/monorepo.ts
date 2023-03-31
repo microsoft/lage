@@ -173,7 +173,7 @@ export class Monorepo {
         out = contents;
       }
 
-      const fullPath = path.join(this.root, file);
+      const fullPath = path.isAbsolute(file) ? file : path.join(this.root, file);
 
       if (!existsSync(path.dirname(fullPath))) {
         await fs.mkdir(path.dirname(fullPath), { recursive: true });
@@ -190,7 +190,7 @@ export class Monorepo {
   async readFiles(files: string[]) {
     const contents = {};
     for (const file of files) {
-      const fullPath = path.join(this.root, file);
+      const fullPath = path.isAbsolute(file) ? file : path.join(this.root, file);
       if (!existsSync(fullPath)) {
         throw new Error(`File ${fullPath} does not exist`);
       }

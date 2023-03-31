@@ -1,11 +1,9 @@
 import type { Command } from "commander";
-import { createCache } from "./createCacheProvider.js";
 import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
 import { findNpmClient } from "@lage-run/find-npm-client";
-import { getConfig } from "../../config/getConfig.js";
-import { getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions } from "../../config/getMaxWorkersPerTask.js";
+import { getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions, getConcurrency } from "@lage-run/config";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { initializeReporters } from "../initializeReporters.js";
 import { SimpleScheduler } from "@lage-run/scheduler";
@@ -16,7 +14,6 @@ import createLogger from "@lage-run/logger";
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { FilterOptions } from "../../types/FilterOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
-import { getConcurrency } from "../../config/getConcurrency.js";
 import type { TargetGraph } from "@lage-run/target-graph";
 import { NoTargetFoundError } from "../../types/errors.js";
 
@@ -68,14 +65,6 @@ export async function runAction(options: RunOptions, command: Command) {
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);
 
-  const { cacheProvider, hasher } = createCache({
-    root,
-    logger,
-    cacheOptions: config.cacheOptions,
-    skipLocalCache: options.skipLocalCache,
-    cliArgs: taskArgs,
-  });
-
   logger.verbose(`Running with ${concurrency} workers`);
 
   const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
@@ -85,29 +74,37 @@ export async function runAction(options: RunOptions, command: Command) {
   const scheduler = new SimpleScheduler({
     logger,
     concurrency,
-    cacheProvider,
-    hasher,
     continueOnError: options.continue,
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
-    maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, concurrency), ...maxWorkersPerTaskMap]),
-    runners: {
-      npmScript: {
-        script: require.resolve("./runners/NpmScriptRunner.js"),
-        options: {
-          nodeArg: options.nodeArg,
-          taskArgs,
-          npmCmd: findNpmClient(config.npmClient),
+    workerData: {
+      root,
+      taskArgs,
+      skipLocalCache: options.skipLocalCache,
+      runners: {
+        npmScript: {
+          script: require.resolve("./runners/NpmScriptRunner.js"),
+          options: {
+            nodeArg: options.nodeArg,
+            taskArgs,
+            npmCmd: findNpmClient(config.npmClient),
+          },
         },
-      },
-      worker: {
-        script: require.resolve("./runners/WorkerRunner.js"),
-        options: {
-          taskArgs,
+        worker: {
+          script: require.resolve("./runners/WorkerRunner.js"),
+          options: {
+            taskArgs,
+          },
         },
+        noop: {
+          script: require.resolve("./runners/NoOpRunner.js"),
+          options: {},
+        },
+        ...config.runners,
       },
-      ...config.runners,
     },
+    maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, concurrency), ...maxWorkersPerTaskMap]),
+
     workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
   });
 

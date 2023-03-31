@@ -31,13 +31,10 @@ export function addToQueue(dependencyNames: string[], queue: string[], done: Pac
 }
 
 export class Hasher implements IHasher {
-  private repoInfo?: RepoInfo;
-
-  constructor(private packageRoot: string) {}
+  constructor(private packageRoot: string, private repoInfo: RepoInfo) {}
 
   public async createPackageHash(salt: string): Promise<string> {
-    const packageRoot = await getPackageRoot(this.packageRoot);
-    this.repoInfo = await getRepoInfo(packageRoot);
+    const packageRoot = this.packageRoot;
 
     const { workspaceInfo } = this.repoInfo;
 

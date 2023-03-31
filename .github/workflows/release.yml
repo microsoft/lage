@@ -1,13 +1,9 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: Release
 
 on:
   workflow_dispatch:
   push:
-    branches:
-      - master
+    branches: [master, v1]
     paths-ignore:
       - "docs/**"
 
@@ -51,6 +47,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    # This environment contains secrets needed for publishing
+    environment: release
+
     strategy:
       matrix:
         node-version: [16.x]
@@ -58,16 +57,32 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.repo_pat }}
+          # Don't save creds in the git config (so it's easier to override later)
+          persist-credentials: false
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+
       - run: yarn
+
       - run: yarn lage transpile types build test lint bundle --concurrency 2 --verbose
-      - run: |
+
+      - name: Set git user
+        run: |
           git config user.email "kchau@microsoft.com"
           git config user.name "Ken Chau"
-      - run: yarn release -y -n $NPM_AUTHTOKEN
+
+      - run: |
+          # Get the existing remote URL without creds, and use a trap (like try/finally)
+          # to restore it after this step finishes
+          trap "git remote set-url origin '$(git remote get-url origin)'" EXIT
+
+          # Add a token to the remote URL for auth during release
+          git remote set-url origin "https://$REPO_PAT@github.com/$GITHUB_REPOSITORY"
+
+          yarn release -y -n $NPM_AUTHTOKEN
         env:
           NPM_AUTHTOKEN: ${{ secrets.npm_authtoken }}
+          REPO_PAT: ${{ secrets.REPO_PAT }}

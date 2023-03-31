@@ -1,0 +1,34 @@
+{
+  "name": "@lage-run/config",
+  "version": "0.1.1",
+  "description": "Config management for Lage",
+  "repository": {
+    "url": "https://github.com/microsoft/lage"
+  },
+  "bin": {
+    "lage": "./bin/lage"
+  },
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc -w --preserveWatchOutput",
+    "test": "jest",
+    "lint": "monorepo-scripts lint"
+  },
+  "dependencies": {
+    "@lage-run/logger": "^1.2.2",
+    "@lage-run/scheduler-types": "^0.3.5",
+    "@lage-run/target-graph": "^0.8.1",
+    "workspace-tools": "^0.30.0",
+    "cosmiconfig": "^7.0.0"
+  },
+  "devDependencies": {
+    "monorepo-scripts": "*",
+    "backfill-config": "6.3.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

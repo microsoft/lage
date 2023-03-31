@@ -12,7 +12,7 @@ interface TraceEventsObject {
 
 interface CompleteEvent {
   name: string;
-  cat: string;
+  cat: string; // status#task
   ph: "X";
   ts: number; // in microseconds
   pid: number;
@@ -69,13 +69,15 @@ export class ChromeTraceEventsReporter implements Reporter {
     const { categorize } = this.options;
 
     for (const targetRun of targetRuns.values()) {
-      if (targetRun.target.hidden) {
+      // Skip hidden targets because those should be hidden by reporters.
+      // Hiding as well skipped targets to avoid polluting the profile.
+      if (targetRun.target.hidden || targetRun.status === "skipped") {
         continue;
       }
 
       const event = {
         name: targetRun.target.id,
-        cat: targetRun.status,
+        cat: `${targetRun.status}#${targetRun.target.task}`,
         ph: "X",
         ts: hrTimeToMicroseconds(targetRun.startTime) - hrTimeToMicroseconds(startTime), // in microseconds
         dur: hrTimeToMicroseconds(targetRun.duration ?? [0, 1000]), // in microseconds

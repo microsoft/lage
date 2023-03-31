@@ -1,8 +1,32 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Wed, 15 Feb 2023 16:47:12 GMT and should not be manually modified.
+This log was last generated on Tue, 14 Mar 2023 00:28:38 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.1
+
+Tue, 14 Mar 2023 00:28:38 GMT
+
+### Patches
+
+- adding support to directly run global task without deps (kchau@microsoft.com)
+
+## 0.8.0
+
+Fri, 10 Mar 2023 01:25:03 GMT
+
+### Minor changes
+
+- adding the ability to have a NoOp Task (kchau@microsoft.com)
+
+## 0.7.0
+
+Wed, 08 Mar 2023 00:05:27 GMT
+
+### Minor changes
+
+- allows global script cache (kchau@microsoft.com)
 
 ## 0.6.2
 

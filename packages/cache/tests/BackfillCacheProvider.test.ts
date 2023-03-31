@@ -5,6 +5,7 @@ import { Monorepo } from "@lage-run/monorepo-fixture";
 import { _testResetEnvHash } from "../src/salt";
 import path from "path";
 import createLogger from "@lage-run/logger";
+import { getCacheDirectory, getLogsCacheDirectory } from "../src/getCacheDirectory";
 
 describe("BackfillCacheProvider", () => {
   it("should fetch a cache of the outputs as specified in the outputs folder in target", async () => {
@@ -39,8 +40,10 @@ describe("BackfillCacheProvider", () => {
 
     const hash = "some-hash";
 
+    const cacheDir = getCacheDirectory(monorepo.root, hash);
+
     await monorepo.writeFiles({
-      "packages/a/node_modules/.cache/backfill/some-hash/output.txt": "output",
+      [path.join(cacheDir, hash, "output.txt")]: "output",
     });
 
     const fetchResult = await provider.fetch(hash, target);
@@ -91,7 +94,9 @@ describe("BackfillCacheProvider", () => {
 
     await provider.put(hash, target);
 
-    const outputFilePath = "packages/a/node_modules/.cache/backfill/some-hash/output.txt";
+    const cacheDir = getCacheDirectory(monorepo.root, hash);
+
+    const outputFilePath = path.join(cacheDir, hash, "output.txt");
     const contents = await monorepo.readFiles([outputFilePath]);
 
     expect(contents[outputFilePath]).toBe("output");

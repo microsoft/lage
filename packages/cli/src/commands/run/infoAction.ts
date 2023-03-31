@@ -1,8 +1,7 @@
 import type { Command } from "commander";
-import { createCache } from "./createCacheProvider.js";
 import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
-import { getConfig } from "../../config/getConfig.js";
+import { getConfig } from "@lage-run/config";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import createLogger from "@lage-run/logger";
 
@@ -30,7 +29,7 @@ export async function infoAction(options: RunOptions, command: Command) {
   const root = getWorkspaceRoot(process.cwd())!;
   const packageInfos = getPackageInfos(root);
 
-  const { tasks, taskArgs } = filterArgsForTasks(command.args);
+  const { tasks } = filterArgsForTasks(command.args);
 
   const targetGraph = createTargetGraph({
     logger,
@@ -50,14 +49,6 @@ export async function infoAction(options: RunOptions, command: Command) {
   // Make sure we do not attempt writeRemoteCache in info mode
   config.cacheOptions.writeRemoteCache = false;
 
-  const { hasher } = createCache({
-    root,
-    logger,
-    cacheOptions: config.cacheOptions,
-    skipLocalCache: false,
-    cliArgs: taskArgs,
-  });
-
   const { targets } = targetGraph;
 
   for (const target of targets.values()) {
@@ -68,11 +59,6 @@ export async function infoAction(options: RunOptions, command: Command) {
     const startIdIndex = target.dependencies.indexOf(getStartTargetId());
     target.dependencies.splice(startIdIndex, 1);
 
-    process.stdout.write(
-      `${JSON.stringify({
-        ...target,
-        hash: await hasher.hash(target),
-      })}\n`
-    );
+    process.stdout.write(`${JSON.stringify(target)}\n`);
   }
 }

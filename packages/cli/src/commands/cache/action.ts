@@ -1,9 +1,8 @@
 import { clearCache } from "./clearCache.js";
 import type { Command } from "commander";
-import { getConfig } from "../../config/getConfig.js";
+import { getConfig } from "@lage-run/config";
 import { pruneCache } from "./pruneCache.js";
 import createLogger from "@lage-run/logger";
-import { initializeReporters } from "../initializeReporters.js";
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 
 interface CacheOptions extends ReporterInitOptions {
@@ -15,8 +14,6 @@ export async function cacheAction(options: CacheOptions, command: Command) {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
   const logger = createLogger();
-
-  initializeReporters(logger, options);
 
   if (options.clear) {
     return await clearCache({

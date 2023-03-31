@@ -2,6 +2,114 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Wed, 29 Mar 2023 22:41:49 GMT",
+      "tag": "@lage-run/reporters_v1.0.7",
+      "version": "1.0.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.5",
+            "commit": "ec458f83e5adb784019efaa06f902ec75f85990c"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Mar 2023 00:28:38 GMT",
+      "tag": "@lage-run/reporters_v1.0.6",
+      "version": "1.0.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.4",
+            "commit": "c5fc57309aaa493758f646cbfe02dc84f679675e"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.8.1",
+            "commit": "c5fc57309aaa493758f646cbfe02dc84f679675e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 10 Mar 2023 01:25:03 GMT",
+      "tag": "@lage-run/reporters_v1.0.5",
+      "version": "1.0.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.3",
+            "commit": "5fd1b1eb7f87917f3abec9e99b240d38846eea09"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.8.0",
+            "commit": "5fd1b1eb7f87917f3abec9e99b240d38846eea09"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Mar 2023 00:05:27 GMT",
+      "tag": "@lage-run/reporters_v1.0.4",
+      "version": "1.0.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.2",
+            "commit": "e2eb2c00d1b23e2c65943e9c64134c14e04f985f"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.7.0",
+            "commit": "e2eb2c00d1b23e2c65943e9c64134c14e04f985f"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 18 Feb 2023 00:43:33 GMT",
+      "tag": "@lage-run/reporters_v1.0.3",
+      "version": "1.0.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "felescoto95@hotmail.com",
+            "package": "@lage-run/reporters",
+            "commit": "d6b4b81f694ee20c10f2521dd3058547699562c4",
+            "comment": "ChromeTraceEventsReporter: Add task name to category"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 18 Feb 2023 00:40:18 GMT",
+      "tag": "@lage-run/reporters_v1.0.2",
+      "version": "1.0.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "felescoto95@hotmail.com",
+            "package": "@lage-run/reporters",
+            "commit": "75247c3e9172dc763c5253cf94014b99ac2f4fc4",
+            "comment": "ChromeTraceEventsReporter: Hide skipped tasks from the profile"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Feb 2023 16:47:12 GMT",
       "tag": "@lage-run/reporters_v1.0.1",
       "version": "1.0.1",

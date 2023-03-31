@@ -43,13 +43,16 @@ describe("SimpleScheduler watch mode", () => {
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 4,
-      cacheProvider,
-      hasher,
+      workerData: {
+        root,
+        taskArgs: [],
+        skipLocalCache: false,
+        runners: {},
+      },
       maxWorkersPerTask: new Map(),
       continueOnError: true,
       shouldCache: true,
       shouldResetCache: false,
-      runners: {},
       pool: new InProcPool(runner),
       workerIdleMemoryLimit: 1024 * 1024 * 1024,
     });
@@ -92,13 +95,16 @@ describe("SimpleScheduler watch mode", () => {
     const scheduler = new SimpleScheduler({
       logger,
       concurrency: 4,
-      cacheProvider,
-      hasher,
       maxWorkersPerTask: new Map(),
       continueOnError: true,
       shouldCache: true,
       shouldResetCache: false,
-      runners: {},
+      workerData: {
+        root,
+        taskArgs: [],
+        skipLocalCache: false,
+        runners: {},
+      },
       pool: new InProcPool(runner),
       workerIdleMemoryLimit: 1024 * 1024 * 1024,
     });

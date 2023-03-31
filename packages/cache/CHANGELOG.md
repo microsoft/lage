@@ -1,8 +1,68 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Wed, 15 Feb 2023 16:51:15 GMT and should not be manually modified.
+This log was last generated on Wed, 29 Mar 2023 20:02:40 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.1
+
+Wed, 29 Mar 2023 20:02:40 GMT
+
+### Patches
+
+- moving back to fast-glob for globbing, as it was more accurate (kchau@microsoft.com)
+- Bump @lage-run/hasher to v0.2.2
+
+## 0.5.0
+
+Mon, 27 Mar 2023 18:00:15 GMT
+
+### Minor changes
+
+- gitignore to be respected again in the envglob - this causes major perf regression otherwise (kchau@microsoft.com)
+
+## 0.4.3
+
+Tue, 14 Mar 2023 00:28:38 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.8.1
+
+## 0.4.2
+
+Fri, 10 Mar 2023 01:25:03 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.8.0
+
+## 0.4.1
+
+Wed, 08 Mar 2023 17:35:28 GMT
+
+### Patches
+
+- deleted unused sortObjects (kchau@microsoft.com)
+- Bump @lage-run/hasher to v0.2.1
+
+## 0.4.0
+
+Wed, 08 Mar 2023 00:05:27 GMT
+
+### Minor changes
+
+- allows global script cache (kchau@microsoft.com)
+- Bump @lage-run/hasher to v0.2.0
+- Bump @lage-run/target-graph to v0.7.0
+
+## 0.3.0
+
+Tue, 21 Feb 2023 21:30:37 GMT
+
+### Minor changes
+
+- cache directory to be centralized (kchau@microsoft.com)
 
 ## 0.2.5
 

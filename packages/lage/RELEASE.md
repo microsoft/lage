@@ -10,24 +10,19 @@ Lage version 2 is now available at dist-tag `@latest`, featuring significant upd
 * Weighted targets to allow better utilization of resources for tasks that spawn multiple processes like Jest
 * Smaller installation, faster startup times thanks to distributing a pre-made bundle rather than individual scripts
 * Featured in v1, but expanded in v2: the configuration syntax of pipelines is improved to allow for more [configuration options](https://microsoft.github.io/lage/docs/Reference/config#a-complete-tour-of-the-config)
-* Remote fall back cache to speed up local development experience
+* Remote fallback cache to speed up local development experience
 * `@lage-run` scoped packages are now available to integrate as a set of Node.js API such as target graphs, scheduling, worker pool, logging, caching, etc.
 
-## Get started today
+## Breaking changes
 
-Installing `lage` has always been a single package dependency and one installation away. Add `lage` to your `package.json` as one of your `devDependencies`:
+* `lage` requires **Node 16**, or using the `--experimental-abortcontroller` flag in Node 14
+* `lage` now will automatically write remote cache if the typical environment variable is set (e.g. `CI` or `TF_BUILD`)
+* `info` command is not implemented yet
+* `graph` command is not implemented yet
 
-```
-npm install --save-dev lage
-```
+## Other features and migration
 
-or 
-
-```
-yarn add -D lage
-```
-
-Read up on how to [get started quickly](https://microsoft.github.io/lage/docs/Quick%20Start) in the docs!
+[See the migration guide on the website.](https://microsoft.github.io/lage/docs/Cookbook/migration)
 
 ## New Node.js API @lage-run scoped packages
 
@@ -40,4 +35,3 @@ Read up on how to [get started quickly](https://microsoft.github.io/lage/docs/Qu
 * `@lage-run/scheduler`: a typed work scheduler that understands how to schedule work according to a `target-graph`
 * `@lage-run/target-graph`: a graph representation between of packages and their tasks; with utilities to caculate subgraphs
 * `@lage-run/worker-threads-pool`: a typed `worker_threads` pool implementation that includes the ability to associate stdout of each task given to workers
-
