@@ -1,17 +1,17 @@
 import EventEmitter from "events";
-import { LogEntry, LogLevel, Reporter } from "@lage-run/logger";
+import { type LogEntry, LogLevel, type Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 
 // @ts-ignore Ignoring ESM in CJS errors here, but still importing the types to be used
 // import type { TaskReporter as TaskReporterType, TaskReporterTask } from "@ms-cloudpack/task-reporter";
 import { TaskReporter, type TaskReporterTask } from "@ms-cloudpack/task-reporter";
-import { Target } from "@lage-run/target-graph";
+import type { Target } from "@lage-run/target-graph";
 import gradient from "gradient-string";
 import chalk from "chalk";
-import { Writable } from "stream";
+import type { Writable } from "stream";
 import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
-import { formatBytes } from "./formatBytes";
-import { slowestTargetRuns } from "./slowestTargetRuns";
+import { formatBytes } from "./formatBytes.js";
+import { slowestTargetRuns } from "./slowestTargetRuns.js";
 
 const colors = {
   [LogLevel.info]: chalk.white,
@@ -43,7 +43,7 @@ export class ProgressReporter implements Reporter {
   constructor(private options: { concurrency: number; version: string } = { concurrency: 0, version: "0.0.0" }) {
     this.taskReporter = this.createTaskReporter();
 
-    this.print(`${fancy("lage")} - Version ${options.version}`);
+    this.print(`${fancy("lage")} - Version ${options.version} - ${options.concurrency} Workers`);
   }
 
   createTaskReporter() {
