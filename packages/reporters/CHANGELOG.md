@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Wed, 29 Mar 2023 22:41:49 GMT and should not be manually modified.
+This log was last generated on Sat, 01 Apr 2023 00:28:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.0
+
+Sat, 01 Apr 2023 00:28:31 GMT
+
+### Minor changes
+
+- replace ink with @ms-cloudpack/task-reporter (kchau@microsoft.com)
 
 ## 1.0.7
 

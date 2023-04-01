@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "replace ink with @ms-cloudpack/task-reporter",
-  "packageName": "@lage-run/reporters",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

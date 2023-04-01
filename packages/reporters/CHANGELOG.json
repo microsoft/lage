@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Sat, 01 Apr 2023 00:28:31 GMT",
+      "tag": "@lage-run/reporters_v1.1.0",
+      "version": "1.1.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "884c8b5aba15cd1cc5f943c06a6a9da4af20f806",
+            "comment": "replace ink with @ms-cloudpack/task-reporter"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 29 Mar 2023 22:41:49 GMT",
       "tag": "@lage-run/reporters_v1.0.7",
       "version": "1.0.7",

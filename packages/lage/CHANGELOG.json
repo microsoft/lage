@@ -2,6 +2,27 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sat, 01 Apr 2023 00:28:31 GMT",
+      "tag": "lage_v2.5.0",
+      "version": "2.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "884c8b5aba15cd1cc5f943c06a6a9da4af20f806",
+            "comment": "replace ink with @ms-cloudpack/task-reporter"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.13.0",
+            "commit": "884c8b5aba15cd1cc5f943c06a6a9da4af20f806"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 Mar 2023 23:46:52 GMT",
       "tag": "lage_v2.4.0",
       "version": "2.4.0",

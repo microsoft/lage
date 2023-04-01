@@ -1,8 +1,17 @@
 # Change Log - lage
 
-This log was last generated on Thu, 30 Mar 2023 23:46:52 GMT and should not be manually modified.
+This log was last generated on Sat, 01 Apr 2023 00:28:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.0
+
+Sat, 01 Apr 2023 00:28:31 GMT
+
+### Minor changes
+
+- replace ink with @ms-cloudpack/task-reporter (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.13.0
 
 ## 2.4.0
 
