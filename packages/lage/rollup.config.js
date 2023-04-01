@@ -37,7 +37,7 @@ export default [
       retainDynamicImport(),
       terser(),
     ],
-    external: ["fsevents", "yoga-layout-prebuilt", "glob-hasher"],
+    external: ["fsevents", "glob-hasher"],
     inlineDynamicImports: true,
   },
   {
@@ -83,7 +83,7 @@ export default [
       retainDynamicImport(),
       terser(),
     ],
-    external: ["fsevents", "yoga-layout-prebuilt", "glob-hasher"],
+    external: ["fsevents", "glob-hasher"],
     inlineDynamicImports: true,
   },
 ];

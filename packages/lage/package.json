@@ -12,7 +12,6 @@
     "dts-bundle": "dts-bundle-generator --config ./dts-bundle.config.js && node ./scripts/update-dts-bundle.js"
   },
   "dependencies": {
-    "yoga-layout-prebuilt": "^1.10.0",
     "glob-hasher": "1.2.1"
   },
   "optionalDependencies": {

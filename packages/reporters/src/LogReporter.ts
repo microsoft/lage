@@ -76,11 +76,6 @@ function normalize(prefixOrMessage: string, message?: string) {
   }
 }
 
-function getQueueDuration(queueTime: [number, number], startTime: [number, number]) {
-  const queueDuration = hrtimeDiff(queueTime, startTime);
-  return formatDuration(hrToSeconds(queueDuration));
-}
-
 export class LogReporter implements Reporter {
   logStream: Writable = process.stdout;
   private logEntries = new Map<string, LogEntry[]>();
