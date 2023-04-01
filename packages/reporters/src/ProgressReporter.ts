@@ -1,31 +1,56 @@
 import EventEmitter from "events";
-import type { LogEntry, Reporter } from "@lage-run/logger";
+import { LogEntry, LogLevel, Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 
 // @ts-ignore Ignoring ESM in CJS errors here, but still importing the types to be used
 // import type { TaskReporter as TaskReporterType, TaskReporterTask } from "@ms-cloudpack/task-reporter";
-import * as taskReporter from "@ms-cloudpack/task-reporter";
+import { TaskReporter, type TaskReporterTask } from "@ms-cloudpack/task-reporter";
 import { Target } from "@lage-run/target-graph";
+import gradient from "gradient-string";
+import chalk from "chalk";
+import { Writable } from "stream";
+import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
+import { formatBytes } from "./formatBytes";
+import { slowestTargetRuns } from "./slowestTargetRuns";
+
+const colors = {
+  [LogLevel.info]: chalk.white,
+  [LogLevel.verbose]: chalk.gray,
+  [LogLevel.warn]: chalk.white,
+  [LogLevel.error]: chalk.hex("#FF1010"),
+  [LogLevel.silly]: chalk.green,
+  task: chalk.hex("#00DDDD"),
+  pkg: chalk.hex("#FFD66B"),
+  ok: chalk.green,
+  error: chalk.red,
+  warn: chalk.yellow,
+};
+
+function fancy(str: string) {
+  return gradient({ r: 237, g: 178, b: 77 }, "cyan")(str);
+}
 
 export class ProgressReporter implements Reporter {
+  logStream: Writable = process.stdout;
   startTime: [number, number] = [0, 0];
 
   logEvent: EventEmitter = new EventEmitter();
   logEntries = new Map<string, LogEntry[]>();
 
-  taskReporter: taskReporter.TaskReporter;
-  tasks: Map<string, taskReporter.TaskReporterTask> = new Map();
+  taskReporter: TaskReporter;
+  tasks: Map<string, TaskReporterTask> = new Map();
 
   constructor(private options: { concurrency: number; version: string } = { concurrency: 0, version: "0.0.0" }) {
     this.taskReporter = this.createTaskReporter();
+
+    this.print(`${fancy("lage")} - Version ${options.version}`);
   }
 
   createTaskReporter() {
-    // return import("@ms-cloudpack/task-reporter").then((taskReporterModule) => {
-    //   const TaskReporter = taskReporterModule.TaskReporter;
-    return new taskReporter.TaskReporter({
+    return new TaskReporter({
       productName: "lage",
       version: this.options.version,
+
       showCompleted: true,
       showConsoleDebug: true,
       showConsoleError: true,
@@ -40,7 +65,6 @@ export class ProgressReporter implements Reporter {
       showTaskDetails: true,
       showTaskExtended: true,
     });
-    // });
   }
 
   log(entry: LogEntry<any>) {
@@ -65,43 +89,127 @@ export class ProgressReporter implements Reporter {
       const target: Target = entry.data.target;
       const status: TargetStatus = entry.data.status;
 
-      const report = async () => {
-        const reporterTask = this.tasks.has(target.id) ? this.tasks.get(target.id) : (await this.taskReporter).addTask(target.label, true);
+      const reporterTask = this.tasks.has(target.id) ? this.tasks.get(target.id) : this.taskReporter.addTask(target.label, true);
+
+      if (reporterTask) {
+        this.tasks.set(target.id, reporterTask);
         switch (status) {
           case "running":
-            reporterTask?.start();
+            reporterTask.start();
             break;
 
           case "success":
-            reporterTask?.complete({ status: "complete" });
+            reporterTask.complete({ status: "complete" });
             break;
 
           case "aborted":
-            reporterTask?.complete({ status: "abort" });
+            reporterTask.complete({ status: "abort" });
             break;
 
           case "skipped":
-            reporterTask?.complete({ status: "skip" });
+            reporterTask.complete({ status: "skip" });
             break;
 
           case "failed":
-            reporterTask?.complete({ status: "fail" });
+            reporterTask.complete({ status: "fail" });
             break;
         }
-      };
-
-      // async, fire & forget here
-      report();
+      }
     }
   }
 
+  private print(message: string) {
+    this.logStream.write(message + "\n");
+  }
+
+  hr() {
+    this.print("┈".repeat(80));
+  }
+
   summarize(schedulerRunSummary: SchedulerRunSummary) {
-    const summarizeAsync = async () => {
-      const reporter = await this.taskReporter;
-      reporter.complete(schedulerRunSummary.results);
+    const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
+    const { failed, aborted, skipped, success, pending } = targetRunByStatus;
+
+    const statusColorFn: {
+      [status in TargetStatus]: chalk.Chalk;
+    } = {
+      success: chalk.greenBright,
+      failed: chalk.redBright,
+      skipped: chalk.gray,
+      running: chalk.yellow,
+      pending: chalk.gray,
+      aborted: chalk.red,
+      queued: chalk.magenta,
     };
 
-    // async, fire & forget
-    summarizeAsync();
+    if (targetRuns.size > 0) {
+      this.print(chalk.cyanBright(`\nSummary`));
+
+      this.hr();
+
+      const slowestTargets = slowestTargetRuns([...targetRuns.values()]);
+
+      for (const wrappedTarget of slowestTargets) {
+        if (wrappedTarget.target.hidden) {
+          continue;
+        }
+
+        const colorFn = statusColorFn[wrappedTarget.status] ?? chalk.white;
+        const target = wrappedTarget.target;
+        const hasDurations = !!wrappedTarget.duration && !!wrappedTarget.queueTime;
+        const queueDuration: [number, number] = hasDurations ? hrtimeDiff(wrappedTarget.queueTime, wrappedTarget.startTime) : [0, 0];
+
+        this.print(
+          `${target.label} ${colorFn(
+            `${wrappedTarget.status === "running" ? "running - incomplete" : wrappedTarget.status}${
+              hasDurations
+                ? `, took ${formatDuration(hrToSeconds(wrappedTarget.duration))}, queued for ${formatDuration(hrToSeconds(queueDuration))}`
+                : ""
+            }`
+          )}`
+        );
+      }
+
+      this.print(
+        `success: ${success.length}, skipped: ${skipped.length}, pending: ${pending.length}, aborted: ${aborted.length}, failed: ${failed.length}`
+      );
+
+      this.print(
+        `worker restarts: ${schedulerRunSummary.workerRestarts}, max worker memory usage: ${formatBytes(
+          schedulerRunSummary.maxWorkerMemoryUsage
+        )}`
+      );
+    } else {
+      this.print("Nothing has been run.");
+    }
+
+    this.hr();
+
+    if (failed && failed.length > 0) {
+      for (const targetId of failed) {
+        const target = targetRuns.get(targetId)?.target;
+
+        if (target) {
+          const { packageName, task } = target;
+          const failureLogs = this.logEntries.get(targetId);
+
+          this.print(`[${colors.pkg(packageName ?? "<root>")} ${colors.task(task)}] ${colors[LogLevel.error]("ERROR DETECTED")}`);
+
+          if (failureLogs) {
+            for (const entry of failureLogs) {
+              // Log each entry separately to prevent truncation
+              this.print(entry.msg);
+            }
+          }
+
+          this.hr();
+        }
+      }
+    }
+
+    const allCacheHits = [...targetRuns.values()].filter((run) => !run.target.hidden).length === skipped.length;
+    const allCacheHitText = allCacheHits ? fancy(`All targets skipped!`) : "";
+
+    this.print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
   }
 }
