@@ -25,7 +25,6 @@
     "gradient-string": "^2.0.1"
   },
   "devDependencies": {
-    "@types/react": "18.0.28",
     "memory-streams": "0.1.3"
   },
   "publishConfig": {
