@@ -48,9 +48,9 @@ export async function getPackageHash(packageRoot: string, repoInfo: RepoInfo): P
 
   const internalDependencies = resolveInternalDependencies(allDependencies, workspaceInfo);
 
-  const externalDeoendencies = resolveExternalDependencies(allDependencies, workspaceInfo, parsedLock);
+  const externalDependencies = resolveExternalDependencies(allDependencies, workspaceInfo, parsedLock);
 
-  const resolvedDependencies = [...internalDependencies, ...externalDeoendencies];
+  const resolvedDependencies = [...internalDependencies, ...externalDependencies];
 
   const filesHash = await generateHashOfFiles(packageRoot, repoInfo);
   const dependenciesHash = hashStrings(resolvedDependencies);

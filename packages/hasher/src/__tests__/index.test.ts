@@ -96,6 +96,13 @@ describe("The main Hasher class", () => {
     return hash;
   };
 
+  it("just a test", async () => {
+    const root = path.join("/workspace/test-lage");
+    const repoInfo = await getRepoInfo(root);
+    const hasher = new Hasher(path.join(root, "packages/lage"), repoInfo);
+    const hash = await hasher.createPackageHash("hello");
+  });
+
   it("creates different hashes given different fixtures", async () => {
     const hash = await setupFixtureAndReturnHash();
 
