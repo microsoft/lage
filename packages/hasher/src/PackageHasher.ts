@@ -1,18 +1,15 @@
-import globby from "globby";
 import {
   type PackageInfos,
-  getWorkspaces,
-  WorkspaceInfo,
   type ParsedLock,
   PackageInfo,
   getPackageInfos,
   parseLockFile,
+  nameAtVersion,
+  queryLockFile,
 } from "workspace-tools";
-import { resolveExternalDependencies } from "./resolveExternalDependencies";
-import { resolveInternalDependencies } from "./resolveInternalDependencies";
 import path from "path";
-
-type Dependencies = Record<string, string>;
+import { glob, hash as hashFiles } from "glob-hasher";
+import { hashStrings } from "./helpers";
 
 export interface PackageHasherOptions {
   root: string;
@@ -21,6 +18,9 @@ export interface PackageHasherOptions {
 }
 
 export class PackageHasher {
+  /** @type {import('globby')} */
+  static globby;
+
   constructor(private options: PackageHasherOptions) {}
 
   async hash(packageName: string, inputs?: string[]) {
@@ -35,29 +35,63 @@ export class PackageHasher {
 
     const { packageJsonPath } = packageInfo;
 
-    //    const externalDeps = resolveExternalDependencies(allDependencies, workspaces, parsedLock);
+    const internalDeps = this.getInternalDeps(packageInfo);
+    const externalDeps = this.getExternalDeps(packageInfo);
 
     // if no inputs, it means all non-gitignored files and the package's internal deps source files as well
+    let sourceFiles: string[] = [];
     if (!inputs) {
       packageFiles = await this.getPackageFiles(path.dirname(packageJsonPath));
       const internalDepFiles = await this.getInternalDependentPackageFiles(packageInfo);
-      console.log(packageFiles, internalDepFiles);
+      sourceFiles = packageFiles.concat(internalDepFiles);
     } else {
+      const packageFilePatterns: string[] = [];
+      const dependencyFilePatterns: string[] = [];
+      const globalFilePatterns: string[] = [];
+
+      for (const input of inputs) {
+        if (input.startsWith("^")) {
+          dependencyFilePatterns.push(input.substring(1));
+        } else if (input.startsWith("#")) {
+          globalFilePatterns.push(input.substring(1));
+        } else if (input.startsWith("//")) {
+          globalFilePatterns.push(input.substring(2));
+        } else {
+          packageFilePatterns.push(input);
+        }
+      }
+
+      packageFiles = await this.getPackageFiles(path.dirname(packageJsonPath), packageFilePatterns);
+      const globalFiles = await this.getPackageFiles(root, packageFilePatterns);
+      const internalDepFiles = await this.getInternalDependentPackageFiles(packageInfo, dependencyFilePatterns);
+
+      sourceFiles = packageFiles.concat(internalDepFiles).concat(globalFiles);
     }
+
+    const fileHash = hashFiles(sourceFiles, { cwd: root });
+    const hash = hashStrings([]);
+  }
+
+  getInternalDeps(packageInfo: PackageInfo) {
+    const { packageInfos } = this.options;
+    const { dependencies, devDependencies } = packageInfo;
+    return [...(dependencies ? Object.keys(dependencies) : []), ...(devDependencies ? Object.keys(devDependencies) : [])].filter(
+      (dep) => !!packageInfos[dep]
+    );
+  }
+
+  getExternalDeps(packageInfo: PackageInfo) {
+    const { packageInfos } = this.options;
+    const { dependencies, devDependencies } = packageInfo;
+    return [...(dependencies ? Object.keys(dependencies) : []), ...(devDependencies ? Object.keys(devDependencies) : [])].filter(
+      (dep) => !packageInfos[dep]
+    );
   }
 
   async getInternalDependentPackageFiles(packageInfo: PackageInfo, inputs?: string[]) {
-    console.log("HI");
     const { packageInfos } = this.options;
 
-    function getInternalDeps(packageInfo: PackageInfo) {
-      const { dependencies, devDependencies } = packageInfo;
-      return [...(dependencies ? Object.keys(dependencies) : []), ...(devDependencies ? Object.keys(devDependencies) : [])].filter(
-        (dep) => !!packageInfos[dep]
-      );
-    }
-
-    const queue = [...getInternalDeps(packageInfo)];
+    const queue = [...this.getInternalDeps(packageInfo)];
     const visited = new Set<string>();
     const getFilePromises: Promise<string[]>[] = [];
 
@@ -76,7 +110,7 @@ export class PackageHasher {
       getFilePromises.push(this.getPackageFiles(path.dirname(packageInfos[pkg].packageJsonPath), inputs));
 
       if (packageInfos[pkg]) {
-        const deps = getInternalDeps(packageInfos[pkg]);
+        const deps = this.getInternalDeps(packageInfos[pkg]);
         queue.push(...deps);
       }
     }
@@ -85,23 +119,60 @@ export class PackageHasher {
     return allResults.flat().sort();
   }
 
-  async getExternalPackageAndNames(allDependencies) {}
+  async getExternalPackageAtVersion(packageInfo: PackageInfo) {
+    const { parsedLock } = this.options;
+    const dependencies = this.getExternalDeps(packageInfo);
+
+    const queue = Object.entries(dependencies);
+    const externals: string[] = [];
+    const visited = new Set<string>();
+
+    while (queue.length > 0) {
+      const nameVersion = queue.shift()!;
+
+      if (visited.has(nameAtVersion(nameVersion[0], nameVersion[1]))) {
+        continue;
+      }
+
+      const [name, versionRange] = nameVersion;
+      visited.add(nameAtVersion(name, versionRange));
+
+      const lockFileResult = queryLockFile(name, versionRange, parsedLock);
+
+      if (lockFileResult) {
+        const { version, dependencies } = lockFileResult;
+
+        for (const [depName, depVersion] of Object.entries(dependencies ?? {})) {
+          queue.push([depName, depVersion]);
+        }
+
+        externals.push(nameAtVersion(name, version));
+      } else {
+        externals.push(nameAtVersion(name, versionRange));
+      }
+    }
+
+    return [...externals];
+  }
 
   async getPackageFiles(packageRoot: string, inputs?: string[]) {
-    return (await globby(inputs ?? ["**/*", "!**/node_modules/**"], { cwd: packageRoot, gitignore: true })).map((f) =>
-      path.join(packageRoot, f)
-    );
+    const results = glob(inputs ?? ["!**/node_modules/**", "!.git"], { cwd: packageRoot, gitignore: true, concurrency: 2 }) ?? [];
+    return results;
   }
 }
 
 if (require.main === module) {
   (async () => {
-    const root = "/workspace/test-lage";
-    const hasher = new PackageHasher({
-      root,
-      packageInfos: getPackageInfos(root),
-      parsedLock: await parseLockFile(root),
-    });
-    console.log(await hasher.hash("lage"));
+    try {
+      const root = "/workspace/test-lage";
+      const hasher = new PackageHasher({
+        root,
+        packageInfos: getPackageInfos(root),
+        parsedLock: await parseLockFile(root),
+      });
+      console.log(await hasher.hash("lage"));
+    } catch (e) {
+      console.error(e);
+    }
   })();
 }
