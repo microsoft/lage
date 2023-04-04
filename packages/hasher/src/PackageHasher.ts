@@ -21,9 +21,15 @@ export class PackageHasher {
   /** @type {import('globby')} */
   static globby;
 
+  static packageHashes = new Map<string, string>();
+
   constructor(private options: PackageHasherOptions) {}
 
   async hash(packageName: string, inputs?: string[]) {
+    if (PackageHasher.packageHashes.has(packageName)) {
+      return PackageHasher.packageHashes.get(packageName);
+    }
+
     const { root, packageInfos, parsedLock } = this.options;
     let packageFiles: string[] = [];
 
@@ -68,8 +74,15 @@ export class PackageHasher {
       sourceFiles = packageFiles.concat(internalDepFiles).concat(globalFiles);
     }
 
-    const fileHash = hashFiles(sourceFiles, { cwd: root });
-    const hash = hashStrings([]);
+    const orderedSourceFiles = sourceFiles.sort();
+
+    console.time("hashFiles");
+    const fileHashes = hashFiles(orderedSourceFiles) ?? {};
+    console.timeEnd("hashFiles");
+
+    const hash = hashStrings([...Object.values(fileHashes), ...internalDeps, ...externalDeps]);
+
+    return hash;
   }
 
   getInternalDeps(packageInfo: PackageInfo) {
@@ -156,7 +169,9 @@ export class PackageHasher {
   }
 
   async getPackageFiles(packageRoot: string, inputs?: string[]) {
-    const results = glob(inputs ?? ["!**/node_modules/**", "!.git"], { cwd: packageRoot, gitignore: true, concurrency: 2 }) ?? [];
+    console.time("glob " + packageRoot);
+    const results = glob(inputs ?? [], { cwd: packageRoot, gitignore: true, concurrency: 16 }) ?? [];
+    console.timeEnd("glob " + packageRoot);
     return results;
   }
 }
@@ -164,13 +179,13 @@ export class PackageHasher {
 if (require.main === module) {
   (async () => {
     try {
-      const root = "/workspace/test-lage";
+      const root = "/workspace/tmp1";
       const hasher = new PackageHasher({
         root,
         packageInfos: getPackageInfos(root),
         parsedLock: await parseLockFile(root),
       });
-      console.log(await hasher.hash("lage"));
+      console.log(await hasher.hash("@msteams/apps-files"));
     } catch (e) {
       console.error(e);
     }
