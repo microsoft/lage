@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Sat, 01 Apr 2023 00:28:31 GMT and should not be manually modified.
+This log was last generated on Tue, 04 Apr 2023 20:00:55 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.1
+
+Tue, 04 Apr 2023 20:00:55 GMT
+
+### Patches
+
+- Fixed a bundling issue where cache was no longer working due to exportConditions problem in rollup's node plugin (kchau@microsoft.com)
 
 ## 2.5.0
 
