@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fixed a bundling issue where cache was no longer working due to exportConditions problem in rollup's node plugin",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
