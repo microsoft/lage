@@ -1,6 +1,6 @@
 import createLogger from "@lage-run/logger";
 import { Monorepo } from "@lage-run/monorepo-fixture";
-import { getPackageInfos } from "workspace-tools";
+import { getPackageInfosAsync } from "workspace-tools";
 import { getFilteredPackages } from "../src/filter/getFilteredPackages";
 
 describe("getFilteredPackages", () => {
@@ -24,7 +24,7 @@ describe("getFilteredPackages", () => {
 
     const filteredPackages = getFilteredPackages({
       root: monorepo.root,
-      packageInfos: getPackageInfos(monorepo.root),
+      packageInfos: await getPackageInfosAsync(monorepo.root),
       includeDependents: false,
       includeDependencies: false,
       since: "HEAD~1",
@@ -59,7 +59,7 @@ describe("getFilteredPackages", () => {
 
     const filteredPackages = getFilteredPackages({
       root: monorepo.root,
-      packageInfos: getPackageInfos(monorepo.root),
+      packageInfos: await getPackageInfosAsync(monorepo.root),
       includeDependents: false,
       includeDependencies: false,
       since: "HEAD~1",
@@ -96,7 +96,7 @@ describe("getFilteredPackages", () => {
 
     const filteredPackages = getFilteredPackages({
       root: monorepo.root,
-      packageInfos: getPackageInfos(monorepo.root),
+      packageInfos: await getPackageInfosAsync(monorepo.root),
       includeDependents: false,
       includeDependencies: false,
       since: "HEAD~1",
