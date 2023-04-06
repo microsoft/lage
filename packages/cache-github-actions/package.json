@@ -16,7 +16,7 @@
   "dependencies": {
     "backfill-config": "^6.3.0",
     "backfill-logger": "^5.1.3",
-    "workspace-tools": "^0.31.0",
+    "workspace-tools": "^0.32.0",
     "@actions/cache": "^3.0.4"
   },
   "devDependencies": {
