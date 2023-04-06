@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache-github-actions
 
-This log was last generated on Wed, 15 Feb 2023 16:47:12 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Apr 2023 22:27:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.11
+
+Thu, 06 Apr 2023 22:27:50 GMT
+
+### Patches
+
+- bumps workspace-tools and use async packageinfos (kchau@microsoft.com)
 
 ## 0.1.10
 

@@ -2,6 +2,39 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Thu, 06 Apr 2023 22:27:50 GMT",
+      "tag": "@lage-run/scheduler_v0.11.1",
+      "version": "0.11.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/target-graph to v0.8.2",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v0.5.2",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/config to v0.1.2",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.6",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 Mar 2023 23:46:52 GMT",
       "tag": "@lage-run/scheduler_v0.11.0",
       "version": "0.11.0",

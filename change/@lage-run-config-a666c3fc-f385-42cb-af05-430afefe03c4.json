@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "bumps workspace-tools and use async packageinfos",
-  "packageName": "@lage-run/config",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,19 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Thu, 30 Mar 2023 23:46:52 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Apr 2023 22:27:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.11.1
+
+Thu, 06 Apr 2023 22:27:50 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.8.2
+- Bump @lage-run/cache to v0.5.2
+- Bump @lage-run/config to v0.1.2
+- Bump @lage-run/scheduler-types to v0.3.6
 
 ## 0.11.0
 

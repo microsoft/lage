@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Thu, 06 Apr 2023 22:27:50 GMT",
+      "tag": "@lage-run/cache-github-actions_v0.1.11",
+      "version": "0.1.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b",
+            "comment": "bumps workspace-tools and use async packageinfos"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Feb 2023 16:47:12 GMT",
       "tag": "@lage-run/cache-github-actions_v0.1.10",
       "version": "0.1.10",

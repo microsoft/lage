@@ -2,6 +2,57 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 06 Apr 2023 22:27:50 GMT",
+      "tag": "@lage-run/cli_v0.13.1",
+      "version": "0.13.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b",
+            "comment": "bumps workspace-tools and use async packageinfos"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.1.2",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v0.11.1",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.6",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.8.2",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v0.5.2",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.1.1",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 01 Apr 2023 00:28:31 GMT",
       "tag": "@lage-run/cli_v0.13.0",
       "version": "0.13.0",
