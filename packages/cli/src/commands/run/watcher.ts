@@ -1,7 +1,7 @@
 import chokidar from "chokidar";
 
 import path from "path";
-import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { getWorkspaceRoot } from "workspace-tools";
 import type { PackageInfos } from "workspace-tools";
 import EventEmitter from "events";
 
@@ -13,10 +13,9 @@ interface PathIndex {
   [pathPart: string]: PathIndexItem;
 }
 
-export function watch(cwd: string): EventEmitter {
+export function watch(cwd: string, packageInfos: PackageInfos): EventEmitter {
   const events = new EventEmitter();
   const root = getWorkspaceRoot(cwd);
-  const packageInfos = getPackageInfos(cwd);
 
   // generate a tree index of all the packages
   const packageIndex = createPackageIndex(root!, packageInfos);

@@ -4836,10 +4836,10 @@ word-wrap@^1.2.3:
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
 
-workspace-tools@0.30.0, workspace-tools@^0.30.0:
-  version "0.30.0"
-  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.30.0.tgz#93103df09a66d5a4260bf65005b8f9924e439cf1"
-  integrity sha512-vQrzjAFvQYI2Zg9kFAo43aIgQNX5VSTtWLvOxCKhgjKnPdyLMXcPNxPTCKu3v+tjDW+YJNXUAigVv+pykrwOsQ==
+workspace-tools@0.30.0, workspace-tools@^0.30.0, workspace-tools@^0.32.0:
+  version "0.32.0"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.32.0.tgz#ffc07ae42377aad774b294168afad1b69d7db379"
+  integrity sha512-A61/L7jpHLAvGVgjtT5tJypOP7FVuI3iLwJYlyxJSrZpY5NQ/lCzW1fQZiXi7gNJDnJXuXjQM5cSLvIANH3X4Q==
   dependencies:
     "@yarnpkg/lockfile" "^1.1.0"
     git-url-parse "^13.0.0"

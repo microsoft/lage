@@ -3,7 +3,7 @@ import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions, getConcurrency } from "@lage-run/config";
-import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { getPackageInfosAsync, getWorkspaceRoot } from "workspace-tools";
 import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
 import { LogReporter } from "@lage-run/reporters";
 import { SimpleScheduler } from "@lage-run/scheduler";
@@ -43,7 +43,7 @@ export async function watchAction(options: RunOptions, command: Command) {
 
   // Build Target Graph
   const root = getWorkspaceRoot(process.cwd())!;
-  const packageInfos = getPackageInfos(root);
+  const packageInfos = await getPackageInfosAsync(root);
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
@@ -119,7 +119,7 @@ export async function watchAction(options: RunOptions, command: Command) {
   }
 
   // When initial run is done, disable fetching of caches on all targets, keep writing to the cache
-  const watcher = watch(root);
+  const watcher = await watch(root, packageInfos);
   watcher.on("change", async (packageName) => {
     reporter.resetLogEntries();
     const targets = new Map<string, Target>();
