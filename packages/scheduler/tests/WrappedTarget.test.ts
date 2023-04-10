@@ -36,21 +36,28 @@ class InProcPool implements Pool {
   }
 }
 
+class SkippyInProcPool implements Pool {
+  constructor(private runner: TargetRunner) {}
+  exec({ target }: { target: Target; weight: number }, weight, _setup, _teardown, abortSignal?: AbortSignal): Promise<any> {
+    this.runner.run({ target, weight, abortSignal });
+    return Promise.resolve({
+      skipped: true,
+      hash: "1234",
+    });
+  }
+  stats() {
+    return {
+      workerRestarts: 0,
+      maxWorkerMemoryUsage: 0,
+    };
+  }
+  close() {
+    return Promise.resolve();
+  }
+}
+
 describe("WrappedTarget", () => {
   it("should be able to run a target to completion", async () => {
-    const cacheProvider = {
-      async clear() {},
-      async fetch() {
-        return false;
-      },
-      async purge() {},
-      async put() {},
-    } as CacheProvider;
-
-    const hasher = {
-      hash(_target: Target) {},
-    } as TargetHasher;
-
     const logger = new Logger();
 
     const runner = {
@@ -64,13 +71,10 @@ describe("WrappedTarget", () => {
 
     const wrappedTarget = new WrappedTarget({
       abortController: new AbortController(),
-      cacheProvider,
       continueOnError: false,
-      hasher,
       logger,
       root: process.cwd(),
       shouldCache: true,
-      shouldResetCache: false,
       target: createTarget("a"),
       pool: new InProcPool(runner),
     });
@@ -83,19 +87,6 @@ describe("WrappedTarget", () => {
   });
 
   it("should be able to run many targets to completion", async () => {
-    const cacheProvider = {
-      async clear() {},
-      async fetch() {
-        return false;
-      },
-      async purge() {},
-      async put() {},
-    } as CacheProvider;
-
-    const hasher = {
-      hash(target: Target) {},
-    } as TargetHasher;
-
     const logger = new Logger();
 
     const fakePackages = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -113,13 +104,10 @@ describe("WrappedTarget", () => {
     for (const packageName of fakePackages) {
       const wrappedTarget = new WrappedTarget({
         abortController: new AbortController(),
-        cacheProvider,
         continueOnError: false,
-        hasher,
         logger,
         root: process.cwd(),
         shouldCache: true,
-        shouldResetCache: false,
         target: createTarget(packageName),
         pool: new InProcPool(runner),
       });
@@ -139,19 +127,6 @@ describe("WrappedTarget", () => {
   it("should be able to carry to completion all the wrapped targets even if one had an exception", async () => {
     const continueOnError = true; // This is the ONLY difference between the continueOnError tests
 
-    const cacheProvider = {
-      async clear() {},
-      async fetch() {
-        return false;
-      },
-      async purge() {},
-      async put() {},
-    } as CacheProvider;
-
-    const hasher = {
-      hash(target: Target) {},
-    } as TargetHasher;
-
     const logger = new Logger();
 
     const fakePackages = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -169,13 +144,10 @@ describe("WrappedTarget", () => {
     for (const packageName of fakePackages) {
       const wrappedTarget = new WrappedTarget({
         abortController: new AbortController(),
-        cacheProvider,
         continueOnError,
-        hasher,
         logger,
         root: process.cwd(),
         shouldCache: true,
-        shouldResetCache: false,
         target: createTarget(packageName),
         pool: new InProcPool(runner),
       });
@@ -196,19 +168,6 @@ describe("WrappedTarget", () => {
 
   it("should be able to abort all the wrapped targets even if one had an exception, with continueOnError = false", async () => {
     const continueOnError = false; // This is the ONLY difference between the continueOnError tests
-
-    const cacheProvider = {
-      async clear() {},
-      async fetch() {
-        return true;
-      },
-      async purge() {},
-      async put() {},
-    } as CacheProvider;
-
-    const hasher = {
-      hash(target: Target) {},
-    } as TargetHasher;
 
     const logger = new Logger();
 
@@ -239,13 +198,10 @@ describe("WrappedTarget", () => {
     for (const packageName of fakePackages) {
       const wrappedTarget = new WrappedTarget({
         abortController,
-        cacheProvider,
         continueOnError,
-        hasher,
         logger,
         root: process.cwd(),
         shouldCache: true,
-        shouldResetCache: false,
         target: createTarget(packageName),
         pool: new InProcPool(runner),
       });
@@ -261,21 +217,6 @@ describe("WrappedTarget", () => {
   });
 
   it("should skip the work if cache is hit", async () => {
-    const cacheProvider = {
-      async clear() {},
-      async fetch() {
-        return true;
-      },
-      async purge() {},
-      async put() {},
-    } as CacheProvider;
-
-    const hasher = {
-      async hash(target: Target) {
-        return "xyz";
-      },
-    } as TargetHasher;
-
     const logger = new Logger();
 
     const runner = {
@@ -289,15 +230,12 @@ describe("WrappedTarget", () => {
 
     const wrappedTarget = new WrappedTarget({
       abortController: new AbortController(),
-      cacheProvider,
       continueOnError: false,
-      hasher,
       logger,
       root: process.cwd(),
       shouldCache: true,
-      shouldResetCache: false,
       target: { ...createTarget("a"), cache: true },
-      pool: new InProcPool(runner),
+      pool: new SkippyInProcPool(runner),
     });
 
     expect(wrappedTarget.status).toBe("pending");

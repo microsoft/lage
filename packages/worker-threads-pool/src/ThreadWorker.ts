@@ -88,6 +88,8 @@ export class ThreadWorker extends EventEmitter implements IWorker {
         } else {
           this.#ready();
         }
+      } else {
+        this.emit("message", data);
       }
     };
 

@@ -1,4 +1,4 @@
-import type { ConfigOptions } from "../types/ConfigOptions.js";
+import type { ConfigOptions } from "./types/ConfigOptions.js";
 
 export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], concurrency: number) {
   const maxWorkersPerTask = new Map<string, number>();

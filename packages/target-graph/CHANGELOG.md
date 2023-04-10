@@ -1,8 +1,32 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Wed, 08 Mar 2023 00:05:27 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Apr 2023 22:27:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.2
+
+Thu, 06 Apr 2023 22:27:50 GMT
+
+### Patches
+
+- bumps workspace-tools and use async packageinfos (kchau@microsoft.com)
+
+## 0.8.1
+
+Tue, 14 Mar 2023 00:28:38 GMT
+
+### Patches
+
+- adding support to directly run global task without deps (kchau@microsoft.com)
+
+## 0.8.0
+
+Fri, 10 Mar 2023 01:25:03 GMT
+
+### Minor changes
+
+- adding the ability to have a NoOp Task (kchau@microsoft.com)
 
 ## 0.7.0
 

@@ -1,8 +1,51 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Wed, 08 Mar 2023 00:05:27 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Apr 2023 22:27:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.1
+
+Thu, 06 Apr 2023 22:27:50 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.6
+- Bump @lage-run/target-graph to v0.8.2
+
+## 1.1.0
+
+Sat, 01 Apr 2023 00:28:31 GMT
+
+### Minor changes
+
+- replace ink with @ms-cloudpack/task-reporter (kchau@microsoft.com)
+
+## 1.0.7
+
+Wed, 29 Mar 2023 22:41:49 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.5
+
+## 1.0.6
+
+Tue, 14 Mar 2023 00:28:38 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.4
+- Bump @lage-run/target-graph to v0.8.1
+
+## 1.0.5
+
+Fri, 10 Mar 2023 01:25:03 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.3
+- Bump @lage-run/target-graph to v0.8.0
 
 ## 1.0.4
 

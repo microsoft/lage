@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/hasher",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Hasher for Lage Targets",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc",
     "start": "tsc -w --preserveWatchOutput",
-    "test": "monorepo-scripts jest --runInBand",
+    "test": "monorepo-scripts jest",
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {

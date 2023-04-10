@@ -5,22 +5,24 @@ import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph"
 import { WrappedTarget } from "./WrappedTarget.js";
 import { TargetRunnerPicker } from "./runners/TargetRunnerPicker.js";
 
-import type { CacheProvider, TargetHasher } from "@lage-run/cache";
 import type { Logger } from "@lage-run/logger";
 import type { TargetGraph } from "@lage-run/target-graph";
 import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "@lage-run/scheduler-types";
 import type { Pool } from "@lage-run/worker-threads-pool";
-import type { TargetRunnerPickerOptions } from "./runners/TargetRunnerPicker.js";
+import type { TargetRunnerPickerOptions } from "@lage-run/scheduler-types";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
   concurrency: number;
   continueOnError: boolean;
-  cacheProvider?: CacheProvider;
-  hasher?: TargetHasher;
   shouldCache: boolean;
   shouldResetCache: boolean;
-  runners: TargetRunnerPickerOptions;
+  workerData: {
+    runners: TargetRunnerPickerOptions;
+    root: string;
+    taskArgs: string[];
+    skipLocalCache?: boolean;
+  };
   maxWorkersPerTask: Map<string, number>;
   pool?: Pool; // for testing
   workerIdleMemoryLimit: number; // in bytes
@@ -60,14 +62,12 @@ export class SimpleScheduler implements TargetScheduler {
         workerOptions: {
           stdout: true,
           stderr: true,
-          workerData: {
-            runners: options.runners,
-          },
+          workerData: { ...options.workerData, shouldCache: options.shouldCache, shouldResetCache: options.shouldResetCache },
         },
         workerIdleMemoryLimit: options.workerIdleMemoryLimit, // in bytes
       });
 
-    this.runnerPicker = new TargetRunnerPicker(options.runners);
+    this.runnerPicker = new TargetRunnerPicker(options.workerData.runners);
   }
 
   getTargetsByPriority() {
@@ -87,7 +87,7 @@ export class SimpleScheduler implements TargetScheduler {
   async run(root: string, targetGraph: TargetGraph, shouldRerun = false): Promise<SchedulerRunSummary> {
     const startTime: [number, number] = process.hrtime();
 
-    const { continueOnError, logger, cacheProvider, shouldCache, shouldResetCache, hasher } = this.options;
+    const { continueOnError, logger, shouldCache } = this.options;
 
     logger.verbose("", {
       schedulerRun: {
@@ -120,10 +120,7 @@ export class SimpleScheduler implements TargetScheduler {
           target,
           root,
           logger,
-          cacheProvider,
-          hasher,
           shouldCache,
-          shouldResetCache,
           continueOnError,
           abortController,
           pool,
@@ -183,14 +180,17 @@ export class SimpleScheduler implements TargetScheduler {
     const queue = [targetId];
     while (queue.length > 0) {
       const current = queue.shift()!;
-      const targetRun = this.targetRuns.get(current)!;
 
-      if (targetRun.status !== "pending") {
-        targetRun.status = "pending";
-        this.rerunTargets.add(targetRun.target.id);
-        const dependents = targetRun.target.dependents;
-        for (const dependent of dependents) {
-          queue.push(dependent);
+      if (this.targetRuns.has(current)) {
+        const targetRun = this.targetRuns.get(current)!;
+
+        if (targetRun.status !== "pending") {
+          targetRun.status = "pending";
+          this.rerunTargets.add(targetRun.target.id);
+          const dependents = targetRun.target.dependents;
+          for (const dependent of dependents) {
+            queue.push(dependent);
+          }
         }
       }
     }

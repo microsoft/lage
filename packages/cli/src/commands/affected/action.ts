@@ -1,6 +1,6 @@
 import createLogger from "@lage-run/logger";
-import { getPackageInfos, getWorkspaceRoot, type PackageInfos } from "workspace-tools";
-import { getConfig } from "../../config/getConfig.js";
+import { getPackageInfosAsync, getWorkspaceRoot, type PackageInfos } from "workspace-tools";
+import { getConfig } from "@lage-run/config";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import type { FilterOptions } from "../../types/FilterOptions.js";
 
@@ -16,7 +16,7 @@ export async function affectedAction(options: AffectedOptions) {
   const logger = createLogger();
 
   const root = getWorkspaceRoot(cwd)!;
-  const packageInfos = getPackageInfos(root);
+  const packageInfos = await getPackageInfosAsync(root);
 
   const packages = getFilteredPackages({
     root,

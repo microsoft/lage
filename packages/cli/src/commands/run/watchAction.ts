@@ -1,11 +1,9 @@
 import type { Command } from "commander";
-import { createCache } from "./createCacheProvider.js";
 import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { findNpmClient } from "@lage-run/find-npm-client";
-import { getConfig } from "../../config/getConfig.js";
-import { getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions } from "../../config/getMaxWorkersPerTask.js";
-import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions, getConcurrency } from "@lage-run/config";
+import { getPackageInfosAsync, getWorkspaceRoot } from "workspace-tools";
 import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
 import { LogReporter } from "@lage-run/reporters";
 import { SimpleScheduler } from "@lage-run/scheduler";
@@ -17,7 +15,6 @@ import createLogger, { LogLevel } from "@lage-run/logger";
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
-import { getConcurrency } from "../../config/getConcurrency.js";
 import type { FilterOptions } from "../../types/FilterOptions.js";
 
 interface RunOptions extends ReporterInitOptions, FilterOptions {
@@ -46,7 +43,7 @@ export async function watchAction(options: RunOptions, command: Command) {
 
   // Build Target Graph
   const root = getWorkspaceRoot(process.cwd())!;
-  const packageInfos = getPackageInfos(root);
+  const packageInfos = await getPackageInfosAsync(root);
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
@@ -68,14 +65,6 @@ export async function watchAction(options: RunOptions, command: Command) {
   // Make sure we do not attempt writeRemoteCache in watch mode
   config.cacheOptions.writeRemoteCache = false;
 
-  const { cacheProvider, hasher } = createCache({
-    root,
-    logger,
-    cacheOptions: config.cacheOptions,
-    skipLocalCache: false,
-    cliArgs: taskArgs,
-  });
-
   const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
 
   const maxWorkersPerTaskMap = getMaxWorkersPerTaskFromOptions(options.maxWorkersPerTask);
@@ -83,29 +72,37 @@ export async function watchAction(options: RunOptions, command: Command) {
   const scheduler = new SimpleScheduler({
     logger,
     concurrency,
-    cacheProvider,
-    hasher,
     continueOnError: true,
+    workerData: {
+      root,
+      taskArgs,
+      skipLocalCache: options.skipLocalCache,
+      runners: {
+        npmScript: {
+          script: require.resolve("./runners/NpmScriptRunner.js"),
+          options: {
+            nodeArg: options.nodeArg,
+            taskArgs,
+            npmCmd: findNpmClient(config.npmClient),
+          },
+        },
+        worker: {
+          script: require.resolve("./runners/WorkerRunner.js"),
+          options: {
+            taskArgs,
+          },
+        },
+        noop: {
+          script: require.resolve("./runners/NoOpRunner.js"),
+          options: {},
+        },
+        ...config.runners,
+      },
+    },
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
     maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, concurrency), ...maxWorkersPerTaskMap]),
-    runners: {
-      npmScript: {
-        script: require.resolve("./runners/NpmScriptRunner.js"),
-        options: {
-          nodeArg: options.nodeArg,
-          taskArgs,
-          npmCmd: findNpmClient(config.npmClient),
-        },
-      },
-      worker: {
-        script: require.resolve("./runners/WorkerRunner.js"),
-        options: {
-          taskArgs,
-        },
-      },
-      ...config.runners,
-    },
+
     workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
   });
 
@@ -118,13 +115,11 @@ export async function watchAction(options: RunOptions, command: Command) {
   // Disables cache for subsequent runs
   // TODO: support updating hasher + write-only local cacheProvider for subsequent runs
   for (const targetRun of scheduler.targetRuns.values()) {
-    targetRun.options.cacheProvider = undefined;
-    targetRun.options.hasher = undefined;
     targetRun.options.shouldCache = false;
   }
 
   // When initial run is done, disable fetching of caches on all targets, keep writing to the cache
-  const watcher = watch(root);
+  const watcher = await watch(root, packageInfos);
   watcher.on("change", async (packageName) => {
     reporter.resetLogEntries();
     const targets = new Map<string, Target>();

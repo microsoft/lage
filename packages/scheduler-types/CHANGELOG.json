@@ -2,6 +2,66 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Thu, 06 Apr 2023 22:27:50 GMT",
+      "tag": "@lage-run/scheduler-types_v0.3.6",
+      "version": "0.3.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.8.2",
+            "commit": "ec15819ad8677a57ed2c7b8ce55538da69095c3b"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 29 Mar 2023 22:41:49 GMT",
+      "tag": "@lage-run/scheduler-types_v0.3.5",
+      "version": "0.3.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "ec458f83e5adb784019efaa06f902ec75f85990c",
+            "comment": "moving config to its own package"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Mar 2023 00:28:38 GMT",
+      "tag": "@lage-run/scheduler-types_v0.3.4",
+      "version": "0.3.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.8.1",
+            "commit": "c5fc57309aaa493758f646cbfe02dc84f679675e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 10 Mar 2023 01:25:03 GMT",
+      "tag": "@lage-run/scheduler-types_v0.3.3",
+      "version": "0.3.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.8.0",
+            "commit": "5fd1b1eb7f87917f3abec9e99b240d38846eea09"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Mar 2023 00:05:27 GMT",
       "tag": "@lage-run/scheduler-types_v0.3.2",
       "version": "0.3.2",

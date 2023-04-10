@@ -1,11 +1,11 @@
 import type { TargetRunner } from "@lage-run/scheduler-types";
 
-export const NoOpRunner: TargetRunner = {
+export class NoOpRunner implements TargetRunner {
   async shouldRun() {
     return true;
-  },
+  }
 
   async run() {
     // pass
-  },
-};
+  }
+}

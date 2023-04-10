@@ -1,6 +1,6 @@
 import { clearCache } from "./clearCache.js";
 import type { Command } from "commander";
-import { getConfig } from "../../config/getConfig.js";
+import { getConfig } from "@lage-run/config";
 import { pruneCache } from "./pruneCache.js";
 import createLogger from "@lage-run/logger";
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";

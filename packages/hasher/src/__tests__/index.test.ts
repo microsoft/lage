@@ -2,7 +2,7 @@ import path from "path";
 
 import { WorkspaceInfo } from "workspace-tools";
 import { PackageHashInfo } from "../hashOfPackage";
-import { Hasher, addToQueue } from "../index";
+import { Hasher, addToQueue, getRepoInfo } from "../index";
 
 import { Monorepo } from "@lage-run/monorepo-fixture";
 const fixturesPath = path.join(__dirname, "..", "__fixtures__");
@@ -89,7 +89,8 @@ describe("The main Hasher class", () => {
 
     const buildSignature = "yarn build";
 
-    const hasher = new Hasher(packageRoot);
+    const repoInfo = await getRepoInfo(monorepo.root);
+    const hasher = new Hasher(packageRoot, repoInfo);
     const hash = await hasher.createPackageHash(buildSignature);
 
     return hash;

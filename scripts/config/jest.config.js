@@ -2,7 +2,7 @@
 const { getWorkspaceRoot, getPackageInfos } = require("workspace-tools");
 const path = require("path");
 
-const root = getWorkspaceRoot(process.cwd());
+const root = getWorkspaceRoot(process.cwd()) ?? process.cwd();
 const packages = getPackageInfos(root);
 const moduleNameMapper = Object.values(packages).reduce((acc, { packageJsonPath, name }) => {
   const packagePath = path.dirname(packageJsonPath);

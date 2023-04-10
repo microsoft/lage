@@ -1,7 +1,6 @@
-import { getConfig } from "../../config/getConfig.js";
+import { getConfig, getConcurrency } from "@lage-run/config";
 import { getWorkspaceRoot } from "workspace-tools";
 import type { Logger } from "@lage-run/logger";
-import { getConcurrency } from "../../config/getConcurrency.js";
 import { BackfillCacheProvider } from "@lage-run/cache";
 
 export interface ClearCacheOptions {

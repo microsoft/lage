@@ -1,7 +1,7 @@
 import os from "os";
 import { cosmiconfig } from "cosmiconfig";
 import { getWorkspaceRoot } from "workspace-tools";
-import type { ConfigOptions } from "../types/ConfigOptions.js";
+import type { ConfigOptions } from "./types/ConfigOptions.js";
 
 export async function getConfig(cwd: string): Promise<ConfigOptions> {
   // Verify presence of git

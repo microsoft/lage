@@ -10,7 +10,7 @@ export interface Pool {
     data: unknown,
     weight: number,
     setup?: (worker: IWorker, stdout: Readable, stderr: Readable) => void,
-    cleanup?: (args: any) => void,
+    cleanup?: (worker: IWorker) => void,
     abortSignal?: AbortSignal
   ): Promise<unknown>;
 

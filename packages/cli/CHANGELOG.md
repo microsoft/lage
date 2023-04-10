@@ -1,8 +1,111 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 08 Mar 2023 17:35:28 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Apr 2023 22:27:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.13.1
+
+Thu, 06 Apr 2023 22:27:50 GMT
+
+### Patches
+
+- bumps workspace-tools and use async packageinfos (kchau@microsoft.com)
+- Bump @lage-run/config to v0.1.2
+- Bump @lage-run/scheduler to v0.11.1
+- Bump @lage-run/scheduler-types to v0.3.6
+- Bump @lage-run/target-graph to v0.8.2
+- Bump @lage-run/cache to v0.5.2
+- Bump @lage-run/reporters to v1.1.1
+
+## 0.13.0
+
+Sat, 01 Apr 2023 00:28:31 GMT
+
+### Minor changes
+
+- replace ink with @ms-cloudpack/task-reporter (kchau@microsoft.com)
+- Bump @lage-run/reporters to v1.1.0
+
+## 0.12.0
+
+Thu, 30 Mar 2023 23:46:52 GMT
+
+### Minor changes
+
+- moved caching to happen inside workers (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.11.0
+
+## 0.11.4
+
+Wed, 29 Mar 2023 22:41:49 GMT
+
+### Patches
+
+- moving config to its own package (kchau@microsoft.com)
+- Bump @lage-run/config to v0.1.1
+- Bump @lage-run/scheduler to v0.10.5
+- Bump @lage-run/scheduler-types to v0.3.5
+- Bump @lage-run/reporters to v1.0.7
+
+## 0.11.3
+
+Wed, 29 Mar 2023 20:02:40 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.10.4
+- Bump @lage-run/cache to v0.5.1
+
+## 0.11.2
+
+Mon, 27 Mar 2023 18:00:15 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.10.3
+- Bump @lage-run/cache to v0.5.0
+
+## 0.11.1
+
+Thu, 23 Mar 2023 19:32:03 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.10.2
+
+## 0.11.0
+
+Wed, 22 Mar 2023 17:26:54 GMT
+
+### Minor changes
+
+- Export more types used by the config (elcraig@microsoft.com)
+
+## 0.10.1
+
+Tue, 14 Mar 2023 00:28:38 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v0.10.1
+- Bump @lage-run/scheduler-types to v0.3.4
+- Bump @lage-run/target-graph to v0.8.1
+- Bump @lage-run/cache to v0.4.3
+- Bump @lage-run/reporters to v1.0.6
+
+## 0.10.0
+
+Fri, 10 Mar 2023 01:25:03 GMT
+
+### Minor changes
+
+- adding the ability to have a NoOp Task (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v0.10.0
+- Bump @lage-run/scheduler-types to v0.3.3
+- Bump @lage-run/target-graph to v0.8.0
+- Bump @lage-run/cache to v0.4.2
+- Bump @lage-run/reporters to v1.0.5
 
 ## 0.9.2
 
