@@ -6,8 +6,6 @@ describe("basics", () => {
     const repo = new Monorepo("basics");
 
     repo.init();
-
-    console.log(repo.root);
     repo.addPackage("a", ["b"]);
     repo.addPackage("b");
 
