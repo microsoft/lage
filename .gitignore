@@ -9,3 +9,5 @@ coverage
 .idea/
 **/.docusaurus/
 profile*.json
+.yarn/cache
+.yarn/install-state.gz

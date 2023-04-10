@@ -14,9 +14,11 @@
     "test": "jest",
     "lint": "monorepo-scripts lint"
   },
-  "devDependencies": {},
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "monorepo-scripts": "*"
   },
   "files": [
     "lib/**/*"

@@ -25,7 +25,7 @@ module.exports = {
   testPathIgnorePatterns: ["/node_modules/"],
   transform: {
     "^.+\\.tsx?$": [
-      "ts-jest",
+      require.resolve("ts-jest"),
       {
         isolatedModules: true,
         tsconfig: {

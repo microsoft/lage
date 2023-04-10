@@ -10,15 +10,15 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "monorepo-scripts tsc",
+    "lint": "monorepo-scripts lint",
     "start": "monorepo-scripts tsc -w --preserveWatchOutput",
-    "test": "monorepo-scripts jest",
-    "lint": "monorepo-scripts lint"
+    "test": "monorepo-scripts jest"
   },
   "dependencies": {
-    "@lage-run/target-graph": "^0.8.2",
-    "@lage-run/logger": "^1.2.2",
     "@lage-run/cache": "^0.5.2",
     "@lage-run/config": "^0.1.2",
+    "@lage-run/logger": "^1.2.2",
+    "@lage-run/target-graph": "^0.8.2",
     "@lage-run/worker-threads-pool": "^0.6.0"
   },
   "devDependencies": {

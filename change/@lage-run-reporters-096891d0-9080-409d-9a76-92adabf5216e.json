@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "upgrading to yarn3 + pnpm",
+  "packageName": "@lage-run/reporters",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

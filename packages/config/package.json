@@ -21,12 +21,12 @@
     "@lage-run/logger": "^1.2.2",
     "@lage-run/scheduler-types": "^0.3.6",
     "@lage-run/target-graph": "^0.8.2",
-    "workspace-tools": "^0.32.0",
-    "cosmiconfig": "^7.0.0"
+    "cosmiconfig": "^7.0.0",
+    "workspace-tools": "^0.32.0"
   },
   "devDependencies": {
-    "monorepo-scripts": "*",
-    "backfill-config": "6.3.1"
+    "backfill-config": "6.3.1",
+    "monorepo-scripts": "*"
   },
   "publishConfig": {
     "access": "public"
