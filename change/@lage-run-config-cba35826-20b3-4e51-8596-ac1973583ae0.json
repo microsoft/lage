@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "changing package manager to yarn 3",
+  "packageName": "@lage-run/config",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
