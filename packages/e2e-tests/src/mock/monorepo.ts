@@ -44,7 +44,8 @@ export class Monorepo {
       fs.cpSync(packagePath, path.join(this.root, "node_modules", name), { recursive: true });
     }
 
-    fs.cpSync(path.join(__dirname, "..", "..", "yarn"), path.dirname(this.yarnPath), { recursive: true });
+    fs.cpSync(path.join(__dirname, "..", "..", "yarn", "yarn.js"), this.yarnPath);
+    fs.cpSync(path.join(__dirname, "..", "..", "yarn", "yarnrc.yml"), path.join(this.root, ".yarnrc.yml"));
     execa.sync("node", [this.yarnPath, "install"], { cwd: this.root });
   }
 
