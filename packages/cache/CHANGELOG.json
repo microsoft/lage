@@ -2,6 +2,27 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Fri, 14 Apr 2023 04:37:54 GMT",
+      "tag": "@lage-run/cache_v0.5.3",
+      "version": "0.5.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "bb22ec2ee3a793eef0a09feb6759f7c10db65fe0",
+            "comment": "making lage boot faster"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.8.3",
+            "commit": "bb22ec2ee3a793eef0a09feb6759f7c10db65fe0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Apr 2023 22:27:50 GMT",
       "tag": "@lage-run/cache_v0.5.2",
       "version": "0.5.2",
