@@ -3446,10 +3446,10 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-"lage-npm@npm:lage@2.5.2":
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/lage/-/lage-2.5.2.tgz#07df8b7d6357314ace3a151d8a9b1311c64ea97c"
-  integrity sha512-dYlkErh6LQ5zabLvsK5P72HO3FpwqEHoFfvtWW+KT90xYtMX+bFY8t+Auc23DgQ8s+WHRhXyZigmAqcHEQBP1g==
+"lage-npm@npm:lage@2.5.3":
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/lage/-/lage-2.5.3.tgz#d6ab87a56022086c886aaade41e3b1643f88c3d4"
+  integrity sha512-FKFwem6WeWTvz4vxBHVKfKDTroAU1rfyl+hfqDBSh3I/uhHAdgAcOjCoLN3ABx0yMmMJyUtz6u3BYo/ozEs4MQ==
   dependencies:
     glob-hasher "1.2.1"
   optionalDependencies:
