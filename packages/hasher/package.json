@@ -15,6 +15,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
+    "@lage-run/target-graph": "^0.8.3",
     "execa": "5.1.1",
     "workspace-tools": "0.30.0",
     "find-up": "^5.0.0"
