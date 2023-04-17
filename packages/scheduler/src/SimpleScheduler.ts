@@ -89,15 +89,16 @@ export class SimpleScheduler implements TargetScheduler {
 
     const { continueOnError, logger, shouldCache } = this.options;
 
-    logger.verbose("", {
-      schedulerRun: {
-        startTime,
-      },
-    });
-
     const { pool, abortController } = this;
 
     const { targets } = targetGraph;
+
+    logger.verbose("", {
+      schedulerRun: {
+        startTime,
+        targets: [...targets.values()].filter((t) => !t.hidden).map((t) => ({ id: t.id, label: t.label })),
+      },
+    });
 
     for (const target of targets.values()) {
       let targetRun: WrappedTarget;
@@ -251,6 +252,12 @@ export class SimpleScheduler implements TargetScheduler {
     }
 
     await Promise.all(promises);
+  }
+
+  logTargets() {
+    this.options.logger.verbose("", {
+      targets: [...this.targetRuns.values()].map((t) => ({ id: t.target.id, label: t.target.label })),
+    });
   }
 
   logProgress() {
