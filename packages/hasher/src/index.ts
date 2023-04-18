@@ -64,3 +64,5 @@ export class Hasher implements IHasher {
 }
 
 export * from "./repoInfo.js";
+
+export { TargetHasher } from "./TargetHasher.js";

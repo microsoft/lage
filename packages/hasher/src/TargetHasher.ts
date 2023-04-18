@@ -1,15 +1,38 @@
-import { getRepoInfo, Hasher as LageHasher, type RepoInfo } from "@lage-run/hasher";
+import { type RepoInfo } from "./repoInfo.js";
 import { salt } from "./salt.js";
 import type { Target } from "@lage-run/target-graph";
 import { hash } from "glob-hasher";
 import fg from "fast-glob";
+import globby from "globby";
 import { hashStrings } from "./hashStrings.js";
+import { resolveInternalDependencies } from "./resolveInternalDependencies.js";
+
+import fs from "fs";
+import path from "path";
+import { type ParsedLock, type WorkspaceInfo, getWorkspacesAsync, parseLockFile } from "workspace-tools";
+import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
+
+import crypto from "crypto";
 
 export interface TargetHasherOptions {
   root: string;
   environmentGlob: string[];
   cacheKey?: string;
   cliArgs?: string[];
+}
+
+function globFiles(globs: string[], { cwd }: { cwd: string }) {
+  return fg(globs, { cwd }).then((files) => hash(files, { cwd }) ?? {});
+}
+
+function hashFiles(files, options?) {
+  const hashes: Record<string, string> = {};
+  for (const file of files) {
+    const data = fs.readFileSync(file);
+    const hash = crypto.createHash("sha256").update(data).digest("hex");
+    hashes[file] = hash;
+  }
+  return hashes;
 }
 
 /**
@@ -20,10 +43,21 @@ export interface TargetHasherOptions {
 export class TargetHasher {
   private repoInfo?: RepoInfo;
 
-  constructor(private options: TargetHasherOptions) {}
+  static workspaceInfoPromise: Promise<WorkspaceInfo>;
+  static globalInputsHashPromise: Promise<Record<string, string>>;
+  static lockInfoPromise: Promise<ParsedLock>;
+
+  constructor(private options: TargetHasherOptions) {
+    const { environmentGlob, root } = options;
+    TargetHasher.globalInputsHashPromise = globFiles(environmentGlob, { cwd: root });
+    TargetHasher.workspaceInfoPromise = getWorkspacesAsync(root);
+    TargetHasher.lockInfoPromise = parseLockFile(root);
+  }
 
   async hash(target: Target): Promise<string> {
     const { root } = this.options;
+
+    const globalInputsHash = await TargetHasher.globalInputsHashPromise;
 
     const hashKey = await salt(
       target.environmentGlob ?? this.options.environmentGlob ?? ["lage.config.js"],
@@ -52,6 +86,31 @@ export class TargetHasher {
 
     // 1. add hash of target's inputs
     // 2. add hash of target packages' internal and external deps
+    const { dependencies, devDependencies } = JSON.parse(fs.readFileSync(path.join(target.cwd, "package.json"), "utf-8"));
+    const workspaceInfo = await TargetHasher.workspaceInfoPromise;
+    const parsedLock = await TargetHasher.lockInfoPromise;
+
+    const allDependencies: Record<string, string> = {
+      ...dependencies,
+      ...devDependencies,
+    };
+
+    const internalDeps = resolveInternalDependencies(allDependencies, workspaceInfo);
+    const externalDeps = resolveExternalDependencies(allDependencies, workspaceInfo, parsedLock);
+    const resolvedDependencies = [...internalDeps, ...externalDeps];
+
+    const inputs = target.inputs ?? ["**/*"];
+
+    console.time("glob");
+    const files = await fg(
+      inputs.map((i) => path.join(target.cwd, i)),
+      { cwd: root, ignore: ["**/node_modules"] }
+    );
+    console.timeEnd("glob");
+
+    const fileHashes = (await hash(files, { cwd: root })) ?? [];
+
+    const hashString = hashStrings(Object.values(fileHashes).concat(resolvedDependencies).concat(hashKey));
 
     return hashString;
   }
