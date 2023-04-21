@@ -1,6 +1,6 @@
 {
   "type": "minor",
-  "comment": "Add VerboseFileLogReporter, which writes verbose, ungrouped logs to a file",
+  "comment": "Added optional .cleanup() to Reporter interface, so reporters can clean up resources",
   "packageName": "@lage-run/logger",
   "email": "stchur@microsoft.com",
   "dependentChangeType": "patch"

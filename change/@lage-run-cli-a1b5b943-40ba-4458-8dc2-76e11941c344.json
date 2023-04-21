@@ -1,6 +1,6 @@
 {
   "type": "minor",
-  "comment": "Add VerboseFileLogReporter, which writes verbose, ungrouped logs to a file",
+  "comment": "Add support for --log-file (to be used in concert with --reporter vfl",
   "packageName": "@lage-run/cli",
   "email": "stchur@microsoft.com",
   "dependentChangeType": "patch"
