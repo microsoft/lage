@@ -8,4 +8,5 @@ export interface ReporterInitOptions {
   concurrency: number;
   logLevel: keyof typeof LogLevel;
   profile?: boolean | string;
+  logFile?: string;
 }
