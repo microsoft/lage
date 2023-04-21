@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/config",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Config management for Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -18,15 +18,15 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
+    "backfill-config": "^6.3.1",
     "@lage-run/logger": "^1.2.2",
-    "@lage-run/scheduler-types": "^0.3.6",
-    "@lage-run/target-graph": "^0.8.2",
-    "workspace-tools": "^0.32.0",
+    "@lage-run/scheduler-types": "^0.3.7",
+    "@lage-run/target-graph": "^0.8.3",
+    "workspace-tools": "^0.34.0",
     "cosmiconfig": "^7.0.0"
   },
   "devDependencies": {
-    "monorepo-scripts": "*",
-    "backfill-config": "6.3.1"
+    "monorepo-scripts": "*"
   },
   "publishConfig": {
     "access": "public"

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache-github-actions
 
-This log was last generated on Thu, 06 Apr 2023 22:27:50 GMT and should not be manually modified.
+This log was last generated on Fri, 14 Apr 2023 04:37:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.12
+
+Fri, 14 Apr 2023 04:37:54 GMT
+
+### Patches
+
+- making lage boot faster (kchau@microsoft.com)
 
 ## 0.1.11
 

@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Fri, 14 Apr 2023 04:37:54 GMT",
+      "tag": "@lage-run/cache-github-actions_v0.1.12",
+      "version": "0.1.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "bb22ec2ee3a793eef0a09feb6759f7c10db65fe0",
+            "comment": "making lage boot faster"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Apr 2023 22:27:50 GMT",
       "tag": "@lage-run/cache-github-actions_v0.1.11",
       "version": "0.1.11",

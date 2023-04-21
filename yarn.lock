@@ -1573,10 +1573,10 @@ babel-preset-jest@^29.5.0:
     babel-plugin-jest-hoist "^29.5.0"
     babel-preset-current-node-syntax "^1.0.0"
 
-backfill-cache@^5.6.1:
-  version "5.6.3"
-  resolved "https://registry.yarnpkg.com/backfill-cache/-/backfill-cache-5.6.3.tgz#4d5d883f9f833a1866a7c15389cd423c9b737e15"
-  integrity sha512-wH3SJBKw2x5trhXUfL+lnr3cQAAyclsS9rMGM4f6XNPjec8xNqpZ0EOpJ+GULuXbozvxQBoynkfbAxWUAAvKpA==
+backfill-cache@^5.6.4:
+  version "5.6.4"
+  resolved "https://registry.yarnpkg.com/backfill-cache/-/backfill-cache-5.6.4.tgz#2b86e29b981be3713bf523b1b6643468aeb63cae"
+  integrity sha512-sw/CH+Z3ZLDLt7qLF18zKbbt/wFLYGjOhjRO2u0lqJYEfuJxhYlePI2B7e2aL6FXMItJlc2mRZcIT7e4DaJ1Tw==
   dependencies:
     "@azure/storage-blob" "12.1.2"
     "@rushstack/package-deps-hash" "^3.2.4"
@@ -1589,7 +1589,7 @@ backfill-cache@^5.6.1:
     p-limit "^3.0.0"
     tar-fs "^2.1.0"
 
-backfill-config@6.3.1, backfill-config@^6.3.0, backfill-config@^6.3.1:
+backfill-config@^6.3.1:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/backfill-config/-/backfill-config-6.3.1.tgz#7044e003dd9f5f71e277eef3d0184d213f8c4298"
   integrity sha512-k+NsMZyinQaKqb/yRUahp2+PwXcRU2SHpOkbXOAHIlqN2qZO78hUfjViBj8YoJ7gcweWY59dP4jdgo6q3nDoEg==
@@ -3446,10 +3446,10 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-"lage-npm@npm:lage@2.5.2":
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/lage/-/lage-2.5.2.tgz#07df8b7d6357314ace3a151d8a9b1311c64ea97c"
-  integrity sha512-dYlkErh6LQ5zabLvsK5P72HO3FpwqEHoFfvtWW+KT90xYtMX+bFY8t+Auc23DgQ8s+WHRhXyZigmAqcHEQBP1g==
+"lage-npm@npm:lage@2.5.3":
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/lage/-/lage-2.5.3.tgz#d6ab87a56022086c886aaade41e3b1643f88c3d4"
+  integrity sha512-FKFwem6WeWTvz4vxBHVKfKDTroAU1rfyl+hfqDBSh3I/uhHAdgAcOjCoLN3ABx0yMmMJyUtz6u3BYo/ozEs4MQ==
   dependencies:
     glob-hasher "1.2.1"
   optionalDependencies:
@@ -4836,10 +4836,10 @@ word-wrap@^1.2.3:
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
 
-workspace-tools@0.30.0, workspace-tools@^0.30.0, workspace-tools@^0.32.0:
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.32.0.tgz#ffc07ae42377aad774b294168afad1b69d7db379"
-  integrity sha512-A61/L7jpHLAvGVgjtT5tJypOP7FVuI3iLwJYlyxJSrZpY5NQ/lCzW1fQZiXi7gNJDnJXuXjQM5cSLvIANH3X4Q==
+workspace-tools@0.30.0, workspace-tools@^0.30.0, workspace-tools@^0.34.0:
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.34.0.tgz#cfe096d8d55c8c3ec7c7977b84bbe2bbdfb05e17"
+  integrity sha512-grYUZvWs7SXJzXCPx0jdIkErFkGKVt74jZKYC2GxIEX2IZgEYYjwLmWDIPnZAtXpQ2jNuZiXxh9Kglyb5LUpnQ==
   dependencies:
     "@yarnpkg/lockfile" "^1.1.0"
     git-url-parse "^13.0.0"
