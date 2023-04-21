@@ -37,7 +37,7 @@ describe("VerboseFileLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      ":::${entry.data.target.id}::: @madeUp/avettLyrics generateLyrics ➔ start
+      "[:${entry.data.target.id}:] @madeUp/avettLyrics generateLyrics ➔ start
       "
     `);
   });
@@ -60,7 +60,7 @@ describe("VerboseFileLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      ":::${entry.data.target.id}::: @madeUp/avettLyrics generateLyrics : Be loud. Let your colors show!
+      "[:${entry.data.target.id}:] @madeUp/avettLyrics generateLyrics : Be loud. Let your colors show!
       "
     `);
   });
@@ -84,7 +84,7 @@ describe("VerboseFileLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      ":::I love the Avett Brothers!::: @madeUp/avettLyrics generateLyrics : I've got something to say, but it's all vanity.
+      "[:I love the Avett Brothers!:] @madeUp/avettLyrics generateLyrics : I've got something to say, but it's all vanity.
       "
     `);
   });
@@ -144,18 +144,18 @@ describe("VerboseFileLogReporter", () => {
     writer.end();
 
     expect(writer.toString()).toMatchInlineSnapshot(`
-      ":::${aBuildTarget.id}::: a build ➔ start
-      :::${aTestTarget.id}::: a test ➔ start
-      :::${bBuildTarget.id}::: b build ➔ start
-      :::${aBuildTarget.id}::: a build : test message for a#build
-      :::${aTestTarget.id}::: a test : test message for a#test
-      :::${aBuildTarget.id}::: a build : test message for a#build again
-      :::${bBuildTarget.id}::: b build : test message for b#build
-      :::${aTestTarget.id}::: a test : test message for a#test again
-      :::${bBuildTarget.id}::: b build : test message for b#build again
-      :::${aTestTarget.id}::: a test ✓ done - 10.00s
-      :::${bBuildTarget.id}::: b build ✓ done - 30.00s
-      :::${aBuildTarget.id}::: a build ✖ fail
+      "[:${aBuildTarget.id}:] a build ➔ start
+      [:${aTestTarget.id}:] a test ➔ start
+      [:${bBuildTarget.id}:] b build ➔ start
+      [:${aBuildTarget.id}:] a build : test message for a#build
+      [:${aTestTarget.id}:] a test : test message for a#test
+      [:${aBuildTarget.id}:] a build : test message for a#build again
+      [:${bBuildTarget.id}:] b build : test message for b#build
+      [:${aTestTarget.id}:] a test : test message for a#test again
+      [:${bBuildTarget.id}:] b build : test message for b#build again
+      [:${aTestTarget.id}:] a test ✓ done - 10.00s
+      [:${bBuildTarget.id}:] b build ✓ done - 30.00s
+      [:${aBuildTarget.id}:] a build ✖ fail
       "
     `);
   });

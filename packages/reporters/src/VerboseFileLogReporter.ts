@@ -62,7 +62,7 @@ export class VerboseFileLogReporter implements Reporter {
 
   private getEntryTargetId(entry: LogEntry<any>) {
     if (entry.data?.target?.id) {
-      return `:::${entry.data.target.id}:::`;
+      return `[:${entry.data.target.id}:]`;
     }
 
     return "";
