@@ -1,8 +1,18 @@
 # Change Log - lage
 
-This log was last generated on Thu, 06 Apr 2023 22:27:50 GMT and should not be manually modified.
+This log was last generated on Fri, 14 Apr 2023 04:37:55 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.3
+
+Fri, 14 Apr 2023 04:37:55 GMT
+
+### Patches
+
+- making lage boot faster (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.13.2
+- Bump @lage-run/scheduler to v0.11.2
 
 ## 2.5.2
 

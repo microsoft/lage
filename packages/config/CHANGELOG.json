@@ -2,6 +2,33 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Fri, 14 Apr 2023 04:37:54 GMT",
+      "tag": "@lage-run/config_v0.1.3",
+      "version": "0.1.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "bb22ec2ee3a793eef0a09feb6759f7c10db65fe0",
+            "comment": "making lage boot faster"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.7",
+            "commit": "bb22ec2ee3a793eef0a09feb6759f7c10db65fe0"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/target-graph to v0.8.3",
+            "commit": "bb22ec2ee3a793eef0a09feb6759f7c10db65fe0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Apr 2023 22:27:50 GMT",
       "tag": "@lage-run/config_v0.1.2",
       "version": "0.1.2",

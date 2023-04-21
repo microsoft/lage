@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Fri, 14 Apr 2023 04:37:55 GMT",
+      "tag": "@lage-run/scheduler-types_v0.3.7",
+      "version": "0.3.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.8.3",
+            "commit": "bb22ec2ee3a793eef0a09feb6759f7c10db65fe0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Apr 2023 22:27:50 GMT",
       "tag": "@lage-run/scheduler-types_v0.3.6",
       "version": "0.3.6",
