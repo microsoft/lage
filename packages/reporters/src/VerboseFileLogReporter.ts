@@ -18,7 +18,7 @@ export class VerboseFileLogReporter implements Reporter {
   fileStream: Writable;
   constructor(logFile?: string) {
     // if logFile is falsy (not specified on cli args), this.fileStream just become a "nowhere" stream and this reporter effectively does nothing
-    this.fileStream = logFile ? fs.createWriteStream(logFile) : new Writable();
+    this.fileStream = logFile ? fs.createWriteStream(logFile) : new Writable({ write() {} });
   }
 
   cleanup() {
