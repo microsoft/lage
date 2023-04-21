@@ -3,7 +3,7 @@ import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
 import ansiRegex from "ansi-regex";
 import type { Reporter, LogEntry } from "@lage-run/logger";
-import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
+import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
 import { Writable } from "stream";
 import fs from "fs";
@@ -43,24 +43,26 @@ export class VerboseFileLogReporter implements Reporter {
 
     // log generic entries (not related to target)
     if (entry.msg) {
-      return this.print(`:::${entry.data?.target?.id}::: ${entry.msg}`);
+      return this.print(`${entry.msg}`);
     }
   }
 
   private printEntry(entry: LogEntry<any>, message: string) {
-    let pkg = "";
+    let packageAndTask = "";
 
     if (entry?.data?.target) {
-      const { packageName } = entry.data.target;
-      pkg = packageName ?? "<root>";
+      const { packageName, task } = entry.data.target;
+      const pkg = packageName ?? "<root>";
+
+      packageAndTask = `${pkg} ${task}`.trim();
     }
 
-    this.print(`${this.getEntryTargetId(entry)} ${pkg} ${message}`.trim());
+    this.print(`${this.getEntryTargetId(entry)} ${packageAndTask} ${message}`.trim());
   }
 
   private getEntryTargetId(entry: LogEntry<any>) {
     if (entry.data?.target?.id) {
-      return `:::${entry.data?.target?.id}:::`;
+      return `:::${entry.data.target.id}:::`;
     }
 
     return "";
@@ -91,7 +93,7 @@ export class VerboseFileLogReporter implements Reporter {
     }
   }
 
-  summarize(_: SchedulerRunSummary) {
+  summarize() {
     // No summary needed for VerboseFileLogReporter
   }
 }
