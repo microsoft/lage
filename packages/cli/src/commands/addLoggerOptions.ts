@@ -9,5 +9,6 @@ export function addLoggerOptions(program: Command) {
     .option("--grouped", "groups the logs", false)
     .addOption(new Option("--progress").conflicts(["reporter", "grouped", "verbose"]).default(!isCI))
     .addOption(new Option("--log-level <level>", "log level").choices(["info", "warn", "error", "verbose", "silly"]).conflicts("verbose"))
+    .addOption(new Option("--log-file <file>", "when used with --reporter vfl, writes verbose, ungrouped logs to the specified file"))
     .option("--verbose", "verbose output", false);
 }

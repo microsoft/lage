@@ -40,7 +40,7 @@ export async function runAction(options: RunOptions, command: Command) {
   // Configure logger
   const logger = createLogger();
 
-  initializeReporters(logger, { ...options, concurrency });
+  const reporters = initializeReporters(logger, { ...options, concurrency });
 
   // Build Target Graph
   const root = getWorkspaceRoot(process.cwd())!;
@@ -112,6 +112,10 @@ export async function runAction(options: RunOptions, command: Command) {
   await scheduler.cleanup();
 
   displaySummaryAndExit(summary, logger.reporters);
+
+  for (const reporter of reporters) {
+    await reporter.cleanup?.();
+  }
 }
 
 function displaySummaryAndExit(summary: SchedulerRunSummary, reporters: Reporter[]) {
