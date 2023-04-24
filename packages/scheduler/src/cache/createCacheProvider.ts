@@ -1,5 +1,6 @@
 import type { CacheOptions } from "@lage-run/cache";
-import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
+import { BackfillCacheProvider, RemoteFallbackCacheProvider } from "@lage-run/cache";
+import { TargetHasher } from "@lage-run/hasher";
 import type { Logger } from "@lage-run/logger";
 import { isRunningFromCI } from "./isRunningFromCI.js";
 

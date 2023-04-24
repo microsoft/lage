@@ -8,6 +8,7 @@ import { hashStrings } from "./hashStrings.js";
 import { resolveInternalDependencies } from "./resolveInternalDependencies.js";
 
 import fs from "fs";
+import fsp from "fs/promises";
 import path from "path";
 import { type ParsedLock, type WorkspaceInfo, getWorkspacesAsync, parseLockFile } from "workspace-tools";
 import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
@@ -35,6 +36,21 @@ function hashFiles(files, options?) {
   return hashes;
 }
 
+export interface TargetManifest {
+  id: string;
+  hash: string;
+  globalInputsHash: string;
+  dependency: Record<string, string>;
+  files: Record<
+    string,
+    {
+      mtimeMs: number;
+      size: number;
+      hash: string;
+    }
+  >;
+}
+
 /**
  * TargetHasher is a class that can be used to generate a hash of a target.
  *
@@ -52,6 +68,28 @@ export class TargetHasher {
     TargetHasher.globalInputsHashPromise = globFiles(environmentGlob, { cwd: root });
     TargetHasher.workspaceInfoPromise = getWorkspacesAsync(root);
     TargetHasher.lockInfoPromise = parseLockFile(root);
+  }
+
+  #targetManifest(target: Target) {
+    const { root } = this.options;
+    const cacheDirectory = path.join(root, "node_modules", ".cache", "lage");
+    return path.join(cacheDirectory, "manifest", `${target.id}.json`);
+  }
+
+  async #readManifest(target: Target) {
+    const manifestFile = this.#targetManifest(target);
+    if (fs.existsSync(manifestFile)) {
+      const contents = await fsp.readFile(manifestFile, "utf-8");
+      return JSON.parse(contents) as TargetManifest;
+    }
+  }
+
+  async #writeManifest(target: Target) {
+    // const manifestFile = this.#targetManifest(target);
+    // if (fs.existsSync(manifestFile)) {
+    //   const contents = await fsp.readFile(manifestFile, "utf-8");
+    //   return JSON.parse(contents) as TargetManifest;
+    // }
   }
 
   async hash(target: Target): Promise<string> {
