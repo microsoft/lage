@@ -139,5 +139,6 @@ export async function watchAction(options: RunOptions, command: Command) {
 function displaySummary(summary: SchedulerRunSummary, reporters: Reporter[]) {
   for (const reporter of reporters) {
     reporter.summarize(summary);
+    reporter.cleanup?.();
   }
 }

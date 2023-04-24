@@ -1,0 +1,9 @@
+{
+  "type": "patch",
+  "comment": {
+    "title": "Add reporter cleanup to watchAction"
+  },
+  "packageName": "@lage-run/cli",
+  "email": "stchur@microsoft.com",
+  "dependentChangeType": "patch"
+}
