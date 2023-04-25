@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "lage transpile types build bundle",
-    "watch": "lage transpile --verbose --unstable-watch",
+    "watch": "lage transpile isolatedTypes --no-cache --verbose --unstable-watch",
     "change": "beachball change",
     "checkchange": "beachball check",
     "release": "beachball publish -y --tag latest",
@@ -41,7 +41,8 @@
     "lint-staged": "13.2.0",
     "patch-package": "6.5.1",
     "prettier": "2.8.6",
-    "syncpack": "8.5.14"
+    "syncpack": "8.5.14",
+    "ts-node": "10.9.1"
   },
   "resolutions": {
     "workspace-tools": "^0.34.0",
