@@ -2596,25 +2596,50 @@ glob-hasher-darwin-arm64@1.2.1:
   resolved "https://registry.yarnpkg.com/glob-hasher-darwin-arm64/-/glob-hasher-darwin-arm64-1.2.1.tgz#642de0fc1f8fc92c3d6b5dd54bf0a95c219ff188"
   integrity sha512-zm9bcLTmrN4WrLn60T6PVs3s3Wp4ebp8nAdtenF5UZ7mWo1V/d/BSVGbp/4HNXZz8oH8FoNNRDfA4irj7O7sYg==
 
+glob-hasher-darwin-arm64@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/glob-hasher-darwin-arm64/-/glob-hasher-darwin-arm64-1.3.0.tgz#98dd31a7b08c3c9940a99ea391af405778065d79"
+  integrity sha512-xJk+chXLeVBamYQ2fo1Plk0uqoUkv42o7PYZBVr7lSy9eoBAqXKCcf23godpA1BoUfz2cWpvzhI0Nl+MQsJX6g==
+
 glob-hasher-darwin-x64@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/glob-hasher-darwin-x64/-/glob-hasher-darwin-x64-1.2.1.tgz#85fff7adede9a7b51fec6ebbcbdc01e399dbf4b0"
   integrity sha512-5/ywPOZaMWHuk6L8SDd5Ndi0cAZTbbrYyTyZsjGAiY7Lo7qsAxtMV5DY19+z1NlO2vhTKbRVnqdS/r7vlhjvjQ==
+
+glob-hasher-darwin-x64@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/glob-hasher-darwin-x64/-/glob-hasher-darwin-x64-1.3.0.tgz#dd0f3723f41e69dd851de3be145f8c1e132b8ea9"
+  integrity sha512-RpXjO136MYGi+GyQgYgDqsBmyrLUhSJTwsEZx8mhF/3JcH5/RW/RVhr9PSB9Mt/FU1MH099Ln03G+u3OEDK46g==
 
 glob-hasher-linux-x64-gnu@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/glob-hasher-linux-x64-gnu/-/glob-hasher-linux-x64-gnu-1.2.1.tgz#3ce5ee596f2610843865edf9290c48230b8059f2"
   integrity sha512-QBuGYH1av9rPaOKHid0EWwruuEhEaI9T04oM66Q7LpJVFdkmSVaBj/8GJgBnA4UjraBpr7PMM5+5nvxZ/a8u4Q==
 
+glob-hasher-linux-x64-gnu@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/glob-hasher-linux-x64-gnu/-/glob-hasher-linux-x64-gnu-1.3.0.tgz#cc3b94deb935f92aee980507daec3d4eef12a0f1"
+  integrity sha512-B8woNLpg+JEdyD9Lfqvmm0rWDn2aYrh04SthIw2i1hdXwBm53JgsNIcdMnkhW9ZZtRI8LH5uTcQgPmC46lCE4w==
+
 glob-hasher-win32-arm64-msvc@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/glob-hasher-win32-arm64-msvc/-/glob-hasher-win32-arm64-msvc-1.2.1.tgz#a40ba3676e914e9f6e28c1b1ac557fa09191221d"
   integrity sha512-8ISCz8cpA33yt5TH3DMEVTsZBxozpHuDAg7JOf8zlXElEvLJ6TLkdJyubvG/VRmIzd4S0qtUeLNl9fDh5LHM7Q==
 
+glob-hasher-win32-arm64-msvc@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/glob-hasher-win32-arm64-msvc/-/glob-hasher-win32-arm64-msvc-1.3.0.tgz#eff90a37fb7a8372ce2d12315ee154341fecd7a9"
+  integrity sha512-mndlrg8lgXoHjzZooHh5aBkS5vOKRzVYBQkNKhqXmeSK6uV4VPnDYE3I/G7ucyNJc1CcAjQ9YTktwXNJkshLVg==
+
 glob-hasher-win32-x64-msvc@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/glob-hasher-win32-x64-msvc/-/glob-hasher-win32-x64-msvc-1.2.1.tgz#99c66196f330c9da4f054f405283727bb8715cf0"
   integrity sha512-sM+7R9/gmhAQ/TjndTqsOLPjCmmxN5jhY42ROvlOoRMgY76dsUn7Hshm1U1ctE/n+4nPEUTD4eEpVERCDaV55A==
+
+glob-hasher-win32-x64-msvc@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/glob-hasher-win32-x64-msvc/-/glob-hasher-win32-x64-msvc-1.3.0.tgz#fa862a1c857cf3f5736fcc4c247d69fcf0e444b5"
+  integrity sha512-Gs4y0ZX4bJzLA2F9zAafvUJEZEEYYEDREEhdec3KB+a3pPxxjlVtNgH0hVOgXfzv8WRqUdFIff7a1vyem+y2NQ==
 
 glob-hasher@1.2.1:
   version "1.2.1"
@@ -2626,6 +2651,17 @@ glob-hasher@1.2.1:
     glob-hasher-linux-x64-gnu "1.2.1"
     glob-hasher-win32-arm64-msvc "1.2.1"
     glob-hasher-win32-x64-msvc "1.2.1"
+
+glob-hasher@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/glob-hasher/-/glob-hasher-1.3.0.tgz#f43cc931bd0c364b0db8d8f08ab357cf967899b7"
+  integrity sha512-kwtzRkuYcF1FfO5h7rwMtklwI2wtAXh4BreHxgSSvoFQ4XGdtIIxkXUEmmvIsCrVr2NVBSNyCmcCXxkddtUv9w==
+  optionalDependencies:
+    glob-hasher-darwin-arm64 "1.3.0"
+    glob-hasher-darwin-x64 "1.3.0"
+    glob-hasher-linux-x64-gnu "1.3.0"
+    glob-hasher-win32-arm64-msvc "1.3.0"
+    glob-hasher-win32-x64-msvc "1.3.0"
 
 glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
