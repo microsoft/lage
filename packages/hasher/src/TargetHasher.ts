@@ -3,7 +3,6 @@ import { salt } from "./salt.js";
 import type { Target } from "@lage-run/target-graph";
 import { hash } from "glob-hasher";
 import fg from "fast-glob";
-import globby from "globby";
 import { hashStrings } from "./hashStrings.js";
 import { resolveInternalDependencies } from "./resolveInternalDependencies.js";
 
@@ -14,6 +13,7 @@ import { type ParsedLock, type WorkspaceInfo, getWorkspacesAsync, parseLockFile 
 import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
 
 import crypto from "crypto";
+import { FileHasher } from "./FileHasher.js";
 
 export interface TargetHasherOptions {
   root: string;
@@ -26,21 +26,12 @@ function globFiles(globs: string[], { cwd }: { cwd: string }) {
   return fg(globs, { cwd }).then((files) => hash(files, { cwd }) ?? {});
 }
 
-function hashFiles(files, options?) {
-  const hashes: Record<string, string> = {};
-  for (const file of files) {
-    const data = fs.readFileSync(file);
-    const hash = crypto.createHash("sha256").update(data).digest("hex");
-    hashes[file] = hash;
-  }
-  return hashes;
-}
-
 export interface TargetManifest {
   id: string;
   hash: string;
   globalInputsHash: string;
   dependency: Record<string, string>;
+  fileHasher: FileHasher;
   files: Record<
     string,
     {
@@ -73,7 +64,7 @@ export class TargetHasher {
   #targetManifest(target: Target) {
     const { root } = this.options;
     const cacheDirectory = path.join(root, "node_modules", ".cache", "lage");
-    return path.join(cacheDirectory, "manifest", `${target.id}.json`);
+    return path.join(cacheDirectory, "targets", `${target.id}.json`);
   }
 
   async #readManifest(target: Target) {
