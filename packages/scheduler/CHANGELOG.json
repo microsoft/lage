@@ -2,6 +2,57 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Tue, 25 Apr 2023 02:51:19 GMT",
+      "tag": "@lage-run/scheduler_v0.11.3",
+      "version": "0.11.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801",
+            "comment": "Update repository and homepage"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/target-graph to v0.8.4",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/logger to v1.3.0",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v0.5.4",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/config to v0.1.4",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.6.1",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.8",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 14 Apr 2023 04:37:55 GMT",
       "tag": "@lage-run/scheduler_v0.11.2",
       "version": "0.11.2",

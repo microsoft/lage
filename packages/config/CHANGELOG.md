@@ -1,8 +1,19 @@
 # Change Log - @lage-run/config
 
-This log was last generated on Fri, 14 Apr 2023 04:37:54 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Apr 2023 02:51:19 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.4
+
+Tue, 25 Apr 2023 02:51:19 GMT
+
+### Patches
+
+- Update repository and homepage (elcraig@microsoft.com)
+- Bump @lage-run/logger to v1.3.0
+- Bump @lage-run/scheduler-types to v0.3.8
+- Bump @lage-run/target-graph to v0.8.4
 
 ## 0.1.3
 

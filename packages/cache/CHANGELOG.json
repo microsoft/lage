@@ -2,6 +2,33 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Tue, 25 Apr 2023 02:51:19 GMT",
+      "tag": "@lage-run/cache_v0.5.4",
+      "version": "0.5.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801",
+            "comment": "Update repository and homepage"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.8.4",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/logger to v1.3.0",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 14 Apr 2023 04:37:54 GMT",
       "tag": "@lage-run/cache_v0.5.3",
       "version": "0.5.3",

@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Add VerboseFileLogReporter, which writes verbose, ungrouped logs to a file",
-  "packageName": "@lage-run/reporters",
-  "email": "stchur@microsoft.com",
-  "dependentChangeType": "patch"
-}

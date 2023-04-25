@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update repository and homepage",
-  "packageName": "@lage-run/target-graph",
-  "email": "elcraig@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Added optional .cleanup() to Reporter interface, so reporters can clean up resources",
-  "packageName": "@lage-run/logger",
-  "email": "stchur@microsoft.com",
-  "dependentChangeType": "patch"
-}
