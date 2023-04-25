@@ -3,8 +3,10 @@
   "version": "0.8.3",
   "description": "Target for Lage",
   "repository": {
+    "type": "git",
     "url": "https://github.com/microsoft/lage"
   },
+  "homepage": "https://microsoft.github.io/lage/",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

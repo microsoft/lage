@@ -3,8 +3,10 @@
   "version": "0.6.0",
   "description": "A worker_threads pool implementation based on the official Node.js async_hooks documentation",
   "repository": {
+    "type": "git",
     "url": "https://github.com/microsoft/lage"
   },
+  "homepage": "https://microsoft.github.io/lage/",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

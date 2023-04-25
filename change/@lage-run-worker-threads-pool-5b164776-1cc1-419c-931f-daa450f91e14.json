@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Update repository and homepage",
+  "packageName": "@lage-run/worker-threads-pool",
+  "email": "elcraig@microsoft.com",
+  "dependentChangeType": "patch"
+}

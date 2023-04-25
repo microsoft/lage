@@ -3,8 +3,10 @@
   "version": "0.13.2",
   "description": "Command Line Interface for Lage",
   "repository": {
+    "type": "git",
     "url": "https://github.com/microsoft/lage"
   },
+  "homepage": "https://microsoft.github.io/lage/",
   "bin": {
     "lage": "./bin/lage"
   },

@@ -1,6 +1,11 @@
 {
   "name": "lage",
   "version": "2.5.3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/lage"
+  },
+  "homepage": "https://microsoft.github.io/lage/",
   "main": "dist/main.js",
   "types": "dist/index.d.ts",
   "bin": {
