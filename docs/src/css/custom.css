@@ -6,14 +6,26 @@
   --ifm-navbar-link-hover-color: white;
 }
 
-html[data-theme='dark'] {
+html[data-theme="dark"] {
   --ifm-color-primary: rgb(70, 189, 226);
+}
+
+/* Make links in markdown text visible in light mode (add an underline because it was hard to get a
+color with enough contrast against both the background and other text) */
+html[data-theme="light"] .markdown {
+  --ifm-link-color: #357e95;
+  --ifm-link-decoration: underline;
 }
 
 [data-theme="light"] .shiki.nord {
   display: none;
 }
 
-[data-theme="dark"] .shiki.min-light {
+[data-theme="dark"] .shiki.light-plus {
+  display: none;
+}
+
+/* Used for hiding a redirect page from the sidebar */
+.hidden {
   display: none;
 }

@@ -6,26 +6,26 @@ title: Quick Start
 
 ## Automated Installation
 
+To automatically install `lage` as a `devDependency` at your workspace's root and create a default `lage.config.js`, run:
+
 ```
 npx lage init
 ```
 
-This will let `lage` install the latest version of lage into your repo as a one of the `devDependencies` at the root level.
-
-`lage` is compatible with all the popular workspace managers, this can be applied to a `yarn`, `pnpm`, or `rush` workspace.
+`lage` is compatible with all the popular workspace managers, including `yarn`, `npm`, `pnpm`, and `rush`.
 
 ## Customize `lage.config.js`
 
 The `init` command will also generate a default `lage.config.js`. This will likely need to be modified. In particular, pay attention to the `pipeline`
 configuration:
 
-```js
+```js title="/lage.config.js"
 module.exports = {
   pipeline: {
     build: ["^build"],
     test: ["build"],
-    lint: [],
-  },
+    lint: []
+  }
 };
 ```
 
@@ -33,7 +33,7 @@ module.exports = {
 
 Modify the `package.json` to use `lage` to run your tasks:
 
-```json
+```json title="/package.json"
 {
   "name": "workspace-root",
   "scripts": {
@@ -51,19 +51,12 @@ Modify the `package.json` to use `lage` to run your tasks:
 
 You are now ready to start running all the commands in your repository with `lage`. You'll notice that tasks are now cached!
 
-```
+For example (choose the appropriate command for your package manager):
+
+```shell
+# choose one
 npm run build
-```
-
-or 
-
-```
 yarn build
-```
-
-or
-
-```
 pnpm build
 ```
 
