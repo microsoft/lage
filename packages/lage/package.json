@@ -31,9 +31,9 @@
     "@rollup/plugin-json": "4.1.0",
     "@rollup/plugin-alias": "3.1.9",
     "rollup-plugin-terser": "7.0.2",
-    "backfill-config": "^6.3.1",
+    "backfill-config": "6.3.1",
     "dts-bundle-generator": "7.2.0",
-    "workspace-tools": "^0.34.0"
+    "workspace-tools": "0.34.0"
   },
   "files": [
     "dist/*.d.ts",
