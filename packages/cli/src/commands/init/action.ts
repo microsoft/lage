@@ -1,3 +1,4 @@
+/* eslint-disable no-console -- logger doesn't work in this context */
 import { readConfigFile } from "@lage-run/config";
 import fs from "fs";
 import path from "path";
