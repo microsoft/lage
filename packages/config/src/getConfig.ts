@@ -1,22 +1,15 @@
 import os from "os";
-import { cosmiconfig } from "cosmiconfig";
-import { getWorkspaceRoot } from "workspace-tools";
+import { readConfigFile } from "./readConfigFile.js";
 import type { ConfigOptions } from "./types/ConfigOptions.js";
+import type { CacheOptions } from "./types/CacheOptions.js";
 
+/**
+ * Get the lage config with defaults.
+ */
 export async function getConfig(cwd: string): Promise<ConfigOptions> {
-  // Verify presence of git
-  const root = getWorkspaceRoot(cwd);
-  if (!root) {
-    throw new Error("This must be called inside a codebase that is part of a JavaScript workspace.");
-  }
-
-  // Search for lage.config.js file
-  const ConfigModuleName = "lage";
-  const configExplorer = await cosmiconfig(ConfigModuleName);
-  const results = await configExplorer.search(root ?? cwd);
-  const config = results?.config;
+  const config = (await readConfigFile(cwd)) || ({} as Partial<ConfigOptions>);
   return {
-    cacheOptions: config?.cacheOptions ?? {},
+    cacheOptions: config?.cacheOptions ?? ({} as CacheOptions),
     ignore: config?.ignore ?? [],
     npmClient: config?.npmClient ?? "npm",
     pipeline: config?.pipeline ?? {},

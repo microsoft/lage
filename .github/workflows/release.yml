@@ -74,7 +74,8 @@ jobs:
           git config user.email "kchau@microsoft.com"
           git config user.name "Ken Chau"
 
-      - run: |
+      - name: Publish
+        run: |
           # Get the existing remote URL without creds, and use a trap (like try/finally)
           # to restore it after this step finishes
           trap "git remote set-url origin '$(git remote get-url origin)'" EXIT
