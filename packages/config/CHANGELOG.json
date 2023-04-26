@@ -2,6 +2,21 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Wed, 26 Apr 2023 04:56:20 GMT",
+      "tag": "@lage-run/config_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "56910ce2ef67d9d3dc99b7a75df007820e9444c8",
+            "comment": "Add readConfigFile API to read the file without defaults"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Apr 2023 02:51:19 GMT",
       "tag": "@lage-run/config_v0.1.4",
       "version": "0.1.4",

@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Add readConfigFile API to read the file without defaults",
-  "packageName": "@lage-run/config",
-  "email": "elcraig@microsoft.com",
-  "dependentChangeType": "patch"
-}

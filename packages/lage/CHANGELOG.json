@@ -2,6 +2,33 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 26 Apr 2023 04:56:20 GMT",
+      "tag": "lage_v2.5.5",
+      "version": "2.5.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "56910ce2ef67d9d3dc99b7a75df007820e9444c8",
+            "comment": "Update readme"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.0",
+            "commit": "994af55fcc890b448fc2b5cd5e4ba8bca0832997"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v0.11.4",
+            "commit": "994af55fcc890b448fc2b5cd5e4ba8bca0832997"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Apr 2023 02:51:19 GMT",
       "tag": "lage_v2.5.4",
       "version": "2.5.4",
