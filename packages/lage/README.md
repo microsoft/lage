@@ -2,7 +2,7 @@
 
 Documentation: https://microsoft.github.io/lage/
 
-See the [release notes](https://github.com/microsoft/lage/blob/master/packages/lage/RELEASE.md) for more details of new features!
+**Lage v2 is here!** See the [release notes](https://github.com/microsoft/lage/blob/master/packages/lage/RELEASE.md) for details about new features and breaking changes.
 
 ## Overview
 
@@ -14,17 +14,31 @@ This usually means that there are wasted CPU cycles in between `build` and `test
 
 `lage` (Norwegian for "make", pronounced law-geh) solves this by providing a terse pipelining syntax. It has many features geared towards speeding up the task runner that we'll explore later.
 
-## Quick Start
+## Quick start
 
-`lage` gives you this capability with very little configuration. First, let's install the `lage` utility. You can place this in your workspace's root `package.json` by running `yarn add`:
+`lage` gives you this capability with very little configuration.
 
-```
-yarn add -D lage
-```
+### Automatic installation
 
-Confirm with `yarn` that you are sure to add a package at the root level, you then place a root level script inside the `package.json` to run `lage`:
+You can automatically install lage and create a basic config file by running:
 
 ```
+npx lage init
+```
+
+### Manual installation
+
+You can also install and configure `lage` manually.
+
+First, install `lage` at your workspace's root. For example, if you're using `yarn`:
+
+```
+yarn add -D -W lage
+```
+
+Next, add scripts inside the workspace root `package.json` to run `lage`. For example:
+
+```json
 {
   "scripts": {
     "build": "lage build",
@@ -33,7 +47,7 @@ Confirm with `yarn` that you are sure to add a package at the root level, you th
 }
 ```
 
-Add a configuration file in the root to get started. Create this file at the root `lage.config.js`:
+To specify that `test` depends on `build`, create a file `lage.config.js` at the repo root and add the following:
 
 ```js
 module.exports = {
@@ -44,10 +58,22 @@ module.exports = {
 };
 ```
 
-Do not worry about the syntax for now. We will go over the configuration file in a coming section. You can now run this command:
+(You can find more details about this syntax in the [pipelines tutorial](https://microsoft.github.io/lage/docs/Tutorial/pipeline).)
+
+You can now run this command:
 
 ```
-$ lage test
+lage test
 ```
 
 `lage` will detect that you need to run `build` steps before `test`s are run.
+
+## Next steps
+
+Take a look at some of the other resources on the website:
+
+- [Introduction and overview](https://microsoft.github.io/lage/docs/Introduction) of how `lage` works
+- [Tutorial](https://microsoft.github.io/lage/docs/Tutorial/pipeline) about the `pipeline` syntax and other `lage` concepts
+- [CLI reference](https://microsoft.github.io/lage/docs/Reference/cli)
+- [Config reference](https://microsoft.github.io/lage/docs/Reference/config)
+- [Recipes](https://microsoft.github.io/lage/docs/Cookbook/make-jest-fast) for integrating with Jest, ESLint, and more
