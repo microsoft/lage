@@ -17,6 +17,7 @@
     "typeRoots": ["../node_modules/@types", "../types", "node_modules/@types"]
   },
   "ts-node": {
-    "swc": true
+    "swc": true,
+    "transpileOnly": true
   }
 }

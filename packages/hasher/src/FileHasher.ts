@@ -23,8 +23,14 @@ export class FileHasher {
     this.#manifestFile = path.join(cacheDirectory, "file_hashes.json");
   }
 
+  async getHashesFromGit() {}
+
   async readManifest() {
     return new Promise<void>((resolve, reject) => {
+      if (!fs.existsSync(this.#manifestFile)) {
+        return resolve();
+      }
+
       const inputStream = fs.createReadStream(this.#manifestFile, "utf-8");
       const rl = createInterface({
         input: inputStream,
@@ -60,6 +66,7 @@ export class FileHasher {
     const updatedFiles: string[] = [];
 
     const stats = stat(files, { cwd: this.options.root }) ?? {};
+
     await Promise.all(
       files.map(async (file) => {
         const stat = stats[file];
@@ -73,9 +80,7 @@ export class FileHasher {
       })
     );
 
-    console.time("hash");
     const updatedHashes = fastHash(updatedFiles, { cwd: this.options.root }) ?? {};
-    console.timeEnd("hash");
 
     await Promise.all(
       Object.entries(updatedHashes).map(async ([file, hash]) => {
@@ -113,6 +118,6 @@ if (require.main === module) {
     await hasher.writeManifest();
     console.timeEnd("write");
 
-    console.log(hashes);
+    console.log(Object.keys(hashes).length);
   })();
 }

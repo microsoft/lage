@@ -16,7 +16,11 @@
       "type": "node",
       "request": "launch",
       "args": ["${relativeFile}"],
-      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "env": {
+        "NODE_OPTIONS": "-r ts-node/register",
+        "TS_NODE_COMPILER_OPTIONS": "{\"target\":\"ES2020\",\"module\":\"CommonJS\",\"moduleResolution\":\"node16\",\"sourceMap\":false}"
+      },
+      "runtimeArgs": [],
       "sourceMaps": true,
       "cwd": "${workspaceRoot}",
       "protocol": "inspector"
