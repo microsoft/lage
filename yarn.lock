@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@actions/cache@^3.0.4":
+"@actions/cache@^3.2.1":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@actions/cache/-/cache-3.2.1.tgz#bbd4680aeab811f3e839e58be493ffe7583d0311"
   integrity sha512-QurbMiY//02+0kN1adJkMHN44RcZ5kAXfhSnKUZmtSmhMTNqLitGArG1xOkt93NNyByTlLGAc5wIOF/dZ2ENOQ==
