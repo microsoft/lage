@@ -50,5 +50,8 @@
   "lint-staged": {
     "*.ts": "prettier --config .prettierrc --write --ignore-path .gitignore",
     "*.json": "prettier --config .prettierrc --write --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "typescript": "^5.0.3"
   }
 }
