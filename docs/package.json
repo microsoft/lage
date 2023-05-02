@@ -22,7 +22,6 @@
     "@stackblitz/sdk": "^1.8.0",
     "clsx": "^1.1.1",
     "mermaid": "^9.0.0",
-    "prism-react-renderer": "^1.2.1",
     "react-dom": "^17.0.1",
     "react-flow-renderer": "^10.3.7",
     "react": "^17.0.1",
@@ -43,6 +42,20 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "prettier": {
+    "overrides": [
+      {
+        "files": [
+          "*.md",
+          "*.mdx"
+        ],
+        "options": {
+          "printWidth": 80,
+          "trailingComma": "none"
+        }
+      }
     ]
   }
 }

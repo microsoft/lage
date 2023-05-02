@@ -1,0 +1,5 @@
+{
+  // tsconfig used only for eslint in the editor
+  "extends": "../../packages/tsconfig.lage2.json",
+  "include": ["../../packages/*/src"]
+}

@@ -1,10 +1,12 @@
 {
   "name": "@lage-run/scheduler-types",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Scheduler types for Lage",
   "repository": {
+    "type": "git",
     "url": "https://github.com/microsoft/lage"
   },
+  "homepage": "https://microsoft.github.io/lage/",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -14,7 +16,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/target-graph": "^0.8.3"
+    "@lage-run/target-graph": "^0.8.4"
   },
   "devDependencies": {
     "monorepo-scripts": "*"

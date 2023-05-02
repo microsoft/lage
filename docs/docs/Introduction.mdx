@@ -8,14 +8,14 @@ slug: Introduction
 import ThemedImage from "@theme/ThemedImage";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
-When your JavaScript repository has grown large enough that you have turned to using a [monorepo](https://monorepo.tools) to help you organize your code as multiple packages inside a repository. That's great! However, you realized quickly that the build scripts defined inside the workspace have to be run in package dependency order.
+Your JavaScript repository has grown large enough that you have turned to using a [monorepo](https://monorepo.tools) to help you organize your code as multiple packages inside a repository. That's great! However, you realized quickly that the build scripts defined inside the workspace have to be run in package dependency order.
 
-There exists tools in the market that will provide a way for you to run these npm scripts in a topological order. These tools will allow you execute your tasks in the correct order. So why choose `lage` for your repository?
+There exist many tools in the market that provide ways for you to run these npm scripts in the correct topological order. So why choose `lage` for your repository?
 
 1. `lage` is battle tested - it is in use by many JavaScript repositories number in the millions lines of code each
 2. `lage` can be easily adopted - all it takes is just one npm package install with a single configuration file for the entire repository
 3. `lage` supports remote cache as a fallback - never build the same code twice
-4. `lage` is optimized for modern multi-core development machines - don't waste your CPU resource waiting on a single core when you have so many to spare!
+4. `lage` is optimized for modern multi-core development machines - don't waste your CPU resources waiting on a single core when you have so many to spare!
 
 ## How does `lage` schedule tasks?
 
@@ -25,10 +25,10 @@ There exists tools in the market that will provide a way for you to run these np
   alt="Package graph with task graph equals target graph"
   sources={{
     light: useBaseUrl("/img/graph-diagram-light.png"),
-    dark: useBaseUrl("/img/graph-diagram-dark.png"),
+    dark: useBaseUrl("/img/graph-diagram-dark.png")
   }}
   style={{
-    width: "100%",
+    width: "100%"
   }}
 />
 
@@ -51,7 +51,7 @@ graph TD
 
 ### Level 1: Legacy Workspace Runners
 
-First, let's take a look at the typical workspace runners. `Lerna` (before ), `pnpm recursive`, `rush` and `wsrun` all will run one task at a time. This creates a sort of "build phase" effect where `test` scripts are not allowed to run until `build`.
+First, let's take a look at the typical workspace runners. `Lerna` (before), `pnpm recursive`, `rush` and `wsrun` all will run one task at a time. This creates a sort of "build phase" effect where `test` scripts are not allowed to run until `build`.
 
 <Mermaid
   chart={`gantt
@@ -91,7 +91,7 @@ First, let's take a look at the typical workspace runners. `Lerna` (before ), `p
 
 ### Level 2: Scoping
 
-One of the first way to speeding up build jobs is to use "scoping". Usually a change only affect a subset of the graph. We can get rid of the builds of `FooCore`, `FooApp1` and `FooApp2` if the only changes are inside `BarCore`. However, we'll note that `BarPage` is still affected, resulting in this.
+One of the first way to speeding up build jobs is to use "scoping." Usually a change only affects a subset of the graph. We can get rid of the builds of `FooCore`, `FooApp1` and `FooApp2` if the only changes are inside `BarCore`. However, we'll note that `BarPage` is still affected, resulting in this.
 
 <Mermaid
   chart={`gantt

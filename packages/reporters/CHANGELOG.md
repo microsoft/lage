@@ -1,8 +1,23 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Fri, 14 Apr 2023 04:37:55 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Apr 2023 02:51:19 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.0
+
+Tue, 25 Apr 2023 02:51:19 GMT
+
+### Minor changes
+
+- Add VerboseFileLogReporter, which writes verbose, ungrouped logs to a file (stchur@microsoft.com)
+- Bump @lage-run/logger to v1.3.0
+- Bump @lage-run/scheduler-types to v0.3.8
+- Bump @lage-run/target-graph to v0.8.4
+
+### Patches
+
+- Update repository and homepage (elcraig@microsoft.com)
 
 ## 1.1.2
 

@@ -87,6 +87,10 @@ Choosing a different reporter while logging (e.g. nice outputs for Azure DevOps)
 
     $ lage build test lint --reporter=azureDevOps
 
+Or combine multiple reporters (e.g. Azure DepOps with VerboseFileLog)
+
+    $ lage build test lint --reporter azureDevOps --reporter vfl --log-file /my/verbose/log.file
+
 Ignoring files when calculating the scope with --since in addition to files specified in lage.config:
 
     $ lage build test lint --since origin/master --ignore "package.json" "yarn.lock" "**/.azure-pipelines/**"

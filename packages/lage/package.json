@@ -1,6 +1,11 @@
 {
   "name": "lage",
-  "version": "2.5.3",
+  "version": "2.5.5",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/lage"
+  },
+  "homepage": "https://microsoft.github.io/lage/",
   "main": "dist/main.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -18,8 +23,8 @@
     "fsevents": "~2.3.2"
   },
   "devDependencies": {
-    "@lage-run/cli": "^0.13.2",
-    "@lage-run/scheduler": "^0.11.2",
+    "@lage-run/cli": "^0.15.0",
+    "@lage-run/scheduler": "^0.11.4",
     "rollup": "2.79.1",
     "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-node-resolve": "14.1.0",

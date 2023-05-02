@@ -1,12 +1,19 @@
 import { LogLevel } from "@lage-run/logger";
-import { JsonReporter, AdoReporter, LogReporter, ProgressReporter, ChromeTraceEventsReporter } from "@lage-run/reporters";
+import {
+  JsonReporter,
+  AdoReporter,
+  LogReporter,
+  ProgressReporter,
+  VerboseFileLogReporter,
+  ChromeTraceEventsReporter,
+} from "@lage-run/reporters";
 import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
 import { findPackageRoot } from "workspace-tools";
 import { readFileSync } from "fs";
 import path from "path";
 
 export function createReporter(reporter: string, options: ReporterInitOptions) {
-  const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress } = options;
+  const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress, logFile } = options;
   const logLevel = LogLevel[logLevelName];
 
   const root = findPackageRoot(__filename)!;
@@ -28,6 +35,10 @@ export function createReporter(reporter: string, options: ReporterInitOptions) {
     case "npmLog":
     case "old":
       return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+
+    case "verboseFileLog":
+    case "vfl":
+      return new VerboseFileLogReporter(logFile);
 
     default:
       if (progress && !(logLevel >= LogLevel.verbose || verbose || grouped)) {

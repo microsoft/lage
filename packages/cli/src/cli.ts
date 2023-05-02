@@ -4,12 +4,14 @@ import { runCommand } from "./commands/run/index.js";
 import { cacheCommand } from "./commands/cache/index.js";
 import { NoTargetFoundError } from "./types/errors.js";
 import { affectedCommand } from "./commands/affected/index.js";
+import { initCommand } from "./commands/init/index.js";
 
 async function main() {
   const program = new Command();
   program.addCommand(runCommand, { isDefault: true });
   program.addCommand(cacheCommand);
   program.addCommand(affectedCommand);
+  program.addCommand(initCommand);
 
   await program.parseAsync(process.argv);
 }

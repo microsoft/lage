@@ -1,6 +1,7 @@
 export { getConfig } from "./getConfig.js";
 export { getConcurrency } from "./getConcurrency.js";
 export { getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions } from "./getMaxWorkersPerTask.js";
+export { readConfigFile } from "./readConfigFile.js";
 export type { PipelineDefinition } from "./types/PipelineDefinition.js";
 export type { ConfigOptions } from "./types/ConfigOptions.js";
 export type { CacheOptions } from "./types/CacheOptions.js";
