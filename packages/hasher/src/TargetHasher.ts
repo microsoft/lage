@@ -6,22 +6,27 @@ import { hashStrings } from "./hashStrings.js";
 import { resolveInternalDependencies } from "./resolveInternalDependencies.js";
 
 import fs from "fs";
-import fsp from "fs/promises";
+
 import path from "path";
-import { type ParsedLock, type WorkspaceInfo, getWorkspacesAsync, parseLockFile } from "workspace-tools";
+import {
+  type ParsedLock,
+  type WorkspaceInfo,
+  getWorkspacesAsync,
+  parseLockFile,
+  createDependencyMap,
+  type PackageInfos,
+} from "workspace-tools";
+import { infoFromPackageJson } from "workspace-tools/lib/infoFromPackageJson.js";
 import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
 
 import { FileHasher } from "./FileHasher.js";
+import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
 
 export interface TargetHasherOptions {
   root: string;
   environmentGlob: string[];
   cacheKey?: string;
   cliArgs?: string[];
-}
-
-function globFiles(globs: string[], { cwd }: { cwd: string }) {
-  return fg(globs, { cwd }).then((files) => hash(files, { cwd }) ?? {});
 }
 
 export interface TargetManifest {
@@ -49,15 +54,77 @@ export class TargetHasher {
   #ignorePatterns: string[] = [];
   fileHasher: FileHasher;
 
-  static workspaceInfoPromise: Promise<WorkspaceInfo>;
-  static globalInputsHashPromise: Promise<Record<string, string>>;
-  static lockInfoPromise: Promise<ParsedLock>;
+  initializedPromise: Promise<unknown> | undefined;
+
+  packageInfos: PackageInfos = {};
+  workspaceInfo: WorkspaceInfo | undefined;
+  globalInputsHash: Record<string, string> | undefined;
+  lockInfo: ParsedLock | undefined;
+
+  dependencyMap: DependencyMap = {
+    dependencies: new Map(),
+    dependents: new Map(),
+  };
+
+  getPackageInfos(workspacePackages: WorkspaceInfo) {
+    const { root } = this.options;
+    const packageInfos: PackageInfos = {};
+
+    if (workspacePackages.length) {
+      for (const pkg of workspacePackages) {
+        packageInfos[pkg.name] = pkg.packageJson;
+      }
+    } else {
+      const packageJsonPath = path.join(root, "package.json");
+      if (fs.existsSync(packageJsonPath)) {
+        try {
+          const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
+          const rootInfo = infoFromPackageJson(packageJson, packageJsonPath);
+          if (rootInfo) {
+            packageInfos[rootInfo.name] = rootInfo;
+          }
+        } catch (e) {
+          throw new Error(`Invalid package.json file detected ${packageJsonPath}: ${(e as Error)?.message || e}`);
+        }
+      }
+    }
+
+    return packageInfos;
+  }
+
+  expandInputPatterns(patterns: string[], target: Target) {
+    const { root } = this.options;
+    const packageInfos = this.packageInfos;
+    const expandedPatterns: string[] = [];
+
+    const relative = (pattern: string) => path.relative(root, path.join(target.cwd, pattern)).replace(/\\/g, "/");
+
+    for (const pattern of patterns) {
+      if (pattern.startsWith("^")) {
+        // get all the packages that are transitive deps and add them to the list
+        const queue = [target.packageName];
+        while (queue.length > 0) {
+          const pkg = queue.pop()!;
+          if (this.dependencyMap.dependencies.has(pkg)) {
+            const packageInfo = packageInfos[pkg];
+            const location = path.dirname(packageInfo.packageJsonPath);
+            expandedPatterns.push(`${location}/${pattern.slice(1)}`);
+            const deps = this.dependencyMap.dependencies.get(pkg) ?? [];
+            if (deps) {
+              queue.push(...deps);
+            }
+          }
+        }
+      } else {
+        expandedPatterns.push(relative(pattern));
+      }
+    }
+
+    return expandedPatterns;
+  }
 
   constructor(private options: TargetHasherOptions) {
-    const { environmentGlob, root } = options;
-    TargetHasher.globalInputsHashPromise = globFiles(environmentGlob, { cwd: root });
-    TargetHasher.workspaceInfoPromise = getWorkspacesAsync(root);
-    TargetHasher.lockInfoPromise = parseLockFile(root);
+    const { root } = options;
 
     const gitignoreFile = path.join(root, ".gitignore");
     if (fs.existsSync(gitignoreFile)) {
@@ -73,32 +140,37 @@ export class TargetHasher {
     });
   }
 
-  #targetManifest(target: Target) {
-    const { root } = this.options;
-    const cacheDirectory = path.join(root, "node_modules", ".cache", "lage");
-    return path.join(cacheDirectory, "targets", `${target.id}.json`);
-  }
-
-  async #readManifest(target: Target) {
-    const manifestFile = this.#targetManifest(target);
-    if (fs.existsSync(manifestFile)) {
-      const contents = await fsp.readFile(manifestFile, "utf-8");
-      return JSON.parse(contents) as TargetManifest;
+  ensureInitialized() {
+    if (!this.initializedPromise) {
+      throw new Error("TargetHasher is not initialized");
     }
   }
 
-  async #writeManifest(target: Target) {
-    // const manifestFile = this.#targetManifest(target);
-    // if (fs.existsSync(manifestFile)) {
-    //   const contents = await fsp.readFile(manifestFile, "utf-8");
-    //   return JSON.parse(contents) as TargetManifest;
-    // }
+  async initialize() {
+    const { environmentGlob, root } = this.options;
+
+    if (this.initializedPromise) {
+      await this.initializedPromise;
+      return;
+    }
+
+    this.initializedPromise = Promise.all([
+      this.fileHasher.hash(environmentGlob).then((hash) => (this.globalInputsHash = hash)),
+      getWorkspacesAsync(root).then((workspaceInfo) => (this.workspaceInfo = workspaceInfo)),
+      parseLockFile(root).then((lockInfo) => (this.lockInfo = lockInfo)),
+    ]);
+
+    await this.initializedPromise;
+
+    this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
+
+    this.dependencyMap = createDependencyMap(this.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
   }
 
   async hash(target: Target): Promise<string> {
-    const { root } = this.options;
+    this.ensureInitialized();
 
-    const globalInputsHash = await TargetHasher.globalInputsHashPromise;
+    const { root } = this.options;
 
     const hashKey = await salt(
       target.environmentGlob ?? this.options.environmentGlob ?? ["lage.config.js"],
@@ -124,8 +196,9 @@ export class TargetHasher {
     // 1. add hash of target's inputs
     // 2. add hash of target packages' internal and external deps
     const { dependencies, devDependencies } = JSON.parse(fs.readFileSync(path.join(target.cwd, "package.json"), "utf-8"));
-    const workspaceInfo = await TargetHasher.workspaceInfoPromise;
-    const parsedLock = await TargetHasher.lockInfoPromise;
+
+    const workspaceInfo = this.workspaceInfo!;
+    const parsedLock = this.lockInfo!;
 
     const allDependencies: Record<string, string> = {
       ...dependencies,
@@ -136,16 +209,14 @@ export class TargetHasher {
     const externalDeps = resolveExternalDependencies(allDependencies, workspaceInfo, parsedLock);
     const resolvedDependencies = [...internalDeps, ...externalDeps];
 
-    const inputs = target.inputs ?? ["**/*"];
+    const inputs = target.inputs ?? ["**/*", "^**/*"];
 
-    const files = await fg(
-      inputs.map((i) => path.relative(root, path.join(target.cwd, i)).replace(/\\/g, "/")),
-      { cwd: root, ignore: this.#ignorePatterns }
-    );
+    const files = await fg(this.expandInputPatterns(inputs, target), {
+      cwd: root,
+      ignore: this.#ignorePatterns,
+    });
 
-    console.time("hash files");
     const fileHashes = hash(files, { cwd: root }) ?? {};
-    console.timeEnd("hash files");
 
     const hashString = hashStrings(Object.values(fileHashes).concat(resolvedDependencies).concat(hashKey));
 
@@ -174,6 +245,7 @@ if (require.main === module) {
     console.time("target hash");
     const hashes = await hasher.hash(target);
     console.timeEnd("target hash");
+
     await hasher.fileHasher.writeManifest();
 
     console.log(Object.keys(hashes).length);
