@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import fs from "fs";
 import path from "path";
 import { hash as fastHash, stat } from "glob-hasher";
@@ -13,7 +14,7 @@ export class FileHasher {
   #store: Record<string, string> = {};
   #manifestFile: string;
 
-  getKey(relativePath: string, mtime: BigInt, size: number) {
+  getKey(relativePath: string, mtime: bigint, size: number) {
     return `${mtime}-${size}-${relativePath}`;
   }
 

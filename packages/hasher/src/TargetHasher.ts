@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { salt } from "./salt.js";
 import type { Target } from "@lage-run/target-graph";
 import { hash } from "glob-hasher";
@@ -21,6 +22,7 @@ import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
 
 import { FileHasher } from "./FileHasher.js";
 import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
+import { PackageTree } from "./PackageTree.js";
 
 export interface TargetHasherOptions {
   root: string;
@@ -53,6 +55,7 @@ export interface TargetManifest {
 export class TargetHasher {
   #ignorePatterns: string[] = [];
   fileHasher: FileHasher;
+  packageTree: PackageTree | undefined;
 
   initializedPromise: Promise<unknown> | undefined;
 
@@ -60,6 +63,7 @@ export class TargetHasher {
   workspaceInfo: WorkspaceInfo | undefined;
   globalInputsHash: Record<string, string> | undefined;
   lockInfo: ParsedLock | undefined;
+  targetHashes: Record<string, string> = {};
 
   dependencyMap: DependencyMap = {
     dependencies: new Map(),
@@ -171,6 +175,14 @@ export class TargetHasher {
     this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
 
     this.dependencyMap = createDependencyMap(this.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
+
+    this.packageTree = new PackageTree({
+      root,
+      packageInfos: this.packageInfos,
+
+      // TODO: (optimization) false if process.env.TF_BUILD || process.env.CI
+      includeUntracked: true,
+    });
   }
 
   async hash(target: Target): Promise<string> {
@@ -220,15 +232,24 @@ export class TargetHasher {
     const patterns = this.expandInputPatterns(inputs, target);
 
     console.time("fg");
-    const files = await fg(patterns, {
-      cwd: root,
-      ignore: this.#ignorePatterns,
-    });
+
+    const files = this.packageTree!.getPackageFiles(target.packageName!, patterns);
+
     console.timeEnd("fg");
 
+    console.time("filehasher");
     const fileHashes = (await this.fileHasher.hash(files)) ?? {};
+    console.timeEnd("filehasher");
 
-    const hashString = hashStrings(Object.values(fileHashes).concat(resolvedDependencies).concat(hashKey));
+    // get target hashes
+    const targetDepHashes = target.dependencies?.sort().map((targetDep) => this.targetHashes[targetDep]);
+
+    console.time("hashStrings");
+    const combinedHashes = [...Object.values(fileHashes), ...resolvedDependencies, ...hashKey, ...targetDepHashes];
+    const hashString = hashStrings(combinedHashes);
+    console.timeEnd("hashStrings");
+
+    this.targetHashes[target.id] = hashString;
 
     return hashString;
   }
@@ -248,7 +269,7 @@ if (require.main === module) {
       depSpecs: [],
       label: "files - build",
       task: "build",
-      packageName: "files",
+      packageName: "@msteams/apps-files",
     };
 
     await hasher.fileHasher.readManifest();
@@ -258,7 +279,7 @@ if (require.main === module) {
 
     console.time("target hash2");
 
-    const hashes2 = await hasher.hash(target);
+    await hasher.hash(target);
     console.timeEnd("target hash2");
 
     await hasher.fileHasher.writeManifest();
