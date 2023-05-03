@@ -22,7 +22,7 @@
     "@actions/cache": "^3.0.4"
   },
   "devDependencies": {
-    "monorepo-scripts": "*"
+    "@lage-run/monorepo-scripts": "*"
   },
   "publishConfig": {
     "access": "public"

@@ -1,0 +1,95 @@
+{
+  "changes": [
+    {
+      "type": "none",
+      "comment": "Use ranges for devDependencies",
+      "packageName": "@lage-run/cache",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Use ranges for devDependencies",
+      "packageName": "@lage-run/cli",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "patch",
+      "comment": "Update backfill-config to ^6.4.1",
+      "packageName": "@lage-run/config",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "none",
+      "comment": "Use ranges for devDependencies",
+      "packageName": "@lage-run/hasher",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Use ranges for devDependencies",
+      "packageName": "@lage-run/cache-github-actions",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Use ranges for devDependencies",
+      "packageName": "@lage-run/config",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Use ranges for devDependencies",
+      "packageName": "@lage-run/find-npm-client",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Use ranges for devDependencies",
+      "packageName": "lage",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Use ranges for devDependencies",
+      "packageName": "@lage-run/reporters",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Use ranges for devDependencies",
+      "packageName": "@lage-run/scheduler-types",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Use ranges for devDependencies",
+      "packageName": "@lage-run/scheduler",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Use ranges for devDependencies",
+      "packageName": "@lage-run/target-graph",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Use ranges for devDependencies",
+      "packageName": "@lage-run/worker-threads-pool",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    }
+  ]
+}

@@ -40,7 +40,7 @@ jobs:
 
       # @see https://www.npmjs.com/package/syncpack
       - name: Check consistent package.json dep versions
-        run: yarn syncpack list-mismatches -w
+        run: yarn syncpack list-mismatches
 
       - name: Dependency checks
         run: yarn lage depcheck

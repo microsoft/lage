@@ -25,9 +25,9 @@
     "micromatch": "^4.0.5"
   },
   "devDependencies": {
-    "@types/graceful-fs": "^4.1.6",
-    "@lage-run/monorepo-fixture": "^0.1.0",
-    "monorepo-scripts": "*"
+    "@lage-run/monorepo-fixture": "*",
+    "@lage-run/monorepo-scripts": "*",
+    "@types/graceful-fs": "^4.1.6"
   },
   "publishConfig": {
     "access": "public"

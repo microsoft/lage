@@ -15,7 +15,7 @@
     "lint": "monorepo-scripts lint"
   },
   "devDependencies": {
-    "execa": "5.1.1",
-    "monorepo-scripts": "*"
+    "@lage-run/monorepo-scripts": "*",
+    "execa": "^5.1.1"
   }
 }

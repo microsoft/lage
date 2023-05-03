@@ -19,7 +19,7 @@
     "@lage-run/target-graph": "^0.8.8"
   },
   "devDependencies": {
-    "monorepo-scripts": "*"
+    "@lage-run/monorepo-scripts": "*"
   },
   "publishConfig": {
     "access": "public"

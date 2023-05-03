@@ -27,7 +27,7 @@
     "gradient-string": "^2.0.1"
   },
   "devDependencies": {
-    "memory-streams": "0.1.3"
+    "memory-streams": "^0.1.3"
   },
   "publishConfig": {
     "access": "public"

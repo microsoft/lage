@@ -20,7 +20,7 @@
     "@lage-run/logger": "^1.3.0"
   },
   "devDependencies": {
-    "monorepo-scripts": "*"
+    "@lage-run/monorepo-scripts": "*"
   },
   "publishConfig": {
     "access": "public"
