@@ -103,12 +103,18 @@ export class TargetHasher {
       if (pattern.startsWith("^")) {
         // get all the packages that are transitive deps and add them to the list
         const queue = [target.packageName];
+        const visited = new Set<string>();
+
         while (queue.length > 0) {
           const pkg = queue.pop()!;
+          if (visited.has(pkg)) {
+            continue;
+          }
+          visited.add(pkg);
           if (this.dependencyMap.dependencies.has(pkg)) {
             const packageInfo = packageInfos[pkg];
-            const location = path.dirname(packageInfo.packageJsonPath);
-            expandedPatterns.push(`${location}/${pattern.slice(1)}`);
+            const location = path.relative(root, path.dirname(packageInfo.packageJsonPath));
+            expandedPatterns.push(`${location}/${pattern.slice(1)}`.replace(/\\/g, "/"));
             const deps = this.dependencyMap.dependencies.get(pkg) ?? [];
             if (deps) {
               queue.push(...deps);
@@ -195,7 +201,7 @@ export class TargetHasher {
 
     // 1. add hash of target's inputs
     // 2. add hash of target packages' internal and external deps
-    const { dependencies, devDependencies } = JSON.parse(fs.readFileSync(path.join(target.cwd, "package.json"), "utf-8"));
+    const { dependencies, devDependencies } = this.packageInfos[target.packageName!];
 
     const workspaceInfo = this.workspaceInfo!;
     const parsedLock = this.lockInfo!;
@@ -211,12 +217,16 @@ export class TargetHasher {
 
     const inputs = target.inputs ?? ["**/*", "^**/*"];
 
-    const files = await fg(this.expandInputPatterns(inputs, target), {
+    const patterns = this.expandInputPatterns(inputs, target);
+
+    console.time("fg");
+    const files = await fg(patterns, {
       cwd: root,
       ignore: this.#ignorePatterns,
     });
+    console.timeEnd("fg");
 
-    const fileHashes = hash(files, { cwd: root }) ?? {};
+    const fileHashes = (await this.fileHasher.hash(files)) ?? {};
 
     const hashString = hashStrings(Object.values(fileHashes).concat(resolvedDependencies).concat(hashKey));
 
@@ -228,11 +238,11 @@ if (require.main === module) {
   (async () => {
     const root = "/workspace/tmp1";
     const hasher = new TargetHasher({ root, environmentGlob: ["lage.config.js"] });
-
+    await hasher.initialize();
     const target: Target = {
       id: "s#build",
       cwd: root + "/packages/apps/apps-files",
-      inputs: ["**/*"],
+      inputs: ["**/*", "^**/*"],
       dependencies: [],
       dependents: [],
       depSpecs: [],
@@ -246,8 +256,13 @@ if (require.main === module) {
     const hashes = await hasher.hash(target);
     console.timeEnd("target hash");
 
+    console.time("target hash2");
+
+    const hashes2 = await hasher.hash(target);
+    console.timeEnd("target hash2");
+
     await hasher.fileHasher.writeManifest();
 
-    console.log(Object.keys(hashes).length);
+    console.log(hashes);
   })();
 }
