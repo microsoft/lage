@@ -246,9 +246,9 @@ if (require.main === module) {
       dependencies: [],
       dependents: [],
       depSpecs: [],
-      label: "s - build",
+      label: "files - build",
       task: "build",
-      packageName: "s",
+      packageName: "files",
     };
 
     await hasher.fileHasher.readManifest();
