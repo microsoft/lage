@@ -4,6 +4,7 @@ import { hash as fastHash, stat } from "glob-hasher";
 import { createInterface } from "node:readline";
 
 import fg from "fast-glob";
+import { getPackageDeps } from "./getPackageDeps";
 
 interface FileHashStoreOptions {
   root: string;
@@ -23,11 +24,25 @@ export class FileHasher {
     this.#manifestFile = path.join(cacheDirectory, "file_hashes.json");
   }
 
-  async getHashesFromGit() {}
+  async getHashesFromGit() {
+    const { root } = this.options;
+    const fileHashes = await getPackageDeps(root);
+    const files = [...fileHashes.keys()];
+    const fileStats = stat(files, { cwd: root }) ?? {};
+
+    for (const [relativePath, fileStat] of Object.entries(fileStats)) {
+      const key = this.getKey(relativePath, fileStat.mtime, fileStat.size);
+
+      if (fileHashes.has(relativePath)) {
+        this.#store[key] = fileHashes.get(relativePath)!;
+      }
+    }
+  }
 
   async readManifest() {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       if (!fs.existsSync(this.#manifestFile)) {
+        await this.getHashesFromGit();
         return resolve();
       }
 
@@ -97,14 +112,12 @@ export class FileHasher {
 
 if (require.main === module) {
   (async () => {
-    const root = "/workspace/tmp1";
+    const root = "/Users/ken/workspace/tmp1";
     const hasher = new FileHasher({ root });
 
     console.time("fg");
     const files = await fg(["**/*"], { cwd: root, ignore: ["**/node_modules"] });
     console.timeEnd("fg");
-
-    console.log(files.length);
 
     console.time("read");
     await hasher.readManifest();
