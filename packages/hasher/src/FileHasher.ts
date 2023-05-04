@@ -5,7 +5,7 @@ import { hash as fastHash, stat } from "glob-hasher";
 import { createInterface } from "node:readline";
 
 import fg from "fast-glob";
-import { getPackageDeps } from "./getPackageDeps";
+import { getPackageDeps } from "./getPackageDeps.js";
 
 interface FileHashStoreOptions {
   root: string;
@@ -41,10 +41,10 @@ export class FileHasher {
   }
 
   async readManifest() {
-    return new Promise<void>(async (resolve, reject) => {
+    return new Promise<void>((resolve) => {
       if (!fs.existsSync(this.#manifestFile)) {
-        await this.getHashesFromGit();
-        return resolve();
+        this.getHashesFromGit().then(() => resolve());
+        return;
       }
 
       const inputStream = fs.createReadStream(this.#manifestFile, "utf-8");
