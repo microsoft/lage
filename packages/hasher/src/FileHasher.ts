@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import fs from "fs";
 import path from "path";
 import { hash as fastHash, stat } from "glob-hasher";
@@ -11,18 +10,23 @@ interface FileHashStoreOptions {
   root: string;
 }
 
-export class FileHasher {
-  #store: Record<string, string> = {};
-  #manifestFile: string;
-
-  getKey(relativePath: string, mtime: bigint, size: number) {
-    return `${mtime}-${size}-${relativePath}`;
+type FileHashManifestStore = Record<
+  string,
+  {
+    mtime: bigint;
+    size: number;
+    hash: string;
   }
+>;
+
+export class FileHasher {
+  #store: FileHashManifestStore = {};
+  #manifestFile: string;
 
   constructor(private options: FileHashStoreOptions) {
     const { root } = options;
     const cacheDirectory = path.join(root, "node_modules", ".cache", "lage");
-    this.#manifestFile = path.join(cacheDirectory, "file_hashes.json");
+    this.#manifestFile = path.join(cacheDirectory, "file_hashes.manifest");
   }
 
   async getHashesFromGit() {
@@ -32,10 +36,12 @@ export class FileHasher {
     const fileStats = stat(files, { cwd: root }) ?? {};
 
     for (const [relativePath, fileStat] of Object.entries(fileStats)) {
-      const key = this.getKey(relativePath, fileStat.mtime, fileStat.size);
-
       if (fileHashes.has(relativePath)) {
-        this.#store[key] = fileHashes.get(relativePath)!;
+        this.#store[relativePath] = {
+          mtime: fileStat.mtime,
+          size: fileStat.size,
+          hash: fileHashes.get(relativePath)!,
+        };
       }
     }
   }
@@ -54,8 +60,12 @@ export class FileHasher {
       });
 
       rl.on("line", (line) => {
-        const [key, hash] = line.split(":");
-        this.#store[key] = hash;
+        const [relativePath, mtimeStr, sizeStr, hash] = line.split("\0");
+        this.#store[relativePath] = {
+          mtime: BigInt(mtimeStr),
+          size: parseInt(sizeStr),
+          hash,
+        };
       });
 
       inputStream.on("end", () => {
@@ -67,8 +77,8 @@ export class FileHasher {
 
   writeManifest() {
     const outputStream = fs.createWriteStream(this.#manifestFile, "utf-8");
-    for (const [key, hash] of Object.entries(this.#store)) {
-      outputStream.write(`${key}:${hash}\n`);
+    for (const [relativePath, info] of Object.entries(this.#store)) {
+      outputStream.write(`${relativePath}\0${info.mtime.toString()}\0${info.size.toString()}\0${info.hash}\n`);
     }
 
     outputStream.end();
@@ -86,10 +96,10 @@ export class FileHasher {
     await Promise.all(
       files.map(async (file) => {
         const stat = stats[file];
-        const key = this.getKey(file, stat?.mtime, stat?.size);
-        const hash = this.#store[key];
-        if (hash) {
-          hashes[file] = hash;
+        //const key = this.getKey(file, stat?.mtime, stat?.size);
+        const info = this.#store[file];
+        if (info && stat.mtime === info.mtime && stat.size == info.size) {
+          hashes[file] = info.hash;
         } else {
           updatedFiles.push(file);
         }
@@ -101,37 +111,15 @@ export class FileHasher {
     await Promise.all(
       Object.entries(updatedHashes).map(async ([file, hash]) => {
         const stat = fs.statSync(path.join(this.options.root, file), { bigint: true });
-        const key = this.getKey(file, stat.mtimeMs, Number(stat.size));
-        this.#store[key] = hash;
+        this.#store[file] = {
+          mtime: stat.mtimeMs,
+          size: Number(stat.size),
+          hash,
+        };
         hashes[file] = hash;
       })
     );
 
     return hashes;
   }
-}
-
-if (require.main === module) {
-  (async () => {
-    const root = "/Users/ken/workspace/tmp1";
-    const hasher = new FileHasher({ root });
-
-    console.time("fg");
-    const files = await fg(["**/*"], { cwd: root, ignore: ["**/node_modules"] });
-    console.timeEnd("fg");
-
-    console.time("read");
-    await hasher.readManifest();
-    console.timeEnd("read");
-
-    console.time("hasher.hash");
-    const hashes = await hasher.hash(files);
-    console.timeEnd("hasher.hash");
-
-    console.time("write");
-    await hasher.writeManifest();
-    console.timeEnd("write");
-
-    console.log(Object.keys(hashes).length);
-  })();
 }

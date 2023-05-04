@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import type { Target } from "@lage-run/target-graph";
 import { hash } from "glob-hasher";
 import fg from "fast-glob";
@@ -52,7 +51,6 @@ export interface TargetManifest {
  * Currently, it encapsulates the use of `backfill-hasher` to generate a hash.
  */
 export class TargetHasher {
-  #ignorePatterns: string[] = [];
   fileHasher: FileHasher;
   packageTree: PackageTree | undefined;
 
@@ -99,7 +97,9 @@ export class TargetHasher {
     const expandedPatterns: Record<string, string[]> = {};
 
     for (const pattern of patterns) {
-      if (pattern.startsWith("^")) {
+      if (pattern.startsWith("^") || pattern.startsWith("!^")) {
+        const matchPattern = pattern.replace("^", "");
+
         // get all the packages that are transitive deps and add them to the list
         const queue = [target.packageName];
 
@@ -115,7 +115,7 @@ export class TargetHasher {
           if (this.dependencyMap.dependencies.has(pkg)) {
             if (pkg !== target.packageName) {
               expandedPatterns[pkg] = expandedPatterns[pkg] ?? [];
-              expandedPatterns[pkg].push(pattern.slice(1));
+              expandedPatterns[pkg].push(matchPattern);
             }
 
             const deps = this.dependencyMap.dependencies.get(pkg) ?? [];
@@ -127,7 +127,7 @@ export class TargetHasher {
       } else {
         const pkg = target.packageName!;
         expandedPatterns[pkg] = expandedPatterns[pkg] ?? [];
-        expandedPatterns[pkg].push(pattern.slice(1));
+        expandedPatterns[pkg].push(pattern);
       }
     }
 
@@ -136,15 +136,6 @@ export class TargetHasher {
 
   constructor(private options: TargetHasherOptions) {
     const { root } = options;
-
-    const gitignoreFile = path.join(root, ".gitignore");
-    if (fs.existsSync(gitignoreFile)) {
-      this.#ignorePatterns = fs
-        .readFileSync(gitignoreFile, "utf-8")
-        .split("\n")
-        .map((s) => s.trim())
-        .filter((line) => line && !line.startsWith("#"));
-    }
 
     this.fileHasher = new FileHasher({
       root,
@@ -168,8 +159,10 @@ export class TargetHasher {
     this.initializedPromise = Promise.all([
       this.fileHasher
         .readManifest()
-        .then(() => this.fileHasher.hash(environmentGlob))
+        .then(() => fg(environmentGlob, { cwd: root }))
+        .then((files) => this.fileHasher.hash(files))
         .then((hash) => (this.globalInputsHash = hash)),
+
       getWorkspacesAsync(root)
         .then((workspaceInfo) => (this.workspaceInfo = workspaceInfo))
         .then(() => {
@@ -187,6 +180,7 @@ export class TargetHasher {
 
           return this.packageTree.initialize();
         }),
+
       parseLockFile(root).then((lockInfo) => (this.lockInfo = lockInfo)),
     ]);
 
@@ -228,10 +222,8 @@ export class TargetHasher {
     const resolvedDependencies = [...internalDeps, ...externalDeps].sort();
 
     const inputs = target.inputs ?? ["**/*", "^**/*"];
-    console.time("prelude");
+
     const packagePatterns = this.expandInputPatterns(inputs, target);
-    console.timeEnd("prelude");
-    console.time("getPackageFiles");
 
     const files: string[] = [];
     for (const [pkg, patterns] of Object.entries(packagePatterns)) {
@@ -239,17 +231,10 @@ export class TargetHasher {
       files.push(...packageFiles);
     }
 
-    console.timeEnd("getPackageFiles");
-
-    console.time("hashing content");
     const fileHashes = (await this.fileHasher.hash(files)) ?? {}; // this list is sorted by file name
-
-    console.timeEnd("hashing content");
 
     // get target hashes
     const targetDepHashes = target.dependencies?.sort().map((targetDep) => this.targetHashes[targetDep]);
-
-    console.time("hashStrings");
 
     const combinedHashes = [
       // Environmental hashes
@@ -263,12 +248,10 @@ export class TargetHasher {
       // Dependency hashes
       ...resolvedDependencies,
       ...targetDepHashes,
-    ];
+    ].filter(Boolean);
     const hashString = hashStringsNoSort(combinedHashes);
 
     this.targetHashes[target.id] = hashString;
-
-    console.timeEnd("hashStrings");
 
     return hashString;
   }
@@ -276,54 +259,4 @@ export class TargetHasher {
   async cleanup() {
     await this.fileHasher.writeManifest();
   }
-}
-
-if (require.main === module) {
-  (async () => {
-    const root = "/workspace/tmp1";
-    const target: Target = {
-      id: "s#build",
-      cwd: root + "/packages/apps/apps-files",
-      inputs: ["**/*", "^**/*"],
-      dependencies: [],
-      dependents: [],
-      depSpecs: [],
-      label: "files - build",
-      task: "build",
-      packageName: "@msteams/apps-files",
-    };
-
-    const hasher = new TargetHasher({ root, environmentGlob: ["lage.config.js"] });
-
-    console.log(`hashing ${target.packageName}`);
-
-    console.time("init");
-
-    await hasher.initialize();
-    console.timeEnd("init");
-
-    console.time("TargetHasher.hash()");
-    const hashes = await hasher.hash(target);
-    console.timeEnd("TargetHasher.hash()");
-
-    console.time("TargetHasher.hash() 2");
-    await hasher.hash(target);
-    console.timeEnd("TargetHasher.hash() 2");
-
-    console.time("TargetHasher.hash() 2");
-    await hasher.hash(target);
-    console.timeEnd("TargetHasher.hash() 2");
-
-    console.time("TargetHasher.hash() 2");
-    await hasher.hash(target);
-    console.timeEnd("TargetHasher.hash() 2");
-
-    console.time("TargetHasher.hash() 2");
-    await hasher.hash(target);
-    console.timeEnd("TargetHasher.hash() 2");
-
-    await hasher.cleanup();
-
-    console.log(hashes);
-  })();
 }

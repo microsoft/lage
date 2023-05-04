@@ -30,7 +30,7 @@ async function setup(options: TargetWorkerDataOptions) {
     summarize() {},
   });
 
-  const { cacheProvider, hasher } = createCache({
+  const { cacheProvider, hasher } = await createCache({
     root,
     logger,
     cacheOptions: config.cacheOptions,

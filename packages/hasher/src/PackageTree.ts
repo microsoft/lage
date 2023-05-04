@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import { getPackageInfosAsync, type PackageInfos } from "workspace-tools";
+import { type PackageInfos } from "workspace-tools";
 
 import execa from "execa";
 import path from "path";
@@ -91,20 +90,4 @@ export class PackageTree {
 
     return micromatch(packageFiles, patterns, { dot: true });
   }
-}
-
-if (require.main === module) {
-  const root = "/workspace/tmp1";
-  (async () => {
-    console.time("tree");
-
-    const packageInfos = await getPackageInfosAsync(root);
-    const packageTree = new PackageTree({ root, packageInfos, includeUntracked: true });
-    await packageTree.initialize();
-
-    console.log(packageTree.getPackageFiles("@msteams/apps-files", ["**/*"]));
-    console.log(packageTree.getPackageFiles("@msteams/apps-chat", ["**/*"]));
-
-    console.timeEnd("tree");
-  })();
 }

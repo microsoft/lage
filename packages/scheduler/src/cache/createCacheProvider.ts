@@ -12,7 +12,7 @@ interface CreateCacheOptions {
   cliArgs: string[];
 }
 
-export function createCache(options: CreateCacheOptions) {
+export async function createCache(options: CreateCacheOptions) {
   const { cacheOptions, logger, root, skipLocalCache, cliArgs } = options;
 
   const hasRemoteCacheConfig =
@@ -45,6 +45,8 @@ export function createCache(options: CreateCacheOptions) {
     cacheKey: cacheOptions?.cacheKey,
     cliArgs,
   });
+
+  await hasher.initialize();
 
   return { cacheProvider, hasher };
 }
