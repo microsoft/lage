@@ -1,4 +1,4 @@
-import type { ResourceLimits } from "worker_threads";
+import type { ResourceLimits, Worker } from "worker_threads";
 import type { Readable } from "stream";
 import type EventEmitter from "events";
 
@@ -23,4 +23,5 @@ export interface IWorker extends EventEmitter {
   status: "free" | "busy";
   maxWorkerMemoryUsage: number;
   restarts: number;
+  postMessage: Worker["postMessage"];
 }

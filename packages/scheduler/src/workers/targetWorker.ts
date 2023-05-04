@@ -30,7 +30,7 @@ async function setup(options: TargetWorkerDataOptions) {
     summarize() {},
   });
 
-  const { cacheProvider, hasher } = await createCache({
+  const { cacheProvider } = await createCache({
     root,
     logger,
     cacheOptions: config.cacheOptions,
@@ -44,23 +44,36 @@ async function setup(options: TargetWorkerDataOptions) {
     options,
     runnerPicker,
     cacheProvider,
-    hasher,
   };
 }
 
 (async () => {
-  const { cacheProvider, hasher, runnerPicker, options } = await setup(workerData);
+  const { cacheProvider, runnerPicker, options } = await setup(workerData);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  let hashPromiseResolve = (_hash: string) => {};
+
+  // main thread sends hash to worker because it keeps a global memory cache of the hashes
+  parentPort!.on("message", (data: any) => {
+    if (data.type === "hash") {
+      hashPromiseResolve(data.hash);
+    }
+  });
 
   async function getCache(target: Target) {
     const { shouldCache, shouldResetCache } = options;
     let hash: string | undefined = undefined;
     let cacheHit = false;
 
-    if (!shouldCache || !target.cache || !cacheProvider || !hasher) {
+    if (!shouldCache || !target.cache || !cacheProvider) {
       return { hash, cacheHit };
     }
 
-    hash = await hasher.hash(target);
+    // using a special pattern in communicating with the main thread to get the hash for the target
+    hash = await new Promise((resolve) => {
+      hashPromiseResolve = resolve;
+      parentPort!.postMessage({ type: "hash" });
+    });
 
     if (hash && !shouldResetCache) {
       cacheHit = await cacheProvider.fetch(hash, target);

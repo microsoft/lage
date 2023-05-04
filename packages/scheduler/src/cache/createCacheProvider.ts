@@ -1,6 +1,5 @@
 import type { CacheOptions } from "@lage-run/cache";
 import { BackfillCacheProvider, RemoteFallbackCacheProvider } from "@lage-run/cache";
-import { TargetHasher } from "@lage-run/hasher";
 import type { Logger } from "@lage-run/logger";
 import { isRunningFromCI } from "./isRunningFromCI.js";
 
@@ -13,7 +12,7 @@ interface CreateCacheOptions {
 }
 
 export async function createCache(options: CreateCacheOptions) {
-  const { cacheOptions, logger, root, skipLocalCache, cliArgs } = options;
+  const { cacheOptions, logger, root, skipLocalCache } = options;
 
   const hasRemoteCacheConfig =
     !!cacheOptions?.cacheStorageConfig || !!process.env.BACKFILL_CACHE_PROVIDER || !!process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
@@ -39,14 +38,5 @@ export async function createCache(options: CreateCacheOptions) {
       cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI,
   });
 
-  const hasher = new TargetHasher({
-    root,
-    environmentGlob: cacheOptions?.environmentGlob ?? [],
-    cacheKey: cacheOptions?.cacheKey,
-    cliArgs,
-  });
-
-  await hasher.initialize();
-
-  return { cacheProvider, hasher };
+  return { cacheProvider };
 }

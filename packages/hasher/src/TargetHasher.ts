@@ -1,7 +1,7 @@
 import type { Target } from "@lage-run/target-graph";
 import { hash } from "glob-hasher";
 import fg from "fast-glob";
-import { hashStringsNoSort, hashStrings } from "./hashStrings.js";
+import { hashStrings } from "./hashStrings.js";
 import { resolveInternalDependencies } from "./resolveInternalDependencies.js";
 
 import fs from "fs";
@@ -221,7 +221,7 @@ export class TargetHasher {
     const externalDeps = resolveExternalDependencies(allDependencies, workspaceInfo, parsedLock);
     const resolvedDependencies = [...internalDeps, ...externalDeps].sort();
 
-    const inputs = target.inputs ?? ["**/*", "^**/*"];
+    const inputs = target.inputs ?? ["**/*"];
 
     const packagePatterns = this.expandInputPatterns(inputs, target);
 
@@ -231,7 +231,7 @@ export class TargetHasher {
       files.push(...packageFiles);
     }
 
-    const fileHashes = (await this.fileHasher.hash(files)) ?? {}; // this list is sorted by file name
+    const fileHashes = this.fileHasher.hash(files) ?? {}; // this list is sorted by file name
 
     // get target hashes
     const targetDepHashes = target.dependencies?.sort().map((targetDep) => this.targetHashes[targetDep]);
@@ -249,7 +249,8 @@ export class TargetHasher {
       ...resolvedDependencies,
       ...targetDepHashes,
     ].filter(Boolean);
-    const hashString = hashStringsNoSort(combinedHashes);
+
+    const hashString = hashStrings(combinedHashes);
 
     this.targetHashes[target.id] = hashString;
 

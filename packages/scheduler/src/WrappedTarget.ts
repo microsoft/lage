@@ -10,6 +10,7 @@ import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 import type { Logger } from "@lage-run/logger";
+import type { TargetHasher } from "@lage-run/hasher";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -19,6 +20,7 @@ export interface WrappedTargetOptions {
   continueOnError: boolean;
   abortController: AbortController;
   pool: Pool;
+  hasher: TargetHasher;
 }
 
 interface WorkerResult {
@@ -202,19 +204,23 @@ export class WrappedTarget implements TargetRun {
     const bufferStdout = bufferTransform();
     const bufferStderr = bufferTransform();
 
-    let logHandler: (data: LogEntry<any> & { type: string }) => void;
+    let msgHandler: (data: LogEntry<any> & { type: string }) => void;
 
     this.result = pool.exec(
       { target },
       target.weight ?? 1,
       (worker, stdout, stderr) => {
-        logHandler = (data) => {
+        msgHandler = (data) => {
           if (data.type === "log") {
             logger.log(data.level, data.msg, { target, threadId: worker.threadId });
+          } else if (data.type === "hash") {
+            this.options.hasher.hash(target).then((hash) => {
+              worker.postMessage({ type: "hash", hash });
+            });
           }
         };
 
-        worker.on("message", logHandler);
+        worker.on("message", msgHandler);
 
         const threadId = worker.threadId;
 
@@ -238,7 +244,7 @@ export class WrappedTarget implements TargetRun {
         };
       },
       (worker) => {
-        worker.off("message", logHandler);
+        worker.off("message", msgHandler);
         releaseStdout();
         releaseStderr();
       },

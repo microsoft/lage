@@ -10,6 +10,7 @@ import type { TargetGraph } from "@lage-run/target-graph";
 import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "@lage-run/scheduler-types";
 import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetRunnerPickerOptions } from "@lage-run/scheduler-types";
+import type { TargetHasher } from "@lage-run/hasher";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -26,6 +27,7 @@ export interface SimpleSchedulerOptions {
   maxWorkersPerTask: Map<string, number>;
   pool?: Pool; // for testing
   workerIdleMemoryLimit: number; // in bytes
+  hasher: TargetHasher;
 }
 
 /**
@@ -124,6 +126,7 @@ export class SimpleScheduler implements TargetScheduler {
           continueOnError,
           abortController,
           pool,
+          hasher: this.options.hasher,
         });
       }
 

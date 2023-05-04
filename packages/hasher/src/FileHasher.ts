@@ -44,6 +44,8 @@ export class FileHasher {
         };
       }
     }
+
+    this.writeManifest();
   }
 
   async readManifest() {
@@ -86,39 +88,35 @@ export class FileHasher {
 
   async initializeManifest() {}
 
-  async hash(files: string[]) {
+  hash(files: string[]) {
     const hashes: Record<string, string> = {};
 
     const updatedFiles: string[] = [];
 
     const stats = stat(files, { cwd: this.options.root }) ?? {};
 
-    await Promise.all(
-      files.map(async (file) => {
-        const stat = stats[file];
-        //const key = this.getKey(file, stat?.mtime, stat?.size);
-        const info = this.#store[file];
-        if (info && stat.mtime === info.mtime && stat.size == info.size) {
-          hashes[file] = info.hash;
-        } else {
-          updatedFiles.push(file);
-        }
-      })
-    );
+    for (const file of files) {
+      const stat = stats[file];
 
-    const updatedHashes = fastHash(updatedFiles, { cwd: this.options.root }) ?? {};
+      const info = this.#store[file];
+      if (info && stat.mtime === info.mtime && stat.size == info.size) {
+        hashes[file] = info.hash;
+      } else {
+        updatedFiles.push(file);
+      }
+    }
 
-    await Promise.all(
-      Object.entries(updatedHashes).map(async ([file, hash]) => {
-        const stat = fs.statSync(path.join(this.options.root, file), { bigint: true });
-        this.#store[file] = {
-          mtime: stat.mtimeMs,
-          size: Number(stat.size),
-          hash,
-        };
-        hashes[file] = hash;
-      })
-    );
+    const updatedHashes = fastHash(updatedFiles, { cwd: this.options.root, concurrency: 4 }) ?? {};
+
+    for (const [file, hash] of Object.entries(updatedHashes)) {
+      const stat = fs.statSync(path.join(this.options.root, file), { bigint: true });
+      this.#store[file] = {
+        mtime: stat.mtimeMs,
+        size: Number(stat.size),
+        hash,
+      };
+      hashes[file] = hash;
+    }
 
     return hashes;
   }
