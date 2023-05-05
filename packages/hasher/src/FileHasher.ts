@@ -78,7 +78,9 @@ export class FileHasher {
   }
 
   writeManifest() {
+    fs.mkdirSync(path.dirname(this.#manifestFile), { recursive: true });
     const outputStream = fs.createWriteStream(this.#manifestFile, "utf-8");
+
     for (const [relativePath, info] of Object.entries(this.#store)) {
       outputStream.write(`${relativePath}\0${info.mtime.toString()}\0${info.size.toString()}\0${info.hash}\n`);
     }
