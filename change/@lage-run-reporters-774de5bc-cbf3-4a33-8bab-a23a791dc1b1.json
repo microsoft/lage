@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fixed progress reporter",
+  "packageName": "@lage-run/reporters",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

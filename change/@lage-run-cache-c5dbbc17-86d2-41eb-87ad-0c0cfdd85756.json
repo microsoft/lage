@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "Moved the TargetHasher into @lage-run/hasher package",
+  "packageName": "@lage-run/cache",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fixed against tests",
+  "packageName": "@lage-run/target-graph",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
