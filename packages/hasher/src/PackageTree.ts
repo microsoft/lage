@@ -14,12 +14,29 @@ interface PathNode {
   [key: string]: PathNode;
 }
 
+/**
+ * Package Tree keeps a data structure to quickly find all files in a package.
+ *
+ * TODO: add a watcher to make sure the tree is up to date during a "watched" run.
+ */
 export class PackageTree {
   #tree: PathNode = {};
   #packageFiles: Record<string, string[]> = {};
+  #memoizedPackageFiles: Record<string, string[]> = {};
 
-  constructor(private options: PackageTreeOptions) {
-    const { root, packageInfos } = options;
+  constructor(private options: PackageTreeOptions) {}
+
+  reset() {
+    // reset the internal state
+    this.#tree = {};
+    this.#packageFiles = {};
+    this.#memoizedPackageFiles = {};
+  }
+
+  async initialize() {
+    const { root, includeUntracked, packageInfos } = this.options;
+
+    this.reset();
 
     // Generate path tree of all packages in workspace (scale: ~2000 * ~3)
     for (const info of Object.values(packageInfos)) {
@@ -33,10 +50,8 @@ export class PackageTree {
         currentNode = currentNode[part];
       }
     }
-  }
 
-  async initialize() {
-    const { root, includeUntracked } = this.options;
+    // Get all files in the workspace (scale: ~2000) according to git
     const lsFilesResults = await execa("git", ["ls-files", "-z"], { cwd: root });
 
     if (lsFilesResults.exitCode === 0) {
@@ -45,6 +60,7 @@ export class PackageTree {
     }
 
     if (includeUntracked) {
+      // Also get all untracked files in the workspace according to git
       const lsOtherResults = await execa("git", ["ls-files", "-o", "--exclude-standard"], { cwd: root });
       if (lsOtherResults.exitCode === 0) {
         const files = lsOtherResults.stdout.split("\0").filter(Boolean);
@@ -88,6 +104,19 @@ export class PackageTree {
       return [];
     }
 
-    return micromatch(packageFiles, patterns, { dot: true });
+    const key = `${packageName}\0${patterns.join("\0")}`;
+
+    if (!this.#memoizedPackageFiles[key]) {
+      const packagePatterns = patterns.map((pattern) => {
+        if (pattern.startsWith("!")) {
+          return `!${path.join(packagePath, pattern.slice(1)).replace(/\\/g, "/")}`;
+        }
+
+        return path.join(packagePath, pattern).replace(/\\/g, "/");
+      });
+      this.#memoizedPackageFiles[key] = micromatch(packageFiles, packagePatterns, { dot: true });
+    }
+
+    return this.#memoizedPackageFiles[key];
   }
 }

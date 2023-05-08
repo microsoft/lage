@@ -1,9 +1,7 @@
-import fs from "fs";
+import fs from "graceful-fs";
 import path from "path";
 import { hash as fastHash, stat } from "glob-hasher";
 import { createInterface } from "node:readline";
-
-import fg from "fast-glob";
 import { getPackageDeps } from "./getPackageDeps.js";
 
 interface FileHashStoreOptions {
@@ -87,8 +85,6 @@ export class FileHasher {
 
     outputStream.end();
   }
-
-  async initializeManifest() {}
 
   hash(files: string[]) {
     const hashes: Record<string, string> = {};

@@ -1,25 +1,24 @@
 import type { Target } from "@lage-run/target-graph";
 import { hash } from "glob-hasher";
 import fg from "fast-glob";
-import { hashStrings } from "./hashStrings.js";
-import { resolveInternalDependencies } from "./resolveInternalDependencies.js";
 
 import fs from "fs";
-
 import path from "path";
 import {
   type ParsedLock,
   type WorkspaceInfo,
+  type PackageInfos,
   getWorkspacesAsync,
   parseLockFile,
   createDependencyMap,
-  type PackageInfos,
 } from "workspace-tools";
-import { infoFromPackageJson } from "workspace-tools/lib/infoFromPackageJson.js";
-import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
-
-import { FileHasher } from "./FileHasher.js";
 import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
+import { infoFromPackageJson } from "workspace-tools/lib/infoFromPackageJson.js";
+
+import { hashStrings } from "./hashStrings.js";
+import { resolveInternalDependencies } from "./resolveInternalDependencies.js";
+import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
+import { FileHasher } from "./FileHasher.js";
 import { PackageTree } from "./PackageTree.js";
 
 export interface TargetHasherOptions {
@@ -112,15 +111,17 @@ export class TargetHasher {
           }
           visited.add(pkg);
 
-          if (this.dependencyMap.dependencies.has(pkg)) {
-            if (pkg !== target.packageName) {
-              expandedPatterns[pkg] = expandedPatterns[pkg] ?? [];
-              expandedPatterns[pkg].push(matchPattern);
-            }
+          if (pkg !== target.packageName) {
+            expandedPatterns[pkg] = expandedPatterns[pkg] ?? [];
+            expandedPatterns[pkg].push(matchPattern);
+          }
 
-            const deps = this.dependencyMap.dependencies.get(pkg) ?? [];
+          if (this.dependencyMap.dependencies.has(pkg)) {
+            const deps = this.dependencyMap.dependencies.get(pkg);
             if (deps) {
-              queue.push(...deps);
+              for (const dep of deps) {
+                queue.push(dep);
+              }
             }
           }
         }
@@ -169,7 +170,6 @@ export class TargetHasher {
           this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
 
           this.dependencyMap = createDependencyMap(this.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
-
           this.packageTree = new PackageTree({
             root,
             packageInfos: this.packageInfos,
@@ -224,13 +224,11 @@ export class TargetHasher {
     const inputs = target.inputs ?? ["**/*"];
 
     const packagePatterns = this.expandInputPatterns(inputs, target);
-
     const files: string[] = [];
     for (const [pkg, patterns] of Object.entries(packagePatterns)) {
       const packageFiles = this.packageTree!.getPackageFiles(pkg, patterns);
       files.push(...packageFiles);
     }
-
     const fileHashes = this.fileHasher.hash(files) ?? {}; // this list is sorted by file name
 
     // get target hashes
