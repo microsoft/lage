@@ -28,7 +28,7 @@
     "@lage-run/reporters": "^1.2.1",
     "@lage-run/scheduler": "^0.11.4",
     "@lage-run/scheduler-types": "^0.3.8",
-    "@lage-run/target-graph": "^0.8.4",
+    "@lage-run/target-graph": "^0.8.5",
     "chokidar": "3.5.3",
     "commander": "^9.4.0",
     "execa": "5.1.1",
