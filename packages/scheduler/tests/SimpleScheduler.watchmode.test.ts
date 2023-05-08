@@ -5,6 +5,10 @@ import { InProcPool } from "./fixtures/pools";
 import { getTargetId, Target, TargetGraphBuilder } from "@lage-run/target-graph";
 import { TargetRunner } from "@lage-run/scheduler-types";
 
+import fs from "fs";
+import path from "path";
+import os from "os";
+
 function createTarget(packageName: string, task: string): Target {
   const id = getTargetId(packageName, task);
   return {
@@ -21,7 +25,7 @@ function createTarget(packageName: string, task: string): Target {
 
 describe("SimpleScheduler watch mode", () => {
   it("should not execute the target runner twice by default", async () => {
-    const root = "/root-of-repo";
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "watch-mode"));
     const logger = new Logger();
 
     const hasher = new TargetHasher({ root, environmentGlob: [] });
@@ -48,7 +52,7 @@ describe("SimpleScheduler watch mode", () => {
       shouldResetCache: false,
       pool: new InProcPool(runner),
       workerIdleMemoryLimit: 1024 * 1024 * 1024,
-      hasher: new TargetHasher({ root, environmentGlob: [] }),
+      hasher,
     });
 
     // these would normally come from the CLI
@@ -67,7 +71,7 @@ describe("SimpleScheduler watch mode", () => {
   });
 
   it("should re-run all the targets if a target said to re-run is a root node", async () => {
-    const root = "/root-of-repo";
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "watch-mode-rerun"));
     const logger = new Logger();
 
     const hasher = new TargetHasher({ root, environmentGlob: [] });
