@@ -34,12 +34,11 @@ export class FileHasher {
     const fileStats = stat(files, { cwd: root }) ?? {};
 
     for (const [relativePath, fileStat] of Object.entries(fileStats)) {
-      if (fileHashes.has(relativePath)) {
-        this.#store[relativePath] = {
-          mtime: fileStat.mtime,
-          size: fileStat.size,
-          hash: fileHashes.get(relativePath)!,
-        };
+      const hash = fileHashes.get(relativePath);
+      if (hash) {
+        const { size, mtime } = fileStat;
+
+        this.#store[relativePath] = { hash, size, mtime };
       }
     }
 
