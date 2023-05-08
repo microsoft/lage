@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cache",
-  "version": "0.5.4",
+  "version": "1.1.0",
   "description": "Cache for Lage",
   "repository": {
     "type": "git",

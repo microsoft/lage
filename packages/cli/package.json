@@ -20,7 +20,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/cache": "^0.5.4",
+    "@lage-run/cache": "^1.1.0",
     "@lage-run/config": "^0.2.0",
     "@lage-run/find-npm-client": "^0.1.4",
     "@lage-run/hasher": "^0.2.2",
