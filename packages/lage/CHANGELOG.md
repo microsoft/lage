@@ -1,8 +1,18 @@
 # Change Log - lage
 
-This log was last generated on Mon, 08 May 2023 16:33:24 GMT and should not be manually modified.
+This log was last generated on Mon, 08 May 2023 22:27:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.0
+
+Mon, 08 May 2023 22:27:16 GMT
+
+### Minor changes
+
+- Swapped to using a target hasher that is capable of hashing a target at a time, with support for inputs (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.15.2
+- Bump @lage-run/scheduler to v1.0.0
 
 ## 2.5.6
 

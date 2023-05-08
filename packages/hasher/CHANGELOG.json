@@ -2,6 +2,27 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Mon, 08 May 2023 22:27:16 GMT",
+      "tag": "@lage-run/hasher_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "major": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103",
+            "comment": "Added FileHasher, PackageTree, and its own TargetHasher"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.8.6",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 Mar 2023 17:47:47 GMT",
       "tag": "@lage-run/hasher_v0.2.2",
       "version": "0.2.2",

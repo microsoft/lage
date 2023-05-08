@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Mon, 08 May 2023 22:27:16 GMT",
+      "tag": "@lage-run/target-graph_v0.8.6",
+      "version": "0.8.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103",
+            "comment": "fixed against tests"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Apr 2023 02:51:19 GMT",
       "tag": "@lage-run/target-graph_v0.8.4",
       "version": "0.8.4",

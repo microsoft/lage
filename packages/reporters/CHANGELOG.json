@@ -2,6 +2,39 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Mon, 08 May 2023 22:27:16 GMT",
+      "tag": "@lage-run/reporters_v1.2.2",
+      "version": "1.2.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103",
+            "comment": "Fixed progress reporter"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.9",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.8.6",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/format-hrtime to v0.1.5",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 08 May 2023 16:33:24 GMT",
       "tag": "@lage-run/reporters_v1.2.1",
       "version": "1.2.1",

@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "Now takes in a TargetHasher as a dep, but retains its own calls to cache provider",
-  "packageName": "@lage-run/scheduler",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

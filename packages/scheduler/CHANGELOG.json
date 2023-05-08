@@ -2,6 +2,57 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Mon, 08 May 2023 22:27:16 GMT",
+      "tag": "@lage-run/scheduler_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "major": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103",
+            "comment": "Now takes in a TargetHasher as a dep, but retains its own calls to cache provider"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/target-graph to v0.8.6",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v1.1.1",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/config to v0.2.1",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/hasher to v1.0.0",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.7.0",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.9",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 Apr 2023 04:56:20 GMT",
       "tag": "@lage-run/scheduler_v0.11.4",
       "version": "0.11.4",

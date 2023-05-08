@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/scheduler-types",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "Scheduler types for Lage",
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/target-graph": "^0.8.5"
+    "@lage-run/target-graph": "^0.8.6"
   },
   "devDependencies": {
     "monorepo-scripts": "*"

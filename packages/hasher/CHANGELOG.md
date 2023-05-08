@@ -1,8 +1,17 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Wed, 29 Mar 2023 20:02:40 GMT and should not be manually modified.
+This log was last generated on Mon, 08 May 2023 22:27:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0
+
+Mon, 08 May 2023 22:27:16 GMT
+
+### Major changes
+
+- Added FileHasher, PackageTree, and its own TargetHasher (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.8.6
 
 ## 0.2.2
 

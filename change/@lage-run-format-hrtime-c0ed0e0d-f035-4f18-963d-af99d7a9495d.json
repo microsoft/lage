@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixed an issue with formatting time where the seconds became negative",
-  "packageName": "@lage-run/format-hrtime",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Mon, 08 May 2023 22:27:16 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103",
+            "comment": "Adds ability to communicate with postMessage in the ThreadWorker"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Apr 2023 02:51:19 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.6.1",
       "version": "0.6.1",

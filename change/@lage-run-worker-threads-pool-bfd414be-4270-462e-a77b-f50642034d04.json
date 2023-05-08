@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Adds ability to communicate with postMessage in the ThreadWorker",
-  "packageName": "@lage-run/worker-threads-pool",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,19 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Mon, 08 May 2023 16:33:24 GMT and should not be manually modified.
+This log was last generated on Mon, 08 May 2023 22:27:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.2
+
+Mon, 08 May 2023 22:27:16 GMT
+
+### Patches
+
+- Fixed progress reporter (kchau@microsoft.com)
+- Bump @lage-run/scheduler-types to v0.3.9
+- Bump @lage-run/target-graph to v0.8.6
+- Bump @lage-run/format-hrtime to v0.1.5
 
 ## 1.2.1
 

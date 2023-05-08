@@ -2,6 +2,33 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 08 May 2023 22:27:16 GMT",
+      "tag": "lage_v2.6.0",
+      "version": "2.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103",
+            "comment": "Swapped to using a target hasher that is capable of hashing a target at a time, with support for inputs"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.2",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.0.0",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 08 May 2023 16:33:24 GMT",
       "tag": "lage_v2.5.6",
       "version": "2.5.6",
