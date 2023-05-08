@@ -26,7 +26,7 @@ export function hrtimeDiff(start: [number, number] = [0, 0], end: [number, numbe
   const nsec = end[1] - start[1];
 
   if (nsec < 0) {
-    return [sec - 1, 1e9 + nsec];
+    return [Math.max(0, sec - 1), 1e9 + nsec];
   }
 
   return [sec, nsec];

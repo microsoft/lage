@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fixed to utilize the correct package for the hasher",
+  "packageName": "@lage-run/cli",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

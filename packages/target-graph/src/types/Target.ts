@@ -3,8 +3,20 @@ export interface Target {
    * Unique ID of the target (e.g. "pkg-a#build")
    */
   id: string;
+
+  /**
+   * A display label of the target
+   */
   label: string;
+
+  /**
+   * Working directory of the target - full path
+   */
   cwd: string;
+
+  /**
+   * Name of the task for the target (e.g. "build", "test", "lint")
+   */
   task: string;
 
   /**

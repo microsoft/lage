@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "Added FileHasher, PackageTree, and its own TargetHasher",
+  "packageName": "@lage-run/hasher",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

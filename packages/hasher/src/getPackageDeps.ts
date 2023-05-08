@@ -1,6 +1,4 @@
 import * as path from "path";
-
-import { ensureGitMinimumVersion } from "./getRepoState.js";
 import execa from "execa";
 
 /**
@@ -141,8 +139,6 @@ export function getGitHashForFiles(filesToHash: string[], packagePath: string, g
     });
 
     if (result.exitCode !== 0) {
-      ensureGitMinimumVersion(gitPath);
-
       throw new Error(`git hash-object exited with status ${result.exitCode}: ${result.stderr}`);
     }
 
@@ -174,8 +170,6 @@ export function gitLsTree(path: string, gitPath?: string): string {
   });
 
   if (result.exitCode !== 0) {
-    ensureGitMinimumVersion(gitPath);
-
     throw new Error(`git ls-tree exited with status ${result.exitCode}: ${result.stderr}`);
   }
 
@@ -199,8 +193,6 @@ export function gitStatus(path: string, gitPath?: string): string {
   });
 
   if (result.exitCode !== 0) {
-    ensureGitMinimumVersion(gitPath);
-
     throw new Error(`git status exited with status ${result.exitCode}: ${result.stderr}`);
   }
 

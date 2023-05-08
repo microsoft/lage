@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Swapped to using a target hasher that is capable of hashing a target at a time, with support for inputs",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}

@@ -4,7 +4,7 @@ import { endMarker, startMarker } from "./stdioStreamMarkers.js";
 import { EventEmitter } from "events";
 import { Readable } from "stream";
 import { TaskInfo } from "./TaskInfo.js";
-import { Worker } from "worker_threads";
+import { type TransferListItem, Worker } from "worker_threads";
 import crypto from "crypto";
 import os from "os";
 import type { IWorker } from "./types/WorkerQueue.js";
@@ -252,5 +252,9 @@ export class ThreadWorker extends EventEmitter implements IWorker {
 
   async checkMemoryUsage() {
     this.#worker.postMessage({ type: "check-memory-usage" });
+  }
+
+  postMessage(value: any, transferList?: readonly TransferListItem[] | undefined): void {
+    this.#worker.postMessage(value, transferList);
   }
 }

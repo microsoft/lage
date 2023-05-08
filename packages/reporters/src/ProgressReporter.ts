@@ -167,6 +167,13 @@ export class ProgressReporter implements Reporter {
         const hasDurations = !!wrappedTarget.duration && !!wrappedTarget.queueTime;
         const queueDuration: [number, number] = hasDurations ? hrtimeDiff(wrappedTarget.queueTime, wrappedTarget.startTime) : [0, 0];
 
+        if (wrappedTarget.status === "running") {
+          const reporterTask = this.tasks.get(wrappedTarget.target.id);
+          if (reporterTask) {
+            reporterTask.complete({ status: "fail" });
+          }
+        }
+
         this.print(
           `${target.label} ${colorFn(
             `${wrappedTarget.status === "running" ? "running - incomplete" : wrappedTarget.status}${

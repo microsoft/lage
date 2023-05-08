@@ -16,6 +16,7 @@ import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 import type { FilterOptions } from "../../types/FilterOptions.js";
+import { createCache } from "../../cache/createCacheProvider.js";
 
 interface RunOptions extends ReporterInitOptions, FilterOptions {
   concurrency: number;
@@ -69,6 +70,14 @@ export async function watchAction(options: RunOptions, command: Command) {
 
   const maxWorkersPerTaskMap = getMaxWorkersPerTaskFromOptions(options.maxWorkersPerTask);
 
+  const { hasher } = await createCache({
+    root,
+    logger,
+    cacheOptions: config.cacheOptions,
+    cliArgs: taskArgs,
+    skipLocalCache: options.skipLocalCache,
+  });
+
   const scheduler = new SimpleScheduler({
     logger,
     concurrency,
@@ -102,7 +111,7 @@ export async function watchAction(options: RunOptions, command: Command) {
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
     maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, concurrency), ...maxWorkersPerTaskMap]),
-
+    hasher,
     workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
   });
 

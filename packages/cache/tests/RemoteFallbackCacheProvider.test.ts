@@ -1,4 +1,3 @@
-import { _testResetEnvHash } from "../src/salt";
 import { CacheProvider } from "../src/types/CacheProvider";
 import { Logger } from "@lage-run/logger";
 import { RemoteFallbackCacheProvider, RemoteFallbackCacheProviderOptions } from "../src/providers/RemoteFallbackCacheProvider";
@@ -6,10 +5,6 @@ import path from "path";
 import type { Target } from "@lage-run/target-graph";
 
 describe("RemoteFallbackCacheProvider", () => {
-  beforeEach(() => {
-    _testResetEnvHash();
-  });
-
   it("should fetch from local cache first", async () => {
     const root = "/test";
 

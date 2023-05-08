@@ -10,6 +10,7 @@ import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 import type { Logger } from "@lage-run/logger";
+import type { TargetHasher } from "@lage-run/hasher";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -19,6 +20,7 @@ export interface WrappedTargetOptions {
   continueOnError: boolean;
   abortController: AbortController;
   pool: Pool;
+  hasher: TargetHasher;
 }
 
 interface WorkerResult {
@@ -131,7 +133,7 @@ export class WrappedTarget implements TargetRun {
   }
 
   async run() {
-    const { target, logger, shouldCache, abortController } = this.options;
+    const { target, logger, shouldCache, abortController, root } = this.options;
 
     const abortSignal = abortController.signal;
 
@@ -146,7 +148,7 @@ export class WrappedTarget implements TargetRun {
       const cacheEnabled = target.cache && shouldCache && result.hash;
       // Save output if cache is enabled & cache is hit
       if (!result.skipped && cacheEnabled) {
-        const outputLocation = getLageOutputCacheLocation(this.options.root, result.hash);
+        const outputLocation = getLageOutputCacheLocation(root, result.hash);
         const outputPath = path.dirname(outputLocation);
         await mkdir(outputPath, { recursive: true });
 
@@ -154,25 +156,19 @@ export class WrappedTarget implements TargetRun {
 
         await writeFile(outputLocation, output);
 
-        this.options.logger.verbose(`>> Saved cache - ${result.hash}`, { target });
+        logger.verbose(`>> Saved cache - ${result.hash}`, { target });
       }
 
       if (result.skipped) {
         const { hash } = result;
 
-        const cachedOutputFile = getLageOutputCacheLocation(this.options.root, hash ?? "");
+        const cachedOutputFile = getLageOutputCacheLocation(root, hash ?? "");
 
-        if (fs.existsSync(cachedOutputFile)) {
-          const cachedOutput = fs.createReadStream(cachedOutputFile, "utf8");
-          this.options.logger.verbose(">> Replaying cached output", { target });
-          this.options.logger.stream(LogLevel.verbose, cachedOutput, { target });
-
-          return await new Promise<void>((resolve) => {
-            cachedOutput.on("close", () => {
-              this.onSkipped(hash);
-              resolve();
-            });
-          });
+        const shouldShowCachedOutput = fs.existsSync(cachedOutputFile);
+        if (shouldShowCachedOutput) {
+          const cachedOutput = fs.readFileSync(cachedOutputFile, "utf8");
+          logger.verbose(">> Replaying cached output", { target });
+          logger.verbose(cachedOutput.trim(), { target });
         }
 
         this.onSkipped(hash);
@@ -202,19 +198,23 @@ export class WrappedTarget implements TargetRun {
     const bufferStdout = bufferTransform();
     const bufferStderr = bufferTransform();
 
-    let logHandler: (data: LogEntry<any> & { type: string }) => void;
+    let msgHandler: (data: LogEntry<any> & { type: string }) => void;
 
     this.result = pool.exec(
       { target },
       target.weight ?? 1,
       (worker, stdout, stderr) => {
-        logHandler = (data) => {
+        msgHandler = (data) => {
           if (data.type === "log") {
             logger.log(data.level, data.msg, { target, threadId: worker.threadId });
+          } else if (data.type === "hash") {
+            this.options.hasher.hash(target).then((hash) => {
+              worker.postMessage({ type: "hash", hash });
+            });
           }
         };
 
-        worker.on("message", logHandler);
+        worker.on("message", msgHandler);
 
         const threadId = worker.threadId;
 
@@ -238,7 +238,7 @@ export class WrappedTarget implements TargetRun {
         };
       },
       (worker) => {
-        worker.off("message", logHandler);
+        worker.off("message", msgHandler);
         releaseStdout();
         releaseStderr();
       },
