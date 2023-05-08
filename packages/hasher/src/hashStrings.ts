@@ -9,11 +9,3 @@ export function hashStrings(strings: string | string[]): string {
 
   return hasher.digest("hex");
 }
-
-export function hashStringsNoSort(strings: string[]): string {
-  const hasher = crypto.createHash("sha1");
-  for (const str of strings) {
-    hasher.update(str);
-  }
-  return hasher.digest("hex");
-}

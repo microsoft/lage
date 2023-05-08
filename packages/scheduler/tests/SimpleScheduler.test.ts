@@ -1,5 +1,5 @@
 import { Logger } from "@lage-run/logger";
-import { CacheProvider, TargetHasher } from "@lage-run/cache";
+import { TargetHasher } from "@lage-run/hasher";
 import { SimpleScheduler } from "../src/SimpleScheduler";
 import { getStartTargetId, Target, TargetGraph } from "@lage-run/target-graph";
 import { InProcPool, SingleSchedulePool } from "./fixtures/pools";
@@ -80,6 +80,10 @@ describe("SimpleScheduler", () => {
       },
       pool: new InProcPool(runner),
       workerIdleMemoryLimit: 1024 * 1024 * 1024,
+      hasher: new TargetHasher({
+        root,
+        environmentGlob: [],
+      }),
     });
 
     // these would normally come from the CLI
@@ -126,6 +130,10 @@ describe("SimpleScheduler", () => {
       shouldCache: true,
       shouldResetCache: false,
       workerIdleMemoryLimit: 1024 * 1024 * 1024,
+      hasher: new TargetHasher({
+        root,
+        environmentGlob: [],
+      }),
     });
 
     // these would normally come from the CLI
@@ -168,6 +176,10 @@ describe("SimpleScheduler", () => {
       },
       pool: new InProcPool(runner),
       workerIdleMemoryLimit: 1024 * 1024 * 1024,
+      hasher: new TargetHasher({
+        root,
+        environmentGlob: [],
+      }),
     });
 
     // these would normally come from the CLI
@@ -211,6 +223,10 @@ describe("SimpleScheduler", () => {
       shouldResetCache: false,
       pool: new SingleSchedulePool(runner, 4),
       workerIdleMemoryLimit: 1024 * 1024 * 1024,
+      hasher: new TargetHasher({
+        root,
+        environmentGlob: [],
+      }),
     });
 
     // these would normally come from the CLI

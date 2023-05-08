@@ -1,4 +1,4 @@
-import { CacheProvider, TargetHasher } from "@lage-run/cache";
+import { TargetHasher } from "@lage-run/hasher";
 import { Logger } from "@lage-run/logger";
 import { SimpleScheduler } from "../src/SimpleScheduler";
 import { InProcPool } from "./fixtures/pools";
@@ -24,13 +24,6 @@ describe("SimpleScheduler watch mode", () => {
     const root = "/root-of-repo";
     const logger = new Logger();
 
-    const cacheProvider: CacheProvider = {
-      clear: jest.fn(),
-      fetch: jest.fn(),
-      put: jest.fn(),
-      purge: jest.fn(),
-    };
-
     const hasher = new TargetHasher({ root, environmentGlob: [] });
 
     const runner: TargetRunner = {
@@ -55,6 +48,7 @@ describe("SimpleScheduler watch mode", () => {
       shouldResetCache: false,
       pool: new InProcPool(runner),
       workerIdleMemoryLimit: 1024 * 1024 * 1024,
+      hasher: new TargetHasher({ root, environmentGlob: [] }),
     });
 
     // these would normally come from the CLI
@@ -76,13 +70,6 @@ describe("SimpleScheduler watch mode", () => {
     const root = "/root-of-repo";
     const logger = new Logger();
 
-    const cacheProvider: CacheProvider = {
-      clear: jest.fn(),
-      fetch: jest.fn(),
-      put: jest.fn(),
-      purge: jest.fn(),
-    };
-
     const hasher = new TargetHasher({ root, environmentGlob: [] });
 
     const runner: TargetRunner = {
@@ -107,6 +94,7 @@ describe("SimpleScheduler watch mode", () => {
       },
       pool: new InProcPool(runner),
       workerIdleMemoryLimit: 1024 * 1024 * 1024,
+      hasher,
     });
 
     // these would normally come from the CLI
