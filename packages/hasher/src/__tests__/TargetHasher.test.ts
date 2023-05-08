@@ -1,6 +1,5 @@
 import path from "path";
 
-import { WorkspaceInfo } from "workspace-tools";
 import { TargetHasher } from "../index";
 
 import { Monorepo } from "@lage-run/monorepo-fixture";
