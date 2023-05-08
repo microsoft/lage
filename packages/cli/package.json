@@ -23,6 +23,7 @@
     "@lage-run/cache": "^0.5.4",
     "@lage-run/config": "^0.2.0",
     "@lage-run/find-npm-client": "^0.1.4",
+    "@lage-run/hasher": "^0.2.2",
     "@lage-run/logger": "^1.3.0",
     "@lage-run/reporters": "^1.2.1",
     "@lage-run/scheduler": "^0.11.4",
