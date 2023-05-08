@@ -4,6 +4,10 @@ import { SimpleScheduler } from "../src/SimpleScheduler";
 import { getStartTargetId, Target, TargetGraph } from "@lage-run/target-graph";
 import { InProcPool, SingleSchedulePool } from "./fixtures/pools";
 
+import fs from "fs";
+import path from "path";
+import os from "os";
+
 /**
  * Purely manually managed target graph.
  * 1. It doesn't gaurantee that the targets' dependencies are the same as the graph's dependencies.
@@ -60,7 +64,7 @@ function dropTiming(obj: any) {
 
 describe("SimpleScheduler", () => {
   it("should run all targets, if no target dependencies exists in the target graph", async () => {
-    const root = "/root-of-repo";
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "no-target-deps"));
     const logger = new Logger();
 
     const runner = new (require("./fixtures/NoOpRunner").NoOpRunner)();
@@ -110,7 +114,7 @@ describe("SimpleScheduler", () => {
   });
 
   it("should abort early throwing an error, if one target fails without continue on error", async () => {
-    const root = "/root-of-repo";
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "early-throw"));
     const logger = new Logger();
 
     const runner = new (require("./fixtures/FailOnPackageRunner").FailOnPackageRunner)("d");
@@ -156,7 +160,7 @@ describe("SimpleScheduler", () => {
   });
 
   it("should either be success or failed, if one target fails with continue on error", async () => {
-    const root = "/root-of-repo";
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "continue-on-error"));
     const logger = new Logger();
 
     const runner = new (require("./fixtures/FailOnPackageRunner").FailOnPackageRunner)("d");
@@ -203,7 +207,7 @@ describe("SimpleScheduler", () => {
   });
 
   it("should return expected summary, aborted case", async () => {
-    const root = "/root-of-repo";
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "abort"));
     const logger = new Logger();
 
     const runner = new (require("./fixtures/FailOnPackageRunner").FailOnPackageRunner)("d");
