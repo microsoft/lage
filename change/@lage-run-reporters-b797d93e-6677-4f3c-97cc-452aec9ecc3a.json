@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "reporting \"abort\" status for \"queued\" or \"running\" tasks when abortSignal is received",
-  "packageName": "@lage-run/reporters",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
