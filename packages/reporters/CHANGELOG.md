@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Tue, 25 Apr 2023 02:51:19 GMT and should not be manually modified.
+This log was last generated on Mon, 08 May 2023 16:33:24 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.1
+
+Mon, 08 May 2023 16:33:24 GMT
+
+### Patches
+
+- reporting "abort" status for "queued" or "running" tasks when abortSignal is received (kchau@microsoft.com)
 
 ## 1.2.0
 

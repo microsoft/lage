@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 26 Apr 2023 04:56:20 GMT and should not be manually modified.
+This log was last generated on Mon, 08 May 2023 16:33:24 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.6
+
+Mon, 08 May 2023 16:33:24 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.15.1
 
 ## 2.5.5
 
