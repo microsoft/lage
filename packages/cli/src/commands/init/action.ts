@@ -107,9 +107,7 @@ async function installLage(cwd: string, workspaceManager: WorkspaceManager, pipe
 }
 
 function getLageVersion() {
-  const lagePackageJsonFile = require.resolve("../../package.json", {
-    paths: [__dirname],
-  });
+  const lagePackageJsonFile = path.join(__dirname, "../../package.json");
   const lagePackageJson = JSON.parse(fs.readFileSync(lagePackageJsonFile, "utf-8"));
   return lagePackageJson.version;
 }
