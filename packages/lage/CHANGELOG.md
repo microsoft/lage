@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Mon, 08 May 2023 22:27:16 GMT and should not be manually modified.
+This log was last generated on Tue, 09 May 2023 20:03:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.1
+
+Tue, 09 May 2023 20:03:32 GMT
+
+### Patches
+
+- switching to using esbuild to bundle instead to make the bundling super fast (kchau@microsoft.com)
 
 ## 2.6.0
 

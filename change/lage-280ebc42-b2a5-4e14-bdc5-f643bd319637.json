@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "switching to using esbuild to bundle instead to make the bundling super fast",
-  "packageName": "lage",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}
