@@ -958,10 +958,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@ms-cloudpack/task-reporter@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@ms-cloudpack/task-reporter/-/task-reporter-0.3.2.tgz#26bc9129174cc039e819401304134a50e2279e56"
-  integrity sha512-2cP5424WQoCYLcclU49yswI2keMD7yCknfCO+4JmKYWLCQvOVjGs1W2CdjPSF+5AncFzaDJ+hHhFlXeluK65aw==
+"@ms-cloudpack/task-reporter@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@ms-cloudpack/task-reporter/-/task-reporter-0.3.3.tgz#a34fc2c9d249605a05914f4e68bd69c9b3983196"
+  integrity sha512-4Tf9ajafU5cHN11z7c43KL5Fl4bHaIUrg9oxIVdHDwLxwcN5z0om/dO3L+6ZUHwRr+MRvZQPBWmnUNZgaFJRxw==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
