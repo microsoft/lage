@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Fri, 12 May 2023 06:12:34 GMT",
+      "tag": "@lage-run/reporters_v1.2.3",
+      "version": "1.2.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "ab261addb6264b298e3c59b06aa0dfb58e53a9d4",
+            "comment": "Update @ms-cloudpack/task-reporter to fix \"performance is not defined\" issue"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 08 May 2023 22:27:16 GMT",
       "tag": "@lage-run/reporters_v1.2.2",
       "version": "1.2.2",

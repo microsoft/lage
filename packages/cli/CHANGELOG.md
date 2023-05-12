@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Mon, 08 May 2023 22:27:16 GMT and should not be manually modified.
+This log was last generated on Fri, 12 May 2023 06:12:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.15.3
+
+Fri, 12 May 2023 06:12:34 GMT
+
+### Patches
+
+- Bump @lage-run/reporters to v1.2.3
 
 ## 0.15.2
 

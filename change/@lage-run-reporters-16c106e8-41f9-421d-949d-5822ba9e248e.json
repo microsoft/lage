@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update @ms-cloudpack/task-reporter to fix \"performance is not defined\" issue",
-  "packageName": "@lage-run/reporters",
-  "email": "elcraig@microsoft.com",
-  "dependentChangeType": "patch"
-}

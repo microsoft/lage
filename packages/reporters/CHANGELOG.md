@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Mon, 08 May 2023 22:27:16 GMT and should not be manually modified.
+This log was last generated on Fri, 12 May 2023 06:12:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.3
+
+Fri, 12 May 2023 06:12:34 GMT
+
+### Patches
+
+- Update @ms-cloudpack/task-reporter to fix "performance is not defined" issue (elcraig@microsoft.com)
 
 ## 1.2.2
 
