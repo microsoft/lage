@@ -1,6 +1,6 @@
 import type { Config as BackfillCacheOptions, CustomStorageConfig } from "backfill-config";
 
-type LageBackfillCacheOptions = Omit<BackfillCacheOptions, "cacheStorageConfig"> & {
+export type LageBackfillCacheOptions = Omit<BackfillCacheOptions, "cacheStorageConfig"> & {
   cacheStorageConfig: Exclude<BackfillCacheOptions["cacheStorageConfig"], CustomStorageConfig>;
 };
 
