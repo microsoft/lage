@@ -1,10 +1,10 @@
 import { createCache } from "../cache/createCacheProvider.js";
-import { getConfig } from "@lage-run/config";
 import { registerWorker } from "@lage-run/worker-threads-pool";
 import { TargetRunnerPicker } from "../runners/TargetRunnerPicker.js";
 import { parentPort, workerData } from "worker_threads";
 import createLogger from "@lage-run/logger";
 
+import type { CacheOptions } from "@lage-run/config";
 import type { Target } from "@lage-run/target-graph";
 import type { TargetRunnerPickerOptions } from "@lage-run/scheduler-types";
 
@@ -15,12 +15,11 @@ interface TargetWorkerDataOptions {
   shouldResetCache: boolean;
   taskArgs: string[];
   root: string;
+  cacheOptions?: CacheOptions;
 }
 
 async function setup(options: TargetWorkerDataOptions) {
-  const { runners, root } = options;
-
-  const config = await getConfig(root);
+  const { runners, root, cacheOptions } = options;
 
   const logger = createLogger();
   logger.addReporter({
@@ -33,7 +32,7 @@ async function setup(options: TargetWorkerDataOptions) {
   const { cacheProvider } = await createCache({
     root,
     logger,
-    cacheOptions: config.cacheOptions,
+    cacheOptions,
     cliArgs: options.taskArgs,
     skipLocalCache: options.skipLocalCache,
   });
