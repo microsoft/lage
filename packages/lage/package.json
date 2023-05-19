@@ -1,6 +1,6 @@
 {
   "name": "lage",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/microsoft/lage"
@@ -23,8 +23,8 @@
     "fsevents": "~2.3.2"
   },
   "devDependencies": {
-    "@lage-run/cli": "^0.15.3",
-    "@lage-run/scheduler": "^1.0.0",
+    "@lage-run/cli": "^0.15.4",
+    "@lage-run/scheduler": "^1.0.1",
     "backfill-config": "^6.3.1",
     "dts-bundle-generator": "7.2.0",
     "workspace-tools": "^0.34.0",

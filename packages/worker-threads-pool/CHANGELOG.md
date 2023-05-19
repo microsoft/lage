@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Mon, 08 May 2023 22:27:16 GMT and should not be manually modified.
+This log was last generated on Fri, 19 May 2023 22:10:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.7.1
+
+Fri, 19 May 2023 22:10:20 GMT
+
+### Patches
+
+- crash immediate on OOM in worker (not the memory leak case) (kchau@microsoft.com)
 
 ## 0.7.0
 

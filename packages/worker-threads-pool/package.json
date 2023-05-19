@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/worker-threads-pool",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "A worker_threads pool implementation based on the official Node.js async_hooks documentation",
   "repository": {
     "type": "git",
