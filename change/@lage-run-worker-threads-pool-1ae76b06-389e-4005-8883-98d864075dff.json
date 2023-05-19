@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "crash immediate on OOM in worker (not the memory leak case)",
+  "packageName": "@lage-run/worker-threads-pool",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
