@@ -11,6 +11,7 @@ import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetR
 import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetRunnerPickerOptions } from "@lage-run/scheduler-types";
 import type { TargetHasher } from "@lage-run/hasher";
+import type { CacheOptions } from "@lage-run/cache";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -23,6 +24,7 @@ export interface SimpleSchedulerOptions {
     root: string;
     taskArgs: string[];
     skipLocalCache?: boolean;
+    cacheOptions?: CacheOptions;
   };
   maxWorkersPerTask: Map<string, number>;
   pool?: Pool; // for testing

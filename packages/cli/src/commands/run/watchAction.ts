@@ -86,6 +86,7 @@ export async function watchAction(options: RunOptions, command: Command) {
       root,
       taskArgs,
       skipLocalCache: options.skipLocalCache,
+      cacheOptions: config.cacheOptions,
       runners: {
         npmScript: {
           script: require.resolve("./runners/NpmScriptRunner.js"),
