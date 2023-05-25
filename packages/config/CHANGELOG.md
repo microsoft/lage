@@ -1,8 +1,16 @@
 # Change Log - @lage-run/config
 
-This log was last generated on Mon, 08 May 2023 22:27:16 GMT and should not be manually modified.
+This log was last generated on Thu, 25 May 2023 15:46:02 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.0
+
+Thu, 25 May 2023 15:46:02 GMT
+
+### Minor changes
+
+- Do not read config in targetWorker, instead pass CacheOptions as part of workerdata (altinokd@microsoft.com)
 
 ## 0.2.1
 

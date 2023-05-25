@@ -1,8 +1,17 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Fri, 19 May 2023 22:10:20 GMT and should not be manually modified.
+This log was last generated on Thu, 25 May 2023 15:46:02 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.2
+
+Thu, 25 May 2023 15:46:02 GMT
+
+### Patches
+
+- Do not read config in targetWorker, instead pass CacheOptions as part of workerdata (altinokd@microsoft.com)
+- Bump @lage-run/config to v0.3.0
 
 ## 1.0.1
 

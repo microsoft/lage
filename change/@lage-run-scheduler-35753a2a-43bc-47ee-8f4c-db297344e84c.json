@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Do not read config in targetWorker, instead pass CacheOptions as part of workerdata",
-  "packageName": "@lage-run/scheduler",
-  "email": "altinokd@microsoft.com",
-  "dependentChangeType": "patch"
-}

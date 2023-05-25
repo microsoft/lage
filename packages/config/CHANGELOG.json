@@ -2,6 +2,21 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Thu, 25 May 2023 15:46:02 GMT",
+      "tag": "@lage-run/config_v0.3.0",
+      "version": "0.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "altinokd@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "c2bf5ab7a31c05a11e9488a92d58ef0f74bc3e9d",
+            "comment": "Do not read config in targetWorker, instead pass CacheOptions as part of workerdata"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 08 May 2023 22:27:16 GMT",
       "tag": "@lage-run/config_v0.2.1",
       "version": "0.2.1",

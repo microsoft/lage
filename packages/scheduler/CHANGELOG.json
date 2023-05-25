@@ -2,6 +2,27 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Thu, 25 May 2023 15:46:02 GMT",
+      "tag": "@lage-run/scheduler_v1.0.2",
+      "version": "1.0.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "altinokd@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "c2bf5ab7a31c05a11e9488a92d58ef0f74bc3e9d",
+            "comment": "Do not read config in targetWorker, instead pass CacheOptions as part of workerdata"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/config to v0.3.0",
+            "commit": "c2bf5ab7a31c05a11e9488a92d58ef0f74bc3e9d"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 19 May 2023 22:10:20 GMT",
       "tag": "@lage-run/scheduler_v1.0.1",
       "version": "1.0.1",
