@@ -1,0 +1,7 @@
+{
+  "comment": "Dynamic pooling by firing up 2 workers as a start, then adding new workers as work comes in",
+  "type": "minor",
+  "packageName": "lage",
+  "email": "kchau@microsoft.com",
+  "dependentChangeType": "patch"
+}
