@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Fri, 26 May 2023 01:09:04 GMT",
+      "tag": "@lage-run/hasher_v1.0.1",
+      "version": "1.0.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "8cb78bef8aeb568c2da2ac62d0e0a62d3580847d",
+            "comment": "makes sure the presence of a file does not crash lage on the file hashing"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 08 May 2023 22:27:16 GMT",
       "tag": "@lage-run/hasher_v1.0.0",
       "version": "1.0.0",

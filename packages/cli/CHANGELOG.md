@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Fri, 26 May 2023 00:17:46 GMT and should not be manually modified.
+This log was last generated on Fri, 26 May 2023 01:09:04 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.15.7
+
+Fri, 26 May 2023 01:09:04 GMT
+
+### Patches
+
+- Bump @lage-run/hasher to v1.0.1
+- Bump @lage-run/scheduler to v1.1.1
 
 ## 0.15.6
 

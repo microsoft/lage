@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "makes sure the presence of a file does not crash lage on the file hashing",
-  "packageName": "@lage-run/hasher",
-  "email": "kchau@microsoft.com",
-  "dependentChangeType": "patch"
-}

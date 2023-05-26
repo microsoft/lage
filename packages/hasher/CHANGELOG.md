@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Mon, 08 May 2023 22:27:16 GMT and should not be manually modified.
+This log was last generated on Fri, 26 May 2023 01:09:04 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.1
+
+Fri, 26 May 2023 01:09:04 GMT
+
+### Patches
+
+- makes sure the presence of a file does not crash lage on the file hashing (kchau@microsoft.com)
 
 ## 1.0.0
 
