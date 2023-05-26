@@ -2,6 +2,7 @@ import { type PackageInfos } from "workspace-tools";
 
 import execa from "execa";
 import path from "path";
+import fs from "fs";
 import micromatch from "micromatch";
 
 export interface PackageTreeOptions {
@@ -55,7 +56,7 @@ export class PackageTree {
     const lsFilesResults = await execa("git", ["ls-files", "-z"], { cwd: root });
 
     if (lsFilesResults.exitCode === 0) {
-      const files = lsFilesResults.stdout.split("\0").filter(Boolean);
+      const files = lsFilesResults.stdout.split("\0").filter((f) => Boolean(f) && fs.existsSync(path.join(root, f)));
       this.addToPackageTree(files);
     }
 
