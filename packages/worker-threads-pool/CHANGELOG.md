@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Fri, 19 May 2023 22:10:20 GMT and should not be manually modified.
+This log was last generated on Fri, 26 May 2023 20:44:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.0
+
+Fri, 26 May 2023 20:44:05 GMT
+
+### Minor changes
+
+- Dynamic pooling by firing up 2 workers as a start, then adding new workers as work comes in (kchau@microsoft.com)
 
 ## 0.7.1
 

@@ -2,6 +2,33 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 26 May 2023 20:44:05 GMT",
+      "tag": "lage_v2.7.0",
+      "version": "2.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "50b57f4af793a6595e52d71b86ada5be1e7412b9",
+            "comment": "Dynamic pooling by firing up 2 workers as a start, then adding new workers as work comes in"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.8",
+            "commit": "50b57f4af793a6595e52d71b86ada5be1e7412b9"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.2",
+            "commit": "50b57f4af793a6595e52d71b86ada5be1e7412b9"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 May 2023 01:09:04 GMT",
       "tag": "lage_v2.6.6",
       "version": "2.6.6",
