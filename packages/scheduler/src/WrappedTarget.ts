@@ -214,7 +214,7 @@ export class WrappedTarget implements TargetRun {
               worker.postMessage({ type: "hash", hash });
             });
           } else if (this.options.onMessage) {
-            this.options.onMessage(data, worker.postMessage);
+            this.options.onMessage(data, worker.postMessage.bind(worker));
           }
         };
 
