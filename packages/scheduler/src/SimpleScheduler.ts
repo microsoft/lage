@@ -12,6 +12,7 @@ import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetRunnerPickerOptions } from "@lage-run/scheduler-types";
 import type { TargetHasher } from "@lage-run/hasher";
 import type { CacheOptions } from "@lage-run/cache";
+import type { MessagePort } from "worker_threads";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -30,6 +31,7 @@ export interface SimpleSchedulerOptions {
   pool?: Pool; // for testing
   workerIdleMemoryLimit: number; // in bytes
   hasher: TargetHasher;
+  onMessage?: (message: any, postMessage: MessagePort["postMessage"]) => void;
 }
 
 /**
@@ -129,6 +131,7 @@ export class SimpleScheduler implements TargetScheduler {
           abortController,
           pool,
           hasher: this.options.hasher,
+          onMessage: this.options.onMessage,
         });
       }
 

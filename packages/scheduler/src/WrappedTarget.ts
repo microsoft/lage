@@ -11,6 +11,7 @@ import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 import type { Logger } from "@lage-run/logger";
 import type { TargetHasher } from "@lage-run/hasher";
+import type { MessagePort } from "worker_threads";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -21,6 +22,7 @@ export interface WrappedTargetOptions {
   abortController: AbortController;
   pool: Pool;
   hasher: TargetHasher;
+  onMessage?: (message: any, postMessage: MessagePort["postMessage"]) => void;
 }
 
 interface WorkerResult {
@@ -211,6 +213,8 @@ export class WrappedTarget implements TargetRun {
             this.options.hasher.hash(target).then((hash) => {
               worker.postMessage({ type: "hash", hash });
             });
+          } else if (this.options.onMessage) {
+            this.options.onMessage(data, worker.postMessage);
           }
         };
 
