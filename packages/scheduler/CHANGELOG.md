@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Thu, 25 May 2023 15:46:02 GMT and should not be manually modified.
+This log was last generated on Fri, 26 May 2023 00:17:46 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.0
+
+Fri, 26 May 2023 00:17:46 GMT
+
+### Minor changes
+
+- Add onMessage handler for workers (altinokd@microsoft.com)
 
 ## 1.0.2
 

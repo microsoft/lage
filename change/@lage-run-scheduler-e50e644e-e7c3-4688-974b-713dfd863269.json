@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Add onMessage handler for workers",
-  "packageName": "@lage-run/scheduler",
-  "email": "altinokd@microsoft.com",
-  "dependentChangeType": "patch"
-}
