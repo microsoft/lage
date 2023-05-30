@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Fri, 26 May 2023 20:44:05 GMT and should not be manually modified.
+This log was last generated on Tue, 30 May 2023 18:19:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.3
+
+Tue, 30 May 2023 18:19:34 GMT
+
+### Patches
+
+- Bind postMessage when passing into onMessage (altinokd@microsoft.com)
 
 ## 1.1.2
 
