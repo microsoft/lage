@@ -30,7 +30,7 @@ interface WorkerResult {
   stderrBuffer: string;
   skipped: boolean;
   hash: string;
-  result: any;
+  result: unknown;
 }
 
 /**

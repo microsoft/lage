@@ -8,6 +8,6 @@ export interface TargetRunnerOptions {
 
 export interface TargetRunner {
   shouldRun(target: Target): Promise<boolean>;
-  run(options: TargetRunnerOptions): Promise<any>;
+  run(options: TargetRunnerOptions): Promise<unknown>;
   cleanup?(): Promise<void> | void;
 }
