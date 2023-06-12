@@ -252,12 +252,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
 
     const result = await this.result;
 
-    return {
-      stdoutBuffer: bufferStdout.buffer,
-      stderrBuffer: bufferStderr.buffer,
-      skipped: result?.skipped,
-      hash: result?.hash,
-    };
+    return { stdoutBuffer: bufferStdout.buffer, stderrBuffer: bufferStderr.buffer, skipped: result?.skipped, hash: result?.hash };
   }
 
   /**
