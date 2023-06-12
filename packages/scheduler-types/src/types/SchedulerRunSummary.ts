@@ -7,9 +7,9 @@ export type TargetRunSummary = { [key in TargetStatus]-?: string[] };
 
 export type SchedulerRunResults = "success" | "failed";
 
-export interface SchedulerRunSummary {
+export interface SchedulerRunSummary<TTargetRunResult = unknown> {
   targetRunByStatus: TargetRunSummary;
-  targetRuns: Map<string, TargetRun>;
+  targetRuns: Map<string, TargetRun<TTargetRunResult>>;
   startTime: [number, number];
   duration: [number, number];
   results: SchedulerRunResults;

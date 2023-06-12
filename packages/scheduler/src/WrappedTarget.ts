@@ -25,12 +25,12 @@ export interface WrappedTargetOptions {
   onMessage?: (message: any, postMessage: MessagePort["postMessage"]) => void;
 }
 
-interface WorkerResult {
+export interface WorkerResult {
   stdoutBuffer: string;
   stderrBuffer: string;
   skipped: boolean;
   hash: string;
-  returnedValue: unknown;
+  returnedValue: unknown | undefined;
 }
 
 /**
@@ -40,7 +40,7 @@ interface WorkerResult {
  * 3. Abort signal
  * 4. Continue on error
  */
-export class WrappedTarget implements TargetRun {
+export class WrappedTarget implements TargetRun<WorkerResult> {
   queueTime: [number, number] = [0, 0];
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
@@ -257,7 +257,6 @@ export class WrappedTarget implements TargetRun {
       stderrBuffer: bufferStderr.buffer,
       skipped: result?.skipped,
       hash: result?.hash,
-      returnedValue: result?.returnedValue,
     };
   }
 
