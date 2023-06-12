@@ -8,5 +8,5 @@ export interface TargetRun {
   target: Target;
   status: TargetStatus;
   threadId: number;
-  result: Promise<unknown> | undefined;
+  returnedValue: Promise<unknown> | undefined;
 }

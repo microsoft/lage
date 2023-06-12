@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "Add a result property to TargetRun",
+  "comment": "Add a returnedValue property to TargetRun",
   "packageName": "@lage-run/scheduler-types",
   "email": "altinokd@microsoft.com",
   "dependentChangeType": "patch"

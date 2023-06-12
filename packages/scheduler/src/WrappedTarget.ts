@@ -30,7 +30,7 @@ interface WorkerResult {
   stderrBuffer: string;
   skipped: boolean;
   hash: string;
-  result: unknown;
+  returnedValue: unknown;
 }
 
 /**
@@ -257,7 +257,7 @@ export class WrappedTarget implements TargetRun {
       stderrBuffer: bufferStderr.buffer,
       skipped: result?.skipped,
       hash: result?.hash,
-      result: result?.result,
+      returnedValue: result?.returnedValue,
     };
   }
 

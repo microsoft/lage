@@ -93,10 +93,10 @@ async function setup(options: TargetWorkerDataOptions) {
 
     const cacheEnabled = data.target.cache && options.shouldCache && hash;
 
-    let result: any = undefined;
+    let returnedValue: any = undefined;
     if (!cacheHit || !cacheEnabled) {
       const runner = await runnerPicker.pick(data.target);
-      result = await runner.run({
+      returnedValue = await runner.run({
         ...data,
         abortSignal,
       });
@@ -107,7 +107,7 @@ async function setup(options: TargetWorkerDataOptions) {
     return {
       skipped: cacheHit,
       hash,
-      result,
+      returnedValue,
     };
   }
 
