@@ -12,6 +12,7 @@ import type { Target } from "@lage-run/target-graph";
 import type { Logger } from "@lage-run/logger";
 import type { TargetHasher } from "@lage-run/hasher";
 import type { MessagePort } from "worker_threads";
+import { TypedEventEmitter } from "./TypedEventEmitter.js";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -32,6 +33,14 @@ interface WorkerResult {
   hash: string;
 }
 
+type WrappedTargetEvents = {
+  returnValue: [returnValue: unknown];
+};
+
+function isReturnValueMessage(message: { type: string }): message is { type: "returnValue"; value: unknown } {
+  return message.type === "returnValue";
+}
+
 /**
  * Wraps a target with additional functionality:
  * 1. Caching
@@ -39,7 +48,7 @@ interface WorkerResult {
  * 3. Abort signal
  * 4. Continue on error
  */
-export class WrappedTarget implements TargetRun {
+export class WrappedTarget extends TypedEventEmitter<WrappedTargetEvents> implements TargetRun {
   queueTime: [number, number] = [0, 0];
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
@@ -66,6 +75,7 @@ export class WrappedTarget implements TargetRun {
   }
 
   constructor(public options: WrappedTargetOptions) {
+    super();
     this.status = "pending";
     this.target = options.target;
   }
@@ -215,6 +225,8 @@ export class WrappedTarget implements TargetRun {
             this.options.hasher.hash(target).then((hash) => {
               worker.postMessage({ type: "hash", hash });
             });
+          } else if (isReturnValueMessage(data)) {
+            this.emit("returnValue", data.value);
           } else if (this.options.onMessage) {
             this.options.onMessage(data, postMessage);
           }

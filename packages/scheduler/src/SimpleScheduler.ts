@@ -105,6 +105,8 @@ export class SimpleScheduler implements TargetScheduler {
 
     const { targets } = targetGraph;
 
+    const targetRunReturnValues = new Map<string, Promise<unknown>>();
+
     for (const target of targets.values()) {
       let targetRun: WrappedTarget;
 
@@ -133,6 +135,15 @@ export class SimpleScheduler implements TargetScheduler {
           hasher: this.options.hasher,
           onMessage: this.options.onMessage,
         });
+
+        targetRunReturnValues.set(
+          target.id,
+          new Promise((resolve) => {
+            targetRun.once("returnValue", (returnValue) => {
+              resolve(returnValue);
+            });
+          })
+        );
       }
 
       if (target.id === getStartTargetId()) {
@@ -172,6 +183,7 @@ export class SimpleScheduler implements TargetScheduler {
 
     return {
       targetRunByStatus,
+      targetRunReturnValues,
       targetRuns: this.targetRuns,
       duration,
       startTime,

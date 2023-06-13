@@ -10,6 +10,7 @@ export type SchedulerRunResults = "success" | "failed";
 export interface SchedulerRunSummary {
   targetRunByStatus: TargetRunSummary;
   targetRuns: Map<string, TargetRun>;
+  targetRunReturnValues: Map<string, Promise<unknown>>;
   startTime: [number, number];
   duration: [number, number];
   results: SchedulerRunResults;
