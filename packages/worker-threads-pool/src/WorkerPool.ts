@@ -13,12 +13,14 @@ export class WorkerPool extends EventEmitter implements Pool {
   workers: IWorker[] = [];
   freeWorkers: IWorker[] = [];
   queue: QueueItem[] = [];
+  minWorkers = 0;
   maxWorkers = 0;
   availability = 0;
 
   constructor(private options: WorkerPoolOptions) {
     super();
 
+    this.minWorkers = this.options.minWorkers ?? 2;
     this.maxWorkers = this.options.maxWorkers ?? os.cpus().length - 1;
     this.availability = this.maxWorkers;
 
@@ -26,7 +28,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     this.freeWorkers = [];
     this.queue = [];
 
-    this.ensureWorkers();
+    this.createInitialWorkers();
 
     // Any time the workerFreedEvent is emitted, dispatch
     // the next task pending in the queue, if any.
@@ -52,23 +54,26 @@ export class WorkerPool extends EventEmitter implements Pool {
     };
   }
 
-  ensureWorkers() {
+  createInitialWorkers() {
     if (this.workers.length === 0) {
-      for (let i = 0; i < this.maxWorkers; i++) {
+      for (let i = 0; i < this.minWorkers; i++) {
         this.addNewWorker();
       }
     }
   }
 
   addNewWorker() {
-    const { script, workerOptions } = this.options;
-    const worker = new ThreadWorker(script, { workerOptions, workerIdleMemoryLimit: this.options.workerIdleMemoryLimit });
-    worker.on("free", (data) => {
-      const { weight } = data;
-      this.availability += weight;
-      this.emit(workerFreedEvent);
-    });
-    this.workers.push(worker);
+    if (this.workers.length <= this.maxWorkers) {
+      const { script, workerOptions } = this.options;
+      const worker = new ThreadWorker(script, { workerOptions, workerIdleMemoryLimit: this.options.workerIdleMemoryLimit });
+      worker.on("free", (data) => {
+        const { weight } = data;
+        this.availability += weight;
+        this.emit(workerFreedEvent);
+      });
+      this.workers.push(worker);
+      return worker;
+    }
   }
 
   exec(
@@ -101,7 +106,13 @@ export class WorkerPool extends EventEmitter implements Pool {
 
     // This is to immediate execute tasks if there ARE free workers
     // If there are no free workers, the "workerFreedEvent" will call this function again to start the task
-    const worker = this.workers.find((w) => w.status === "free");
+    let worker = this.workers.find((w) => w.status === "free");
+
+    // If there are no free workers, create a new one
+    if (!worker) {
+      worker = this.addNewWorker();
+    }
+
     if (worker) {
       const work = this.queue[workIndex];
       this.queue.splice(workIndex, 1);

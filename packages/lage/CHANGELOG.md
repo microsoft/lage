@@ -1,8 +1,27 @@
 # Change Log - lage
 
-This log was last generated on Fri, 26 May 2023 01:09:04 GMT and should not be manually modified.
+This log was last generated on Tue, 30 May 2023 18:19:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.1
+
+Tue, 30 May 2023 18:19:34 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.15.9
+- Bump @lage-run/scheduler to v1.1.3
+
+## 2.7.0
+
+Fri, 26 May 2023 20:44:05 GMT
+
+### Minor changes
+
+- Dynamic pooling by firing up 2 workers as a start, then adding new workers as work comes in (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.15.8
+- Bump @lage-run/scheduler to v1.1.2
 
 ## 2.6.6
 

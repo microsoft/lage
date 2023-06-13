@@ -207,6 +207,8 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
       { target },
       target.weight ?? 1,
       (worker, stdout, stderr) => {
+        const postMessage = worker.postMessage.bind(worker);
+
         msgHandler = (data) => {
           if (data.type === "log") {
             logger.log(data.level, data.msg, { target, threadId: worker.threadId });
@@ -215,7 +217,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
               worker.postMessage({ type: "hash", hash });
             });
           } else if (this.options.onMessage) {
-            this.options.onMessage(data, worker.postMessage);
+            this.options.onMessage(data, postMessage);
           }
         };
 

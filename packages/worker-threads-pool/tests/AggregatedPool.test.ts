@@ -22,8 +22,8 @@ describe("AggregatedPool", () => {
     expect(group1Pool).toBeTruthy();
     expect(group2Pool).toBeTruthy();
     expect(group1Pool).not.toBe(group2Pool);
-    expect(group1Pool?.workers.length).toBe(5);
-    expect(group2Pool?.workers.length).toBe(5);
+    expect(group1Pool?.maxWorkers).toBe(5);
+    expect(group2Pool?.maxWorkers).toBe(5);
 
     expect(pool.defaultPool).toBeUndefined();
 
@@ -49,11 +49,12 @@ describe("AggregatedPool", () => {
     expect(group1Pool).toBeTruthy();
     expect(group2Pool).toBeTruthy();
     expect(group1Pool).not.toBe(group2Pool);
-    expect(group1Pool?.workers.length).toBe(2);
-    expect(group2Pool?.workers.length).toBe(3);
+
+    expect(group1Pool?.maxWorkers).toBe(2);
+    expect(group2Pool?.maxWorkers).toBe(3);
 
     expect(pool.defaultPool).toBeTruthy();
-    expect(pool.defaultPool?.workers.length).toBe(5);
+    expect(pool.defaultPool?.maxWorkers).toBe(5);
 
     await pool.close();
   });
