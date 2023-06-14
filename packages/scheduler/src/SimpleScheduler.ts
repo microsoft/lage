@@ -138,9 +138,19 @@ export class SimpleScheduler implements TargetScheduler {
 
         targetRunReturnValues.set(
           target.id,
-          new Promise((resolve) => {
-            targetRun.once("returnValue", (returnValue) => {
-              resolve(returnValue);
+          new Promise((resolve, reject) => {
+            targetRun.once("completed", (status, payload) => {
+              switch (status) {
+                case "success":
+                  resolve(payload);
+                  break;
+                case "skipped":
+                  resolve(undefined);
+                  break;
+                default:
+                  reject();
+                  break;
+              }
             });
           })
         );

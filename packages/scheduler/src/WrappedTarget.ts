@@ -34,12 +34,8 @@ interface WorkerResult {
 }
 
 type WrappedTargetEvents = {
-  returnValue: [returnValue: unknown];
+  completed: [status: TargetStatus, payload?: unknown];
 };
-
-function isReturnValueMessage(message: { type: string }): message is { type: "returnValue"; value: unknown } {
-  return message.type === "returnValue";
-}
 
 /**
  * Wraps a target with additional functionality:
@@ -89,6 +85,7 @@ export class WrappedTarget extends TypedEventEmitter<WrappedTargetEvents> implem
     this.status = "aborted";
     this.duration = process.hrtime(this.startTime);
     this.options.logger.info("", { target: this.target, status: "aborted", threadId: this.threadId });
+    this.emit("completed", this.status);
   }
 
   onStart(threadId: number) {
@@ -100,7 +97,7 @@ export class WrappedTarget extends TypedEventEmitter<WrappedTargetEvents> implem
     }
   }
 
-  onComplete() {
+  onComplete(returnValue?: unknown) {
     this.status = "success";
     this.duration = process.hrtime(this.startTime);
     this.options.logger.info("", {
@@ -109,6 +106,7 @@ export class WrappedTarget extends TypedEventEmitter<WrappedTargetEvents> implem
       duration: this.duration,
       threadId: this.threadId,
     });
+    this.emit("completed", this.status, returnValue);
   }
 
   onFail() {
@@ -124,6 +122,7 @@ export class WrappedTarget extends TypedEventEmitter<WrappedTargetEvents> implem
     if (!this.options.continueOnError && this.options.abortController) {
       this.options.abortController.abort();
     }
+    this.emit("completed", this.status);
   }
 
   onSkipped(hash?: string | undefined) {
@@ -142,6 +141,8 @@ export class WrappedTarget extends TypedEventEmitter<WrappedTargetEvents> implem
         threadId: this.threadId,
       });
     }
+
+    this.emit("completed", this.status);
   }
 
   async run() {
@@ -185,7 +186,7 @@ export class WrappedTarget extends TypedEventEmitter<WrappedTargetEvents> implem
 
         this.onSkipped(hash);
       } else {
-        this.onComplete();
+        this.onComplete(result.returnValue);
       }
     } catch (e) {
       logger.error(String(e), { target });
@@ -212,7 +213,7 @@ export class WrappedTarget extends TypedEventEmitter<WrappedTargetEvents> implem
 
     let msgHandler: (data: LogEntry<any> & { type: string }) => void;
 
-    this.result = pool.exec(
+    const resultPromise = pool.exec(
       { target },
       target.weight ?? 1,
       (worker, stdout, stderr) => {
@@ -225,8 +226,6 @@ export class WrappedTarget extends TypedEventEmitter<WrappedTargetEvents> implem
             this.options.hasher.hash(target).then((hash) => {
               worker.postMessage({ type: "hash", hash });
             });
-          } else if (isReturnValueMessage(data)) {
-            this.emit("returnValue", data.value);
           } else if (this.options.onMessage) {
             this.options.onMessage(data, postMessage);
           }
@@ -261,11 +260,27 @@ export class WrappedTarget extends TypedEventEmitter<WrappedTargetEvents> implem
         releaseStderr();
       },
       abortSignal
-    ) as Promise<WorkerResult>;
+    ) as Promise<WorkerResult & { returnValue: unknown }>;
+
+    let returnValue: unknown = undefined;
+    this.result = new Promise<WorkerResult>((resolve, reject) => {
+      resultPromise
+        .then(({ returnValue: value, ...result }) => {
+          returnValue = value;
+          resolve(result);
+        })
+        .catch(reject);
+    });
 
     const result = await this.result;
 
-    return { stdoutBuffer: bufferStdout.buffer, stderrBuffer: bufferStderr.buffer, skipped: result?.skipped, hash: result?.hash };
+    return {
+      stdoutBuffer: bufferStdout.buffer,
+      stderrBuffer: bufferStderr.buffer,
+      skipped: result?.skipped,
+      hash: result?.hash,
+      returnValue,
+    };
   }
 
   /**

@@ -24,8 +24,7 @@ export function registerWorker(fn: (data: any, abortSignal?: AbortSignal) => Pro
     try {
       process.stdout.write(`${startMarker(workerTaskId)}\n`);
       process.stderr.write(`${startMarker(workerTaskId)}\n`);
-      const { returnValue, ...results } = await fn(task, abortSignal);
-      parentPort?.postMessage({ type: "returnValue", value: returnValue });
+      const results = await fn(task, abortSignal);
       parentPort?.postMessage({ type: "status", err: undefined, results });
     } catch (err) {
       parentPort?.postMessage({ type: "status", err, results: undefined });
