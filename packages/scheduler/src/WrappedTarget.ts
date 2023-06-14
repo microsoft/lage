@@ -75,6 +75,11 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
 
   constructor(public options: WrappedTargetOptions) {
     this.target = options.target;
+
+    if (this.target.id === getStartTargetId()) {
+      this.#status = "success";
+      return;
+    }
   }
 
   onQueued() {
@@ -143,10 +148,6 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
 
   async run() {
     const { target, logger, shouldCache, abortController, root } = this.options;
-    if (target.id === getStartTargetId()) {
-      this.onComplete();
-      return;
-    }
 
     const abortSignal = abortController.signal;
 
