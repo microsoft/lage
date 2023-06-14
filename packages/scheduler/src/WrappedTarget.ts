@@ -78,7 +78,6 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
 
     if (this.target.id === getStartTargetId()) {
       this.#status = "success";
-      return;
     }
   }
 
