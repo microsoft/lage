@@ -5,6 +5,7 @@ import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph"
 import { WrappedTarget } from "./WrappedTarget.js";
 import { TargetRunnerPicker } from "./runners/TargetRunnerPicker.js";
 
+import type { WorkerResult } from "./WrappedTarget.js";
 import type { Logger } from "@lage-run/logger";
 import type { TargetGraph } from "@lage-run/target-graph";
 import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "@lage-run/scheduler-types";
@@ -46,7 +47,7 @@ export interface SimpleSchedulerOptions {
  * 1. Allow for multiple kinds of runner (currently only ONE is supported, and it is applied to all targets)
  *
  */
-export class SimpleScheduler implements TargetScheduler {
+export class SimpleScheduler implements TargetScheduler<WorkerResult> {
   targetRuns: Map<string, WrappedTarget> = new Map();
   rerunTargets: Set<string> = new Set();
   abortController: AbortController = new AbortController();
@@ -90,7 +91,7 @@ export class SimpleScheduler implements TargetScheduler {
    * @param targetGraph
    * @returns
    */
-  async run(root: string, targetGraph: TargetGraph, shouldRerun = false): Promise<SchedulerRunSummary> {
+  async run(root: string, targetGraph: TargetGraph, shouldRerun = false): Promise<SchedulerRunSummary<WorkerResult>> {
     const startTime: [number, number] = process.hrtime();
 
     const { continueOnError, logger, shouldCache } = this.options;
@@ -133,10 +134,6 @@ export class SimpleScheduler implements TargetScheduler {
           hasher: this.options.hasher,
           onMessage: this.options.onMessage,
         });
-      }
-
-      if (target.id === getStartTargetId()) {
-        targetRun.status = "success";
       }
 
       this.targetRuns.set(target.id, targetRun);
@@ -195,7 +192,7 @@ export class SimpleScheduler implements TargetScheduler {
         const targetRun = this.targetRuns.get(current)!;
 
         if (targetRun.status !== "pending") {
-          targetRun.status = "pending";
+          targetRun.reset();
           this.rerunTargets.add(targetRun.target.id);
           const dependents = targetRun.target.dependents;
           for (const dependent of dependents) {
@@ -284,9 +281,7 @@ export class SimpleScheduler implements TargetScheduler {
   async #generateTargetRunPromise(target: WrappedTarget) {
     let runError: unknown | undefined;
 
-    if (target.result && target.successful && !this.rerunTargets.has(target.target.id)) {
-      await target.result;
-    } else {
+    if (!target.successful || this.rerunTargets.has(target.target.id)) {
       // This do-while loop only runs again if something causes this target to rerun (asynchronously triggering a re-run)
       do {
         this.rerunTargets.delete(target.target.id);
