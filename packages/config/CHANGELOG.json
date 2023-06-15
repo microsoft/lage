@@ -2,6 +2,21 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Thu, 15 Jun 2023 17:04:58 GMT",
+      "tag": "@lage-run/config_v0.3.1",
+      "version": "0.3.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.10",
+            "commit": "91dfab46c2cb13c175931f12f2964b2b9ace491a"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 May 2023 15:46:02 GMT",
       "tag": "@lage-run/config_v0.3.0",
       "version": "0.3.0",

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Added result to TargetRun. Made TargetRun, TargetRunner, SchedulerRunSummary, TargetScheduler generic to support type safe results",
-  "packageName": "@lage-run/scheduler-types",
-  "email": "altinokd@microsoft.com",
-  "dependentChangeType": "patch"
-}

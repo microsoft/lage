@@ -1,8 +1,18 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Tue, 30 May 2023 18:19:34 GMT and should not be manually modified.
+This log was last generated on Thu, 15 Jun 2023 17:04:58 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.4
+
+Thu, 15 Jun 2023 17:04:58 GMT
+
+### Patches
+
+- Return value from worker run functions as part of TargetRun.result object. Encapsulated status and result fields. Added a way to reset WrappedTarget (altinokd@microsoft.com)
+- Bump @lage-run/config to v0.3.1
+- Bump @lage-run/scheduler-types to v0.3.10
 
 ## 1.1.3
 

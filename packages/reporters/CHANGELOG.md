@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Fri, 12 May 2023 06:12:34 GMT and should not be manually modified.
+This log was last generated on Thu, 15 Jun 2023 17:04:58 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.4
+
+Thu, 15 Jun 2023 17:04:58 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.10
 
 ## 1.2.3
 

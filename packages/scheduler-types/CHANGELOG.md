@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler-types
 
-This log was last generated on Mon, 08 May 2023 22:27:16 GMT and should not be manually modified.
+This log was last generated on Thu, 15 Jun 2023 17:04:58 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.10
+
+Thu, 15 Jun 2023 17:04:58 GMT
+
+### Patches
+
+- Added result to TargetRun. Made TargetRun, TargetRunner, SchedulerRunSummary, TargetScheduler generic to support type safe results (altinokd@microsoft.com)
 
 ## 0.3.9
 

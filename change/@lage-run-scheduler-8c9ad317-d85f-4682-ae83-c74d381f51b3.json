@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Return value from worker run functions as part of TargetRun.result object. Encapsulated status and result fields. Added a way to reset WrappedTarget",
-  "packageName": "@lage-run/scheduler",
-  "email": "altinokd@microsoft.com",
-  "dependentChangeType": "patch"
-}

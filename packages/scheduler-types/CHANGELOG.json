@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Thu, 15 Jun 2023 17:04:58 GMT",
+      "tag": "@lage-run/scheduler-types_v0.3.10",
+      "version": "0.3.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "altinokd@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "91dfab46c2cb13c175931f12f2964b2b9ace491a",
+            "comment": "Added result to TargetRun. Made TargetRun, TargetRunner, SchedulerRunSummary, TargetScheduler generic to support type safe results"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 08 May 2023 22:27:16 GMT",
       "tag": "@lage-run/scheduler-types_v0.3.9",
       "version": "0.3.9",
