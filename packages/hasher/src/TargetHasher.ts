@@ -19,6 +19,7 @@ import { hashStrings } from "./hashStrings.js";
 import { resolveInternalDependencies } from "./resolveInternalDependencies.js";
 import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
 import { FileHasher } from "./FileHasher.js";
+import { Logger } from "@lage-run/logger";
 import { PackageTree } from "./PackageTree.js";
 
 export interface TargetHasherOptions {
@@ -26,6 +27,7 @@ export interface TargetHasherOptions {
   environmentGlob: string[];
   cacheKey?: string;
   cliArgs?: string[];
+  logger?: Logger;
 }
 
 export interface TargetManifest {
@@ -50,6 +52,7 @@ export interface TargetManifest {
  * Currently, it encapsulates the use of `backfill-hasher` to generate a hash.
  */
 export class TargetHasher {
+  logger: Logger | undefined;
   fileHasher: FileHasher;
   packageTree: PackageTree | undefined;
 
@@ -136,8 +139,8 @@ export class TargetHasher {
   }
 
   constructor(private options: TargetHasherOptions) {
-    const { root } = options;
-
+    const { root, logger } = options;
+    this.logger = logger;
     this.fileHasher = new FileHasher({
       root,
     });
@@ -185,6 +188,11 @@ export class TargetHasher {
     ]);
 
     await this.initializedPromise;
+
+    if (this.logger !== undefined) {
+      const globalInputsHash = hashStrings(Object.values(this.globalInputsHash ?? {}));
+      this.logger.silly(`Global inputs hash: ${globalInputsHash}`);
+    }
   }
 
   async hash(target: Target): Promise<string> {
