@@ -11,13 +11,14 @@ interface CreateCacheOptions {
 }
 
 export async function createCache(options: CreateCacheOptions) {
-  const { cacheOptions, root, cliArgs } = options;
+  const { cacheOptions, root, cliArgs, logger } = options;
 
   const hasher = new TargetHasher({
     root,
     environmentGlob: cacheOptions?.environmentGlob ?? [],
     cacheKey: cacheOptions?.cacheKey,
     cliArgs,
+    logger,
   });
 
   await hasher.initialize();
