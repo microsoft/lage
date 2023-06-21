@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Fri, 26 May 2023 01:09:04 GMT and should not be manually modified.
+This log was last generated on Wed, 21 Jun 2023 19:06:25 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.2
+
+Wed, 21 Jun 2023 19:06:25 GMT
+
+### Patches
+
+- Added logging in TargetHasher, now logs hash of glob-hashed files for global input hash comparison (brunoru@microsoft.com)
 
 ## 1.0.1
 

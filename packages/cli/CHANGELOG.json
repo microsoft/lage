@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 21 Jun 2023 19:06:25 GMT",
+      "tag": "@lage-run/cli_v0.15.11",
+      "version": "0.15.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "brunoru@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "3efba30544ff1844986f469e01b47316d700ceeb",
+            "comment": "Passing logger object to TargetHasher for hasher init logging"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.0.2",
+            "commit": "3efba30544ff1844986f469e01b47316d700ceeb"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.1.5",
+            "commit": "3efba30544ff1844986f469e01b47316d700ceeb"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 15 Jun 2023 17:04:58 GMT",
       "tag": "@lage-run/cli_v0.15.10",
       "version": "0.15.10",

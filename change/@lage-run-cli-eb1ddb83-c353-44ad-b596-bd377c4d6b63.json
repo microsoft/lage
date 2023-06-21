@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Passing logger object to TargetHasher for hasher init logging",
-  "packageName": "@lage-run/cli",
-  "email": "brunoru@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Wed, 21 Jun 2023 19:06:25 GMT",
+      "tag": "@lage-run/hasher_v1.0.2",
+      "version": "1.0.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "brunoru@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "3efba30544ff1844986f469e01b47316d700ceeb",
+            "comment": "Added logging in TargetHasher, now logs hash of glob-hashed files for global input hash comparison"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 May 2023 01:09:04 GMT",
       "tag": "@lage-run/hasher_v1.0.1",
       "version": "1.0.1",

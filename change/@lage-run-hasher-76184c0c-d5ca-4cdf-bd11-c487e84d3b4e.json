@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Added logging in TargetHasher, now logs hash of glob-hashed files for global input hash comparison",
-  "packageName": "@lage-run/hasher",
-  "email": "brunoru@microsoft.com",
-  "dependentChangeType": "patch"
-}
