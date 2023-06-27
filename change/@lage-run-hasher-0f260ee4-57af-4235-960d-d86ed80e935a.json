@@ -1,0 +1,9 @@
+{
+  "type": "patch",
+  "comment": {
+    "title": ""
+  },
+  "packageName": "@lage-run/hasher",
+  "email": "brunoru@microsoft.com",
+  "dependentChangeType": "patch"
+}
