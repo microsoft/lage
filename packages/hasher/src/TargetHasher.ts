@@ -193,6 +193,7 @@ export class TargetHasher {
     if (this.logger !== undefined) {
       const globalInputsHash = hashStrings(Object.values(this.globalInputsHash ?? {}));
       this.logger.verbose(`Global inputs hash: ${globalInputsHash}`);
+      this.logger.silly(`\n\tnFiles: ${JSON.stringify(this.globalInputsHash, null, 2)}`);
     }
   }
 
