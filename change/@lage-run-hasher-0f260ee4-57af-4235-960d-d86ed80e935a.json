@@ -1,7 +1,7 @@
 {
   "type": "patch",
   "comment": {
-    "title": ""
+    "title": "Adding in file level global input file logging to JSON log file"
   },
   "packageName": "@lage-run/hasher",
   "email": "brunoru@microsoft.com",
