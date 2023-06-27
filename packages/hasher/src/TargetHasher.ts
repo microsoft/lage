@@ -194,6 +194,13 @@ export class TargetHasher {
       const globalInputsHash = hashStrings(Object.values(this.globalInputsHash ?? {}));
       this.logger.verbose(`Global inputs hash: ${globalInputsHash}`);
       this.logger.silly(`\nFile hashes:`);
+      // Log global input hashs to log file
+      if (this.options.cliArgs && this.options.cliArgs.includes("--globalInputsLogFile")) {
+        const logFilePathIndex = this.options.cliArgs.indexOf("--globalInputsLogFile") + 1;
+        const logFilePath = this.options.cliArgs[logFilePathIndex];
+        const globalInputsHashJson = JSON.stringify(this.globalInputsHash, null, 2);
+        await fs.promises.writeFile(logFilePath, globalInputsHashJson);
+      }
       for (const key in this.globalInputsHash) {
         this.logger.silly(`\n\t${key}: ${this.globalInputsHash[key]}`);
       }
