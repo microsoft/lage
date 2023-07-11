@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Tue, 11 Jul 2023 14:51:52 GMT",
+      "tag": "@lage-run/hasher_v1.0.3",
+      "version": "1.0.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "brunoru@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "e7dbec3c24355721132a15425fa5044c74c13efb",
+            "comment": "Log file level input file hashes to silly logs"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 21 Jun 2023 19:06:25 GMT",
       "tag": "@lage-run/hasher_v1.0.2",
       "version": "1.0.2",

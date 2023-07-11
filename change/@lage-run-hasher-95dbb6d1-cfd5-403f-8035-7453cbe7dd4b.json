@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Log file level input file hashes to silly logs",
-  "packageName": "@lage-run/hasher",
-  "email": "brunoru@microsoft.com",
-  "dependentChangeType": "patch"
-}
