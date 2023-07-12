@@ -173,7 +173,9 @@ function generateCommand(target, config) {
 
 function getWorkingDirectory(target) {
   const cwd = process.cwd();
-  const workingDirectory = path.relative(getWorkspaceRoot(cwd) ?? "", target.cwd);
+  const workingDirectory = path
+    .relative(getWorkspaceRoot(cwd) ?? "", target.cwd)
+    .replace(/\\/g, "/");
   return workingDirectory;
 }
 
