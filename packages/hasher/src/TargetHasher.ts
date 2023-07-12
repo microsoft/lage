@@ -193,6 +193,9 @@ export class TargetHasher {
     if (this.logger !== undefined) {
       const globalInputsHash = hashStrings(Object.values(this.globalInputsHash ?? {}));
       this.logger.verbose(`Global inputs hash: ${globalInputsHash}`);
+      // Log global input hashs to log file
+      const globalInputsHashJson = JSON.stringify(this.globalInputsHash, null, 2);
+      this.logger.silly(globalInputsHashJson);
     }
   }
 

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Wed, 21 Jun 2023 19:06:25 GMT and should not be manually modified.
+This log was last generated on Tue, 11 Jul 2023 14:51:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.3
+
+Tue, 11 Jul 2023 14:51:52 GMT
+
+### Patches
+
+- Log file level input file hashes to silly logs (brunoru@microsoft.com)
 
 ## 1.0.2
 

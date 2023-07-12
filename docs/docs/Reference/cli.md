@@ -35,7 +35,7 @@ Usage: `lage [run] <command1> [command2...commandN] [options]  run commands`
   --reset-cache                                     resets the cache, filling it after a run
   --skip-local-cache                                skips caching locally
   --profile [profile]                               writes a run profile into a file that can be processed by Chromium devtool
-  --nodearg <nodeArg>                               arguments to be passed to node (e.g. --nodearg="--max_old_space_size=1234 --heap-prof" - set via "NODE_OPTIONS" environment variable
+  --nodearg <nodeArg>                               arguments to be passed to node (e.g. --nodearg="--max_old_space_size=1234 --heap-prof" - set via "NODE_OPTIONS" environment variable)
   --continue                                        continues the run even on error
   -h, --help                                        display help for command
 ```
