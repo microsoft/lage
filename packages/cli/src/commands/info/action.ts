@@ -81,14 +81,6 @@ export async function infoAction(options: RunOptions, command: Command) {
 
   const packageTasks = processTargets(targetGraph.targets, packageInfos, config);
 
-  /* This currently does not seem to work
-      logger.info(`info`, {
-    command: config.command.slice(1),
-    scope: packages,
-    packageTasks: [...packageTasks.values()],
-  });
-  */
-
   // eslint-disable-next-line no-console
   console.log(
     JSON.stringify({
