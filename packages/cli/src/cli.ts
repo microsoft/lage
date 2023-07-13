@@ -12,7 +12,7 @@ async function main() {
   program.addCommand(runCommand, { isDefault: true });
   program.addCommand(cacheCommand);
   program.addCommand(affectedCommand);
-  program.addCommand(initCommand);  
+  program.addCommand(initCommand);
   program.addCommand(infoCommand);
 
   await program.parseAsync(process.argv);
