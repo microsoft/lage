@@ -30,23 +30,48 @@ interface PackageTask {
   task: string;
 }
 
-interface Output {
-  msg: string;
-  data: {
-    command: string[];
-    scope: string[];
-    packageTasks: PackageTask[];
-  };
-}
-
-interface PackageTasksByPackage {
-  [packageName: string]: PackageTask[];
-}
-
+/**
+ * (UNSTABLE) The info command displays information about a target graph in a workspace.
+ * The generated output can be read and used by other task runners, such as BuildXL.
+ *
+ * Expected format:
+ * [
+ *   {
+ *       "id": "bar##build",
+ *       "package": "bar",
+ *       "task": "build",
+ *       "command": "npm run build --blah",
+ *       "workingDirectory": "packages/bar",
+ *       "dependencies": []
+ *   },
+ *   {
+ *       "id": "foo##build",
+ *       "package": "foo",
+ *       "task": "build",
+ *       "command": "npm run build --blah",
+ *       "workingDirectory": "packages/foo",
+ *       "dependencies": [
+ *           "bar##build"
+ *       ]
+ *   },
+ *   {
+ *       "id": "foo##test",
+ *       "package": "foo",
+ *       "task": "test",
+ *       "command": "npm run test --blah",
+ *       "workingDirectory": "packages/foo",
+ *       "dependencies": [
+ *           "foo##build"
+ *       ]
+ *   },
+ *   ...
+ * ]
+ */
 export async function infoAction(options: RunOptions, command: Command) {
   const cwd = process.cwd();
-
-  const { config, logger, root } = await getConfigAndLogger(cwd);
+  const config = await getConfig(cwd);
+  const logger = createLogger();
+  const root = getWorkspaceRoot(cwd)!;
 
   const packageInfos = await getPackageInfosAsync(root);
 
@@ -54,19 +79,25 @@ export async function infoAction(options: RunOptions, command: Command) {
 
   const scope = prepareAndGetFilteredPackages(config, logger, root, options, packageInfos);
 
-  let output = initialOutputGenerator(command, scope);
+  const packageTasks = processTargets(targetGraph.targets, packageInfos, config);
 
-  output = processTargets(targetGraph.targets, packageInfos, config, output);
+  /* This currently does not seem to work
+      logger.info(`info`, {
+    command: config.command.slice(1),
+    scope: packages,
+    packageTasks: [...packageTasks.values()],
+  });
+  */
 
   // eslint-disable-next-line no-console
-  console.log(JSON.stringify(output, null, 2));
-}
-
-async function getConfigAndLogger(cwd) {
-  const config = await getConfig(cwd);
-  const logger = createLogger();
-  const root = getWorkspaceRoot(cwd)!;
-  return { config, logger, root };
+  console.log(
+    JSON.stringify({
+      message: "info",
+      command: command.args,
+      scope,
+      packageTasks: [...packageTasks.values()],
+    })
+  );
 }
 
 function prepareAndCreateTargetGraph(config, logger, root, options, packageInfos, command) {
@@ -105,20 +136,8 @@ function prepareAndGetFilteredPackages(config, logger, root, options, packageInf
   return scope;
 }
 
-function initialOutputGenerator(command, scope) {
-  const output: Output = {
-    msg: "info",
-    data: {
-      command: command.args,
-      scope: scope,
-      packageTasks: [],
-    },
-  };
-  return output;
-}
-
-function processTargets(targets, packageInfos, config, output) {
-  const packageTasksByPackage: PackageTasksByPackage = {};
+function processTargets(targets, packageInfos, config) {
+  const packageTasks = new Map<string, PackageTask[]>(); // Initialize the map with the correct type
 
   for (const target of targets.values()) {
     if (shouldSkipTarget(target, packageInfos)) {
@@ -129,23 +148,21 @@ function processTargets(targets, packageInfos, config, output) {
     target.dependencies.splice(startIdIndex, 1);
 
     const packageTask = generatePackageTask(target, config);
-    packageTasksByPackage[packageTask.package] = packageTasksByPackage[packageTask.package] || [];
-    packageTasksByPackage[packageTask.package].push(packageTask);
+    if (packageTask) {
+      // Check if the packageTask is defined before accessing its properties
+      const packageName = packageTask.package;
+      if (!packageTasks.has(packageName)) {
+        packageTasks.set(packageName, []);
+      }
+      packageTasks.get(packageName)!.push(packageTask); // Use the non-null assertion operator to avoid type errors
+    }
   }
 
-  appendPackageTasksToOutput(packageTasksByPackage, output);
-
-  return output;
+  return packageTasks;
 }
 
 function shouldSkipTarget(target, packageInfos) {
   return target.id === getStartTargetId() || !packageInfos[target.packageName ?? ""]?.scripts?.[target.task];
-}
-
-function appendPackageTasksToOutput(packageTasksByPackage: PackageTasksByPackage, output: Output) {
-  for (const [, packageTasks] of Object.entries(packageTasksByPackage)) {
-    output.data.packageTasks.push(...packageTasks);
-  }
 }
 
 function generatePackageTask(target, config): PackageTask {
@@ -173,9 +190,7 @@ function generateCommand(target, config) {
 
 function getWorkingDirectory(target) {
   const cwd = process.cwd();
-  const workingDirectory = path
-    .relative(getWorkspaceRoot(cwd) ?? "", target.cwd)
-    .replace(/\\/g, "/");
+  const workingDirectory = path.relative(getWorkspaceRoot(cwd) ?? "", target.cwd).replace(/\\/g, "/");
   return workingDirectory;
 }
 
