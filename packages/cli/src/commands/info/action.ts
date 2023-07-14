@@ -9,6 +9,7 @@ import path from "path";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import { getStartTargetId } from "@lage-run/target-graph";
+import { initializeReporters } from "../initializeReporters.js";
 
 interface RunOptions extends ReporterInitOptions {
   dependencies: boolean;
@@ -71,25 +72,20 @@ export async function infoAction(options: RunOptions, command: Command) {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
   const logger = createLogger();
+  options.logLevel = options.logLevel ?? "info";
+  initializeReporters(logger, options);
   const root = getWorkspaceRoot(cwd)!;
 
   const packageInfos = await getPackageInfosAsync(root);
-
   const targetGraph = prepareAndCreateTargetGraph(config, logger, root, options, packageInfos, command);
-
   const scope = prepareAndGetFilteredPackages(config, logger, root, options, packageInfos);
-
   const packageTasks = processTargets(targetGraph.targets, packageInfos, config);
 
-  // eslint-disable-next-line no-console
-  console.log(
-    JSON.stringify({
-      message: "info",
-      command: command.args,
-      scope,
-      packageTasks: [...packageTasks.values()],
-    })
-  );
+  logger.info("info", {
+    command: command.args,
+    scope,
+    packageTasks: [...packageTasks.values()],
+  });
 }
 
 function prepareAndCreateTargetGraph(config, logger, root, options, packageInfos, command) {
