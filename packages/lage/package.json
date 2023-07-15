@@ -27,7 +27,7 @@
     "@lage-run/scheduler": "^1.1.6",
     "backfill-config": "^6.3.1",
     "dts-bundle-generator": "7.2.0",
-    "workspace-tools": "^0.34.0",
+    "workspace-tools": "^0.35.0",
     "esbuild": "^0.17.18"
   },
   "files": [
