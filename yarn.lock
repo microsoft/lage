@@ -958,10 +958,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@ms-cloudpack/task-reporter@^0.3.3":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@ms-cloudpack/task-reporter/-/task-reporter-0.3.3.tgz#a34fc2c9d249605a05914f4e68bd69c9b3983196"
-  integrity sha512-4Tf9ajafU5cHN11z7c43KL5Fl4bHaIUrg9oxIVdHDwLxwcN5z0om/dO3L+6ZUHwRr+MRvZQPBWmnUNZgaFJRxw==
+"@ms-cloudpack/task-reporter@^0.5.0":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@ms-cloudpack/task-reporter/-/task-reporter-0.5.3.tgz#e333e26ee4d072b8cc4eed464c8c35431a1cf08d"
+  integrity sha512-c10BWph01gwc7boSo+Ia79/wiM7HS6B3K2Ykk27eWgPoe3FS29QRW1JLtxlDt/7oDF9CpO7bqS09mZy70f2VVw==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -4898,10 +4898,10 @@ word-wrap@^1.2.3:
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
 
-workspace-tools@0.30.0, workspace-tools@^0.30.0, workspace-tools@^0.34.0:
-  version "0.34.0"
-  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.34.0.tgz#cfe096d8d55c8c3ec7c7977b84bbe2bbdfb05e17"
-  integrity sha512-grYUZvWs7SXJzXCPx0jdIkErFkGKVt74jZKYC2GxIEX2IZgEYYjwLmWDIPnZAtXpQ2jNuZiXxh9Kglyb5LUpnQ==
+workspace-tools@0.35.0, workspace-tools@^0.30.0, workspace-tools@^0.35.0:
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.35.0.tgz#405d7546162b701d5a8ee24d33d6981212095ecb"
+  integrity sha512-Xy6fu6gk4/6jf59H4XE20d8aHCEI4pmfy1xMdmGhTHMf4wDbPbYrd0qywONu88jSu7habVbCB5ygI3v/nttZYg==
   dependencies:
     "@yarnpkg/lockfile" "^1.1.0"
     git-url-parse "^13.0.0"

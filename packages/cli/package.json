@@ -33,7 +33,7 @@
     "commander": "^9.4.0",
     "execa": "5.1.1",
     "fast-glob": "^3.2.11",
-    "workspace-tools": "^0.34.0"
+    "workspace-tools": "^0.35.0"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "*",

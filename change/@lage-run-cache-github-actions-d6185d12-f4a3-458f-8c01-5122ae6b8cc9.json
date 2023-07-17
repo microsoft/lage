@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Update lage core deps",
+  "packageName": "@lage-run/cache-github-actions",
+  "email": "email not defined",
+  "dependentChangeType": "patch"
+}
