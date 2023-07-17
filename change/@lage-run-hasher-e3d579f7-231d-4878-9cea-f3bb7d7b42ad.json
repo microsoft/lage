@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update lage core deps",
-  "packageName": "@lage-run/hasher",
-  "email": "email not defined",
-  "dependentChangeType": "patch"
-}

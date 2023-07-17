@@ -1,8 +1,18 @@
 # Change Log - lage
 
-This log was last generated on Tue, 11 Jul 2023 14:51:52 GMT and should not be manually modified.
+This log was last generated on Mon, 17 Jul 2023 15:14:04 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.5
+
+Mon, 17 Jul 2023 15:14:04 GMT
+
+### Patches
+
+- Update lage core deps (email not defined)
+- Bump @lage-run/cli to v0.15.13
+- Bump @lage-run/scheduler to v1.1.7
 
 ## 2.7.4
 
