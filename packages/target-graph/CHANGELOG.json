@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Mon, 17 Jul 2023 15:14:04 GMT",
+      "tag": "@lage-run/target-graph_v0.8.7",
+      "version": "0.8.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6",
+            "comment": "Update lage core deps"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 08 May 2023 22:27:16 GMT",
       "tag": "@lage-run/target-graph_v0.8.6",
       "version": "0.8.6",
