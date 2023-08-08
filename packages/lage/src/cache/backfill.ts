@@ -34,7 +34,8 @@ export async function cacheFetch(hash: string | null, id: string, cwd: string, c
   try {
     return await backfill.fetch(cwd, hash, backfillLogger, cacheConfig);
   } catch (e) {
-    logger.error(`${id} fetchBackfill ${(e && (e as any).stack) || (e && (e as any).message) || e}`);
+    //Backfill fetch can fail, we should simply ignore and continue but make this error available in silly log level
+    logger.silly(`${id} fetchBackfill ${(e && (e as any).stack) || (e && (e as any).message) || e}`);
   }
 
   return false;
