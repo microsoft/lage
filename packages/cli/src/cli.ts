@@ -5,6 +5,7 @@ import { cacheCommand } from "./commands/cache/index.js";
 import { NoTargetFoundError } from "./types/errors.js";
 import { affectedCommand } from "./commands/affected/index.js";
 import { initCommand } from "./commands/init/index.js";
+import { infoCommand } from "./commands/info/index.js";
 
 async function main() {
   const program = new Command();
@@ -12,6 +13,7 @@ async function main() {
   program.addCommand(cacheCommand);
   program.addCommand(affectedCommand);
   program.addCommand(initCommand);
+  program.addCommand(infoCommand);
 
   await program.parseAsync(process.argv);
 }
