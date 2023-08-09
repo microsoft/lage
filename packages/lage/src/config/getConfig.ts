@@ -1,10 +1,10 @@
 import { Config } from "../types/Config";
-import { cosmiconfigSync } from "cosmiconfig";
+import { cosmiconfig } from "cosmiconfig";
 import { getWorkspaceRoot } from "workspace-tools";
 import { parseArgs, arrifyArgs, getPassThroughArgs, validateInput } from "../args";
 import os from "os";
 
-export function getConfig(cwd: string): Config {
+export async function getConfig(cwd: string): Promise<Config> {
   // Verify presence of git
   const root = getWorkspaceRoot(cwd);
   if (!root) {
@@ -13,7 +13,7 @@ export function getConfig(cwd: string): Config {
 
   // Search for lage.config.js file
   const ConfigModuleName = "lage";
-  const configResults = cosmiconfigSync(ConfigModuleName).search(root || cwd);
+  const configResults = await cosmiconfig(ConfigModuleName).search(root || cwd);
 
   // Parse CLI args
   const parsedArgs = parseArgs();
