@@ -73,6 +73,7 @@ export async function infoAction(options: RunOptions, command: Command) {
   const config = await getConfig(cwd);
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
+  options.reporter = options.reporter ?? "json";
   initializeReporters(logger, options);
   const root = getWorkspaceRoot(cwd)!;
 
@@ -84,7 +85,7 @@ export async function infoAction(options: RunOptions, command: Command) {
   logger.info("info", {
     command: command.args,
     scope,
-    packageTasks: [...packageTasks.values()],
+    packageTasks: [...packageTasks.values()].flat(),
   });
 }
 
