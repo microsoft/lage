@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Implemented info command in lage v2",
-  "packageName": "@lage-run/cli",
-  "email": "unpervertedkid@gmail.com",
-  "dependentChangeType": "patch"
-}

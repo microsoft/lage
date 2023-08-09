@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Mon, 17 Jul 2023 15:14:04 GMT and should not be manually modified.
+This log was last generated on Wed, 09 Aug 2023 18:41:19 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.16.0
+
+Wed, 09 Aug 2023 18:41:19 GMT
+
+### Minor changes
+
+- Implemented info command in lage v2 (unpervertedkid@gmail.com)
 
 ## 0.15.13
 

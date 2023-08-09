@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 09 Aug 2023 18:41:19 GMT",
+      "tag": "@lage-run/cli_v0.16.0",
+      "version": "0.16.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "unpervertedkid@gmail.com",
+            "package": "@lage-run/cli",
+            "commit": "228357ca14429835006fe0bf7018e52ad551243e",
+            "comment": "Implemented info command in lage v2"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 17 Jul 2023 15:14:04 GMT",
       "tag": "@lage-run/cli_v0.15.13",
       "version": "0.15.13",
