@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cli",
-  "version": "0.15.12",
+  "version": "0.15.13",
   "description": "Command Line Interface for Lage",
   "repository": {
     "type": "git",
@@ -20,20 +20,20 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/cache": "^1.1.1",
-    "@lage-run/config": "^0.3.1",
+    "@lage-run/cache": "^1.1.2",
+    "@lage-run/config": "^0.3.2",
     "@lage-run/find-npm-client": "^0.1.4",
-    "@lage-run/hasher": "^1.0.3",
+    "@lage-run/hasher": "^1.0.4",
     "@lage-run/logger": "^1.3.0",
-    "@lage-run/reporters": "^1.2.4",
-    "@lage-run/scheduler": "^1.1.6",
-    "@lage-run/scheduler-types": "^0.3.10",
-    "@lage-run/target-graph": "^0.8.6",
+    "@lage-run/reporters": "^1.2.5",
+    "@lage-run/scheduler": "^1.1.7",
+    "@lage-run/scheduler-types": "^0.3.11",
+    "@lage-run/target-graph": "^0.8.7",
     "chokidar": "3.5.3",
     "commander": "^9.4.0",
     "execa": "5.1.1",
     "fast-glob": "^3.2.11",
-    "workspace-tools": "^0.34.0"
+    "workspace-tools": "^0.35.0"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "*",

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache-github-actions
 
-This log was last generated on Tue, 25 Apr 2023 02:51:19 GMT and should not be manually modified.
+This log was last generated on Mon, 17 Jul 2023 15:14:04 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.14
+
+Mon, 17 Jul 2023 15:14:04 GMT
+
+### Patches
+
+- Update lage core deps (email not defined)
 
 ## 0.1.13
 

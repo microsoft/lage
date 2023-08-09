@@ -2,6 +2,63 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Mon, 17 Jul 2023 15:14:04 GMT",
+      "tag": "@lage-run/cli_v0.15.13",
+      "version": "0.15.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6",
+            "comment": "Update lage core deps"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.1.2",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.3.2",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.0.4",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.2.5",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.1.7",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.11",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.8.7",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 11 Jul 2023 14:51:52 GMT",
       "tag": "@lage-run/cli_v0.15.12",
       "version": "0.15.12",
