@@ -84,7 +84,7 @@ Show logs as grouped by each target:
 
 Choosing a different reporter while logging (e.g. nice outputs for Azure DevOps):
 
-    lage build test lint --reporter=azureDevOps
+    lage build test lint --reporter=azureDevops
 
 ---
 
