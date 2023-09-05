@@ -91,7 +91,7 @@ First, let's take a look at the typical workspace runners. `Lerna` (before), `pn
 
 ### Level 2: Scoping
 
-One of the first way to speeding up build jobs is to use "scoping." Usually a change only affects a subset of the graph. We can get rid of the builds of `FooCore`, `FooApp1` and `FooApp2` if the only changes are inside `BarCore`. However, we'll note that `BarPage` is still affected, resulting in this.
+One of the first ways to speeding up build jobs is to use "scoping." Usually a change only affects a subset of the graph. We can get rid of the builds of `FooCore`, `FooApp1` and `FooApp2` if the only changes are inside `BarCore`. However, we'll note that `BarPage` is still affected, resulting in this.
 
 <Mermaid
   chart={`gantt
