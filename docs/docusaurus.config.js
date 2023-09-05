@@ -34,7 +34,7 @@ const config = {
       "classic",
       {
         docs: {
-          editUrl: "https://github.com/microsoft/lage/",
+          editUrl: "https://github.com/microsoft/lage/edit/master/docs",
         },
         theme: {
           customCss: [require.resolve("./src/css/custom.css")],
