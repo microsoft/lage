@@ -16,8 +16,8 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "backfill-config": "^6.3.1",
-    "backfill-logger": "^5.1.3",
+    "backfill-config": "^6.4.1",
+    "backfill-logger": "^5.2.1",
     "workspace-tools": "^0.35.0",
     "@actions/cache": "^3.0.4"
   },
