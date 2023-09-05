@@ -2,6 +2,33 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 05 Sep 2023 22:19:29 GMT",
+      "tag": "lage_v2.7.7",
+      "version": "2.7.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "1b921746f45e232095c13e35039b2f425ff74f8e",
+            "comment": "Update backfill dependencies"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.1",
+            "commit": "1b921746f45e232095c13e35039b2f425ff74f8e"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.8",
+            "commit": "1b921746f45e232095c13e35039b2f425ff74f8e"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 09 Aug 2023 18:41:19 GMT",
       "tag": "lage_v2.7.6",
       "version": "2.7.6",

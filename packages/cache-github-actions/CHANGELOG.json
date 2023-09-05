@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Tue, 05 Sep 2023 22:19:29 GMT",
+      "tag": "@lage-run/cache-github-actions_v0.1.15",
+      "version": "0.1.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "1b921746f45e232095c13e35039b2f425ff74f8e",
+            "comment": "Update backfill dependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 17 Jul 2023 15:14:04 GMT",
       "tag": "@lage-run/cache-github-actions_v0.1.14",
       "version": "0.1.14",

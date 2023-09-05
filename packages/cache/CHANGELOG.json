@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Tue, 05 Sep 2023 22:19:29 GMT",
+      "tag": "@lage-run/cache_v1.1.3",
+      "version": "1.1.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "1b921746f45e232095c13e35039b2f425ff74f8e",
+            "comment": "Update backfill dependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 17 Jul 2023 15:14:04 GMT",
       "tag": "@lage-run/cache_v1.1.2",
       "version": "1.1.2",
