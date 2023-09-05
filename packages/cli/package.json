@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cli",
-  "version": "0.16.1",
+  "version": "0.16.2",
   "description": "Command Line Interface for Lage",
   "repository": {
     "type": "git",
@@ -23,10 +23,10 @@
     "@lage-run/cache": "^1.1.3",
     "@lage-run/config": "^0.3.2",
     "@lage-run/find-npm-client": "^0.1.4",
-    "@lage-run/hasher": "^1.0.4",
+    "@lage-run/hasher": "^1.0.5",
     "@lage-run/logger": "^1.3.0",
     "@lage-run/reporters": "^1.2.5",
-    "@lage-run/scheduler": "^1.1.8",
+    "@lage-run/scheduler": "^1.1.9",
     "@lage-run/scheduler-types": "^0.3.11",
     "@lage-run/target-graph": "^0.8.7",
     "chokidar": "3.5.3",

@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Tue, 05 Sep 2023 22:23:23 GMT",
+      "version": "1.0.5",
+      "tag": "@lage-run/hasher_v1.0.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "6f7dbb6f1fd3b75ba07f2a45580e750a6244d572",
+            "comment": "Unpin workspace-tools, fast-glob, and execa dependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 17 Jul 2023 15:14:04 GMT",
       "tag": "@lage-run/hasher_v1.0.4",
       "version": "1.0.4",

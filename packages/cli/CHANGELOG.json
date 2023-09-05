@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Tue, 05 Sep 2023 22:23:23 GMT",
+      "version": "0.16.2",
+      "tag": "@lage-run/cli_v0.16.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "6f7dbb6f1fd3b75ba07f2a45580e750a6244d572",
+            "comment": "Unpin execa dependency"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.0.5",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.1.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 05 Sep 2023 22:19:29 GMT",
       "tag": "@lage-run/cli_v0.16.1",
       "version": "0.16.1",

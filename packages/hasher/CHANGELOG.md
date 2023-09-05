@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Mon, 17 Jul 2023 15:14:04 GMT and should not be manually modified.
+This log was last generated on Tue, 05 Sep 2023 22:23:23 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.5
+
+Tue, 05 Sep 2023 22:23:23 GMT
+
+### Patches
+
+- Unpin workspace-tools, fast-glob, and execa dependencies (elcraig@microsoft.com)
 
 ## 1.0.4
 

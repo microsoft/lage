@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Unpin execa dependency",
-  "packageName": "@lage-run/cli",
-  "email": "elcraig@microsoft.com",
-  "dependentChangeType": "patch"
-}

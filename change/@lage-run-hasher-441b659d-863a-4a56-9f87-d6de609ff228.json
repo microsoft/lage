@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Unpin workspace-tools, fast-glob, and execa dependencies",
-  "packageName": "@lage-run/hasher",
-  "email": "elcraig@microsoft.com",
-  "dependentChangeType": "patch"
-}
