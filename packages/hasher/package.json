@@ -17,9 +17,9 @@
   "dependencies": {
     "@lage-run/target-graph": "^0.8.7",
     "@lage-run/logger": "^1.3.0",
-    "execa": "5.1.1",
-    "workspace-tools": "0.35.0",
-    "fast-glob": "3.2.12",
+    "execa": "^5.1.1",
+    "workspace-tools": "^0.35.0",
+    "fast-glob": "^3.2.12",
     "glob-hasher": "^1.3.0",
     "graceful-fs": "^4.2.11",
     "micromatch": "^4.0.5"
