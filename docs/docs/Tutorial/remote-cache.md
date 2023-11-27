@@ -79,7 +79,7 @@ Create a secret named "BACKFILL_CACHE_PROVIDER_OPTIONS":
 {"connectionString":"the **read-write** connection string","container":"CONTAINER NAME"}
 ```
 
-::Note
+:::note
 
 ### Uploading cache to a remote is _not_ the default
 
@@ -91,4 +91,4 @@ Lage picks up your `.env` file contents using [`dotenv`](https://www.npmjs.com/p
 
 Need to access environment variables from the `.env` file in your application? You would need to setup a mechanism to inject them. Try using utilities like `dotenv` (for Node.js) or [`env-cmd`](https://www.npmjs.com/package/env-cmd) (for executing commands).
 
-::
+:::
