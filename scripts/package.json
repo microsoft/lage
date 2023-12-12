@@ -14,7 +14,7 @@
     "typescript": "^5.0.3",
     "eslint": "^8.20.0",
     "eslint-plugin-file-extension-in-import-ts": "^1.0.1",
-    "workspace-tools": "^0.35.0",
+    "workspace-tools": "^0.36.4",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7"
   }
