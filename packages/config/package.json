@@ -22,7 +22,7 @@
     "@lage-run/logger": "^1.2.2",
     "@lage-run/scheduler-types": "^0.3.7",
     "@lage-run/target-graph": "^0.8.3",
-    "workspace-tools": "^0.34.0",
+    "workspace-tools": "^0.36.4",
     "cosmiconfig": "^7.0.0"
   },
   "devDependencies": {

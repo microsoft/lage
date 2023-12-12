@@ -27,7 +27,7 @@
     "@lage-run/cache": "^0.5.3",
     "@lage-run/reporters": "^1.1.2",
     "commander": "^9.4.0",
-    "workspace-tools": "^0.34.0",
+    "workspace-tools": "^0.36.4",
     "chokidar": "3.5.3",
     "fast-glob": "^3.2.11"
   },
