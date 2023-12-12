@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Upgrade workspace-tools package to latest",
+  "packageName": "@lage-run/cache-github-actions",
+  "email": "stchur@microsoft.com",
+  "dependentChangeType": "patch"
+}
