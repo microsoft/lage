@@ -1,8 +1,17 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Tue, 05 Sep 2023 22:23:23 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Dec 2023 04:22:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.6
+
+Tue, 12 Dec 2023 04:22:41 GMT
+
+### Patches
+
+- Upgrade workspace-tools package to latest (stchur@microsoft.com)
+- Bump @lage-run/target-graph to v0.8.8
 
 ## 1.0.5
 

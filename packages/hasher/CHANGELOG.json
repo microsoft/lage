@@ -2,6 +2,27 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Tue, 12 Dec 2023 04:22:41 GMT",
+      "version": "1.0.6",
+      "tag": "@lage-run/hasher_v1.0.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "stchur@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "f631134451741444619e28c80616ba22fc6454cf",
+            "comment": "Upgrade workspace-tools package to latest"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.8.8",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 05 Sep 2023 22:23:23 GMT",
       "version": "1.0.5",
       "tag": "@lage-run/hasher_v1.0.5",

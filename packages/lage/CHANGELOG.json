@@ -2,6 +2,33 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 12 Dec 2023 04:22:41 GMT",
+      "version": "2.7.9",
+      "tag": "lage_v2.7.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "stchur@microsoft.com",
+            "package": "lage",
+            "commit": "f631134451741444619e28c80616ba22fc6454cf",
+            "comment": "Upgrade workspace-tools package to latest"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.3",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.10",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 05 Sep 2023 22:23:23 GMT",
       "version": "2.7.8",
       "tag": "lage_v2.7.8",

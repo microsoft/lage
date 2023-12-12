@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Mon, 17 Jul 2023 15:14:04 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Dec 2023 04:22:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.8
+
+Tue, 12 Dec 2023 04:22:41 GMT
+
+### Patches
+
+- Upgrade workspace-tools package to latest (stchur@microsoft.com)
 
 ## 0.8.7
 

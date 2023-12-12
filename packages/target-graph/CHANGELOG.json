@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Tue, 12 Dec 2023 04:22:41 GMT",
+      "version": "0.8.8",
+      "tag": "@lage-run/target-graph_v0.8.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "stchur@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "f631134451741444619e28c80616ba22fc6454cf",
+            "comment": "Upgrade workspace-tools package to latest"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 17 Jul 2023 15:14:04 GMT",
       "tag": "@lage-run/target-graph_v0.8.7",
       "version": "0.8.7",

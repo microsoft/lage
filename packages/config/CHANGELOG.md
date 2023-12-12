@@ -1,8 +1,18 @@
 # Change Log - @lage-run/config
 
-This log was last generated on Mon, 17 Jul 2023 15:14:04 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Dec 2023 04:22:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.3
+
+Tue, 12 Dec 2023 04:22:41 GMT
+
+### Patches
+
+- Upgrade workspace-tools package to latest (stchur@microsoft.com)
+- Bump @lage-run/scheduler-types to v0.3.12
+- Bump @lage-run/target-graph to v0.8.8
 
 ## 0.3.2
 

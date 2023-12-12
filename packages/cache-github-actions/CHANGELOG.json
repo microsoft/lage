@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Tue, 12 Dec 2023 04:22:41 GMT",
+      "version": "0.1.16",
+      "tag": "@lage-run/cache-github-actions_v0.1.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "stchur@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "f631134451741444619e28c80616ba22fc6454cf",
+            "comment": "Upgrade workspace-tools package to latest"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 05 Sep 2023 22:19:29 GMT",
       "tag": "@lage-run/cache-github-actions_v0.1.15",
       "version": "0.1.15",

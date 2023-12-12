@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Upgrade workspace-tools package to latest",
-  "packageName": "@lage-run/config",
-  "email": "stchur@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,18 @@
 # Change Log - lage
 
-This log was last generated on Tue, 05 Sep 2023 22:23:23 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Dec 2023 04:22:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.9
+
+Tue, 12 Dec 2023 04:22:41 GMT
+
+### Patches
+
+- Upgrade workspace-tools package to latest (stchur@microsoft.com)
+- Bump @lage-run/cli to v0.16.3
+- Bump @lage-run/scheduler to v1.1.10
 
 ## 2.7.8
 
