@@ -20,7 +20,7 @@
     "@lage-run/target-graph": "^0.8.8",
     "@lage-run/logger": "^1.3.0",
     "backfill-config": "^6.4.1",
-    "backfill-cache": "^5.7.1",
+    "backfill-cache": "^5.8.0",
     "backfill-logger": "^5.2.1",
     "glob-hasher": "^1.3.0"
   },

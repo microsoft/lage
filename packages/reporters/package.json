@@ -21,7 +21,7 @@
     "@lage-run/scheduler-types": "^0.3.12",
     "@lage-run/target-graph": "^0.8.8",
     "@lage-run/format-hrtime": "^0.1.5",
-    "@ms-cloudpack/task-reporter": "^0.5.0",
+    "@ms-cloudpack/task-reporter": "^0.10.2",
     "chalk": "^4.0.0",
     "ansi-regex": "^5.0.1",
     "gradient-string": "^2.0.1"
