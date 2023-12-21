@@ -31,24 +31,28 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
-    "@types/jest": "29.5.1",
-    "@types/node": "16.18.3",
+    "@types/jest": "^29.5.1",
+    "@types/node": "^16.18.3",
     "beachball": "^2.37.0",
     "fast-glob": "^3.2.12",
-    "gh-pages": "4.0.0",
-    "husky": "8.0.3",
+    "gh-pages": "^4.0.0",
+    "husky": "^8.0.3",
     "lage-npm": "npm:lage@2.7.6",
-    "lint-staged": "13.2.0",
-    "patch-package": "6.5.1",
-    "prettier": "2.8.6",
-    "syncpack": "8.5.14",
-    "ts-node": "10.9.1"
-  },
-  "resolutions": {
-    "typescript": "^5.0.3"
+    "lint-staged": "^13.2.0",
+    "patch-package": "^6.5.1",
+    "prettier": "^2.8.6",
+    "syncpack": "^9.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "~5.0.3"
   },
   "lint-staged": {
     "*.ts": "prettier --config .prettierrc --write --ignore-path .gitignore",
     "*.json": "prettier --config .prettierrc --write --ignore-path .gitignore"
+  },
+  "syncpack": {
+    "dependencyTypes": [
+      "dev",
+      "prod"
+    ]
   }
 }
