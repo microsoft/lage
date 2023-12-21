@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Thu, 21 Dec 2023 08:37:41 GMT",
+      "version": "1.0.6",
+      "tag": "@lage-run/hasher_v1.0.6",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "0752bad677868d982719f792f6692ab43ad325e0",
+            "comment": "Use ranges for devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 12 Dec 2023 04:22:41 GMT",
       "version": "1.0.6",
       "tag": "@lage-run/hasher_v1.0.6",

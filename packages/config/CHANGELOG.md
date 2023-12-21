@@ -1,8 +1,16 @@
 # Change Log - @lage-run/config
 
-This log was last generated on Tue, 12 Dec 2023 04:22:41 GMT and should not be manually modified.
+This log was last generated on Thu, 21 Dec 2023 08:37:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.4
+
+Thu, 21 Dec 2023 08:37:41 GMT
+
+### Patches
+
+- Update backfill-config to ^6.4.1 (elcraig@microsoft.com)
 
 ## 0.3.3
 

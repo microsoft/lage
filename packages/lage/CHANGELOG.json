@@ -2,6 +2,35 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 21 Dec 2023 08:37:41 GMT",
+      "version": "2.7.10",
+      "tag": "lage_v2.7.10",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "0752bad677868d982719f792f6692ab43ad325e0",
+            "comment": "Use ranges for devDependencies"
+          }
+        ],
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.4",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.11",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 12 Dec 2023 04:22:41 GMT",
       "version": "2.7.9",
       "tag": "lage_v2.7.9",
