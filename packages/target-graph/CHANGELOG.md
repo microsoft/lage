@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Tue, 12 Dec 2023 04:22:41 GMT and should not be manually modified.
+This log was last generated on Thu, 21 Dec 2023 09:49:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.9
+
+Thu, 21 Dec 2023 09:49:09 GMT
+
+### Patches
+
+- Pin external deps to ensure explicit updates to lage bundle (elcraig@microsoft.com)
 
 ## 0.8.8
 

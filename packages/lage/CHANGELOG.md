@@ -1,8 +1,18 @@
 # Change Log - lage
 
-This log was last generated on Thu, 21 Dec 2023 08:37:41 GMT and should not be manually modified.
+This log was last generated on Thu, 21 Dec 2023 09:49:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.11
+
+Thu, 21 Dec 2023 09:49:09 GMT
+
+### Patches
+
+- Pin external deps to ensure explicit updates to lage bundle (elcraig@microsoft.com)
+- Bump @lage-run/cli to v0.16.5
+- Bump @lage-run/scheduler to v1.1.12
 
 ## 2.7.10
 

@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Thu, 21 Dec 2023 09:49:09 GMT",
+      "version": "0.8.9",
+      "tag": "@lage-run/target-graph_v0.8.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "429047eb173880261b9e76f82ef1fcf7bfe9e29a",
+            "comment": "Pin external deps to ensure explicit updates to lage bundle"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 Dec 2023 08:37:41 GMT",
       "version": "0.8.8",
       "tag": "@lage-run/target-graph_v0.8.8",

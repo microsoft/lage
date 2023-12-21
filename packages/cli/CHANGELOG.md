@@ -1,8 +1,23 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Thu, 21 Dec 2023 08:37:41 GMT and should not be manually modified.
+This log was last generated on Thu, 21 Dec 2023 09:49:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.16.5
+
+Thu, 21 Dec 2023 09:49:09 GMT
+
+### Patches
+
+- Pin external deps to ensure explicit updates to lage bundle (elcraig@microsoft.com)
+- Bump @lage-run/cache to v1.1.5
+- Bump @lage-run/config to v0.3.5
+- Bump @lage-run/hasher to v1.0.7
+- Bump @lage-run/reporters to v1.2.7
+- Bump @lage-run/scheduler to v1.1.12
+- Bump @lage-run/scheduler-types to v0.3.13
+- Bump @lage-run/target-graph to v0.8.9
 
 ## 0.16.4
 

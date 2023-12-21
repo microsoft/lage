@@ -2,6 +2,33 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Thu, 21 Dec 2023 09:49:09 GMT",
+      "version": "1.2.7",
+      "tag": "@lage-run/reporters_v1.2.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "429047eb173880261b9e76f82ef1fcf7bfe9e29a",
+            "comment": "Pin external deps to ensure explicit updates to lage bundle"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.13",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.8.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 Dec 2023 08:37:41 GMT",
       "version": "1.2.6",
       "tag": "@lage-run/reporters_v1.2.6",
