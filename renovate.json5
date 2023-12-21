@@ -13,6 +13,8 @@
 
   "prHourlyLimit": 5,
 
+  "semanticCommits": "disabled",
+
   "ignorePaths": [
     "**/node_modules/**",
     // incorrect manager is being used for fixtures, and most of them don't have real deps anyway
