@@ -30,10 +30,10 @@
     "@lage-run/scheduler-types": "^0.3.12",
     "@lage-run/target-graph": "^0.8.8",
     "chokidar": "3.5.3",
-    "commander": "^9.4.0",
-    "execa": "^5.1.1",
-    "fast-glob": "^3.2.12",
-    "workspace-tools": "^0.36.4"
+    "commander": "9.5.0",
+    "execa": "5.1.1",
+    "fast-glob": "3.3.1",
+    "workspace-tools": "0.36.4"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "*",

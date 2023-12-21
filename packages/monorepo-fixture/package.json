@@ -16,6 +16,6 @@
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "*",
-    "execa": "^5.1.1"
+    "execa": "5.1.1"
   }
 }
