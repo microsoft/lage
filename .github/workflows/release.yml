@@ -67,7 +67,7 @@ jobs:
 
       - run: yarn
 
-      - run: yarn lage transpile types build test lint bundle --concurrency 2 --verbose
+      - run: yarn ci --concurrency 2 --verbose
 
       - name: Set git user
         run: |
