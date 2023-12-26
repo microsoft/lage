@@ -21,7 +21,7 @@
     "@mdx-js/react": "^1.6.21",
     "@stackblitz/sdk": "^1.8.0",
     "@tsconfig/docusaurus": "1.0.7",
-    "clsx": "^1.1.1",
+    "clsx": "^1.2.1",
     "docusaurus-preset-shiki-twoslash": "^1.1.38",
     "identity-obj-proxy": "^3.0.0",
     "mermaid": "^9.0.0",
