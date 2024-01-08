@@ -5,6 +5,7 @@ import { LogLevel } from "./LogLevel";
 import { JsonReporter } from "./reporters/JsonReporter";
 import { AdoReporter } from "./reporters/AdoReporter";
 import { DgmlReporter } from "./reporters/DgmlReporter";
+import { CustomReporter } from "./reporters/CustomReporter";
 
 export function initReporters(config: Config) {
   // Initialize logger
@@ -30,6 +31,9 @@ export function initReporters(config: Config) {
     // Will always include NpmLogReporter and add AdoReporter
     reporters.push(new AdoReporter());
   }
+
+  // Will always include CustomReporter as well to pass metadata.
+  reporters.push(new CustomReporter());
 
   Logger.reporters = reporters;
   return reporters;
