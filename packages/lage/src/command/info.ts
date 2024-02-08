@@ -53,6 +53,7 @@ export async function info(cwd: string, config: Config) {
   const pipeline = new Pipeline(workspace, config);
   const targetGraph = pipeline.generateTargetGraph();
 
+  const dependenciesCache = new Map<string, string>();
   const packageTasks = new Map<string, PackageTaskInfo>();
 
   for (const [from, to] of targetGraph) {
@@ -71,11 +72,38 @@ export async function info(cwd: string, config: Config) {
     }
   }
 
+  for (const [, info] of packageTasks) {
+    info.dependencies = info.dependencies.flatMap((dependency: string) => resolveDependency(dependency, packageTasks, dependenciesCache));
+  }
+
   logger.info(`info`, {
     command: config.command.slice(1),
     scope: packages,
-    packageTasks: [...packageTasks.values()],
+    packageTasks: [...packageTasks.values()].filter((task) => task.type === "npm-script"),
   });
+}
+
+function resolveDependency(
+  dependency: string,
+  packageTasks: Map<string, PackageTaskInfo>,
+  dependenciesCache: Map<string, string>
+): string | string[] {
+  if (dependenciesCache[dependency]) {
+    return dependenciesCache[dependency];
+  }
+
+  const dependencyTarget = packageTasks.get(dependency)!;
+  if (dependencyTarget.type === "npm-script") {
+    dependenciesCache[dependency] = dependency;
+  } else if (dependencyTarget.type === "noop") {
+    dependenciesCache[dependency] = [
+      ...new Set(
+        dependencyTarget.dependencies.flatMap((dependency: string) => resolveDependency(dependency, packageTasks, dependenciesCache))
+      ),
+    ];
+  }
+
+  return dependenciesCache[dependency];
 }
 
 function createPackageTaskInfo(id: string, config: Config, workspace: Workspace): PackageTaskInfo | undefined {
@@ -84,18 +112,15 @@ function createPackageTaskInfo(id: string, config: Config, workspace: Workspace)
   if (packageName) {
     const info = workspace.allPackages[packageName];
 
-    if (info.scripts?.[task]) {
-      return {
-        id,
-        command: [config.npmClient, ...getNpmCommand(config.node, config.args, task)],
-        dependencies: [],
-        workingDirectory: path
-          .relative(workspace.root, path.dirname(workspace.allPackages[packageName].packageJsonPath))
-          .replace(/\\/g, "/"),
-        package: packageName,
-        task,
-      };
-    }
+    return {
+      id,
+      command: [config.npmClient, ...getNpmCommand(config.node, config.args, task)],
+      dependencies: [],
+      workingDirectory: path.relative(workspace.root, path.dirname(workspace.allPackages[packageName].packageJsonPath)).replace(/\\/g, "/"),
+      package: packageName,
+      task,
+      type: info.scripts?.[task] ? "npm-script" : "noop",
+    };
   } else {
     return {
       id,
@@ -104,6 +129,7 @@ function createPackageTaskInfo(id: string, config: Config, workspace: Workspace)
       workingDirectory: ".",
       package: undefined,
       task,
+      type: "npm-script",
     };
   }
 }

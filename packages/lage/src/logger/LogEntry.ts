@@ -41,4 +41,5 @@ export interface PackageTaskInfo {
   command: string[];
   workingDirectory: string;
   dependencies: string[];
+  type: "npm-script" | "noop";
 }

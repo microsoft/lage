@@ -4,7 +4,7 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "declaration": true,
-    "lib": ["ES2017"],
+    "lib": ["ES2019"],
     "allowJs": true,
     "outDir": "./lib",
     "strict": true,
