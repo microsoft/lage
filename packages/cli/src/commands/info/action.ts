@@ -127,16 +127,14 @@ function prepareAndGetFilteredPackages(config, logger, root, options, packageInf
 
 function processTargets(targets, packageInfos, config) {
   const packageTasks = new Map<string, PackageTask[]>(); // Initialize the map with the correct type
+  const dependenciesCache = new Map<string, string[]>();
 
   for (const target of targets.values()) {
     if (shouldSkipTarget(target, packageInfos)) {
       continue;
     }
 
-    const startIdIndex = target.dependencies.indexOf(getStartTargetId());
-    target.dependencies.splice(startIdIndex, 1);
-
-    const packageTask = generatePackageTask(target, config);
+    const packageTask = generatePackageTask(target, targets, packageInfos, dependenciesCache, config);
     if (packageTask) {
       // Check if the packageTask is defined before accessing its properties
       const packageName = packageTask.package;
@@ -150,24 +148,53 @@ function processTargets(targets, packageInfos, config) {
   return packageTasks;
 }
 
-function shouldSkipTarget(target, packageInfos) {
-  return target.id === getStartTargetId() || !packageInfos[target.packageName ?? ""]?.scripts?.[target.task];
+function isTargetNoop(target, packageInfos) {
+  return !packageInfos[target.packageName]?.scripts?.[target.task];
 }
 
-function generatePackageTask(target, config): PackageTask {
+function shouldSkipTarget(target, packageInfos) {
+  return target.id === getStartTargetId() || isTargetNoop(target, packageInfos);
+}
+
+function generatePackageTask(target, targets, packageInfos, dependenciesCache, config): PackageTask {
   const command = generateCommand(target, config);
   const workingDirectory = getWorkingDirectory(target);
+
+  const dependenciesSet = resolveDependencies(target.dependencies, targets, packageInfos, dependenciesCache);
 
   const packageTask: PackageTask = {
     id: target.id,
     command,
-    dependencies: target.dependencies,
+    dependencies: [...dependenciesSet],
     workingDirectory,
     package: target.packageName,
     task: target.task,
   };
 
   return packageTask;
+}
+
+function resolveDependencies(dependencies: string[], targets, packageInfos, dependenciesCache: Map<string, Set<string>>) {
+  const result: Set<string> = new Set();
+
+  for (const dependency of dependencies) {
+    if (dependency === getStartTargetId()) {
+      continue;
+    }
+
+    if (!dependenciesCache.has(dependency)) {
+      const dependencyTarget = targets.get(dependency);
+      if (isTargetNoop(dependencyTarget, packageInfos)) {
+        dependenciesCache.set(dependency, resolveDependencies(dependencyTarget.dependencies, targets, packageInfos, dependenciesCache));
+      } else {
+        dependenciesCache.set(dependency, new Set([dependency]));
+      }
+    }
+
+    dependenciesCache.get(dependency)?.forEach((dependency: string) => result.add(dependency));
+  }
+
+  return result;
 }
 
 function generateCommand(target, config) {
