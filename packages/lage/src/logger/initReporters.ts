@@ -15,25 +15,24 @@ export function initReporters(config: Config) {
     logLevel = LogLevel[config.logLevel as LogLevelString];
   }
 
-  const reporters: Array<AdoReporter | JsonReporter | NpmLogReporter> = [
-    config.reporter === "json"
-      ? new JsonReporter({ logLevel })
-      : config.reporter === "dgml"
-      ? new DgmlReporter()
-      : new NpmLogReporter({
-          logLevel,
-          grouped: config.grouped,
-          npmLoggerOptions: config.loggerOptions,
-        }),
-  ];
+  let reporters: Array<AdoReporter | JsonReporter | NpmLogReporter | DgmlReporter | CustomReporter> = [];
+  if (config.reporter.includes("json")) {
+    reporters.push(new JsonReporter({ logLevel }));
+  } else if (config.reporter.includes("dgml")) {
+    reporters.push(new DgmlReporter());
+  } else {
+    reporters.push(new NpmLogReporter({ logLevel, grouped: config.grouped, npmLoggerOptions: config.loggerOptions }));
+  }
 
-  if (config.reporter === "adoLog") {
-    // Will always include NpmLogReporter and add AdoReporter
+  // Will always include NpmLogReporter and add AdoReporter
+  if (config.reporter.includes("adoLog")) {
     reporters.push(new AdoReporter());
   }
 
   // Will always include CustomReporter as well to pass metadata.
-  reporters.push(new CustomReporter());
+  if (config.reporter.includes("lage-custom-reporter.js")) {
+    reporters.push(new CustomReporter());
+  }
 
   Logger.reporters = reporters;
   return reporters;

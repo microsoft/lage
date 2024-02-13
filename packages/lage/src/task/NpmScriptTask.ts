@@ -49,7 +49,7 @@ export class NpmScriptTask {
         stdio: "pipe",
         env: {
           ...process.env,
-          ...(process.stdout.isTTY && this.config.reporter !== "json" && { FORCE_COLOR: "1" }),
+          ...(process.stdout.isTTY && !this.config.reporter.includes("json") && { FORCE_COLOR: "1" }),
           LAGE_PACKAGE_NAME: info.name,
         },
       });

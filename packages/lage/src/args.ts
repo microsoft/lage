@@ -90,7 +90,7 @@ export function getPassThroughArgs(command: string[], args: { [key: string]: str
 
 export function parseArgs() {
   return yargsParser(process.argv.slice(2), {
-    array: ["scope", "node", "ignore", "to"],
+    array: ["scope", "node", "ignore", "to", "reporter"],
     configuration: {
       "populate--": true,
       "strip-dashed": true,

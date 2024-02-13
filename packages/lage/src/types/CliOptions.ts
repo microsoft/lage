@@ -140,7 +140,7 @@ export interface CliOptions {
    * Example: `lage --reporter json`
    * Example: `lage info build --reporter dgml`
    */
-  reporter: string;
+  reporter: string[];
 
   /**
    * Specify whether to make the console logger to group the logs per package task
