@@ -39,7 +39,7 @@ export async function getConfig(cwd: string): Promise<Config> {
   const concurrency = parsedArgs.concurrency || configResults?.config.concurrency || os.cpus().length - 1;
 
   return {
-    reporter: parsedArgs.reporter || configResults?.config.reporter || ["npmLog"],
+    reporter: parsedArgs.reporter || ["npmLog"],
     grouped: parsedArgs.grouped || false,
     args: getPassThroughArgs(command, parsedArgs),
     cache: parsedArgs.cache === false ? false : true,
