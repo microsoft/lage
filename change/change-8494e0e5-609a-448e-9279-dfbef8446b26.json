@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Fix undefined dependencies in info output",
+      "packageName": "@lage-run/cli",
+      "email": "sverre.johansen@gmail.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
