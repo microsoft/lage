@@ -30,8 +30,11 @@ export function initReporters(config: Config) {
   }
 
   // Will always include CustomReporter as well to pass metadata.
-  if (config.reporter.includes("lage-custom-reporter.js")) {
-    reporters.push(new CustomReporter());
+  const configReporters = Array.from(config.reporter);
+  for (const reporter of configReporters) {
+    if (reporter.match(/\.[jt]s$/)) {
+      reporters.push(new CustomReporter(reporter));
+    }
   }
 
   Logger.reporters = reporters;

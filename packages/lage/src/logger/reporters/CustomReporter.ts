@@ -4,12 +4,15 @@ import { LogEntry } from "../LogEntry";
 import path from "path";
 
 export class CustomReporter implements Reporter {
+  constructor(private customReporterFilePath: string) {}
+
   log(entry: LogEntry) {}
 
   summarize(context: RunContext) {
     try {
-      const filePath = path.join(process.cwd(), "lage-custom-reporter.js");
-      const customReporter = require(filePath);
+      const customReporter = require(path.isAbsolute(this.customReporterFilePath)
+        ? this.customReporterFilePath
+        : path.join(process.cwd(), this.customReporterFilePath));
       customReporter.summarize(context);
     } catch (e) {}
   }
