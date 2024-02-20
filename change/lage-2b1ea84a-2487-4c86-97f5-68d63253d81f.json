@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Added Custom Reporter to pass metadata to consuming repo",
-  "packageName": "lage",
-  "email": "email not defined",
-  "dependentChangeType": "patch"
-}

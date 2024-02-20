@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Converting getConfig to async",
-  "packageName": "lage",
-  "email": "71752651+unpervertedkid@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,18 @@
 # Change Log - lage
 
-This log was last generated on Wed, 21 Dec 2022 22:10:21 GMT and should not be manually modified.
+This log was last generated on Tue, 20 Feb 2024 18:56:42 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.9.7
+
+Tue, 20 Feb 2024 18:56:42 GMT
+
+### Patches
+
+- Added Custom Reporter to pass metadata to consuming repo (email not defined)
+- Fixed logging error in error level to silly level (unpervertedkid@gmail.com)
+- Converting getConfig to async (71752651+unpervertedkid@users.noreply.github.com)
 
 ## 1.9.6
 

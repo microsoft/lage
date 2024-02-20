@@ -2,6 +2,33 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 20 Feb 2024 18:56:42 GMT",
+      "tag": "lage_v1.9.7",
+      "version": "1.9.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "d1cd137cde1942acc9540cd664977f1a9bcb6dfb",
+            "comment": "Added Custom Reporter to pass metadata to consuming repo"
+          },
+          {
+            "author": "unpervertedkid@gmail.com",
+            "package": "lage",
+            "commit": "6f97e0e0c1ff50e1b188007414f4ff6d2113ca78",
+            "comment": "Fixed logging error in error level to silly level"
+          },
+          {
+            "author": "71752651+unpervertedkid@users.noreply.github.com",
+            "package": "lage",
+            "commit": "1047b26e67b77accbe18294374c1c2ccc6056a02",
+            "comment": "Converting getConfig to async"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 21 Dec 2022 22:10:21 GMT",
       "tag": "lage_v1.9.6",
       "version": "1.9.6",
