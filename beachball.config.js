@@ -2,7 +2,7 @@
 /** @type {import('beachball').BeachballConfig}*/
 module.exports = {
   branch: "v1",
-  tag: "v1",
+  tag: "ver1",
   ignorePatterns: [
     ".*ignore",
     ".github/**",
