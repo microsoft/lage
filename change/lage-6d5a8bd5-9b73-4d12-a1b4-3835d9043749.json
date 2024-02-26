@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Enabled reporter param for lage.config.js",
+  "packageName": "lage",
+  "email": "argoy@microsoft.com",
+  "dependentChangeType": "patch"
+}
