@@ -37,9 +37,10 @@ export async function getConfig(cwd: string): Promise<Config> {
 
   const dist = parsedArgs.experimentDist || false;
   const concurrency = parsedArgs.concurrency || configResults?.config.concurrency || os.cpus().length - 1;
+  const reporter = parsedArgs.reporter || configResults?.config.reporter || ["npmLog"];
 
   return {
-    reporter: parsedArgs.reporter || ["npmLog"],
+    reporter: reporter,
     grouped: parsedArgs.grouped || false,
     args: getPassThroughArgs(command, parsedArgs),
     cache: parsedArgs.cache === false ? false : true,
