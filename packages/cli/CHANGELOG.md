@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Thu, 21 Dec 2023 09:49:09 GMT and should not be manually modified.
+This log was last generated on Mon, 26 Feb 2024 16:18:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.16.6
+
+Mon, 26 Feb 2024 16:18:50 GMT
+
+### Patches
+
+- Fix undefined dependencies in info output (sverre.johansen@gmail.com)
 
 ## 0.16.5
 

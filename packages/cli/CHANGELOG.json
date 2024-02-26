@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Mon, 26 Feb 2024 16:18:50 GMT",
+      "version": "0.16.6",
+      "tag": "@lage-run/cli_v0.16.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "sverre.johansen@gmail.com",
+            "package": "@lage-run/cli",
+            "commit": "9346c9d5b06973485c23cd3269228f91b0d79cbb",
+            "comment": "Fix undefined dependencies in info output"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 Dec 2023 09:49:09 GMT",
       "version": "0.16.5",
       "tag": "@lage-run/cli_v0.16.5",
