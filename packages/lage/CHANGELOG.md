@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Tue, 20 Feb 2024 18:56:42 GMT and should not be manually modified.
+This log was last generated on Mon, 26 Feb 2024 17:40:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.9.8
+
+Mon, 26 Feb 2024 17:40:31 GMT
+
+### Patches
+
+- Enabled reporter param for lage.config.js (argoy@microsoft.com)
 
 ## 1.9.7
 

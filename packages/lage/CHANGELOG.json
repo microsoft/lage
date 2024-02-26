@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 26 Feb 2024 17:40:31 GMT",
+      "tag": "lage_v1.9.8",
+      "version": "1.9.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "argoy@microsoft.com",
+            "package": "lage",
+            "commit": "02a5e2529e14c5fa5c4348514450e8ebe2c89f03",
+            "comment": "Enabled reporter param for lage.config.js"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 20 Feb 2024 18:56:42 GMT",
       "tag": "lage_v1.9.7",
       "version": "1.9.7",
