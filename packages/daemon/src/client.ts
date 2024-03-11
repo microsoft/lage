@@ -8,16 +8,17 @@ export function getDir() {
   client.end();
 }
 
-let connection: Socket;
+export async function getPackageInfosAsync() {
+  // ensure client, use client to ask for package infos from server
+  const client = ensureClient();
+  client.write("getPackageInfos");
+  client.on("data", (data) => {
+    console.log(data.toString());
+  });
+  client.end();
+}
+
 export function ensureClient() {
-  if (!connection) {
-    const pipePath = process.env.PIPE_PATH ?? os.platform() === "win32" ? "\\\\?\\pipe\\my_pipe" : "/tmp/my_pipe";
-    connection = connect(pipePath);
-
-    connection.on("data", (data) => {
-      console.log(data.toString());
-    });
-  }
-
-  return connection;
+  const pipePath = process.env.PIPE_PATH ?? os.platform() === "win32" ? "\\\\?\\pipe\\my_pipe" : "/tmp/my_pipe";
+  return connect(pipePath);
 }

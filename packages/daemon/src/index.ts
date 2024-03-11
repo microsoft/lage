@@ -1,8 +1,11 @@
 import { startDaemon } from "./daemon.js";
-import { getDir } from "./client.js";
+import { getPackageInfosAsync } from "./client.js";
 
-// startDaemon(false);
+startDaemon(false);
 
-getDir();
+(async () => {
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
+  await getPackageInfosAsync();
+})();
 
 export { startDaemon };
