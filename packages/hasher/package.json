@@ -22,7 +22,8 @@
     "fast-glob": "3.3.1",
     "glob-hasher": "^1.3.0",
     "graceful-fs": "4.2.11",
-    "micromatch": "4.0.5"
+    "micromatch": "4.0.5",
+    "fb-watchman": "^2.0.2"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "*",

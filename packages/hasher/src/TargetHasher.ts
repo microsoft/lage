@@ -20,7 +20,9 @@ import { resolveInternalDependencies } from "./resolveInternalDependencies.js";
 import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
 import { FileHasher } from "./FileHasher.js";
 import type { Logger } from "@lage-run/logger";
-import { PackageTree } from "./PackageTree.js";
+// import { PackageTree } from "./PackageTree.js";
+
+import watchman from "fb-watchman";
 
 export interface TargetHasherOptions {
   root: string;
@@ -54,7 +56,8 @@ export interface TargetManifest {
 export class TargetHasher {
   logger: Logger | undefined;
   fileHasher: FileHasher;
-  packageTree: PackageTree | undefined;
+  //packageTree: PackageTree | undefined;
+  watchmanClient: watchman.Client | undefined;
 
   initializedPromise: Promise<unknown> | undefined;
 
@@ -174,15 +177,31 @@ export class TargetHasher {
           this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
 
           this.dependencyMap = createDependencyMap(this.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
-          this.packageTree = new PackageTree({
-            root,
-            packageInfos: this.packageInfos,
-
-            // TODO: (optimization) false if process.env.TF_BUILD || process.env.CI
-            includeUntracked: true,
+          this.watchmanClient = new watchman.Client();
+          console.time("watch-project");
+          return new Promise<void>((resolve, reject) => {
+            this.watchmanClient.command(["watch", root], (error, resp) => {
+              if (error) {
+                reject(error);
+                return;
+              }
+              if ("warning" in resp) {
+                this.logger?.warn(`watchman warning: ${resp.warning}`);
+              }
+              console.timeEnd("watch-project");
+              resolve();
+            });
           });
 
-          return this.packageTree.initialize();
+          // this.packageTree = new PackageTree({
+          //   root,
+          //   packageInfos: this.packageInfos,
+
+          //   // TODO: (optimization) false if process.env.TF_BUILD || process.env.CI
+          //   includeUntracked: true,
+          // });
+
+          // return this.packageTree.initialize();
         }),
 
       parseLockFile(root).then((lockInfo) => (this.lockInfo = lockInfo)),
@@ -238,9 +257,36 @@ export class TargetHasher {
     const packagePatterns = this.expandInputPatterns(inputs, target);
     const files: string[] = [];
     for (const [pkg, patterns] of Object.entries(packagePatterns)) {
-      const packageFiles = this.packageTree!.getPackageFiles(pkg, patterns);
+      // const packageFiles = this.packageTree!.getPackageFiles(pkg, patterns);
+      const packageFiles = await new Promise<string[]>((resolve, reject) => {
+        const relative = path.relative(root, target.cwd);
+        this.watchmanClient.command(
+          [
+            "query",
+            root,
+            {
+              glob: patterns.map((p) => `${relative}/${p}`) ?? [`${relative}/**/*`],
+              fields: ["name"],
+              expression: ["allof", ["type", "f"], ["not", ["dirname", "node_modules"]]],
+            },
+          ],
+          (error, resp) => {
+            if (error) {
+              reject(error);
+              return;
+            }
+
+            if ("files" in resp) {
+              resolve(resp.files.map((file: string) => path.join(target.cwd, file)));
+              return;
+            }
+          }
+        );
+      });
+
       files.push(...packageFiles);
     }
+
     const fileHashes = this.fileHasher.hash(files) ?? {}; // this list is sorted by file name
 
     // get target hashes

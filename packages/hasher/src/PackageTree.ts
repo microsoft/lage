@@ -53,7 +53,9 @@ export class PackageTree {
     }
 
     // Get all files in the workspace (scale: ~2000) according to git
+    console.time("ls-files");
     const lsFilesResults = await execa("git", ["ls-files", "-z"], { cwd: root });
+    console.timeEnd("ls-files");
 
     if (lsFilesResults.exitCode === 0) {
       const files = lsFilesResults.stdout.split("\0").filter((f) => Boolean(f) && fs.existsSync(path.join(root, f)));
@@ -62,10 +64,14 @@ export class PackageTree {
 
     if (includeUntracked) {
       // Also get all untracked files in the workspace according to git
+      console.time("ls-files -o --exclude-standard");
       const lsOtherResults = await execa("git", ["ls-files", "-o", "--exclude-standard"], { cwd: root });
+      console.timeEnd("ls-files -o --exclude-standard");
       if (lsOtherResults.exitCode === 0) {
         const files = lsOtherResults.stdout.split("\0").filter(Boolean);
+        console.time("add to package tree");
         this.addToPackageTree(files);
+        console.timeEnd("add to package tree");
       }
     }
   }

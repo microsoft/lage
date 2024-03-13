@@ -1,24 +1,45 @@
-import os from "os";
 import { type Socket, connect } from "net";
+import { getPipePath } from "./pipe-path.js";
 
-export function getDir() {
-  // ensure client, use client to ask for dir from server
-  const client = ensureClient();
-  client.write("getDir");
-  client.end();
-}
+export class LageDaemonClient {
+  private client: Socket | undefined;
 
-export async function getPackageInfosAsync() {
-  // ensure client, use client to ask for package infos from server
-  const client = ensureClient();
-  client.write("getPackageInfos");
-  client.on("data", (data) => {
-    console.log(data.toString());
-  });
-  client.end();
-}
+  constructor(private root: string) {}
 
-export function ensureClient() {
-  const pipePath = process.env.PIPE_PATH ?? os.platform() === "win32" ? "\\\\?\\pipe\\my_pipe" : "/tmp/my_pipe";
-  return connect(pipePath);
+  #ensureClient() {
+    if (this.client === undefined) {
+      const pipePath = getPipePath(this.root);
+      this.client = connect(pipePath);
+    }
+    return this.client!;
+  }
+
+  async call(fn: string, args: any[]) {
+    const client = this.#ensureClient();
+    client.write(JSON.stringify({ fn, args }));
+
+    return new Promise((resolve, reject) => {
+      client.on("data", (data) => {
+        const dataString = data.toString();
+        const message = JSON.parse(dataString);
+
+        if (message.results) {
+          return resolve(message.results);
+        }
+
+        if (message.errors) {
+          return reject(message.errors);
+        }
+
+        resolve(undefined);
+        client.end();
+      });
+    });
+  }
+
+  close() {
+    if (this.client) {
+      this.client.end();
+    }
+  }
 }
