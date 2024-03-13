@@ -98,6 +98,33 @@ export class TargetHasher {
     return packageInfos;
   }
 
+  #queryWatchman(relative: string, patterns: string[]) {
+    return new Promise<string[]>((resolve, reject) => {
+      this.watchmanClient.command(
+        [
+          "query",
+          this.options.root,
+          {
+            glob: patterns.map((p) => `${relative}/${p}`) ?? [`${relative}/**/*`],
+            fields: ["name"],
+            expression: ["allof", ["type", "f"], ["not", ["dirname", "node_modules"]]],
+          },
+        ],
+        (error, resp) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+
+          if ("files" in resp) {
+            resolve(resp.files);
+            return;
+          }
+        }
+      );
+    });
+  }
+
   expandInputPatterns(patterns: string[], target: Target) {
     const expandedPatterns: Record<string, string[]> = {};
 
@@ -164,48 +191,48 @@ export class TargetHasher {
       return;
     }
 
-    this.initializedPromise = Promise.all([
-      this.fileHasher
-        .readManifest()
-        .then(() => fg(environmentGlob, { cwd: root }))
-        .then((files) => this.fileHasher.hash(files))
-        .then((hash) => (this.globalInputsHash = hash)),
+    this.watchmanClient = new watchman.Client();
+    const watchmanClientInitializePromise = new Promise<void>((resolve, reject) => {
+      this.watchmanClient.command(["watch", root], (error, resp) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        if ("warning" in resp) {
+          this.logger?.warn(`watchman warning: ${resp.warning}`);
+        }
+        resolve();
+      });
+    });
 
-      getWorkspacesAsync(root)
-        .then((workspaceInfo) => (this.workspaceInfo = workspaceInfo))
-        .then(() => {
-          this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
+    this.initializedPromise = watchmanClientInitializePromise.then(() => {
+      return Promise.all([
+        this.fileHasher
+          .readManifest()
+          .then(() => this.#queryWatchman(root, environmentGlob))
+          .then((files) => this.fileHasher.hash(files))
+          .then((hash) => (this.globalInputsHash = hash)),
 
-          this.dependencyMap = createDependencyMap(this.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
-          this.watchmanClient = new watchman.Client();
-          console.time("watch-project");
-          return new Promise<void>((resolve, reject) => {
-            this.watchmanClient.command(["watch", root], (error, resp) => {
-              if (error) {
-                reject(error);
-                return;
-              }
-              if ("warning" in resp) {
-                this.logger?.warn(`watchman warning: ${resp.warning}`);
-              }
-              console.timeEnd("watch-project");
-              resolve();
-            });
-          });
+        getWorkspacesAsync(root)
+          .then((workspaceInfo) => (this.workspaceInfo = workspaceInfo))
+          .then(() => {
+            this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
+            this.dependencyMap = createDependencyMap(this.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
 
-          // this.packageTree = new PackageTree({
-          //   root,
-          //   packageInfos: this.packageInfos,
+            // this.packageTree = new PackageTree({
+            //   root,
+            //   packageInfos: this.packageInfos,
 
-          //   // TODO: (optimization) false if process.env.TF_BUILD || process.env.CI
-          //   includeUntracked: true,
-          // });
+            //   // TODO: (optimization) false if process.env.TF_BUILD || process.env.CI
+            //   includeUntracked: true,
+            // });
 
-          // return this.packageTree.initialize();
-        }),
+            // return this.packageTree.initialize();
+          }),
 
-      parseLockFile(root).then((lockInfo) => (this.lockInfo = lockInfo)),
-    ]);
+        parseLockFile(root).then((lockInfo) => (this.lockInfo = lockInfo)),
+      ]);
+    });
 
     await this.initializedPromise;
 
@@ -228,7 +255,8 @@ export class TargetHasher {
         throw new Error("Root-level targets must have `inputs` defined if it has cache enabled.");
       }
 
-      const files = await fg(target.inputs, { cwd: root });
+      // const files = await fg(target.inputs, { cwd: root });
+      const files = await this.#queryWatchman(root, target.inputs);
       const fileFashes = hash(files, { cwd: root }) ?? {};
 
       const hashes = Object.values(fileFashes);
@@ -258,31 +286,8 @@ export class TargetHasher {
     const files: string[] = [];
     for (const [pkg, patterns] of Object.entries(packagePatterns)) {
       // const packageFiles = this.packageTree!.getPackageFiles(pkg, patterns);
-      const packageFiles = await new Promise<string[]>((resolve, reject) => {
-        const relative = path.relative(root, target.cwd);
-        this.watchmanClient.command(
-          [
-            "query",
-            root,
-            {
-              glob: patterns.map((p) => `${relative}/${p}`) ?? [`${relative}/**/*`],
-              fields: ["name"],
-              expression: ["allof", ["type", "f"], ["not", ["dirname", "node_modules"]]],
-            },
-          ],
-          (error, resp) => {
-            if (error) {
-              reject(error);
-              return;
-            }
-
-            if ("files" in resp) {
-              resolve(resp.files.map((file: string) => path.join(target.cwd, file)));
-              return;
-            }
-          }
-        );
-      });
+      const relative = path.relative(this.options.root, target.cwd);
+      const packageFiles = await this.#queryWatchman(relative, patterns);
 
       files.push(...packageFiles);
     }
@@ -315,5 +320,6 @@ export class TargetHasher {
 
   async cleanup() {
     await this.fileHasher.writeManifest();
+    this.watchmanClient.end();
   }
 }
