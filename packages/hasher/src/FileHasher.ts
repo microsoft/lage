@@ -58,12 +58,15 @@ export class FileHasher {
         crlfDelay: Infinity,
       });
 
+      let info: string[] = [];
+
       rl.on("line", (line) => {
-        const [relativePath, mtimeStr, sizeStr, hash] = line.split("\0");
-        this.#store[relativePath] = {
-          mtime: BigInt(mtimeStr),
-          size: parseInt(sizeStr),
-          hash,
+        info = line.split("\0");
+
+        this.#store[info[0]] = {
+          mtime: BigInt(info[1]),
+          size: parseInt(info[2]),
+          hash: info[3],
         };
       });
 
@@ -76,13 +79,11 @@ export class FileHasher {
 
   writeManifest() {
     fs.mkdirSync(path.dirname(this.#manifestFile), { recursive: true });
-    const outputStream = fs.createWriteStream(this.#manifestFile, "utf-8");
+    const outputLines = Object.entries(this.#store).map(([relativePath, info]) => {
+      return `${relativePath}\0${info.mtime.toString()}\0${info.size.toString()}\0${info.hash}`;
+    });
 
-    for (const [relativePath, info] of Object.entries(this.#store)) {
-      outputStream.write(`${relativePath}\0${info.mtime.toString()}\0${info.size.toString()}\0${info.hash}\n`);
-    }
-
-    outputStream.end();
+    fs.writeFileSync(this.#manifestFile, outputLines.join("\n"), "utf-8");
   }
 
   hash(files: string[]) {

@@ -100,28 +100,37 @@ export class TargetHasher {
 
   #queryWatchman(relative: string, patterns: string[]) {
     return new Promise<string[]>((resolve, reject) => {
-      this.watchmanClient.command(
-        [
-          "query",
-          this.options.root,
-          {
-            glob: patterns.map((p) => `${relative}/${p}`) ?? [`${relative}/**/*`],
-            fields: ["name"],
-            expression: ["allof", ["type", "f"], ["not", ["dirname", "node_modules"]]],
-          },
-        ],
-        (error, resp) => {
-          if (error) {
-            reject(error);
-            return;
-          }
+      const excludePatterns = patterns.filter((p) => p.startsWith("!")).map((p) => p.slice(1));
+      const includePatterns = patterns.filter((p) => !p.startsWith("!"));
 
-          if ("files" in resp) {
-            resolve(resp.files);
-            return;
-          }
+      const command = [
+        "query",
+        this.options.root,
+        {
+          fields: ["name"],
+          expression: [
+            "allof",
+            ["anyof", ...includePatterns.map((p) => ["match", p, "wholename"])],
+            ["type", "f"],
+            ["not", ["dirname", "node_modules"]],
+            ["not", ["dirname", "dist"]],
+            ...(excludePatterns.length === 0 ? [] : [["not", ["anyof", ...excludePatterns.map((p) => ["match", p, "wholename"])]]]),
+          ],
+          ...(relative !== this.options.root ? { relative_root: relative } : undefined),
+        },
+      ];
+
+      this.watchmanClient.command(command, (error, resp) => {
+        if (error) {
+          reject(error);
+          return;
         }
-      );
+
+        if ("files" in resp) {
+          resolve(resp.files.map((f) => path.join(relative, f)));
+          return;
+        }
+      });
     });
   }
 
@@ -209,7 +218,7 @@ export class TargetHasher {
       return Promise.all([
         this.fileHasher
           .readManifest()
-          .then(() => this.#queryWatchman(root, environmentGlob))
+          .then(() => fg(environmentGlob, { cwd: root }))
           .then((files) => this.fileHasher.hash(files))
           .then((hash) => (this.globalInputsHash = hash)),
 
@@ -319,7 +328,7 @@ export class TargetHasher {
   }
 
   async cleanup() {
-    await this.fileHasher.writeManifest();
     this.watchmanClient.end();
+    await this.fileHasher.writeManifest();
   }
 }
