@@ -4,7 +4,7 @@ import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
 import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions, getConcurrency } from "@lage-run/config";
-import { getPackageInfosAsync, getWorkspaceRoot } from "workspace-tools";
+import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { initializeReporters } from "../initializeReporters.js";
 import { SimpleScheduler } from "@lage-run/scheduler";
 
@@ -45,7 +45,7 @@ export async function runAction(options: RunOptions, command: Command) {
 
   // Build Target Graph
   const root = getWorkspaceRoot(process.cwd())!;
-  const packageInfos = await getPackageInfosAsync(root);
+  const packageInfos = getPackageInfos(root);
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 

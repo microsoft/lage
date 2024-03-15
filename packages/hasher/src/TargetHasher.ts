@@ -3,14 +3,7 @@ import { hash } from "glob-hasher";
 
 import fs from "fs";
 import path from "path";
-import {
-  type ParsedLock,
-  type WorkspaceInfo,
-  type PackageInfos,
-  getWorkspacesAsync,
-  parseLockFile,
-  createDependencyMap,
-} from "workspace-tools";
+import { type ParsedLock, type WorkspaceInfo, type PackageInfos, getWorkspaces, parseLockFile, createDependencyMap } from "workspace-tools";
 import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
 import { infoFromPackageJson } from "workspace-tools/lib/infoFromPackageJson.js";
 
@@ -165,6 +158,10 @@ export class TargetHasher {
       includeUntracked: true,
     });
 
+    this.workspaceInfo = getWorkspaces(root);
+    this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
+    this.dependencyMap = createDependencyMap(this.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
+
     const finderInitPromise = this.packageTree.initialize();
     this.initializedPromise = finderInitPromise.then(() => {
       return Promise.all([
@@ -173,14 +170,6 @@ export class TargetHasher {
           .then(() => (environmentGlob.length > 0 ? this.packageTree.findFilesInPath(root, environmentGlob) : []))
           .then((files) => this.fileHasher.hash(files))
           .then((hash) => (this.globalInputsHash = hash)),
-
-        getWorkspacesAsync(root)
-          .then((workspaceInfo) => (this.workspaceInfo = workspaceInfo))
-          .then(() => {
-            this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
-            this.dependencyMap = createDependencyMap(this.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
-          })
-          .then(() => {}),
 
         parseLockFile(root).then((lockInfo) => (this.lockInfo = lockInfo)),
       ]);
