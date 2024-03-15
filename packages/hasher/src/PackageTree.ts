@@ -36,8 +36,7 @@ export class PackageTree {
   async #addFilesFromGitTree(packagePath: string, patterns: string[]) {
     const { includeUntracked } = this.options;
 
-    // Get all files in the workspace (scale: ~2000) according to git
-    const lsFilesResults = await execa(
+    const trackedPromise = execa(
       "git",
       [
         "ls-files",
@@ -46,16 +45,16 @@ export class PackageTree {
         ...patterns.filter((p) => p.startsWith("!")).map((p) => `:!:${p.slice(1)}`),
       ],
       { cwd: packagePath }
-    );
+    ).then((lsFilesResults) => {
+      if (lsFilesResults.exitCode === 0) {
+        const files = lsFilesResults.stdout.split("\0").filter((f) => Boolean(f) && fs.existsSync(path.join(packagePath, f)));
+        this.#addToPackageTree(files);
+      }
+    });
 
-    if (lsFilesResults.exitCode === 0) {
-      const files = lsFilesResults.stdout.split("\0").filter((f) => Boolean(f) && fs.existsSync(path.join(packagePath, f)));
-      this.#addToPackageTree(files);
-    }
-
-    if (includeUntracked) {
-      // Also get all untracked files in the workspace according to git
-      const lsOtherResults = await execa(
+    const untrackedPromise =
+      includeUntracked ??
+      execa(
         "git",
         [
           "ls-files",
@@ -65,12 +64,14 @@ export class PackageTree {
           ...patterns.filter((p) => p.startsWith("!")).map((p) => `:!:${p.slice(1)}`),
         ],
         { cwd: packagePath }
-      );
-      if (lsOtherResults.exitCode === 0) {
-        const files = lsOtherResults.stdout.split("\0").filter(Boolean);
-        this.#addToPackageTree(files);
-      }
-    }
+      ).then((lsOtherResults) => {
+        if (lsOtherResults.exitCode === 0) {
+          const files = lsOtherResults.stdout.split("\0").filter(Boolean);
+          this.#addToPackageTree(files);
+        }
+      });
+
+    await Promise.all([trackedPromise, untrackedPromise]);
   }
 
   async #addToPackageTree(filePaths: string[]) {
