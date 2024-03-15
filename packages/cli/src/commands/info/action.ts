@@ -2,7 +2,7 @@ import type { Command } from "commander";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { getConfig } from "@lage-run/config";
-import { getPackageInfosAsync, getWorkspaceRoot } from "workspace-tools";
+import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
 import path from "path";
@@ -77,7 +77,7 @@ export async function infoAction(options: RunOptions, command: Command) {
   initializeReporters(logger, options);
   const root = getWorkspaceRoot(cwd)!;
 
-  const packageInfos = await getPackageInfosAsync(root);
+  const packageInfos = getPackageInfos(root);
   const targetGraph = prepareAndCreateTargetGraph(config, logger, root, options, packageInfos, command);
   const scope = prepareAndGetFilteredPackages(config, logger, root, options, packageInfos);
   const packageTasks = processTargets(targetGraph.targets, packageInfos, config);
