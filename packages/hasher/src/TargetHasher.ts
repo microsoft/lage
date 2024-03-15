@@ -137,6 +137,11 @@ export class TargetHasher {
     this.fileHasher = new FileHasher({
       root,
     });
+
+    this.packageTree = new PackageTree({
+      root,
+      includeUntracked: true,
+    });
   }
 
   ensureInitialized() {
@@ -152,11 +157,6 @@ export class TargetHasher {
       await this.initializedPromise;
       return;
     }
-
-    this.packageTree = new PackageTree({
-      root,
-      includeUntracked: true,
-    });
 
     this.workspaceInfo = getWorkspaces(root);
     this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
@@ -197,6 +197,7 @@ export class TargetHasher {
       }
 
       const files = await this.packageTree.findFilesInPath(root, target.inputs);
+
       const fileFashes = hash(files, { cwd: root }) ?? {};
 
       const hashes = Object.values(fileFashes);
