@@ -1,0 +1,32 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Update backfill monorepo",
+      "packageName": "@lage-run/cache-github-actions",
+      "email": "renovate@whitesourcesoftware.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Update backfill monorepo",
+      "packageName": "@lage-run/cache",
+      "email": "renovate@whitesourcesoftware.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Update backfill monorepo",
+      "packageName": "@lage-run/config",
+      "email": "renovate@whitesourcesoftware.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Update backfill monorepo",
+      "packageName": "lage",
+      "email": "renovate@whitesourcesoftware.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
