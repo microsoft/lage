@@ -1,13 +1,10 @@
-import { type PackageInfos } from "workspace-tools";
-
 import execa from "execa";
 import path from "path";
 import fs from "fs";
 import micromatch from "micromatch";
 
-export interface PackageTreeOptions {
+export interface LocalPackageTreeOptions {
   root: string;
-  packageInfos: PackageInfos;
   includeUntracked: boolean;
 }
 
@@ -16,16 +13,14 @@ interface PathNode {
 }
 
 /**
- * Package Tree keeps a data structure to quickly find all files in a package.
- *
- * TODO: add a watcher to make sure the tree is up to date during a "watched" run.
+ * Keeps a data structure to quickly find all files in a package.
  */
 export class PackageTree {
   #tree: PathNode = {};
   #packageFiles: Record<string, string[]> = {};
   #memoizedPackageFiles: Record<string, string[]> = {};
 
-  constructor(private options: PackageTreeOptions) {}
+  constructor(private options: LocalPackageTreeOptions) {}
 
   reset() {
     // reset the internal state
@@ -35,48 +30,50 @@ export class PackageTree {
   }
 
   async initialize() {
-    const { root, includeUntracked, packageInfos } = this.options;
-
     this.reset();
+  }
 
-    // Generate path tree of all packages in workspace (scale: ~2000 * ~3)
-    for (const info of Object.values(packageInfos)) {
-      const packagePath = path.dirname(info.packageJsonPath);
-      const pathParts = path.relative(root, packagePath).split(/[\\/]/);
-
-      let currentNode = this.#tree;
-
-      for (const part of pathParts) {
-        currentNode[part] = currentNode[part] || {};
-        currentNode = currentNode[part];
-      }
-    }
+  async #addFilesFromGitTree(packagePath: string, patterns: string[]) {
+    const { includeUntracked } = this.options;
 
     // Get all files in the workspace (scale: ~2000) according to git
-    console.time("ls-files");
-    const lsFilesResults = await execa("git", ["ls-files", "-z"], { cwd: root });
-    console.timeEnd("ls-files");
+    const lsFilesResults = await execa(
+      "git",
+      [
+        "ls-files",
+        "-z",
+        ...patterns.filter((p) => !p.startsWith("!")),
+        ...patterns.filter((p) => p.startsWith("!")).map((p) => `:!:${p.slice(1)}`),
+      ],
+      { cwd: packagePath }
+    );
 
     if (lsFilesResults.exitCode === 0) {
-      const files = lsFilesResults.stdout.split("\0").filter((f) => Boolean(f) && fs.existsSync(path.join(root, f)));
-      this.addToPackageTree(files);
+      const files = lsFilesResults.stdout.split("\0").filter((f) => Boolean(f) && fs.existsSync(path.join(packagePath, f)));
+      this.#addToPackageTree(files);
     }
 
     if (includeUntracked) {
       // Also get all untracked files in the workspace according to git
-      console.time("ls-files -o --exclude-standard");
-      const lsOtherResults = await execa("git", ["ls-files", "-o", "--exclude-standard"], { cwd: root });
-      console.timeEnd("ls-files -o --exclude-standard");
+      const lsOtherResults = await execa(
+        "git",
+        [
+          "ls-files",
+          "-o",
+          "--exclude-standard",
+          ...patterns.filter((p) => !p.startsWith("!")),
+          ...patterns.filter((p) => p.startsWith("!")).map((p) => `:!:${p.slice(1)}`),
+        ],
+        { cwd: packagePath }
+      );
       if (lsOtherResults.exitCode === 0) {
         const files = lsOtherResults.stdout.split("\0").filter(Boolean);
-        console.time("add to package tree");
-        this.addToPackageTree(files);
-        console.timeEnd("add to package tree");
+        this.#addToPackageTree(files);
       }
     }
   }
 
-  async addToPackageTree(filePaths: string[]) {
+  async #addToPackageTree(filePaths: string[]) {
     // key: path/to/package (packageRoot), value: array of a tuple of [file, hash]
     const packageFiles = this.#packageFiles;
 
@@ -101,19 +98,17 @@ export class PackageTree {
     }
   }
 
-  getPackageFiles(packageName: string, patterns: string[]) {
-    const { root, packageInfos } = this.options;
-    const packagePath = path.relative(root, path.dirname(packageInfos[packageName].packageJsonPath)).replace(/\\/g, "/");
-
-    const packageFiles = this.#packageFiles[packagePath];
-
-    if (!packageFiles) {
-      return [];
-    }
-
-    const key = `${packageName}\0${patterns.join("\0")}`;
+  async findFilesInPath(packagePath: string, patterns: string[]) {
+    const key = `${packagePath}\0${patterns.join("\0")}`;
 
     if (!this.#memoizedPackageFiles[key]) {
+      await this.#addFilesFromGitTree(packagePath, patterns);
+      const packageFiles = this.#packageFiles[packagePath];
+
+      if (!packageFiles) {
+        return [];
+      }
+
       const packagePatterns = patterns.map((pattern) => {
         if (pattern.startsWith("!")) {
           return `!${path.join(packagePath, pattern.slice(1)).replace(/\\/g, "/")}`;
@@ -126,4 +121,6 @@ export class PackageTree {
 
     return this.#memoizedPackageFiles[key];
   }
+
+  cleanup() {}
 }

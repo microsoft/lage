@@ -875,98 +875,6 @@
   resolved "https://registry.yarnpkg.com/@ms-cloudpack/task-reporter/-/task-reporter-0.5.3.tgz#e333e26ee4d072b8cc4eed464c8c35431a1cf08d"
   integrity sha512-c10BWph01gwc7boSo+Ia79/wiM7HS6B3K2Ykk27eWgPoe3FS29QRW1JLtxlDt/7oDF9CpO7bqS09mZy70f2VVw==
 
-"@napi-rs/notify-android-arm64@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify-android-arm64/-/notify-android-arm64-0.0.1.tgz#5e9fbbb4f42387d762b0b29d8df530755639e86e"
-  integrity sha512-A0VBen6scYpTaysFNKHpk/ZPDumB174BDGause7gd0kZ5qezwChMeCO+CibwScrri6Sc4fXxpNUR2yllZL531A==
-
-"@napi-rs/notify-darwin-arm64@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify-darwin-arm64/-/notify-darwin-arm64-0.0.1.tgz#87b060c9f1cee7523035f2347a6be26a5f2341fd"
-  integrity sha512-9EU3bK6tmA4D8akN5HF27S5SfkgZJd0e/KSj0nySPr06bBQWiBl4ymCveuiuv7NMzCoMVYCSMvEj/pZtt9rQdw==
-
-"@napi-rs/notify-darwin-x64@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify-darwin-x64/-/notify-darwin-x64-0.0.1.tgz#bac5bfebc8ccf4a9e67eabfb38ca44903fe67b53"
-  integrity sha512-iNiivDtbS5P8t1tqk4ibbV6N/iYbGK2lNEOhmh+KApzWORCM4EsRhIxTHVphGsakFZesas744hdectjmv8QL3Q==
-
-"@napi-rs/notify-freebsd-x64@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify-freebsd-x64/-/notify-freebsd-x64-0.0.1.tgz#b06792c9242bf1e6eb7fd64ed02239bf3d3ae5c3"
-  integrity sha512-5ShImqBg9Ugu2L3scpOkKWNlMMCK/WvKTQdRsdS9aNvlTO3/dQVchtA5UwFXC/JEuKXJkuPlu40FhAlGF8qfxQ==
-
-"@napi-rs/notify-linux-arm-gnueabihf@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify-linux-arm-gnueabihf/-/notify-linux-arm-gnueabihf-0.0.1.tgz#0f233a4e6ca06c51306ffc8c426171e37aeaabb8"
-  integrity sha512-w8eWymcamCGmJ+rcD1Fbg7UJJAdwbyKMAflBesDhWtK+ZzVBMx4DDDQnMPQy85Ilm5e4Oui3o5ikl52QYVfD0A==
-
-"@napi-rs/notify-linux-arm64-gnu@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify-linux-arm64-gnu/-/notify-linux-arm64-gnu-0.0.1.tgz#134194405d388904761375e695c925b1dc8dbf5a"
-  integrity sha512-0zMLsgr5mF4Qc0PbtPZfEyq2k/FYUb9Z/8jelV3ylxl8Zy5Gd7u0O+DBe3V7kd6T+TYvWzzbqtyYGFuPdy4dJQ==
-
-"@napi-rs/notify-linux-arm64-musl@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify-linux-arm64-musl/-/notify-linux-arm64-musl-0.0.1.tgz#b276b987d26a83429beeb271576c14bf21abce22"
-  integrity sha512-1/8LxJNftLpnSSiQuhnu+x8qXcNkb3DGj4fHjw+cg09DYFQOsclsAp/utyuOHYi0NFj61G70j1vjAWOrI1JmXQ==
-
-"@napi-rs/notify-linux-x64-gnu@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify-linux-x64-gnu/-/notify-linux-x64-gnu-0.0.1.tgz#7c78aa23ce7a479e49bc6db53742f1bf8a9c5b7f"
-  integrity sha512-i/fkvbfhefi6zDmoUyEhz0ry8iM7v48yUiylzsDp6CDZ7NIXBiNTzhyoGDvk4k1XqBODfQ8d/GuvBxp2wl8LEg==
-
-"@napi-rs/notify-linux-x64-musl@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify-linux-x64-musl/-/notify-linux-x64-musl-0.0.1.tgz#c52bdd2fa0510ef9bde08fe5fd9fef943840640a"
-  integrity sha512-85BuqLi/1Ea+oaVkGP3iCNM8fxIwQL4nMHqxjkc2VDa+9/g4tu+o6aaQ5ILOv9k60CkyRaVn9SM4ySwe3J/5UA==
-
-"@napi-rs/notify-win32-arm64-msvc@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify-win32-arm64-msvc/-/notify-win32-arm64-msvc-0.0.1.tgz#0e6179f40da6684390869abcdd1b6c736edde547"
-  integrity sha512-1QzArITvCDIWnR+iYDY3ActHwwQDSwV6EJm4H6ri4i+nrTWeProA+ISdqLFG/UpXRXPHsZBH3nwropWB0KVRJg==
-
-"@napi-rs/notify-win32-ia32-msvc@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify-win32-ia32-msvc/-/notify-win32-ia32-msvc-0.0.1.tgz#71d31a40f5f22a228ef93e1b0602d7544b8eb407"
-  integrity sha512-pZON4K4I6/z44T1uP7xOXpns2DM5fHyJaCEgnxD79rcYcg7kXjg5qReTpyVdXv9mijo3nNwSm3+WoPEhfyd2Kw==
-
-"@napi-rs/notify-win32-x64-msvc@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify-win32-x64-msvc/-/notify-win32-x64-msvc-0.0.1.tgz#6483ffb73c0ff3db74009551f1f60dd837b8cc7d"
-  integrity sha512-KC75jdyoA+rXKQr7U01MsKHpK58AZ70L3LwNymKrxL+X5T1l8nWs3xswvKA3msG08/8ct7ISmdukbWlUqu13ew==
-
-"@napi-rs/notify@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@napi-rs/notify/-/notify-0.0.1.tgz#930549222fc5c7d0f51b75c72718be89876adab4"
-  integrity sha512-U3ZLRgEBrbdk49mqwlwD6T7h5kEF5tJ7zAUwg3PxGLmQBxCuHvVgIrdM8semFhUxz8PxvAzD0axYrQrWy5k+eg==
-  dependencies:
-    "@node-rs/helper" "^1.2.0"
-  optionalDependencies:
-    "@napi-rs/notify-android-arm64" "^0.0.1"
-    "@napi-rs/notify-darwin-arm64" "^0.0.1"
-    "@napi-rs/notify-darwin-x64" "^0.0.1"
-    "@napi-rs/notify-freebsd-x64" "^0.0.1"
-    "@napi-rs/notify-linux-arm-gnueabihf" "^0.0.1"
-    "@napi-rs/notify-linux-arm64-gnu" "^0.0.1"
-    "@napi-rs/notify-linux-arm64-musl" "^0.0.1"
-    "@napi-rs/notify-linux-x64-gnu" "^0.0.1"
-    "@napi-rs/notify-linux-x64-musl" "^0.0.1"
-    "@napi-rs/notify-win32-arm64-msvc" "^0.0.1"
-    "@napi-rs/notify-win32-ia32-msvc" "^0.0.1"
-    "@napi-rs/notify-win32-x64-msvc" "^0.0.1"
-
-"@napi-rs/triples@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/triples/-/triples-1.2.0.tgz#bcd9c936acb93890e7015818e0181f3db421aafa"
-  integrity sha512-HAPjR3bnCsdXBsATpDIP5WCrw0JcACwhhrwIAQhiR46n+jm+a2F8kBsfseAuWtSyQ+H3Yebt2k43B5dy+04yMA==
-
-"@node-rs/helper@^1.2.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@node-rs/helper/-/helper-1.5.0.tgz#7ca665286e90a6c46d572084759a052247c03dbb"
-  integrity sha512-4E1laLlg532nkrvUohZzl/wFos3bsHExSDw/guaoLekMcTKtD3ZsH6Vc4/qIRzOzAhQv5LLRnTE+vOeJ6C9Z8w==
-  dependencies:
-    "@napi-rs/triples" "^1.2.0"
-
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -2401,7 +2309,7 @@ fastq@^1.6.0:
   dependencies:
     reusify "^1.0.4"
 
-fb-watchman@^2.0.0, fb-watchman@^2.0.2:
+fb-watchman@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/fb-watchman/-/fb-watchman-2.0.2.tgz#e9524ee6b5c77e9e5001af0f85f3adbb8623255c"
   integrity sha512-p5161BqbuCaSnB8jIbzQHOlpgsPmK5rJVDfDKO91Axs5NC1uu3HRQm6wt9cd9/+GtQQIO53JdGXXoyDpTAsgYA==
