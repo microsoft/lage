@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 15 Mar 2024 04:35:11 GMT",
+      "version": "0.16.7",
+      "tag": "@lage-run/cli_v0.16.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "71283d4af8888454c953e5228c97bfbb471c15ba",
+            "comment": "perf optimizations"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.1.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.1.13",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 26 Feb 2024 16:18:50 GMT",
       "version": "0.16.6",
       "tag": "@lage-run/cli_v0.16.6",

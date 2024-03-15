@@ -2,6 +2,27 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 15 Mar 2024 04:35:11 GMT",
+      "version": "2.7.13",
+      "tag": "lage_v2.7.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.7",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.13",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 26 Feb 2024 16:18:50 GMT",
       "version": "2.7.12",
       "tag": "lage_v2.7.12",

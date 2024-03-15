@@ -19,7 +19,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/cli": "^0.16.6",
+    "@lage-run/cli": "^0.16.7",
     "@lage-run/monorepo-scripts": "*",
     "@lage-run/target-graph": "^0.8.9",
     "@lage-run/scheduler-types": "^0.3.13",
