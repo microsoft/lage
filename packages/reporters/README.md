@@ -1,6 +1,6 @@
 # @lage-run/reporters
 
-This package provides some default built-in reporters to be used inside @lage-run/cli (and lage, the main entry point to the tool). The `Reporter` interface comes from `@lage-run/logger`. 
+This package provides some default built-in reporters to be used inside @lage-run/cli (and lage, the main entry point to the tool). The `Reporter` interface comes from `@lage-run/logger`.
 
 ## NpmLogReporter
 
@@ -34,14 +34,14 @@ info ✓ done b build - 30.00s
 info ➔ start a build
 info ✖ fail a build
 info 🏗 Summary
-info 
+info
 info Nothing has been run.
 info ----------------------------------------------
 ERR! [a build] ERROR DETECTED
-ERR! 
+ERR!
 ERR! test message for a#build
 ERR! test message for a#build again, but look there is an error!
-ERR! 
+ERR!
 info ----------------------------------------------
 info Took a total of 1m 40.00s to complete
 ```
@@ -79,9 +79,9 @@ INFO: a test success, took 60.00s
 INFO: b build success, took 60.00s
 [Tasks Count] success: 2, skipped: 0, pending: 0, aborted: 0
 ##[error] [a build] ERROR DETECTED
-##[error] 
+##[error]
 ##[error] test message for a#build
 ##[error] test message for a#build again, but look there is an error!
-##[error] 
+##[error]
 INFO:  Took a total of 1m 40.00s to complete
 ```

@@ -45,8 +45,9 @@ export default function Grapher() {
       <Point>Dependency Graph Visualizer</Point>
       <Description>
         After running the <span className="text-button font-bold">graph </span>
-        command in your root directory, copy and paste the content of the <span className="text-button font-bold">output.js</span> file
-        here. <br />
+        command in your root directory, copy and paste the content of the{" "}
+        <span className="text-button font-bold">output.js</span> file here.{" "}
+        <br />
         The content should be a JSON object.
       </Description>
       <form>
@@ -77,7 +78,10 @@ export default function Grapher() {
         </div>
         <Description>
           Don't know what to look for?{" "}
-          <a className="text-black hover:text-bodyPrimary italic" onClick={downloadTxtFile}>
+          <a
+            className="text-black hover:text-bodyPrimary italic"
+            onClick={downloadTxtFile}
+          >
             {" "}
             Here is a content example.
           </a>

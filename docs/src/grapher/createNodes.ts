@@ -17,13 +17,25 @@ export default function createNodes(file) {
     var isIndependent = !names.has(pkg) && !dependencies.has(pkg);
     node = {
       id: pkg,
-      type: isIndependent ? "independentNode" : isOutput ? "output" : isInput ? "input" : "default",
+      type: isIndependent
+        ? "independentNode"
+        : isOutput
+        ? "output"
+        : isInput
+        ? "input"
+        : "default",
       data: {
         label: pkg,
       },
       position: position,
       style: {
-        background: isIndependent ? "#90D4A1" : isInput ? "#A7E2E8" : isOutput ? "#F2B4FF" : "#fff",
+        background: isIndependent
+          ? "#90D4A1"
+          : isInput
+          ? "#A7E2E8"
+          : isOutput
+          ? "#F2B4FF"
+          : "#fff",
         color: "#000",
         border: "1px solid #222138",
         width: 180,
