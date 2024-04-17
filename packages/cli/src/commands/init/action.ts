@@ -102,7 +102,7 @@ async function installLage(cwd: string, workspaceManager: WorkspaceManager, pipe
     packageJson.devDependencies.lage = lageVersion;
     writePackageJson(cwd, packageJson);
 
-    await execa(workspaceManager, ["install"], { stdio: "inherit" });
+    await execa(workspaceManager, ["install"], { stdio: "inherit", shell: true });
   }
 }
 

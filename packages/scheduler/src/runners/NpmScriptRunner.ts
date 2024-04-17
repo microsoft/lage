@@ -1,9 +1,8 @@
 import { existsSync } from "fs";
 import { join } from "path";
 import { readFile } from "fs/promises";
-import { spawn } from "child_process";
+import execa from "execa";
 import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
-import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";
 
 export interface NpmScriptRunnerOptions {
@@ -65,7 +64,7 @@ export class NpmScriptRunner implements TargetRunner {
     const { nodeOptions, npmCmd, taskArgs } = this.options;
     const task = target.options?.script ?? target.task;
 
-    let childProcess: ChildProcess | undefined;
+    let childProcess: execa.ExecaChildProcess | undefined;
 
     /**
      * Handling abort signal from the abort controller. Gracefully kills the process,
@@ -109,12 +108,14 @@ export class NpmScriptRunner implements TargetRunner {
     const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter((str) => str).join(" ");
 
     await new Promise<void>((resolve, reject) => {
-      childProcess = spawn(npmCmd, npmRunArgs, {
+      childProcess = execa(npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: ["inherit", "pipe", "pipe"],
+        shell: true,
+        reject: false, // don't reject the promise on exit non-zero
         env: {
-          ...process.env,
           ...(process.stdout.isTTY && { FORCE_COLOR: "1" }),
+          ...process.env,
           ...(npmRunNodeOptions && { NODE_OPTIONS: npmRunNodeOptions }),
           LAGE_PACKAGE_NAME: target.packageName,
           LAGE_TASK: target.task,

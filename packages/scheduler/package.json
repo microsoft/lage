@@ -22,7 +22,8 @@
     "@lage-run/cache": "^1.1.5",
     "@lage-run/config": "^0.3.5",
     "@lage-run/hasher": "^1.1.0",
-    "@lage-run/worker-threads-pool": "^0.8.0"
+    "@lage-run/worker-threads-pool": "^0.8.0",
+    "execa": "5.1.1"
   },
   "devDependencies": {
     "@lage-run/scheduler-types": "^0.3.13",
