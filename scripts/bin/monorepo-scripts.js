@@ -17,7 +17,7 @@ if (spawnCommand.endsWith(".js")) {
   console.log(`Running ${command} as: ${spawnCommand} ${spawnArgs.join(" ")}`);
   cp = spawn(spawnCommand, spawnArgs, {
     stdio: "inherit",
-    shell: true,
+    shell: process.platform === "win32",
   });
 }
 

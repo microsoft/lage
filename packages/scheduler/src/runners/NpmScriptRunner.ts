@@ -111,7 +111,7 @@ export class NpmScriptRunner implements TargetRunner {
       childProcess = execa(npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: ["inherit", "pipe", "pipe"],
-        shell: true,
+        shell: process.platform === "win32",
         reject: false, // don't reject the promise on exit non-zero
         env: {
           ...(process.stdout.isTTY && { FORCE_COLOR: "1" }),
