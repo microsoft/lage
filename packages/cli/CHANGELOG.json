@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 17 Apr 2024 23:20:47 GMT",
+      "version": "0.16.7",
+      "tag": "@lage-run/cli_v0.16.7",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "fb4fcb8419cc778210104d7d04102fc95df13d5b",
+            "comment": "Update formatting"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 15 Mar 2024 04:35:11 GMT",
       "version": "0.16.7",
       "tag": "@lage-run/cli_v0.16.7",

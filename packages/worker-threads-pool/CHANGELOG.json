@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Wed, 17 Apr 2024 23:20:47 GMT",
+      "version": "0.8.0",
+      "tag": "@lage-run/worker-threads-pool_v0.8.0",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "fb4fcb8419cc778210104d7d04102fc95df13d5b",
+            "comment": "Update formatting"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 Dec 2023 08:37:41 GMT",
       "version": "0.8.0",
       "tag": "@lage-run/worker-threads-pool_v0.8.0",

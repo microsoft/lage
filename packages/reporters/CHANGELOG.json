@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Wed, 17 Apr 2024 23:20:47 GMT",
+      "version": "1.2.7",
+      "tag": "@lage-run/reporters_v1.2.7",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "fb4fcb8419cc778210104d7d04102fc95df13d5b",
+            "comment": "Update formatting"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 Dec 2023 09:49:09 GMT",
       "version": "1.2.7",
       "tag": "@lage-run/reporters_v1.2.7",
