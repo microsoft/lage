@@ -2,20 +2,20 @@
 # yarn lockfile v1
 
 
-"@actions/cache@3.2.1":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@actions/cache/-/cache-3.2.1.tgz#bbd4680aeab811f3e839e58be493ffe7583d0311"
-  integrity sha512-QurbMiY//02+0kN1adJkMHN44RcZ5kAXfhSnKUZmtSmhMTNqLitGArG1xOkt93NNyByTlLGAc5wIOF/dZ2ENOQ==
+"@actions/cache@3.2.4":
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/@actions/cache/-/cache-3.2.4.tgz#793aade7375ba436295ff5ae6139be9d06dfab30"
+  integrity sha512-RuHnwfcDagtX+37s0ZWy7clbOfnZ7AlDJQ7k/9rzt2W4Gnwde3fa/qjSjVuz4vLcLIpc7fUob27CMrqiWZytYA==
   dependencies:
     "@actions/core" "^1.10.0"
     "@actions/exec" "^1.0.1"
     "@actions/glob" "^0.1.0"
-    "@actions/http-client" "^2.0.1"
+    "@actions/http-client" "^2.1.1"
     "@actions/io" "^1.0.1"
     "@azure/abort-controller" "^1.1.0"
     "@azure/ms-rest-js" "^2.6.0"
     "@azure/storage-blob" "^12.13.0"
-    semver "^6.1.0"
+    semver "^6.3.1"
     uuid "^3.3.3"
 
 "@actions/core@^1.10.0", "@actions/core@^1.2.6":
@@ -41,12 +41,13 @@
     "@actions/core" "^1.2.6"
     minimatch "^3.0.4"
 
-"@actions/http-client@^2.0.1":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@actions/http-client/-/http-client-2.1.0.tgz#b6d8c3934727d6a50d10d19f00a711a964599a9f"
-  integrity sha512-BonhODnXr3amchh4qkmjPMUO8mFi/zLaaCeCAJZqch8iQqyDnVIkySjB38VHAC8IJ+bnlgfOqlhpyCUZHlQsqw==
+"@actions/http-client@^2.0.1", "@actions/http-client@^2.1.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@actions/http-client/-/http-client-2.2.1.tgz#ed3fe7a5a6d317ac1d39886b0bb999ded229bb38"
+  integrity sha512-KhC/cZsq7f8I4LfZSJKgCvEwfkE8o1538VoBeoGzokVLLnbFDEAdFD3UhoMklxo2un9NJVBdANOresx7vTHlHw==
   dependencies:
     tunnel "^0.0.6"
+    undici "^5.25.4"
 
 "@actions/io@^1.0.1":
   version "1.1.2"
@@ -595,6 +596,11 @@
   version "8.35.0"
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.35.0.tgz#b7569632b0b788a0ca0e438235154e45d42813a7"
   integrity sha512-JXdzbRiWclLVoD8sNUjR443VVlYqiYmDVT6rGUEIEHU5YJW0gaVZwV2xgM7D4arkvASqD0IlLUVjHiFuxaftRw==
+
+"@fastify/busboy@^2.0.0":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.1.1.tgz#b9da6a878a371829a0502c9b6c1c143ef6663f4d"
+  integrity sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==
 
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
@@ -4130,10 +4136,10 @@ semver@^5.5.0, semver@^5.6.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.2.tgz#48d55db737c3287cd4835e17fa13feace1c41ef8"
   integrity sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==
 
-semver@^6.0.0, semver@^6.1.0, semver@^6.3.0:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
-  integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
+semver@^6.0.0, semver@^6.3.0, semver@^6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
+  integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
 
 shebang-command@^1.2.0:
   version "1.2.0"
@@ -4555,6 +4561,13 @@ typescript@>=4.5.2, typescript@~5.0.3:
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.4.tgz#b217fd20119bd61a94d4011274e0ab369058da3b"
   integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
+
+undici@^5.25.4:
+  version "5.28.4"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-5.28.4.tgz#6b280408edb6a1a604a9b20340f45b422e373068"
+  integrity sha512-72RFADWFqKmUb2hmmvNODKL3p9hcB6Gt2DOQMis1SEBaV6a4MH8soBvzg+95CYhCKPFedut2JY9bMfrDl9D23g==
+  dependencies:
+    "@fastify/busboy" "^2.0.0"
 
 universalify@^0.1.0:
   version "0.1.2"
