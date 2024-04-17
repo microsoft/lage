@@ -2,13 +2,15 @@ export const ToolList = [
   {
     title: "Just ___",
     Svg: require("../../static/img/just.svg").default,
-    description: "The task library that just works. Use to build, test, and lint your frontend projects.",
+    description:
+      "The task library that just works. Use to build, test, and lint your frontend projects.",
     link: "https://github.com/microsoft/just",
   },
   {
     title: "Beachball",
     Svg: require("../../static/img/beachball1.svg").default,
-    description: "The sunniest semantic version bumper. Makes automating npm publishing a breeze.",
+    description:
+      "The sunniest semantic version bumper. Makes automating npm publishing a breeze.",
     link: "https://github.com/microsoft/beachball",
   },
   {

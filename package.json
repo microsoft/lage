@@ -47,8 +47,7 @@
     "typescript": "~5.0.3"
   },
   "lint-staged": {
-    "*.ts": "prettier --config .prettierrc --write --ignore-path .gitignore",
-    "*.json": "prettier --config .prettierrc --write --ignore-path .gitignore"
+    "*": "prettier --write"
   },
   "syncpack": {
     "dependencyTypes": [
