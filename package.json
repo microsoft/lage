@@ -26,8 +26,8 @@
     "docs:build": "yarn --cwd docs build",
     "docs:test": "yarn --cwd docs build",
     "gh-pages": "gh-pages",
-    "format": "prettier --config .prettierrc packages/**/*.ts **/*.json --write --ignore-path .gitignore",
-    "format:check": "prettier --config .prettierrc packages/**/*.ts **/*.json --check --ignore-path .gitignore",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "prepare": "husky install",
     "postinstall": "patch-package"
   },
