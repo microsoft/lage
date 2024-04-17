@@ -8,7 +8,7 @@ import ReactFlow, {
   useEdgesState,
   MiniMap,
   Controls,
-  Background
+  Background,
 } from "react-flow-renderer";
 import dagre from "dagre";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
@@ -60,22 +60,21 @@ export const FlowGraph = (props) => {
 
   const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
     initialNodes,
-    initialEdges
+    initialEdges,
   );
 
   const nodeColor = (node) => {
     switch (node.type) {
-      case 'input':
-        return '#A7E2E8';
-      case 'independentNode':
-        return '#90D4A1';
-      case 'output':
-        return '#F2B4FF';
+      case "input":
+        return "#A7E2E8";
+      case "independentNode":
+        return "#90D4A1";
+      case "output":
+        return "#F2B4FF";
       default:
-        return '#FFFFFF';
+        return "#FFFFFF";
     }
   };
-
 
   const LayoutFlow = () => {
     const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
@@ -86,16 +85,16 @@ export const FlowGraph = (props) => {
         setEdges((eds) =>
           addEdge(
             { ...params, type: ConnectionLineType.SmoothStep, animated: true },
-            eds
-          )
+            eds,
+          ),
         ),
-      []
+      [],
     );
 
     return (
       <div className="bg-bodyPrimary">
         <ReactFlow
-          style={{ width: "60rem", height: "40rem"}}
+          style={{ width: "60rem", height: "40rem" }}
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
@@ -105,15 +104,13 @@ export const FlowGraph = (props) => {
           connectionLineType={ConnectionLineType.SmoothStep}
           fitView
         >
-      <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} />
-      <Controls />
-      <Background/>
+          <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} />
+          <Controls />
+          <Background />
         </ReactFlow>
       </div>
     );
   };
 
-  return (
-    <LayoutFlow />
-  );
+  return <LayoutFlow />;
 };

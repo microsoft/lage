@@ -1,10 +1,9 @@
 ---
-name: 'RFC: Design Spec'
+name: "RFC: Design Spec"
 about: Create a "Request for Comment" design spec
 title: "[RFC]: "
 labels: dev design
 assignees: kenotron
-
 ---
 
 # Overview

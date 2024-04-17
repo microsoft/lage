@@ -12,7 +12,11 @@ export const StackBlitz = (props: StackBlitzProps) => {
 
   React.useEffect(() => {
     if (editorRef.current) {
-      stackblitzSdk.embedGithubProject(editorRef.current, githubRepo, embedOptions);
+      stackblitzSdk.embedGithubProject(
+        editorRef.current,
+        githubRepo,
+        embedOptions,
+      );
     }
   }, [editorRef.current]);
 

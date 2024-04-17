@@ -3,7 +3,7 @@ const { parentPort } = require("worker_threads");
 const START_WORKER_STREAM_MARKER = "## WORKER:START:";
 const END_WORKER_STREAM_MARKER = "## WORKER:END:";
 
-module.exports.registerWorker = function(fn) {
+module.exports.registerWorker = function (fn) {
   parentPort?.on("message", async (message) => {
     let abortController;
 
@@ -34,4 +34,4 @@ module.exports.registerWorker = function(fn) {
       process.stderr.write(`${END_WORKER_STREAM_MARKER}${id}\n`);
     }
   }
-}
+};

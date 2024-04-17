@@ -1,8 +1,8 @@
 export function retainDynamicImport() {
   return {
-    name: 'retain-dynamic-import',
+    name: "retain-dynamic-import",
     resolveDynamicImport(specifier) {
-      if (typeof specifier === 'string') {
+      if (typeof specifier === "string") {
         return null;
       }
       return false;
@@ -10,10 +10,10 @@ export function retainDynamicImport() {
     renderDynamicImport(entry) {
       if (!entry.targetModuleId) {
         return {
-          left: 'import(',
-          right: ')'
+          left: "import(",
+          right: ")",
         };
       }
-    }
+    },
   };
 }
