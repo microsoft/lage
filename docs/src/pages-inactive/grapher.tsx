@@ -31,7 +31,7 @@ export default function Grapher() {
       ],
       {
         type: "text/plain",
-      },
+      }
     );
     element.href = URL.createObjectURL(file);
     element.download = "content-example.txt";

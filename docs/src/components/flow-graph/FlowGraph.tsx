@@ -60,7 +60,7 @@ export const FlowGraph = (props) => {
 
   const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
     initialNodes,
-    initialEdges,
+    initialEdges
   );
 
   const nodeColor = (node) => {
@@ -85,10 +85,10 @@ export const FlowGraph = (props) => {
         setEdges((eds) =>
           addEdge(
             { ...params, type: ConnectionLineType.SmoothStep, animated: true },
-            eds,
-          ),
+            eds
+          )
         ),
-      [],
+      []
     );
 
     return (

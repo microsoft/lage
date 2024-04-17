@@ -9,13 +9,13 @@ export const TwoColumns = (props) => {
             <>
               {React.Children.map(
                 props.children,
-                (child, i) => i === 0 && child,
+                (child, i) => i === 0 && child
               )}
             </>
             <>
               {React.Children.map(
                 props.children,
-                (child, i) => i === 1 && child,
+                (child, i) => i === 1 && child
               )}
             </>
           </div>
@@ -25,13 +25,13 @@ export const TwoColumns = (props) => {
             <>
               {React.Children.map(
                 props.children,
-                (child, i) => i === 1 && child,
+                (child, i) => i === 1 && child
               )}
             </>
             <>
               {React.Children.map(
                 props.children,
-                (child, i) => i === 0 && child,
+                (child, i) => i === 0 && child
               )}
             </>
           </div>
@@ -41,13 +41,13 @@ export const TwoColumns = (props) => {
             <>
               {React.Children.map(
                 props.children,
-                (child, i) => i === 1 && child,
+                (child, i) => i === 1 && child
               )}
             </>
             <>
               {React.Children.map(
                 props.children,
-                (child, i) => i === 0 && child,
+                (child, i) => i === 0 && child
               )}
             </>
           </div>
@@ -58,13 +58,13 @@ export const TwoColumns = (props) => {
             <>
               {React.Children.map(
                 props.children,
-                (child, i) => i === 0 && child,
+                (child, i) => i === 0 && child
               )}
             </>
             <>
               {React.Children.map(
                 props.children,
-                (child, i) => i === 1 && child,
+                (child, i) => i === 1 && child
               )}
             </>
           </div>

@@ -54,9 +54,10 @@ let eslintInstance = null;
 /** caches an ESLint instance for the worker */
 function getEslintInstance() {
   if (!eslintInstance) {
-    const baseConfig = require(
-      path.join(PROJECT_ROOT, "scripts/config/eslintrc.js")
-    );
+    const baseConfig = require(path.join(
+      PROJECT_ROOT,
+      "scripts/config/eslintrc.js"
+    ));
     baseConfig.parserOptions.project = path.join(target.cwd, "tsconfig.json");
 
     eslintInstance = new ESLint({

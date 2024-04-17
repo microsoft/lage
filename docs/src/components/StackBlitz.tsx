@@ -15,7 +15,7 @@ export const StackBlitz = (props: StackBlitzProps) => {
       stackblitzSdk.embedGithubProject(
         editorRef.current,
         githubRepo,
-        embedOptions,
+        embedOptions
       );
     }
   }, [editorRef.current]);
