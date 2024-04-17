@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Wed, 17 Apr 2024 23:37:27 GMT",
+      "version": "0.1.18",
+      "tag": "@lage-run/cache-github-actions_v0.1.18",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "54d11a6963bc9343e20f3b95f9c26a703fea2ed2",
+            "comment": "Update dependency @actions/cache to v3.2.4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 Dec 2023 09:49:09 GMT",
       "version": "0.1.17",
       "tag": "@lage-run/cache-github-actions_v0.1.17",
