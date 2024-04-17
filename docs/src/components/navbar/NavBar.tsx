@@ -28,13 +28,18 @@ export function NavBar() {
             }
           >
             {/*Creating the cross to exit the hamburger menu*/}
-            <div className="absolute top-0 right-0 px-8 py-8" onClick={() => setIsNavOpen(false)}>
+            <div
+              className="absolute top-0 right-0 px-8 py-8"
+              onClick={() => setIsNavOpen(false)}
+            >
               <Cross />
             </div>
             {/*Contents of the hamburger menu*/}
             <div className="flex flex-col space-y-2 px-4 py-24">
               <HamburgerButton to="/docs/Introduction">Guide</HamburgerButton>
-              <HamburgerButton to="https://github.com/microsoft/lage">GitHub</HamburgerButton>
+              <HamburgerButton to="https://github.com/microsoft/lage">
+                GitHub
+              </HamburgerButton>
             </div>
           </div>
         </section>

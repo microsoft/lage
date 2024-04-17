@@ -25,18 +25,21 @@ module.exports = async function transpile(data) {
         const swcOutput = await swc.transformFile(fullPath, {
           jsc: {
             parser: {
-              "syntax": "typescript",
-              "tsx": false,
-              "dynamicImport": true
+              syntax: "typescript",
+              tsx: false,
+              dynamicImport: true,
             },
             target: "es2020",
           },
           module: {
             type: "commonjs",
-            ignoreDynamic: true
+            ignoreDynamic: true,
           },
         });
-        const dest = fullPath.replace(/([/\\])src/, "$1lib").replace(".tsx", ".js").replace(".ts", ".js");
+        const dest = fullPath
+          .replace(/([/\\])src/, "$1lib")
+          .replace(".tsx", ".js")
+          .replace(".ts", ".js");
         await fs.mkdir(path.dirname(dest), { recursive: true });
         await fs.writeFile(dest, swcOutput.code);
       }

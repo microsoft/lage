@@ -1,8 +1,25 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Tue, 12 Dec 2023 04:22:41 GMT and should not be manually modified.
+This log was last generated on Fri, 15 Mar 2024 04:35:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.0
+
+Fri, 15 Mar 2024 04:35:11 GMT
+
+### Minor changes
+
+- perf optimizations (kchau@microsoft.com)
+
+## 1.0.7
+
+Thu, 21 Dec 2023 09:49:09 GMT
+
+### Patches
+
+- Pin external deps to ensure explicit updates to lage bundle (elcraig@microsoft.com)
+- Bump @lage-run/target-graph to v0.8.9
 
 ## 1.0.6
 

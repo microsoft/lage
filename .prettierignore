@@ -1,0 +1,22 @@
+# Generated or imported files
+change/*.json
+CHANGELOG.*
+LICENSE
+SECURITY.md
+*.snap
+yarn.lock
+# this is a test fixture
+yarn.js
+
+# These lines from .gitignore can be removed after prettier 3 update
+node_modules
+src/**/*.js
+dist
+lib
+*.log
+.DS_Store
+*.pdf
+coverage
+.idea/
+**/.docusaurus/
+profile*.json

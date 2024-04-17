@@ -1,13 +1,9 @@
-import { type PackageInfos } from "workspace-tools";
-
 import execa from "execa";
 import path from "path";
 import fs from "fs";
-import micromatch from "micromatch";
 
-export interface PackageTreeOptions {
+export interface LocalPackageTreeOptions {
   root: string;
-  packageInfos: PackageInfos;
   includeUntracked: boolean;
 }
 
@@ -16,16 +12,14 @@ interface PathNode {
 }
 
 /**
- * Package Tree keeps a data structure to quickly find all files in a package.
- *
- * TODO: add a watcher to make sure the tree is up to date during a "watched" run.
+ * Keeps a data structure to quickly find all files in a package.
  */
 export class PackageTree {
   #tree: PathNode = {};
   #packageFiles: Record<string, string[]> = {};
   #memoizedPackageFiles: Record<string, string[]> = {};
 
-  constructor(private options: PackageTreeOptions) {}
+  constructor(private options: LocalPackageTreeOptions) {}
 
   reset() {
     // reset the internal state
@@ -35,89 +29,63 @@ export class PackageTree {
   }
 
   async initialize() {
-    const { root, includeUntracked, packageInfos } = this.options;
-
     this.reset();
-
-    // Generate path tree of all packages in workspace (scale: ~2000 * ~3)
-    for (const info of Object.values(packageInfos)) {
-      const packagePath = path.dirname(info.packageJsonPath);
-      const pathParts = path.relative(root, packagePath).split(/[\\/]/);
-
-      let currentNode = this.#tree;
-
-      for (const part of pathParts) {
-        currentNode[part] = currentNode[part] || {};
-        currentNode = currentNode[part];
-      }
-    }
-
-    // Get all files in the workspace (scale: ~2000) according to git
-    const lsFilesResults = await execa("git", ["ls-files", "-z"], { cwd: root });
-
-    if (lsFilesResults.exitCode === 0) {
-      const files = lsFilesResults.stdout.split("\0").filter((f) => Boolean(f) && fs.existsSync(path.join(root, f)));
-      this.addToPackageTree(files);
-    }
-
-    if (includeUntracked) {
-      // Also get all untracked files in the workspace according to git
-      const lsOtherResults = await execa("git", ["ls-files", "-o", "--exclude-standard"], { cwd: root });
-      if (lsOtherResults.exitCode === 0) {
-        const files = lsOtherResults.stdout.split("\0").filter(Boolean);
-        this.addToPackageTree(files);
-      }
-    }
   }
 
-  async addToPackageTree(filePaths: string[]) {
-    // key: path/to/package (packageRoot), value: array of a tuple of [file, hash]
-    const packageFiles = this.#packageFiles;
+  async #findFilesFromGitTree(packagePath: string, patterns: string[]) {
+    const { includeUntracked } = this.options;
 
-    for (const entry of filePaths) {
-      const pathParts = entry.split(/[\\/]/);
+    const cwd = path.isAbsolute(packagePath) ? packagePath : path.join(this.options.root, packagePath);
 
-      let node = this.#tree;
-      const packagePathParts: string[] = [];
-
-      for (const part of pathParts) {
-        if (node[part]) {
-          node = node[part] as PathNode;
-          packagePathParts.push(part);
-        } else {
-          break;
-        }
+    const trackedPromise = execa(
+      "git",
+      [
+        "ls-files",
+        "-z",
+        ...patterns.filter((p) => !p.startsWith("!")),
+        ...patterns.filter((p) => p.startsWith("!")).map((p) => `:!:${p.slice(1)}`),
+      ],
+      { cwd }
+    ).then((lsFilesResults) => {
+      if (lsFilesResults.exitCode === 0) {
+        return lsFilesResults.stdout.split("\0").filter((f) => Boolean(f) && fs.existsSync(path.join(cwd, f)));
       }
-
-      const packageRoot = packagePathParts.join("/");
-      packageFiles[packageRoot] = packageFiles[packageRoot] || [];
-      packageFiles[packageRoot].push(entry);
-    }
-  }
-
-  getPackageFiles(packageName: string, patterns: string[]) {
-    const { root, packageInfos } = this.options;
-    const packagePath = path.relative(root, path.dirname(packageInfos[packageName].packageJsonPath)).replace(/\\/g, "/");
-
-    const packageFiles = this.#packageFiles[packagePath];
-
-    if (!packageFiles) {
       return [];
-    }
+    });
 
-    const key = `${packageName}\0${patterns.join("\0")}`;
+    const untrackedPromise = includeUntracked
+      ? execa(
+          "git",
+          [
+            "ls-files",
+            "-o",
+            "--exclude-standard",
+            ...patterns.filter((p) => !p.startsWith("!")),
+            ...patterns.filter((p) => p.startsWith("!")).map((p) => `:!:${p.slice(1)}`),
+          ],
+          { cwd }
+        ).then((lsOtherResults) => {
+          if (lsOtherResults.exitCode === 0) {
+            return lsOtherResults.stdout.split("\0").filter((f) => Boolean(f));
+          }
+          return [];
+        })
+      : Promise.resolve<string[]>([]);
 
+    const [trackedFiles, untrackedFiles] = await Promise.all([trackedPromise, untrackedPromise]);
+
+    return trackedFiles.concat(untrackedFiles);
+  }
+
+  async findFilesInPath(packagePath: string, patterns: string[]) {
+    const key = `${packagePath}\0${patterns.join("\0")}`;
     if (!this.#memoizedPackageFiles[key]) {
-      const packagePatterns = patterns.map((pattern) => {
-        if (pattern.startsWith("!")) {
-          return `!${path.join(packagePath, pattern.slice(1)).replace(/\\/g, "/")}`;
-        }
-
-        return path.join(packagePath, pattern).replace(/\\/g, "/");
-      });
-      this.#memoizedPackageFiles[key] = micromatch(packageFiles, packagePatterns, { dot: true });
+      const files = (await this.#findFilesFromGitTree(packagePath, patterns)).map((f) => path.join(packagePath, f));
+      this.#memoizedPackageFiles[key] = files;
     }
 
     return this.#memoizedPackageFiles[key];
   }
+
+  cleanup() {}
 }

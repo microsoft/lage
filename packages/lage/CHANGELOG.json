@@ -2,6 +2,98 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 15 Mar 2024 04:35:11 GMT",
+      "version": "2.7.13",
+      "tag": "lage_v2.7.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.7",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.13",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 26 Feb 2024 16:18:50 GMT",
+      "version": "2.7.12",
+      "tag": "lage_v2.7.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.6",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Dec 2023 09:49:09 GMT",
+      "version": "2.7.11",
+      "tag": "lage_v2.7.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "429047eb173880261b9e76f82ef1fcf7bfe9e29a",
+            "comment": "Pin external deps to ensure explicit updates to lage bundle"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.5",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.12",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Dec 2023 08:37:41 GMT",
+      "version": "2.7.10",
+      "tag": "lage_v2.7.10",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "0752bad677868d982719f792f6692ab43ad325e0",
+            "comment": "Use ranges for devDependencies"
+          }
+        ],
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.4",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.11",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 12 Dec 2023 04:22:41 GMT",
       "version": "2.7.9",
       "tag": "lage_v2.7.9",

@@ -2,6 +2,36 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Thu, 21 Dec 2023 09:49:09 GMT",
+      "version": "0.1.17",
+      "tag": "@lage-run/cache-github-actions_v0.1.17",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "429047eb173880261b9e76f82ef1fcf7bfe9e29a",
+            "comment": "Pin external deps to ensure explicit updates to lage bundle"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Dec 2023 08:37:41 GMT",
+      "version": "0.1.16",
+      "tag": "@lage-run/cache-github-actions_v0.1.16",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "0752bad677868d982719f792f6692ab43ad325e0",
+            "comment": "Use ranges for devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 12 Dec 2023 04:22:41 GMT",
       "version": "0.1.16",
       "tag": "@lage-run/cache-github-actions_v0.1.16",

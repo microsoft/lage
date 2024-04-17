@@ -2,6 +2,57 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Fri, 15 Mar 2024 04:35:11 GMT",
+      "version": "1.1.0",
+      "tag": "@lage-run/hasher_v1.1.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "71283d4af8888454c953e5228c97bfbb471c15ba",
+            "comment": "perf optimizations"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Dec 2023 09:49:09 GMT",
+      "version": "1.0.7",
+      "tag": "@lage-run/hasher_v1.0.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "429047eb173880261b9e76f82ef1fcf7bfe9e29a",
+            "comment": "Pin external deps to ensure explicit updates to lage bundle"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.8.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Dec 2023 08:37:41 GMT",
+      "version": "1.0.6",
+      "tag": "@lage-run/hasher_v1.0.6",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "0752bad677868d982719f792f6692ab43ad325e0",
+            "comment": "Use ranges for devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 12 Dec 2023 04:22:41 GMT",
       "version": "1.0.6",
       "tag": "@lage-run/hasher_v1.0.6",

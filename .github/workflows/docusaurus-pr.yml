@@ -2,9 +2,9 @@ name: Test deployment
 
 on:
   pull_request:
-    branches: 
+    branches:
       - master
-    paths: 
+    paths:
       - "docs/**"
 
 jobs:

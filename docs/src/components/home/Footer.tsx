@@ -19,7 +19,8 @@ export function Footer() {
           <div>
             <Point>Seeing is believing— give Lage a spin</Point>
             <Description>
-              There’s no better time than now to save yourself time. Get started within a minute with a single command!
+              There’s no better time than now to save yourself time. Get started
+              within a minute with a single command!
             </Description>
             <SideBySide>
               <Button isEmphasized={true} to="/docs/Introduction">
@@ -32,7 +33,10 @@ export function Footer() {
         <div className="mt-16" />
         <Section>
           <Point>Better together</Point>
-          <Description>Lage works great on its own, but even better alongside its related tools.</Description>
+          <Description>
+            Lage works great on its own, but even better alongside its related
+            tools.
+          </Description>
           <Tools />
         </Section>
       </div>
