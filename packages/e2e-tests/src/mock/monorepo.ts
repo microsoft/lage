@@ -44,26 +44,27 @@ export class Monorepo {
       fs.cpSync(packagePath, path.join(this.root, "node_modules", name), { recursive: true });
     }
 
-    fs.cpSync(path.join(__dirname, "..", "..", "yarn"), path.dirname(this.yarnPath), { recursive: true });
-    execa.sync("node", [this.yarnPath, "install"], { cwd: this.root });
+    fs.cpSync(path.resolve(__dirname, "..", "..", "yarn"), path.dirname(this.yarnPath), { recursive: true });
+    execa.sync("yarn", ["install"], { cwd: this.root });
   }
 
   generateRepoFiles() {
     this.commitFiles({
+      ".yarnrc": `yarn-path "${this.yarnPath}"`,
       "package.json": {
-        name: this.name,
+        name: this.name.replace(/ /g, "-"),
         version: "0.1.0",
         private: true,
         workspaces: ["packages/*"],
         scripts: {
-          bundle: `node ${this.yarnPath} lage bundle --reporter json --log-level silly`,
-          transpile: `node ${this.yarnPath} lage transpile --reporter json --log-level silly`,
-          build: `node ${this.yarnPath} lage build --reporter json --log-level silly`,
-          writeInfo: `node ${this.yarnPath} lage info`,
-          test: `node ${this.yarnPath} lage test --reporter json --log-level silly`,
-          lint: `node ${this.yarnPath} lage lint --reporter json --log-level silly`,
-          clear: `node ${this.yarnPath} lage cache --clear --reporter json --log-level silly`,
-          extra: `node ${this.yarnPath} lage extra --clear --reporter json --log-level silly`,
+          bundle: `lage bundle --reporter json --log-level silly`,
+          transpile: `lage transpile --reporter json --log-level silly`,
+          build: `lage build --reporter json --log-level silly`,
+          writeInfo: `lage info`,
+          test: `lage test --reporter json --log-level silly`,
+          lint: `lage lint --reporter json --log-level silly`,
+          clear: `lage cache --clear --reporter json --log-level silly`,
+          extra: `lage extra --clear --reporter json --log-level silly`,
         },
         devDependencies: {
           lage: path.resolve(__dirname, "..", "..", "..", "lage"),
