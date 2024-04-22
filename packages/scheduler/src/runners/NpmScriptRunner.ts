@@ -111,7 +111,7 @@ export class NpmScriptRunner implements TargetRunner {
       childProcess = spawn(npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: ["inherit", "pipe", "pipe"],
-        shell: process.platform === "win32",
+        shell: true,
         env: {
           ...(process.stdout.isTTY && { FORCE_COLOR: "1" }), // allow user env to override this
           ...process.env,
