@@ -4,5 +4,10 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "files.associations": {
     "*.json5": "jsonc"
+  },
+  "search.exclude": {
+    "**/lib": true,
+    "**/node_modules": true,
+    "**/*.code-search": true
   }
 }

@@ -1,3 +1,6 @@
+# Not formatted
+.*ignore
+
 # Generated or imported files
 change/*.json
 CHANGELOG.*
