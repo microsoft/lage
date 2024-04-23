@@ -32,9 +32,7 @@ export interface NpmScriptRunnerOptions {
 export class NpmScriptRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
 
-  constructor(private options: NpmScriptRunnerOptions) {
-    this.validateOptions(options);
-  }
+  constructor(private options: NpmScriptRunnerOptions) {}
 
   private getNpmArgs(task: string, taskTargs: string[]) {
     const extraArgs = taskTargs.length > 0 ? ["--", ...taskTargs] : [];
@@ -46,12 +44,6 @@ export class NpmScriptRunner implements TargetRunner {
     const packageJsonPath = join(target.cwd, "package.json");
     const packageJson = JSON.parse(await readFile(packageJsonPath, "utf8"));
     return !!packageJson.scripts?.[task];
-  }
-
-  private validateOptions(options: NpmScriptRunnerOptions) {
-    if (!existsSync(options.npmCmd)) {
-      throw new Error(`NPM Script Runner: ${this.options.npmCmd} does not exist`);
-    }
   }
 
   async shouldRun(target: Target) {

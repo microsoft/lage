@@ -76,7 +76,8 @@ export class Monorepo {
           test: ['build'],
           lint: [],
           extra: []
-        }
+        },
+        npmClient: 'yarn'
       };`,
       ".gitignore": "node_modules",
     });
