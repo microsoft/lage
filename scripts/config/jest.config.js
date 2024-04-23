@@ -1,9 +1,10 @@
 // @ts-check
 const { findProjectRoot, getPackageInfos } = require("workspace-tools");
+const fs = require("fs");
 const path = require("path");
-const swcOptions = require("./swc");
 
 const root = findProjectRoot(process.cwd()) ?? process.cwd();
+const swcOptions = JSON.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8"));
 const packages = getPackageInfos(root);
 const moduleNameMapper = Object.values(packages).reduce((acc, { packageJsonPath, name }) => {
   const packagePath = path.dirname(packageJsonPath);
