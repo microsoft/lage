@@ -8,8 +8,10 @@ import { mkdir, writeFile } from "fs/promises";
 
 import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
-import type { Target } from "@lage-run/target-graph";
+import { getStartTargetId, type Target } from "@lage-run/target-graph";
 import type { Logger } from "@lage-run/logger";
+import type { TargetHasher } from "@lage-run/hasher";
+import type { MessagePort } from "worker_threads";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -19,13 +21,16 @@ export interface WrappedTargetOptions {
   continueOnError: boolean;
   abortController: AbortController;
   pool: Pool;
+  hasher: TargetHasher;
+  onMessage?: (message: any, postMessage: MessagePort["postMessage"]) => void;
 }
 
-interface WorkerResult {
+export interface WorkerResult {
   stdoutBuffer: string;
   stderrBuffer: string;
   skipped: boolean;
   hash: string;
+  value: unknown;
 }
 
 /**
@@ -35,15 +40,22 @@ interface WorkerResult {
  * 3. Abort signal
  * 4. Continue on error
  */
-export class WrappedTarget implements TargetRun {
+export class WrappedTarget implements TargetRun<WorkerResult> {
+  #status: TargetStatus = "pending";
+  #result: WorkerResult | undefined;
   queueTime: [number, number] = [0, 0];
   startTime: [number, number] = [0, 0];
   duration: [number, number] = [0, 0];
   target: Target;
-  status: TargetStatus;
   threadId = 0;
 
-  result: Promise<WorkerResult> | undefined;
+  get result() {
+    return this.#result;
+  }
+
+  get status() {
+    return this.#status;
+  }
 
   get abortController() {
     return this.options.abortController;
@@ -54,25 +66,28 @@ export class WrappedTarget implements TargetRun {
   }
 
   get successful() {
-    return this.status === "skipped" || this.status === "success";
+    return this.#status === "skipped" || this.#status === "success";
   }
 
   get waiting() {
-    return this.status === "pending" || this.status === "queued";
+    return this.#status === "pending" || this.#status === "queued";
   }
 
   constructor(public options: WrappedTargetOptions) {
-    this.status = "pending";
     this.target = options.target;
+
+    if (this.target.id === getStartTargetId()) {
+      this.#status = "success";
+    }
   }
 
   onQueued() {
-    this.status = "queued";
+    this.#status = "queued";
     this.queueTime = process.hrtime();
   }
 
   onAbort() {
-    this.status = "aborted";
+    this.#status = "aborted";
     this.duration = process.hrtime(this.startTime);
     this.options.logger.info("", { target: this.target, status: "aborted", threadId: this.threadId });
   }
@@ -80,14 +95,14 @@ export class WrappedTarget implements TargetRun {
   onStart(threadId: number) {
     if (this.status !== "running") {
       this.threadId = threadId;
-      this.status = "running";
+      this.#status = "running";
       this.startTime = process.hrtime();
       this.options.logger.info("", { target: this.target, status: "running", threadId });
     }
   }
 
   onComplete() {
-    this.status = "success";
+    this.#status = "success";
     this.duration = process.hrtime(this.startTime);
     this.options.logger.info("", {
       target: this.target,
@@ -98,7 +113,7 @@ export class WrappedTarget implements TargetRun {
   }
 
   onFail() {
-    this.status = "failed";
+    this.#status = "failed";
     this.duration = process.hrtime(this.startTime);
     this.options.logger.info("", {
       target: this.target,
@@ -117,7 +132,7 @@ export class WrappedTarget implements TargetRun {
       this.duration = process.hrtime(this.startTime);
     }
 
-    this.status = "skipped";
+    this.#status = "skipped";
 
     if (hash) {
       this.options.logger.info("", {
@@ -131,7 +146,7 @@ export class WrappedTarget implements TargetRun {
   }
 
   async run() {
-    const { target, logger, shouldCache, abortController } = this.options;
+    const { target, logger, shouldCache, abortController, root } = this.options;
 
     const abortSignal = abortController.signal;
 
@@ -142,37 +157,32 @@ export class WrappedTarget implements TargetRun {
     }
 
     try {
-      const result = await this.runInPool();
-      const cacheEnabled = target.cache && shouldCache && result.hash;
+      this.#result = await this.runInPool();
+
+      const cacheEnabled = target.cache && shouldCache && this.#result.hash;
       // Save output if cache is enabled & cache is hit
-      if (!result.skipped && cacheEnabled) {
-        const outputLocation = getLageOutputCacheLocation(this.options.root, result.hash);
+      if (!this.#result.skipped && cacheEnabled) {
+        const outputLocation = getLageOutputCacheLocation(root, this.#result.hash);
         const outputPath = path.dirname(outputLocation);
         await mkdir(outputPath, { recursive: true });
 
-        const output = `${result.stdoutBuffer}\n${result.stderrBuffer}`;
+        const output = `${this.#result.stdoutBuffer}\n${this.#result.stderrBuffer}`;
 
         await writeFile(outputLocation, output);
 
-        this.options.logger.verbose(`>> Saved cache - ${result.hash}`, { target });
+        logger.verbose(`>> Saved cache - ${this.#result.hash}`, { target });
       }
 
-      if (result.skipped) {
-        const { hash } = result;
+      if (this.#result.skipped) {
+        const { hash } = this.#result;
 
-        const cachedOutputFile = getLageOutputCacheLocation(this.options.root, hash ?? "");
+        const cachedOutputFile = getLageOutputCacheLocation(root, hash ?? "");
 
-        if (fs.existsSync(cachedOutputFile)) {
-          const cachedOutput = fs.createReadStream(cachedOutputFile, "utf8");
-          this.options.logger.verbose(">> Replaying cached output", { target });
-          this.options.logger.stream(LogLevel.verbose, cachedOutput, { target });
-
-          return await new Promise<void>((resolve) => {
-            cachedOutput.on("close", () => {
-              this.onSkipped(hash);
-              resolve();
-            });
-          });
+        const shouldShowCachedOutput = fs.existsSync(cachedOutputFile);
+        if (shouldShowCachedOutput) {
+          const cachedOutput = fs.readFileSync(cachedOutputFile, "utf8");
+          logger.verbose(">> Replaying cached output", { target });
+          logger.verbose(cachedOutput.trim(), { target });
         }
 
         this.onSkipped(hash);
@@ -192,7 +202,7 @@ export class WrappedTarget implements TargetRun {
     }
   }
 
-  private async runInPool() {
+  private async runInPool(): Promise<WorkerResult> {
     const { target, logger, abortController, pool } = this.options;
     const abortSignal = abortController.signal;
 
@@ -202,19 +212,27 @@ export class WrappedTarget implements TargetRun {
     const bufferStdout = bufferTransform();
     const bufferStderr = bufferTransform();
 
-    let logHandler: (data: LogEntry<any> & { type: string }) => void;
+    let msgHandler: (data: LogEntry<any> & { type: string }) => void;
 
-    this.result = pool.exec(
+    const result = await (pool.exec(
       { target },
       target.weight ?? 1,
       (worker, stdout, stderr) => {
-        logHandler = (data) => {
+        const postMessage = worker.postMessage.bind(worker);
+
+        msgHandler = (data) => {
           if (data.type === "log") {
             logger.log(data.level, data.msg, { target, threadId: worker.threadId });
+          } else if (data.type === "hash") {
+            this.options.hasher.hash(target).then((hash) => {
+              worker.postMessage({ type: "hash", hash });
+            });
+          } else if (this.options.onMessage) {
+            this.options.onMessage(data, postMessage);
           }
         };
 
-        worker.on("message", logHandler);
+        worker.on("message", msgHandler);
 
         const threadId = worker.threadId;
 
@@ -238,16 +256,20 @@ export class WrappedTarget implements TargetRun {
         };
       },
       (worker) => {
-        worker.off("message", logHandler);
+        worker.off("message", msgHandler);
         releaseStdout();
         releaseStderr();
       },
       abortSignal
-    ) as Promise<WorkerResult>;
+    ) as Promise<{ value?: unknown; skipped: boolean; hash: string }>);
 
-    const result = await this.result;
-
-    return { stdoutBuffer: bufferStdout.buffer, stderrBuffer: bufferStderr.buffer, skipped: result?.skipped, hash: result?.hash };
+    return {
+      stdoutBuffer: bufferStdout.buffer,
+      stderrBuffer: bufferStderr.buffer,
+      skipped: result?.skipped,
+      hash: result?.hash,
+      value: result?.value,
+    };
   }
 
   /**
@@ -262,5 +284,13 @@ export class WrappedTarget implements TargetRun {
       target: this.target.id,
       status: this.status,
     };
+  }
+
+  /**
+   * Reset the state of this wrapped target.
+   */
+  reset() {
+    this.#result = undefined;
+    this.#status = "pending";
   }
 }

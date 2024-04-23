@@ -1,0 +1,10 @@
+{
+  "name": "monorepo-different",
+  "license": "MIT",
+  "version": "0.1.0",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  }
+}

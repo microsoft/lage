@@ -2,7 +2,7 @@
 const path = require("path");
 const fastGlob = require("fast-glob");
 
-/** @type {import("@lage-run/cli/src/types/ConfigOptions").ConfigOptions} */
+/** @type {import("lage").ConfigOptions} */
 module.exports = {
   pipeline: {
     "lage#bundle": ["^^transpile", "types"],
@@ -12,6 +12,14 @@ module.exports = {
         worker: path.join(__dirname, "scripts/worker/types.js"),
       },
       dependsOn: ["^types"],
+      outputs: ["lib/**/*.d.ts"],
+    },
+    isolatedTypes: {
+      type: "worker",
+      options: {
+        worker: path.join(__dirname, "scripts/worker/types.js"),
+      },
+      dependsOn: [],
       outputs: ["lib/**/*.d.ts"],
     },
     transpile: {

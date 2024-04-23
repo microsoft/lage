@@ -5,7 +5,7 @@ const path = require("path");
 const depcheck = require("depcheck");
 
 module.exports = async function depcheckWorker({ target }) {
-  const ignored = ["monorepo-scripts", "@lage-run/docs"];
+  const ignored = ["@lage-run/monorepo-scripts", "@lage-run/docs"];
 
   // ignore the tooling package: monorepo-scripts
   if (ignored.includes(target.packageName)) {
@@ -15,7 +15,7 @@ module.exports = async function depcheckWorker({ target }) {
   const results = await depcheck(target.cwd, {
     ignoreBinPackage: true,
     ignorePatterns: ["node_modules", "dist", "lib", "build"],
-    ignoreMatches: ["yoga-layout-prebuilt", "glob-hasher"]
+    ignoreMatches: ["yoga-layout-prebuilt", "glob-hasher"],
   });
 
   let hasErrors = false;

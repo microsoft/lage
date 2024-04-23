@@ -1,17 +1,27 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+/**
+ * @typedef {import('@docusaurus/types').Config} DocusaurusConfig
+ * @typedef {import('@docusaurus/types').PresetConfig} DocusaurusPresetConfig
+ * @typedef {import('@docusaurus/preset-classic').Options} ClassicPresetOptions
+ * @typedef {import('@docusaurus/preset-classic').ThemeConfig} ClassicThemeConfig
+ * @typedef {import('remark-shiki-twoslash').Options} ShikiTwoslashOptions
+ * @typedef {['classic', ClassicPresetOptions] | ['docusaurus-preset-shiki-twoslash', ShikiTwoslashOptions] | DocusaurusPresetConfig} PresetConfig
+ * @typedef {Omit<DocusaurusConfig, 'presets' | 'themeConfig'> & {
+ *   presets: PresetConfig[];
+ *   themeConfig: ClassicThemeConfig;
+ * }} Config
+ */
 
-/** @type {import('@docusaurus/types').Config} */
+/** @type {Config} */
 const config = {
   title: "Lage",
   tagline: "A Beautiful JS Monorepo Task Runner",
-  url: process.env.DEPLOY_URL ? process.env.DEPLOY_URL : "https://microsoft.github.io",
+  url: process.env.DEPLOY_URL || "https://microsoft.github.io",
   baseUrl: "/lage/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  onBrokenMarkdownLinks: "throw",
   favicon: "img/lage-logo.svg",
   organizationName: "microsoft", // Usually your GitHub org/user name.
   projectName: "lage", // Usually your repo name.
@@ -22,12 +32,9 @@ const config = {
   presets: [
     [
       "classic",
-      /** @type {import('@docusaurus/preset-classic').Options} */
       {
         docs: {
-          sidebarPath: require.resolve("./sidebars.js"),
-          // Please change this to your repo.
-          editUrl: "https://github.com/microsoft/lage/",
+          editUrl: "https://github.com/microsoft/lage/edit/master/docs",
         },
         theme: {
           customCss: [require.resolve("./src/css/custom.css")],
@@ -37,41 +44,35 @@ const config = {
     [
       "docusaurus-preset-shiki-twoslash",
       {
-        themes: ["min-light", "nord"],
+        themes: ["light-plus", "nord"],
       },
     ],
   ],
 
-  themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
-      navbar: {
-        logo: {
-          alt: "Lage Logo",
-          src: "img/lage.png",
+  themeConfig: {
+    navbar: {
+      logo: {
+        alt: "Lage Logo",
+        src: "img/lage.png",
+      },
+      items: [
+        {
+          type: "doc",
+          docId: "Introduction",
+          position: "left",
+          label: "Guide",
         },
-        items: [
-          {
-            type: "doc",
-            docId: "Introduction",
-            position: "left",
-            label: "Guide",
-          },
-          {
-            href: "https://github.com/microsoft/lage",
-            label: "GitHub",
-            position: "right",
-          },
-        ],
-      },
-      prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
-      },
-      colorMode: {
-        disableSwitch: false,
-      },
-    }),
+        {
+          href: "https://github.com/microsoft/lage",
+          label: "GitHub",
+          position: "right",
+        },
+      ],
+    },
+    colorMode: {
+      disableSwitch: false,
+    },
+  },
 
   plugins: [
     require.resolve("@cmfcmf/docusaurus-search-local"),

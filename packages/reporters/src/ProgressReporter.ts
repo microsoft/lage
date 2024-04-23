@@ -134,7 +134,15 @@ export class ProgressReporter implements Reporter {
 
   summarize(schedulerRunSummary: SchedulerRunSummary) {
     const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
-    const { failed, aborted, skipped, success, pending } = targetRunByStatus;
+    const { failed, aborted, skipped, success, pending, running, queued } = targetRunByStatus;
+
+    // If we are printing summary, and there are still some running / queued tasks - report them as aborted
+    for (const wrappedTarget of running.concat(queued)) {
+      const reporterTask = this.tasks.get(wrappedTarget);
+      if (reporterTask) {
+        reporterTask.complete({ status: "abort" });
+      }
+    }
 
     const statusColorFn: {
       [status in TargetStatus]: chalk.Chalk;
@@ -164,6 +172,13 @@ export class ProgressReporter implements Reporter {
         const target = wrappedTarget.target;
         const hasDurations = !!wrappedTarget.duration && !!wrappedTarget.queueTime;
         const queueDuration: [number, number] = hasDurations ? hrtimeDiff(wrappedTarget.queueTime, wrappedTarget.startTime) : [0, 0];
+
+        if (wrappedTarget.status === "running") {
+          const reporterTask = this.tasks.get(wrappedTarget.target.id);
+          if (reporterTask) {
+            reporterTask.complete({ status: "fail" });
+          }
+        }
 
         this.print(
           `${target.label} ${colorFn(

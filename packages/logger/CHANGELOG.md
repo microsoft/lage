@@ -1,8 +1,20 @@
 # Change Log - @lage-run/logger
 
-This log was last generated on Tue, 01 Nov 2022 22:25:59 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Apr 2023 02:51:19 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.0
+
+Tue, 25 Apr 2023 02:51:19 GMT
+
+### Minor changes
+
+- Added optional .cleanup() to Reporter interface, so reporters can clean up resources (stchur@microsoft.com)
+
+### Patches
+
+- Update repository and homepage (elcraig@microsoft.com)
 
 ## 1.2.2
 

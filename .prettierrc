@@ -3,6 +3,11 @@
   "semi": true,
   "singleQuote": false,
   "trailingComma": "es5",
-  "endOfLine": "auto",
-  "tabWidth": 2
+  "tabWidth": 2,
+  "overrides": [
+    {
+      "files": "*.json5",
+      "options": { "parser": "json" }
+    }
+  ]
 }

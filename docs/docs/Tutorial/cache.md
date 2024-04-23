@@ -4,7 +4,7 @@ sidebar_position: 4
 title: 4. Local Caching
 ---
 
-`lage` by default will cache tasks that it has already done recently locally on disk. As long as the source file and the command arguments have not changed, those cached results will be restored.
+`lage` by default will cache recent task results locally on disk. As long as the source file and the command arguments have not changed, those cached results will be restored.
 
 See [Remote Cache](Tutorial/remote-cache.md) for details about speeding up local dev environment even further with a remote cache from Continuous Integration jobs.
 
@@ -13,7 +13,7 @@ See [Remote Cache](Tutorial/remote-cache.md) for details about speeding up local
 Sometimes, this incremental behavior is not desired. You can override the caching behavior by using the `--no-cache` argument.
 
 ```
-$ lage build --no-cache
+lage build --no-cache
 ```
 
 ## Resetting cache
@@ -26,4 +26,4 @@ lage build --reset-cache
 
 ## Cache Options
 
-Caching capability is provided by `backfill`. All of the configuration under the `cacheOptions` key is passed to `backfill`. For the complete documentation of `cacheOptions`, see the [`backfill` configuration documentation](https://github.com/microsoft/backfill#configuration)
+Caching capability is provided by `backfill`. All of the configuration under the `cacheOptions` key is passed to `backfill`. For the complete documentation of `cacheOptions`, see the [`backfill` configuration documentation](https://github.com/microsoft/backfill#configuration).

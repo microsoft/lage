@@ -2,6 +2,21 @@
   "name": "@lage-run/find-npm-client",
   "entries": [
     {
+      "date": "Thu, 21 Dec 2023 08:37:41 GMT",
+      "version": "0.1.4",
+      "tag": "@lage-run/find-npm-client_v0.1.4",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/find-npm-client",
+            "commit": "0752bad677868d982719f792f6692ab43ad325e0",
+            "comment": "Use ranges for devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 01 Nov 2022 22:25:59 GMT",
       "tag": "@lage-run/find-npm-client_v0.1.4",
       "version": "0.1.4",

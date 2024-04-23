@@ -2,6 +2,102 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Wed, 17 Apr 2024 23:20:47 GMT",
+      "version": "0.8.0",
+      "tag": "@lage-run/worker-threads-pool_v0.8.0",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "fb4fcb8419cc778210104d7d04102fc95df13d5b",
+            "comment": "Update formatting"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Dec 2023 08:37:41 GMT",
+      "version": "0.8.0",
+      "tag": "@lage-run/worker-threads-pool_v0.8.0",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "0752bad677868d982719f792f6692ab43ad325e0",
+            "comment": "Use ranges for devDependencies"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 26 May 2023 20:44:05 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.8.0",
+      "version": "0.8.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "50b57f4af793a6595e52d71b86ada5be1e7412b9",
+            "comment": "Dynamic pooling by firing up 2 workers as a start, then adding new workers as work comes in"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 19 May 2023 22:10:20 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.7.1",
+      "version": "0.7.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "429b1e61a7237a95e1d8f3c636b51db7de748fcf",
+            "comment": "crash immediate on OOM in worker (not the memory leak case)"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 08 May 2023 22:27:16 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103",
+            "comment": "Adds ability to communicate with postMessage in the ThreadWorker"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Apr 2023 02:51:19 GMT",
+      "tag": "@lage-run/worker-threads-pool_v0.6.1",
+      "version": "0.6.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801",
+            "comment": "Update repository and homepage"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/worker-threads-pool",
+            "comment": "Bump @lage-run/logger to v1.3.0",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 Mar 2023 23:46:52 GMT",
       "tag": "@lage-run/worker-threads-pool_v0.6.0",
       "version": "0.6.0",

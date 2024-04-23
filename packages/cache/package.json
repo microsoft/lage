@@ -1,10 +1,12 @@
 {
   "name": "@lage-run/cache",
-  "version": "0.5.3",
+  "version": "1.1.5",
   "description": "Cache for Lage",
   "repository": {
+    "type": "git",
     "url": "https://github.com/microsoft/lage"
   },
+  "homepage": "https://microsoft.github.io/lage/",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -15,18 +17,16 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/hasher": "^0.2.2",
-    "@lage-run/target-graph": "^0.8.3",
-    "@lage-run/logger": "^1.2.2",
-    "backfill-config": "^6.3.1",
-    "backfill-cache": "^5.6.4",
-    "backfill-logger": "^5.1.3",
-    "glob-hasher": "1.2.1",
-    "fast-glob": "3.2.12"
+    "@lage-run/target-graph": "^0.8.9",
+    "@lage-run/logger": "^1.3.0",
+    "backfill-cache": "5.7.1",
+    "backfill-config": "6.4.1",
+    "backfill-logger": "5.2.1",
+    "glob-hasher": "^1.3.0"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "*",
-    "monorepo-scripts": "*"
+    "@lage-run/monorepo-scripts": "*"
   },
   "publishConfig": {
     "access": "public"

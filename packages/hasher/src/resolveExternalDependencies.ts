@@ -1,6 +1,6 @@
 import type { ParsedLock, WorkspaceInfo } from "workspace-tools";
 import { queryLockFile, listOfWorkspacePackageNames } from "workspace-tools";
-import { nameAtVersion } from "./helpers.js";
+import { nameAtVersion } from "./nameAtVersion.js";
 
 export type Dependencies = { [key in string]: string };
 

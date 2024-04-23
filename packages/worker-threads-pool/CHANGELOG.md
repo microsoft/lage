@@ -1,8 +1,41 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Thu, 30 Mar 2023 23:46:52 GMT and should not be manually modified.
+This log was last generated on Fri, 26 May 2023 20:44:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.0
+
+Fri, 26 May 2023 20:44:05 GMT
+
+### Minor changes
+
+- Dynamic pooling by firing up 2 workers as a start, then adding new workers as work comes in (kchau@microsoft.com)
+
+## 0.7.1
+
+Fri, 19 May 2023 22:10:20 GMT
+
+### Patches
+
+- crash immediate on OOM in worker (not the memory leak case) (kchau@microsoft.com)
+
+## 0.7.0
+
+Mon, 08 May 2023 22:27:16 GMT
+
+### Minor changes
+
+- Adds ability to communicate with postMessage in the ThreadWorker (kchau@microsoft.com)
+
+## 0.6.1
+
+Tue, 25 Apr 2023 02:51:19 GMT
+
+### Patches
+
+- Update repository and homepage (elcraig@microsoft.com)
+- Bump @lage-run/logger to v1.3.0
 
 ## 0.6.0
 

@@ -4,11 +4,11 @@ tags:
   - version 2
 ---
 
-import { Badge } from '@site/src/components/Badge'
+import { Badge } from "@site/src/components/Badge";
 
 <Badge>version 2</Badge>
 
-TypeScript is a superset on top of JavaScript that adds type safety checks and a downlevel conversion of modern ECMAScript-like syntax with types to a target ECMAScript level. In a monorepo, we are interested in how to accelerate two aspects of TypeScript: transpilation and type checking. Let's go!
+TypeScript is a superset on top of JavaScript that adds type safety checks and downlevel conversion of modern ECMAScript-like syntax with types to a target ECMAScript level. In a monorepo, we are interested in how to accelerate two aspects of TypeScript: transpilation and type checking. Let's go!
 
 ## Fastest transpilation
 
@@ -20,9 +20,7 @@ tsc -p some-package/tsconfig.json --isolatedModules
 
 This is something you can place inside your package's `package.json` like so:
 
-```
-// @filename package.json
-
+```json title="/package.json"
 {
   "scripts": {
     "transpile": "tsc -p some-package/tsconfig.json --isolatedModules"
@@ -30,29 +28,27 @@ This is something you can place inside your package's `package.json` like so:
 }
 ```
 
-Recently, many pure transpilers have been made to make transpilation even faster. You can use any of these packages: `swc` (Rust based), `esbuild` (Go based), `sucrase` (Node.js based). In this document, we will show one of the packages listed - `swc`:
+Recently, many pure transpilers have been made to make transpilation even faster. You can use any of these packages: `swc` (Rust-based), `esbuild` (Go-based), `sucrase` (Node.js-based). In this document, we will demonstrate with `swc`:
 
-```
+```shell
 # if you use npm
-$ npm i -D @swc/cli @swc/core
+npm i -D @swc/cli @swc/core
 
 # if you use yarn
-$ yarn add -D @swc/cli @swc/core
+yarn add -D @swc/cli @swc/core
 ```
 
-```
-// @filename package.json
-
+```json title="/package.json"
 {
   "scripts": {
     "transpile": "swc ./src -d lib"
   }
 }
-``` 
+```
 
-You could also skip `@swc/cli` package, and make your own custom worker script (configure this inside the `lage.config.js` pipeline as a "worker" type):
+You could also skip `@swc/cli` package, and make your own custom worker script (configure this inside the `lage.config.js` pipeline as a `"worker"` type):
 
-```js
+```js title="/scripts/workers/swc-worker.js"
 const path = require("path");
 const fs = require("fs/promises");
 const swc = require("@swc/core");
@@ -72,13 +68,22 @@ module.exports = async function transpile(data) {
       const fullPath = path.join(dir, entry.name);
 
       // some basic "excluded directory" list: node_modules, lib, tests, dist
-      if (entry.isDirectory() && entry.name !== "node_modules" && entry.name !== "lib" && entry.name !== "tests" && entry.name !== "dist") {
+      if (
+        entry.isDirectory() &&
+        entry.name !== "node_modules" &&
+        entry.name !== "lib" &&
+        entry.name !== "tests" &&
+        entry.name !== "dist"
+      ) {
         queue.push(fullPath);
-      } 
-      // if file extension is .ts - you maybe want to include .tsx here as well for repos that have TSX files
+      }
+      // if file extension is .ts - you maybe want to include .tsx here as well
+      // for repos that have TSX files
       else if (entry.isFile() && entry.name.endsWith(".ts")) {
         const swcOutput = await swc.transformFile(fullPath);
-        const dest = fullPath.replace(/([/\\])src/, "$1lib").replace(".ts", ".js");
+        const dest = fullPath
+          .replace(/([/\\])src/, "$1lib")
+          .replace(".ts", ".js");
         await fs.mkdir(path.dirname(dest), { recursive: true });
         await fs.writeFile(dest, swcOutput.code);
       }
@@ -89,23 +94,27 @@ module.exports = async function transpile(data) {
 
 ## Fastest Type Checking
 
-The industry is abuzz about how to replace TypeScript with a faster transpiler. There is still no open sourced TypeScript type checker that retains the full fidelity of the work that is done by `tsc`. TypeScript compiler is a single threaded program, so previously the fastest way to type check without caching (i.e fastest first run) is to flatten everything into a single TS program with all the TypeScript source files found inside monorepo. This indeed is currently the fastest way to type check, however, we can do better. In particular, we would like to have the best of these features of `lage`:
+The industry is abuzz about how to replace TypeScript with a faster transpiler. There is still no open sourced TypeScript type checker that retains the full fidelity of the work that is done by `tsc`.
+
+TypeScript compiler is a single threaded program, so previously the fastest way to type check without caching (i.e fastest first run) is to flatten everything into a single TS program with all the TypeScript source files found inside monorepo. This indeed is currently the fastest way to type check, but we can do better.
+
+In particular, we would like to have the best of these features of `lage`:
 
 1. remote cache
 2. scope skipping
 3. pipeline across workers (multi-core)
 
-A naive approach in achieving a faster build would have been to subdivide the TypeScript project by packages each with its own `tsc -p tsconfig.json` script inside a `build` script of a `package.json` file. It then would allow the project to be subdivided in smaller pieces that can be cached and executed in parallel topologically. This is subtly different than the project reference feature of TypeScript. 
+A naive approach to achieving a faster build would be to subdivide the TypeScript project into packages, each with its own `package.json` script `"build": "tsc -p tsconfig.json"`. Builds of these packages can be cached and executed in parallel topologically. This is subtly different than the project references feature of TypeScript.
 
 > :note: Project references are not preferable because it incurs an overhead of resolution of modules as well as having a tool-specific cache that isn't hooked up with a remote cache
 
-This solution will scale to a certain degree of scale. The speed up is highly dependent on the shape of the package dependency graph. This is because (1) remote caching, (2) scope skipping, and even a distributed execution (not present in lage (yet?)) is highly dependent on the the shape of the graph. To truly achieve the optimal type checker that can compete with the single flattened TS project strategy is to see why it is faster. The answer is that TS is spending an large amount of time given a complex repo in re-processing source files. You can see this in an individual trace of a single package - much of the time is in "ts.findSourceFile()" processing the `d.ts` files from the package dependencies. Even with `skipLibCheck`, we still have to load type information from these module dependency into memory each time. A single compilation for all packages would have the ability to re-use this from memory.
+This solution will scale up to a certain degree. The speed up is highly dependent on the shape of the package dependency graph. This is because (1) remote caching, (2) scope skipping, and even a distributed execution (not present in lage (yet?)) are highly dependent on the the shape of the graph.
 
-`lage` worker is here to rescue us from the single-threaded, no-remote-cache bleak state! `lage` has been applied inside various 10+ million lines of code repositories and has shown to cut type checking time by at least 2 (build agents are slower than local development machines):
+To truly achieve the optimal type checker that can compete with the single flattened TS project strategy, we must understand why the flattened project is faster in a complex repo. The answer is that in a divided project, TS is spending a large amount of time on re-processing source files. You can see this in a trace of a single package: much of the time is in `ts.findSourceFile()` processing the `d.ts` files from the package dependencies. Even with `skipLibCheck`, we still have to load type information from these dependencies into memory each time. A single compilation for all packages would have the ability to re-use this from memory.
 
-```js
-// @filename tsc-worker.js
+`lage` workers are here to rescue us from the single-threaded, no-remote-cache bleak state! `lage` has been applied inside various 10+ million lines of code repositories and has shown to cut type checking time by at least 2 (build agents are slower than local development machines).
 
+```js title="/scripts/workers/tsc-worker.js"
 const ts = require("typescript");
 const path = require("path");
 const { existsSync } = require("fs");
@@ -149,7 +158,7 @@ function createCompilerHost(compilerOptions) {
 
 async function tsc(data) {
   const { target } = data; // Lage target data
-  
+
   const pathString = path.normalize(target.cwd);
   const packageString = pathString.substring(pathString.lastIndexOf("\\") + 1);
 
@@ -193,7 +202,7 @@ async function tsc(data) {
     semantics: program.getSemanticDiagnostics(),
     declaration: program.getDeclarationDiagnostics(),
     syntactic: program.getSyntacticDiagnostics(),
-    global: program.getGlobalDiagnostics(),
+    global: program.getGlobalDiagnostics()
   };
 
   const allErrors = [];
@@ -204,7 +213,7 @@ async function tsc(data) {
     console.log(e.messageText);
     throw new Error("Encountered errors while emitting");
   }
-  
+
   let hasErrors = false;
 
   for (const kind of Object.keys(errors)) {
@@ -215,7 +224,9 @@ async function tsc(data) {
   }
 
   if (hasErrors) {
-    console.log(ts.formatDiagnosticsWithColorAndContext(allErrors, compilerHost))
+    console.log(
+      ts.formatDiagnosticsWithColorAndContext(allErrors, compilerHost)
+    );
     throw new Error("Failed to compile");
   } else {
     console.log("Compiled successfully\n");
@@ -225,17 +236,17 @@ async function tsc(data) {
 
 function parseConfigHostFromCompilerHostLike(host) {
   return {
-    fileExists: f => host.fileExists(f),
+    fileExists: (f) => host.fileExists(f),
     readDirectory(root, extensions, excludes, includes, depth) {
       return host.readDirectory(root, extensions, excludes, includes, depth);
     },
-    readFile: f => host.readFile(f),
+    readFile: (f) => host.readFile(f),
     useCaseSensitiveFileNames: host.useCaseSensitiveFileNames,
     getCurrentDirectory: host.getCurrentDirectory,
-    onUnRecoverableConfigFileDiagnostic: d => {
+    onUnRecoverableConfigFileDiagnostic: (d) => {
       throw new Error(ts.flattenDiagnosticMessageText(d.messageText, "\n"));
     },
-    trace: host.trace,
+    trace: host.trace
   };
 }
 

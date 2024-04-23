@@ -2,8 +2,8 @@ name: Windows Rolling
 
 on:
   schedule:
-    - cron:  '30 5,17 * * *'
-    
+    - cron: "30 5,17 * * *"
+
 jobs:
   build:
     strategy:

@@ -2,6 +2,96 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Thu, 21 Dec 2023 09:49:09 GMT",
+      "version": "0.8.9",
+      "tag": "@lage-run/target-graph_v0.8.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "429047eb173880261b9e76f82ef1fcf7bfe9e29a",
+            "comment": "Pin external deps to ensure explicit updates to lage bundle"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Dec 2023 08:37:41 GMT",
+      "version": "0.8.8",
+      "tag": "@lage-run/target-graph_v0.8.8",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "0752bad677868d982719f792f6692ab43ad325e0",
+            "comment": "Use ranges for devDependencies"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 12 Dec 2023 04:22:41 GMT",
+      "version": "0.8.8",
+      "tag": "@lage-run/target-graph_v0.8.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "stchur@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "f631134451741444619e28c80616ba22fc6454cf",
+            "comment": "Upgrade workspace-tools package to latest"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 17 Jul 2023 15:14:04 GMT",
+      "tag": "@lage-run/target-graph_v0.8.7",
+      "version": "0.8.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6",
+            "comment": "Update lage core deps"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 08 May 2023 22:27:16 GMT",
+      "tag": "@lage-run/target-graph_v0.8.6",
+      "version": "0.8.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103",
+            "comment": "fixed against tests"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Apr 2023 02:51:19 GMT",
+      "tag": "@lage-run/target-graph_v0.8.4",
+      "version": "0.8.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801",
+            "comment": "Update repository and homepage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 14 Apr 2023 04:37:55 GMT",
       "tag": "@lage-run/target-graph_v0.8.3",
       "version": "0.8.3",

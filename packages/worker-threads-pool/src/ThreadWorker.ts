@@ -4,7 +4,7 @@ import { endMarker, startMarker } from "./stdioStreamMarkers.js";
 import { EventEmitter } from "events";
 import { Readable } from "stream";
 import { TaskInfo } from "./TaskInfo.js";
-import { Worker } from "worker_threads";
+import { type TransferListItem, Worker } from "worker_threads";
 import crypto from "crypto";
 import os from "os";
 import type { IWorker } from "./types/WorkerQueue.js";
@@ -96,16 +96,18 @@ export class ThreadWorker extends EventEmitter implements IWorker {
     worker.on("message", msgHandler);
 
     const errHandler = (err) => {
-      Promise.all([this.#stdoutInfo.promise, this.#stderrInfo.promise]).then(() => {
-        // In case of an uncaught exception: Call the callback that was passed to
-        // `runTask` with the error.
-        if (this.#taskInfo) {
-          this.#taskInfo.done(err, null);
-        }
+      // We likely have a worker that has crashed - many instances of this is due to out-of-memory errors, we need to fail fast!
+      this.#stdoutInfo.resolve();
+      this.#stderrInfo.resolve();
 
+      // In case of an uncaught exception: Call the callback that was passed to
+      // `runTask` with the error, otherwise, just emit an "error" event (which will crash the process if not handled)
+      if (this.#taskInfo) {
+        this.#taskInfo.abortSignal?.removeEventListener("abort", this.#handleAbort);
+        this.#taskInfo.done(err, null);
+      } else {
         this.emit("error", err);
-        this.restart();
-      });
+      }
     };
 
     // The 'error' event is emitted if the worker thread throws an uncaught exception. In that case, the worker is terminated.
@@ -190,7 +192,9 @@ export class ThreadWorker extends EventEmitter implements IWorker {
   }
 
   #handleAbort() {
-    this.#worker.postMessage({ type: "abort" });
+    if (this.#worker) {
+      this.#worker.postMessage({ type: "abort" });
+    }
   }
 
   start(work: QueueItem, abortSignal?: AbortSignal) {
@@ -252,5 +256,9 @@ export class ThreadWorker extends EventEmitter implements IWorker {
 
   async checkMemoryUsage() {
     this.#worker.postMessage({ type: "check-memory-usage" });
+  }
+
+  postMessage(value: any, transferList?: readonly TransferListItem[] | undefined): void {
+    this.#worker.postMessage(value, transferList);
   }
 }

@@ -1,8 +1,227 @@
 # Change Log - lage
 
-This log was last generated on Fri, 14 Apr 2023 04:37:55 GMT and should not be manually modified.
+This log was last generated on Fri, 15 Mar 2024 04:35:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.13
+
+Fri, 15 Mar 2024 04:35:11 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.16.7
+- Bump @lage-run/scheduler to v1.1.13
+
+## 2.7.12
+
+Mon, 26 Feb 2024 16:18:50 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.16.6
+
+## 2.7.11
+
+Thu, 21 Dec 2023 09:49:09 GMT
+
+### Patches
+
+- Pin external deps to ensure explicit updates to lage bundle (elcraig@microsoft.com)
+- Bump @lage-run/cli to v0.16.5
+- Bump @lage-run/scheduler to v1.1.12
+
+## 2.7.10
+
+Thu, 21 Dec 2023 08:37:41 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.16.4
+- Bump @lage-run/scheduler to v1.1.11
+
+## 2.7.9
+
+Tue, 12 Dec 2023 04:22:41 GMT
+
+### Patches
+
+- Upgrade workspace-tools package to latest (stchur@microsoft.com)
+- Bump @lage-run/cli to v0.16.3
+- Bump @lage-run/scheduler to v1.1.10
+
+## 2.7.8
+
+Tue, 05 Sep 2023 22:23:23 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.16.2
+- Bump @lage-run/scheduler to v1.1.9
+
+## 2.7.7
+
+Tue, 05 Sep 2023 22:19:29 GMT
+
+### Patches
+
+- Update backfill dependencies (elcraig@microsoft.com)
+- Bump @lage-run/cli to v0.16.1
+- Bump @lage-run/scheduler to v1.1.8
+
+## 2.7.6
+
+Wed, 09 Aug 2023 18:41:19 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.16.0
+
+## 2.7.5
+
+Mon, 17 Jul 2023 15:14:04 GMT
+
+### Patches
+
+- Update lage core deps (email not defined)
+- Bump @lage-run/cli to v0.15.13
+- Bump @lage-run/scheduler to v1.1.7
+
+## 2.7.4
+
+Tue, 11 Jul 2023 14:51:52 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.15.12
+- Bump @lage-run/scheduler to v1.1.6
+
+## 2.7.3
+
+Wed, 21 Jun 2023 19:06:25 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.15.11
+- Bump @lage-run/scheduler to v1.1.5
+
+## 2.7.2
+
+Thu, 15 Jun 2023 17:04:58 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.15.10
+- Bump @lage-run/scheduler to v1.1.4
+
+## 2.7.1
+
+Tue, 30 May 2023 18:19:34 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.15.9
+- Bump @lage-run/scheduler to v1.1.3
+
+## 2.7.0
+
+Fri, 26 May 2023 20:44:05 GMT
+
+### Minor changes
+
+- Dynamic pooling by firing up 2 workers as a start, then adding new workers as work comes in (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.15.8
+- Bump @lage-run/scheduler to v1.1.2
+
+## 2.6.6
+
+Fri, 26 May 2023 01:09:04 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.15.7
+- Bump @lage-run/scheduler to v1.1.1
+
+## 2.6.5
+
+Fri, 26 May 2023 00:17:46 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.15.6
+- Bump @lage-run/scheduler to v1.1.0
+
+## 2.6.4
+
+Thu, 25 May 2023 15:46:02 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.15.5
+- Bump @lage-run/scheduler to v1.0.2
+
+## 2.6.3
+
+Fri, 19 May 2023 22:10:20 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.15.4
+- Bump @lage-run/scheduler to v1.0.1
+
+## 2.6.2
+
+Fri, 12 May 2023 06:12:34 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.15.3
+
+## 2.6.1
+
+Tue, 09 May 2023 20:03:32 GMT
+
+### Patches
+
+- switching to using esbuild to bundle instead to make the bundling super fast (kchau@microsoft.com)
+
+## 2.6.0
+
+Mon, 08 May 2023 22:27:16 GMT
+
+### Minor changes
+
+- Swapped to using a target hasher that is capable of hashing a target at a time, with support for inputs (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.15.2
+- Bump @lage-run/scheduler to v1.0.0
+
+## 2.5.6
+
+Mon, 08 May 2023 16:33:24 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.15.1
+
+## 2.5.5
+
+Wed, 26 Apr 2023 04:56:20 GMT
+
+### Patches
+
+- Update readme (elcraig@microsoft.com)
+- Bump @lage-run/cli to v0.15.0
+- Bump @lage-run/scheduler to v0.11.4
+
+## 2.5.4
+
+Tue, 25 Apr 2023 02:51:19 GMT
+
+### Patches
+
+- Update repository and homepage (elcraig@microsoft.com)
+- Bump @lage-run/cli to v0.14.0
+- Bump @lage-run/scheduler to v0.11.3
 
 ## 2.5.3
 

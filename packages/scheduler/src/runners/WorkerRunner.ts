@@ -72,7 +72,7 @@ export class WorkerRunner implements TargetRunner {
       throw new Error("WorkerRunner: worker script must export a function; you likely need to use `module.exports = function() {...}`");
     }
 
-    await runFn({ target, weight, taskArgs, abortSignal });
+    return await runFn({ target, weight, taskArgs, abortSignal });
   }
 
   async getScriptModule(target: Target) {

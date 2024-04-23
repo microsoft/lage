@@ -18,15 +18,9 @@ describe("RemoteFallbackCacheProvider", () => {
         cacheOptions: {
           writeRemoteCache: true,
           cacheStorageConfig: {
-            provider: (logger, cwd) => ({
-              async fetch(hash) {
-                return false;
-              },
-
-              async put(hash, filesToCache) {
-              },
-            }),
+            provider: 'local'
           },
+          internalCacheFolder: '.lage-cache-test'
         } 
       };`
     );
@@ -115,16 +109,10 @@ describe("RemoteFallbackCacheProvider", () => {
         cache: true,
         cacheOptions: {
           cacheStorageConfig: {
-            provider: (logger, cwd) => ({
-              async fetch(hash) {
-                return false;
-              },
-
-              async put(hash, filesToCache) {
-              },
-            }),
+            provider: 'local'
           },
-        } 
+          internalCacheFolder: '.lage-cache-test'
+        }  
       };`
     );
 
@@ -169,16 +157,10 @@ describe("RemoteFallbackCacheProvider", () => {
         cacheOptions: {
           writeRemoteCache: true,
           cacheStorageConfig: {
-            provider: (logger, cwd) => ({
-              async fetch(hash) {
-                return false;
-              },
-
-              async put(hash, filesToCache) {
-              },
-            }),
+            provider: 'local'
           },
-        } 
+          internalCacheFolder: '.lage-cache-test'
+        }
       };`
     );
 

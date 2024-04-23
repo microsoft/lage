@@ -11,4 +11,7 @@ export interface Reporter<TLogStructuredData extends LogStructuredData = LogStru
 
   /** renders a summary based on the incoming data */
   summarize(context: unknown): void;
+
+  /** gives a reporter an opportunity to clean up any resources */
+  cleanup?: () => void;
 }

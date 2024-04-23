@@ -2,6 +2,551 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 17 Apr 2024 23:20:47 GMT",
+      "version": "2.7.13",
+      "tag": "lage_v2.7.13",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "fb4fcb8419cc778210104d7d04102fc95df13d5b",
+            "comment": "Update formatting"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 15 Mar 2024 04:35:11 GMT",
+      "version": "2.7.13",
+      "tag": "lage_v2.7.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.7",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.13",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 26 Feb 2024 16:18:50 GMT",
+      "version": "2.7.12",
+      "tag": "lage_v2.7.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.6",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Dec 2023 09:49:09 GMT",
+      "version": "2.7.11",
+      "tag": "lage_v2.7.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "429047eb173880261b9e76f82ef1fcf7bfe9e29a",
+            "comment": "Pin external deps to ensure explicit updates to lage bundle"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.5",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.12",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Dec 2023 08:37:41 GMT",
+      "version": "2.7.10",
+      "tag": "lage_v2.7.10",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "0752bad677868d982719f792f6692ab43ad325e0",
+            "comment": "Use ranges for devDependencies"
+          }
+        ],
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.4",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.11",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 12 Dec 2023 04:22:41 GMT",
+      "version": "2.7.9",
+      "tag": "lage_v2.7.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "stchur@microsoft.com",
+            "package": "lage",
+            "commit": "f631134451741444619e28c80616ba22fc6454cf",
+            "comment": "Upgrade workspace-tools package to latest"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.3",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.10",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 05 Sep 2023 22:23:23 GMT",
+      "version": "2.7.8",
+      "tag": "lage_v2.7.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.2",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 05 Sep 2023 22:19:29 GMT",
+      "tag": "lage_v2.7.7",
+      "version": "2.7.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "1b921746f45e232095c13e35039b2f425ff74f8e",
+            "comment": "Update backfill dependencies"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.1",
+            "commit": "1b921746f45e232095c13e35039b2f425ff74f8e"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.8",
+            "commit": "1b921746f45e232095c13e35039b2f425ff74f8e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 09 Aug 2023 18:41:19 GMT",
+      "tag": "lage_v2.7.6",
+      "version": "2.7.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.16.0",
+            "commit": "228357ca14429835006fe0bf7018e52ad551243e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 17 Jul 2023 15:14:04 GMT",
+      "tag": "lage_v2.7.5",
+      "version": "2.7.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6",
+            "comment": "Update lage core deps"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.13",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.7",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Jul 2023 14:51:52 GMT",
+      "tag": "lage_v2.7.4",
+      "version": "2.7.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.12",
+            "commit": "e7dbec3c24355721132a15425fa5044c74c13efb"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.6",
+            "commit": "e7dbec3c24355721132a15425fa5044c74c13efb"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 21 Jun 2023 19:06:25 GMT",
+      "tag": "lage_v2.7.3",
+      "version": "2.7.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.11",
+            "commit": "3efba30544ff1844986f469e01b47316d700ceeb"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.5",
+            "commit": "3efba30544ff1844986f469e01b47316d700ceeb"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 15 Jun 2023 17:04:58 GMT",
+      "tag": "lage_v2.7.2",
+      "version": "2.7.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.10",
+            "commit": "91dfab46c2cb13c175931f12f2964b2b9ace491a"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.4",
+            "commit": "91dfab46c2cb13c175931f12f2964b2b9ace491a"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 30 May 2023 18:19:34 GMT",
+      "tag": "lage_v2.7.1",
+      "version": "2.7.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.9",
+            "commit": "88d72690b8e3444290d6be5c7072188cf85b4c39"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.3",
+            "commit": "88d72690b8e3444290d6be5c7072188cf85b4c39"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 26 May 2023 20:44:05 GMT",
+      "tag": "lage_v2.7.0",
+      "version": "2.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "50b57f4af793a6595e52d71b86ada5be1e7412b9",
+            "comment": "Dynamic pooling by firing up 2 workers as a start, then adding new workers as work comes in"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.8",
+            "commit": "50b57f4af793a6595e52d71b86ada5be1e7412b9"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.2",
+            "commit": "50b57f4af793a6595e52d71b86ada5be1e7412b9"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 26 May 2023 01:09:04 GMT",
+      "tag": "lage_v2.6.6",
+      "version": "2.6.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.7",
+            "commit": "8cb78bef8aeb568c2da2ac62d0e0a62d3580847d"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.1",
+            "commit": "8cb78bef8aeb568c2da2ac62d0e0a62d3580847d"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 26 May 2023 00:17:46 GMT",
+      "tag": "lage_v2.6.5",
+      "version": "2.6.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.6",
+            "commit": "73192733ef3891d4e22928daaf1787402def5e8d"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.1.0",
+            "commit": "73192733ef3891d4e22928daaf1787402def5e8d"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 May 2023 15:46:02 GMT",
+      "tag": "lage_v2.6.4",
+      "version": "2.6.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.5",
+            "commit": "c2bf5ab7a31c05a11e9488a92d58ef0f74bc3e9d"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.0.2",
+            "commit": "c2bf5ab7a31c05a11e9488a92d58ef0f74bc3e9d"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 19 May 2023 22:10:20 GMT",
+      "tag": "lage_v2.6.3",
+      "version": "2.6.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.4",
+            "commit": "429b1e61a7237a95e1d8f3c636b51db7de748fcf"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.0.1",
+            "commit": "429b1e61a7237a95e1d8f3c636b51db7de748fcf"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 12 May 2023 06:12:34 GMT",
+      "tag": "lage_v2.6.2",
+      "version": "2.6.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.3",
+            "commit": "ab261addb6264b298e3c59b06aa0dfb58e53a9d4"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 09 May 2023 20:03:32 GMT",
+      "tag": "lage_v2.6.1",
+      "version": "2.6.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "353cb7b15642f86a38bc2e36d7036590fd5eb05d",
+            "comment": "switching to using esbuild to bundle instead to make the bundling super fast"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 08 May 2023 22:27:16 GMT",
+      "tag": "lage_v2.6.0",
+      "version": "2.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103",
+            "comment": "Swapped to using a target hasher that is capable of hashing a target at a time, with support for inputs"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.2",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.0.0",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 08 May 2023 16:33:24 GMT",
+      "tag": "lage_v2.5.6",
+      "version": "2.5.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.1",
+            "commit": "fbe51aa289332ec599ceeace4171dc1f7d2f5377"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 Apr 2023 04:56:20 GMT",
+      "tag": "lage_v2.5.5",
+      "version": "2.5.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "56910ce2ef67d9d3dc99b7a75df007820e9444c8",
+            "comment": "Update readme"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.15.0",
+            "commit": "994af55fcc890b448fc2b5cd5e4ba8bca0832997"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v0.11.4",
+            "commit": "994af55fcc890b448fc2b5cd5e4ba8bca0832997"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Apr 2023 02:51:19 GMT",
+      "tag": "lage_v2.5.4",
+      "version": "2.5.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801",
+            "comment": "Update repository and homepage"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.14.0",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v0.11.3",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 14 Apr 2023 04:37:55 GMT",
       "tag": "lage_v2.5.3",
       "version": "2.5.3",

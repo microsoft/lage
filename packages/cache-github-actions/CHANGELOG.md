@@ -1,8 +1,56 @@
 # Change Log - @lage-run/cache-github-actions
 
-This log was last generated on Fri, 14 Apr 2023 04:37:54 GMT and should not be manually modified.
+This log was last generated on Wed, 17 Apr 2024 23:37:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.18
+
+Wed, 17 Apr 2024 23:37:27 GMT
+
+### Patches
+
+- Update dependency @actions/cache to v3.2.4 (email not defined)
+
+## 0.1.17
+
+Thu, 21 Dec 2023 09:49:09 GMT
+
+### Patches
+
+- Pin external deps to ensure explicit updates to lage bundle (elcraig@microsoft.com)
+
+## 0.1.16
+
+Tue, 12 Dec 2023 04:22:41 GMT
+
+### Patches
+
+- Upgrade workspace-tools package to latest (stchur@microsoft.com)
+
+## 0.1.15
+
+Tue, 05 Sep 2023 22:19:29 GMT
+
+### Patches
+
+- Update backfill dependencies (elcraig@microsoft.com)
+
+## 0.1.14
+
+Mon, 17 Jul 2023 15:14:04 GMT
+
+### Patches
+
+- Update lage core deps (email not defined)
+
+## 0.1.13
+
+Tue, 25 Apr 2023 02:51:19 GMT
+
+### Patches
+
+- Update repository and homepage (elcraig@microsoft.com)
 
 ## 0.1.12
 

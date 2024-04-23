@@ -1,8 +1,87 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Fri, 14 Apr 2023 04:37:55 GMT and should not be manually modified.
+This log was last generated on Thu, 21 Dec 2023 09:49:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.7
+
+Thu, 21 Dec 2023 09:49:09 GMT
+
+### Patches
+
+- Pin external deps to ensure explicit updates to lage bundle (elcraig@microsoft.com)
+- Bump @lage-run/scheduler-types to v0.3.13
+- Bump @lage-run/target-graph to v0.8.9
+
+## 1.2.6
+
+Tue, 12 Dec 2023 04:22:41 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.12
+- Bump @lage-run/target-graph to v0.8.8
+
+## 1.2.5
+
+Mon, 17 Jul 2023 15:14:04 GMT
+
+### Patches
+
+- Update lage core deps (email not defined)
+- Bump @lage-run/scheduler-types to v0.3.11
+- Bump @lage-run/target-graph to v0.8.7
+
+## 1.2.4
+
+Thu, 15 Jun 2023 17:04:58 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.10
+
+## 1.2.3
+
+Fri, 12 May 2023 06:12:34 GMT
+
+### Patches
+
+- Update @ms-cloudpack/task-reporter to fix "performance is not defined" issue (elcraig@microsoft.com)
+
+## 1.2.2
+
+Mon, 08 May 2023 22:27:16 GMT
+
+### Patches
+
+- Fixed progress reporter (kchau@microsoft.com)
+- Bump @lage-run/scheduler-types to v0.3.9
+- Bump @lage-run/target-graph to v0.8.6
+- Bump @lage-run/format-hrtime to v0.1.5
+
+## 1.2.1
+
+Mon, 08 May 2023 16:33:24 GMT
+
+### Patches
+
+- reporting "abort" status for "queued" or "running" tasks when abortSignal is received (kchau@microsoft.com)
+
+## 1.2.0
+
+Tue, 25 Apr 2023 02:51:19 GMT
+
+### Minor changes
+
+- Add VerboseFileLogReporter, which writes verbose, ungrouped logs to a file (stchur@microsoft.com)
+- Bump @lage-run/logger to v1.3.0
+- Bump @lage-run/scheduler-types to v0.3.8
+- Bump @lage-run/target-graph to v0.8.4
+
+### Patches
+
+- Update repository and homepage (elcraig@microsoft.com)
 
 ## 1.1.2
 

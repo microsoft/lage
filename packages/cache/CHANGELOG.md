@@ -1,8 +1,60 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Fri, 14 Apr 2023 04:37:54 GMT and should not be manually modified.
+This log was last generated on Thu, 21 Dec 2023 09:49:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.5
+
+Thu, 21 Dec 2023 09:49:09 GMT
+
+### Patches
+
+- Pin external deps to ensure explicit updates to lage bundle (elcraig@microsoft.com)
+- Bump @lage-run/target-graph to v0.8.9
+
+## 1.1.4
+
+Tue, 12 Dec 2023 04:22:41 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.8.8
+
+## 1.1.3
+
+Tue, 05 Sep 2023 22:19:29 GMT
+
+### Patches
+
+- Update backfill dependencies (elcraig@microsoft.com)
+
+## 1.1.2
+
+Mon, 17 Jul 2023 15:14:04 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.8.7
+
+## 1.1.1
+
+Mon, 08 May 2023 22:27:16 GMT
+
+### Patches
+
+- Moved the TargetHasher into @lage-run/hasher package (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.8.6
+
+## 0.5.4
+
+Tue, 25 Apr 2023 02:51:19 GMT
+
+### Patches
+
+- Update repository and homepage (elcraig@microsoft.com)
+- Bump @lage-run/target-graph to v0.8.4
+- Bump @lage-run/logger to v1.3.0
 
 ## 0.5.3
 

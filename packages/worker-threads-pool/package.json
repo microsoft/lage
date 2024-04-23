@@ -1,10 +1,12 @@
 {
   "name": "@lage-run/worker-threads-pool",
-  "version": "0.6.0",
+  "version": "0.8.0",
   "description": "A worker_threads pool implementation based on the official Node.js async_hooks documentation",
   "repository": {
+    "type": "git",
     "url": "https://github.com/microsoft/lage"
   },
+  "homepage": "https://microsoft.github.io/lage/",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -15,10 +17,10 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/logger": "^1.2.2"
+    "@lage-run/logger": "^1.3.0"
   },
   "devDependencies": {
-    "monorepo-scripts": "*"
+    "@lage-run/monorepo-scripts": "*"
   },
   "publishConfig": {
     "access": "public"

@@ -1,8 +1,48 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Fri, 14 Apr 2023 04:37:55 GMT and should not be manually modified.
+This log was last generated on Thu, 21 Dec 2023 09:49:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.9
+
+Thu, 21 Dec 2023 09:49:09 GMT
+
+### Patches
+
+- Pin external deps to ensure explicit updates to lage bundle (elcraig@microsoft.com)
+
+## 0.8.8
+
+Tue, 12 Dec 2023 04:22:41 GMT
+
+### Patches
+
+- Upgrade workspace-tools package to latest (stchur@microsoft.com)
+
+## 0.8.7
+
+Mon, 17 Jul 2023 15:14:04 GMT
+
+### Patches
+
+- Update lage core deps (email not defined)
+
+## 0.8.6
+
+Mon, 08 May 2023 22:27:16 GMT
+
+### Patches
+
+- fixed against tests (kchau@microsoft.com)
+
+## 0.8.4
+
+Tue, 25 Apr 2023 02:51:19 GMT
+
+### Patches
+
+- Update repository and homepage (elcraig@microsoft.com)
 
 ## 0.8.3
 

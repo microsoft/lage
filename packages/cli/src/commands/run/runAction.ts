@@ -4,7 +4,7 @@ import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
 import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions, getConcurrency } from "@lage-run/config";
-import { getPackageInfosAsync, getWorkspaceRoot } from "workspace-tools";
+import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { initializeReporters } from "../initializeReporters.js";
 import { SimpleScheduler } from "@lage-run/scheduler";
 
@@ -16,6 +16,7 @@ import type { FilterOptions } from "../../types/FilterOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { TargetGraph } from "@lage-run/target-graph";
 import { NoTargetFoundError } from "../../types/errors.js";
+import { createCache } from "../../cache/createCacheProvider.js";
 
 interface RunOptions extends ReporterInitOptions, FilterOptions {
   concurrency: number;
@@ -40,11 +41,11 @@ export async function runAction(options: RunOptions, command: Command) {
   // Configure logger
   const logger = createLogger();
 
-  initializeReporters(logger, { ...options, concurrency });
+  const reporters = initializeReporters(logger, { ...options, concurrency });
 
   // Build Target Graph
   const root = getWorkspaceRoot(process.cwd())!;
-  const packageInfos = await getPackageInfosAsync(root);
+  const packageInfos = getPackageInfos(root);
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
@@ -71,6 +72,14 @@ export async function runAction(options: RunOptions, command: Command) {
 
   const maxWorkersPerTaskMap = getMaxWorkersPerTaskFromOptions(options.maxWorkersPerTask);
 
+  const { hasher } = await createCache({
+    root,
+    logger,
+    cacheOptions: config.cacheOptions,
+    cliArgs: taskArgs,
+    skipLocalCache: options.skipLocalCache,
+  });
+
   const scheduler = new SimpleScheduler({
     logger,
     concurrency,
@@ -81,6 +90,7 @@ export async function runAction(options: RunOptions, command: Command) {
       root,
       taskArgs,
       skipLocalCache: options.skipLocalCache,
+      cacheOptions: config.cacheOptions,
       runners: {
         npmScript: {
           script: require.resolve("./runners/NpmScriptRunner.js"),
@@ -104,7 +114,7 @@ export async function runAction(options: RunOptions, command: Command) {
       },
     },
     maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, concurrency), ...maxWorkersPerTaskMap]),
-
+    hasher,
     workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
   });
 
@@ -112,6 +122,10 @@ export async function runAction(options: RunOptions, command: Command) {
   await scheduler.cleanup();
 
   displaySummaryAndExit(summary, logger.reporters);
+
+  for (const reporter of reporters) {
+    await reporter.cleanup?.();
+  }
 }
 
 function displaySummaryAndExit(summary: SchedulerRunSummary, reporters: Reporter[]) {

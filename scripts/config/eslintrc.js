@@ -11,11 +11,10 @@ module.exports = {
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-require-imports": "error",
     "no-console": "error",
-    "file-extension-in-import-ts/file-extension-in-import-ts": "error"
+    "file-extension-in-import-ts/file-extension-in-import-ts": "error",
   },
   parserOptions: {
     project: "./tsconfig.json",
   },
   root: true,
-  
 };

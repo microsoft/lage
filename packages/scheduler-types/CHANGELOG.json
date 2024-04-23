@@ -2,6 +2,117 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Thu, 21 Dec 2023 09:49:09 GMT",
+      "version": "0.3.13",
+      "tag": "@lage-run/scheduler-types_v0.3.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.8.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Dec 2023 08:37:41 GMT",
+      "version": "0.3.12",
+      "tag": "@lage-run/scheduler-types_v0.3.12",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "0752bad677868d982719f792f6692ab43ad325e0",
+            "comment": "Use ranges for devDependencies"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 12 Dec 2023 04:22:41 GMT",
+      "version": "0.3.12",
+      "tag": "@lage-run/scheduler-types_v0.3.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.8.8",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 17 Jul 2023 15:14:04 GMT",
+      "tag": "@lage-run/scheduler-types_v0.3.11",
+      "version": "0.3.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.8.7",
+            "commit": "5f41b1db342b6d7a8492a46b68ca328a21e61ee6"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 15 Jun 2023 17:04:58 GMT",
+      "tag": "@lage-run/scheduler-types_v0.3.10",
+      "version": "0.3.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "altinokd@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "91dfab46c2cb13c175931f12f2964b2b9ace491a",
+            "comment": "Added result to TargetRun. Made TargetRun, TargetRunner, SchedulerRunSummary, TargetScheduler generic to support type safe results"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 08 May 2023 22:27:16 GMT",
+      "tag": "@lage-run/scheduler-types_v0.3.9",
+      "version": "0.3.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.8.6",
+            "commit": "5a132808f166179bc316a279c9e11a13d3a39103"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Apr 2023 02:51:19 GMT",
+      "tag": "@lage-run/scheduler-types_v0.3.8",
+      "version": "0.3.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801",
+            "comment": "Update repository and homepage"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.8.4",
+            "commit": "a2e112e8aafee26380684efca4db994a9c5e3801"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 14 Apr 2023 04:37:55 GMT",
       "tag": "@lage-run/scheduler-types_v0.3.7",
       "version": "0.3.7",

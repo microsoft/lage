@@ -1,10 +1,12 @@
 {
   "name": "@lage-run/target-graph",
-  "version": "0.8.3",
+  "version": "0.8.9",
   "description": "Target for Lage",
   "repository": {
+    "type": "git",
     "url": "https://github.com/microsoft/lage"
   },
+  "homepage": "https://microsoft.github.io/lage/",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -15,10 +17,10 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "workspace-tools": "^0.34.0"
+    "workspace-tools": "0.36.4"
   },
   "devDependencies": {
-    "monorepo-scripts": "*"
+    "@lage-run/monorepo-scripts": "*"
   },
   "publishConfig": {
     "access": "public"
