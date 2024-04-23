@@ -26,14 +26,15 @@
       "protocol": "inspector"
     },
     {
+      "name": "Debug current open test",
       "type": "node",
       "request": "launch",
-      "name": "Jest",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "node_modules/jest/bin/jest.js",
-      "outFiles": ["${workspaceFolder}/**/*.js"],
-      "args": ["--runInBand", "${fileBasenameNoExtension}"],
-      "sourceMaps": true
+      "program": "${workspaceRoot}/scripts/debugTests.js",
+      "cwd": "${fileDirname}",
+      "args": ["--runInBand", "--watch", "${fileBasename}"],
+      "sourceMaps": true,
+      "outputCapture": "std",
+      "console": "integratedTerminal"
     }
   ]
 }

@@ -1,6 +1,8 @@
+// @ts-check
 const path = require("path");
 const fs = require("fs/promises");
 const swc = require("@swc/core");
+const swcOptions = require("../config/swc");
 
 module.exports = async function transpile(data) {
   const { target } = data;
@@ -22,20 +24,7 @@ module.exports = async function transpile(data) {
       if (entry.isDirectory() && entry.name !== "node_modules" && entry.name !== "lib" && entry.name !== "tests" && entry.name !== "dist") {
         queue.push(fullPath);
       } else if (entry.isFile() && (entry.name.endsWith(".ts") || entry.name.endsWith(".tsx"))) {
-        const swcOutput = await swc.transformFile(fullPath, {
-          jsc: {
-            parser: {
-              syntax: "typescript",
-              tsx: false,
-              dynamicImport: true,
-            },
-            target: "es2020",
-          },
-          module: {
-            type: "commonjs",
-            ignoreDynamic: true,
-          },
-        });
+        const swcOutput = await swc.transformFile(fullPath, swcOptions);
         const dest = fullPath
           .replace(/([/\\])src/, "$1lib")
           .replace(".tsx", ".js")
