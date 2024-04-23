@@ -4,5 +4,5 @@ module.exports = {
   parserOptions: {
     project: "./scripts/config/tsconfig.eslint.json",
   },
-  ignorePatterns: ["**/*.js", "**/__fixtures__", "**/hasher/src/__tests__", "docs"],
+  ignorePatterns: ["**/*.js", "**/__fixtures__", "**/hasher/src/__tests__", "docs", "packages/*/scripts"],
 };
