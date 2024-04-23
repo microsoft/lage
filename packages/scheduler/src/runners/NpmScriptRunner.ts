@@ -1,9 +1,8 @@
 import { existsSync } from "fs";
 import { join } from "path";
 import { readFile } from "fs/promises";
-import { spawn } from "child_process";
+import { spawn, type ChildProcess } from "child_process";
 import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
-import type { ChildProcess } from "child_process";
 import type { Target } from "@lage-run/target-graph";
 
 export interface NpmScriptRunnerOptions {
@@ -33,9 +32,7 @@ export interface NpmScriptRunnerOptions {
 export class NpmScriptRunner implements TargetRunner {
   static gracefulKillTimeout = 2500;
 
-  constructor(private options: NpmScriptRunnerOptions) {
-    this.validateOptions(options);
-  }
+  constructor(private options: NpmScriptRunnerOptions) {}
 
   private getNpmArgs(task: string, taskTargs: string[]) {
     const extraArgs = taskTargs.length > 0 ? ["--", ...taskTargs] : [];
@@ -47,12 +44,6 @@ export class NpmScriptRunner implements TargetRunner {
     const packageJsonPath = join(target.cwd, "package.json");
     const packageJson = JSON.parse(await readFile(packageJsonPath, "utf8"));
     return !!packageJson.scripts?.[task];
-  }
-
-  private validateOptions(options: NpmScriptRunnerOptions) {
-    if (!existsSync(options.npmCmd)) {
-      throw new Error(`NPM Script Runner: ${this.options.npmCmd} does not exist`);
-    }
   }
 
   async shouldRun(target: Target) {
@@ -112,9 +103,11 @@ export class NpmScriptRunner implements TargetRunner {
       childProcess = spawn(npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: ["inherit", "pipe", "pipe"],
+        // This is required for Windows due to https://nodejs.org/en/blog/vulnerability/april-2024-security-releases-2
+        shell: true,
         env: {
+          ...(process.stdout.isTTY && { FORCE_COLOR: "1" }), // allow user env to override this
           ...process.env,
-          ...(process.stdout.isTTY && { FORCE_COLOR: "1" }),
           ...(npmRunNodeOptions && { NODE_OPTIONS: npmRunNodeOptions }),
           LAGE_PACKAGE_NAME: target.packageName,
           LAGE_TASK: target.task,

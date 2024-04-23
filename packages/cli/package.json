@@ -22,7 +22,6 @@
   "dependencies": {
     "@lage-run/cache": "^1.1.5",
     "@lage-run/config": "^0.3.5",
-    "@lage-run/find-npm-client": "^0.1.4",
     "@lage-run/hasher": "^1.1.0",
     "@lage-run/logger": "^1.3.0",
     "@lage-run/reporters": "^1.2.7",

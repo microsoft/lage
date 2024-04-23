@@ -2,8 +2,15 @@ import { Monorepo } from "./mock/monorepo.js";
 import { filterEntry, parseNdJson } from "./parseNdJson.js";
 
 describe("basics", () => {
+  let repo: Monorepo | undefined;
+
+  afterEach(() => {
+    repo?.cleanup();
+    repo = undefined;
+  });
+
   it("basic test case", () => {
-    const repo = new Monorepo("basics");
+    repo = new Monorepo("basics");
 
     repo.init();
     repo.addPackage("a", ["b"]);
@@ -20,12 +27,10 @@ describe("basics", () => {
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "success"))).toBeTruthy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "test", "success"))).toBeTruthy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "lint", "success"))).toBeFalsy();
-
-    repo.cleanup();
   });
 
   it("basic with missing script names - logging should not include those targets", () => {
-    const repo = new Monorepo("basics-missing-scripts");
+    repo = new Monorepo("basics-missing-scripts");
 
     repo.init();
     repo.addPackage("a", ["b"]);
@@ -47,12 +52,10 @@ describe("basics", () => {
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "success"))).toBeFalsy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "test", "success"))).toBeFalsy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "lint", "success"))).toBeFalsy();
-
-    repo.cleanup();
   });
 
   it("basic test case - with task args", () => {
-    const repo = new Monorepo("basics-with-task-args");
+    repo = new Monorepo("basics-with-task-args");
 
     repo.init();
     repo.addPackage("a", ["b"]);
@@ -106,7 +109,25 @@ describe("basics", () => {
     expect(jsonOutput4.find((entry) => filterEntry(entry.data, "a", "build", "skipped"))).toBeTruthy();
     expect(jsonOutput4.find((entry) => filterEntry(entry.data, "a", "test", "skipped"))).toBeTruthy();
     expect(jsonOutput4.find((entry) => filterEntry(entry.data, "a", "lint", "skipped"))).toBeFalsy();
+  });
 
-    repo.cleanup();
+  it("works in repo with spaces", () => {
+    repo = new Monorepo("spaces why");
+
+    repo.init();
+    repo.addPackage("a", ["b"]);
+    repo.addPackage("b");
+
+    repo.install();
+
+    const results = repo.run("test");
+    const output = results.stdout + results.stderr;
+    const jsonOutput = parseNdJson(output);
+
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "build", "success"))).toBeTruthy();
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "test", "success"))).toBeTruthy();
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "success"))).toBeTruthy();
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "test", "success"))).toBeTruthy();
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "lint", "success"))).toBeFalsy();
   });
 });

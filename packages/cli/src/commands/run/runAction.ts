@@ -2,7 +2,6 @@ import type { Command } from "commander";
 import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
-import { findNpmClient } from "@lage-run/find-npm-client";
 import { getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions, getConcurrency } from "@lage-run/config";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { initializeReporters } from "../initializeReporters.js";
@@ -97,7 +96,7 @@ export async function runAction(options: RunOptions, command: Command) {
           options: {
             nodeArg: options.nodeArg,
             taskArgs,
-            npmCmd: findNpmClient(config.npmClient),
+            npmCmd: config.npmClient,
           },
         },
         worker: {
