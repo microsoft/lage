@@ -1,6 +1,8 @@
 export function showHelp(msg: string) {
+  // eslint-disable-next-line no-console
   console.error(msg);
 
+  // eslint-disable-next-line no-console
   console.log(`
 Usage: lage [command] [command] [options]
 

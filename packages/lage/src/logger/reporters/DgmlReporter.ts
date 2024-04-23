@@ -1,7 +1,6 @@
 import xmldom from "@xmldom/xmldom";
 import { Reporter } from "./Reporter";
 import { InfoData, LogEntry } from "../LogEntry";
-import { RunContext } from "../../types/RunContext";
 import { LogLevel } from "../LogLevel";
 
 export class DgmlReporter implements Reporter {
@@ -24,7 +23,7 @@ export class DgmlReporter implements Reporter {
 
         const visitedCategories = new Set<string>();
 
-        for (var packageTask of packageTasks) {
+        for (const packageTask of packageTasks) {
           // Node
           const node = dgmlDoc.createElement("Node");
           node.setAttribute("Id", packageTask.id);
@@ -36,7 +35,7 @@ export class DgmlReporter implements Reporter {
           node.appendChild(category);
 
           // Links
-          for (var dependencyId of packageTask.dependencies) {
+          for (const dependencyId of packageTask.dependencies) {
             const link = dgmlDoc.createElement("Link");
             link.setAttribute("Source", packageTask.id);
             link.setAttribute("Target", dependencyId);
@@ -54,10 +53,11 @@ export class DgmlReporter implements Reporter {
         }
 
         const dgmlContents = new xmldom.XMLSerializer().serializeToString(dgmlDoc);
+        // eslint-disable-next-line no-console
         console.log(dgmlContents);
       }
     }
   }
 
-  summarize(context: RunContext) {}
+  summarize() {}
 }

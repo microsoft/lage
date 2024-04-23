@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "lint": "eslint src --ext .ts",
     "start": "tsc -w --preserveWatchOutput",
     "test": "jest"
   },

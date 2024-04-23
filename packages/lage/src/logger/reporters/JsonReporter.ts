@@ -9,6 +9,7 @@ export class JsonReporter implements Reporter {
 
   log(entry: LogEntry) {
     if (this.options.logLevel >= entry.level) {
+      // eslint-disable-next-line no-console
       console.log(JSON.stringify(entry));
     }
   }
@@ -34,6 +35,7 @@ export class JsonReporter implements Reporter {
     summary.duration = hrToSeconds(measures.duration);
     summary.taskStats = taskStats;
 
+    // eslint-disable-next-line no-console
     console.log(JSON.stringify({ summary }));
   }
 }

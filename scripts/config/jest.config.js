@@ -1,8 +1,10 @@
 // @ts-check
-const { getWorkspaceRoot, getPackageInfos } = require("workspace-tools");
+const { findProjectRoot, getPackageInfos } = require("workspace-tools");
+const fs = require("fs");
 const path = require("path");
 
-const root = getWorkspaceRoot(process.cwd());
+const root = findProjectRoot(process.cwd()) ?? process.cwd();
+const swcOptions = JSON.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8"));
 const packages = getPackageInfos(root);
 const moduleNameMapper = Object.values(packages).reduce((acc, { packageJsonPath, name }) => {
   const packagePath = path.dirname(packageJsonPath);
@@ -13,26 +15,14 @@ const moduleNameMapper = Object.values(packages).reduce((acc, { packageJsonPath,
 
 moduleNameMapper["^(\\.{1,2}/.*)\\.js$"] = "$1";
 
-/** @type {import("ts-jest").JestConfigWithTsJest} */
-module.exports = {
+/** @type {import("jest").Config} */
+const config = {
   clearMocks: true,
-  collectCoverage: false,
-  collectCoverageFrom: ["src/**/*.ts", "!src/types/*.ts", "!**/node_modules/**"],
-  coverageDirectory: "coverage",
-  coverageProvider: "v8",
   extensionsToTreatAsEsm: [".ts"],
   testMatch: ["**/?(*.)+(spec|test).ts?(x)"],
   testPathIgnorePatterns: ["/node_modules/"],
   transform: {
-    "^.+\\.tsx?$": [
-      "ts-jest",
-      {
-        isolatedModules: true,
-        tsconfig: {
-          jsx: "react",
-        },
-      },
-    ],
+    "^.+\\.tsx?$": ["@swc/jest", /** @type {*} */ (swcOptions)],
   },
   transformIgnorePatterns: ["/node_modules/", "\\.pnp\\.[^\\/]+$"],
   watchPathIgnorePatterns: ["/node_modules/"],
@@ -40,3 +30,4 @@ module.exports = {
   ...(process.env.LAGE_PACKAGE_NAME && { maxWorkers: 1 }),
   setupFilesAfterEnv: [path.join(__dirname, "jest-setup-after-env.js")],
 };
+module.exports = config;

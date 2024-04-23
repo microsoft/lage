@@ -1,4 +1,12 @@
 {
-  "eslint.workingDirectories": ["src", "tests"],
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "eslint.lintTask.options": "src --ext .ts",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "search.exclude": {
+    "**/lib": true,
+    "**/node_modules": true,
+    "**/*.code-search": true
+  }
 }

@@ -1,10 +1,9 @@
 import { getPackageAndTask } from "../../task/taskId";
 import { RunContext } from "../../types/RunContext";
 import { Reporter } from "./Reporter";
-import { LogEntry } from "../LogEntry";
 
 export class AdoReporter implements Reporter {
-  log(entry: LogEntry) {}
+  log() {}
 
   summarize(context: RunContext) {
     const { measures, targets } = context;
@@ -33,8 +32,10 @@ export class AdoReporter implements Reporter {
         }
       });
       packagesMessage += "find the error logs above with the prefix 'ERR!'";
+      // eslint-disable-next-line no-console
       console.log(packagesMessage);
 
+      // eslint-disable-next-line no-console
       console.log(`##vso[task.logissue type=warning]${logGroup.join(" | ")}`);
     }
   }

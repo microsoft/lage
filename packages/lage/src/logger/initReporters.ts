@@ -15,7 +15,7 @@ export function initReporters(config: Config) {
     logLevel = LogLevel[config.logLevel as LogLevelString];
   }
 
-  let reporters: Array<AdoReporter | JsonReporter | NpmLogReporter | DgmlReporter | CustomReporter> = [];
+  const reporters: Array<AdoReporter | JsonReporter | NpmLogReporter | DgmlReporter | CustomReporter> = [];
   if (config.reporter.includes("json")) {
     reporters.push(new JsonReporter({ logLevel }));
   } else if (config.reporter.includes("dgml")) {

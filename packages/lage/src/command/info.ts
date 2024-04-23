@@ -83,7 +83,7 @@ function createPackageTaskInfo(id: string, config: Config, workspace: Workspace)
   if (packageName) {
     const info = workspace.allPackages[packageName];
 
-    if (!!info.scripts?.[task]) {
+    if (info.scripts?.[task]) {
       return {
         id,
         command: [config.npmClient, ...getNpmCommand(config.node, config.args, task)],

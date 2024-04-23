@@ -104,7 +104,7 @@ export class Pipeline {
       packages.push(packageName);
     } else {
       // generic case in definition (e.g. 'test': ['build'])
-      packages = Object.entries(this.packageInfos).map(([pkg, _info]) => pkg);
+      packages = Object.keys(this.packageInfos);
     }
 
     for (const packageWithScript of packages) {
@@ -161,8 +161,7 @@ export class Pipeline {
         },
       ];
     } else {
-      const packages = Object.entries(this.packageInfos);
-      return packages.map(([pkg, _info]) => {
+      return Object.keys(this.packageInfos).map((pkg) => {
         const targetId = getTargetId(pkg, id);
         return {
           ...target,
@@ -298,13 +297,13 @@ export class Pipeline {
       // in cases of circular dependencies
       this.cachedTransitiveTaskDependencies.set(packageName, "walk-in-progress");
 
-      let immediateDependencies = this.graph[packageName]?.dependencies ?? [];
+      const immediateDependencies = this.graph[packageName]?.dependencies ?? [];
 
       // build the set of transitive dependencies by recursively walking the
       // immediate dependencies' dependencies.
-      let transitiveDepSet = new Set<string>(immediateDependencies);
-      for (let immediateDependency of immediateDependencies) {
-        for (let transitiveSubDependency of this.getTransitiveGraphDependencies(immediateDependency)) {
+      const transitiveDepSet = new Set<string>(immediateDependencies);
+      for (const immediateDependency of immediateDependencies) {
+        for (const transitiveSubDependency of this.getTransitiveGraphDependencies(immediateDependency)) {
           transitiveDepSet.add(transitiveSubDependency);
         }
       }

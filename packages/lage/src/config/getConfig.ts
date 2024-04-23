@@ -35,7 +35,6 @@ export async function getConfig(cwd: string): Promise<Config> {
     deps = false;
   }
 
-  const dist = parsedArgs.experimentDist || false;
   const concurrency = parsedArgs.concurrency || configResults?.config.concurrency || os.cpus().length - 1;
   const reporter = parsedArgs.reporter || configResults?.config.reporter || ["npmLog"];
 

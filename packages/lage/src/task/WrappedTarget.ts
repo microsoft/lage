@@ -11,7 +11,7 @@ import { TargetStatus } from "../types/TargetStatus";
 import { LoggableTarget, PipelineTarget } from "../types/PipelineDefinition";
 
 export class WrappedTarget implements LoggableTarget {
-  static npmCmd: string = "";
+  static npmCmd = "";
   static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
 
