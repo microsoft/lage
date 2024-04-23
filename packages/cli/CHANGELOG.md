@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Fri, 15 Mar 2024 04:35:11 GMT and should not be manually modified.
+This log was last generated on Tue, 23 Apr 2024 22:21:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.17.0
+
+Tue, 23 Apr 2024 22:21:27 GMT
+
+### Minor changes
+
+- Set shell: true when spawning npm commands, due to Node security fix. Also remove custom npm client resolution logic, which should be handled based on the PATH in the shell. (elcraig@microsoft.com)
+- Bump @lage-run/scheduler to v1.2.0
 
 ## 0.16.7
 

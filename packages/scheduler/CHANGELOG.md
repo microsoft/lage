@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Fri, 15 Mar 2024 04:35:11 GMT and should not be manually modified.
+This log was last generated on Tue, 23 Apr 2024 22:21:27 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.0
+
+Tue, 23 Apr 2024 22:21:27 GMT
+
+### Minor changes
+
+- Set shell: true when spawning npm commands, due to Node security fix (elcraig@microsoft.com)
 
 ## 1.1.13
 

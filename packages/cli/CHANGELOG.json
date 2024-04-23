@@ -2,6 +2,27 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Tue, 23 Apr 2024 22:21:27 GMT",
+      "version": "0.17.0",
+      "tag": "@lage-run/cli_v0.17.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "f324cccc43c32e2edf1767ccf7d7d72294421715",
+            "comment": "Set shell: true when spawning npm commands, due to Node security fix. Also remove custom npm client resolution logic, which should be handled based on the PATH in the shell."
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.2.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 17 Apr 2024 23:20:47 GMT",
       "version": "0.16.7",
       "tag": "@lage-run/cli_v0.16.7",
