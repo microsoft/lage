@@ -103,6 +103,7 @@ export class NpmScriptRunner implements TargetRunner {
       childProcess = spawn(npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: ["inherit", "pipe", "pipe"],
+        // This is required for Windows due to https://nodejs.org/en/blog/vulnerability/april-2024-security-releases-2
         shell: true,
         env: {
           ...(process.stdout.isTTY && { FORCE_COLOR: "1" }), // allow user env to override this
