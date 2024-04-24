@@ -1,7 +1,6 @@
 import { TaskLogger } from "../logger/TaskLogger";
 import { ChildProcess } from "child_process";
 import { PackageInfo } from "workspace-tools";
-import { findNpmClient } from "../workspace/findNpmClient";
 import { spawn } from "child_process";
 import path from "path";
 import { getNpmCommand } from "./getNpmCommand";
@@ -9,7 +8,6 @@ import { Config } from "../types/Config";
 import { LogLevel } from "../logger/LogLevel";
 
 export class NpmScriptTask {
-  static npmCmd = "";
   static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
 
@@ -34,22 +32,23 @@ export class NpmScriptTask {
   }
 
   constructor(public task: string, public info: PackageInfo, private config: Config, private logger: TaskLogger) {
-    NpmScriptTask.npmCmd = NpmScriptTask.npmCmd || findNpmClient(config.npmClient);
     this.npmArgs = getNpmCommand(config.node, config.args, task);
   }
 
   run() {
     const { info, logger, npmArgs } = this;
-    const { npmCmd } = NpmScriptTask;
+    const npmCmd = this.config.npmClient;
     return new Promise<void>((resolve, reject) => {
       logger.verbose(`Running ${[npmCmd, ...npmArgs].join(" ")}`);
 
       const cp = spawn(npmCmd, npmArgs, {
         cwd: path.dirname(info.packageJsonPath),
         stdio: "pipe",
+        // This is required for Windows due to https://nodejs.org/en/blog/vulnerability/april-2024-security-releases-2
+        shell: true,
         env: {
+          ...(process.stdout.isTTY && !this.config.reporter.includes("json") && { FORCE_COLOR: "1" }), // allow user env to override this
           ...process.env,
-          ...(process.stdout.isTTY && !this.config.reporter.includes("json") && { FORCE_COLOR: "1" }),
           LAGE_PACKAGE_NAME: info.name,
         },
       });

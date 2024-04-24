@@ -13,6 +13,7 @@ import { getPackageAndTask } from "../task/taskId";
  * Generates a graph and spit it out in stdout
  *
  * Expected format:
+ * ```json
  * [
  *   {
  *       "id": "bar##build",
@@ -44,8 +45,8 @@ import { getPackageAndTask } from "../task/taskId";
  *   },
  *   ...
  * ]
+ * ```
  */
-
 export async function info(cwd: string, config: Config) {
   const workspace = getWorkspace(cwd, config);
   const packages = getPipelinePackages(workspace, config);
