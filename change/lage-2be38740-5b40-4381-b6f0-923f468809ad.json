@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix lint issues",
-  "packageName": "lage",
-  "email": "elcraig@microsoft.com",
-  "dependentChangeType": "patch"
-}

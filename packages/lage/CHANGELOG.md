@@ -1,8 +1,20 @@
 # Change Log - lage
 
-This log was last generated on Mon, 26 Feb 2024 17:40:31 GMT and should not be manually modified.
+This log was last generated on Wed, 24 Apr 2024 23:24:02 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.10.0
+
+Wed, 24 Apr 2024 23:24:02 GMT
+
+### Minor changes
+
+- Set shell: true when spawning npm commands. This is required for Windows after a [Node security fix](https://nodejs.org/en/blog/vulnerability/april-2024-security-releases-2). (elcraig@microsoft.com)
+
+### Patches
+
+- Fix lint issues (elcraig@microsoft.com)
 
 ## 1.9.8
 

@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Set shell: true when spawning npm commands. This is required for Windows after a [Node security fix](https://nodejs.org/en/blog/vulnerability/april-2024-security-releases-2).",
-  "packageName": "lage",
-  "email": "elcraig@microsoft.com",
-  "dependentChangeType": "patch"
-}

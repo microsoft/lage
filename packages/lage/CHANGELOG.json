@@ -2,6 +2,29 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 24 Apr 2024 23:24:02 GMT",
+      "tag": "lage_v1.10.0",
+      "version": "1.10.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "5cddb72d40abaa5f91c8e666261f2b3bacf440ff",
+            "comment": "Fix lint issues"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "60cdce1bd5340b6297a414b65ae6ef1433f2753d",
+            "comment": "Set shell: true when spawning npm commands. This is required for Windows after a [Node security fix](https://nodejs.org/en/blog/vulnerability/april-2024-security-releases-2)."
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 26 Feb 2024 17:40:31 GMT",
       "tag": "lage_v1.9.8",
       "version": "1.9.8",
