@@ -22,7 +22,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky install",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "lage:local": "node ./packages/lage/bin/lage.js"
   },
   "devDependencies": {
     "@swc/core": "^1.3.14",
