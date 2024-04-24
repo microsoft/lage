@@ -11,7 +11,8 @@ export async function graph(cwd: string) {
     includeDependencies: true,
     includeDependents: false,
   });
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const fs = require("fs");
-  let output = JSON.stringify(edges);
+  const output = JSON.stringify(edges);
   fs.writeFileSync("types-dependents-false.js", output);
 }

@@ -12,33 +12,36 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
 
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
       - run: yarn
 
       - name: Code Format Check
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: yarn format:check
 
       - name: Check Change Files
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: yarn checkchange
 
       # @see https://www.npmjs.com/package/syncpack
       - name: Check consistent package.json dep versions
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: yarn syncpack list-mismatches -w
 
-      - name: Build, Test, Lint (Linux)
+      - name: Build, Test, Lint
         run: yarn lage build test lint --concurrency 2 --verbose
         env:
           BACKFILL_CACHE_PROVIDER: ${{ secrets.backfill_cache_provider }}

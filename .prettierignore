@@ -1,0 +1,16 @@
+.*ignore
+change/*.json
+CHANGELOG.*
+LICENSE
+SECURITY.md
+yarn.lock
+
+node_modules
+lib
+*.log
+.DS_Store
+coverage
+.idea/
+**/.docusaurus/
+profile*.json
+docs/

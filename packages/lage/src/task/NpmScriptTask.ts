@@ -9,7 +9,7 @@ import { Config } from "../types/Config";
 import { LogLevel } from "../logger/LogLevel";
 
 export class NpmScriptTask {
-  static npmCmd: string = "";
+  static npmCmd = "";
   static activeProcesses = new Set<ChildProcess>();
   static gracefulKillTimeout = 2500;
 
