@@ -57,10 +57,7 @@ export class NpmScriptRunner implements TargetRunner {
 
     let childProcess: execa.ExecaChildProcess | undefined;
 
-    /**
-     * Handling abort signal from the abort controller. Gracefully kills the process,
-     * will be handled by exit handler separately to resolve the promise.
-     */
+    // Handling abort signal from the abort controller. This gracefully kills the process.
     if (abortSignal) {
       if (abortSignal.aborted) {
         return;
@@ -69,9 +66,7 @@ export class NpmScriptRunner implements TargetRunner {
       const abortSignalHandler = () => {
         abortSignal.removeEventListener("abort", abortSignalHandler);
         if (childProcess && !childProcess.killed) {
-          const pid = childProcess.pid;
-
-          process.stdout.write(`Abort signal detected, attempting to killing process id ${pid}\n`);
+          process.stdout.write(`Abort signal detected, attempting to killing process id ${childProcess.pid}\n`);
 
           childProcess.kill("SIGTERM");
 
@@ -83,28 +78,23 @@ export class NpmScriptRunner implements TargetRunner {
           }, NpmScriptRunner.gracefulKillTimeout);
 
           // Remember that even this timeout needs to be unref'ed, otherwise the process will hang due to this timeout
-          if (t.unref) {
-            t.unref();
-          }
+          t.unref?.();
         }
       };
 
       abortSignal.addEventListener("abort", abortSignalHandler);
     }
 
-    /**
-     * Actually spawn the npm client to run the task
-     */
+    // Actually spawn the npm client to run the task
     const npmRunArgs = this.getNpmArgs(task, taskArgs);
     const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter((str) => str).join(" ");
 
-    await new Promise<void>((resolve, reject) => {
+    try {
       childProcess = execa(npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: ["inherit", "pipe", "pipe"],
         // This is required for Windows due to https://nodejs.org/en/blog/vulnerability/april-2024-security-releases-2
         shell: true,
-        reject: false, // don't reject the promise on exit non-zero (we handle that differently)
         env: {
           ...(process.stdout.isTTY && { FORCE_COLOR: "1" }), // allow user env to override this
           ...process.env,
@@ -115,41 +105,25 @@ export class NpmScriptRunner implements TargetRunner {
         },
       });
 
-      let exitHandled = false;
+      process.stdout.write(`Running ${[npmCmd, ...npmRunArgs].join(" ")}, pid: ${childProcess.pid}\n`);
 
-      const handleChildProcessExit = (code: number) => {
-        childProcess?.off("exit", handleChildProcessExit);
-        childProcess?.off("error", handleChildProcessExit);
+      childProcess.stdout?.pipe(process.stdout);
+      childProcess.stderr?.pipe(process.stderr);
 
-        if (exitHandled) {
-          return;
-        }
-
-        exitHandled = true;
-
+      await childProcess;
+    } catch (err) {
+      const execaError = err as execa.ExecaError;
+      throw new Error(
+        `NPM Script Runner: ${npmCmd} ${npmRunArgs.join(" ")} exited with ${execaError.exitCode ? `code ${execaError.exitCode}` : "error"}`
+      );
+    } finally {
+      try {
         childProcess?.stdout?.destroy();
         childProcess?.stderr?.destroy();
-        childProcess?.stdin?.destroy();
-
-        if (code === 0) {
-          return resolve();
-        }
-
-        reject(new Error(`NPM Script Runner: ${npmCmd} ${npmRunArgs.join(" ")} exited with code ${code}`));
-      };
-
-      const { pid } = childProcess;
-
-      process.stdout.write(`Running ${[npmCmd, ...npmRunArgs].join(" ")}, pid: ${pid}\n`);
-
-      const stdout = childProcess.stdout!;
-      const stderr = childProcess.stderr!;
-
-      stdout.pipe(process.stdout);
-      stderr.pipe(process.stderr);
-
-      childProcess.on("exit", handleChildProcessExit);
-      childProcess.on("error", () => handleChildProcessExit(1));
-    });
+        childProcess = undefined;
+      } catch {
+        // ignore
+      }
+    }
   }
 }

@@ -48,6 +48,17 @@ async function bundle() {
     external,
     minify: true,
   });
+
+  await esbuild.build({
+    entryPoints,
+    bundle: true,
+    platform: "node",
+    target: ["node16"],
+    outdir: "dist/debug",
+    logLevel: "info",
+    external,
+    minify: false,
+  });
 }
 
 await bundle().catch((err) => {
