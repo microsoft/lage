@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 25 Apr 2024 00:41:14 GMT",
+      "version": "1.10.0",
+      "tag": "lage_v1.10.0",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "32133f1d5db9ec967073518439e7361feaf644b3",
+            "comment": "Unpin dev deps and use node 14 to ensure compat"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 24 Apr 2024 23:24:02 GMT",
       "tag": "lage_v1.10.0",
       "version": "1.10.0",
