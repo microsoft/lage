@@ -21,8 +21,7 @@
     "@lage-run/logger": "^1.3.0",
     "backfill-cache": "5.7.1",
     "backfill-config": "6.4.1",
-    "backfill-logger": "5.2.1",
-    "glob-hasher": "^1.3.0"
+    "backfill-logger": "5.2.1"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "*",

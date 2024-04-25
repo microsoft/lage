@@ -12,7 +12,6 @@ const ignoreUnused = {
 };
 
 module.exports = async function depcheckWorker({ target: { packageName, cwd } }) {
-  // ignore the tooling package: monorepo-scripts
   if (ignoredPackages.includes(packageName)) {
     return;
   }
@@ -25,7 +24,7 @@ module.exports = async function depcheckWorker({ target: { packageName, cwd } })
   let hasErrors = false;
   let formattedError = `Depcheck errors detected in ${packageName}\n\n`;
 
-  const unusedDeps = results.dependencies.filter((dep) => ignoreUnused[packageName]?.dependencies?.includes(dep));
+  const unusedDeps = results.dependencies.filter((dep) => !ignoreUnused[packageName]?.dependencies?.includes(dep));
   if (unusedDeps.length > 0) {
     hasErrors = true;
     formattedError += `Unused dependency: \n`;
@@ -34,7 +33,7 @@ module.exports = async function depcheckWorker({ target: { packageName, cwd } })
     }
   }
 
-  const unusedDevDeps = results.devDependencies.filter((dep) => ignoreUnused[packageName]?.devDependencies?.includes(dep));
+  const unusedDevDeps = results.devDependencies.filter((dep) => !ignoreUnused[packageName]?.devDependencies?.includes(dep));
   if (unusedDevDeps.length > 0) {
     hasErrors = true;
     formattedError += `Unused devDependency: \n`;
