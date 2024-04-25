@@ -12,8 +12,7 @@
     "lage": "dist/lage.js"
   },
   "scripts": {
-    "prebundle": "node scripts/prebuild.js",
-    "bundle": "yarn dts-bundle && node scripts/bundle.mjs",
+    "bundle": "rimraf dist && yarn dts-bundle && node scripts/bundle.mjs",
     "dts-bundle": "dts-bundle-generator --config ./dts-bundle.config.js && node ./scripts/update-dts-bundle.js"
   },
   "dependencies": {
@@ -28,14 +27,11 @@
     "backfill-config": "6.4.1",
     "dts-bundle-generator": "^7.2.0",
     "workspace-tools": "0.36.4",
-    "esbuild": "^0.17.18"
+    "esbuild": "^0.17.18",
+    "rimraf": "^5.0.5"
   },
   "files": [
-    "dist/*.d.ts",
-    "dist/lage.js",
-    "dist/lage.js.map",
-    "dist/runners/**",
-    "dist/workers/**"
+    "dist"
   ],
   "publishConfig": {
     "access": "public"
