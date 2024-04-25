@@ -1,4 +1,5 @@
 .*ignore
+.nvmrc
 change/*.json
 CHANGELOG.*
 LICENSE

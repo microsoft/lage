@@ -36,11 +36,11 @@
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "*",
-    "@types/chalk": "2.2.0",
-    "@types/cosmiconfig": "6.0.0",
-    "@types/execa": "2.0.0",
-    "@types/npmlog": "4.1.4",
-    "@types/yargs-parser": "15.0.0",
-    "ts-node": "8.10.2"
+    "@types/chalk": "^2.2.0",
+    "@types/cosmiconfig": "^6.0.0",
+    "@types/execa": "^2.0.0",
+    "@types/npmlog": "^4.1.4",
+    "@types/yargs-parser": "^15.0.0",
+    "ts-node": "^8.10.2"
   }
 }
