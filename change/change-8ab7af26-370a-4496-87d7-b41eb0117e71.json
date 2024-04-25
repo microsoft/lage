@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Add shebang to CLI entry point",
+      "packageName": "@lage-run/cli",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Use execa to run scripts, and add a lage-debug command which runs with a non-minified build",
+      "packageName": "lage",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Use execa to run scripts",
+      "packageName": "@lage-run/scheduler",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
