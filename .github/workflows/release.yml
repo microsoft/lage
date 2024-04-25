@@ -25,8 +25,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       # Cancel the release if a newer run is pending or no change files are present
       - uses: ecraig12345/beachball-actions/should-release@v1
@@ -45,22 +43,16 @@ jobs:
     # This environment contains secrets needed for publishing
     environment: release
 
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
       - uses: actions/checkout@v4
         with:
-          # Fetch all history
-          fetch-depth: 0
           # Don't save creds in the git config (so it's easier to override later)
           persist-credentials: false
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: .nvmrc
 
       - run: yarn
 
