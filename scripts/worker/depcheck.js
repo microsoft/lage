@@ -4,35 +4,41 @@ const path = require("path");
 
 const depcheck = require("depcheck");
 
-module.exports = async function depcheckWorker({ target }) {
-  const ignored = ["@lage-run/monorepo-scripts", "@lage-run/docs"];
+const ignoredPackages = ["@lage-run/monorepo-scripts", "@lage-run/docs"];
+/** @type {Record<string, { dependencies?: string[]; devDependencies?: string[] }>} */
+const ignoreUnused = {
+  // used in ways that aren't detected
+  lage: { dependencies: ["glob-hasher"], devDependencies: ["@lage-run/scheduler"] },
+};
 
+module.exports = async function depcheckWorker({ target: { packageName, cwd } }) {
   // ignore the tooling package: monorepo-scripts
-  if (ignored.includes(target.packageName)) {
+  if (ignoredPackages.includes(packageName)) {
     return;
   }
 
-  const results = await depcheck(target.cwd, {
+  const results = await depcheck(cwd, {
     ignoreBinPackage: true,
     ignorePatterns: ["node_modules", "dist", "lib", "build"],
-    ignoreMatches: ["yoga-layout-prebuilt", "glob-hasher"],
   });
 
   let hasErrors = false;
-  let formattedError = `Depcheck errors detected in ${target.packageName}\n\n`;
+  let formattedError = `Depcheck errors detected in ${packageName}\n\n`;
 
-  if (results.dependencies.length > 0) {
+  const unusedDeps = results.dependencies.filter((dep) => ignoreUnused[packageName]?.dependencies?.includes(dep));
+  if (unusedDeps.length > 0) {
     hasErrors = true;
     formattedError += `Unused dependency: \n`;
-    for (const dep of results.dependencies) {
+    for (const dep of unusedDeps) {
       formattedError += `  ${dep}\n`;
     }
   }
 
-  if (results.devDependencies.length > 0) {
+  const unusedDevDeps = results.devDependencies.filter((dep) => ignoreUnused[packageName]?.devDependencies?.includes(dep));
+  if (unusedDevDeps.length > 0) {
     hasErrors = true;
     formattedError += `Unused devDependency: \n`;
-    for (const dep of results.devDependencies) {
+    for (const dep of unusedDevDeps) {
       formattedError += `  ${dep}\n`;
     }
   }
