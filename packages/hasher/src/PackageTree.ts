@@ -58,6 +58,7 @@ export class PackageTree {
           "git",
           [
             "ls-files",
+            "-z",
             "-o",
             "--exclude-standard",
             ...patterns.filter((p) => !p.startsWith("!")),
