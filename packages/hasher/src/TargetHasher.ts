@@ -200,7 +200,7 @@ export class TargetHasher {
 
       const fileFashes = hash(files, { cwd: root }) ?? {};
 
-      const hashes = Object.values(fileFashes);
+      const hashes = Object.values(fileFashes).filter((hash) => hash !== undefined && hash !== null) as string[];
 
       return hashStrings(hashes);
     }
