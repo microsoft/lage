@@ -111,9 +111,9 @@ export class FileHasher {
       this.#store[file] = {
         mtime: stat.mtimeMs,
         size: Number(stat.size),
-        hash,
+        hash: hash ?? "",
       };
-      hashes[file] = hash;
+      hashes[file] = hash ?? "";
     }
 
     return hashes;
