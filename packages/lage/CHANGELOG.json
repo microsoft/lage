@@ -2,6 +2,33 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sun, 05 May 2024 22:55:45 GMT",
+      "version": "2.7.15",
+      "tag": "lage_v2.7.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "1e36de04ab83fc0cde38062fc1543e4b12902166",
+            "comment": "fixing hashing issues related to rust panic"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.17.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.2.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 23 Apr 2024 22:21:27 GMT",
       "version": "2.7.14",
       "tag": "lage_v2.7.14",

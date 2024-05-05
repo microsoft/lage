@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Thu, 21 Dec 2023 09:49:09 GMT and should not be manually modified.
+This log was last generated on Sun, 05 May 2024 22:55:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.6
+
+Sun, 05 May 2024 22:55:45 GMT
+
+### Patches
+
+- fixing hashing issues related to rust panic (kchau@microsoft.com)
 
 ## 1.1.5
 

@@ -1,8 +1,18 @@
 # Change Log - lage
 
-This log was last generated on Tue, 23 Apr 2024 22:21:27 GMT and should not be manually modified.
+This log was last generated on Sun, 05 May 2024 22:55:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.15
+
+Sun, 05 May 2024 22:55:45 GMT
+
+### Patches
+
+- fixing hashing issues related to rust panic (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.17.1
+- Bump @lage-run/scheduler to v1.2.1
 
 ## 2.7.14
 

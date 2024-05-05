@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Fri, 15 Mar 2024 04:35:11 GMT and should not be manually modified.
+This log was last generated on Sun, 05 May 2024 22:55:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.1
+
+Sun, 05 May 2024 22:55:45 GMT
+
+### Patches
+
+- fixing hashing issues related to rust panic (kchau@microsoft.com)
 
 ## 1.1.0
 

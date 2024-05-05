@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Sun, 05 May 2024 22:55:45 GMT",
+      "version": "1.1.6",
+      "tag": "@lage-run/cache_v1.1.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "1e36de04ab83fc0cde38062fc1543e4b12902166",
+            "comment": "fixing hashing issues related to rust panic"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 17 Apr 2024 23:20:47 GMT",
       "version": "1.1.5",
       "tag": "@lage-run/cache_v1.1.5",
