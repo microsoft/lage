@@ -1528,13 +1528,14 @@ babel-preset-jest@^29.5.0:
     babel-plugin-jest-hoist "^29.5.0"
     babel-preset-current-node-syntax "^1.0.0"
 
-backfill-cache@5.7.1:
-  version "5.7.1"
-  resolved "https://registry.yarnpkg.com/backfill-cache/-/backfill-cache-5.7.1.tgz#09484ed1f963d8d64fbbd7cc0cddd85db5f06143"
-  integrity sha512-+zR2r+A0EmShwhxj3fsGAPmA7EOAs4xc4X0Xr10K+2zsohGWpm4a/L/GmwFi7RfwGeNm/P99nm85Hoexe7V+ag==
+backfill-cache@5.8.0:
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/backfill-cache/-/backfill-cache-5.8.0.tgz#660ce9df5029ed67beaaa88371b5c907a84d14f8"
+  integrity sha512-KCVc8GBUaS2Xod5XwD+it6rP+IpLhORuxurGH4KfyIa5kui4oESJGmZKVlo9eL6qjUqsnhU54xJ66IAZJDdwNA==
   dependencies:
+    "@azure/core-http" "^3.0.0"
     "@azure/storage-blob" "^12.15.0"
-    backfill-config "^6.4.1"
+    backfill-config "^6.4.2"
     backfill-logger "^5.2.1"
     execa "^5.0.0"
     fs-extra "^8.1.0"
@@ -1542,11 +1543,12 @@ backfill-cache@5.7.1:
     p-limit "^3.0.0"
     tar-fs "^2.1.0"
 
-backfill-config@6.4.1, backfill-config@^6.4.1:
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/backfill-config/-/backfill-config-6.4.1.tgz#b85afd0a8acc0c9f04f4eb177e8d239dc4a2502e"
-  integrity sha512-u4394nK6W/GfsAEKSXxdyVhcmQcDb36YztINEKI5mpsd7NjTqnxJVkBgTo5YetbomL/7RU3/ROiwXuv2nkbqyA==
+backfill-config@6.4.2, backfill-config@^6.4.2:
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/backfill-config/-/backfill-config-6.4.2.tgz#129a0c9916755bdf3d20d3e25cd18a7a79cb7c8d"
+  integrity sha512-QNWew1fCIiAt20ZSyTSErL0IdRZeRLOxMbhjNGB4sZgT3Iyld0JTb8DyvqZhFONnN/KWwVokB6wnT6I0MmYoyg==
   dependencies:
+    "@azure/core-http" "^3.0.0"
     backfill-logger "^5.2.1"
     find-up "^5.0.0"
     pkg-dir "^4.2.0"
