@@ -2,6 +2,21 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Thu, 23 May 2024 18:15:05 GMT",
+      "version": "0.3.6",
+      "tag": "@lage-run/config_v0.3.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/config",
+            "commit": "04cdac2a148208348ea26f0d0190b90f947d2cfd",
+            "comment": "Update backfill monorepo"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 Dec 2023 09:49:09 GMT",
       "version": "0.3.5",
       "tag": "@lage-run/config_v0.3.5",

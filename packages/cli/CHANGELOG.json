@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 23 May 2024 18:15:05 GMT",
+      "version": "0.17.2",
+      "tag": "@lage-run/cli_v0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.1.7",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.3.6",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.2.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 05 May 2024 22:55:45 GMT",
       "version": "0.17.1",
       "tag": "@lage-run/cli_v0.17.1",

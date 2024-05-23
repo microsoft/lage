@@ -1,8 +1,16 @@
 # Change Log - @lage-run/config
 
-This log was last generated on Thu, 21 Dec 2023 09:49:09 GMT and should not be manually modified.
+This log was last generated on Thu, 23 May 2024 18:15:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.6
+
+Thu, 23 May 2024 18:15:05 GMT
+
+### Patches
+
+- Update backfill monorepo (renovate@whitesourcesoftware.com)
 
 ## 0.3.5
 

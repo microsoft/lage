@@ -2,6 +2,33 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 23 May 2024 18:15:05 GMT",
+      "version": "2.7.16",
+      "tag": "lage_v2.7.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "04cdac2a148208348ea26f0d0190b90f947d2cfd",
+            "comment": "Update backfill monorepo"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.17.2",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.2.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 05 May 2024 22:55:45 GMT",
       "version": "2.7.15",
       "tag": "lage_v2.7.15",

@@ -1,8 +1,18 @@
 # Change Log - lage
 
-This log was last generated on Sun, 05 May 2024 22:55:45 GMT and should not be manually modified.
+This log was last generated on Thu, 23 May 2024 18:15:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.16
+
+Thu, 23 May 2024 18:15:05 GMT
+
+### Patches
+
+- Update backfill monorepo (renovate@whitesourcesoftware.com)
+- Bump @lage-run/cli to v0.17.2
+- Bump @lage-run/scheduler to v1.2.2
 
 ## 2.7.15
 
