@@ -1528,10 +1528,10 @@ babel-preset-jest@^29.5.0:
     babel-plugin-jest-hoist "^29.5.0"
     babel-preset-current-node-syntax "^1.0.0"
 
-backfill-cache@5.8.0:
-  version "5.8.0"
-  resolved "https://registry.yarnpkg.com/backfill-cache/-/backfill-cache-5.8.0.tgz#660ce9df5029ed67beaaa88371b5c907a84d14f8"
-  integrity sha512-KCVc8GBUaS2Xod5XwD+it6rP+IpLhORuxurGH4KfyIa5kui4oESJGmZKVlo9eL6qjUqsnhU54xJ66IAZJDdwNA==
+backfill-cache@5.8.1:
+  version "5.8.1"
+  resolved "https://registry.yarnpkg.com/backfill-cache/-/backfill-cache-5.8.1.tgz#ab286c13db635b27ed64a87d1bdb5e765a5fd185"
+  integrity sha512-uiD0GkI4p840q0r/SdC5+PPr+j639Ev98tiY30BbkCy1Sp0mDuG9F5hSONzZMCcq+gDYej5E4Ri/KpkJBiDuYw==
   dependencies:
     "@azure/core-http" "^3.0.0"
     "@azure/storage-blob" "^12.15.0"
@@ -4557,12 +4557,7 @@ type-fest@^0.21.3:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.21.3.tgz#d260a24b0198436e133fa26a524a6d65fa3b2e37"
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
 
-typescript@>=5.0.2:
-  version "5.4.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.4.5.tgz#42ccef2c571fdbd0f6718b1d1f5e6e5ef006f611"
-  integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
-
-typescript@~5.0.3:
+typescript@>=5.0.2, typescript@~5.0.3:
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.4.tgz#b217fd20119bd61a94d4011274e0ab369058da3b"
   integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
