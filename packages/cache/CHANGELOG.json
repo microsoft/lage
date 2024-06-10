@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Mon, 10 Jun 2024 23:50:39 GMT",
+      "version": "1.2.0",
+      "tag": "@lage-run/cache_v1.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "brunoru@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "0894d97ebfedc339b77161c40fa8643d93e4486d",
+            "comment": "Add support for DefaultAzureCredentials when storage endpoint is passed in."
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 23 May 2024 18:15:05 GMT",
       "version": "1.1.7",
       "tag": "@lage-run/cache_v1.1.7",

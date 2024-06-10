@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Thu, 23 May 2024 18:15:05 GMT and should not be manually modified.
+This log was last generated on Mon, 10 Jun 2024 23:50:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.0
+
+Mon, 10 Jun 2024 23:50:39 GMT
+
+### Minor changes
+
+- Add support for DefaultAzureCredentials when storage endpoint is passed in. (brunoru@microsoft.com)
 
 ## 1.1.7
 

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Sun, 05 May 2024 22:55:45 GMT and should not be manually modified.
+This log was last generated on Mon, 10 Jun 2024 23:50:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.1.2
+
+Mon, 10 Jun 2024 23:50:39 GMT
+
+### Patches
+
+- matching correct glob and exclude patterns (kchau@microsoft.com_msteamsmdb)
 
 ## 1.1.1
 
