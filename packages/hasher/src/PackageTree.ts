@@ -42,8 +42,8 @@ export class PackageTree {
       [
         "ls-files",
         "-z",
-        ...patterns.filter((p) => !p.startsWith("!")),
-        ...patterns.filter((p) => p.startsWith("!")).map((p) => `:!:${p.slice(1)}`),
+        ...patterns.filter((p) => !p.startsWith("!")).map((p) => `:(glob)${p}`),
+        ...patterns.filter((p) => p.startsWith("!")).map((p) => `:(exclude,glob)${p.slice(1)}`),
       ],
       { cwd }
     ).then((lsFilesResults) => {
@@ -61,8 +61,8 @@ export class PackageTree {
             "-z",
             "-o",
             "--exclude-standard",
-            ...patterns.filter((p) => !p.startsWith("!")),
-            ...patterns.filter((p) => p.startsWith("!")).map((p) => `:!:${p.slice(1)}`),
+            ...patterns.filter((p) => !p.startsWith("!")).map((p) => `:(glob)${p}`),
+            ...patterns.filter((p) => p.startsWith("!")).map((p) => `:(exclude,glob)${p.slice(1)}`),
           ],
           { cwd }
         ).then((lsOtherResults) => {

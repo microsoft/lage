@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "matching correct glob and exclude patterns",
+      "packageName": "@lage-run/hasher",
+      "email": "kchau@microsoft.com_msteamsmdb",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
