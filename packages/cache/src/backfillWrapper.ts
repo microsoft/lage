@@ -5,6 +5,8 @@
 import * as os from "os";
 import { createDefaultConfig, getEnvConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
+import { CacheStorageConfig } from "backfill-config";
+import { DefaultAzureCredential } from "@azure/identity";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { CacheOptions } from "./types/CacheOptions.js";
 
@@ -28,9 +30,24 @@ export function createBackfillLogger() {
 
 export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<CacheOptions> = {}, backfillLogger: BackfillLogger) {
   const envConfig = getEnvConfig(backfillLogger);
-  return {
+  const mergedConfig = {
     ...createDefaultConfig(cwd),
     ...cacheOptions,
     ...envConfig,
   };
+
+  if (mergedConfig.cacheStorageConfig.provider === "azure-blob") {
+    if (
+      mergedConfig.cacheStorageConfig.options.connectionString &&
+      !isTokenConnectionString(mergedConfig.cacheStorageConfig.options.connectionString)
+    ) {
+      mergedConfig.cacheStorageConfig.options.credential = new DefaultAzureCredential();
+    }
+  }
+
+  return mergedConfig;
+}
+
+function isTokenConnectionString(connectionString: string) {
+  return connectionString.includes("SharedAccessSignature");
 }
