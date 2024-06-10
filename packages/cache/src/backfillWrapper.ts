@@ -6,9 +6,9 @@ import * as os from "os";
 import { createDefaultConfig, getEnvConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
 import { CacheStorageConfig } from "backfill-config";
-import { DefaultAzureCredential } from "@azure/identity";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { CacheOptions } from "./types/CacheOptions.js";
+import { CredentialCache } from "./CredentialCache.js";
 
 export function createBackfillLogger() {
   const stdout = process.stdout;
@@ -41,7 +41,7 @@ export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<Cac
       mergedConfig.cacheStorageConfig.options.connectionString &&
       !isTokenConnectionString(mergedConfig.cacheStorageConfig.options.connectionString)
     ) {
-      mergedConfig.cacheStorageConfig.options.credential = new DefaultAzureCredential();
+      mergedConfig.cacheStorageConfig.options.credential = CredentialCache.getInstance();
     }
   }
 
