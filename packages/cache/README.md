@@ -32,7 +32,7 @@ const remoteFallbackCacheProviderOptions = {
       cacheStorageOptions: {
         provider: "azure-blob",
         options: {
-          connectionString: "asdfasdfasdfafds";
+          connectionString: "asdfasdfasdfafds"; // Providing an un-authenitcated Blob Service Endpoint will force use of Azure DefualtAzureCredentials
           container: "container";
           maxSize?: 150;
         }
