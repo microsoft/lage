@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Add support for DefaultAzureCredentials when storage endpoint is passed in.",
+      "packageName": "@lage-run/cache",
+      "email": "brunoru@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
