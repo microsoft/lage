@@ -2,6 +2,7 @@
 /** @type {import('beachball').BeachballConfig}*/
 module.exports = {
   groupChanges: true,
+  access: "public",
   ignorePatterns: [
     ".*ignore",
     ".github/**",
