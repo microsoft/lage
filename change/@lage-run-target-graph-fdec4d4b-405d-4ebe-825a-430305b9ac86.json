@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Don't add to graph scripts missing from package.json",
+  "packageName": "@lage-run/target-graph",
+  "email": "felescoto95@hotmail.com",
+  "dependentChangeType": "patch"
+}
