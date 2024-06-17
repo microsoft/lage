@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Default fallback with optional pre-set credentials",
+      "packageName": "@lage-run/cache",
+      "email": "brunoru@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
