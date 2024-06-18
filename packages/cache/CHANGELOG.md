@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Mon, 10 Jun 2024 23:50:39 GMT and should not be manually modified.
+This log was last generated on Tue, 18 Jun 2024 00:31:29 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.0
+
+Tue, 18 Jun 2024 00:31:29 GMT
+
+### Minor changes
+
+- Default fallback with optional pre-set credentials (brunoru@microsoft.com)
 
 ## 1.2.0
 
