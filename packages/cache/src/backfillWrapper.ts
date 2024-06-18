@@ -30,22 +30,40 @@ export function createBackfillLogger() {
 
 export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<CacheOptions> = {}, backfillLogger: BackfillLogger) {
   const envConfig = getEnvConfig(backfillLogger);
+  // To avoid weakmap issues, we need to store the credential and restore post-merge
+  const credentialStash = getCredentialStash(cacheOptions);
+
   const mergedConfig = {
     ...createDefaultConfig(cwd),
     ...cacheOptions,
     ...envConfig,
   };
 
-  if (mergedConfig.cacheStorageConfig.provider === "azure-blob") {
-    if (
-      mergedConfig.cacheStorageConfig.options.connectionString &&
-      !isTokenConnectionString(mergedConfig.cacheStorageConfig.options.connectionString)
-    ) {
-      mergedConfig.cacheStorageConfig.options.credential = CredentialCache.getInstance();
-    }
-  }
+  applyCredentialStashToMergedConfig(mergedConfig, credentialStash);
 
   return mergedConfig;
+}
+
+function getCredentialStash(cacheOptions: Partial<CacheOptions>) {
+  if (
+    cacheOptions.cacheStorageConfig &&
+    cacheOptions.cacheStorageConfig.provider === "azure-blob" &&
+    cacheOptions.cacheStorageConfig.options.credential
+  ) {
+    const stashedCredential = cacheOptions.cacheStorageConfig.options.credential;
+    delete cacheOptions.cacheStorageConfig.options.credential;
+    return stashedCredential;
+  }
+  return null;
+}
+
+function applyCredentialStashToMergedConfig(mergedConfig: any, credentialStash: any) {
+  if (mergedConfig.cacheStorageConfig.provider === "azure-blob") {
+    const connectionString = mergedConfig.cacheStorageConfig.options.connectionString;
+    if (connectionString && !isTokenConnectionString(connectionString)) {
+      mergedConfig.cacheStorageConfig.options.credential = credentialStash || CredentialCache.getInstance();
+    }
+  }
 }
 
 function isTokenConnectionString(connectionString: string) {
