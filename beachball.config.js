@@ -4,6 +4,7 @@ module.exports = {
   groupChanges: true,
   access: "public",
   ignorePatterns: [
+    "benchmark/**",
     ".*ignore",
     ".github/**",
     "beachball.config.js",

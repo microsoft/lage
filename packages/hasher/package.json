@@ -20,6 +20,7 @@
     "execa": "5.1.1",
     "workspace-tools": "0.36.4",
     "glob-hasher": "^1.4.2",
+    "globby": "^14.0.1",
     "graceful-fs": "4.2.11"
   },
   "devDependencies": {
