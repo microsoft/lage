@@ -3,6 +3,7 @@ const root = getWorkspaceRoot(process.cwd());
 const path = require("path");
 
 const depcheck = require("depcheck");
+const { defaultOptions } = require("depcheck/dist/constants");
 
 module.exports = async function depcheckWorker({ target }) {
   const ignored = ["@lage-run/monorepo-scripts", "@lage-run/docs"];
