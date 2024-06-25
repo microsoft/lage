@@ -2,6 +2,33 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 25 Jun 2024 18:10:57 GMT",
+      "version": "2.7.19",
+      "tag": "lage_v2.7.19",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "e294f805313ceb5b66640f8aaff8647bdb588511",
+            "comment": "bumps the esbuild"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.17.5",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/scheduler to v1.2.5",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 18 Jun 2024 00:31:29 GMT",
       "version": "2.7.18",
       "tag": "lage_v2.7.18",

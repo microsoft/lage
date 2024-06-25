@@ -1,8 +1,17 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Mon, 10 Jun 2024 23:50:39 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Jun 2024 18:10:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.0
+
+Tue, 25 Jun 2024 18:10:57 GMT
+
+### Minor changes
+
+- moving back to using globby instead for speed & accuracy reasons (kchau@microsoft.com)
+- Bump @lage-run/globby to v14.0.2
 
 ## 1.1.2
 

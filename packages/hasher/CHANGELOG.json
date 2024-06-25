@@ -2,6 +2,27 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Tue, 25 Jun 2024 18:10:57 GMT",
+      "version": "1.2.0",
+      "tag": "@lage-run/hasher_v1.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "e294f805313ceb5b66640f8aaff8647bdb588511",
+            "comment": "moving back to using globby instead for speed & accuracy reasons"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/globby to v14.0.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 10 Jun 2024 23:50:39 GMT",
       "version": "1.1.2",
       "tag": "@lage-run/hasher_v1.1.2",

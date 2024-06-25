@@ -1,8 +1,18 @@
 # Change Log - lage
 
-This log was last generated on Tue, 18 Jun 2024 00:31:29 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Jun 2024 18:10:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.19
+
+Tue, 25 Jun 2024 18:10:57 GMT
+
+### Patches
+
+- bumps the esbuild (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.17.5
+- Bump @lage-run/scheduler to v1.2.5
 
 ## 2.7.18
 
