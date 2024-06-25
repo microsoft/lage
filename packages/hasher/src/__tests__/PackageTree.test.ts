@@ -28,7 +28,7 @@ describe("PackageTree", () => {
       [
         "node_modules/package-2/package.json",
         "package.json",
-        "src/index.ts",       
+        "src/index.ts",
         "yarn.lock",
       ]
     `);
