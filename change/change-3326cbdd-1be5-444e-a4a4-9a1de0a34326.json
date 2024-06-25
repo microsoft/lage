@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "bumps the esbuild",
+      "packageName": "lage",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

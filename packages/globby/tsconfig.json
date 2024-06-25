@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.lage2.json",
+  "compilerOptions": {
+    "outDir": "./lib",
+    "emitDeclarationOnly": true,
+    "module": "Node16"
+  },
+  "include": ["src"]
+}

@@ -39,6 +39,17 @@ module.exports = {
       },
       dependsOn: ["build"],
     },
+    build: {
+      type: "noop",
+      dependsOn: ["transpile", "types"],
+    },
+    "@lage-run/globby#build": {
+      type: "npmScript",
+      dependsOn: ["types"],
+    },
+    "@lage-run/globby#transpile": {
+      type: "noop",
+    },
     lint: {
       type: "worker",
       options: {

@@ -7,9 +7,19 @@ const root = findProjectRoot(process.cwd()) ?? process.cwd();
 const swcOptions = JSON.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8"));
 const packages = getPackageInfos(root);
 const moduleNameMapper = Object.values(packages).reduce((acc, { packageJsonPath, name }) => {
+  if (name === "@lage-run/globby") {
+    return acc;
+  }
+
   const packagePath = path.dirname(packageJsonPath);
   acc[`^${name}/(.*)$`] = `${packagePath}/src/$1`;
-  acc[`^${name}$`] = `${packagePath}/src/index.ts`;
+
+  if (fs.existsSync(path.join(packagePath, "src/index.ts"))) {
+    acc[`^${name}$`] = `${packagePath}/src/index.ts`;
+  } else if (fs.existsSync(path.join(packagePath, "src/index.mts"))) {
+    acc[`^${name}$`] = `${packagePath}/src/index.mts`;
+  }
+
   return acc;
 }, {});
 
@@ -22,7 +32,7 @@ const config = {
   testMatch: ["**/?(*.)+(spec|test).ts?(x)"],
   testPathIgnorePatterns: ["/node_modules/"],
   transform: {
-    "^.+\\.tsx?$": ["@swc/jest", /** @type {*} */ (swcOptions)],
+    "^.+\\.m?tsx?$": ["@swc/jest", /** @type {*} */ (swcOptions)],
   },
   transformIgnorePatterns: ["/node_modules/", "\\.pnp\\.[^\\/]+$"],
   watchPathIgnorePatterns: ["/node_modules/"],

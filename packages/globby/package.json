@@ -1,0 +1,21 @@
+{
+  "name": "@lage-run/globby",
+  "version": "14.0.1",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "esbuild src/index.mts --bundle --platform=node --target=node14 --format=cjs --outfile=lib/index.js && tsc"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "globby": "14.0.1",
+    "esbuild": "^0.21.5"
+  },
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "source": "./src/index.mts",
+      "types": "./lib/index.d.ts"
+    }
+  }
+}

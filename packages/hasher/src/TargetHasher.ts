@@ -168,7 +168,14 @@ export class TargetHasher {
         this.fileHasher
           .readManifest()
           .then(() => (environmentGlob.length > 0 ? this.packageTree.findFilesInPath(root, environmentGlob) : []))
-          .then((files) => this.fileHasher.hash(files))
+          .then((files) => {
+            if (this.logger !== undefined) {
+              this.logger.verbose(`Environment glob files:`);
+              this.logger.silly(" " + files.join("\n "));
+            }
+
+            return this.fileHasher.hash(files);
+          })
           .then((hash) => (this.globalInputsHash = hash)),
 
         parseLockFile(root).then((lockInfo) => (this.lockInfo = lockInfo)),
