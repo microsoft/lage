@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Tue, 25 Jun 2024 18:25:19 GMT",
+      "version": "1.3.1",
+      "tag": "@lage-run/cache_v1.3.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "brunoru@microsoft.com_msteamsmdb",
+            "package": "@lage-run/cache",
+            "commit": "09e1689b8716b87202634a2866d712a1e0b9783f",
+            "comment": "Revert \"DefaultAzureCredential as fallback with optional in config set credential (#760)\""
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 18 Jun 2024 00:31:29 GMT",
       "version": "1.3.0",
       "tag": "@lage-run/cache_v1.3.0",

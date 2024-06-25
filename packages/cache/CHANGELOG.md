@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-This log was last generated on Tue, 18 Jun 2024 00:31:29 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Jun 2024 18:25:19 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.1
+
+Tue, 25 Jun 2024 18:25:19 GMT
+
+### Patches
+
+- Revert "DefaultAzureCredential as fallback with optional in config set credential (#760)" (brunoru@microsoft.com_msteamsmdb)
 
 ## 1.3.0
 

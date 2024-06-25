@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Tue, 25 Jun 2024 18:25:19 GMT",
+      "version": "1.2.6",
+      "tag": "@lage-run/scheduler_v1.2.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/cache to v1.3.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Jun 2024 18:10:57 GMT",
       "version": "1.2.5",
       "tag": "@lage-run/scheduler_v1.2.5",

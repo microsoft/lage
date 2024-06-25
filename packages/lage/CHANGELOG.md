@@ -1,8 +1,17 @@
 # Change Log - lage
 
-This log was last generated on Tue, 25 Jun 2024 18:10:57 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Jun 2024 18:25:19 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.20
+
+Tue, 25 Jun 2024 18:25:19 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.17.6
+- Bump @lage-run/scheduler to v1.2.6
 
 ## 2.7.19
 
