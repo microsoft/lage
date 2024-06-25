@@ -95,10 +95,6 @@ export class PackageTree {
     }
   }
 
-  findFilesInPath(packageName: string, patterns: string[]) {
-    return this.getPackageFiles(packageName, patterns);
-  }
-
   getPackageFiles(packageName: string, patterns: string[]) {
     const { root, packageInfos } = this.options;
     const packagePath = path.relative(root, path.dirname(packageInfos[packageName].packageJsonPath)).replace(/\\/g, "/");
