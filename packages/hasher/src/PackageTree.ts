@@ -25,7 +25,7 @@ export class PackageTree {
   #packageFiles: Record<string, string[]> = {};
   #memoizedPackageFiles: Record<string, string[]> = {};
 
-  constructor(private options: PackageTreeOptions) { }
+  constructor(private options: PackageTreeOptions) {}
 
   reset() {
     // reset the internal state
