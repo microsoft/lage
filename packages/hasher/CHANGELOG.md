@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Thu, 21 Dec 2023 09:49:09 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Jun 2024 22:03:40 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.1
+
+Tue, 25 Jun 2024 22:03:40 GMT
+
+### Patches
+
+- reverting all the hasher changes (kchau@microsoft.com_msteamsmdb)
 
 ## 1.0.7
 
