@@ -1,41 +1,8 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Tue, 25 Jun 2024 18:10:57 GMT and should not be manually modified.
+This log was last generated on Thu, 21 Dec 2023 09:49:09 GMT and should not be manually modified.
 
 <!-- Start content -->
-
-## 1.2.0
-
-Tue, 25 Jun 2024 18:10:57 GMT
-
-### Minor changes
-
-- moving back to using globby instead for speed & accuracy reasons (kchau@microsoft.com)
-- Bump @lage-run/globby to v14.0.2
-
-## 1.1.2
-
-Mon, 10 Jun 2024 23:50:39 GMT
-
-### Patches
-
-- matching correct glob and exclude patterns (kchau@microsoft.com_msteamsmdb)
-
-## 1.1.1
-
-Sun, 05 May 2024 22:55:45 GMT
-
-### Patches
-
-- fixing hashing issues related to rust panic (kchau@microsoft.com)
-
-## 1.1.0
-
-Fri, 15 Mar 2024 04:35:11 GMT
-
-### Minor changes
-
-- perf optimizations (kchau@microsoft.com)
 
 ## 1.0.7
 
