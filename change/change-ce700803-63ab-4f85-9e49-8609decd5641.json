@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "created a new globby package",
+      "packageName": "@lage-run/globby",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
