@@ -1,4 +1,5 @@
 import path from "path";
+import { globby } from "@lage-run/globby";
 
 export interface LocalPackageTreeOptions {
   root: string;
@@ -10,7 +11,6 @@ export interface LocalPackageTreeOptions {
  */
 export class PackageTree {
   #memoizedPackageFiles: Record<string, string[]> = {};
-  #globby?: (patterns: string[], options: { cwd: string; onlyFiles: true; ignore: string[]; gitignore: true }) => Promise<string[]>;
 
   constructor(private options: LocalPackageTreeOptions) {}
 
@@ -21,18 +21,17 @@ export class PackageTree {
 
   async initialize() {
     this.reset();
-    this.#globby = (await import("globby")).globby;
   }
 
   async #findFilesFromGitTree(packagePath: string, patterns: string[]) {
     const cwd = path.isAbsolute(packagePath) ? packagePath : path.join(this.options.root, packagePath);
-    return this.#globby?.(patterns, { cwd, onlyFiles: true, ignore: [".git"], gitignore: true }) ?? [];
+    return globby(patterns, { cwd, onlyFiles: true, ignore: [".git"], gitignore: true, absolute: true }) ?? [];
   }
 
   async findFilesInPath(packagePath: string, patterns: string[]) {
     const key = `${packagePath}\0${patterns.join("\0")}`;
     if (!this.#memoizedPackageFiles[key]) {
-      const files = (await this.#findFilesFromGitTree(packagePath, patterns)).map((f: string) => path.join(packagePath, f));
+      const files = await this.#findFilesFromGitTree(packagePath, patterns);
       this.#memoizedPackageFiles[key] = files;
     }
 
