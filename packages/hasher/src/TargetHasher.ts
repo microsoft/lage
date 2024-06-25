@@ -1,9 +1,17 @@
 import type { Target } from "@lage-run/target-graph";
 import { hash } from "glob-hasher";
+import fg from "fast-glob";
 
 import fs from "fs";
 import path from "path";
-import { type ParsedLock, type WorkspaceInfo, type PackageInfos, getWorkspaces, parseLockFile, createDependencyMap } from "workspace-tools";
+import {
+  type ParsedLock,
+  type WorkspaceInfo,
+  type PackageInfos,
+  getWorkspacesAsync,
+  parseLockFile,
+  createDependencyMap,
+} from "workspace-tools";
 import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
 import { infoFromPackageJson } from "workspace-tools/lib/infoFromPackageJson.js";
 
@@ -46,7 +54,7 @@ export interface TargetManifest {
 export class TargetHasher {
   logger: Logger | undefined;
   fileHasher: FileHasher;
-  packageTree!: PackageTree;
+  packageTree: PackageTree | undefined;
 
   initializedPromise: Promise<unknown> | undefined;
 
@@ -137,11 +145,6 @@ export class TargetHasher {
     this.fileHasher = new FileHasher({
       root,
     });
-
-    this.packageTree = new PackageTree({
-      root,
-      includeUntracked: true,
-    });
   }
 
   ensureInitialized() {
@@ -158,29 +161,32 @@ export class TargetHasher {
       return;
     }
 
-    this.workspaceInfo = getWorkspaces(root);
-    this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
-    this.dependencyMap = createDependencyMap(this.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
+    this.initializedPromise = Promise.all([
+      this.fileHasher
+        .readManifest()
+        .then(() => fg(environmentGlob, { cwd: root }))
+        .then((files) => this.fileHasher.hash(files))
+        .then((hash) => (this.globalInputsHash = hash)),
 
-    const finderInitPromise = this.packageTree.initialize();
-    this.initializedPromise = finderInitPromise.then(() => {
-      return Promise.all([
-        this.fileHasher
-          .readManifest()
-          .then(() => (environmentGlob.length > 0 ? this.packageTree.findFilesInPath(root, environmentGlob) : []))
-          .then((files) => {
-            if (this.logger !== undefined) {
-              this.logger.verbose(`Environment glob files:`);
-              this.logger.silly(" " + files.join("\n "));
-            }
+      getWorkspacesAsync(root)
+        .then((workspaceInfo) => (this.workspaceInfo = workspaceInfo))
+        .then(() => {
+          this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
 
-            return this.fileHasher.hash(files);
-          })
-          .then((hash) => (this.globalInputsHash = hash)),
+          this.dependencyMap = createDependencyMap(this.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
+          this.packageTree = new PackageTree({
+            root,
+            packageInfos: this.packageInfos,
 
-        parseLockFile(root).then((lockInfo) => (this.lockInfo = lockInfo)),
-      ]);
-    });
+            // TODO: (optimization) false if process.env.TF_BUILD || process.env.CI
+            includeUntracked: true,
+          });
+
+          return this.packageTree.initialize();
+        }),
+
+      parseLockFile(root).then((lockInfo) => (this.lockInfo = lockInfo)),
+    ]);
 
     await this.initializedPromise;
 
@@ -203,11 +209,10 @@ export class TargetHasher {
         throw new Error("Root-level targets must have `inputs` defined if it has cache enabled.");
       }
 
-      const files = await this.packageTree.findFilesInPath(root, target.inputs);
-
+      const files = await fg(target.inputs, { cwd: root });
       const fileFashes = hash(files, { cwd: root }) ?? {};
 
-      const hashes = Object.values(fileFashes).filter((hash) => hash !== undefined && hash !== null) as string[];
+      const hashes = Object.values(fileFashes) as string[];
 
       return hashStrings(hashes);
     }
@@ -233,12 +238,9 @@ export class TargetHasher {
     const packagePatterns = this.expandInputPatterns(inputs, target);
     const files: string[] = [];
     for (const [pkg, patterns] of Object.entries(packagePatterns)) {
-      const { root } = this.options;
-      const packagePath = path.relative(root, path.dirname(this.packageInfos[pkg].packageJsonPath)).replace(/\\/g, "/");
-      const packageFiles = await this.packageTree.findFilesInPath(packagePath, patterns);
+      const packageFiles = this.packageTree!.getPackageFiles(pkg, patterns);
       files.push(...packageFiles);
     }
-
     const fileHashes = this.fileHasher.hash(files) ?? {}; // this list is sorted by file name
 
     // get target hashes
@@ -266,7 +268,6 @@ export class TargetHasher {
   }
 
   async cleanup() {
-    this.packageTree.cleanup();
-    this.fileHasher.writeManifest();
+    await this.fileHasher.writeManifest();
   }
 }

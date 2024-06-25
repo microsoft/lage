@@ -9,5 +9,11 @@
     "**/lib": true,
     "**/node_modules": true,
     "**/*.code-search": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   }
 }

@@ -3,6 +3,7 @@
 import { Monorepo } from "@lage-run/monorepo-fixture";
 import { PackageTree } from "../PackageTree";
 import path from "path";
+import { getPackageInfos } from "workspace-tools";
 
 // given various patterns that exercises the globby functionality with extgob, etc.
 describe("PackageTree", () => {
@@ -19,7 +20,9 @@ describe("PackageTree", () => {
     const packagePath = monorepo.root;
     const patterns = ["**/*"];
 
-    const packageTree = new PackageTree({ root: packagePath, includeUntracked: true });
+    const packageInfos = getPackageInfos(monorepo.root);
+
+    const packageTree = new PackageTree({ root: packagePath, includeUntracked: true, packageInfos });
     await packageTree.initialize();
 
     const files = await packageTree.findFilesInPath(packagePath, patterns);
@@ -39,10 +42,11 @@ describe("PackageTree", () => {
   it("should find all files in a package using globby with extglob", async () => {
     const monorepo = await setupFixture("basic");
     const packagePath = monorepo.root;
+    const packageInfos = getPackageInfos(monorepo.root);
 
     const patterns = ["**/*.+(json|ts)", "!yarn.lock"];
 
-    const packageTree = new PackageTree({ root: packagePath, includeUntracked: true });
+    const packageTree = new PackageTree({ root: packagePath, includeUntracked: true, packageInfos });
     await packageTree.initialize();
 
     const files = await packageTree.findFilesInPath(packagePath, patterns);
@@ -62,8 +66,9 @@ describe("PackageTree", () => {
     const monorepo = await setupFixture("monorepo-with-deps");
     const packagePath = monorepo.root;
     const patterns = ["**/!(package.json)"];
+    const packageInfos = getPackageInfos(monorepo.root);
 
-    const packageTree = new PackageTree({ root: packagePath, includeUntracked: true });
+    const packageTree = new PackageTree({ root: packagePath, includeUntracked: true, packageInfos });
     await packageTree.initialize();
 
     const files = await packageTree.findFilesInPath(packagePath, patterns);
