@@ -22,16 +22,14 @@ describe("PackageTree", () => {
     const packageTree = new PackageTree({ root: packagePath, includeUntracked: true });
     await packageTree.initialize();
 
-    const files = (await packageTree.findFilesInPath(packagePath, patterns))
-      .map((p) => path.relative(packagePath, p))
-      .map((p) => p.replace(/\\/g, "/"));
+    const files = await packageTree.findFilesInPath(packagePath, patterns);
 
-    expect(files).toMatchInlineSnapshot(`
+    expect(serializeFiles(files, packagePath)).toMatchInlineSnapshot(`
       [
-        "package.json",
-        "yarn.lock",
-        "src/index.ts",
         "node_modules/package-2/package.json",
+        "package.json",
+        "src/index.ts",       
+        "yarn.lock",
       ]
     `);
 
@@ -47,15 +45,13 @@ describe("PackageTree", () => {
     const packageTree = new PackageTree({ root: packagePath, includeUntracked: true });
     await packageTree.initialize();
 
-    const files = (await packageTree.findFilesInPath(packagePath, patterns))
-      .map((p) => path.relative(packagePath, p))
-      .map((p) => p.replace(/\\/g, "/"));
+    const files = await packageTree.findFilesInPath(packagePath, patterns);
 
-    expect(files).toMatchInlineSnapshot(`
+    expect(serializeFiles(files, packagePath)).toMatchInlineSnapshot(`
       [
+        "node_modules/package-2/package.json",
         "package.json",
         "src/index.ts",
-        "node_modules/package-2/package.json",
       ]
     `);
 
@@ -70,21 +66,26 @@ describe("PackageTree", () => {
     const packageTree = new PackageTree({ root: packagePath, includeUntracked: true });
     await packageTree.initialize();
 
-    const files = (await packageTree.findFilesInPath(packagePath, patterns))
-      .map((p) => path.relative(packagePath, p))
-      .map((p) => p.replace(/\\/g, "/"));
+    const files = await packageTree.findFilesInPath(packagePath, patterns);
 
-    expect(files).toMatchInlineSnapshot(`
+    expect(serializeFiles(files, packagePath)).toMatchInlineSnapshot(`
       [
-        "yarn.lock",
         "node_modules/.yarn-integrity",
-        "node_modules/package-b/src/index.ts",
         "node_modules/package-a/src/index.ts",
-        "packages/package-b/src/index.ts",
+        "node_modules/package-b/src/index.ts",
         "packages/package-a/src/index.ts",
+        "packages/package-b/src/index.ts",
+        "yarn.lock",
       ]
     `);
 
     monorepo.cleanup();
   });
+
+  function serializeFiles(files: string[], packagePath: string) {
+    return files
+      .map((p) => path.relative(packagePath, p))
+      .map((p) => p.replace(/\\/g, "/"))
+      .sort();
+  }
 });
