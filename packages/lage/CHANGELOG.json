@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 26 Jul 2024 15:39:01 GMT",
+      "version": "1.10.1",
+      "tag": "lage_v1.10.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "sverre.johansen@gmail.com",
+            "package": "lage",
+            "commit": "0ee3776fe416e6c7ae03afd7dc4d118d222c20a6",
+            "comment": "Fix non-existing tasks in Lage Info if transient tasks are noop"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 Apr 2024 00:41:14 GMT",
       "version": "1.10.0",
       "tag": "lage_v1.10.0",

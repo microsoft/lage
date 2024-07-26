@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix non-existing tasks in Lage Info if transient tasks are noop",
-  "packageName": "lage",
-  "email": "sverre.johansen@gmail.com",
-  "dependentChangeType": "patch"
-}

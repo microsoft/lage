@@ -1,8 +1,16 @@
 # Change Log - lage
 
-This log was last generated on Wed, 24 Apr 2024 23:24:02 GMT and should not be manually modified.
+This log was last generated on Fri, 26 Jul 2024 15:39:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.10.1
+
+Fri, 26 Jul 2024 15:39:01 GMT
+
+### Patches
+
+- Fix non-existing tasks in Lage Info if transient tasks are noop (sverre.johansen@gmail.com)
 
 ## 1.10.0
 
