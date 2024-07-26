@@ -17,6 +17,36 @@ describe("info test", () => {
     const result = testInfoWithReporter("dgml");
     expect(result).toMatchSnapshot();
   });
+
+  it("dependencies are resolved via noop tasks", () => {
+    const repo = new Monorepo("noop-task-info");
+    repo.init();
+    repo.addPackage("a", ["b"], { build: "echo 'building a'" });
+    // This task does not have a `build` script.
+    repo.addPackage("b", ["c"], {});
+    repo.addPackage("c", [], { build: "echo 'building c'" });
+    repo.install();
+    repo.linkPackages();
+
+    const output = repo.run("writeInfo", ["test", "--reporter", "json"], true).stdout;
+    const infoJsonOutput: any = JSON.parse(output);
+
+    const { packageTasks } = infoJsonOutput.data;
+
+    // Check if task `a#build` depends on `c#build`, because package `b` doesn't
+    // have a `build` task so dependencies are hoisted up.
+    const task = packageTasks.find(({ id }) => id === "a#build");
+    expect(task.dependencies).toEqual(["c#build"]);
+
+    // Make sure all dependencies points to an existing task.
+    for (const task of packageTasks) {
+      for (const dependency of task.dependencies) {
+        expect(packageTasks.some(({ id }) => id === dependency)).toBeTruthy();
+      }
+    }
+
+    repo.cleanup();
+  });
 });
 
 function testInfoWithReporter(reporterName: string): string {
