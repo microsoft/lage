@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Update dependency micromatch to v4.0.8",
+      "packageName": "@lage-run/hasher",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
