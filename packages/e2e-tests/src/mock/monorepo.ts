@@ -12,11 +12,7 @@ export class Monorepo {
   nodeModulesPath: string;
   yarnPath: string;
 
-  static externalPackageJsonGlobs = [
-    "node_modules/yoga-layout-prebuilt/package.json",
-    "node_modules/glob-hasher/package.json",
-    "node_modules/glob-hasher-*/package.json",
-  ];
+  static externalPackageJsonGlobs = ["node_modules/glob-hasher/package.json", "node_modules/glob-hasher-*/package.json"];
 
   static externalPackageJsons = glob(Monorepo.externalPackageJsonGlobs, {
     cwd: path.join(__dirname, "..", "..", "..", ".."),
