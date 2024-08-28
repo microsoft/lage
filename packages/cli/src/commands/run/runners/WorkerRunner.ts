@@ -1,1 +1,1 @@
-export { WorkerRunner } from "@lage-run/scheduler";
+export { WorkerRunner } from "@lage-run/runners";

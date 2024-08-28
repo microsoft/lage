@@ -1,8 +1,7 @@
-import { existsSync } from "fs";
 import { join } from "path";
 import { readFile } from "fs/promises";
 import { spawn, type ChildProcess } from "child_process";
-import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
+import type { TargetRunner, TargetRunnerOptions } from "./types/TargetRunner.js";
 import type { Target } from "@lage-run/target-graph";
 
 export interface NpmScriptRunnerOptions {

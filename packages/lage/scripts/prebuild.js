@@ -2,10 +2,10 @@ const fs = require("fs");
 const path = require("path");
 
 const cwd = process.cwd();
-const schedulerPath = path.dirname(require.resolve("@lage-run/scheduler/package.json"));
+const runnersPath = path.dirname(require.resolve("@lage-run/runners/package.json"));
 const cliPath = path.dirname(require.resolve("@lage-run/cli/package.json"));
 
-const runnerDirs = [path.join(schedulerPath, "lib", "runners"), path.join(cliPath, "lib", "commands", "cache", "runners")];
+const runnerDirs = [path.join(runnersPath, "lib"), path.join(cliPath, "lib", "commands", "cache", "runners")];
 
 function prebuild() {
   // Due to the fact that workers require the runner to be in the same directory, we need to copy the runners to the dist folder

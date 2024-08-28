@@ -1,1 +1,1 @@
-export { NpmScriptRunner } from "@lage-run/scheduler";
+export { NpmScriptRunner } from "@lage-run/runners";

@@ -1,4 +1,4 @@
-import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
+import type { TargetRunner, TargetRunnerOptions } from "./types/TargetRunner.js";
 import type { Target } from "@lage-run/target-graph";
 import { pathToFileURL } from "url";
 

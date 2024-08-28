@@ -1,12 +1,12 @@
 import { createCache } from "../cache/createCacheProvider.js";
 import { registerWorker } from "@lage-run/worker-threads-pool";
-import { TargetRunnerPicker } from "../runners/TargetRunnerPicker.js";
+import { TargetRunnerPicker } from "@lage-run/runners";
 import { parentPort, workerData } from "worker_threads";
 import createLogger from "@lage-run/logger";
 
 import type { CacheOptions } from "@lage-run/config";
 import type { Target } from "@lage-run/target-graph";
-import type { TargetRunnerPickerOptions } from "@lage-run/scheduler-types";
+import type { TargetRunnerPickerOptions } from "@lage-run/runners";
 
 interface TargetWorkerDataOptions {
   runners: TargetRunnerPickerOptions;
