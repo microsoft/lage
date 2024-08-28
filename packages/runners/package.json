@@ -20,7 +20,6 @@
     "@lage-run/target-graph": "^0.8.9"
   },
   "devDependencies": {
-    "@lage-run/scheduler-types": "^0.3.13",
     "@lage-run/monorepo-scripts": "*"
   },
   "publishConfig": {
