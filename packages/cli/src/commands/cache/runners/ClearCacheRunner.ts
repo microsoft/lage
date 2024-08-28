@@ -1,4 +1,4 @@
-import type { TargetRunner, TargetRunnerOptions } from "@lage-run/scheduler-types";
+import type { TargetRunner, TargetRunnerOptions } from "@lage-run/runners";
 import fs from "fs";
 import path from "path";
 import { rm, stat, unlink } from "fs/promises";

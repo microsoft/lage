@@ -2,7 +2,7 @@ import type { CacheOptions } from "./CacheOptions.js";
 import type { Priority } from "./Priority.js";
 import type { PipelineDefinition } from "./PipelineDefinition.js";
 import type { LoggerOptions } from "./LoggerOptions.js";
-import type { TargetRunnerPickerOptions } from "@lage-run/scheduler-types";
+import type { TargetRunnerPickerOptions } from "@lage-run/runners";
 
 export type NpmClient = "npm" | "yarn" | "pnpm";
 

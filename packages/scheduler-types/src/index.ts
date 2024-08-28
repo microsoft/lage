@@ -1,6 +1,4 @@
 export type { TargetRunSummary, SchedulerRunSummary, SchedulerRunResults } from "./types/SchedulerRunSummary.js";
 export type { TargetRun } from "./types/TargetRun.js";
-export type { TargetRunner, TargetRunnerOptions } from "./types/TargetRunner.js";
 export type { TargetScheduler } from "./types/TargetScheduler.js";
 export type { TargetStatus } from "./types/TargetStatus.js";
-export type { TargetRunnerPickerOptions } from "./types/TargetRunnerPickerOptions.js";

@@ -1,1 +1,1 @@
-export { NoOpRunner } from "@lage-run/scheduler";
+export { NoOpRunner } from "@lage-run/runners";

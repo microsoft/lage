@@ -1,4 +1,4 @@
-import type { TargetRunner } from "@lage-run/scheduler-types";
+import type { TargetRunner } from "./types/TargetRunner.js";
 
 export class NoOpRunner implements TargetRunner {
   async shouldRun() {
