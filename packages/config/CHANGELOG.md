@@ -1,8 +1,17 @@
 # Change Log - @lage-run/config
 
-This log was last generated on Thu, 23 May 2024 18:15:05 GMT and should not be manually modified.
+This log was last generated on Wed, 28 Aug 2024 21:12:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.7
+
+Wed, 28 Aug 2024 21:12:45 GMT
+
+### Patches
+
+- moving runners to its own package, fixing up imports (kchau@microsoft.com)
+- Bump @lage-run/runners to v1.0.1
 
 ## 0.3.6
 

@@ -2,6 +2,51 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 28 Aug 2024 21:12:45 GMT",
+      "version": "0.17.8",
+      "tag": "@lage-run/cli_v0.17.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8b27a04b8d5916457d1c8219edd1f2d216543954",
+            "comment": "moving runners to its own package, fixing up imports"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.3.7",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.2.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/runners to v1.0.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.2.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.14",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Jun 2024 22:03:40 GMT",
       "version": "0.17.7",
       "tag": "@lage-run/cli_v0.17.7",

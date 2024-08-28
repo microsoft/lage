@@ -1,8 +1,19 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Tue, 25 Jun 2024 22:03:40 GMT and should not be manually modified.
+This log was last generated on Wed, 28 Aug 2024 21:12:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.8
+
+Wed, 28 Aug 2024 21:12:45 GMT
+
+### Patches
+
+- moving runners to its own package, fixing up imports (kchau@microsoft.com)
+- Bump @lage-run/config to v0.3.7
+- Bump @lage-run/runners to v1.0.1
+- Bump @lage-run/scheduler-types to v0.3.14
 
 ## 1.2.7
 
