@@ -1,7 +1,7 @@
 import "child_process";
 import { ChildProcess } from "child_process";
 import { getTargetId, Target } from "@lage-run/target-graph";
-import { NpmScriptRunner } from "../src/runners/NpmScriptRunner";
+import { NpmScriptRunner } from "@lage-run/runners";
 import { waitFor } from "./waitFor";
 import os from "os";
 import path from "path";
