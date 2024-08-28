@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@lage-run/cli": "^0.17.7",
-    "@lage-run/scheduler": "^1.2.7",
+    "@lage-run/runners": "^1.0.0",
     "backfill-config": "6.4.2",
     "dts-bundle-generator": "^9.5.1",
     "workspace-tools": "0.36.4",
