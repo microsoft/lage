@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "adds an exec command that skips building a target graph.",
+      "packageName": "@lage-run/cli",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
