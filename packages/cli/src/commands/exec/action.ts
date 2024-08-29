@@ -1,19 +1,72 @@
 import type { Command } from "commander";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { getConfig } from "@lage-run/config";
-import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { getWorkspaceRoot } from "workspace-tools";
 import createLogger from "@lage-run/logger";
 import path from "path";
-
+import fs from "fs";
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import { TargetFactory } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
-import { TargetRunnerPicker } from "@lage-run/runners";
-import { getPackageAndTask } from "@lage-run/target-graph/lib/targetId.js";
+import { TargetRunnerPicker, TargetRunnerPickerOptions } from "@lage-run/runners";
 
 interface ExecOptions extends ReporterInitOptions {
   cwd?: string;
   nodeArg?: string[];
+}
+
+/**
+ * Parses the package and task from the command as quickly as possible:
+ *
+ * 1. if cwd overridden in args, use it to read the package.json directly
+ * 2. if cwd not overridden and root is not cwd, use the cwd to read the package.json directly
+ * 3. if root is cwd, assume the task is global
+ *
+ * @param options
+ * @param command
+ * @returns
+ */
+function parsePackageInfoFromArgs(root: string, options: ExecOptions, command: Command) {
+  const task = command.args[0] ?? undefined;
+
+  if (options.cwd) {
+    const packageJsonPath = path.join(options.cwd, "package.json");
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
+
+    return {
+      info: {
+        ...packageJson,
+        packageJsonPath,
+      },
+      task,
+      isGlobal: false,
+    };
+  } else if (root !== process.cwd()) {
+    const packageJsonPath = path.join(process.cwd(), "package.json");
+    if (fs.existsSync(packageJsonPath)) {
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
+      return {
+        info: {
+          ...packageJson,
+          packageJsonPath,
+        },
+        task,
+        isGlobal: false,
+      };
+    }
+  }
+
+  const packageJsonPath = path.join(root, "package.json");
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
+
+  return {
+    info: {
+      ...packageJson,
+      packageJsonPath,
+    },
+    task,
+    isGlobal: true,
+  };
 }
 
 export async function execAction(options: ExecOptions, command: Command) {
@@ -27,21 +80,20 @@ export async function execAction(options: ExecOptions, command: Command) {
 
   const root = getWorkspaceRoot(cwd)!;
 
-  const packageInfos = getPackageInfos(root);
+  const { info, task, isGlobal } = parsePackageInfoFromArgs(root, options, command);
 
-  const resolve = (packageName: string) => {
-    return path.relative(root, path.dirname(packageInfos[packageName]?.packageJsonPath)).replace(/\\/g, "/");
+  const packageInfos = { [info.name]: info };
+
+  const resolve = () => {
+    return path.dirname(info.packageJsonPath).replace(/\\/g, "/");
   };
 
   const { taskArgs } = filterArgsForTasks(command.args);
 
-  const { packageName, task } = getPackageAndTask(command.args[0]);
-
   const factory = new TargetFactory({ root, resolve, packageInfos });
 
-  const target = packageName ? factory.createPackageTarget(packageName, task, {}) : factory.createGlobalTarget(task, {});
-
-  const pickerOptions = {
+  const target = isGlobal ? factory.createGlobalTarget(task, {}) : factory.createPackageTarget(info.name, task, {});
+  const pickerOptions: TargetRunnerPickerOptions = {
     npmScript: {
       script: require.resolve("../run/runners/NpmScriptRunner.js"),
       options: {
@@ -61,8 +113,10 @@ export async function execAction(options: ExecOptions, command: Command) {
       options: {},
     },
   };
+
   const runnerPicker = new TargetRunnerPicker(pickerOptions);
   const runner = await runnerPicker.pick(target);
+
   if (await runner.shouldRun(target)) {
     await runner.run({
       target,
