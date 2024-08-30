@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 28 Aug 2024 21:12:45 GMT and should not be manually modified.
+This log was last generated on Fri, 30 Aug 2024 18:40:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.18.0
+
+Fri, 30 Aug 2024 18:40:09 GMT
+
+### Minor changes
+
+- adds an exec command that skips building a target graph. (kchau@microsoft.com)
+- Bump @lage-run/hasher to v1.3.0
+- Bump @lage-run/scheduler to v1.2.9
 
 ## 0.17.8
 

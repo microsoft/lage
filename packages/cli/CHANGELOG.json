@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 30 Aug 2024 18:40:09 GMT",
+      "version": "0.18.0",
+      "tag": "@lage-run/cli_v0.18.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "962af15909d64159bbc5fef954e66b6bd4c410d1",
+            "comment": "adds an exec command that skips building a target graph."
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.3.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.2.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 28 Aug 2024 21:12:45 GMT",
       "version": "0.17.8",
       "tag": "@lage-run/cli_v0.17.8",

@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Fri, 30 Aug 2024 18:40:09 GMT",
+      "version": "1.3.0",
+      "tag": "@lage-run/hasher_v1.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "962af15909d64159bbc5fef954e66b6bd4c410d1",
+            "comment": "adding the ability to calculate target env globs"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Jun 2024 22:03:40 GMT",
       "version": "1.2.1",
       "tag": "@lage-run/hasher_v1.2.1",
