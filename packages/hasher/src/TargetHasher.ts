@@ -69,6 +69,20 @@ export class TargetHasher {
     dependents: new Map(),
   };
 
+  memoizedEnvGlobResults = new Map<string, string[]>();
+
+  async getMemorizedEnvGlobResults(envGlob: string[]) {
+    const key = envGlob.join("\0ENV_GLOB\0");
+    const { root } = this.options;
+
+    if (!this.memoizedEnvGlobResults.has(key)) {
+      const files = await fg(envGlob, { cwd: root });
+      this.memoizedEnvGlobResults.set(key, files);
+    }
+
+    return this.memoizedEnvGlobResults.get(key) ?? [];
+  }
+
   getPackageInfos(workspacePackages: WorkspaceInfo) {
     const { root } = this.options;
     const packageInfos: PackageInfos = {};
@@ -164,7 +178,7 @@ export class TargetHasher {
     this.initializedPromise = Promise.all([
       this.fileHasher
         .readManifest()
-        .then(() => fg(environmentGlob, { cwd: root }))
+        .then(() => this.getMemorizedEnvGlobResults(environmentGlob))
         .then((files) => this.fileHasher.hash(files))
         .then((hash) => (this.globalInputsHash = hash)),
 
@@ -246,9 +260,13 @@ export class TargetHasher {
     // get target hashes
     const targetDepHashes = target.dependencies?.sort().map((targetDep) => this.targetHashes[targetDep]);
 
+    const envGlobFiles = target.environmentGlob
+      ? await this.getMemorizedEnvGlobResults(target.environmentGlob)
+      : Object.values(this.globalInputsHash ?? {});
+
     const combinedHashes = [
       // Environmental hashes
-      ...Object.values(this.globalInputsHash ?? {}),
+      ...envGlobFiles,
       `${target.id}|${JSON.stringify(this.options.cliArgs)}`,
       this.options.cacheKey || "",
 
