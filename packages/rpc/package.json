@@ -1,0 +1,29 @@
+{
+  "name": "@lage-run/rpc",
+  "version": "1.0.0",
+  "description": "RPC server and client for Lage",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/lage"
+  },
+  "homepage": "https://microsoft.github.io/lage/",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "proto": "node scripts/protoc.js"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.11.1",
+    "google-protobuf": "^3.21.4"
+  },
+  "devDependencies": {
+    "@lage-run/monorepo-scripts": "*",
+    "grpc-tools": "^1.12.4",
+    "protoc-gen-ts": "^0.8.7",
+    "execa": "^5.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
