@@ -153,8 +153,9 @@ describe("The main Hasher class", () => {
     const hash3 = await getHash(hasher, target3);
     console.log(monorepo1.root);
 
-    //monorepo1.cleanup();
     expect(hash).not.toEqual(hash2);
     expect(hash2).not.toEqual(hash3);
+
+    monorepo1.cleanup();
   });
 });
