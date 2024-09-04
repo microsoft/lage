@@ -16,6 +16,7 @@ async function main() {
   program.addCommand(initCommand);
   program.addCommand(infoCommand);
   program.addCommand(execCommand);
+  program.addCommand(workerCommand);
 
   await program.parseAsync(process.argv);
 }
