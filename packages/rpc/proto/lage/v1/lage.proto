@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package lage.v1;
+
+message RunTargetRequest {
+  string cwd = 1;
+  string task = 2;
+}
+
+message RunTargetResponse {
+  string package_name = 1;
+  string task = 2;
+  string stdout = 3;
+  string stderr = 4;
+  int32 exit_code = 5;
+}
+
+service TargetRunnerService {
+  rpc RunTarget(RunTargetRequest) returns (RunTargetResponse) {}
+}

@@ -11,16 +11,19 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "proto": "node scripts/protoc.js"
+    "lint": "buf lint",
+    "generate": "buf generate",
+    "build": "tsc"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.11.1",
-    "google-protobuf": "^3.21.4"
+    "@bufbuild/buf": "^1.39.0",
+    "@bufbuild/protoc-gen-es": "^2.0.0",
+    "@bufbuild/protobuf": "^2.0.0",
+    "@connectrpc/protoc-gen-connect-es": "^1.4.0",
+    "@connectrpc/connect": "^1.4.0"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "*",
-    "grpc-tools": "^1.12.4",
-    "protoc-gen-ts": "^0.8.7",
     "execa": "^5.0.0"
   },
   "publishConfig": {
