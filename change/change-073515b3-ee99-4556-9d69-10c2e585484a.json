@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Use file hashes instead of just the file names for env glob for targets\\",
+      "packageName": "@lage-run/hasher",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
