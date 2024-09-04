@@ -130,7 +130,7 @@ describe("The main Hasher class", () => {
     monorepo1.cleanup();
   });
 
-  it.only("creates different hashes when the target has a different env glob for different task types", async () => {
+  it("creates different hashes when the target has a different env glob for different task types", async () => {
     const monorepo1 = await setupFixture("monorepo-with-global-files-different-tasks");
     const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
     const target = createTarget(monorepo1.root, "package-a", "test");
@@ -144,14 +144,12 @@ describe("The main Hasher class", () => {
     target2.inputs = ["**/*", "^**/*"];
 
     const hash2 = await getHash(hasher, target2);
-    hasher.reset();
     const target3 = createTarget(monorepo1.root, "package-a", "lint");
     fs.writeFileSync(path.join(monorepo1.root, ".eslintrc.js"), "module.exports = {/*somethingdifferent*/};");
     target3.environmentGlob = [".eslintrc.js"];
     target3.inputs = ["**/*", "^**/*"];
 
     const hash3 = await getHash(hasher, target3);
-    console.log(monorepo1.root);
 
     expect(hash).not.toEqual(hash2);
     expect(hash2).not.toEqual(hash3);

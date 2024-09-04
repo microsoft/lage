@@ -290,9 +290,4 @@ export class TargetHasher {
   async cleanup() {
     await this.fileHasher.writeManifest();
   }
-
-  reset() {
-    this.memoizedEnvGlobResults.clear();
-    this.fileHasher.reset();
-  }
 }
