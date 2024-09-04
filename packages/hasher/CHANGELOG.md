@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Fri, 30 Aug 2024 18:40:09 GMT and should not be manually modified.
+This log was last generated on Wed, 04 Sep 2024 23:25:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.1
+
+Wed, 04 Sep 2024 23:25:05 GMT
+
+### Patches
+
+- Use file hashes instead of just the file names for env glob for targets\ (kchau@microsoft.com)
 
 ## 1.3.0
 
