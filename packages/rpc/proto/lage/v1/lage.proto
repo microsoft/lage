@@ -15,6 +15,6 @@ message RunTargetResponse {
   int32 exit_code = 5;
 }
 
-service TargetRunnerService {
+service LageService {
   rpc RunTarget(RunTargetRequest) returns (RunTargetResponse) {}
 }
