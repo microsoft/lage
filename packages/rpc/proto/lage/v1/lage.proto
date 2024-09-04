@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package lage.v1;
+package connectrpc.lage.v1;
 
 message RunTargetRequest {
   string cwd = 1;

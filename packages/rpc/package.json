@@ -16,15 +16,15 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@bufbuild/buf": "^1.39.0",
-    "@bufbuild/protoc-gen-es": "^2.0.0",
-    "@bufbuild/protobuf": "^2.0.0",
-    "@connectrpc/protoc-gen-connect-es": "^1.4.0",
-    "@connectrpc/connect": "^1.4.0"
+    "@bufbuild/protobuf": "^1.10.0",
+    "@connectrpc/connect": "^1.4.0",
+    "@connectrpc/connect-node": "^1.4.0"
   },
   "devDependencies": {
-    "@lage-run/monorepo-scripts": "*",
-    "execa": "^5.0.0"
+    "@bufbuild/buf": "^1.39.0",
+    "@bufbuild/protoc-gen-es": "^1.10.0",
+    "@connectrpc/protoc-gen-connect-es": "^1.4.0",
+    "@lage-run/monorepo-scripts": "*"
   },
   "publishConfig": {
     "access": "public"

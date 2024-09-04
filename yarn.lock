@@ -702,34 +702,20 @@
     "@bufbuild/buf-win32-arm64" "1.39.0"
     "@bufbuild/buf-win32-x64" "1.39.0"
 
-"@bufbuild/protobuf@1.10.0", "@bufbuild/protobuf@^1.7.2":
+"@bufbuild/protobuf@1.10.0", "@bufbuild/protobuf@^1.10.0", "@bufbuild/protobuf@^1.7.2":
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/@bufbuild/protobuf/-/protobuf-1.10.0.tgz#1a67ac889c2d464a3492b3e54c38f80517963b16"
   integrity sha512-QDdVFLoN93Zjg36NoQPZfsVH9tZew7wKDKyV5qRdj8ntT4wQCOradQjRaTdwMhWUYsgKsvCINKKm87FdEk96Ag==
 
-"@bufbuild/protobuf@2.0.0", "@bufbuild/protobuf@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@bufbuild/protobuf/-/protobuf-2.0.0.tgz#d4be93c778e0df2c0852cc286b1d04f576294bf9"
-  integrity sha512-sw2JhwJyvyL0zlhG61aDzOVryEfJg2PDZFSV7i7IdC7nAE41WuXCru3QWLGiP87At0BMzKOoKO/FqEGoKygGZQ==
-
-"@bufbuild/protoc-gen-es@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@bufbuild/protoc-gen-es/-/protoc-gen-es-2.0.0.tgz#da72f709614209d126ce99cdafd36dbb1cb21559"
-  integrity sha512-xXDrDFjSD97jGu9RMA8O4Myj66DdCLOFeYG7Z0mX1aCE9hayymfor+BKgKCQouUfty6CYv8709FPYpEtDurLFQ==
+"@bufbuild/protoc-gen-es@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@bufbuild/protoc-gen-es/-/protoc-gen-es-1.10.0.tgz#8771794259b6b78554458b85f7149df155ebe21b"
+  integrity sha512-zBYBsVT/ul4uZb6F+kD7/k4sWNHVVbEPfJwKi0FDr+9VJo8MKIofI6pkr5ksBLr4fi/74r+e/75Xi/0clL5dXg==
   dependencies:
-    "@bufbuild/protobuf" "^2.0.0"
-    "@bufbuild/protoplugin" "2.0.0"
+    "@bufbuild/protobuf" "^1.10.0"
+    "@bufbuild/protoplugin" "1.10.0"
 
-"@bufbuild/protoplugin@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@bufbuild/protoplugin/-/protoplugin-2.0.0.tgz#cac1d9e2f0b08a48609fbda7c7542500ce5ef815"
-  integrity sha512-y77IarGNbJfr5YZHQ+biO0O9B8rXicKLLOFRJu9mKr9LYE5/CLIKqonIBfkc/lggCK2YOtinjZJEYb39HymIog==
-  dependencies:
-    "@bufbuild/protobuf" "2.0.0"
-    "@typescript/vfs" "^1.5.2"
-    typescript "5.4.5"
-
-"@bufbuild/protoplugin@^1.7.2":
+"@bufbuild/protoplugin@1.10.0", "@bufbuild/protoplugin@^1.7.2":
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/@bufbuild/protoplugin/-/protoplugin-1.10.0.tgz#314035fa2b80fa56e72d1aa06eb9ea6de6877c4c"
   integrity sha512-u6NE4vL0lw1+EK4/PiE/SQB7fKO4LRJNTEScIXVOi2x88K/c8WKc/k0KyEaA0asVBMpwekJQZGnRyj04ZtN5Gg==
@@ -737,6 +723,13 @@
     "@bufbuild/protobuf" "1.10.0"
     "@typescript/vfs" "^1.4.0"
     typescript "4.5.2"
+
+"@connectrpc/connect-node@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@connectrpc/connect-node/-/connect-node-1.4.0.tgz#9edd22fd7bc812b4692f228d2ff6bbd549cbb032"
+  integrity sha512-0ANnrr6SvsjevsWEgdzHy7BaHkluZyS6s4xNoVt7RBHFR5V/kT9lPokoIbYUOU9JHzdRgTaS3x5595mwUsu15g==
+  dependencies:
+    undici "^5.28.3"
 
 "@connectrpc/connect@^1.4.0":
   version "1.4.0"
@@ -1585,7 +1578,7 @@
     "@typescript-eslint/types" "5.54.1"
     eslint-visitor-keys "^3.3.0"
 
-"@typescript/vfs@^1.4.0", "@typescript/vfs@^1.5.2":
+"@typescript/vfs@^1.4.0":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/@typescript/vfs/-/vfs-1.6.0.tgz#9c90d8c43f7ac53cc77d5959e5c4c9b639f0959e"
   integrity sha512-hvJUjNVeBMp77qPINuUvYXj4FyWeeMMKZkxEATEU3hqBAQ7qdTBCUFT7Sp0Zu0faeEtFf+ldXxMEDr/bk73ISg==
@@ -5159,7 +5152,7 @@ typescript@4.5.2:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.2.tgz#8ac1fba9f52256fdb06fb89e4122fa6a346c2998"
   integrity sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==
 
-typescript@5.4.5, typescript@>=5.0.2:
+typescript@>=5.0.2:
   version "5.4.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.4.5.tgz#42ccef2c571fdbd0f6718b1d1f5e6e5ef006f611"
   integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
@@ -5169,7 +5162,7 @@ typescript@~5.0.3:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.4.tgz#b217fd20119bd61a94d4011274e0ab369058da3b"
   integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
 
-undici@^5.25.4:
+undici@^5.25.4, undici@^5.28.3:
   version "5.28.4"
   resolved "https://registry.yarnpkg.com/undici/-/undici-5.28.4.tgz#6b280408edb6a1a604a9b20340f45b422e373068"
   integrity sha512-72RFADWFqKmUb2hmmvNODKL3p9hcB6Gt2DOQMis1SEBaV6a4MH8soBvzg+95CYhCKPFedut2JY9bMfrDl9D23g==
