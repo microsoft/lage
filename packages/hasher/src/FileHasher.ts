@@ -118,4 +118,9 @@ export class FileHasher {
 
     return hashes;
   }
+
+  reset() {
+    this.#store = {};
+    this.writeManifest();
+  }
 }
