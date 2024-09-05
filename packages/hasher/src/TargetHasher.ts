@@ -260,9 +260,11 @@ export class TargetHasher {
     // get target hashes
     const targetDepHashes = target.dependencies?.sort().map((targetDep) => this.targetHashes[targetDep]);
 
-    const envGlobFiles = target.environmentGlob
-      ? await this.getMemorizedEnvGlobResults(target.environmentGlob)
-      : Object.values(this.globalInputsHash ?? {});
+    const envGlobFiles = Object.values(
+      target.environmentGlob
+        ? this.fileHasher.hash(await this.getMemorizedEnvGlobResults(target.environmentGlob))
+        : this.globalInputsHash ?? {}
+    );
 
     const combinedHashes = [
       // Environmental hashes

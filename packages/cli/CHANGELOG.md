@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Fri, 30 Aug 2024 18:40:09 GMT and should not be manually modified.
+This log was last generated on Wed, 04 Sep 2024 23:25:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.18.1
+
+Wed, 04 Sep 2024 23:25:05 GMT
+
+### Patches
+
+- Bump @lage-run/hasher to v1.3.1
+- Bump @lage-run/scheduler to v1.2.10
 
 ## 0.18.0
 

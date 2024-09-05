@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Wed, 04 Sep 2024 23:25:05 GMT",
+      "version": "1.3.1",
+      "tag": "@lage-run/hasher_v1.3.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "cbfd60ade539086a6a797c0674e06f26cfc06af3",
+            "comment": "Use file hashes instead of just the file names for env glob for targets\\"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 30 Aug 2024 18:40:09 GMT",
       "version": "1.3.0",
       "tag": "@lage-run/hasher_v1.3.0",
