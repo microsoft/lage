@@ -1,13 +1,25 @@
 import type { Logger } from "@lage-run/logger";
 import type { ILageService } from "@lage-run/rpc";
-import { TargetRunnerPicker } from "@lage-run/runners";
 import type { TargetRunnerPickerOptions } from "@lage-run/runners";
 import { getTargetId, type TargetGraph } from "@lage-run/target-graph";
 
-export async function createLageService(targetGraph: TargetGraph, logger: Logger, npmClient: string): Promise<ILageService> {
+export async function createLageService(
+  targetGraph: TargetGraph,
+  logger: Logger,
+  npmClient: string,
+  maxWorkers?: number
+): Promise<ILageService> {
+  logger.info(`Server started with ${maxWorkers} workers`);
+
+  const poolModule = (await import("@lage-run/worker-threads-pool")).default;
+  const pool = new poolModule.WorkerPool({
+    script: require.resolve("./singleTargetWorker.js"),
+    maxWorkers,
+  });
+
   return {
     async runTarget(request) {
-      const pickerOptions: TargetRunnerPickerOptions = {
+      const runners: TargetRunnerPickerOptions = {
         npmScript: {
           script: require.resolve("../run/runners/NpmScriptRunner.js"),
           options: {
@@ -27,7 +39,6 @@ export async function createLageService(targetGraph: TargetGraph, logger: Logger
           options: {},
         },
       };
-      const runnerPicker = new TargetRunnerPicker(pickerOptions);
 
       if (!targetGraph.targets.has(getTargetId(request.packageName, request.task))) {
         logger.error(`Target not found: ${request.packageName}#${request.task}`);
@@ -37,20 +48,26 @@ export async function createLageService(targetGraph: TargetGraph, logger: Logger
           exitCode: 1,
         };
       }
-      const target = targetGraph.targets.get(getTargetId(request.packageName, request.task))!;
 
-      const runner = await runnerPicker.pick(target);
+      const target = targetGraph.targets.get(getTargetId(request.packageName, request.task))!;
+      const task = {
+        target,
+        runners,
+      };
 
       try {
-        if (await runner.shouldRun(target)) {
-          logger.info(`Running target ${request.packageName}#${request.task}`);
-          await runner.run({
-            target,
-            weight: 0,
-            abortSignal: new AbortController().signal,
-          });
-          logger.info(`Finished target ${request.packageName}#${request.task}`);
-        }
+        await pool.exec(
+          task,
+          0,
+          (worker, stdout, stderr) => {
+            logger.info(`[${worker.threadId}] ${request.packageName}#${request.task} start`);
+            stdout.pipe(process.stdout);
+            stderr.pipe(process.stderr);
+          },
+          (worker) => {
+            logger.info(`[${worker.threadId}] ${request.packageName}#${request.task} end`);
+          }
+        );
 
         return {
           packageName: request.packageName,
