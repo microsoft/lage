@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "remote execution now works with a better command set",
+      "packageName": "@lage-run/cli",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "remote execution now works with a better command set",
+      "packageName": "@lage-run/rpc",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
