@@ -9,6 +9,8 @@ export async function createLageService(
   npmClient: string,
   maxWorkers?: number
 ): Promise<ILageService> {
+  logger.info(`Server started with ${maxWorkers} workers`);
+
   const poolModule = (await import("@lage-run/worker-threads-pool")).default;
   const pool = new poolModule.WorkerPool({
     script: require.resolve("./singleTargetWorker.js"),
@@ -54,10 +56,18 @@ export async function createLageService(
       };
 
       try {
-        await pool.exec(task, 0, (_worker, stdout, stderr) => {
-          stdout.pipe(process.stdout);
-          stderr.pipe(process.stderr);
-        });
+        await pool.exec(
+          task,
+          0,
+          (worker, stdout, stderr) => {
+            logger.info(`[${worker.threadId}] ${request.packageName}#${request.task} start`);
+            stdout.pipe(process.stdout);
+            stderr.pipe(process.stderr);
+          },
+          (worker) => {
+            logger.info(`[${worker.threadId}] ${request.packageName}#${request.task} end`);
+          }
+        );
 
         return {
           packageName: request.packageName,
