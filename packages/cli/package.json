@@ -25,6 +25,7 @@
     "@lage-run/hasher": "^1.3.1",
     "@lage-run/logger": "^1.3.0",
     "@lage-run/reporters": "^1.2.8",
+    "@lage-run/rpc": "^1.0.0",
     "@lage-run/runners": "^1.0.1",
     "@lage-run/scheduler": "^1.2.10",
     "@lage-run/scheduler-types": "^0.3.14",

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package connectrpc.lage.v1;
+
+message RunTargetRequest {
+  optional string package_name = 1;
+  string task = 2;
+  repeated string taskArgs = 3;
+  string nodeOptions = 4;
+  string npmClient = 5;
+}
+
+message RunTargetResponse {
+  optional string package_name = 1;
+  string task = 2;
+  int32 exit_code = 5;
+}
+
+service LageService {
+  rpc RunTarget(RunTargetRequest) returns (RunTargetResponse) {}
+}
