@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 04 Sep 2024 23:25:05 GMT and should not be manually modified.
+This log was last generated on Fri, 06 Sep 2024 20:03:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.19.0
+
+Fri, 06 Sep 2024 20:03:01 GMT
+
+### Minor changes
+
+- remote execution RPC server and client for Lage (kchau@microsoft.com)
+- Bump @lage-run/rpc to v1.1.0
 
 ## 0.18.1
 

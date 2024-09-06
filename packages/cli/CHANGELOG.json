@@ -2,6 +2,27 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 06 Sep 2024 20:03:01 GMT",
+      "version": "0.19.0",
+      "tag": "@lage-run/cli_v0.19.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "0d2a6f936b7250959f5a42f3c79908b8a475d28d",
+            "comment": "remote execution RPC server and client for Lage"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/rpc to v1.1.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 04 Sep 2024 23:25:05 GMT",
       "version": "0.18.1",
       "tag": "@lage-run/cli_v0.18.1",
