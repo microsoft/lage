@@ -8,6 +8,7 @@ import type { CacheOptions } from "./types/CacheOptions.js";
  */
 export async function getConfig(cwd: string): Promise<ConfigOptions> {
   const config = (await readConfigFile(cwd)) || ({} as Partial<ConfigOptions>);
+  const availableParallelism = "availableParallelism" in os ? (os as any)["availableParallelism"]() : os.cpus().length - 1;
   return {
     cacheOptions: config?.cacheOptions ?? ({} as CacheOptions),
     ignore: config?.ignore ?? [],
@@ -25,7 +26,7 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
     loggerOptions: config?.loggerOptions ?? {},
     runners: config?.runners ?? {},
     workerIdleMemoryLimit: config?.workerIdleMemoryLimit ?? os.totalmem(), // 0 means no limit,
-    concurrency: config?.concurrency ?? os.cpus().length - 1,
+    concurrency: config?.concurrency ?? availableParallelism,
     allowNoTargetRuns: config?.allowNoTargetRuns ?? false,
   };
 }

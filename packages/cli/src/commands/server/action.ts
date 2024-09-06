@@ -59,7 +59,7 @@ export async function workerAction(options: WorkerOptions, command: Command) {
     packageInfos,
   });
 
-  const lageService = await createLageService(targetGraph, logger, config.npmClient);
+  const lageService = await createLageService(targetGraph, logger, config.npmClient, config.concurrency);
   const server = await rpc.createServer(lageService);
   logger.info(`Server listening on http://${host}:${port}`);
   await server.listen({ host, port });
