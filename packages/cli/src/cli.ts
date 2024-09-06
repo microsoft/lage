@@ -7,7 +7,7 @@ import { affectedCommand } from "./commands/affected/index.js";
 import { initCommand } from "./commands/init/index.js";
 import { infoCommand } from "./commands/info/index.js";
 import { execCommand } from "./commands/exec/index.js";
-import { workerCommand } from "./commands/worker/index.js";
+import { serverCommand } from "./commands/server/index.js";
 
 async function main() {
   const program = new Command();
@@ -17,7 +17,7 @@ async function main() {
   program.addCommand(initCommand);
   program.addCommand(infoCommand);
   program.addCommand(execCommand);
-  program.addCommand(workerCommand);
+  program.addCommand(serverCommand);
 
   await program.parseAsync(process.argv);
 }

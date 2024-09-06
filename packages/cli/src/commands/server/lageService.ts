@@ -30,7 +30,12 @@ export async function createLageService(targetGraph: TargetGraph, logger: Logger
       const runnerPicker = new TargetRunnerPicker(pickerOptions);
 
       if (!targetGraph.targets.has(getTargetId(request.packageName, request.task))) {
-        throw new Error("Target not found");
+        logger.error(`Target not found: ${request.packageName}#${request.task}`);
+        return {
+          packageName: request.packageName,
+          task: request.task,
+          exitCode: 1,
+        };
       }
       const target = targetGraph.targets.get(getTargetId(request.packageName, request.task))!;
 
