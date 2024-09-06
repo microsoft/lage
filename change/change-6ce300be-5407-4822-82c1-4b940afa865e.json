@@ -2,17 +2,17 @@
   "changes": [
     {
       "type": "minor",
-      "comment": "remote execution now works with a better command set",
+      "comment": "remote execution RPC server and client for Lage",
       "packageName": "@lage-run/cli",
       "email": "kchau@microsoft.com",
-      "dependentChangeType": "patch"
+      "dependentChangeType": "minor"
     },
     {
       "type": "minor",
-      "comment": "remote execution now works with a better command set",
+      "comment": "remote execution RPC server and client for Lage",
       "packageName": "@lage-run/rpc",
       "email": "kchau@microsoft.com",
-      "dependentChangeType": "patch"
+      "dependentChangeType": "minor"
     }
   ]
 }
