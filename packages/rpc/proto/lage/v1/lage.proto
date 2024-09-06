@@ -3,15 +3,16 @@ syntax = "proto3";
 package connectrpc.lage.v1;
 
 message RunTargetRequest {
-  string cwd = 1;
+  optional string package_name = 1;
   string task = 2;
+  repeated string taskArgs = 3;
+  string nodeOptions = 4;
+  string npmClient = 5;
 }
 
 message RunTargetResponse {
-  string package_name = 1;
+  optional string package_name = 1;
   string task = 2;
-  string stdout = 3;
-  string stderr = 4;
   int32 exit_code = 5;
 }
 

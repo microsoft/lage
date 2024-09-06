@@ -7,9 +7,9 @@ export interface CreateClientOptions {
   httpVersion: "1.1" | "2";
 }
 
-export function createClient({ baseUrl }: CreateClientOptions) {
+export function createClient({ baseUrl, httpVersion }: CreateClientOptions) {
   const transport = createConnectTransport({
-    httpVersion: "1.1",
+    httpVersion,
     baseUrl,
   });
 

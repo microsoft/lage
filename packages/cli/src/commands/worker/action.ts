@@ -1,170 +1,98 @@
-import type { Command } from "commander";
-import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
-import { type ConfigOptions, getConfig } from "@lage-run/config";
-import { getWorkspaceRoot, getPackageInfos } from "workspace-tools";
+import { getConfig, type PipelineDefinition } from "@lage-run/config";
 import createLogger from "@lage-run/logger";
-import path from "path";
-import fs from "fs";
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import { TargetFactory } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
-import { TargetRunnerPicker, type TargetRunnerPickerOptions } from "@lage-run/runners";
+import { createLageService } from "./lageService.js";
+import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { createTargetGraph } from "../run/createTargetGraph.js";
 import { getPackageAndTask } from "@lage-run/target-graph/lib/targetId.js";
+import type { Command } from "commander";
 
-interface ExecOptions extends ReporterInitOptions {
-  cwd?: string;
+interface WorkerOptions extends ReporterInitOptions {
   nodeArg?: string[];
+  port?: number;
+  host?: string;
+  server?: boolean;
 }
 
-/**
- * Parses the package and task from the command as quickly as possible:
- *
- * 1. if cwd overridden in args, use it to read the package.json directly
- * 2. if cwd not overridden and root is not cwd, use the cwd to read the package.json directly
- * 3. if root is cwd, assume the task is global
- *
- * @param options
- * @param command
- * @returns
- */
-function parsePackageInfoFromArgs(root: string, options: ExecOptions, command: Command) {
-  const { packageName, task } = getPackageAndTask(command.args[0]);
-
-  if (packageName) {
-    const packageInfos = getPackageInfos(root);
-    const info = packageInfos[packageName];
-    return {
-      info,
-      task,
-      isGlobal: false,
-    };
-  }
-
-  if (options.cwd) {
-    const packageJsonPath = path.join(options.cwd, "package.json");
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
-
-    return {
-      info: {
-        ...packageJson,
-        packageJsonPath,
-      },
-      task,
-      isGlobal: false,
-    };
-  }
-
-  if (root !== process.cwd()) {
-    const packageJsonPath = path.join(process.cwd(), "package.json");
-    if (fs.existsSync(packageJsonPath)) {
-      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
-      return {
-        info: {
-          ...packageJson,
-          packageJsonPath,
-        },
-        task,
-        isGlobal: false,
-      };
+function findAllTasks(pipeline: PipelineDefinition) {
+  const tasks = new Set<string>();
+  for (const key of Object.keys(pipeline)) {
+    if (key.includes("#") || key.startsWith("#") || key.endsWith("//")) {
+      const { task } = getPackageAndTask(key);
+      tasks.add(task);
+    } else {
+      tasks.add(key);
     }
   }
-
-  const packageJsonPath = path.join(root, "package.json");
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
-
-  return {
-    info: {
-      ...packageJson,
-      packageJsonPath,
-    },
-    task,
-    isGlobal: true,
-  };
+  return Array.from(tasks);
 }
 
-function expandTargetDefinition(packageName: string | undefined, task: string, pipeline: ConfigOptions["pipeline"], outputs: string[]) {
-  const id = packageName ? `${packageName}#${task}` : task;
-  const emptyDefinition = {
-    cache: false,
-    dependsOn: [],
-    options: {},
-    outputs,
-  };
-  const definition =
-    id in pipeline
-      ? pipeline[id]
-      : `#${task}` in pipeline
-      ? pipeline[`#${task}`]
-      : `//${task}` in pipeline
-      ? pipeline[`//${task}`]
-      : task in pipeline
-      ? pipeline[task]
-      : emptyDefinition;
+export async function workerAction(options: WorkerOptions, command: Command) {
+  const { port = 5332, host = "localhost", server = false } = options;
 
-  if (Array.isArray(definition)) {
-    return emptyDefinition;
-  } else {
-    return definition;
-  }
-}
-
-export async function execAction(options: ExecOptions, command: Command) {
   const cwd = process.cwd();
-  const config = await getConfig(cwd);
-  const { pipeline } = config;
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
   options.reporter = options.reporter ?? "json";
   initializeReporters(logger, options);
 
-  const root = getWorkspaceRoot(cwd)!;
+  const rpc = (await import("@lage-run/rpc")).default;
 
-  const { info, task, isGlobal } = parsePackageInfoFromArgs(root, options, command);
-  const packageInfos = { [info.name]: info };
-
-  const resolve = () => {
-    return path.dirname(info.packageJsonPath).replace(/\\/g, "/");
-  };
-
-  const { taskArgs } = filterArgsForTasks(command.args);
-
-  const factory = new TargetFactory({ root, resolve, packageInfos });
-
-  const definition = expandTargetDefinition(isGlobal ? undefined : info.name, task, pipeline, config.cacheOptions.outputGlob ?? []);
-
-  const target = isGlobal ? factory.createGlobalTarget(task, definition) : factory.createPackageTarget(info.name, task, definition);
-  const pickerOptions: TargetRunnerPickerOptions = {
-    npmScript: {
-      script: require.resolve("../run/runners/NpmScriptRunner.js"),
-      options: {
-        nodeArg: options.nodeArg,
-        taskArgs,
-        npmCmd: config.npmClient,
-      },
-    },
-    worker: {
-      script: require.resolve("../run/runners/WorkerRunner.js"),
-      options: {
-        taskArgs,
-      },
-    },
-    noop: {
-      script: require.resolve("../run/runners/NoOpRunner.js"),
-      options: {},
-    },
-  };
-
-  const runnerPicker = new TargetRunnerPicker(pickerOptions);
-  const runner = await runnerPicker.pick(target);
-
-  if (await runner.shouldRun(target)) {
-    logger.info("Running target", { target });
-    await runner.run({
-      target,
-      weight: 1,
-      abortSignal: new AbortController().signal,
+  if (server) {
+    const config = await getConfig(cwd);
+    const { pipeline } = config;
+    const root = getWorkspaceRoot(cwd)!;
+    const packageInfos = getPackageInfos(root);
+    const tasks = findAllTasks(pipeline);
+    const targetGraph = createTargetGraph({
+      logger,
+      root,
+      dependencies: false,
+      dependents: false,
+      ignore: [],
+      pipeline,
+      repoWideChanges: config.repoWideChanges,
+      scope: [],
+      since: "",
+      outputs: config.cacheOptions.outputGlob,
+      tasks,
+      packageInfos,
     });
-    logger.info("Finished", { target });
+
+    const lageService = await createLageService(targetGraph, logger, config.npmClient);
+    const server = await rpc.createServer(lageService);
+    logger.info(`Server listening on http://${host}:${port}`);
+    await server.listen({ host, port });
+  } else {
+    const args = command.args;
+    if (args.length === 0) {
+      logger.error("Please provide a target to run");
+      process.exit(1);
+    }
+
+    const { packageName, task } = (() => {
+      if (args.length > 1) {
+        return {
+          packageName: args[0] as string,
+          task: args[1] as string,
+        };
+      }
+
+      return getPackageAndTask(args[0]);
+    })();
+
+    const client = rpc.createClient({
+      baseUrl: `http://${host}:${port}`,
+      httpVersion: "1.1",
+    });
+
+    const response = await client.runTarget({
+      packageName,
+      task,
+    });
+
+    logger.info(`Task ${response.packageName}#${response.task} exited with code ${response.exitCode}`);
   }
 }

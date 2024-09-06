@@ -11,14 +11,29 @@ import { Message, proto3 } from "@bufbuild/protobuf";
  */
 export class RunTargetRequest extends Message<RunTargetRequest> {
   /**
-   * @generated from field: string cwd = 1;
+   * @generated from field: optional string package_name = 1;
    */
-  cwd = "";
+  packageName?: string;
 
   /**
    * @generated from field: string task = 2;
    */
   task = "";
+
+  /**
+   * @generated from field: repeated string taskArgs = 3;
+   */
+  taskArgs: string[] = [];
+
+  /**
+   * @generated from field: string nodeOptions = 4;
+   */
+  nodeOptions = "";
+
+  /**
+   * @generated from field: string npmClient = 5;
+   */
+  npmClient = "";
 
   constructor(data?: PartialMessage<RunTargetRequest>) {
     super();
@@ -28,8 +43,11 @@ export class RunTargetRequest extends Message<RunTargetRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "connectrpc.lage.v1.RunTargetRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "cwd", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "package_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
     { no: 2, name: "task", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "taskArgs", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 4, name: "nodeOptions", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "npmClient", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RunTargetRequest {
@@ -57,24 +75,14 @@ export class RunTargetRequest extends Message<RunTargetRequest> {
  */
 export class RunTargetResponse extends Message<RunTargetResponse> {
   /**
-   * @generated from field: string package_name = 1;
+   * @generated from field: optional string package_name = 1;
    */
-  packageName = "";
+  packageName?: string;
 
   /**
    * @generated from field: string task = 2;
    */
   task = "";
-
-  /**
-   * @generated from field: string stdout = 3;
-   */
-  stdout = "";
-
-  /**
-   * @generated from field: string stderr = 4;
-   */
-  stderr = "";
 
   /**
    * @generated from field: int32 exit_code = 5;
@@ -89,10 +97,8 @@ export class RunTargetResponse extends Message<RunTargetResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "connectrpc.lage.v1.RunTargetResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "package_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "package_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
     { no: 2, name: "task", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "stdout", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "stderr", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 5, name: "exit_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ]);
 
