@@ -1,8 +1,16 @@
 # Change Log - @lage-run/config
 
-This log was last generated on Wed, 28 Aug 2024 21:12:45 GMT and should not be manually modified.
+This log was last generated on Sat, 07 Sep 2024 00:01:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.0
+
+Sat, 07 Sep 2024 00:01:57 GMT
+
+### Minor changes
+
+- adding parallelism to server (kchau@microsoft.com)
 
 ## 0.3.7
 

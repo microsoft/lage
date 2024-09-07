@@ -2,6 +2,21 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Sat, 07 Sep 2024 00:01:57 GMT",
+      "version": "0.4.0",
+      "tag": "@lage-run/config_v0.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "fb00e0249a448bd0ab09a0f68e9ea3456d2a7152",
+            "comment": "adding parallelism to server"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 28 Aug 2024 21:12:45 GMT",
       "version": "0.3.7",
       "tag": "@lage-run/config_v0.3.7",

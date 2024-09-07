@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Fri, 06 Sep 2024 20:03:01 GMT and should not be manually modified.
+This log was last generated on Sat, 07 Sep 2024 00:01:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.19.1
+
+Sat, 07 Sep 2024 00:01:57 GMT
+
+### Patches
+
+- adding parallelism to server (kchau@microsoft.com)
+- Bump @lage-run/config to v0.4.0
+- Bump @lage-run/scheduler to v1.2.11
 
 ## 0.19.0
 

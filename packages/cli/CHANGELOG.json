@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Sat, 07 Sep 2024 00:01:57 GMT",
+      "version": "0.19.1",
+      "tag": "@lage-run/cli_v0.19.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "fb00e0249a448bd0ab09a0f68e9ea3456d2a7152",
+            "comment": "adding parallelism to server"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.4.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.2.11",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 06 Sep 2024 20:03:01 GMT",
       "version": "0.19.0",
       "tag": "@lage-run/cli_v0.19.0",
