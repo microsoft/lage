@@ -2,14 +2,17 @@ import type { PackageInfos } from "workspace-tools";
 import { WorkspaceTargetGraphBuilder } from "../src/WorkspaceTargetGraphBuilder";
 import type { TargetGraph } from "../src/types/TargetGraph";
 
-function createPackageInfo(packages: { [id: string]: string[] }) {
+function createPackageInfo(packages: { [id: string]: { tasks: string[]; dependencies: string[] } }) {
   const packageInfos: PackageInfos = {};
   Object.keys(packages).forEach((id) => {
     packageInfos[id] = {
       packageJsonPath: `/path/to/${id}/package.json`,
       name: id,
       version: "1.0.0",
-      dependencies: packages[id].reduce((acc, dep) => {
+      scripts: packages[id].tasks.reduce((acc, task) => {
+        return { ...acc, [task]: "noop" };
+      }, {}),
+      dependencies: packages[id].dependencies.reduce((acc, dep) => {
         return { ...acc, [dep]: "*" };
       }, {}),
     };
@@ -34,8 +37,8 @@ describe("workspace target graph builder", () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
-      a: ["b"],
-      b: [],
+      a: { dependencies: ["b"], tasks: ["build"] },
+      b: { dependencies: [], tasks: ["build"] },
     });
 
     const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
@@ -69,8 +72,8 @@ describe("workspace target graph builder", () => {
   it("should generate target graphs for tasks that do not depend on each other", () => {
     const root = "/repos/a";
     const packageInfos = createPackageInfo({
-      a: ["b"],
-      b: [],
+      a: { dependencies: ["b"], tasks: ["test", "lint"] },
+      b: { dependencies: [], tasks: ["test", "lint"] },
     });
 
     const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
@@ -107,9 +110,9 @@ describe("workspace target graph builder", () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
-      a: ["b"],
-      b: [],
-      c: ["b"],
+      a: { dependencies: ["b"], tasks: ["build"] },
+      b: { dependencies: [], tasks: ["build"] },
+      c: { dependencies: ["b"], tasks: ["build"] },
     });
 
     const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
@@ -149,9 +152,9 @@ describe("workspace target graph builder", () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
-      a: ["b"],
-      b: [],
-      c: ["b"],
+      a: { dependencies: ["b"], tasks: ["build"] },
+      b: { dependencies: [], tasks: ["build"] },
+      c: { dependencies: ["b"], tasks: ["build"] },
     });
 
     const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
@@ -179,13 +182,59 @@ describe("workspace target graph builder", () => {
     `);
   });
 
+  it("should generate targetGraph without dependencies not needed to run the target", () => {
+    const root = "/repos/a";
+
+    const packageInfos = createPackageInfo({
+      a: { dependencies: ["b"], tasks: ["build"] },
+      b: { dependencies: [], tasks: ["build"] },
+      c: { dependencies: ["b"], tasks: ["build", "test"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
+
+    builder.addTargetConfig("build", {
+      dependsOn: ["^build"],
+    });
+
+    builder.addTargetConfig("test", {
+      dependsOn: ["build"],
+    });
+
+    const targetGraph = builder.build(["test"], ["a", "b", "c"]);
+    expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
+      [
+        [
+          "__start",
+          "c#test",
+        ],
+        [
+          "c#build",
+          "c#test",
+        ],
+        [
+          "__start",
+          "c#build",
+        ],
+        [
+          "b#build",
+          "c#build",
+        ],
+        [
+          "__start",
+          "b#build",
+        ],
+      ]
+    `);
+  });
+
   it("should generate targetGraph with transitive dependencies", () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
-      a: ["b"],
-      b: ["c"],
-      c: [],
+      a: { dependencies: ["b"], tasks: ["bundle", "transpile"] },
+      b: { dependencies: ["c"], tasks: ["bundle", "transpile"] },
+      c: { dependencies: [], tasks: ["bundle", "transpile"] },
     });
 
     const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
@@ -227,10 +276,10 @@ describe("workspace target graph builder", () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
-      a: [],
-      b: [],
-      c: [],
-      common: [],
+      a: { dependencies: [], tasks: ["build"] },
+      b: { dependencies: [], tasks: ["build"] },
+      c: { dependencies: [], tasks: ["build"] },
+      common: { dependencies: [], tasks: ["build", "copy"] },
     });
 
     const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);

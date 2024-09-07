@@ -5,7 +5,7 @@ import { filterEntry, parseNdJson } from "./parseNdJson.js";
 describe("transitive task deps test", () => {
   // This test follows the model as documented here:
   // https://microsoft.github.io/lage/guide/levels.html
-  it("produces a build graph even when some scripts are missing in package.json", () => {
+  it("produces a the correct build graph when some scripts are missing in package.json", () => {
     const repo = new Monorepo("transitiveDeps");
 
     repo.init();
@@ -44,7 +44,7 @@ describe("transitive task deps test", () => {
 
     expect(indices[getTargetId("a", "build")]).toBeLessThan(indices[getTargetId("a", "test")]);
 
-    expect(indices[getTargetId("b", "build")]).toBeLessThan(indices[getTargetId("a", "test")]);
+    expect(indices[getTargetId("b", "build")]).toBeUndefined();
 
     repo.cleanup();
   });
