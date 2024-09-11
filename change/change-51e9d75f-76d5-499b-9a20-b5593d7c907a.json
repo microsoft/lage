@@ -1,0 +1,67 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "yarn 4",
+      "packageName": "@lage-run/cache-github-actions",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "yarn 4",
+      "packageName": "@lage-run/cache",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "yarn 4",
+      "packageName": "@lage-run/format-hrtime",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "yarn 4",
+      "packageName": "@lage-run/globby",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "yarn 4",
+      "packageName": "@lage-run/hasher",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "yarn 4",
+      "packageName": "lage",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "yarn 4",
+      "packageName": "@lage-run/logger",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "yarn 4",
+      "packageName": "@lage-run/reporters",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "yarn 4",
+      "packageName": "@lage-run/scheduler",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

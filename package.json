@@ -28,7 +28,7 @@
     "gh-pages": "gh-pages",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky install",
+    "prepare": "husky",
     "postinstall": "patch-package"
   },
   "devDependencies": {
@@ -37,7 +37,7 @@
     "beachball": "^2.37.0",
     "fast-glob": "3.3.1",
     "gh-pages": "^5.0.0",
-    "husky": "^8.0.3",
+    "husky": "^9.1.5",
     "lage-npm": "npm:lage@2.7.15",
     "lint-staged": "^13.2.0",
     "patch-package": "^6.5.1",
