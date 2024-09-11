@@ -2,6 +2,27 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Wed, 11 Sep 2024 20:52:15 GMT",
+      "version": "1.3.3",
+      "tag": "@lage-run/hasher_v1.3.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/hasher",
+            "commit": "9ce7c7fcd8001c4c1ec3141097aa5b89f8bf7b37",
+            "comment": "Update dependency micromatch to v4.0.8 [SECURITY]"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/hasher",
+            "commit": "9ce7c7fcd8001c4c1ec3141097aa5b89f8bf7b37",
+            "comment": "Update dependency fast-glob to v3.3.2"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Sep 2024 20:30:48 GMT",
       "version": "1.3.2",
       "tag": "@lage-run/hasher_v1.3.2",

@@ -1,8 +1,17 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
+<!-- This log was last generated on Wed, 11 Sep 2024 20:52:15 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.3
+
+Wed, 11 Sep 2024 20:52:15 GMT
+
+### Patches
+
+- Update dependency micromatch to v4.0.8 [SECURITY] (renovate@whitesourcesoftware.com)
+- Update dependency fast-glob to v3.3.2 (renovate@whitesourcesoftware.com)
 
 ## 1.3.2
 

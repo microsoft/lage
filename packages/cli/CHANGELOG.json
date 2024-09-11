@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 11 Sep 2024 20:52:15 GMT",
+      "version": "0.19.3",
+      "tag": "@lage-run/cli_v0.19.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "9ce7c7fcd8001c4c1ec3141097aa5b89f8bf7b37",
+            "comment": "Update dependency fast-glob to v3.3.2"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.3.3",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.2.13",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Sep 2024 20:30:48 GMT",
       "version": "0.19.2",
       "tag": "@lage-run/cli_v0.19.2",

@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
+<!-- This log was last generated on Wed, 11 Sep 2024 20:52:15 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.19.3
+
+Wed, 11 Sep 2024 20:52:15 GMT
+
+### Patches
+
+- Update dependency fast-glob to v3.3.2 (renovate@whitesourcesoftware.com)
+- Bump @lage-run/hasher to v1.3.3
+- Bump @lage-run/scheduler to v1.2.13
 
 ## 0.19.2
 
