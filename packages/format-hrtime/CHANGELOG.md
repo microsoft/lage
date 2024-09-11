@@ -1,8 +1,16 @@
 # Change Log - @lage-run/format-hrtime
 
-This log was last generated on Mon, 08 May 2023 22:27:16 GMT and should not be manually modified.
+This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.6
+
+Wed, 11 Sep 2024 20:30:48 GMT
+
+### Patches
+
+- yarn 4 (kchau@microsoft.com)
 
 ## 0.1.5
 

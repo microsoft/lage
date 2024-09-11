@@ -1,8 +1,17 @@
 # Change Log - @lage-run/hasher
 
-This log was last generated on Wed, 04 Sep 2024 23:25:05 GMT and should not be manually modified.
+This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.2
+
+Wed, 11 Sep 2024 20:30:48 GMT
+
+### Patches
+
+- yarn 4 (kchau@microsoft.com)
+- Bump @lage-run/logger to v1.3.1
 
 ## 1.3.1
 

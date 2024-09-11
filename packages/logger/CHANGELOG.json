@@ -2,6 +2,21 @@
   "name": "@lage-run/logger",
   "entries": [
     {
+      "date": "Wed, 11 Sep 2024 20:30:48 GMT",
+      "version": "1.3.1",
+      "tag": "@lage-run/logger_v1.3.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "3fb589f859c1215e2f3b93bbdb55fae1d5fef116",
+            "comment": "yarn 4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Apr 2023 02:51:19 GMT",
       "tag": "@lage-run/logger_v1.3.0",
       "version": "1.3.0",

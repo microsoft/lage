@@ -1,8 +1,16 @@
 # Change Log - @lage-run/config
 
-This log was last generated on Sat, 07 Sep 2024 00:01:57 GMT and should not be manually modified.
+This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.1
+
+Wed, 11 Sep 2024 20:30:48 GMT
+
+### Patches
+
+- Bump @lage-run/logger to v1.3.1
 
 ## 0.4.0
 

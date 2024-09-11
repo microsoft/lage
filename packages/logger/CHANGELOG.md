@@ -1,8 +1,16 @@
 # Change Log - @lage-run/logger
 
-This log was last generated on Tue, 25 Apr 2023 02:51:19 GMT and should not be manually modified.
+This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.1
+
+Wed, 11 Sep 2024 20:30:48 GMT
+
+### Patches
+
+- yarn 4 (kchau@microsoft.com)
 
 ## 1.3.0
 

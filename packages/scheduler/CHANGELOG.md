@@ -1,8 +1,21 @@
 # Change Log - @lage-run/scheduler
 
-This log was last generated on Sat, 07 Sep 2024 00:01:57 GMT and should not be manually modified.
+This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.12
+
+Wed, 11 Sep 2024 20:30:48 GMT
+
+### Patches
+
+- yarn 4 (kchau@microsoft.com)
+- Bump @lage-run/cache to v1.3.2
+- Bump @lage-run/config to v0.4.1
+- Bump @lage-run/hasher to v1.3.2
+- Bump @lage-run/logger to v1.3.1
+- Bump @lage-run/worker-threads-pool to v0.8.1
 
 ## 1.2.11
 

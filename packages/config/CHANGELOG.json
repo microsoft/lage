@@ -2,6 +2,21 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Wed, 11 Sep 2024 20:30:48 GMT",
+      "version": "0.4.1",
+      "tag": "@lage-run/config_v0.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/logger to v1.3.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 07 Sep 2024 00:01:57 GMT",
       "version": "0.4.0",
       "tag": "@lage-run/config_v0.4.0",

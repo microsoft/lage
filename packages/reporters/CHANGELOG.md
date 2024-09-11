@@ -1,8 +1,18 @@
 # Change Log - @lage-run/reporters
 
-This log was last generated on Wed, 28 Aug 2024 21:12:45 GMT and should not be manually modified.
+This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.2.9
+
+Wed, 11 Sep 2024 20:30:48 GMT
+
+### Patches
+
+- yarn 4 (kchau@microsoft.com)
+- Bump @lage-run/format-hrtime to v0.1.6
+- Bump @lage-run/logger to v1.3.1
 
 ## 1.2.8
 

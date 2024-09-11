@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Wed, 11 Sep 2024 20:30:48 GMT",
+      "version": "0.8.1",
+      "tag": "@lage-run/worker-threads-pool_v0.8.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/worker-threads-pool",
+            "comment": "Bump @lage-run/logger to v1.3.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 17 Apr 2024 23:20:47 GMT",
       "version": "0.8.0",
       "tag": "@lage-run/worker-threads-pool_v0.8.0",

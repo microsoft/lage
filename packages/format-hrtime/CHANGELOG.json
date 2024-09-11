@@ -2,6 +2,21 @@
   "name": "@lage-run/format-hrtime",
   "entries": [
     {
+      "date": "Wed, 11 Sep 2024 20:30:48 GMT",
+      "version": "0.1.6",
+      "tag": "@lage-run/format-hrtime_v0.1.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/format-hrtime",
+            "commit": "3fb589f859c1215e2f3b93bbdb55fae1d5fef116",
+            "comment": "yarn 4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 08 May 2023 22:27:16 GMT",
       "tag": "@lage-run/format-hrtime_v0.1.5",
       "version": "0.1.5",

@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Wed, 11 Sep 2024 20:30:48 GMT",
+      "version": "0.1.20",
+      "tag": "@lage-run/cache-github-actions_v0.1.20",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "3fb589f859c1215e2f3b93bbdb55fae1d5fef116",
+            "comment": "yarn 4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 23 May 2024 18:15:05 GMT",
       "version": "0.1.19",
       "tag": "@lage-run/cache-github-actions_v0.1.19",
