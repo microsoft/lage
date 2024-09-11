@@ -26,7 +26,7 @@
     "docs:build": "yarn --cwd docs build",
     "docs:test": "yarn --cwd docs build",
     "gh-pages": "gh-pages",
-    "format": "prettier --write .",
+    "format": "prettier --write . --",
     "format:check": "prettier --check .",
     "prepare": "husky",
     "postinstall": "patch-package"
@@ -47,8 +47,8 @@
     "typescript": "~5.0.3"
   },
   "lint-staged": {
-    "*.js": "eslint --fix",
-    "*.{json,md}": "prettier --write"
+    "*.{ts,js}": "eslint --fix",
+    "*.{ts,json,md}": "prettier --write"
   },
   "syncpack": {
     "dependencyTypes": [
