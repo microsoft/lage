@@ -41,7 +41,7 @@ export class Monorepo {
     }
 
     fs.cpSync(path.resolve(__dirname, "..", "..", "yarn"), path.dirname(this.yarnPath), { recursive: true });
-    execa.sync(`"${process.execPath}"`, [this.yarnPath, "install"], { cwd: this.root, shell: true });
+    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install"], { cwd: this.root, shell: true });
   }
 
   generateRepoFiles() {
@@ -148,7 +148,7 @@ export class Monorepo {
   }
 
   run(command: string, args?: string[], silent?: boolean) {
-    return execa.sync(`"${process.execPath}"`, [this.yarnPath, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
+    return execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
       shell: true,
     });
