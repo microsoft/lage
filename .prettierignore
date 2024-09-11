@@ -11,6 +11,7 @@ SECURITY.md
 yarn.lock
 # this is a test fixture
 yarn.js
+.yarn/**
 
 # These lines from .gitignore can be removed after prettier 3 update
 node_modules

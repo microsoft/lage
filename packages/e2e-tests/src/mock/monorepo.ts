@@ -41,7 +41,7 @@ export class Monorepo {
     }
 
     fs.cpSync(path.resolve(__dirname, "..", "..", "yarn"), path.dirname(this.yarnPath), { recursive: true });
-    execa.sync("yarn", ["install"], { cwd: this.root });
+    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install"], { cwd: this.root, shell: true });
   }
 
   generateRepoFiles() {
@@ -65,6 +65,7 @@ export class Monorepo {
         devDependencies: {
           lage: path.resolve(__dirname, "..", "..", "..", "lage"),
         },
+        packageManager: "yarn@1.22.19",
       },
       "lage.config.js": `module.exports = {
         pipeline: {
@@ -147,7 +148,7 @@ export class Monorepo {
   }
 
   run(command: string, args?: string[], silent?: boolean) {
-    return execa.sync("yarn", [...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
+    return execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
       shell: true,
     });

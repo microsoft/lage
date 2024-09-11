@@ -26,9 +26,9 @@
     "docs:build": "yarn --cwd docs build",
     "docs:test": "yarn --cwd docs build",
     "gh-pages": "gh-pages",
-    "format": "prettier --write .",
+    "format": "prettier --write . --",
     "format:check": "prettier --check .",
-    "prepare": "husky install",
+    "prepare": "husky",
     "postinstall": "patch-package"
   },
   "devDependencies": {
@@ -37,9 +37,9 @@
     "beachball": "^2.37.0",
     "fast-glob": "3.3.1",
     "gh-pages": "^5.0.0",
-    "husky": "^8.0.3",
+    "husky": "^9.1.5",
     "lage-npm": "npm:lage@2.7.15",
-    "lint-staged": "^13.2.0",
+    "lint-staged": "^15.2.10",
     "patch-package": "^6.5.1",
     "prettier": "^2.8.6",
     "syncpack": "^9.0.0",
@@ -47,12 +47,14 @@
     "typescript": "~5.0.3"
   },
   "lint-staged": {
-    "*": "prettier --write"
+    "*.{ts,js}": "eslint --fix",
+    "*.{ts,json,md}": "prettier --write"
   },
   "syncpack": {
     "dependencyTypes": [
       "dev",
       "prod"
     ]
-  }
+  },
+  "packageManager": "yarn@4.4.1"
 }
