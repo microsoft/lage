@@ -10,8 +10,7 @@
   "types": "dist/index.d.ts",
   "bin": "dist/lage.js",
   "scripts": {
-    "prebundle": "node scripts/prebuild.js",
-    "bundle": "yarn dts-bundle && node scripts/bundle.mjs",
+    "bundle": "node scripts/prebuild.js && yarn dts-bundle && node scripts/bundle.mjs",
     "dts-bundle": "dts-bundle-generator --config ./dts-bundle.config.js && node ./scripts/update-dts-bundle.js"
   },
   "dependencies": {
