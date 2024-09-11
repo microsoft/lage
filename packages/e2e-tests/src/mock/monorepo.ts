@@ -65,7 +65,7 @@ export class Monorepo {
         devDependencies: {
           lage: path.resolve(__dirname, "..", "..", "..", "lage"),
         },
-        packageManager: "yarn@1.22.19"
+        packageManager: "yarn@1.22.19",
       },
       "lage.config.js": `module.exports = {
         pipeline: {
