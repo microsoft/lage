@@ -15,7 +15,7 @@
   "scripts": {
     "build": "tsc",
     "start": "tsc -w --preserveWatchOutput",
-    "test": "yarn dlx jest",
+    "test": "monorepo-scripts jest",
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
