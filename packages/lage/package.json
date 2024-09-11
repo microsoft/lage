@@ -8,7 +8,10 @@
   "homepage": "https://microsoft.github.io/lage/",
   "main": "dist/main.js",
   "types": "dist/index.d.ts",
-  "bin": "dist/lage.js",
+  "bin": {
+    "lage": "dist/lage.js",
+    "lage-server": "dist/lage-server.js"
+  },
   "scripts": {
     "bundle": "node scripts/prebuild.js && yarn dts-bundle && node scripts/bundle.mjs",
     "dts-bundle": "dts-bundle-generator --config ./dts-bundle.config.js && node ./scripts/update-dts-bundle.js"
