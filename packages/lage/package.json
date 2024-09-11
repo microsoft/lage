@@ -8,9 +8,7 @@
   "homepage": "https://microsoft.github.io/lage/",
   "main": "dist/main.js",
   "types": "dist/index.d.ts",
-  "bin": {
-    "lage": "dist/lage.js"
-  },
+  "bin": "dist/lage.js",
   "scripts": {
     "prebundle": "node scripts/prebuild.js",
     "bundle": "yarn dts-bundle && node scripts/bundle.mjs",
@@ -27,8 +25,8 @@
     "@lage-run/runners": "^1.0.1",
     "backfill-config": "6.4.2",
     "dts-bundle-generator": "^9.5.1",
-    "workspace-tools": "0.36.4",
-    "esbuild": "^0.21.5"
+    "esbuild": "^0.21.5",
+    "workspace-tools": "0.36.4"
   },
   "files": [
     "dist/*.d.ts",

@@ -21,8 +21,8 @@
   "dependencies": {
     "@lage-run/cli": "^0.19.1",
     "@lage-run/monorepo-scripts": "*",
-    "@lage-run/target-graph": "^0.8.9",
     "@lage-run/scheduler-types": "^0.3.14",
+    "@lage-run/target-graph": "^0.8.9",
     "execa": "5.1.1",
     "glob-hasher": "^1.4.2"
   }

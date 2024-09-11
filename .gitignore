@@ -9,3 +9,5 @@ coverage
 .idea/
 **/.docusaurus/
 profile*.json
+.yarn/*
+!.yarn/releases/
