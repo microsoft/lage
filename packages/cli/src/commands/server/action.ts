@@ -6,7 +6,6 @@ import type { Command } from "commander";
 import type { LageClient } from "@lage-run/rpc";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { ConnectError, createClient, createServer } from "@lage-run/rpc";
-import "@fastify/express";
 
 interface WorkerOptions extends ReporterInitOptions {
   nodeArg?: string[];
