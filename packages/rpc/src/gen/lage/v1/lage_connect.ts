@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { RunTargetRequest, RunTargetResponse } from "./lage_pb.js";
+import { PingRequest, PingResponse, RunTargetRequest, RunTargetResponse } from "./lage_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -19,6 +19,17 @@ export const LageService = {
       name: "RunTarget",
       I: RunTargetRequest,
       O: RunTargetResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * a ping function to check if the server is up
+     *
+     * @generated from rpc connectrpc.lage.v1.LageService.Ping
+     */
+    ping: {
+      name: "Ping",
+      I: PingRequest,
+      O: PingResponse,
       kind: MethodKind.Unary,
     },
   },

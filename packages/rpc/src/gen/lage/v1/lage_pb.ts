@@ -121,3 +121,71 @@ export class RunTargetResponse extends Message<RunTargetResponse> {
     return proto3.util.equals(RunTargetResponse, a, b);
   }
 }
+
+/**
+ * @generated from message connectrpc.lage.v1.PingRequest
+ */
+export class PingRequest extends Message<PingRequest> {
+  constructor(data?: PartialMessage<PingRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "connectrpc.lage.v1.PingRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => []);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PingRequest {
+    return new PingRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PingRequest {
+    return new PingRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PingRequest {
+    return new PingRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: PingRequest | PlainMessage<PingRequest> | undefined, b: PingRequest | PlainMessage<PingRequest> | undefined): boolean {
+    return proto3.util.equals(PingRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message connectrpc.lage.v1.PingResponse
+ */
+export class PingResponse extends Message<PingResponse> {
+  /**
+   * @generated from field: bool pong = 1;
+   */
+  pong = false;
+
+  constructor(data?: PartialMessage<PingResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "connectrpc.lage.v1.PingResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [{ no: 1, name: "pong", kind: "scalar", T: 8 /* ScalarType.BOOL */ }]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PingResponse {
+    return new PingResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PingResponse {
+    return new PingResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PingResponse {
+    return new PingResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(
+    a: PingResponse | PlainMessage<PingResponse> | undefined,
+    b: PingResponse | PlainMessage<PingResponse> | undefined
+  ): boolean {
+    return proto3.util.equals(PingResponse, a, b);
+  }
+}

@@ -6068,6 +6068,7 @@ __metadata:
       optional: true
   bin:
     lage: dist/lage.js
+    lage-server: dist/lage-server.js
   languageName: unknown
   linkType: soft
 

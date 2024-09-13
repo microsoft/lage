@@ -7,6 +7,8 @@ export interface CreateClientOptions {
   httpVersion: "1.1" | "2";
 }
 
+export type LageClient = ReturnType<typeof createClient>;
+
 export function createClient({ baseUrl, httpVersion }: CreateClientOptions) {
   const transport = createConnectTransport({
     httpVersion,
