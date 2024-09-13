@@ -1,0 +1,32 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "adds a lage-server binary that listens and executes and auto shutsdown",
+      "packageName": "@lage-run/cli",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "adds a lage-server binary",
+      "packageName": "lage",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "modified to allow for lage-server",
+      "packageName": "@lage-run/rpc",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "lage-server work",
+      "packageName": "@lage-run/target-graph",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
