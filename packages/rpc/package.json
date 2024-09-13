@@ -20,7 +20,6 @@
     "@connectrpc/connect": "^1.4.0",
     "@connectrpc/connect-fastify": "^1.4.0",
     "@connectrpc/connect-node": "^1.4.0",
-    "@fastify/express": "^3.0.0",
     "fastify": "^4.28.1"
   },
   "devDependencies": {

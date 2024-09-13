@@ -55,12 +55,21 @@ async function initializeOnce(cwd: string, logger: Logger) {
 
 let pool: WorkerPool | undefined;
 
-export async function createLageService(cwd: string, logger: Logger, maxWorkers?: number): Promise<ILageService> {
+export async function createLageService(
+  cwd: string,
+  abortController: AbortController,
+  logger: Logger,
+  maxWorkers?: number
+): Promise<ILageService> {
   logger.info(`Server started with ${maxWorkers} workers`);
 
   pool = new WorkerPool({
     script: require.resolve("./singleTargetWorker.js"),
     maxWorkers,
+  });
+
+  abortController.signal.addEventListener("abort", () => {
+    pool?.close();
   });
 
   return {
@@ -142,10 +151,4 @@ export async function createLageService(cwd: string, logger: Logger, maxWorkers?
       }
     },
   };
-}
-
-export function closePool() {
-  if (pool) {
-    pool.close();
-  }
 }

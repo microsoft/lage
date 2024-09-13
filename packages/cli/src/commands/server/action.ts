@@ -1,7 +1,7 @@
 import createLogger, { type Logger } from "@lage-run/logger";
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import { initializeReporters } from "../initializeReporters.js";
-import { closePool, createLageService } from "./lageService.js";
+import { createLageService } from "./lageService.js";
 import type { Command } from "commander";
 import type { LageClient } from "@lage-run/rpc";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
@@ -76,8 +76,16 @@ export async function serverAction(options: WorkerOptions, command: Command) {
     await executeOnServer(args, client, logger);
   } else {
     logger.info(`Starting server on http://${host}:${port}`);
-    const lageService = await createLageService(process.cwd(), logger, options.concurrency);
-    const server = await createServer(lageService);
+
+    const abortController = new AbortController();
+
+    const lageService = await createLageService(process.cwd(), abortController, logger, options.concurrency);
+    const server = await createServer(lageService, abortController);
+
+    server.addHook("onRequest", (req, res, next) => {
+      resetTimer(logger, timeout, abortController, server);
+      next();
+    });
 
     await server.listen({ host, port });
     logger.info(`Server listening on http://${host}:${port}, timeout in ${timeout} seconds`);
@@ -91,4 +99,17 @@ export async function serverAction(options: WorkerOptions, command: Command) {
     const args = command.args;
     await executeOnServer(args, client, logger);
   }
+}
+
+let timeoutHandle: NodeJS.Timeout | undefined;
+function resetTimer(logger: Logger, timeout: number, abortController: AbortController, server: any) {
+  if (timeoutHandle) {
+    clearTimeout(timeoutHandle);
+  }
+
+  timeoutHandle = setTimeout(() => {
+    logger.info(`Server timed out after ${timeout} seconds`);
+    abortController.abort();
+    server.close();
+  }, timeout * 1000);
 }
