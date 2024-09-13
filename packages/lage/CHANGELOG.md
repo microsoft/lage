@@ -1,8 +1,18 @@
 # Change Log - lage
 
-<!-- This log was last generated on Wed, 11 Sep 2024 20:52:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 13 Sep 2024 18:05:04 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.9.0
+
+Fri, 13 Sep 2024 18:05:04 GMT
+
+### Minor changes
+
+- adds a lage-server binary (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.20.0
+- Bump @lage-run/runners to v1.0.2
 
 ## 2.8.3
 

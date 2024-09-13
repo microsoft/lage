@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-This log was last generated on Thu, 21 Dec 2023 09:49:09 GMT and should not be manually modified.
+<!-- This log was last generated on Fri, 13 Sep 2024 18:05:04 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.8.10
+
+Fri, 13 Sep 2024 18:05:04 GMT
+
+### Patches
+
+- lage-server work (kchau@microsoft.com)
 
 ## 0.8.9
 

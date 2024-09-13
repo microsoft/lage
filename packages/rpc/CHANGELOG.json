@@ -2,6 +2,21 @@
   "name": "@lage-run/rpc",
   "entries": [
     {
+      "date": "Fri, 13 Sep 2024 18:05:04 GMT",
+      "version": "1.2.0",
+      "tag": "@lage-run/rpc_v1.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "924b93e66ae3cc60effa7cfc1f5254e1e59e9969",
+            "comment": "modified to allow for lage-server"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 06 Sep 2024 20:03:01 GMT",
       "version": "1.1.0",
       "tag": "@lage-run/rpc_v1.1.0",

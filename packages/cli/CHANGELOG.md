@@ -1,8 +1,25 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Wed, 11 Sep 2024 20:52:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 13 Sep 2024 18:05:04 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.20.0
+
+Fri, 13 Sep 2024 18:05:04 GMT
+
+### Minor changes
+
+- adds a lage-server binary that listens and executes and auto shutsdown (kchau@microsoft.com)
+- Bump @lage-run/cache to v1.3.3
+- Bump @lage-run/config to v0.4.2
+- Bump @lage-run/hasher to v1.3.4
+- Bump @lage-run/reporters to v1.2.10
+- Bump @lage-run/rpc to v1.2.0
+- Bump @lage-run/runners to v1.0.2
+- Bump @lage-run/scheduler to v1.2.14
+- Bump @lage-run/scheduler-types to v0.3.15
+- Bump @lage-run/target-graph to v0.8.10
 
 ## 0.19.3
 
