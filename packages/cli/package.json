@@ -38,6 +38,7 @@
     "workspace-tools": "0.36.4"
   },
   "devDependencies": {
+    "@fastify/express": "^3.0.0",
     "@lage-run/monorepo-fixture": "*",
     "@lage-run/monorepo-scripts": "*"
   },

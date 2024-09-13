@@ -16,6 +16,15 @@ message RunTargetResponse {
   int32 exit_code = 5;
 }
 
+message PingRequest {}
+message PingResponse {
+  bool pong = 1;
+}
+
+
 service LageService {
   rpc RunTarget(RunTargetRequest) returns (RunTargetResponse) {}
+
+  // a ping function to check if the server is up
+  rpc Ping(PingRequest) returns (PingResponse) {}  
 }
