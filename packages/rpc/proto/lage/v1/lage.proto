@@ -16,6 +16,9 @@ message RunTargetResponse {
   int32 exit_code = 3;
   optional string hash = 4;
   string id = 5;
+  repeated string inputs = 6;
+  repeated string outputs = 7;
+  repeated string dependencies = 8;
 }
 
 message PingRequest {}
