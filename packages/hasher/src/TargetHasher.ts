@@ -293,8 +293,6 @@ export class TargetHasher {
 
     this.targetHashesLog[target.id] = { fileHashes, globalFileHashes };
 
-    // this.writeTargetHashesManifest(target.id, fileHashes, globalFileHashes);
-
     return hashString;
   }
 
