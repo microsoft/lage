@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Wed, 25 Sep 2024 20:28:10 GMT",
+      "version": "1.4.0",
+      "tag": "@lage-run/hasher_v1.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "09313be6a4a5667bf8c50b654428f778f6fa4028",
+            "comment": "writes out the \"inputs\" as hashes files inside node_modules\\.cache\\lage\\hashes\\**"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 13 Sep 2024 18:05:04 GMT",
       "version": "1.3.4",
       "tag": "@lage-run/hasher_v1.3.4",
