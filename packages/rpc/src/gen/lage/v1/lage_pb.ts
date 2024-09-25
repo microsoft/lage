@@ -85,9 +85,19 @@ export class RunTargetResponse extends Message<RunTargetResponse> {
   task = "";
 
   /**
-   * @generated from field: int32 exit_code = 5;
+   * @generated from field: int32 exit_code = 3;
    */
   exitCode = 0;
+
+  /**
+   * @generated from field: optional string hash = 4;
+   */
+  hash?: string;
+
+  /**
+   * @generated from field: string id = 5;
+   */
+  id = "";
 
   constructor(data?: PartialMessage<RunTargetResponse>) {
     super();
@@ -99,7 +109,9 @@ export class RunTargetResponse extends Message<RunTargetResponse> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "package_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
     { no: 2, name: "task", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 5, name: "exit_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "exit_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 4, name: "hash", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 5, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RunTargetResponse {

@@ -6,6 +6,7 @@ import type { Command } from "commander";
 import type { LageClient } from "@lage-run/rpc";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { ConnectError, createClient, createServer } from "@lage-run/rpc";
+import { simulateFileAccess } from "./simulateFileAccess.js";
 
 interface WorkerOptions extends ReporterInitOptions {
   nodeArg?: string[];
@@ -56,6 +57,10 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
   logger.info(`Task ${response.packageName} #${response.task} exited with code ${response.exitCode} `);
 
   process.exitCode = response.exitCode;
+
+  if (response.exitCode === 0) {
+    await simulateFileAccess(logger, response);
+  }
 }
 
 export async function serverAction(options: WorkerOptions, command: Command) {

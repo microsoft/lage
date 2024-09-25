@@ -1,5 +1,6 @@
 import { type Logger } from "@lage-run/logger";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
+import { simulateFileAccess } from "./simulateFileAccess.js";
 
 interface ExecClientOptions {
   logger: Logger;
@@ -35,4 +36,8 @@ export async function executeRemotely({ logger, server, args }: ExecClientOption
   logger.info(`Task ${response.packageName}#${response.task} exited with code ${response.exitCode}`);
 
   process.exitCode = response.exitCode;
+
+  if (response.exitCode === 0) {
+    await simulateFileAccess(logger, response);
+  }
 }

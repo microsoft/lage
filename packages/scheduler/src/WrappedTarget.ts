@@ -31,6 +31,7 @@ export interface WorkerResult {
   skipped: boolean;
   hash: string;
   value: unknown;
+  id: string;
 }
 
 /**
@@ -189,6 +190,8 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
       } else {
         this.onComplete();
       }
+
+      return this.#result;
     } catch (e) {
       logger.error(String(e), { target });
 
@@ -261,7 +264,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
         releaseStderr();
       },
       abortSignal
-    ) as Promise<{ value?: unknown; skipped: boolean; hash: string }>);
+    ) as Promise<{ value?: unknown; skipped: boolean; hash: string; id: string }>);
 
     return {
       stdoutBuffer: bufferStdout.buffer,
@@ -269,6 +272,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
       skipped: result?.skipped,
       hash: result?.hash,
       value: result?.value,
+      id: result?.id,
     };
   }
 

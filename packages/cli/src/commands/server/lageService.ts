@@ -120,7 +120,7 @@ export async function createLageService(
       let pipedStderr: Readable;
 
       try {
-        await pool!.exec(
+        const results = (await pool!.exec(
           task,
           0,
           (worker, stdout, stderr) => {
@@ -135,12 +135,14 @@ export async function createLageService(
             pipedStdout.unpipe(process.stdout);
             pipedStderr.unpipe(process.stderr);
           }
-        );
+        )) as { hash?: string; id: string };
 
         return {
           packageName: request.packageName,
           task: request.task,
           exitCode: 0,
+          hash: results?.hash,
+          id: results?.id,
         };
       } catch (e) {
         return {

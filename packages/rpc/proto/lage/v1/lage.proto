@@ -13,7 +13,9 @@ message RunTargetRequest {
 message RunTargetResponse {
   optional string package_name = 1;
   string task = 2;
-  int32 exit_code = 5;
+  int32 exit_code = 3;
+  optional string hash = 4;
+  string id = 5;
 }
 
 message PingRequest {}
