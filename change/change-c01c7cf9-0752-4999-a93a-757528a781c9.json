@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "writes out the \"inputs\" as hashes files inside node_modules\\.cache\\lage\\hashes\\**",
+      "packageName": "@lage-run/hasher",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "minor"
+    }
+  ]
+}

@@ -52,6 +52,9 @@ export interface TargetManifest {
  * Currently, it encapsulates the use of `backfill-hasher` to generate a hash.
  */
 export class TargetHasher {
+  targetHashesLog: Record<string, { fileHashes: Record<string, string>; globalFileHashes: Record<string, string> }> = {};
+  targetHashesDirectory: string;
+
   logger: Logger | undefined;
   fileHasher: FileHasher;
   packageTree: PackageTree | undefined;
@@ -159,6 +162,12 @@ export class TargetHasher {
     this.fileHasher = new FileHasher({
       root,
     });
+
+    this.targetHashesDirectory = path.join(root, "node_modules", ".cache", "lage", "hashes");
+
+    if (!fs.existsSync(this.targetHashesDirectory)) {
+      fs.mkdirSync(this.targetHashesDirectory, { recursive: true });
+    }
   }
 
   ensureInitialized() {
@@ -260,15 +269,13 @@ export class TargetHasher {
     // get target hashes
     const targetDepHashes = target.dependencies?.sort().map((targetDep) => this.targetHashes[targetDep]);
 
-    const envGlobFiles = Object.values(
-      target.environmentGlob
-        ? this.fileHasher.hash(await this.getMemorizedEnvGlobResults(target.environmentGlob))
-        : this.globalInputsHash ?? {}
-    );
+    const globalFileHashes = target.environmentGlob
+      ? this.fileHasher.hash(await this.getMemorizedEnvGlobResults(target.environmentGlob))
+      : this.globalInputsHash ?? {};
 
     const combinedHashes = [
       // Environmental hashes
-      ...envGlobFiles,
+      ...Object.values(globalFileHashes),
       `${target.id}|${JSON.stringify(this.options.cliArgs)}`,
       this.options.cacheKey || "",
 
@@ -284,10 +291,23 @@ export class TargetHasher {
 
     this.targetHashes[target.id] = hashString;
 
+    this.targetHashesLog[target.id] = { fileHashes, globalFileHashes };
+
     return hashString;
   }
 
+  writeTargetHashesManifest() {
+    for (const [id, { fileHashes, globalFileHashes }] of Object.entries(this.targetHashesLog)) {
+      const targetHashesManifestPath = path.join(this.targetHashesDirectory, `${id}.json`);
+      if (!fs.existsSync(path.dirname(targetHashesManifestPath))) {
+        fs.mkdirSync(path.dirname(targetHashesManifestPath), { recursive: true });
+      }
+      fs.writeFileSync(targetHashesManifestPath, JSON.stringify({ fileHashes, globalFileHashes }), "utf-8");
+    }
+  }
+
   async cleanup() {
+    this.writeTargetHashesManifest();
     await this.fileHasher.writeManifest();
   }
 }
