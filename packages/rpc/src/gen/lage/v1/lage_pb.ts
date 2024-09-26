@@ -75,44 +75,34 @@ export class RunTargetRequest extends Message<RunTargetRequest> {
  */
 export class RunTargetResponse extends Message<RunTargetResponse> {
   /**
-   * @generated from field: optional string package_name = 1;
-   */
-  packageName?: string;
-
-  /**
-   * @generated from field: string task = 2;
-   */
-  task = "";
-
-  /**
-   * @generated from field: int32 exit_code = 3;
-   */
-  exitCode = 0;
-
-  /**
-   * @generated from field: optional string hash = 4;
-   */
-  hash?: string;
-
-  /**
-   * @generated from field: string id = 5;
+   * @generated from field: string id = 1;
    */
   id = "";
 
   /**
-   * @generated from field: repeated string inputs = 6;
+   * @generated from field: optional string package_name = 2;
+   */
+  packageName?: string;
+
+  /**
+   * @generated from field: string task = 3;
+   */
+  task = "";
+
+  /**
+   * @generated from field: int32 exit_code = 4;
+   */
+  exitCode = 0;
+
+  /**
+   * @generated from field: repeated string inputs = 5;
    */
   inputs: string[] = [];
 
   /**
-   * @generated from field: repeated string outputs = 7;
+   * @generated from field: repeated string outputs = 6;
    */
   outputs: string[] = [];
-
-  /**
-   * @generated from field: repeated string dependencies = 8;
-   */
-  dependencies: string[] = [];
 
   constructor(data?: PartialMessage<RunTargetResponse>) {
     super();
@@ -122,14 +112,12 @@ export class RunTargetResponse extends Message<RunTargetResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "connectrpc.lage.v1.RunTargetResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "package_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
-    { no: 2, name: "task", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "exit_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 4, name: "hash", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
-    { no: 5, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 6, name: "inputs", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 7, name: "outputs", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 8, name: "dependencies", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "package_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 3, name: "task", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "exit_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 5, name: "inputs", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 6, name: "outputs", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RunTargetResponse {

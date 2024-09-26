@@ -54,13 +54,15 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
     taskArgs,
   });
 
-  logger.info(`Task ${response.packageName} #${response.task} exited with code ${response.exitCode} `);
+  logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode} `);
 
   process.exitCode = response.exitCode;
 
   if (response.exitCode === 0) {
-    await simulateFileAccess(logger, response);
+    await simulateFileAccess(logger, response.inputs, response.outputs);
   }
+
+  logger.info("Task execution finished");
 }
 
 export async function serverAction(options: WorkerOptions, command: Command) {

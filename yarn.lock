@@ -1761,12 +1761,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/globby@workspace:packages/globby":
+"@lage-run/globby@npm:^14.0.3, @lage-run/globby@workspace:packages/globby":
   version: 0.0.0-use.local
   resolution: "@lage-run/globby@workspace:packages/globby"
   dependencies:
+    dts-bundle-generator: "npm:^9.5.1"
     esbuild: "npm:^0.21.5"
-    globby: "npm:14.0.1"
+    globby: "npm:^14.0.2"
+    typescript: "npm:^5.0.3"
   languageName: unknown
   linkType: soft
 
@@ -1774,13 +1776,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lage-run/hasher@workspace:packages/hasher"
   dependencies:
+    "@lage-run/globby": "npm:^14.0.3"
     "@lage-run/logger": "npm:^1.3.1"
     "@lage-run/monorepo-fixture": "npm:*"
     "@lage-run/monorepo-scripts": "npm:*"
     "@lage-run/target-graph": "npm:^0.8.10"
     "@types/graceful-fs": "npm:^4.1.6"
     execa: "npm:5.1.1"
-    fast-glob: "npm:3.3.2"
     glob-hasher: "npm:^1.4.2"
     graceful-fs: "npm:4.2.11"
     micromatch: "npm:4.0.8"
@@ -4847,20 +4849,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:14.0.1":
-  version: 14.0.1
-  resolution: "globby@npm:14.0.1"
-  dependencies:
-    "@sindresorhus/merge-streams": "npm:^2.1.0"
-    fast-glob: "npm:^3.3.2"
-    ignore: "npm:^5.2.4"
-    path-type: "npm:^5.0.0"
-    slash: "npm:^5.1.0"
-    unicorn-magic: "npm:^0.1.0"
-  checksum: 10c0/749a6be91cf455c161ebb5c9130df3991cb9fd7568425db850a8279a6cf45acd031c5069395beb7aeb4dd606b64f0d6ff8116c93726178d8e6182fee58c2736d
-  languageName: node
-  linkType: hard
-
 "globby@npm:^11.0.0, globby@npm:^11.1.0":
   version: 11.1.0
   resolution: "globby@npm:11.1.0"
@@ -4872,6 +4860,20 @@ __metadata:
     merge2: "npm:^1.4.1"
     slash: "npm:^3.0.0"
   checksum: 10c0/b39511b4afe4bd8a7aead3a27c4ade2b9968649abab0a6c28b1a90141b96ca68ca5db1302f7c7bd29eab66bf51e13916b8e0a3d0ac08f75e1e84a39b35691189
+  languageName: node
+  linkType: hard
+
+"globby@npm:^14.0.2":
+  version: 14.0.2
+  resolution: "globby@npm:14.0.2"
+  dependencies:
+    "@sindresorhus/merge-streams": "npm:^2.1.0"
+    fast-glob: "npm:^3.3.2"
+    ignore: "npm:^5.2.4"
+    path-type: "npm:^5.0.0"
+    slash: "npm:^5.1.0"
+    unicorn-magic: "npm:^0.1.0"
+  checksum: 10c0/3f771cd683b8794db1e7ebc8b6b888d43496d93a82aad4e9d974620f578581210b6c5a6e75ea29573ed16a1345222fab6e9b877a8d1ed56eeb147e09f69c6f78
   languageName: node
   linkType: hard
 
@@ -8287,6 +8289,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^5.0.3":
+  version: 5.6.2
+  resolution: "typescript@npm:5.6.2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/3ed8297a8c7c56b7fec282532503d1ac795239d06e7c4966b42d4330c6cf433a170b53bcf93a130a7f14ccc5235de5560df4f1045eb7f3550b46ebed16d3c5e5
+  languageName: node
+  linkType: hard
+
 "typescript@npm:~5.0.3":
   version: 5.0.4
   resolution: "typescript@npm:5.0.4"
@@ -8314,6 +8326,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/db2ad2a16ca829f50427eeb1da155e7a45e598eec7b086d8b4e8ba44e5a235f758e606d681c66992230d3fc3b8995865e5fd0b22a2c95486d0b3200f83072ec9
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.0.3#optional!builtin<compat/typescript>":
+  version: 5.6.2
+  resolution: "typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/94eb47e130d3edd964b76da85975601dcb3604b0c848a36f63ac448d0104e93819d94c8bdf6b07c00120f2ce9c05256b8b6092d23cf5cf1c6fa911159e4d572f
   languageName: node
   linkType: hard
 

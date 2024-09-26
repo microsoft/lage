@@ -3,11 +3,15 @@ import type { Logger } from "@lage-run/logger";
 import type { ILageService } from "@lage-run/rpc";
 import type { TargetRunnerPickerOptions } from "@lage-run/runners";
 import { getTargetId, type TargetGraph } from "@lage-run/target-graph";
-import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { getPackageAndTask } from "@lage-run/target-graph";
 import { type Readable } from "stream";
 import { WorkerPool } from "@lage-run/worker-threads-pool";
+import { getInputFiles, PackageTree } from "@lage-run/hasher";
+import { createDependencyMap } from "workspace-tools";
+import { getOutputFiles } from "./getOutputFiles.js";
+import { glob } from "@lage-run/globby";
 
 function findAllTasks(pipeline: PipelineDefinition) {
   const tasks = new Set<string>();
@@ -22,20 +26,20 @@ function findAllTasks(pipeline: PipelineDefinition) {
   return Array.from(tasks);
 }
 
-let targetGraph: TargetGraph | undefined;
-let config: ConfigOptions | undefined;
+let context:
+  | { config: ConfigOptions; targetGraph: TargetGraph; packageTree: PackageTree; dependencyMap: DependencyMap; root: string }
+  | undefined;
 
 async function initializeOnce(cwd: string, logger: Logger) {
-  if (!config) {
-    config = await getConfig(cwd);
-  }
-
-  if (!targetGraph) {
-    const { pipeline } = config;
+  if (!context) {
+    const config = await getConfig(cwd);
     const root = getWorkspaceRoot(cwd)!;
+
+    const { pipeline } = config;
+
     const packageInfos = getPackageInfos(root);
     const tasks = findAllTasks(pipeline);
-    targetGraph = createTargetGraph({
+    const targetGraph = createTargetGraph({
       logger,
       root,
       dependencies: false,
@@ -49,8 +53,20 @@ async function initializeOnce(cwd: string, logger: Logger) {
       tasks,
       packageInfos,
     });
+
+    const dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
+    const packageTree = new PackageTree({
+      root,
+      packageInfos,
+      includeUntracked: true,
+    });
+
+    await packageTree.initialize();
+
+    context = { config, targetGraph, packageTree, dependencyMap, root };
   }
-  return { config, targetGraph };
+
+  return context;
 }
 
 let pool: WorkerPool | undefined;
@@ -78,7 +94,7 @@ export async function createLageService(
     },
 
     async runTarget(request) {
-      const { config, targetGraph } = await initializeOnce(cwd, logger);
+      const { config, targetGraph, dependencyMap, packageTree, root } = await initializeOnce(cwd, logger);
 
       const runners: TargetRunnerPickerOptions = {
         npmScript: {
@@ -122,7 +138,7 @@ export async function createLageService(
       let pipedStderr: Readable;
 
       try {
-        const results = (await pool!.exec(
+        await pool!.exec(
           task,
           0,
           (worker, stdout, stderr) => {
@@ -137,13 +153,20 @@ export async function createLageService(
             pipedStdout.unpipe(process.stdout);
             pipedStderr.unpipe(process.stderr);
           }
-        )) as { hash?: string; id: string };
+        );
+
+        const globalInputs = target.environmentGlob
+          ? glob(target.environmentGlob, { cwd: root })
+          : glob(config.cacheOptions?.environmentGlob, { cwd: root });
+        const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
 
         return {
           packageName: request.packageName,
           task: request.task,
           exitCode: 0,
-          hash: results?.hash,
+          hash: "",
+          inputs,
+          outputs: getOutputFiles(target, config.cacheOptions?.outputGlob),
           id,
         };
       } catch (e) {
@@ -151,6 +174,9 @@ export async function createLageService(
           packageName: request.packageName,
           task: request.task,
           exitCode: 1,
+          hash: "",
+          inputs: [],
+          outputs: [],
           id,
         };
       }

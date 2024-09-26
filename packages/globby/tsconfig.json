@@ -5,5 +5,7 @@
     "emitDeclarationOnly": true,
     "module": "Node16"
   },
-  "include": ["src"]
+  "files": [],
+  "include": ["src/index.mts"],
+  "exclude": ["lib/**/*.mts"]
 }
