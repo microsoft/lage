@@ -1703,6 +1703,7 @@ __metadata:
   dependencies:
     "@lage-run/cache": "npm:^1.3.3"
     "@lage-run/config": "npm:^0.4.2"
+    "@lage-run/globby": "npm:^14.0.3"
     "@lage-run/hasher": "npm:^1.4.0"
     "@lage-run/logger": "npm:^1.3.1"
     "@lage-run/monorepo-fixture": "npm:*"
