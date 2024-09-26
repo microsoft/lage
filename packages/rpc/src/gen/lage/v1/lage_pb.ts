@@ -99,6 +99,21 @@ export class RunTargetResponse extends Message<RunTargetResponse> {
    */
   id = "";
 
+  /**
+   * @generated from field: repeated string inputs = 6;
+   */
+  inputs: string[] = [];
+
+  /**
+   * @generated from field: repeated string outputs = 7;
+   */
+  outputs: string[] = [];
+
+  /**
+   * @generated from field: repeated string dependencies = 8;
+   */
+  dependencies: string[] = [];
+
   constructor(data?: PartialMessage<RunTargetResponse>) {
     super();
     proto3.util.initPartial(data, this);
@@ -112,6 +127,9 @@ export class RunTargetResponse extends Message<RunTargetResponse> {
     { no: 3, name: "exit_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 4, name: "hash", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
     { no: 5, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "inputs", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 7, name: "outputs", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 8, name: "dependencies", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RunTargetResponse {

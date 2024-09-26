@@ -101,7 +101,9 @@ export async function createLageService(
         },
       };
 
-      if (!targetGraph.targets.has(getTargetId(request.packageName, request.task))) {
+      const id = getTargetId(request.packageName, request.task);
+
+      if (!targetGraph.targets.has(id)) {
         logger.error(`Target not found: ${request.packageName}#${request.task}`);
         return {
           packageName: request.packageName,
@@ -110,7 +112,7 @@ export async function createLageService(
         };
       }
 
-      const target = targetGraph.targets.get(getTargetId(request.packageName, request.task))!;
+      const target = targetGraph.targets.get(id)!;
       const task = {
         target,
         runners,
@@ -142,13 +144,14 @@ export async function createLageService(
           task: request.task,
           exitCode: 0,
           hash: results?.hash,
-          id: results?.id,
+          id,
         };
       } catch (e) {
         return {
           packageName: request.packageName,
           task: request.task,
           exitCode: 1,
+          id,
         };
       }
     },

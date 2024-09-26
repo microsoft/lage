@@ -8,3 +8,4 @@ export { detectCycles } from "./detectCycles.js";
 export { WorkspaceTargetGraphBuilder } from "./WorkspaceTargetGraphBuilder.js";
 export { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 export { TargetFactory } from "./TargetFactory.js";
+export { traverse } from "./traverse.js";
