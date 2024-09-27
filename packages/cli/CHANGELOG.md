@@ -1,8 +1,21 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Wed, 25 Sep 2024 20:28:10 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 27 Sep 2024 20:03:49 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.22.0
+
+Fri, 27 Sep 2024 20:03:49 GMT
+
+### Minor changes
+
+- Simulate file access for lage server (kchau@microsoft.com)
+- Bump @lage-run/globby to v14.1.0
+- Bump @lage-run/hasher to v1.5.0
+- Bump @lage-run/rpc to v1.2.1
+- Bump @lage-run/scheduler to v1.3.1
+- Bump @lage-run/worker-threads-pool to v0.8.2
 
 ## 0.21.0
 
