@@ -85,13 +85,17 @@ export async function serverAction(options: WorkerOptions, command: Command) {
 
     const abortController = new AbortController();
 
-    const lageService = await createLageService(process.cwd(), abortController, logger, options.concurrency);
-    const server = await createServer(lageService, abortController);
-
-    server.addHook("onRequest", (req, res, next) => {
-      resetTimer(logger, timeout, abortController, server);
-      next();
+    const lageService = await createLageService({
+      cwd: process.cwd(),
+      serverControls: {
+        abortController,
+        countdownToShutdown: () => resetTimer(logger, timeout, abortController, server),
+        clearCountdown: clearTimer,
+      },
+      logger,
+      maxWorkers: options.concurrency,
     });
+    const server = await createServer(lageService, abortController);
 
     await server.listen({ host, port });
     logger.info(`Server listening on http://${host}:${port}, timeout in ${timeout} seconds`);
@@ -109,13 +113,17 @@ export async function serverAction(options: WorkerOptions, command: Command) {
 
 let timeoutHandle: NodeJS.Timeout | undefined;
 function resetTimer(logger: Logger, timeout: number, abortController: AbortController, server: any) {
-  if (timeoutHandle) {
-    clearTimeout(timeoutHandle);
-  }
+  clearTimer();
 
-  timeoutHandle = setTimeout(() => {
+  timeoutHandle = globalThis.setTimeout(() => {
     logger.info(`Server timed out after ${timeout} seconds`);
     abortController.abort();
     server.close();
   }, timeout * 1000);
+}
+
+function clearTimer() {
+  if (timeoutHandle) {
+    globalThis.clearTimeout(timeoutHandle);
+  }
 }

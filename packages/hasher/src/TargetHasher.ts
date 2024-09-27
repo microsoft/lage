@@ -21,7 +21,6 @@ import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
 import { FileHasher } from "./FileHasher.js";
 import type { Logger } from "@lage-run/logger";
 import { PackageTree } from "./PackageTree.js";
-import { expandInputPatterns } from "./expandInputPatterns.js";
 import { getInputFiles } from "./getInputFiles.js";
 
 export interface TargetHasherOptions {
@@ -132,7 +131,7 @@ export class TargetHasher {
     this.initializedPromise = Promise.all([
       this.fileHasher
         .readManifest()
-        .then(() => globAsync(environmentGlob))
+        .then(() => globAsync(environmentGlob, { cwd: root }))
         .then((files) => this.fileHasher.hash(files))
         .then((hash) => (this.globalInputsHash = hash)),
 
@@ -204,7 +203,7 @@ export class TargetHasher {
     // get target hashes
     const targetDepHashes = target.dependencies?.sort().map((targetDep) => this.targetHashes[targetDep]);
 
-    const globalFileHashes = await this.getEnvironmentGlobHashes(target);
+    const globalFileHashes = await this.getEnvironmentGlobHashes(root, target);
 
     const combinedHashes = [
       // Environmental hashes
@@ -239,9 +238,9 @@ export class TargetHasher {
     }
   }
 
-  async getEnvironmentGlobHashes(target: Target) {
+  async getEnvironmentGlobHashes(root: string, target: Target) {
     const globalFileHashes = target.environmentGlob
-      ? this.fileHasher.hash(await globAsync(target.environmentGlob))
+      ? this.fileHasher.hash(await globAsync(target.environmentGlob ?? [], { cwd: root }))
       : this.globalInputsHash ?? {};
 
     return globalFileHashes;

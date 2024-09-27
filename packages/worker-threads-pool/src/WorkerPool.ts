@@ -35,6 +35,8 @@ export class WorkerPool extends EventEmitter implements Pool {
     this.on(workerFreedEvent, () => {
       if (this.queue.length > 0) {
         this._exec();
+      } else {
+        this.emit("idle");
       }
     });
   }

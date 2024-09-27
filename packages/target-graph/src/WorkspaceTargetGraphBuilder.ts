@@ -104,7 +104,7 @@ export class WorkspaceTargetGraphBuilder {
     const subGraphEntries: string[] = [];
 
     for (const task of tasks) {
-      if (scope) {
+      if (scope && scope.length > 0) {
         for (const packageName of scope) {
           subGraphEntries.push(getTargetId(packageName, task));
         }

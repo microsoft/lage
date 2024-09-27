@@ -47,7 +47,7 @@ async function initializeOnce(cwd: string, logger: Logger) {
       ignore: [],
       pipeline,
       repoWideChanges: config.repoWideChanges,
-      scope: [],
+      scope: undefined,
       since: "",
       outputs: config.cacheOptions.outputGlob,
       tasks,
@@ -71,12 +71,21 @@ async function initializeOnce(cwd: string, logger: Logger) {
 
 let pool: WorkerPool | undefined;
 
-export async function createLageService(
-  cwd: string,
-  abortController: AbortController,
-  logger: Logger,
-  maxWorkers?: number
-): Promise<ILageService> {
+export async function createLageService({
+  cwd,
+  serverControls,
+  logger,
+  maxWorkers,
+}: {
+  cwd: string;
+  serverControls: {
+    abortController: AbortController;
+    countdownToShutdown: () => void;
+    clearCountdown: () => void;
+  };
+  logger: Logger;
+  maxWorkers?: number;
+}): Promise<ILageService> {
   logger.info(`Server started with ${maxWorkers} workers`);
 
   pool = new WorkerPool({
@@ -84,8 +93,13 @@ export async function createLageService(
     maxWorkers,
   });
 
-  abortController.signal.addEventListener("abort", () => {
+  serverControls.abortController.signal.addEventListener("abort", () => {
     pool?.close();
+  });
+
+  pool?.on("idle", () => {
+    logger.info("All workers are idle, shutting down after timeout");
+    serverControls.countdownToShutdown();
   });
 
   return {
@@ -94,6 +108,8 @@ export async function createLageService(
     },
 
     async runTarget(request) {
+      serverControls.clearCountdown();
+
       const { config, targetGraph, dependencyMap, packageTree, root } = await initializeOnce(cwd, logger);
 
       const runners: TargetRunnerPickerOptions = {
@@ -156,8 +172,8 @@ export async function createLageService(
         );
 
         const globalInputs = target.environmentGlob
-          ? glob(target.environmentGlob, { cwd: root })
-          : glob(config.cacheOptions?.environmentGlob, { cwd: root });
+          ? glob(target.environmentGlob, { cwd: root, gitignore: true })
+          : glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true });
         const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
 
         return {
@@ -166,7 +182,7 @@ export async function createLageService(
           exitCode: 0,
           hash: "",
           inputs,
-          outputs: getOutputFiles(target, config.cacheOptions?.outputGlob),
+          outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
           id,
         };
       } catch (e) {

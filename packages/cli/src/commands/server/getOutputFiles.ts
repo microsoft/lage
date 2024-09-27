@@ -1,8 +1,17 @@
 import type { CacheOptions } from "@lage-run/config";
 import { glob } from "@lage-run/globby";
+import type { PackageTree } from "@lage-run/hasher";
 import type { Target } from "@lage-run/target-graph";
 
-export function getOutputFiles(target: Target, outputGlob: CacheOptions["outputGlob"]) {
+import path from "path";
+
+export function getOutputFiles(root: string, target: Target, outputGlob: CacheOptions["outputGlob"], packageTree: PackageTree) {
   const patterns = target.outputs ?? outputGlob ?? ["**/*"];
-  return glob(patterns, { cwd: target.cwd, gitignore: true });
+
+  const sourceControlledFiles = new Set(packageTree.getPackageFiles(target.packageName ?? "", patterns));
+  const outputs = glob(patterns, { cwd: target.cwd, gitignore: false })
+    .map((file) => path.relative(root, path.join(target.cwd, file)))
+    .filter((file) => !sourceControlledFiles.has(file));
+
+  return outputs;
 }
