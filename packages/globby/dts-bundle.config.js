@@ -12,7 +12,7 @@ module.exports = {
       outFile: "./dist/index.d.ts",
       libraries: {
         // Inline any types from workspace packages into the dts bundle
-        inlinedLibraries: ['globby'],
+        inlinedLibraries: ["globby"],
       },
       output: {
         // Only export the types which are explicitly exported in the original files

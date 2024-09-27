@@ -52,8 +52,8 @@ module.exports = {
     "@lage-run/globby#isoldatedTypes": {
       type: "npmScript",
       options: {
-        script: "types"
-      }
+        script: "types",
+      },
     },
     lint: {
       type: "worker",
