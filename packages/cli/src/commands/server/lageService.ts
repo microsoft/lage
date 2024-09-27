@@ -3,11 +3,15 @@ import type { Logger } from "@lage-run/logger";
 import type { ILageService } from "@lage-run/rpc";
 import type { TargetRunnerPickerOptions } from "@lage-run/runners";
 import { getTargetId, type TargetGraph } from "@lage-run/target-graph";
-import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { getPackageAndTask } from "@lage-run/target-graph";
 import { type Readable } from "stream";
 import { WorkerPool } from "@lage-run/worker-threads-pool";
+import { getInputFiles, PackageTree } from "@lage-run/hasher";
+import { createDependencyMap } from "workspace-tools";
+import { getOutputFiles } from "./getOutputFiles.js";
+import { glob } from "@lage-run/globby";
 
 function findAllTasks(pipeline: PipelineDefinition) {
   const tasks = new Set<string>();
@@ -22,20 +26,20 @@ function findAllTasks(pipeline: PipelineDefinition) {
   return Array.from(tasks);
 }
 
-let targetGraph: TargetGraph | undefined;
-let config: ConfigOptions | undefined;
+let context:
+  | { config: ConfigOptions; targetGraph: TargetGraph; packageTree: PackageTree; dependencyMap: DependencyMap; root: string }
+  | undefined;
 
 async function initializeOnce(cwd: string, logger: Logger) {
-  if (!config) {
-    config = await getConfig(cwd);
-  }
-
-  if (!targetGraph) {
-    const { pipeline } = config;
+  if (!context) {
+    const config = await getConfig(cwd);
     const root = getWorkspaceRoot(cwd)!;
+
+    const { pipeline } = config;
+
     const packageInfos = getPackageInfos(root);
     const tasks = findAllTasks(pipeline);
-    targetGraph = createTargetGraph({
+    const targetGraph = createTargetGraph({
       logger,
       root,
       dependencies: false,
@@ -43,24 +47,45 @@ async function initializeOnce(cwd: string, logger: Logger) {
       ignore: [],
       pipeline,
       repoWideChanges: config.repoWideChanges,
-      scope: [],
+      scope: undefined,
       since: "",
       outputs: config.cacheOptions.outputGlob,
       tasks,
       packageInfos,
     });
+
+    const dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
+    const packageTree = new PackageTree({
+      root,
+      packageInfos,
+      includeUntracked: true,
+    });
+
+    await packageTree.initialize();
+
+    context = { config, targetGraph, packageTree, dependencyMap, root };
   }
-  return { config, targetGraph };
+
+  return context;
 }
 
 let pool: WorkerPool | undefined;
 
-export async function createLageService(
-  cwd: string,
-  abortController: AbortController,
-  logger: Logger,
-  maxWorkers?: number
-): Promise<ILageService> {
+export async function createLageService({
+  cwd,
+  serverControls,
+  logger,
+  maxWorkers,
+}: {
+  cwd: string;
+  serverControls: {
+    abortController: AbortController;
+    countdownToShutdown: () => void;
+    clearCountdown: () => void;
+  };
+  logger: Logger;
+  maxWorkers?: number;
+}): Promise<ILageService> {
   logger.info(`Server started with ${maxWorkers} workers`);
 
   pool = new WorkerPool({
@@ -68,8 +93,13 @@ export async function createLageService(
     maxWorkers,
   });
 
-  abortController.signal.addEventListener("abort", () => {
+  serverControls.abortController.signal.addEventListener("abort", () => {
     pool?.close();
+  });
+
+  pool?.on("idle", () => {
+    logger.info("All workers are idle, shutting down after timeout");
+    serverControls.countdownToShutdown();
   });
 
   return {
@@ -78,7 +108,9 @@ export async function createLageService(
     },
 
     async runTarget(request) {
-      const { config, targetGraph } = await initializeOnce(cwd, logger);
+      serverControls.clearCountdown();
+
+      const { config, targetGraph, dependencyMap, packageTree, root } = await initializeOnce(cwd, logger);
 
       const runners: TargetRunnerPickerOptions = {
         npmScript: {
@@ -101,7 +133,9 @@ export async function createLageService(
         },
       };
 
-      if (!targetGraph.targets.has(getTargetId(request.packageName, request.task))) {
+      const id = getTargetId(request.packageName, request.task);
+
+      if (!targetGraph.targets.has(id)) {
         logger.error(`Target not found: ${request.packageName}#${request.task}`);
         return {
           packageName: request.packageName,
@@ -110,7 +144,7 @@ export async function createLageService(
         };
       }
 
-      const target = targetGraph.targets.get(getTargetId(request.packageName, request.task))!;
+      const target = targetGraph.targets.get(id)!;
       const task = {
         target,
         runners,
@@ -137,16 +171,29 @@ export async function createLageService(
           }
         );
 
+        const globalInputs = target.environmentGlob
+          ? glob(target.environmentGlob, { cwd: root, gitignore: true })
+          : glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true });
+        const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
+
         return {
           packageName: request.packageName,
           task: request.task,
           exitCode: 0,
+          hash: "",
+          inputs,
+          outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
+          id,
         };
       } catch (e) {
         return {
           packageName: request.packageName,
           task: request.task,
           exitCode: 1,
+          hash: "",
+          inputs: [],
+          outputs: [],
+          id,
         };
       }
     },

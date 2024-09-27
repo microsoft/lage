@@ -6,6 +6,7 @@ import type { Command } from "commander";
 import type { LageClient } from "@lage-run/rpc";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { ConnectError, createClient, createServer } from "@lage-run/rpc";
+import { simulateFileAccess } from "./simulateFileAccess.js";
 
 interface WorkerOptions extends ReporterInitOptions {
   nodeArg?: string[];
@@ -53,9 +54,15 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
     taskArgs,
   });
 
-  logger.info(`Task ${response.packageName} #${response.task} exited with code ${response.exitCode} `);
+  logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode} `);
 
   process.exitCode = response.exitCode;
+
+  if (response.exitCode === 0) {
+    await simulateFileAccess(logger, response.inputs, response.outputs);
+  }
+
+  logger.info("Task execution finished");
 }
 
 export async function serverAction(options: WorkerOptions, command: Command) {
@@ -78,13 +85,17 @@ export async function serverAction(options: WorkerOptions, command: Command) {
 
     const abortController = new AbortController();
 
-    const lageService = await createLageService(process.cwd(), abortController, logger, options.concurrency);
-    const server = await createServer(lageService, abortController);
-
-    server.addHook("onRequest", (req, res, next) => {
-      resetTimer(logger, timeout, abortController, server);
-      next();
+    const lageService = await createLageService({
+      cwd: process.cwd(),
+      serverControls: {
+        abortController,
+        countdownToShutdown: () => resetTimer(logger, timeout, abortController, server),
+        clearCountdown: clearTimer,
+      },
+      logger,
+      maxWorkers: options.concurrency,
     });
+    const server = await createServer(lageService, abortController);
 
     await server.listen({ host, port });
     logger.info(`Server listening on http://${host}:${port}, timeout in ${timeout} seconds`);
@@ -102,13 +113,17 @@ export async function serverAction(options: WorkerOptions, command: Command) {
 
 let timeoutHandle: NodeJS.Timeout | undefined;
 function resetTimer(logger: Logger, timeout: number, abortController: AbortController, server: any) {
-  if (timeoutHandle) {
-    clearTimeout(timeoutHandle);
-  }
+  clearTimer();
 
-  timeoutHandle = setTimeout(() => {
+  timeoutHandle = globalThis.setTimeout(() => {
     logger.info(`Server timed out after ${timeout} seconds`);
     abortController.abort();
     server.close();
   }, timeout * 1000);
+}
+
+function clearTimer() {
+  if (timeoutHandle) {
+    globalThis.clearTimeout(timeoutHandle);
+  }
 }

@@ -8,6 +8,7 @@ export async function createServer(lageService: ILageService, abortController: A
   await server.register(fastifyConnectPlugin, {
     routes: createRoutes(lageService),
     shutdownSignal: abortController.signal,
+    compressMinBytes: 512,
   });
 
   server.get("/", (_, reply) => {

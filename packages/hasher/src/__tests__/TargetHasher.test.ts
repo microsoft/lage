@@ -34,6 +34,22 @@ describe("The main Hasher class", () => {
     };
   }
 
+  it("creates different hashes given different global environment glob", async () => {
+    const monorepo1 = await setupFixture("monorepo-with-global-files");
+
+    const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: ["some-global.config.js"] });
+    const target = createTarget(monorepo1.root, "package-a", "build");
+    const hash = await getHash(hasher, target);
+
+    const hasher2 = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
+    const target2 = createTarget(monorepo1.root, "package-a", "build");
+    const hash2 = await getHash(hasher2, target2);
+
+    expect(hash).not.toEqual(hash2);
+
+    monorepo1.cleanup();
+  });
+
   it("creates different hashes given different fixtures", async () => {
     const monorepo1 = await setupFixture("monorepo");
     const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
