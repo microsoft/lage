@@ -1,13 +1,16 @@
 import type { Command } from "commander";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
+import type { ConfigOptions} from "@lage-run/config";
 import { getConfig } from "@lage-run/config";
+import type { PackageInfos} from "workspace-tools";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
 import path from "path";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
+import type { TargetGraph} from "@lage-run/target-graph";
 import { getStartTargetId } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
 
@@ -20,6 +23,7 @@ interface RunOptions extends ReporterInitOptions {
   cache: boolean;
   nodeArg: string;
   ignore: string[];
+  server: string;
 }
 
 interface PackageTask {
@@ -32,7 +36,7 @@ interface PackageTask {
 }
 
 /**
- * (UNSTABLE) The info command displays information about a target graph in a workspace.
+ * The info command displays information about a target graph in a workspace.
  * The generated output can be read and used by other task runners, such as BuildXL.
  *
  * Expected format:
@@ -78,19 +82,9 @@ export async function infoAction(options: RunOptions, command: Command) {
   const root = getWorkspaceRoot(cwd)!;
 
   const packageInfos = getPackageInfos(root);
-  const targetGraph = prepareAndCreateTargetGraph(config, logger, root, options, packageInfos, command);
-  const scope = prepareAndGetFilteredPackages(config, logger, root, options, packageInfos);
-  const packageTasks = processTargets(targetGraph.targets, packageInfos, config);
 
-  logger.info("info", {
-    command: command.args,
-    scope,
-    packageTasks: [...packageTasks.values()].flat(),
-  });
-}
-
-function prepareAndCreateTargetGraph(config, logger, root, options, packageInfos, command) {
   const { tasks } = filterArgsForTasks(command.args);
+
   const targetGraph = createTargetGraph({
     logger,
     root,
@@ -106,10 +100,6 @@ function prepareAndCreateTargetGraph(config, logger, root, options, packageInfos
     packageInfos,
   });
 
-  return targetGraph;
-}
-
-function prepareAndGetFilteredPackages(config, logger, root, options, packageInfos) {
   const scope = getFilteredPackages({
     root,
     packageInfos,
@@ -122,10 +112,17 @@ function prepareAndGetFilteredPackages(config, logger, root, options, packageInf
     sinceIgnoreGlobs: options.ignore.concat(config.ignore),
   });
 
-  return scope;
+  const packageTasks = optimizeTargetGraph(targetGraph, packageInfos, config);
+
+  logger.info("info", {
+    command: command.args,
+    scope,
+    packageTasks: [...packageTasks.values()].flat(),
+  });
 }
 
-function processTargets(targets, packageInfos, config) {
+function optimizeTargetGraph(graph: TargetGraph, packageInfos: PackageInfos, config: ConfigOptions) {
+  const targets = graph.targets;
   const packageTasks = new Map<string, PackageTask[]>(); // Initialize the map with the correct type
   const dependenciesCache = new Map<string, string[]>();
 
