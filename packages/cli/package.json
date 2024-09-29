@@ -8,7 +8,8 @@
   },
   "homepage": "https://microsoft.github.io/lage/",
   "bin": {
-    "lage": "./bin/lage"
+    "lage": "./bin/lage.js",
+    "lage-server": "./bin/lage-server.js"
   },
   "license": "MIT",
   "main": "lib/index.js",

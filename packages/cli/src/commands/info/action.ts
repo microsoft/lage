@@ -8,6 +8,7 @@ import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
 import { removeNodes, transitiveReduction } from "@lage-run/target-graph";
 import path from "path";
+import fs from "fs";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { TargetGraph, Target } from "@lage-run/target-graph";
@@ -78,6 +79,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
   options.reporter = options.reporter ?? "json";
+  options.server = typeof options.server === "string" ? options.server : "localhost:5332";
   initializeReporters(logger, options);
   const root = getWorkspaceRoot(cwd)!;
 
@@ -136,13 +138,28 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   const runnerPicker = new TargetRunnerPicker(pickerOptions);
 
   const optimizedTargets = await optimizeTargetGraph(targetGraph, runnerPicker);
-  const packageTasks = optimizedTargets.map((target) => generatePackageTask(target, taskArgs, config, options));
+  const binPaths = getBinPaths();
+  const packageTasks = optimizedTargets.map((target) => generatePackageTask(target, taskArgs, config, options, binPaths));
 
   logger.info("info", {
     command: command.args,
     scope,
     packageTasks,
   });
+}
+
+function getBinPaths() {
+  let dir = __dirname;
+  let packageJsonPath = "";
+  while (dir !== "/") {
+    packageJsonPath = path.join(dir, "package.json");
+    if (fs.existsSync(packageJsonPath)) {
+      break;
+    }
+    dir = path.dirname(dir);
+  }
+  const packageJson = JSON.parse(fs.readFileSync(path.join(dir, "package.json"), "utf8"));
+  return { lage: path.join(dir, packageJson.bin.lage), "lage-server": path.join(dir, packageJson.bin["lage-server"]) };
 }
 
 async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: TargetRunnerPicker) {
@@ -162,8 +179,14 @@ async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: TargetRunne
   return transitiveReduction(targetMinimizedNodes);
 }
 
-function generatePackageTask(target: Target, taskArgs: string[], config: ConfigOptions, options: InfoActionOptions): PackageTask {
-  const command = generateCommand(target, taskArgs, config, options);
+function generatePackageTask(
+  target: Target,
+  taskArgs: string[],
+  config: ConfigOptions,
+  options: InfoActionOptions,
+  binPaths: { lage: string; "lage-server": string }
+): PackageTask {
+  const command = generateCommand(target, taskArgs, config, options, binPaths);
   const workingDirectory = getWorkingDirectory(target);
 
   const packageTask: PackageTask = {
@@ -178,14 +201,20 @@ function generatePackageTask(target: Target, taskArgs: string[], config: ConfigO
   return packageTask;
 }
 
-function generateCommand(target: Target, taskArgs: string[], config: ConfigOptions, options: InfoActionOptions) {
+function generateCommand(
+  target: Target,
+  taskArgs: string[],
+  config: ConfigOptions,
+  options: InfoActionOptions,
+  binPaths: { lage: string; "lage-server": string }
+) {
   if (target.type === "npmScript") {
     const npmClient = config.npmClient ?? "npm";
     const command = [npmClient, ...getNpmArgs(target.task, taskArgs)];
     return command;
   } else if (target.type === "worker" && options.server) {
     const [host, port] = options.server.split(":");
-    const command = [process.execPath, path.join(__dirname, "../../dist/lage-server.js")];
+    const command = [process.execPath, binPaths["lage-server"]];
 
     if (host) {
       command.push("--host", host);
@@ -210,7 +239,7 @@ function generateCommand(target: Target, taskArgs: string[], config: ConfigOptio
     command.push(...taskArgs);
     return command;
   } else if (target.type === "worker") {
-    const command = [process.execPath, path.join(__dirname, "../../dist/lage.js"), "exec"];
+    const command = [process.execPath, binPaths.lage, "exec"];
     command.push(target.packageName ?? "");
     command.push(target.task);
     command.push(...taskArgs);
