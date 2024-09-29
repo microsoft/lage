@@ -1721,7 +1721,8 @@ __metadata:
     fast-glob: "npm:3.3.2"
     workspace-tools: "npm:0.36.4"
   bin:
-    lage: ./bin/lage
+    lage: ./bin/lage.js
+    lage-server: ./bin/lage-server.js
   languageName: unknown
   linkType: soft
 
