@@ -1725,7 +1725,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/config@npm:^0.4.2, @lage-run/config@workspace:^, @lage-run/config@workspace:packages/config":
+"@lage-run/config@npm:^0.4.2, @lage-run/config@workspace:packages/config":
   version: 0.0.0-use.local
   resolution: "@lage-run/config@workspace:packages/config"
   dependencies:
@@ -1770,18 +1770,6 @@ __metadata:
     esbuild: "npm:^0.21.5"
     globby: "npm:^14.0.2"
     typescript: "npm:~5.0.3"
-  languageName: unknown
-  linkType: soft
-
-"@lage-run/graph-optimizer@workspace:packages/graph-optimizer":
-  version: 0.0.0-use.local
-  resolution: "@lage-run/graph-optimizer@workspace:packages/graph-optimizer"
-  dependencies:
-    "@lage-run/config": "workspace:^"
-    "@lage-run/monorepo-scripts": "workspace:^"
-    "@lage-run/runners": "workspace:^"
-    "@lage-run/target-graph": "workspace:^"
-    workspace-tools: "npm:0.36.4"
   languageName: unknown
   linkType: soft
 
@@ -1838,7 +1826,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/monorepo-scripts@npm:*, @lage-run/monorepo-scripts@workspace:^, @lage-run/monorepo-scripts@workspace:scripts":
+"@lage-run/monorepo-scripts@npm:*, @lage-run/monorepo-scripts@workspace:scripts":
   version: 0.0.0-use.local
   resolution: "@lage-run/monorepo-scripts@workspace:scripts"
   dependencies:
@@ -1888,7 +1876,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/runners@npm:^1.0.2, @lage-run/runners@workspace:^, @lage-run/runners@workspace:packages/runners":
+"@lage-run/runners@npm:^1.0.2, @lage-run/runners@workspace:packages/runners":
   version: 0.0.0-use.local
   resolution: "@lage-run/runners@workspace:packages/runners"
   dependencies:
@@ -1922,7 +1910,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/target-graph@npm:^0.8.10, @lage-run/target-graph@workspace:^, @lage-run/target-graph@workspace:packages/target-graph":
+"@lage-run/target-graph@npm:^0.8.10, @lage-run/target-graph@workspace:packages/target-graph":
   version: 0.0.0-use.local
   resolution: "@lage-run/target-graph@workspace:packages/target-graph"
   dependencies:

@@ -1,18 +1,17 @@
 import type { Command } from "commander";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
-import type { ConfigOptions} from "@lage-run/config";
 import { getConfig } from "@lage-run/config";
-import type { PackageInfos} from "workspace-tools";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
+import { removeNodes, transitiveReduction } from "@lage-run/target-graph";
 import path from "path";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import type { TargetGraph} from "@lage-run/target-graph";
-import { getStartTargetId } from "@lage-run/target-graph";
+import type { TargetGraph } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
+import { TargetRunnerPicker, type TargetRunnerPickerOptions } from "@lage-run/runners";
 
 interface RunOptions extends ReporterInitOptions {
   dependencies: boolean;
@@ -83,7 +82,7 @@ export async function infoAction(options: RunOptions, command: Command) {
 
   const packageInfos = getPackageInfos(root);
 
-  const { tasks } = filterArgsForTasks(command.args);
+  const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
   const targetGraph = createTargetGraph({
     logger,
@@ -112,86 +111,70 @@ export async function infoAction(options: RunOptions, command: Command) {
     sinceIgnoreGlobs: options.ignore.concat(config.ignore),
   });
 
-  const packageTasks = optimizeTargetGraph(targetGraph, packageInfos, config);
+  const pickerOptions: TargetRunnerPickerOptions = {
+    npmScript: {
+      script: require.resolve("../run/runners/NpmScriptRunner.js"),
+      options: {
+        nodeArg: options.nodeArg,
+        taskArgs,
+        npmCmd: config.npmClient,
+      },
+    },
+    worker: {
+      script: require.resolve("../run/runners/WorkerRunner.js"),
+      options: {
+        taskArgs,
+      },
+    },
+    noop: {
+      script: require.resolve("../run/runners/NoOpRunner.js"),
+      options: {},
+    },
+  };
+
+  const runnerPicker = new TargetRunnerPicker(pickerOptions);
+
+  const optimizedTargets = await optimizeTargetGraph(targetGraph, runnerPicker);
+  const packageTasks = optimizedTargets.map((target) => generatePackageTask(target, config));
 
   logger.info("info", {
     command: command.args,
     scope,
-    packageTasks: [...packageTasks.values()].flat(),
+    packageTasks,
   });
 }
 
-function optimizeTargetGraph(graph: TargetGraph, packageInfos: PackageInfos, config: ConfigOptions) {
-  const targets = graph.targets;
-  const packageTasks = new Map<string, PackageTask[]>(); // Initialize the map with the correct type
-  const dependenciesCache = new Map<string, string[]>();
-
-  for (const target of targets.values()) {
-    if (shouldSkipTarget(target, packageInfos)) {
-      continue;
+async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: TargetRunnerPicker) {
+  const targetMinimizedNodes = await removeNodes([...graph.targets.values()] ?? [], async (target) => {
+    if (target.type === "noop") {
+      return true;
     }
 
-    const packageTask = generatePackageTask(target, targets, packageInfos, dependenciesCache, config);
-    if (packageTask) {
-      // Check if the packageTask is defined before accessing its properties
-      const packageName = packageTask.package;
-      if (!packageTasks.has(packageName)) {
-        packageTasks.set(packageName, []);
-      }
-      packageTasks.get(packageName)!.push(packageTask); // Use the non-null assertion operator to avoid type errors
+    const runner = await runnerPicker.pick(target);
+    if (!(await runner.shouldRun(target))) {
+      return true;
     }
-  }
 
-  return packageTasks;
+    return false;
+  });
+
+  return transitiveReduction(targetMinimizedNodes);
 }
 
-function isTargetNoop(target, packageInfos) {
-  return !packageInfos[target.packageName]?.scripts?.[target.task];
-}
-
-function shouldSkipTarget(target, packageInfos) {
-  return target.id === getStartTargetId() || isTargetNoop(target, packageInfos);
-}
-
-function generatePackageTask(target, targets, packageInfos, dependenciesCache, config): PackageTask {
+function generatePackageTask(target, config): PackageTask {
   const command = generateCommand(target, config);
   const workingDirectory = getWorkingDirectory(target);
-
-  const dependenciesSet = resolveDependencies(target.dependencies, targets, packageInfos, dependenciesCache);
 
   const packageTask: PackageTask = {
     id: target.id,
     command,
-    dependencies: [...dependenciesSet],
+    dependencies: target.dependencies,
     workingDirectory,
     package: target.packageName,
     task: target.task,
   };
 
   return packageTask;
-}
-
-function resolveDependencies(dependencies: string[], targets, packageInfos, dependenciesCache: Map<string, Set<string>>) {
-  const result: Set<string> = new Set();
-
-  for (const dependency of dependencies) {
-    if (dependency === getStartTargetId()) {
-      continue;
-    }
-
-    if (!dependenciesCache.has(dependency)) {
-      const dependencyTarget = targets.get(dependency);
-      if (isTargetNoop(dependencyTarget, packageInfos)) {
-        dependenciesCache.set(dependency, resolveDependencies(dependencyTarget.dependencies, targets, packageInfos, dependenciesCache));
-      } else {
-        dependenciesCache.set(dependency, new Set([dependency]));
-      }
-    }
-
-    dependenciesCache.get(dependency)?.forEach((dependency: string) => result.add(dependency));
-  }
-
-  return result;
 }
 
 function generateCommand(target, config) {

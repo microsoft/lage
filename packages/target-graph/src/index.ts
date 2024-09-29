@@ -8,3 +8,6 @@ export { detectCycles } from "./detectCycles.js";
 export { WorkspaceTargetGraphBuilder } from "./WorkspaceTargetGraphBuilder.js";
 export { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 export { TargetFactory } from "./TargetFactory.js";
+
+export { removeNodes } from "./removeNodes.js";
+export { transitiveReduction } from "./transitiveReduction.js";
