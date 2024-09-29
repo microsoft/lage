@@ -1,7 +1,7 @@
 import type { Command } from "commander";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
-import type { ConfigOptions} from "@lage-run/config";
+import type { ConfigOptions } from "@lage-run/config";
 import { getConfig } from "@lage-run/config";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
@@ -10,7 +10,7 @@ import { removeNodes, transitiveReduction } from "@lage-run/target-graph";
 import path from "path";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import type { TargetGraph , Target} from "@lage-run/target-graph";
+import type { TargetGraph, Target } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
 import { TargetRunnerPicker, type TargetRunnerPickerOptions } from "@lage-run/runners";
 
@@ -136,7 +136,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   const runnerPicker = new TargetRunnerPicker(pickerOptions);
 
   const optimizedTargets = await optimizeTargetGraph(targetGraph, runnerPicker);
-  const packageTasks = optimizedTargets.map((target) => generatePackageTask(target, config));
+  const packageTasks = optimizedTargets.map((target) => generatePackageTask(target, taskArgs, config, options));
 
   logger.info("info", {
     command: command.args,
