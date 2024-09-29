@@ -1,8 +1,17 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Wed, 25 Sep 2024 20:28:10 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 27 Sep 2024 20:03:49 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.5.0
+
+Fri, 27 Sep 2024 20:03:49 GMT
+
+### Minor changes
+
+- exposes getInputFiles, packageTrees (kchau@microsoft.com)
+- Bump @lage-run/globby to v14.1.0
 
 ## 1.4.0
 

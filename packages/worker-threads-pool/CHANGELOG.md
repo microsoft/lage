@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
+<!-- This log was last generated on Fri, 27 Sep 2024 20:03:49 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.8.2
+
+Fri, 27 Sep 2024 20:03:49 GMT
+
+### Patches
+
+- adds an idle event emit (kchau@microsoft.com)
 
 ## 0.8.1
 

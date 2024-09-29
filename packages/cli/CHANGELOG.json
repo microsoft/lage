@@ -2,6 +2,51 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 27 Sep 2024 20:03:49 GMT",
+      "version": "0.22.0",
+      "tag": "@lage-run/cli_v0.22.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "2919f9041f931dc6ef65017f7aedb9fef9dab66d",
+            "comment": "Simulate file access for lage server"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/globby to v14.1.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.5.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/rpc to v1.2.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.3.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.8.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 25 Sep 2024 20:28:10 GMT",
       "version": "0.21.0",
       "tag": "@lage-run/cli_v0.21.0",

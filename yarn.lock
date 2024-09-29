@@ -1697,24 +1697,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/cli@npm:^0.21.0, @lage-run/cli@workspace:packages/cli":
+"@lage-run/cli@npm:^0.22.0, @lage-run/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lage-run/cli@workspace:packages/cli"
   dependencies:
     "@lage-run/cache": "npm:^1.3.3"
     "@lage-run/config": "npm:^0.4.2"
-    "@lage-run/globby": "npm:^14.0.3"
-    "@lage-run/hasher": "npm:^1.4.0"
+    "@lage-run/globby": "npm:^14.1.0"
+    "@lage-run/hasher": "npm:^1.5.0"
     "@lage-run/logger": "npm:^1.3.1"
     "@lage-run/monorepo-fixture": "npm:*"
     "@lage-run/monorepo-scripts": "npm:*"
     "@lage-run/reporters": "npm:^1.2.10"
-    "@lage-run/rpc": "npm:^1.2.0"
+    "@lage-run/rpc": "npm:^1.2.1"
     "@lage-run/runners": "npm:^1.0.2"
-    "@lage-run/scheduler": "npm:^1.3.0"
+    "@lage-run/scheduler": "npm:^1.3.1"
     "@lage-run/scheduler-types": "npm:^0.3.15"
     "@lage-run/target-graph": "npm:^0.8.10"
-    "@lage-run/worker-threads-pool": "npm:^0.8.1"
+    "@lage-run/worker-threads-pool": "npm:^0.8.2"
     chokidar: "npm:3.5.3"
     commander: "npm:9.5.0"
     execa: "npm:5.1.1"
@@ -1746,7 +1746,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lage-run/e2e-tests@workspace:packages/e2e-tests"
   dependencies:
-    "@lage-run/cli": "npm:^0.21.0"
+    "@lage-run/cli": "npm:^0.22.0"
     "@lage-run/monorepo-scripts": "npm:*"
     "@lage-run/scheduler-types": "npm:^0.3.15"
     "@lage-run/target-graph": "npm:^0.8.10"
@@ -1763,7 +1763,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/globby@npm:^14.0.3, @lage-run/globby@workspace:packages/globby":
+"@lage-run/globby@npm:^14.1.0, @lage-run/globby@workspace:packages/globby":
   version: 0.0.0-use.local
   resolution: "@lage-run/globby@workspace:packages/globby"
   dependencies:
@@ -1774,11 +1774,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/hasher@npm:^1.4.0, @lage-run/hasher@workspace:packages/hasher":
+"@lage-run/hasher@npm:^1.5.0, @lage-run/hasher@workspace:packages/hasher":
   version: 0.0.0-use.local
   resolution: "@lage-run/hasher@workspace:packages/hasher"
   dependencies:
-    "@lage-run/globby": "npm:^14.0.3"
+    "@lage-run/globby": "npm:^14.1.0"
     "@lage-run/logger": "npm:^1.3.1"
     "@lage-run/monorepo-fixture": "npm:*"
     "@lage-run/monorepo-scripts": "npm:*"
@@ -1861,7 +1861,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/rpc@npm:^1.2.0, @lage-run/rpc@workspace:packages/rpc":
+"@lage-run/rpc@npm:^1.2.1, @lage-run/rpc@workspace:packages/rpc":
   version: 0.0.0-use.local
   resolution: "@lage-run/rpc@workspace:packages/rpc"
   dependencies:
@@ -1895,19 +1895,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/scheduler@npm:^1.3.0, @lage-run/scheduler@workspace:packages/scheduler":
+"@lage-run/scheduler@npm:^1.3.1, @lage-run/scheduler@workspace:packages/scheduler":
   version: 0.0.0-use.local
   resolution: "@lage-run/scheduler@workspace:packages/scheduler"
   dependencies:
     "@lage-run/cache": "npm:^1.3.3"
     "@lage-run/config": "npm:^0.4.2"
-    "@lage-run/hasher": "npm:^1.4.0"
+    "@lage-run/hasher": "npm:^1.5.0"
     "@lage-run/logger": "npm:^1.3.1"
     "@lage-run/monorepo-scripts": "npm:*"
     "@lage-run/runners": "npm:^1.0.2"
     "@lage-run/scheduler-types": "npm:^0.3.15"
     "@lage-run/target-graph": "npm:^0.8.10"
-    "@lage-run/worker-threads-pool": "npm:^0.8.1"
+    "@lage-run/worker-threads-pool": "npm:^0.8.2"
   languageName: unknown
   linkType: soft
 
@@ -1920,7 +1920,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/worker-threads-pool@npm:^0.8.1, @lage-run/worker-threads-pool@workspace:packages/worker-threads-pool":
+"@lage-run/worker-threads-pool@npm:^0.8.2, @lage-run/worker-threads-pool@workspace:packages/worker-threads-pool":
   version: 0.0.0-use.local
   resolution: "@lage-run/worker-threads-pool@workspace:packages/worker-threads-pool"
   dependencies:
@@ -6059,7 +6059,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "lage@workspace:packages/lage"
   dependencies:
-    "@lage-run/cli": "npm:^0.21.0"
+    "@lage-run/cli": "npm:^0.22.0"
     "@lage-run/runners": "npm:^1.0.2"
     backfill-config: "npm:6.4.2"
     dts-bundle-generator: "npm:^9.5.1"

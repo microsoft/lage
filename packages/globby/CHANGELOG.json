@@ -2,6 +2,21 @@
   "name": "@lage-run/globby",
   "entries": [
     {
+      "date": "Fri, 27 Sep 2024 20:03:49 GMT",
+      "version": "14.1.0",
+      "tag": "@lage-run/globby_v14.1.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "2919f9041f931dc6ef65017f7aedb9fef9dab66d",
+            "comment": "packages into a bundled globby types"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Sep 2024 20:30:48 GMT",
       "version": "14.0.3",
       "tag": "@lage-run/globby_v14.0.3",
