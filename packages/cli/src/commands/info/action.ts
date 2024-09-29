@@ -1,6 +1,7 @@
 import type { Command } from "commander";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
+import type { ConfigOptions} from "@lage-run/config";
 import { getConfig } from "@lage-run/config";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
@@ -9,11 +10,11 @@ import { removeNodes, transitiveReduction } from "@lage-run/target-graph";
 import path from "path";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import type { TargetGraph } from "@lage-run/target-graph";
+import type { TargetGraph , Target} from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
 import { TargetRunnerPicker, type TargetRunnerPickerOptions } from "@lage-run/runners";
 
-interface RunOptions extends ReporterInitOptions {
+interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
   dependents: boolean;
   since: string;
@@ -71,7 +72,7 @@ interface PackageTask {
  *   ...
  * ]
  */
-export async function infoAction(options: RunOptions, command: Command) {
+export async function infoAction(options: InfoActionOptions, command: Command) {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
   const logger = createLogger();
@@ -161,8 +162,8 @@ async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: TargetRunne
   return transitiveReduction(targetMinimizedNodes);
 }
 
-function generatePackageTask(target, config): PackageTask {
-  const command = generateCommand(target, config);
+function generatePackageTask(target: Target, taskArgs: string[], config: ConfigOptions, options: InfoActionOptions): PackageTask {
+  const command = generateCommand(target, taskArgs, config, options);
   const workingDirectory = getWorkingDirectory(target);
 
   const packageTask: PackageTask = {
@@ -170,18 +171,53 @@ function generatePackageTask(target, config): PackageTask {
     command,
     dependencies: target.dependencies,
     workingDirectory,
-    package: target.packageName,
+    package: target.packageName ?? "",
     task: target.task,
   };
 
   return packageTask;
 }
 
-function generateCommand(target, config) {
-  const npmClient = config.npmClient ?? "npm";
+function generateCommand(target: Target, taskArgs: string[], config: ConfigOptions, options: InfoActionOptions) {
+  if (target.type === "npmScript") {
+    const npmClient = config.npmClient ?? "npm";
+    const command = [npmClient, ...getNpmArgs(target.task, taskArgs)];
+    return command;
+  } else if (target.type === "worker" && options.server) {
+    const [host, port] = options.server.split(":");
+    const command = [process.execPath, path.join(__dirname, "lageserver.js")];
 
-  const command = [npmClient, ...getNpmArgs(target.task, target.taskArgs)];
-  return command;
+    if (host) {
+      command.push("--host", host);
+    }
+
+    if (port) {
+      command.push("--port", port);
+    }
+
+    if (options.concurrency) {
+      command.push("--concurrency", options.concurrency.toString());
+    }
+
+    if (target.packageName) {
+      command.push(target.packageName);
+    }
+
+    if (target.task) {
+      command.push(target.task);
+    }
+
+    command.push(...taskArgs);
+    return command;
+  } else if (target.type === "worker") {
+    const command = [process.execPath, path.join(__dirname, "lage.js"), "exec"];
+    command.push(target.packageName ?? "");
+    command.push(target.task);
+    command.push(...taskArgs);
+    return command;
+  }
+
+  return [];
 }
 
 function getWorkingDirectory(target) {
