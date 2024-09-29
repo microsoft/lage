@@ -185,7 +185,7 @@ function generateCommand(target: Target, taskArgs: string[], config: ConfigOptio
     return command;
   } else if (target.type === "worker" && options.server) {
     const [host, port] = options.server.split(":");
-    const command = [process.execPath, path.join(__dirname, "lageserver.js")];
+    const command = [process.execPath, path.join(__dirname, "../../dist/lageserver.js")];
 
     if (host) {
       command.push("--host", host);
@@ -210,7 +210,7 @@ function generateCommand(target: Target, taskArgs: string[], config: ConfigOptio
     command.push(...taskArgs);
     return command;
   } else if (target.type === "worker") {
-    const command = [process.execPath, path.join(__dirname, "lage.js"), "exec"];
+    const command = [process.execPath, path.join(__dirname, "../../dist/lage.js"), "exec"];
     command.push(target.packageName ?? "");
     command.push(target.task);
     command.push(...taskArgs);
