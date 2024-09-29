@@ -185,7 +185,7 @@ function generateCommand(target: Target, taskArgs: string[], config: ConfigOptio
     return command;
   } else if (target.type === "worker" && options.server) {
     const [host, port] = options.server.split(":");
-    const command = [process.execPath, path.join(__dirname, "../../dist/lageserver.js")];
+    const command = [process.execPath, path.join(__dirname, "../../dist/lage-server.js")];
 
     if (host) {
       command.push("--host", host);
