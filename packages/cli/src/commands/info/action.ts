@@ -1,17 +1,21 @@
 import type { Command } from "commander";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
+import type { ConfigOptions } from "@lage-run/config";
 import { getConfig } from "@lage-run/config";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
+import { removeNodes, transitiveReduction } from "@lage-run/target-graph";
 import path from "path";
+import fs from "fs";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import { getStartTargetId } from "@lage-run/target-graph";
+import type { TargetGraph, Target } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
+import { TargetRunnerPicker, type TargetRunnerPickerOptions } from "@lage-run/runners";
 
-interface RunOptions extends ReporterInitOptions {
+interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
   dependents: boolean;
   since: string;
@@ -20,6 +24,7 @@ interface RunOptions extends ReporterInitOptions {
   cache: boolean;
   nodeArg: string;
   ignore: string[];
+  server: string;
 }
 
 interface PackageTask {
@@ -32,7 +37,7 @@ interface PackageTask {
 }
 
 /**
- * (UNSTABLE) The info command displays information about a target graph in a workspace.
+ * The info command displays information about a target graph in a workspace.
  * The generated output can be read and used by other task runners, such as BuildXL.
  *
  * Expected format:
@@ -68,29 +73,20 @@ interface PackageTask {
  *   ...
  * ]
  */
-export async function infoAction(options: RunOptions, command: Command) {
+export async function infoAction(options: InfoActionOptions, command: Command) {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
   options.reporter = options.reporter ?? "json";
+  options.server = typeof options.server === "string" ? options.server : "localhost:5332";
   initializeReporters(logger, options);
   const root = getWorkspaceRoot(cwd)!;
 
   const packageInfos = getPackageInfos(root);
-  const targetGraph = prepareAndCreateTargetGraph(config, logger, root, options, packageInfos, command);
-  const scope = prepareAndGetFilteredPackages(config, logger, root, options, packageInfos);
-  const packageTasks = processTargets(targetGraph.targets, packageInfos, config);
 
-  logger.info("info", {
-    command: command.args,
-    scope,
-    packageTasks: [...packageTasks.values()].flat(),
-  });
-}
+  const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
-function prepareAndCreateTargetGraph(config, logger, root, options, packageInfos, command) {
-  const { tasks } = filterArgsForTasks(command.args);
   const targetGraph = createTargetGraph({
     logger,
     root,
@@ -106,10 +102,6 @@ function prepareAndCreateTargetGraph(config, logger, root, options, packageInfos
     packageInfos,
   });
 
-  return targetGraph;
-}
-
-function prepareAndGetFilteredPackages(config, logger, root, options, packageInfos) {
   const scope = getFilteredPackages({
     root,
     packageInfos,
@@ -122,86 +114,139 @@ function prepareAndGetFilteredPackages(config, logger, root, options, packageInf
     sinceIgnoreGlobs: options.ignore.concat(config.ignore),
   });
 
-  return scope;
+  const pickerOptions: TargetRunnerPickerOptions = {
+    npmScript: {
+      script: require.resolve("./runners/NpmScriptRunner.js"),
+      options: {
+        nodeArg: options.nodeArg,
+        taskArgs,
+        npmCmd: config.npmClient,
+      },
+    },
+    worker: {
+      script: require.resolve("./runners/WorkerRunner.js"),
+      options: {
+        taskArgs,
+      },
+    },
+    noop: {
+      script: require.resolve("./runners/NoOpRunner.js"),
+      options: {},
+    },
+  };
+
+  const runnerPicker = new TargetRunnerPicker(pickerOptions);
+
+  const optimizedTargets = await optimizeTargetGraph(targetGraph, runnerPicker);
+  const binPaths = getBinPaths();
+  const packageTasks = optimizedTargets.map((target) => generatePackageTask(target, taskArgs, config, options, binPaths));
+
+  logger.info("info", {
+    command: command.args,
+    scope,
+    packageTasks,
+  });
 }
 
-function processTargets(targets, packageInfos, config) {
-  const packageTasks = new Map<string, PackageTask[]>(); // Initialize the map with the correct type
-  const dependenciesCache = new Map<string, string[]>();
-
-  for (const target of targets.values()) {
-    if (shouldSkipTarget(target, packageInfos)) {
-      continue;
+function getBinPaths() {
+  let dir = __dirname;
+  let packageJsonPath = "";
+  while (dir !== "/") {
+    packageJsonPath = path.join(dir, "package.json");
+    if (fs.existsSync(packageJsonPath)) {
+      break;
     }
-
-    const packageTask = generatePackageTask(target, targets, packageInfos, dependenciesCache, config);
-    if (packageTask) {
-      // Check if the packageTask is defined before accessing its properties
-      const packageName = packageTask.package;
-      if (!packageTasks.has(packageName)) {
-        packageTasks.set(packageName, []);
-      }
-      packageTasks.get(packageName)!.push(packageTask); // Use the non-null assertion operator to avoid type errors
-    }
+    dir = path.dirname(dir);
   }
-
-  return packageTasks;
+  const packageJson = JSON.parse(fs.readFileSync(path.join(dir, "package.json"), "utf8"));
+  return { lage: path.join(dir, packageJson.bin.lage), "lage-server": path.join(dir, packageJson.bin["lage-server"]) };
 }
 
-function isTargetNoop(target, packageInfos) {
-  return !packageInfos[target.packageName]?.scripts?.[target.task];
+async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: TargetRunnerPicker) {
+  const targetMinimizedNodes = await removeNodes([...graph.targets.values()] ?? [], async (target) => {
+    if (target.type === "noop") {
+      return true;
+    }
+
+    const runner = await runnerPicker.pick(target);
+    if (!(await runner.shouldRun(target))) {
+      return true;
+    }
+
+    return false;
+  });
+
+  return transitiveReduction(targetMinimizedNodes);
 }
 
-function shouldSkipTarget(target, packageInfos) {
-  return target.id === getStartTargetId() || isTargetNoop(target, packageInfos);
-}
-
-function generatePackageTask(target, targets, packageInfos, dependenciesCache, config): PackageTask {
-  const command = generateCommand(target, config);
+function generatePackageTask(
+  target: Target,
+  taskArgs: string[],
+  config: ConfigOptions,
+  options: InfoActionOptions,
+  binPaths: { lage: string; "lage-server": string }
+): PackageTask {
+  const command = generateCommand(target, taskArgs, config, options, binPaths);
   const workingDirectory = getWorkingDirectory(target);
-
-  const dependenciesSet = resolveDependencies(target.dependencies, targets, packageInfos, dependenciesCache);
 
   const packageTask: PackageTask = {
     id: target.id,
     command,
-    dependencies: [...dependenciesSet],
+    dependencies: target.dependencies,
     workingDirectory,
-    package: target.packageName,
+    package: target.packageName ?? "",
     task: target.task,
   };
 
   return packageTask;
 }
 
-function resolveDependencies(dependencies: string[], targets, packageInfos, dependenciesCache: Map<string, Set<string>>) {
-  const result: Set<string> = new Set();
+function generateCommand(
+  target: Target,
+  taskArgs: string[],
+  config: ConfigOptions,
+  options: InfoActionOptions,
+  binPaths: { lage: string; "lage-server": string }
+) {
+  if (target.type === "npmScript") {
+    const npmClient = config.npmClient ?? "npm";
+    const command = [npmClient, ...getNpmArgs(target.task, taskArgs)];
+    return command;
+  } else if (target.type === "worker" && options.server) {
+    const [host, port] = options.server.split(":");
+    const command = [process.execPath, binPaths["lage-server"]];
 
-  for (const dependency of dependencies) {
-    if (dependency === getStartTargetId()) {
-      continue;
+    if (host) {
+      command.push("--host", host);
     }
 
-    if (!dependenciesCache.has(dependency)) {
-      const dependencyTarget = targets.get(dependency);
-      if (isTargetNoop(dependencyTarget, packageInfos)) {
-        dependenciesCache.set(dependency, resolveDependencies(dependencyTarget.dependencies, targets, packageInfos, dependenciesCache));
-      } else {
-        dependenciesCache.set(dependency, new Set([dependency]));
-      }
+    if (port) {
+      command.push("--port", port);
     }
 
-    dependenciesCache.get(dependency)?.forEach((dependency: string) => result.add(dependency));
+    if (options.concurrency) {
+      command.push("--concurrency", options.concurrency.toString());
+    }
+
+    if (target.packageName) {
+      command.push(target.packageName);
+    }
+
+    if (target.task) {
+      command.push(target.task);
+    }
+
+    command.push(...taskArgs);
+    return command;
+  } else if (target.type === "worker") {
+    const command = [process.execPath, binPaths.lage, "exec"];
+    command.push(target.packageName ?? "");
+    command.push(target.task);
+    command.push(...taskArgs);
+    return command;
   }
 
-  return result;
-}
-
-function generateCommand(target, config) {
-  const npmClient = config.npmClient ?? "npm";
-
-  const command = [npmClient, ...getNpmArgs(target.task, target.taskArgs)];
-  return command;
+  return [];
 }
 
 function getWorkingDirectory(target) {
