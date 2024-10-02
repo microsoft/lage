@@ -7,9 +7,10 @@ import { ConnectError, createClient } from "@lage-run/rpc";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { simulateFileAccess } from "./simulateFileAccess.js";
 import execa from "execa";
+import { getBinPaths } from "../../getBinPaths.js";
 
 interface ExecRemotelyOptions extends ReporterInitOptions {
-  server?: string;
+  server?: string | boolean;
   timeout?: number;
 }
 
@@ -30,6 +31,27 @@ async function tryCreateClient(host: string, port: number) {
     }
 
     throw e;
+  }
+
+  return undefined;
+}
+
+async function tryCreateClientWithRetries(host: string, port: number) {
+  let client = await tryCreateClient(host, port);
+
+  if (client) {
+    return client;
+  }
+
+  const start = Date.now();
+  while (Date.now() - start < 5 * 1000) {
+    client = await tryCreateClient(host, port);
+
+    if (client) {
+      return client;
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
   return undefined;
@@ -65,9 +87,12 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
 export async function executeRemotely(options: ExecRemotelyOptions, command) {
   // launch a 'lage-server.js' process, detached if it is not already running
   // send the command to the server process
-  const { server = "localhost:5332", timeout = 1 } = options;
+  const { server = "localhost:5332" } = options;
+  const timeout = options.timeout ?? 5;
 
-  const parts = server.split(":");
+  const serverString = typeof options.server === "boolean" && options.server ? "localhost:5332" : (server as string);
+
+  const parts = serverString.split(":");
   const host = parts[0];
   const port = parseInt(parts[1] ?? "5332");
 
@@ -86,34 +111,16 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
   } else {
     logger.info(`Starting server on http://${host}:${port}`);
 
-    // const abortController = new AbortController();
-
-    // const lageService = await createLageService({
-    //   cwd: process.cwd(),
-    //   serverControls: {
-    //     abortController,
-    //     countdownToShutdown: () => resetTimer(logger, timeout, abortController, server),
-    //     clearCountdown: clearTimer,
-    //   },
-    //   logger,
-    //   maxWorkers: options.concurrency,
-    // });
-    // const server = await createServer(lageService, abortController);
-
-    // await server.listen({ host, port });
-    // logger.info(`Server listening on http://${host}:${port}, timeout in ${timeout} seconds`);
-
-    // const client = await tryCreateClient(host, port);
-
-    // if (!client) {
-    //   throw new Error("Server could not be reached");
-    // }
-
-    // const args = command.args;
-
+    const binPaths = getBinPaths();
+    const lageServerBinPath = binPaths["lage-server"];
     const args = command.args;
 
-    await execa(process.execPath, [""], { detached: true });
+    await execa(process.execPath, [lageServerBinPath, "--host", host, "--port", port, "--timeout", timeout, ...args], { detached: true });
+    const client = await tryCreateClientWithRetries(host, port);
+
+    if (!client) {
+      throw new Error("Server could not be started");
+    }
 
     await executeOnServer(args, client, logger);
   }

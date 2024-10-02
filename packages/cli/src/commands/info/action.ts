@@ -8,12 +8,12 @@ import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
 import { removeNodes, transitiveReduction } from "@lage-run/target-graph";
 import path from "path";
-import fs from "fs";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { TargetGraph, Target } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
 import { TargetRunnerPicker, type TargetRunnerPickerOptions } from "@lage-run/runners";
+import { getBinPaths } from "../../getBinPaths.js";
 
 interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
@@ -148,20 +148,6 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   });
 }
 
-function getBinPaths() {
-  let dir = __dirname;
-  let packageJsonPath = "";
-  while (dir !== "/") {
-    packageJsonPath = path.join(dir, "package.json");
-    if (fs.existsSync(packageJsonPath)) {
-      break;
-    }
-    dir = path.dirname(dir);
-  }
-  const packageJson = JSON.parse(fs.readFileSync(path.join(dir, "package.json"), "utf8"));
-  return { lage: path.join(dir, packageJson.bin.lage), "lage-server": path.join(dir, packageJson.bin["lage-server"]) };
-}
-
 async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: TargetRunnerPicker) {
   const targetMinimizedNodes = await removeNodes([...graph.targets.values()] ?? [], async (target) => {
     if (target.type === "noop") {
@@ -214,7 +200,7 @@ function generateCommand(
     return command;
   } else if (target.type === "worker" && options.server) {
     const [host, port] = options.server.split(":");
-    const command = [process.execPath, binPaths["lage-server"]];
+    const command = [process.execPath, binPaths["lage"], "exec", "--server", options.server];
 
     if (host) {
       command.push("--host", host);
