@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Wed, 02 Oct 2024 20:26:19 GMT",
+      "version": "0.9.0",
+      "tag": "@lage-run/target-graph_v0.9.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "6ecbd570669a07fa87429af5de13ec1adc58b864",
+            "comment": "add optimization functions for the graph"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 13 Sep 2024 18:05:04 GMT",
       "version": "0.8.10",
       "tag": "@lage-run/target-graph_v0.8.10",

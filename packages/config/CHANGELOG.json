@@ -2,6 +2,27 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Wed, 02 Oct 2024 20:26:19 GMT",
+      "version": "0.4.3",
+      "tag": "@lage-run/config_v0.4.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/runners to v1.0.3",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/target-graph to v0.9.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 13 Sep 2024 18:05:04 GMT",
       "version": "0.4.2",
       "tag": "@lage-run/config_v0.4.2",

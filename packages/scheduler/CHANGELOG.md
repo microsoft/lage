@@ -1,8 +1,23 @@
 # Change Log - @lage-run/scheduler
 
-<!-- This log was last generated on Fri, 27 Sep 2024 20:03:49 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 02 Oct 2024 20:26:19 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.2
+
+Wed, 02 Oct 2024 20:26:19 GMT
+
+### Patches
+
+- Simulate file access for lage server (kchau@microsoft.com)
+- Bump @lage-run/cache to v1.3.4
+- Bump @lage-run/config to v0.4.3
+- Bump @lage-run/hasher to v1.6.0
+- Bump @lage-run/runners to v1.0.3
+- Bump @lage-run/target-graph to v0.9.0
+- Bump @lage-run/worker-threads-pool to v0.8.3
+- Bump @lage-run/scheduler-types to v0.3.16
 
 ## 1.3.1
 

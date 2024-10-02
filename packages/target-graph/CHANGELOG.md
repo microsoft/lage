@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-<!-- This log was last generated on Fri, 13 Sep 2024 18:05:04 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 02 Oct 2024 20:26:19 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.9.0
+
+Wed, 02 Oct 2024 20:26:19 GMT
+
+### Minor changes
+
+- add optimization functions for the graph (kchau@microsoft.com)
 
 ## 0.8.10
 
