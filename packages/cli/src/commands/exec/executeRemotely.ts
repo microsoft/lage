@@ -83,35 +83,38 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
 
     const args = command.args;
     await executeOnServer(args, client, logger);
-
-    await execa(process.execPath, [""], { detached: true });
   } else {
     logger.info(`Starting server on http://${host}:${port}`);
 
-    const abortController = new AbortController();
+    // const abortController = new AbortController();
 
-    const lageService = await createLageService({
-      cwd: process.cwd(),
-      serverControls: {
-        abortController,
-        countdownToShutdown: () => resetTimer(logger, timeout, abortController, server),
-        clearCountdown: clearTimer,
-      },
-      logger,
-      maxWorkers: options.concurrency,
-    });
-    const server = await createServer(lageService, abortController);
+    // const lageService = await createLageService({
+    //   cwd: process.cwd(),
+    //   serverControls: {
+    //     abortController,
+    //     countdownToShutdown: () => resetTimer(logger, timeout, abortController, server),
+    //     clearCountdown: clearTimer,
+    //   },
+    //   logger,
+    //   maxWorkers: options.concurrency,
+    // });
+    // const server = await createServer(lageService, abortController);
 
-    await server.listen({ host, port });
-    logger.info(`Server listening on http://${host}:${port}, timeout in ${timeout} seconds`);
+    // await server.listen({ host, port });
+    // logger.info(`Server listening on http://${host}:${port}, timeout in ${timeout} seconds`);
 
-    const client = await tryCreateClient(host, port);
+    // const client = await tryCreateClient(host, port);
 
-    if (!client) {
-      throw new Error("Server could not be reached");
-    }
+    // if (!client) {
+    //   throw new Error("Server could not be reached");
+    // }
+
+    // const args = command.args;
 
     const args = command.args;
+
+    await execa(process.execPath, [""], { detached: true });
+
     await executeOnServer(args, client, logger);
   }
 }
