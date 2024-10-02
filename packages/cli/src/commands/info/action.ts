@@ -116,7 +116,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
 
   const pickerOptions: TargetRunnerPickerOptions = {
     npmScript: {
-      script: require.resolve("../run/runners/NpmScriptRunner.js"),
+      script: require.resolve("./runners/NpmScriptRunner.js"),
       options: {
         nodeArg: options.nodeArg,
         taskArgs,
@@ -124,13 +124,13 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
       },
     },
     worker: {
-      script: require.resolve("../run/runners/WorkerRunner.js"),
+      script: require.resolve("./runners/WorkerRunner.js"),
       options: {
         taskArgs,
       },
     },
     noop: {
-      script: require.resolve("../run/runners/NoOpRunner.js"),
+      script: require.resolve("./runners/NoOpRunner.js"),
       options: {},
     },
   };
