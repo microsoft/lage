@@ -37,15 +37,10 @@ async function tryCreateClient(host: string, port: number) {
 }
 
 async function tryCreateClientWithRetries(host: string, port: number, logger: Logger) {
-  let client = await tryCreateClient(host, port);
-
-  if (client) {
-    return client;
-  }
+  let client: ReturnType<typeof createClient> | undefined;
 
   const start = Date.now();
   while (Date.now() - start < 5 * 1000) {
-    logger.info("Trying to connect to server");
     try {
       client = await tryCreateClient(host, port);
 
@@ -111,11 +106,16 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
 
     const binPaths = getBinPaths();
     const lageServerBinPath = binPaths["lage-server"];
+    const lageServerArgs = [lageServerBinPath, "--host", host, "--port", port, "--timeout", timeout, ...args];
 
-    await execa(`"${process.execPath}"`, [`"${lageServerBinPath}"`, "--host", host, "--port", port, "--timeout", timeout, ...args], {
+    logger.info(`Launching lage-server with these parameters: "${process.execPath}" ${lageServerArgs.join(" ")}`);
+    const child = execa(process.execPath, lageServerArgs, {
       detached: true,
+      stdio: "ignore",
     });
+    child.unref();
 
+    logger.info("Creating a client to connect to the background services");
     client = await tryCreateClientWithRetries(host, port, logger);
 
     if (!client) {
@@ -131,7 +131,6 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
   process.exitCode = response.exitCode;
 
   if (response.exitCode === 0) {
-    logger.info("Task execution finished");
     await simulateFileAccess(logger, response.inputs, response.outputs);
   }
 

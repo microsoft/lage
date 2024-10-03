@@ -194,12 +194,14 @@ function generateCommand(
   options: InfoActionOptions,
   binPaths: { lage: string; "lage-server": string }
 ) {
+  const shouldRunWorkersAsService = process.env.LAGE_WORKER_SERVER !== "false" || options.server;
+
   if (target.type === "npmScript") {
     const npmClient = config.npmClient ?? "npm";
     const command = [npmClient, ...getNpmArgs(target.task, taskArgs)];
     return command;
-  } else if (target.type === "worker" && options.server) {
-    const [host, port] = options.server.split(":");
+  } else if (target.type === "worker" && shouldRunWorkersAsService) {
+    const [host, port] = options.server ? options.server.split(":") : ["localhost", "5332"];
     const command = [process.execPath, binPaths["lage"], "exec", "--server", options.server];
 
     if (host) {
