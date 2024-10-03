@@ -18,8 +18,8 @@ export async function execAction(options: ExecOptions, command: Command) {
   options.reporter = options.reporter ?? "json";
   initializeReporters(logger, options);
 
-  const { server, timeout } = options;
-  if (server || timeout) {
+  const { server } = options;
+  if (server) {
     logger.info("Running in server mode");
     await executeRemotely(options, command);
   } else {

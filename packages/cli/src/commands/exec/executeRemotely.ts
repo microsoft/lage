@@ -17,7 +17,7 @@ interface ExecRemotelyOptions extends ReporterInitOptions {
 async function tryCreateClient(host: string, port: number) {
   const client = createClient({
     baseUrl: `http://${host}:${port}`,
-    httpVersion: "1.1",
+    httpVersion: "2",
   });
 
   try {
@@ -36,7 +36,7 @@ async function tryCreateClient(host: string, port: number) {
   return undefined;
 }
 
-async function tryCreateClientWithRetries(host: string, port: number) {
+async function tryCreateClientWithRetries(host: string, port: number, logger: Logger) {
   let client = await tryCreateClient(host, port);
 
   if (client) {
@@ -45,10 +45,17 @@ async function tryCreateClientWithRetries(host: string, port: number) {
 
   const start = Date.now();
   while (Date.now() - start < 5 * 1000) {
-    client = await tryCreateClient(host, port);
+    logger.info("Trying to connect to server");
+    try {
+      client = await tryCreateClient(host, port);
 
-    if (client) {
-      return client;
+      if (client) {
+        return client;
+      }
+    } catch (e) {
+      if (e instanceof ConnectError) {
+        logger.error("Error connecting to server", e);
+      }
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -75,22 +82,17 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
 
   logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode} `);
 
-  process.exitCode = response.exitCode;
-
-  if (response.exitCode === 0) {
-    await simulateFileAccess(logger, response.inputs, response.outputs);
-  }
-
-  logger.info("Task execution finished");
+  return response;
 }
 
 export async function executeRemotely(options: ExecRemotelyOptions, command) {
   // launch a 'lage-server.js' process, detached if it is not already running
   // send the command to the server process
   const { server = "localhost:5332" } = options;
-  const timeout = options.timeout ?? 5;
+  const timeout = options.timeout ?? 120;
 
-  const serverString = typeof options.server === "boolean" && options.server ? "localhost:5332" : (server as string);
+  const serverString =
+    typeof options.server === "boolean" && options.server ? "localhost:5332" : !server ? "localhost:5332" : (server as string);
 
   const parts = serverString.split(":");
   const host = parts[0];
@@ -101,27 +103,37 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
   options.reporter = options.reporter ?? "json";
   initializeReporters(logger, options);
 
-  const client = await tryCreateClient(host, port);
+  let client = await tryCreateClient(host, port);
+  const args = command.args;
 
-  if (client) {
-    logger.info(`Executing on server http://${host}:${port}`);
-
-    const args = command.args;
-    await executeOnServer(args, client, logger);
-  } else {
+  if (!client) {
     logger.info(`Starting server on http://${host}:${port}`);
 
     const binPaths = getBinPaths();
     const lageServerBinPath = binPaths["lage-server"];
-    const args = command.args;
 
-    await execa(process.execPath, [lageServerBinPath, "--host", host, "--port", port, "--timeout", timeout, ...args], { detached: true });
-    const client = await tryCreateClientWithRetries(host, port);
+    await execa(`"${process.execPath}"`, [`"${lageServerBinPath}"`, "--host", host, "--port", port, "--timeout", timeout, ...args], {
+      detached: true,
+    });
+
+    client = await tryCreateClientWithRetries(host, port, logger);
 
     if (!client) {
       throw new Error("Server could not be started");
     }
-
-    await executeOnServer(args, client, logger);
   }
+
+  logger.info(`Executing on server http://${host}:${port}`);
+  const response = await executeOnServer(args, client, logger);
+
+  process.stdout.write(response.stdout);
+  process.stderr.write(response.stderr);
+  process.exitCode = response.exitCode;
+
+  if (response.exitCode === 0) {
+    logger.info("Task execution finished");
+    await simulateFileAccess(logger, response.inputs, response.outputs);
+  }
+
+  logger.info("Task execution finished");
 }

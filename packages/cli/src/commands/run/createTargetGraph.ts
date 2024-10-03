@@ -20,21 +20,11 @@ interface CreateTargetGraphOptions {
 }
 
 export function createTargetGraph(options: CreateTargetGraphOptions) {
-  const { logger, root, dependencies, dependents, since, scope, repoWideChanges, ignore, pipeline, outputs, tasks, packageInfos } = options;
+  const { root, pipeline, outputs, tasks, packageInfos } = options;
 
   const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
 
-  const packages = getFilteredPackages({
-    root,
-    logger,
-    packageInfos,
-    includeDependencies: dependencies,
-    includeDependents: dependents,
-    since,
-    scope,
-    repoWideChanges,
-    sinceIgnoreGlobs: ignore,
-  });
+  const packages = Object.keys(packageInfos);
 
   for (const [id, definition] of Object.entries(pipeline)) {
     if (Array.isArray(definition)) {
