@@ -158,7 +158,6 @@ export class Monorepo {
   runServer() {
     return execa.default(`"${process.execPath}"`, [`"${this.yarnPath}"`, "lage-server"], {
       cwd: this.root,
-      shell: true,
       detached: true,
       stdio: "ignore",
     });
