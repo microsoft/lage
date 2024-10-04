@@ -2,6 +2,33 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Wed, 02 Oct 2024 20:26:19 GMT",
+      "version": "1.6.0",
+      "tag": "@lage-run/hasher_v1.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "6ecbd570669a07fa87429af5de13ec1adc58b864",
+            "comment": "exposes getInputFiles, packageTrees"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/globby to v14.2.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.9.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 27 Sep 2024 20:03:49 GMT",
       "version": "1.5.0",
       "tag": "@lage-run/hasher_v1.5.0",

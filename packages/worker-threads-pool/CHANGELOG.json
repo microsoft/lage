@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Wed, 02 Oct 2024 20:26:19 GMT",
+      "version": "0.8.3",
+      "tag": "@lage-run/worker-threads-pool_v0.8.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "6ecbd570669a07fa87429af5de13ec1adc58b864",
+            "comment": "adds an idle event emit"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 27 Sep 2024 20:03:49 GMT",
       "version": "0.8.2",
       "tag": "@lage-run/worker-threads-pool_v0.8.2",
