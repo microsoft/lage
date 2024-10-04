@@ -9,7 +9,7 @@ interface CreateTargetGraphOptions {
   root: string;
   dependencies: boolean;
   dependents: boolean;
-  since: string;
+  since?: string;
   scope?: string[];
   ignore: string[];
   repoWideChanges: string[];
@@ -20,11 +20,21 @@ interface CreateTargetGraphOptions {
 }
 
 export function createTargetGraph(options: CreateTargetGraphOptions) {
-  const { root, pipeline, outputs, tasks, packageInfos } = options;
+  const { logger, root, dependencies, dependents, since, scope, repoWideChanges, ignore, pipeline, outputs, tasks, packageInfos } = options;
 
   const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
 
-  const packages = Object.keys(packageInfos);
+  const packages = getFilteredPackages({
+    root,
+    logger,
+    packageInfos,
+    includeDependencies: dependencies,
+    includeDependents: dependents,
+    since,
+    scope,
+    repoWideChanges,
+    sinceIgnoreGlobs: ignore,
+  });
 
   for (const [id, definition] of Object.entries(pipeline)) {
     if (Array.isArray(definition)) {

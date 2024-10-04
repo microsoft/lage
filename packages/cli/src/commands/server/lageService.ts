@@ -50,7 +50,7 @@ async function initializeOnce(cwd: string, logger: Logger) {
       pipeline,
       repoWideChanges: config.repoWideChanges,
       scope: undefined,
-      since: "",
+      since: undefined,
       outputs: config.cacheOptions.outputGlob,
       tasks,
       packageInfos,
