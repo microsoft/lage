@@ -1,4 +1,3 @@
-import { infoAction } from "./infoAction.js";
 import { runAction } from "./runAction.js";
 import { watchAction } from "./watchAction.js";
 import type { Command } from "commander";
@@ -18,16 +17,14 @@ interface RunOptions extends ReporterInitOptions {
   resetCache: boolean;
   nodeArg: string;
   ignore: string[];
-  unstableWatch: boolean;
+  watch: boolean;
   info: boolean;
   maxWorkersPerTask: string[];
   allowNoTargetRuns: boolean;
 }
 
 export async function action(options: RunOptions, command: Command) {
-  if (options.info) {
-    return infoAction(options, command);
-  } else if (options.unstableWatch) {
+  if (options.watch) {
     return watchAction(options, command);
   } else {
     return runAction(options, command);

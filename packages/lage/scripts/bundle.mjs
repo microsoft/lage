@@ -1,4 +1,5 @@
 import * as esbuild from "esbuild";
+import alias from "esbuild-plugin-alias";
 
 async function bundle(entry, outfile, addBanner = false) {
   await esbuild.build({
@@ -11,10 +12,11 @@ async function bundle(entry, outfile, addBanner = false) {
     external: [
       "fsevents",
       "glob-hasher",
-      "./runners/NpmScriptRunner.js",
-      "./workers/targetWorker",
+      "./runners/NpmScriptsRunner.js",
       "./runners/NoOpRunner.js",
       "./runners/WorkerRunner.js",
+      "./workers/targetWorker",
+      "./singleTargetWorker.js"
     ],
     ...(addBanner && { banner: { js: "#!/usr/bin/env node" } }),
     minify: true,

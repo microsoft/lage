@@ -9,7 +9,7 @@ interface ExecOptions extends ReporterInitOptions {
   cwd?: string;
   server?: boolean | string;
   timeout?: number;
-  nodeArg?: string[];
+  nodeArg?: string;
 }
 
 export async function execAction(options: ExecOptions, command: Command) {

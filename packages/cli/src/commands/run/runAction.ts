@@ -16,6 +16,7 @@ import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { TargetGraph } from "@lage-run/target-graph";
 import { NoTargetFoundError } from "../../types/errors.js";
 import { createCache } from "../../cache/createCacheProvider.js";
+import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 
 interface RunOptions extends ReporterInitOptions, FilterOptions {
   concurrency: number;
@@ -91,24 +92,7 @@ export async function runAction(options: RunOptions, command: Command) {
       skipLocalCache: options.skipLocalCache,
       cacheOptions: config.cacheOptions,
       runners: {
-        npmScript: {
-          script: require.resolve("./runners/NpmScriptRunner.js"),
-          options: {
-            nodeArg: options.nodeArg,
-            taskArgs,
-            npmCmd: config.npmClient,
-          },
-        },
-        worker: {
-          script: require.resolve("./runners/WorkerRunner.js"),
-          options: {
-            taskArgs,
-          },
-        },
-        noop: {
-          script: require.resolve("./runners/NoOpRunner.js"),
-          options: {},
-        },
+        ...runnerPickerOptions(options.nodeArg, config.npmClient, taskArgs),
         ...config.runners,
       },
     },

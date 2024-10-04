@@ -3799,6 +3799,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"esbuild-plugin-alias@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "esbuild-plugin-alias@npm:0.2.1"
+  checksum: 10c0/a67bc6bc2744fc8637f7321f00c1f00e4fae86c182662421738ebfabf3ad344967b9c667185c6c34d9edd5b289807d34bfdceef94620e94e0a45683534af69e0
+  languageName: node
+  linkType: hard
+
 "esbuild@npm:^0.21.5":
   version: 0.21.5
   resolution: "esbuild@npm:0.21.5"
@@ -6064,6 +6071,7 @@ __metadata:
     backfill-config: "npm:6.4.2"
     dts-bundle-generator: "npm:^9.5.1"
     esbuild: "npm:^0.21.5"
+    esbuild-plugin-alias: "npm:^0.2.1"
     fsevents: "npm:~2.3.2"
     glob-hasher: "npm:^1.4.2"
     workspace-tools: "npm:0.36.4"

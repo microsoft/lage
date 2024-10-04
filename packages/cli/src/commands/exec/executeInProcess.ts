@@ -5,12 +5,13 @@ import fs from "fs";
 import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { expandTargetDefinition } from "./expandTargetDefinition.js";
-import { TargetRunnerPicker, type TargetRunnerPickerOptions } from "@lage-run/runners";
+import { TargetRunnerPicker } from "@lage-run/runners";
 import { type Logger } from "@lage-run/logger";
+import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 
 interface ExecuteInProcessOptions {
   cwd?: string;
-  nodeArg?: string[];
+  nodeArg?: string;
   args?: string[];
   logger: Logger;
 }
@@ -106,26 +107,7 @@ export async function executeInProcess({ cwd, args, nodeArg, logger }: ExecuteIn
   const definition = expandTargetDefinition(isGlobal ? undefined : info.name, task, pipeline, config.cacheOptions.outputGlob ?? []);
 
   const target = isGlobal ? factory.createGlobalTarget(task, definition) : factory.createPackageTarget(info.name, task, definition);
-  const pickerOptions: TargetRunnerPickerOptions = {
-    npmScript: {
-      script: require.resolve("../run/runners/NpmScriptRunner.js"),
-      options: {
-        nodeArg,
-        taskArgs,
-        npmCmd: config.npmClient,
-      },
-    },
-    worker: {
-      script: require.resolve("../run/runners/WorkerRunner.js"),
-      options: {
-        taskArgs,
-      },
-    },
-    noop: {
-      script: require.resolve("../run/runners/NoOpRunner.js"),
-      options: {},
-    },
-  };
+  const pickerOptions = runnerPickerOptions(nodeArg, config.npmClient, taskArgs);
 
   const runnerPicker = new TargetRunnerPicker(pickerOptions);
   const runner = await runnerPicker.pick(target);

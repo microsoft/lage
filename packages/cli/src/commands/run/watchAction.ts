@@ -88,7 +88,7 @@ export async function watchAction(options: RunOptions, command: Command) {
       cacheOptions: config.cacheOptions,
       runners: {
         npmScript: {
-          script: require.resolve("./runners/NpmScriptRunner.js"),
+          script: require.resolve("@lage-run/runners/NpmScriptRunner.js"),
           options: {
             nodeArg: options.nodeArg,
             taskArgs,
@@ -96,13 +96,13 @@ export async function watchAction(options: RunOptions, command: Command) {
           },
         },
         worker: {
-          script: require.resolve("./runners/WorkerRunner.js"),
+          script: require.resolve("@lage-run/runners/WorkerRunner.js"),
           options: {
             taskArgs,
           },
         },
         noop: {
-          script: require.resolve("./runners/NoOpRunner.js"),
+          script: require.resolve("@lage-run/runners/NoOpRunner.js"),
           options: {},
         },
         ...config.runners,

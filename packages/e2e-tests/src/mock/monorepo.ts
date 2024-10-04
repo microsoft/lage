@@ -53,6 +53,7 @@ export class Monorepo {
         private: true,
         workspaces: ["packages/*"],
         scripts: {
+          lage: `lage`,
           bundle: `lage bundle --reporter json --log-level silly`,
           transpile: `lage transpile --reporter json --log-level silly`,
           build: `lage build --reporter json --log-level silly`,
@@ -89,7 +90,7 @@ export class Monorepo {
   addPackage(name: string, internalDeps: string[] = [], scripts?: { [script: string]: string }) {
     return this.commitFiles({
       [`packages/${name}/build.js`]: `console.log('building ${name}');`,
-      [`packages/${name}/test.js`]: `console.log('building ${name}');`,
+      [`packages/${name}/test.js`]: `console.log('testing ${name}');`,
       [`packages/${name}/lint.js`]: `console.log('linting ${name}');`,
       [`packages/${name}/extra.js`]: `console.log('extra ${name}');`,
       [`packages/${name}/package.json`]: {
@@ -151,6 +152,15 @@ export class Monorepo {
     return execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
       shell: true,
+    });
+  }
+
+  runServer() {
+    return execa.default(`"${process.execPath}"`, [`"${this.yarnPath}"`, "lage-server"], {
+      cwd: this.root,
+      shell: true,
+      detached: true,
+      stdio: "ignore",
     });
   }
 

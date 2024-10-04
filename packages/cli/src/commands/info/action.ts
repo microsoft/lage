@@ -12,8 +12,9 @@ import path from "path";
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { TargetGraph, Target } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
-import { TargetRunnerPicker, type TargetRunnerPickerOptions } from "@lage-run/runners";
+import { TargetRunnerPicker } from "@lage-run/runners";
 import { getBinPaths } from "../../getBinPaths.js";
+import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 
 interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
@@ -114,26 +115,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
     sinceIgnoreGlobs: options.ignore.concat(config.ignore),
   });
 
-  const pickerOptions: TargetRunnerPickerOptions = {
-    npmScript: {
-      script: require.resolve("./runners/NpmScriptRunner.js"),
-      options: {
-        nodeArg: options.nodeArg,
-        taskArgs,
-        npmCmd: config.npmClient,
-      },
-    },
-    worker: {
-      script: require.resolve("./runners/WorkerRunner.js"),
-      options: {
-        taskArgs,
-      },
-    },
-    noop: {
-      script: require.resolve("./runners/NoOpRunner.js"),
-      options: {},
-    },
-  };
+  const pickerOptions = runnerPickerOptions(options.nodeArg, config.npmClient, taskArgs);
 
   const runnerPicker = new TargetRunnerPicker(pickerOptions);
 

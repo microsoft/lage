@@ -1,7 +1,6 @@
 import { type ConfigOptions, getConfig, type PipelineDefinition } from "@lage-run/config";
 import type { Logger } from "@lage-run/logger";
 import type { ILageService } from "@lage-run/rpc";
-import type { TargetRunnerPickerOptions } from "@lage-run/runners";
 import { getTargetId, type TargetGraph } from "@lage-run/target-graph";
 import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
@@ -13,6 +12,7 @@ import { createDependencyMap } from "workspace-tools";
 import { getOutputFiles } from "./getOutputFiles.js";
 import { glob } from "@lage-run/globby";
 import { MemoryStream } from "./MemoryStream.js";
+import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 
 function findAllTasks(pipeline: PipelineDefinition) {
   const tasks = new Set<string>();
@@ -115,26 +115,7 @@ export async function createLageService({
       logger.info("Running target", request);
 
       const { config, targetGraph, dependencyMap, packageTree, root } = await initializeOnce(cwd, logger);
-      const runners: TargetRunnerPickerOptions = {
-        npmScript: {
-          script: require.resolve("../run/runners/NpmScriptRunner.js"),
-          options: {
-            nodeOptions: request.nodeOptions,
-            taskArgs: request.taskArgs,
-            npmCmd: config.npmClient,
-          },
-        },
-        worker: {
-          script: require.resolve("../run/runners/WorkerRunner.js"),
-          options: {
-            taskArgs: request.taskArgs,
-          },
-        },
-        noop: {
-          script: require.resolve("../run/runners/NoOpRunner.js"),
-          options: {},
-        },
-      };
+      const runners = runnerPickerOptions(request.nodeOptions, config.npmClient, request.taskArgs);
 
       const id = getTargetId(request.packageName, request.task);
 
