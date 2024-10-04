@@ -28,4 +28,5 @@ await Promise.all([
   bundle("@lage-run/cli/lib/server.js", "dist/lage-server.js", true),
   bundle("./index.js", "dist/main.js"),
   bundle("@lage-run/scheduler/lib/workers/targetWorker.js", "dist/workers/targetWorker.js"),
+  bundle("@lage-run/cli/lib/commands/server/singleTargetWorker.js", "dist/singleTargetWorker.js")
 ]);

@@ -26,6 +26,7 @@ describe("lageserver", () => {
     const jsonOutput = parseNdJson(output);
 
     serverProcess.kill();
+    repo.cleanup();
 
     expect(jsonOutput.find((entry) => entry.data?.target?.id === "a#build" && entry.msg === "Finished")).toBeTruthy();
   });
@@ -39,14 +40,16 @@ describe("lageserver", () => {
 
     repo.install();
 
-    const results = repo.run("lage", ["exec", "--server", "--", "a", "build"]);
+    const results = repo.run("lage", ["exec", "a", "build", "--server", "localhost:5112", "--timeout", "2"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
-
     const started = jsonOutput.find((entry) => entry.data?.pid && entry.msg === "Server started");
+    expect(started?.data.pid).not.toBeUndefined();
 
-    expect(started?.pid).not.toBeUndefined();
-
-    process.kill(parseInt(started?.pid));
+    try {
+      process.kill(parseInt(started?.data.pid));
+    } catch (e) {
+      // ignore if cannot kill this
+    }
   });
 });

@@ -161,7 +161,9 @@ export async function createLageService({
 
         const globalInputs = target.environmentGlob
           ? glob(target.environmentGlob, { cwd: root, gitignore: true })
-          : glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true });
+          : config.cacheOptions?.environmentGlob
+          ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
+          : ["lage.config.js"];
         const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
 
         return {
