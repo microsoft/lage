@@ -1,7 +1,7 @@
 import { Monorepo } from "./mock/monorepo.js";
-import { filterEntry, parseNdJson } from "./parseNdJson.js";
+import { parseNdJson } from "./parseNdJson.js";
 
-describe("basics", () => {
+describe("lageserver", () => {
   let repo: Monorepo | undefined;
 
   afterEach(() => {
@@ -27,6 +27,6 @@ describe("basics", () => {
 
     serverProcess.kill();
 
-    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "success"))).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.data?.target?.id === "a#build" && entry.msg === "Finished")).toBeTruthy();
   });
 });

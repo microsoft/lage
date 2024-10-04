@@ -1,5 +1,5 @@
 import { Monorepo } from "./mock/monorepo.js";
-import { filterEntry, parseNdJson } from "./parseNdJson.js";
+import { parseNdJson } from "./parseNdJson.js";
 
 describe("info command", () => {
   it("basic info test case", () => {
@@ -11,11 +11,11 @@ describe("info command", () => {
 
     repo.install();
 
-    const results = repo.run("test", ["--info"]);
+    const results = repo.run("writeInfo", ["test"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
 
-    expect(jsonOutput.map((entry) => ({ ...entry, cwd: `/some/path/to/${entry.packageName}` }))).toMatchSnapshot();
+    expect(jsonOutput).toMatchSnapshot();
 
     repo.cleanup();
   });
@@ -29,11 +29,10 @@ describe("info command", () => {
 
     repo.install();
 
-    const results = repo.run("test", ["--info", "--to", "b"]);
+    const results = repo.run("writeInfo", ["test", "--to", "b"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
-
-    expect(jsonOutput.map((entry) => ({ ...entry, cwd: `/some/path/to/${entry.packageName}` }))).toMatchSnapshot();
+    expect(jsonOutput).toMatchSnapshot();
 
     repo.cleanup();
   });
@@ -47,7 +46,7 @@ describe("info command", () => {
     repo.addPackage("c", [], { build: "echo 'building c'" });
     repo.install();
 
-    const results = repo.run("lage", ["info", "build", "prepare"]);
+    const results = repo.run("writeInfo", ["build", "prepare"]);
 
     const output = results.stdout + results.stderr;
     const infoJsonOutput: any = parseNdJson(output)[0];

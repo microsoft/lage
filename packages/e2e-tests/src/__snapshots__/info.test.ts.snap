@@ -3,83 +3,84 @@
 exports[`info command basic info test case 1`] = `
 [
   {
-    "cache": true,
-    "cwd": "/some/path/to/a",
-    "depSpecs": [
-      "build",
-    ],
-    "dependencies": [
-      "a#build",
-    ],
-    "dependents": [],
-    "id": "a#test",
-    "label": "a - test",
-    "options": {},
-    "packageName": "a",
-    "priority": 0,
-    "task": "test",
-    "type": "npmScript",
-    "weight": 1,
-  },
-  {
-    "cache": true,
-    "cwd": "/some/path/to/b",
-    "depSpecs": [
-      "build",
-    ],
-    "dependencies": [
-      "b#build",
-    ],
-    "dependents": [],
-    "id": "b#test",
-    "label": "b - test",
-    "options": {},
-    "packageName": "b",
-    "priority": 0,
-    "task": "test",
-    "type": "npmScript",
-    "weight": 1,
-  },
-  {
-    "cache": true,
-    "cwd": "/some/path/to/a",
-    "depSpecs": [
-      "^build",
-    ],
-    "dependencies": [
-      "b#build",
-    ],
-    "dependents": [
-      "a#test",
-    ],
-    "id": "a#build",
-    "label": "a - build",
-    "options": {},
-    "packageName": "a",
-    "priority": 0,
-    "task": "build",
-    "type": "npmScript",
-    "weight": 1,
-  },
-  {
-    "cache": true,
-    "cwd": "/some/path/to/b",
-    "depSpecs": [
-      "^build",
-    ],
-    "dependencies": [],
-    "dependents": [
-      "b#test",
-      "a#build",
-    ],
-    "id": "b#build",
-    "label": "b - build",
-    "options": {},
-    "packageName": "b",
-    "priority": 0,
-    "task": "build",
-    "type": "npmScript",
-    "weight": 1,
+    "data": {
+      "command": [
+        "test",
+      ],
+      "packageTasks": [
+        {
+          "command": [],
+          "dependencies": [],
+          "id": "__start",
+          "package": "",
+          "task": "__start",
+          "workingDirectory": "",
+        },
+        {
+          "command": [
+            "yarn",
+            "run",
+            "test",
+          ],
+          "dependencies": [
+            "a#build",
+          ],
+          "id": "a#test",
+          "package": "a",
+          "task": "test",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "yarn",
+            "run",
+            "test",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "b#test",
+          "package": "b",
+          "task": "test",
+          "workingDirectory": "packages/b",
+        },
+        {
+          "command": [
+            "yarn",
+            "run",
+            "build",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "a#build",
+          "package": "a",
+          "task": "build",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "yarn",
+            "run",
+            "build",
+          ],
+          "dependencies": [
+            "__start",
+          ],
+          "id": "b#build",
+          "package": "b",
+          "task": "build",
+          "workingDirectory": "packages/b",
+        },
+      ],
+      "scope": [
+        "a",
+        "b",
+      ],
+    },
+    "level": 30,
+    "msg": "info",
+    "timestamp": 1728065625394,
   },
 ]
 `;
@@ -87,42 +88,55 @@ exports[`info command basic info test case 1`] = `
 exports[`info command scoped info test case 1`] = `
 [
   {
-    "cache": true,
-    "cwd": "/some/path/to/b",
-    "depSpecs": [
-      "build",
-    ],
-    "dependencies": [
-      "b#build",
-    ],
-    "dependents": [],
-    "id": "b#test",
-    "label": "b - test",
-    "options": {},
-    "packageName": "b",
-    "priority": 0,
-    "task": "test",
-    "type": "npmScript",
-    "weight": 1,
-  },
-  {
-    "cache": true,
-    "cwd": "/some/path/to/b",
-    "depSpecs": [
-      "^build",
-    ],
-    "dependencies": [],
-    "dependents": [
-      "b#test",
-    ],
-    "id": "b#build",
-    "label": "b - build",
-    "options": {},
-    "packageName": "b",
-    "priority": 0,
-    "task": "build",
-    "type": "npmScript",
-    "weight": 1,
+    "data": {
+      "command": [
+        "test",
+      ],
+      "packageTasks": [
+        {
+          "command": [],
+          "dependencies": [],
+          "id": "__start",
+          "package": "",
+          "task": "__start",
+          "workingDirectory": "",
+        },
+        {
+          "command": [
+            "yarn",
+            "run",
+            "test",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "b#test",
+          "package": "b",
+          "task": "test",
+          "workingDirectory": "packages/b",
+        },
+        {
+          "command": [
+            "yarn",
+            "run",
+            "build",
+          ],
+          "dependencies": [
+            "__start",
+          ],
+          "id": "b#build",
+          "package": "b",
+          "task": "build",
+          "workingDirectory": "packages/b",
+        },
+      ],
+      "scope": [
+        "b",
+      ],
+    },
+    "level": 30,
+    "msg": "info",
+    "timestamp": 1728065627355,
   },
 ]
 `;
