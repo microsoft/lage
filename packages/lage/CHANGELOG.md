@@ -1,8 +1,17 @@
 # Change Log - lage
 
-<!-- This log was last generated on Wed, 02 Oct 2024 20:26:19 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 04 Oct 2024 23:41:44 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.11.0
+
+Fri, 04 Oct 2024 23:41:44 GMT
+
+### Minor changes
+
+- adds the exec --server capability that would launch the background server (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.23.1
 
 ## 2.10.2
 

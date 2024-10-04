@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Wed, 02 Oct 2024 20:26:19 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 04 Oct 2024 23:41:44 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.23.1
+
+Fri, 04 Oct 2024 23:41:44 GMT
+
+### Patches
+
+- Modified info command to accommodate a "LAGE_WORKER_SERVER" flag (also, --server) (kchau@microsoft.com)
+- Bump @lage-run/rpc to v1.2.3
 
 ## 0.23.0
 

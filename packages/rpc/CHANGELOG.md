@@ -1,8 +1,16 @@
 # Change Log - @lage-run/rpc
 
-<!-- This log was last generated on Wed, 02 Oct 2024 20:26:19 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 04 Oct 2024 23:41:44 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.2.3
+
+Fri, 04 Oct 2024 23:41:44 GMT
+
+### Patches
+
+- adds support for stdout / stderr output (kchau@microsoft.com)
 
 ## 1.2.2
 

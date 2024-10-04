@@ -2,6 +2,27 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 04 Oct 2024 23:41:44 GMT",
+      "version": "0.23.1",
+      "tag": "@lage-run/cli_v0.23.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "5030c3eca2e52a4b31e4246b06dea37e126aa659",
+            "comment": "Modified info command to accommodate a \"LAGE_WORKER_SERVER\" flag (also, --server)"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/rpc to v1.2.3",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Oct 2024 20:26:19 GMT",
       "version": "0.23.0",
       "tag": "@lage-run/cli_v0.23.0",

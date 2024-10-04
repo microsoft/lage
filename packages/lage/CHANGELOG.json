@@ -2,6 +2,27 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 04 Oct 2024 23:41:44 GMT",
+      "version": "2.11.0",
+      "tag": "lage_v2.11.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "5030c3eca2e52a4b31e4246b06dea37e126aa659",
+            "comment": "adds the exec --server capability that would launch the background server"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.23.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Oct 2024 20:26:19 GMT",
       "version": "2.10.2",
       "tag": "lage_v2.10.2",

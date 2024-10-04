@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cli",
-  "version": "0.23.0",
+  "version": "0.23.1",
   "description": "Command Line Interface for Lage",
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
     "@lage-run/hasher": "^1.6.0",
     "@lage-run/logger": "^1.3.1",
     "@lage-run/reporters": "^1.2.11",
-    "@lage-run/rpc": "^1.2.2",
+    "@lage-run/rpc": "^1.2.3",
     "@lage-run/runners": "^1.0.3",
     "@lage-run/scheduler": "^1.3.2",
     "@lage-run/scheduler-types": "^0.3.16",

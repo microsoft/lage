@@ -2,6 +2,21 @@
   "name": "@lage-run/rpc",
   "entries": [
     {
+      "date": "Fri, 04 Oct 2024 23:41:44 GMT",
+      "version": "1.2.3",
+      "tag": "@lage-run/rpc_v1.2.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "5030c3eca2e52a4b31e4246b06dea37e126aa659",
+            "comment": "adds support for stdout / stderr output"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Oct 2024 20:26:19 GMT",
       "version": "1.2.2",
       "tag": "@lage-run/rpc_v1.2.2",
