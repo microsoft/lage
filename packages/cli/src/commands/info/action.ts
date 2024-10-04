@@ -8,12 +8,13 @@ import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
 import { removeNodes, transitiveReduction } from "@lage-run/target-graph";
 import path from "path";
-import fs from "fs";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { TargetGraph, Target } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
-import { TargetRunnerPicker, type TargetRunnerPickerOptions } from "@lage-run/runners";
+import { TargetRunnerPicker } from "@lage-run/runners";
+import { getBinPaths } from "../../getBinPaths.js";
+import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 
 interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
@@ -79,7 +80,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
   options.reporter = options.reporter ?? "json";
-  options.server = typeof options.server === "string" ? options.server : "localhost:5332";
+  options.server = typeof options.server === "boolean" && options.server ? "localhost:5332" : options.server;
   initializeReporters(logger, options);
   const root = getWorkspaceRoot(cwd)!;
 
@@ -114,26 +115,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
     sinceIgnoreGlobs: options.ignore.concat(config.ignore),
   });
 
-  const pickerOptions: TargetRunnerPickerOptions = {
-    npmScript: {
-      script: require.resolve("./runners/NpmScriptRunner.js"),
-      options: {
-        nodeArg: options.nodeArg,
-        taskArgs,
-        npmCmd: config.npmClient,
-      },
-    },
-    worker: {
-      script: require.resolve("./runners/WorkerRunner.js"),
-      options: {
-        taskArgs,
-      },
-    },
-    noop: {
-      script: require.resolve("./runners/NoOpRunner.js"),
-      options: {},
-    },
-  };
+  const pickerOptions = runnerPickerOptions(options.nodeArg, config.npmClient, taskArgs);
 
   const runnerPicker = new TargetRunnerPicker(pickerOptions);
 
@@ -146,20 +128,6 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
     scope,
     packageTasks,
   });
-}
-
-function getBinPaths() {
-  let dir = __dirname;
-  let packageJsonPath = "";
-  while (dir !== "/") {
-    packageJsonPath = path.join(dir, "package.json");
-    if (fs.existsSync(packageJsonPath)) {
-      break;
-    }
-    dir = path.dirname(dir);
-  }
-  const packageJson = JSON.parse(fs.readFileSync(path.join(dir, "package.json"), "utf8"));
-  return { lage: path.join(dir, packageJson.bin.lage), "lage-server": path.join(dir, packageJson.bin["lage-server"]) };
 }
 
 async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: TargetRunnerPicker) {
@@ -208,22 +176,15 @@ function generateCommand(
   options: InfoActionOptions,
   binPaths: { lage: string; "lage-server": string }
 ) {
+  const shouldRunWorkersAsService =
+    (typeof process.env.LAGE_WORKER_SERVER === "string" && process.env.LAGE_WORKER_SERVER !== "false") || !!options.server;
+
   if (target.type === "npmScript") {
     const npmClient = config.npmClient ?? "npm";
     const command = [npmClient, ...getNpmArgs(target.task, taskArgs)];
     return command;
-  } else if (target.type === "worker" && options.server) {
-    const [host, port] = options.server.split(":");
-    const command = [process.execPath, binPaths["lage-server"]];
-
-    if (host) {
-      command.push("--host", host);
-    }
-
-    if (port) {
-      command.push("--port", port);
-    }
-
+  } else if (target.type === "worker" && shouldRunWorkersAsService) {
+    const command = [process.execPath, binPaths["lage"], "exec", "--server", options.server];
     if (options.concurrency) {
       command.push("--concurrency", options.concurrency.toString());
     }

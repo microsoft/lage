@@ -3,11 +3,13 @@ import createLogger from "@lage-run/logger";
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import { initializeReporters } from "../initializeReporters.js";
 import { executeInProcess } from "./executeInProcess.js";
+import { executeRemotely } from "./executeRemotely.js";
 
 interface ExecOptions extends ReporterInitOptions {
   cwd?: string;
-  server?: string | boolean;
-  nodeArg?: string[];
+  server?: boolean | string;
+  timeout?: number;
+  nodeArg?: string;
 }
 
 export async function execAction(options: ExecOptions, command: Command) {
@@ -16,5 +18,11 @@ export async function execAction(options: ExecOptions, command: Command) {
   options.reporter = options.reporter ?? "json";
   initializeReporters(logger, options);
 
-  await executeInProcess({ logger, args: command.args, cwd: options.cwd, nodeArg: options.nodeArg });
+  const { server } = options;
+  if (server) {
+    logger.info("Running in server mode");
+    await executeRemotely(options, command);
+  } else {
+    await executeInProcess({ logger, args: command.args, cwd: options.cwd, nodeArg: options.nodeArg });
+  }
 }

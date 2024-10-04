@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@lage-run/cli": "^0.23.0",
+    "@lage-run/globby": "^14.2.0",
     "@lage-run/monorepo-scripts": "*",
     "@lage-run/scheduler-types": "^0.3.16",
     "@lage-run/target-graph": "^0.9.0",

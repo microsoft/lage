@@ -1747,6 +1747,7 @@ __metadata:
   resolution: "@lage-run/e2e-tests@workspace:packages/e2e-tests"
   dependencies:
     "@lage-run/cli": "npm:^0.23.0"
+    "@lage-run/globby": "npm:^14.2.0"
     "@lage-run/monorepo-scripts": "npm:*"
     "@lage-run/scheduler-types": "npm:^0.3.16"
     "@lage-run/target-graph": "npm:^0.9.0"
@@ -3796,6 +3797,13 @@ __metadata:
   dependencies:
     is-arrayish: "npm:^0.2.1"
   checksum: 10c0/ba827f89369b4c93382cfca5a264d059dfefdaa56ecc5e338ffa58a6471f5ed93b71a20add1d52290a4873d92381174382658c885ac1a2305f7baca363ce9cce
+  languageName: node
+  linkType: hard
+
+"esbuild-plugin-alias@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "esbuild-plugin-alias@npm:0.2.1"
+  checksum: 10c0/a67bc6bc2744fc8637f7321f00c1f00e4fae86c182662421738ebfabf3ad344967b9c667185c6c34d9edd5b289807d34bfdceef94620e94e0a45683534af69e0
   languageName: node
   linkType: hard
 
@@ -6064,6 +6072,7 @@ __metadata:
     backfill-config: "npm:6.4.2"
     dts-bundle-generator: "npm:^9.5.1"
     esbuild: "npm:^0.21.5"
+    esbuild-plugin-alias: "npm:^0.2.1"
     fsevents: "npm:~2.3.2"
     glob-hasher: "npm:^1.4.2"
     workspace-tools: "npm:0.36.4"

@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as execa from "execa";
 
-import { glob } from "glob-hasher";
+import { glob } from "@lage-run/globby";
 
 export class Monorepo {
   static tmpdir = os.tmpdir();
@@ -17,7 +17,7 @@ export class Monorepo {
   static externalPackageJsons = glob(Monorepo.externalPackageJsonGlobs, {
     cwd: path.join(__dirname, "..", "..", "..", ".."),
     gitignore: false,
-  })!;
+  })!.map((f) => path.resolve(path.join(__dirname, "..", "..", "..", ".."), f));
 
   constructor(private name: string) {
     this.root = fs.mkdtempSync(path.join(Monorepo.tmpdir, `lage-monorepo-${name}-`));
@@ -53,6 +53,7 @@ export class Monorepo {
         private: true,
         workspaces: ["packages/*"],
         scripts: {
+          lage: `lage`,
           bundle: `lage bundle --reporter json --log-level silly`,
           transpile: `lage transpile --reporter json --log-level silly`,
           build: `lage build --reporter json --log-level silly`,
@@ -89,7 +90,7 @@ export class Monorepo {
   addPackage(name: string, internalDeps: string[] = [], scripts?: { [script: string]: string }) {
     return this.commitFiles({
       [`packages/${name}/build.js`]: `console.log('building ${name}');`,
-      [`packages/${name}/test.js`]: `console.log('building ${name}');`,
+      [`packages/${name}/test.js`]: `console.log('testing ${name}');`,
       [`packages/${name}/lint.js`]: `console.log('linting ${name}');`,
       [`packages/${name}/extra.js`]: `console.log('extra ${name}');`,
       [`packages/${name}/package.json`]: {
@@ -148,13 +149,34 @@ export class Monorepo {
   }
 
   run(command: string, args?: string[], silent?: boolean) {
-    return execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
+    return execa.sync(process.execPath, [this.yarnPath, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
-      shell: true,
     });
   }
 
-  cleanup() {
-    fs.rmSync(this.root, { recursive: true });
+  runServer() {
+    return execa.default(process.execPath, [path.join(this.root, "node_modules/lage/dist/lage-server.js")], {
+      cwd: this.root,
+      detached: true,
+      stdio: "ignore",
+    });
+  }
+
+  async cleanup() {
+    const maxRetries = 5;
+    let attempts = 0;
+
+    while (attempts < maxRetries) {
+      try {
+        fs.rmSync(this.root, { recursive: true });
+        break;
+      } catch (error) {
+        attempts++;
+        if (attempts >= maxRetries) {
+          throw error;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    }
   }
 }

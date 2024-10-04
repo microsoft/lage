@@ -1,8 +1,8 @@
 import { Monorepo } from "./mock/monorepo.js";
-import { filterEntry, parseNdJson } from "./parseNdJson.js";
+import { parseNdJson } from "./parseNdJson.js";
 
 describe("info command", () => {
-  it("basic info test case", () => {
+  it("basic info test case", async () => {
     const repo = new Monorepo("basics-info");
 
     repo.init();
@@ -11,16 +11,16 @@ describe("info command", () => {
 
     repo.install();
 
-    const results = repo.run("test", ["--info"]);
+    const results = repo.run("writeInfo", ["test"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
 
-    expect(jsonOutput.map((entry) => ({ ...entry, cwd: `/some/path/to/${entry.packageName}` }))).toMatchSnapshot();
+    expect(jsonOutput).toMatchSnapshot();
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 
-  it("scoped info test case", () => {
+  it("scoped info test case", async () => {
     const repo = new Monorepo("scoped-info");
 
     repo.init();
@@ -29,16 +29,15 @@ describe("info command", () => {
 
     repo.install();
 
-    const results = repo.run("test", ["--info", "--to", "b"]);
+    const results = repo.run("writeInfo", ["test", "--to", "b"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
+    expect(jsonOutput).toMatchSnapshot();
 
-    expect(jsonOutput.map((entry) => ({ ...entry, cwd: `/some/path/to/${entry.packageName}` }))).toMatchSnapshot();
-
-    repo.cleanup();
+    await repo.cleanup();
   });
 
-  it("dependencies are resolved via noop tasks", () => {
+  it("dependencies are resolved via noop tasks", async () => {
     const repo = new Monorepo("noop-task-info");
     repo.init();
     repo.addPackage("a", ["b"], { build: "echo 'building a'" });
@@ -47,7 +46,7 @@ describe("info command", () => {
     repo.addPackage("c", [], { build: "echo 'building c'" });
     repo.install();
 
-    const results = repo.run("lage", ["info", "build", "prepare"]);
+    const results = repo.run("writeInfo", ["build", "prepare"]);
 
     const output = results.stdout + results.stderr;
     const infoJsonOutput: any = parseNdJson(output)[0];
@@ -65,6 +64,6 @@ describe("info command", () => {
       }
     }
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 });

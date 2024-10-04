@@ -1,4 +1,4 @@
-import { Command, Option } from "commander";
+import { Command } from "commander";
 import { action } from "./action.js";
 import { addLoggerOptions } from "../addLoggerOptions.js";
 import { isRunningFromCI } from "../isRunningFromCI.js";
@@ -22,13 +22,7 @@ addFilterOptions(addLoggerOptions(runCommand))
   )
   .option("--continue", "continues the run even on error")
   .option("--allow-no-target-runs")
-  .addOption(
-    new Option(
-      "--info",
-      "outputs information about a run action, suitable for calculating shards or as an input for another task runner"
-    ).conflicts("unstableWatch")
-  )
-  .option("--unstable-watch", "runs in watch mode")
+  .option("--watch", "runs in watch mode")
   .allowUnknownOption(true)
   .addHelpCommand("[run] command1 [command2...commandN] [options]", "run commands")
   .addHelpText(

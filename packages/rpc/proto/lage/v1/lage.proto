@@ -17,6 +17,8 @@ message RunTargetResponse {
   int32 exit_code = 4;
   repeated string inputs = 5;
   repeated string outputs = 6;
+  string stdout = 7;
+  string stderr = 8;
 }
 
 message PingRequest {}

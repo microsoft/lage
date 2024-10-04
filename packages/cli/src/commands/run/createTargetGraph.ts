@@ -9,7 +9,7 @@ interface CreateTargetGraphOptions {
   root: string;
   dependencies: boolean;
   dependents: boolean;
-  since: string;
+  since?: string;
   scope?: string[];
   ignore: string[];
   repoWideChanges: string[];

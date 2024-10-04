@@ -1,7 +1,6 @@
 import { type ConfigOptions, getConfig, type PipelineDefinition } from "@lage-run/config";
 import type { Logger } from "@lage-run/logger";
 import type { ILageService } from "@lage-run/rpc";
-import type { TargetRunnerPickerOptions } from "@lage-run/runners";
 import { getTargetId, type TargetGraph } from "@lage-run/target-graph";
 import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
@@ -12,6 +11,8 @@ import { getInputFiles, PackageTree } from "@lage-run/hasher";
 import { createDependencyMap } from "workspace-tools";
 import { getOutputFiles } from "./getOutputFiles.js";
 import { glob } from "@lage-run/globby";
+import { MemoryStream } from "./MemoryStream.js";
+import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 
 function findAllTasks(pipeline: PipelineDefinition) {
   const tasks = new Set<string>();
@@ -39,6 +40,7 @@ async function initializeOnce(cwd: string, logger: Logger) {
 
     const packageInfos = getPackageInfos(root);
     const tasks = findAllTasks(pipeline);
+
     const targetGraph = createTargetGraph({
       logger,
       root,
@@ -48,7 +50,7 @@ async function initializeOnce(cwd: string, logger: Logger) {
       pipeline,
       repoWideChanges: config.repoWideChanges,
       scope: undefined,
-      since: "",
+      since: undefined,
       outputs: config.cacheOptions.outputGlob,
       tasks,
       packageInfos,
@@ -110,28 +112,10 @@ export async function createLageService({
     async runTarget(request) {
       serverControls.clearCountdown();
 
-      const { config, targetGraph, dependencyMap, packageTree, root } = await initializeOnce(cwd, logger);
+      logger.info("Running target", request);
 
-      const runners: TargetRunnerPickerOptions = {
-        npmScript: {
-          script: require.resolve("../run/runners/NpmScriptRunner.js"),
-          options: {
-            nodeOptions: request.nodeOptions,
-            taskArgs: request.taskArgs,
-            npmCmd: config.npmClient,
-          },
-        },
-        worker: {
-          script: require.resolve("../run/runners/WorkerRunner.js"),
-          options: {
-            taskArgs: request.taskArgs,
-          },
-        },
-        noop: {
-          script: require.resolve("../run/runners/NoOpRunner.js"),
-          options: {},
-        },
-      };
+      const { config, targetGraph, dependencyMap, packageTree, root } = await initializeOnce(cwd, logger);
+      const runners = runnerPickerOptions(request.nodeOptions, config.npmClient, request.taskArgs);
 
       const id = getTargetId(request.packageName, request.task);
 
@@ -150,6 +134,8 @@ export async function createLageService({
         runners,
       };
 
+      const writableStdout = new MemoryStream();
+      const writableStderr = new MemoryStream();
       let pipedStdout: Readable;
       let pipedStderr: Readable;
 
@@ -159,21 +145,25 @@ export async function createLageService({
           0,
           (worker, stdout, stderr) => {
             logger.info(`[${worker.threadId}] ${request.packageName}#${request.task} start`);
+
             pipedStdout = stdout;
             pipedStderr = stderr;
-            stdout.pipe(process.stdout);
-            stderr.pipe(process.stderr);
+
+            stdout.pipe(writableStdout);
+            stderr.pipe(writableStderr);
           },
           (worker) => {
             logger.info(`[${worker.threadId}] ${request.packageName}#${request.task} end`);
-            pipedStdout.unpipe(process.stdout);
-            pipedStderr.unpipe(process.stderr);
+            pipedStdout.unpipe(writableStdout);
+            pipedStderr.unpipe(writableStderr);
           }
         );
 
         const globalInputs = target.environmentGlob
           ? glob(target.environmentGlob, { cwd: root, gitignore: true })
-          : glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true });
+          : config.cacheOptions?.environmentGlob
+          ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
+          : ["lage.config.js"];
         const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
 
         return {
@@ -183,6 +173,8 @@ export async function createLageService({
           hash: "",
           inputs,
           outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
+          stdout: writableStdout.toString(),
+          stderr: writableStderr.toString(),
           id,
         };
       } catch (e) {
@@ -193,6 +185,8 @@ export async function createLageService({
           hash: "",
           inputs: [],
           outputs: [],
+          stdout: "",
+          stderr: e instanceof Error ? e.toString() : "",
           id,
         };
       }
