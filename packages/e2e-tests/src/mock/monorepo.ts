@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as execa from "execa";
 
-import { glob } from "glob-hasher";
+import { glob } from "@lage-run/globby";
 
 export class Monorepo {
   static tmpdir = os.tmpdir();
@@ -17,7 +17,7 @@ export class Monorepo {
   static externalPackageJsons = glob(Monorepo.externalPackageJsonGlobs, {
     cwd: path.join(__dirname, "..", "..", "..", ".."),
     gitignore: false,
-  })!;
+  })!.map((f) => path.resolve(path.join(__dirname, "..", "..", "..", ".."), f));
 
   constructor(private name: string) {
     this.root = fs.mkdtempSync(path.join(Monorepo.tmpdir, `lage-monorepo-${name}-`));
@@ -151,12 +151,11 @@ export class Monorepo {
   run(command: string, args?: string[], silent?: boolean) {
     return execa.sync(process.execPath, [this.yarnPath, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
-      shell: true,
     });
   }
 
   runServer() {
-    return execa.default(process.execPath, [this.yarnPath, "lage-server"], {
+    return execa.default(process.execPath, [path.join(this.root, "node_modules/lage/dist/lage-server.js")], {
       cwd: this.root,
       detached: true,
       stdio: "ignore",
