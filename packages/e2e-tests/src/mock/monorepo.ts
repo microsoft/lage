@@ -149,14 +149,14 @@ export class Monorepo {
   }
 
   run(command: string, args?: string[], silent?: boolean) {
-    return execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
+    return execa.sync(process.execPath, [this.yarnPath, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
       shell: true,
     });
   }
 
   runServer() {
-    return execa.default(`"${process.execPath}"`, [`"${this.yarnPath}"`, "lage-server"], {
+    return execa.default(process.execPath, [this.yarnPath, "lage-server"], {
       cwd: this.root,
       detached: true,
       stdio: "ignore",
