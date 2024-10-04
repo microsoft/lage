@@ -5,7 +5,7 @@ import { filterEntry, parseNdJson } from "./parseNdJson.js";
 describe("bigapp test", () => {
   // This test follows the model as documented here:
   // https://microsoft.github.io/lage/guide/levels.html
-  it("with apps and libs and all, y'all", () => {
+  it("with apps and libs and all, y'all", async () => {
     const repo = new Monorepo("bigapp");
 
     repo.init();
@@ -51,6 +51,6 @@ describe("bigapp test", () => {
 
     expect(indices[getTargetId("BarPage", "build")]).toBeLessThan(indices[getTargetId("BarPage", "test")]);
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 });

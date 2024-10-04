@@ -4,8 +4,8 @@ import { parseNdJson } from "./parseNdJson.js";
 describe("lageserver", () => {
   let repo: Monorepo | undefined;
 
-  afterEach(() => {
-    repo?.cleanup();
+  afterEach(async () => {
+    await repo?.cleanup();
     repo = undefined;
   });
 

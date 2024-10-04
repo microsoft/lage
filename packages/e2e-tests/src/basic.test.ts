@@ -4,8 +4,8 @@ import { filterEntry, parseNdJson } from "./parseNdJson.js";
 describe("basics", () => {
   let repo: Monorepo | undefined;
 
-  afterEach(() => {
-    repo?.cleanup();
+  afterEach(async () => {
+    await repo?.cleanup();
     repo = undefined;
   });
 

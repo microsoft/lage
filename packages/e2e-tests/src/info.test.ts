@@ -2,7 +2,7 @@ import { Monorepo } from "./mock/monorepo.js";
 import { parseNdJson } from "./parseNdJson.js";
 
 describe("info command", () => {
-  it("basic info test case", () => {
+  it("basic info test case", async () => {
     const repo = new Monorepo("basics-info");
 
     repo.init();
@@ -17,10 +17,10 @@ describe("info command", () => {
 
     expect(jsonOutput).toMatchSnapshot();
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 
-  it("scoped info test case", () => {
+  it("scoped info test case", async () => {
     const repo = new Monorepo("scoped-info");
 
     repo.init();
@@ -34,10 +34,10 @@ describe("info command", () => {
     const jsonOutput = parseNdJson(output);
     expect(jsonOutput).toMatchSnapshot();
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 
-  it("dependencies are resolved via noop tasks", () => {
+  it("dependencies are resolved via noop tasks", async () => {
     const repo = new Monorepo("noop-task-info");
     repo.init();
     repo.addPackage("a", ["b"], { build: "echo 'building a'" });
@@ -64,6 +64,6 @@ describe("info command", () => {
       }
     }
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 });

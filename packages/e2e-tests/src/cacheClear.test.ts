@@ -6,7 +6,7 @@ import { Monorepo } from "./mock/monorepo.js";
 const defaultCacheLocation = "node_modules/.cache/lage/cache";
 
 describe("Cache clear", () => {
-  it("should clear cache with the default cache location", () => {
+  it("should clear cache with the default cache location", async () => {
     const repo = new Monorepo("cache-default");
 
     repo.init();
@@ -48,6 +48,6 @@ describe("Cache clear", () => {
     // Cache folders should be empty
     expect(fs.readdirSync(cacheFolder)).toHaveLength(0);
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 });

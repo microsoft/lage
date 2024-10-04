@@ -164,7 +164,21 @@ export class Monorepo {
     });
   }
 
-  cleanup() {
-    fs.rmSync(this.root, { recursive: true });
+  async cleanup() {
+    const maxRetries = 5;
+    let attempts = 0;
+
+    while (attempts < maxRetries) {
+      try {
+        fs.rmSync(this.root, { recursive: true });
+        break;
+      } catch (error) {
+        attempts++;
+        if (attempts >= maxRetries) {
+          throw error;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    }
   }
 }

@@ -5,7 +5,7 @@ import { filterEntry, parseNdJson } from "./parseNdJson.js";
 describe("transitive task deps test", () => {
   // This test follows the model as documented here:
   // https://microsoft.github.io/lage/guide/levels.html
-  it("produces a build graph even when some scripts are missing in package.json", () => {
+  it("produces a build graph even when some scripts are missing in package.json", async () => {
     const repo = new Monorepo("transitiveDeps");
 
     repo.init();
@@ -46,7 +46,7 @@ describe("transitive task deps test", () => {
 
     expect(indices[getTargetId("b", "build")]).toBeLessThan(indices[getTargetId("a", "test")]);
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 
   it("only runs package local dependencies for no-prefix dependencies", () => {
@@ -94,10 +94,10 @@ describe("transitive task deps test", () => {
     expect(indices[getTargetId("b", "transpile")]).toBeUndefined();
     expect(indices[getTargetId("c", "transpile")]).toBeUndefined();
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 
-  it("only runs direct dependencies for ^ prefix dependencies -- ", () => {
+  it("only runs direct dependencies for ^ prefix dependencies -- ", async () => {
     const repo = new Monorepo("transitiveDeps-carat-prefix");
 
     repo.init();
@@ -144,10 +144,10 @@ describe("transitive task deps test", () => {
     // and transpile has no dependency on itself
     expect(indices[getTargetId("c", "transpile")]).toBeUndefined();
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 
-  it("Runs transitive dependencies for ^^ prefix dependencies", () => {
+  it("Runs transitive dependencies for ^^ prefix dependencies", async () => {
     const repo = new Monorepo("transitiveDeps-indirect");
 
     repo.init();
@@ -205,6 +205,6 @@ describe("transitive task deps test", () => {
     // dependencies with a ^^ dependency.
     expect(indices[getTargetId("a", "transpile")]).toBeUndefined();
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 });
