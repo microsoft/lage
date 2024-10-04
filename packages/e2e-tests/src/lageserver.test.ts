@@ -26,7 +26,6 @@ describe("lageserver", () => {
     const jsonOutput = parseNdJson(output);
 
     serverProcess.kill();
-    repo.cleanup();
 
     expect(jsonOutput.find((entry) => entry.data?.target?.id === "a#build" && entry.msg === "Finished")).toBeTruthy();
   });
