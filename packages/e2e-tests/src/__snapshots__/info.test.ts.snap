@@ -80,7 +80,6 @@ exports[`info command basic info test case 1`] = `
     },
     "level": 30,
     "msg": "info",
-    "timestamp": 1728065625394,
   },
 ]
 `;
@@ -136,7 +135,6 @@ exports[`info command scoped info test case 1`] = `
     },
     "level": 30,
     "msg": "info",
-    "timestamp": 1728065627355,
   },
 ]
 `;

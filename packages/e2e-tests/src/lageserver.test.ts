@@ -29,4 +29,24 @@ describe("lageserver", () => {
 
     expect(jsonOutput.find((entry) => entry.data?.target?.id === "a#build" && entry.msg === "Finished")).toBeTruthy();
   });
+
+  it("launches a background server", async () => {
+    repo = new Monorepo("basics");
+
+    repo.init();
+    repo.addPackage("a", ["b"]);
+    repo.addPackage("b");
+
+    repo.install();
+
+    const results = repo.run("lage", ["exec", "--server", "--", "a", "build"]);
+    const output = results.stdout + results.stderr;
+    const jsonOutput = parseNdJson(output);
+
+    const started = jsonOutput.find((entry) => entry.data?.pid && entry.msg === "Server started");
+
+    expect(started?.pid).not.toBeUndefined();
+
+    process.kill(parseInt(started?.pid));
+  });
 });

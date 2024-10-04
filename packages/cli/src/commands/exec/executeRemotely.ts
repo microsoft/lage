@@ -115,6 +115,8 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
     });
     child.unref();
 
+    logger.info("Server started", { pid: child.pid });
+
     logger.info("Creating a client to connect to the background services");
     client = await tryCreateClientWithRetries(host, port, logger);
 
