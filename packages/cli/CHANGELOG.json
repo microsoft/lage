@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Mon, 07 Oct 2024 19:33:13 GMT",
+      "version": "0.23.2",
+      "tag": "@lage-run/cli_v0.23.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "43e4f422ae3436c5dedaa961469420ee683098b1",
+            "comment": "Fixing the action command generation to handle the case of launching as server without --server"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 04 Oct 2024 23:41:44 GMT",
       "version": "0.23.1",
       "tag": "@lage-run/cli_v0.23.1",

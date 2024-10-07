@@ -1697,7 +1697,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/cli@npm:^0.23.1, @lage-run/cli@workspace:packages/cli":
+"@lage-run/cli@npm:^0.23.2, @lage-run/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lage-run/cli@workspace:packages/cli"
   dependencies:
@@ -1746,7 +1746,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lage-run/e2e-tests@workspace:packages/e2e-tests"
   dependencies:
-    "@lage-run/cli": "npm:^0.23.1"
+    "@lage-run/cli": "npm:^0.23.2"
     "@lage-run/globby": "npm:^14.2.0"
     "@lage-run/monorepo-scripts": "npm:*"
     "@lage-run/scheduler-types": "npm:^0.3.16"
@@ -6067,7 +6067,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "lage@workspace:packages/lage"
   dependencies:
-    "@lage-run/cli": "npm:^0.23.1"
+    "@lage-run/cli": "npm:^0.23.2"
     "@lage-run/runners": "npm:^1.0.3"
     backfill-config: "npm:6.4.2"
     dts-bundle-generator: "npm:^9.5.1"

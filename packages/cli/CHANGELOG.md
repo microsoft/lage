@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Fri, 04 Oct 2024 23:41:44 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 07 Oct 2024 19:33:13 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.23.2
+
+Mon, 07 Oct 2024 19:33:13 GMT
+
+### Patches
+
+- Fixing the action command generation to handle the case of launching as server without --server (kchau@microsoft.com)
 
 ## 0.23.1
 
