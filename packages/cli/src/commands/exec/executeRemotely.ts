@@ -8,7 +8,7 @@ import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { simulateFileAccess } from "./simulateFileAccess.js";
 import execa from "execa";
 import { getBinPaths } from "../../getBinPaths.js";
-import { parseServer } from "./parseServer.js";
+import { parseServerOption } from "../parseServerOption.js";
 
 interface ExecRemotelyOptions extends ReporterInitOptions {
   server?: string | boolean;
@@ -87,7 +87,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
   const { server } = options;
   const timeout = options.timeout ?? 120;
 
-  const { host, port } = parseServer(server);
+  const { host, port } = parseServerOption(server);
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";

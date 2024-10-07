@@ -15,7 +15,7 @@ import { initializeReporters } from "../initializeReporters.js";
 import { TargetRunnerPicker } from "@lage-run/runners";
 import { getBinPaths } from "../../getBinPaths.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
-import { parseServer } from "../exec/parseServer.js";
+import { parseServerOption } from "../parseServerOption.js";
 
 interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
@@ -185,7 +185,7 @@ function generateCommand(
     const command = [npmClient, ...getNpmArgs(target.task, taskArgs)];
     return command;
   } else if (target.type === "worker" && shouldRunWorkersAsService) {
-    const { host, port } = parseServer(options.server);
+    const { host, port } = parseServerOption(options.server);
     const command = [process.execPath, binPaths["lage"], "exec", "--server", `${host}:${port}`];
     if (options.concurrency) {
       command.push("--concurrency", options.concurrency.toString());
