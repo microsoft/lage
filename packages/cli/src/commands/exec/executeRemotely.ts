@@ -8,6 +8,7 @@ import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { simulateFileAccess } from "./simulateFileAccess.js";
 import execa from "execa";
 import { getBinPaths } from "../../getBinPaths.js";
+import { parseServerOption } from "../parseServerOption.js";
 
 interface ExecRemotelyOptions extends ReporterInitOptions {
   server?: string | boolean;
@@ -83,15 +84,10 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
 export async function executeRemotely(options: ExecRemotelyOptions, command) {
   // launch a 'lage-server.js' process, detached if it is not already running
   // send the command to the server process
-  const { server = "localhost:5332" } = options;
+  const { server } = options;
   const timeout = options.timeout ?? 120;
 
-  const serverString =
-    typeof options.server === "boolean" && options.server ? "localhost:5332" : !server ? "localhost:5332" : (server as string);
-
-  const parts = serverString.split(":");
-  const host = parts[0];
-  const port = parseInt(parts[1] ?? "5332");
+  const { host, port } = parseServerOption(server);
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
