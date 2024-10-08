@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Tue, 08 Oct 2024 20:03:36 GMT",
+      "version": "0.23.3",
+      "tag": "@lage-run/cli_v0.23.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "e0b1d9352f881fd802d982231471152127c65d39",
+            "comment": "uses the shell scripts to have a different executable name"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 07 Oct 2024 19:33:13 GMT",
       "version": "0.23.2",
       "tag": "@lage-run/cli_v0.23.2",

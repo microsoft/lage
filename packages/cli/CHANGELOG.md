@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Mon, 07 Oct 2024 19:33:13 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 08 Oct 2024 20:03:36 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.23.3
+
+Tue, 08 Oct 2024 20:03:36 GMT
+
+### Patches
+
+- uses the shell scripts to have a different executable name (kchau@microsoft.com)
 
 ## 0.23.2
 
