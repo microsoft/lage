@@ -186,7 +186,7 @@ function generateCommand(
     return command;
   } else if (target.type === "worker" && shouldRunWorkersAsService) {
     const { host, port } = parseServerOption(options.server);
-    const command = [process.execPath, binPaths["lage"], "exec", "--server", `${host}:${port}`];
+    const command = [binPaths["lage"], "exec", "--server", `${host}:${port}`];
     if (options.concurrency) {
       command.push("--concurrency", options.concurrency.toString());
     }
@@ -202,7 +202,7 @@ function generateCommand(
     command.push(...taskArgs);
     return command;
   } else if (target.type === "worker") {
-    const command = [process.execPath, binPaths.lage, "exec"];
+    const command = [binPaths.lage, "exec"];
     command.push(target.packageName ?? "");
     command.push(target.task);
     command.push(...taskArgs);

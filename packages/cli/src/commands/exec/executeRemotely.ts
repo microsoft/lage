@@ -102,10 +102,10 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
 
     const binPaths = getBinPaths();
     const lageServerBinPath = binPaths["lage-server"];
-    const lageServerArgs = [lageServerBinPath, "--host", host, "--port", port, "--timeout", timeout, ...args];
+    const lageServerArgs = ["--host", host, "--port", port, "--timeout", timeout, ...args];
 
-    logger.info(`Launching lage-server with these parameters: "${process.execPath}" ${lageServerArgs.join(" ")}`);
-    const child = execa(process.execPath, lageServerArgs, {
+    logger.info(`Launching lage-server with these parameters: ${lageServerArgs.join(" ")}`);
+    const child = execa(lageServerBinPath, lageServerArgs, {
       detached: true,
       stdio: "ignore",
     });
