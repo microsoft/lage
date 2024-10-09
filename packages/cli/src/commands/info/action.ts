@@ -132,7 +132,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
 }
 
 async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: TargetRunnerPicker) {
-  const targetMinimizedNodes = await removeNodes([...graph.targets.values()] ?? [], async (target) => {
+  const targetMinimizedNodes = await removeNodes([...graph.targets.values()], async (target) => {
     if (target.type === "noop") {
       return true;
     }

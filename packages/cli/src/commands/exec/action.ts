@@ -14,6 +14,7 @@ interface ExecOptions extends ReporterInitOptions {
 
 export async function execAction(options: ExecOptions, command: Command) {
   const logger = createLogger();
+  options.cwd = options.cwd ?? process.cwd();
   options.logLevel = options.logLevel ?? "info";
   options.reporter = options.reporter ?? "json";
   initializeReporters(logger, options);

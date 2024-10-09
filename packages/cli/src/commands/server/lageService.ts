@@ -27,12 +27,29 @@ function findAllTasks(pipeline: PipelineDefinition) {
   return Array.from(tasks);
 }
 
-let context:
-  | { config: ConfigOptions; targetGraph: TargetGraph; packageTree: PackageTree; dependencyMap: DependencyMap; root: string }
-  | undefined;
+interface LageServiceContext {
+  config: ConfigOptions;
+  targetGraph: TargetGraph;
+  packageTree: PackageTree;
+  dependencyMap: DependencyMap;
+  root: string;
+}
 
-async function initializeOnce(cwd: string, logger: Logger) {
-  if (!context) {
+let initializedPromise: Promise<LageServiceContext> | undefined;
+
+/**
+ * Initializes the lageService: the extra "initializePromise" ensures only one initialization is done at a time across threads
+ * @param cwd
+ * @param logger
+ * @returns
+ */
+async function initialize(cwd: string, logger: Logger) {
+  if (initializedPromise) {
+    return await initializedPromise;
+  }
+
+  async function createInitializedPromise() {
+    logger.info("Initializing context");
     const config = await getConfig(cwd);
     const root = getWorkspaceRoot(cwd)!;
 
@@ -63,12 +80,15 @@ async function initializeOnce(cwd: string, logger: Logger) {
       includeUntracked: true,
     });
 
+    logger.info("Initializing Package Tree");
     await packageTree.initialize();
 
-    context = { config, targetGraph, packageTree, dependencyMap, root };
+    return { config, targetGraph, packageTree, dependencyMap, root };
   }
 
-  return context;
+  initializedPromise = createInitializedPromise();
+
+  return await initializedPromise;
 }
 
 let pool: WorkerPool | undefined;
@@ -112,21 +132,24 @@ export async function createLageService({
     async runTarget(request) {
       serverControls.clearCountdown();
 
+      const { config, targetGraph, dependencyMap, packageTree, root } = await initialize(cwd, logger);
+
       logger.info("Running target", request);
 
-      const { config, targetGraph, dependencyMap, packageTree, root } = await initializeOnce(cwd, logger);
       const runners = runnerPickerOptions(request.nodeOptions, config.npmClient, request.taskArgs);
 
       const id = getTargetId(request.packageName, request.task);
 
       if (!targetGraph.targets.has(id)) {
-        logger.error(`Target not found: ${request.packageName}#${request.task}`);
+        logger.info(`Target not found: ${request.packageName}#${request.task}`);
         return {
           packageName: request.packageName,
           task: request.task,
           exitCode: 1,
         };
       }
+
+      logger.info("Target found", { id });
 
       const target = targetGraph.targets.get(id)!;
       const task = {
