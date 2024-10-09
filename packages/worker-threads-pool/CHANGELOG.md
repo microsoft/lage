@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-<!-- This log was last generated on Wed, 02 Oct 2024 20:26:19 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 09 Oct 2024 17:20:33 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.8.4
+
+Wed, 09 Oct 2024 17:20:33 GMT
+
+### Patches
+
+- fixed the workerpool to raise "idle" event only if all workers are freed (kchau@microsoft.com)
 
 ## 0.8.3
 

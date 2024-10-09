@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 09 Oct 2024 17:20:33 GMT",
+      "version": "0.23.4",
+      "tag": "@lage-run/cli_v0.23.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "41964958d510982762eaa7a496cad7bbb560bcc5",
+            "comment": "fixing up the lage integrate with buildxl to utilize lage-server"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.3.3",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.8.4",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 08 Oct 2024 20:03:36 GMT",
       "version": "0.23.3",
       "tag": "@lage-run/cli_v0.23.3",

@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Tue, 08 Oct 2024 20:03:36 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 09 Oct 2024 17:20:33 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.23.4
+
+Wed, 09 Oct 2024 17:20:33 GMT
+
+### Patches
+
+- fixing up the lage integrate with buildxl to utilize lage-server (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v1.3.3
+- Bump @lage-run/worker-threads-pool to v0.8.4
 
 ## 0.23.3
 
