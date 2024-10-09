@@ -9,8 +9,13 @@ import { simulateFileAccess } from "./simulateFileAccess.js";
 import execa from "execa";
 import { getBinPaths } from "../../getBinPaths.js";
 import { parseServerOption } from "../parseServerOption.js";
+import lockfile from "proper-lockfile";
+import path from "path";
+import fs from "fs";
+import { getWorkspaceRoot } from "workspace-tools";
 
 interface ExecRemotelyOptions extends ReporterInitOptions {
+  cwd?: string;
   server?: string | boolean;
   timeout?: number;
 }
@@ -70,15 +75,44 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
 
   const { taskArgs } = filterArgsForTasks(args ?? []);
 
-  const response = await client.runTarget({
-    packageName,
-    task,
-    taskArgs,
-  });
+  try {
+    const response = await client.runTarget({
+      packageName,
+      task,
+      taskArgs,
+    });
+    logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode} `);
+    return response;
+  } catch (error) {
+    if (error instanceof ConnectError) {
+      logger.error("Error connecting to server", { error });
+    } else {
+      logger.error("Error running task", { error });
+    }
+  }
+}
 
-  logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode} `);
+function isAlive(pid: number) {
+  try {
+    return process.kill(pid, 0);
+  } catch {
+    return false;
+  }
+}
 
-  return response;
+function ensurePidFile(lockfilePath: string) {
+  if (!fs.existsSync(path.dirname(lockfilePath))) {
+    fs.mkdirSync(path.dirname(lockfilePath), { recursive: true });
+  }
+
+  if (!fs.existsSync(lockfilePath)) {
+    try {
+      const fd = fs.openSync(lockfilePath, "w");
+      fs.closeSync(fd);
+    } catch {
+      // ignore
+    }
+  }
 }
 
 export async function executeRemotely(options: ExecRemotelyOptions, command) {
@@ -94,24 +128,56 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
   options.reporter = options.reporter ?? "json";
   initializeReporters(logger, options);
 
+  const root = getWorkspaceRoot(options.cwd ?? process.cwd())!;
+
+  const lockfilePath = path.join(root, `node_modules/.cache/lage/.lage-server-${host}-${port}.pid`);
+
   let client = await tryCreateClient(host, port);
   const args = command.args;
 
   if (!client) {
     logger.info(`Starting server on http://${host}:${port}`);
+    logger.info(`acquiring lock: ${lockfilePath}`);
 
-    const binPaths = getBinPaths();
-    const lageServerBinPath = binPaths["lage-server"];
-    const lageServerArgs = ["--host", host, "--port", port, "--timeout", timeout, ...args];
+    ensurePidFile(lockfilePath);
 
-    logger.info(`Launching lage-server with these parameters: ${lageServerArgs.join(" ")}`);
-    const child = execa(lageServerBinPath, lageServerArgs, {
-      detached: true,
-      stdio: "ignore",
+    const releaseLock = lockfile.lockSync(lockfilePath, {
+      stale: 1000 * 60 * 1,
+      // retries: {
+      //   retries: 10,
+      //   factor: 3,
+      //   minTimeout: 0.5 * 1000,
+      //   maxTimeout: 60 * 1000,
+      //   randomize: true,
+      // },
     });
-    child.unref();
 
-    logger.info("Server started", { pid: child.pid });
+    const pid = parseInt(fs.readFileSync(lockfilePath, "utf-8"));
+    const isServerRunning = pid && isAlive(pid);
+    logger.info("Checking if server is already running", { pid, isServerRunning });
+    if (pid && isServerRunning) {
+      logger.info("Server already running", { pid });
+    } else {
+      const binPaths = getBinPaths();
+      const lageServerBinPath = binPaths["lage-server"];
+      const lageServerArgs = ["--host", host, "--port", port, "--timeout", timeout, ...args];
+
+      logger.info(`Launching lage-server with these parameters: ${lageServerArgs.join(" ")}`);
+      const child = execa(lageServerBinPath, lageServerArgs, {
+        cwd: root,
+        detached: true,
+        stdio: "ignore",
+      });
+
+      if (child && child.pid) {
+        fs.writeFileSync(lockfilePath, child.pid.toString());
+      }
+
+      child.unref();
+      logger.info("Server started", { pid: child.pid });
+    }
+
+    releaseLock();
 
     logger.info("Creating a client to connect to the background services");
     client = await tryCreateClientWithRetries(host, port, logger);
@@ -124,12 +190,16 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
   logger.info(`Executing on server http://${host}:${port}`);
   const response = await executeOnServer(args, client, logger);
 
-  process.stdout.write(response.stdout);
-  process.stderr.write(response.stderr);
-  process.exitCode = response.exitCode;
+  if (response) {
+    process.stdout.write(response.stdout);
+    process.stderr.write(response.stderr);
+    process.exitCode = response.exitCode;
 
-  if (response.exitCode === 0) {
-    await simulateFileAccess(logger, response.inputs, response.outputs);
+    if (response.exitCode === 0) {
+      await simulateFileAccess(logger, response.inputs, response.outputs);
+    }
+  } else {
+    process.exitCode = 1;
   }
 
   logger.info("Task execution finished");

@@ -37,11 +37,13 @@
     "commander": "9.5.0",
     "execa": "5.1.1",
     "fast-glob": "3.3.2",
+    "proper-lockfile": "^4.1.2",
     "workspace-tools": "0.36.4"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "*",
-    "@lage-run/monorepo-scripts": "*"
+    "@lage-run/monorepo-scripts": "*",
+    "@types/proper-lockfile": "^4.1.4"
   },
   "publishConfig": {
     "access": "public"

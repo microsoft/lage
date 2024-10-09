@@ -33,6 +33,7 @@ let context:
 
 async function initializeOnce(cwd: string, logger: Logger) {
   if (!context) {
+    logger.info("Initializing context");
     const config = await getConfig(cwd);
     const root = getWorkspaceRoot(cwd)!;
 
@@ -63,6 +64,7 @@ async function initializeOnce(cwd: string, logger: Logger) {
       includeUntracked: true,
     });
 
+    logger.info("Initializing Package Tree");
     await packageTree.initialize();
 
     context = { config, targetGraph, packageTree, dependencyMap, root };
@@ -104,6 +106,8 @@ export async function createLageService({
     serverControls.countdownToShutdown();
   });
 
+  const { config, targetGraph, dependencyMap, packageTree, root } = await initializeOnce(cwd, logger);
+
   return {
     async ping() {
       return { pong: true };
@@ -114,19 +118,20 @@ export async function createLageService({
 
       logger.info("Running target", request);
 
-      const { config, targetGraph, dependencyMap, packageTree, root } = await initializeOnce(cwd, logger);
       const runners = runnerPickerOptions(request.nodeOptions, config.npmClient, request.taskArgs);
 
       const id = getTargetId(request.packageName, request.task);
 
       if (!targetGraph.targets.has(id)) {
-        logger.error(`Target not found: ${request.packageName}#${request.task}`);
+        logger.info(`Target not found: ${request.packageName}#${request.task}`);
         return {
           packageName: request.packageName,
           task: request.task,
           exitCode: 1,
         };
       }
+
+      logger.info("Target found", { id });
 
       const target = targetGraph.targets.get(id)!;
       const task = {
