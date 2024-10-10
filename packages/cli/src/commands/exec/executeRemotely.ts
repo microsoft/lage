@@ -141,15 +141,15 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
 
     ensurePidFile(lockfilePath);
 
-    const releaseLock = lockfile.lockSync(lockfilePath, {
+    const releaseLock = await lockfile.lock(lockfilePath, {
       stale: 1000 * 60 * 1,
-      // retries: {
-      //   retries: 10,
-      //   factor: 3,
-      //   minTimeout: 0.5 * 1000,
-      //   maxTimeout: 60 * 1000,
-      //   randomize: true,
-      // },
+      retries: {
+        retries: 10,
+        factor: 3,
+        minTimeout: 0.5 * 1000,
+        maxTimeout: 60 * 1000,
+        randomize: true,
+      },
     });
 
     const pid = parseInt(fs.readFileSync(lockfilePath, "utf-8"));
@@ -177,7 +177,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
       logger.info("Server started", { pid: child.pid });
     }
 
-    releaseLock();
+    await releaseLock();
 
     logger.info("Creating a client to connect to the background services");
     client = await tryCreateClientWithRetries(host, port, logger);
