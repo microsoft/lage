@@ -1805,7 +1805,7 @@ __metadata:
     fast-glob: "npm:3.3.2"
     gh-pages: "npm:^5.0.0"
     husky: "npm:^9.1.5"
-    lage-npm: "npm:lage@2.7.15"
+    lage-npm: "npm:lage@2.11.4"
     lint-staged: "npm:^15.2.10"
     patch-package: "npm:^6.5.1"
     prettier: "npm:^2.8.6"
@@ -6066,22 +6066,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lage-npm@npm:lage@2.7.15":
-  version: 2.7.15
-  resolution: "lage@npm:2.7.15"
-  dependencies:
-    fsevents: "npm:~2.3.2"
-    glob-hasher: "npm:^1.4.2"
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    lage: dist/lage.js
-  checksum: 10c0/8654faf84a32f7a69c851036124dc0fac14172a0217adc766ed80c211db2d1f1ea2ffa411ffe21e14540ba457e08f3b5c1f30efedba99b7cb9c43b4461becd26
-  languageName: node
-  linkType: hard
-
-"lage@workspace:packages/lage":
+"lage-npm@npm:lage@2.11.4, lage@workspace:packages/lage":
   version: 0.0.0-use.local
   resolution: "lage@workspace:packages/lage"
   dependencies:
