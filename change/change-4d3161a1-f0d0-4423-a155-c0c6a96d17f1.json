@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Pin dependencies",
+      "packageName": "@lage-run/cache",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Pin dependencies",
+      "packageName": "@lage-run/cli",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Pin dependencies",
+      "packageName": "@lage-run/rpc",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
