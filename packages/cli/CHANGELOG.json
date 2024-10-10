@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 10 Oct 2024 20:14:59 GMT",
+      "version": "0.23.5",
+      "tag": "@lage-run/cli_v0.23.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "cad4d2b233433e70c2fd24cfa5a779d0715d778a",
+            "comment": "shutoff at 3 minutes"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 09 Oct 2024 17:20:33 GMT",
       "version": "0.23.4",
       "tag": "@lage-run/cli_v0.23.4",

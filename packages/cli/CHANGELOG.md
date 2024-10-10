@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Wed, 09 Oct 2024 17:20:33 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 10 Oct 2024 20:14:59 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.23.5
+
+Thu, 10 Oct 2024 20:14:59 GMT
+
+### Patches
+
+- shutoff at 3 minutes (kchau@microsoft.com)
 
 ## 0.23.4
 
