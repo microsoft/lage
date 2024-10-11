@@ -3,10 +3,10 @@ import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
 import ansiRegex from "ansi-regex";
 import type { Reporter, LogEntry } from "@lage-run/logger";
-import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
 import { Writable } from "stream";
 import fs from "fs";
+import path from "path";
 
 const stripAnsiRegex = ansiRegex();
 
@@ -18,6 +18,13 @@ export class VerboseFileLogReporter implements Reporter {
   fileStream: Writable;
   constructor(logFile?: string) {
     // if logFile is falsy (not specified on cli args), this.fileStream just become a "nowhere" stream and this reporter effectively does nothing
+    if (logFile) {
+      const logFilePath = path.dirname(path.resolve(logFile));
+      if (!fs.existsSync(logFilePath)) {
+        fs.mkdirSync(logFilePath, { recursive: true });
+      }
+    }
+
     this.fileStream = logFile ? fs.createWriteStream(logFile) : new Writable({ write() {} });
   }
 
