@@ -36,7 +36,9 @@
     "dist/lage.js",
     "dist/lage.js.map",
     "dist/runners/**",
-    "dist/workers/**"
+    "dist/workers/**",
+    "dist/singleTargetWorker.js",
+    "dist/singleTargetWorker.js.map"
   ],
   "publishConfig": {
     "access": "public"
