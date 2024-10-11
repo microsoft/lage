@@ -1,8 +1,16 @@
 # Change Log - lage
 
-<!-- This log was last generated on Thu, 10 Oct 2024 20:14:59 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 11 Oct 2024 19:49:15 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.11.5
+
+Fri, 11 Oct 2024 19:49:15 GMT
+
+### Patches
+
+- fixing the lage-server by publishing the correct files (kchau@microsoft.com)
 
 ## 2.11.4
 

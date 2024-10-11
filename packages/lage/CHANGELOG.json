@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 11 Oct 2024 19:49:15 GMT",
+      "version": "2.11.5",
+      "tag": "lage_v2.11.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "lage",
+            "commit": "4304893f9249e26a2838587d2ebf29689f02cdfc",
+            "comment": "fixing the lage-server by publishing the correct files"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 10 Oct 2024 20:14:59 GMT",
       "version": "2.11.4",
       "tag": "lage_v2.11.4",
