@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Fri, 11 Oct 2024 22:09:18 GMT",
+      "version": "1.2.12",
+      "tag": "@lage-run/reporters_v1.2.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "cd7a1ed3a889ba4f57205b9779eb292863685dec",
+            "comment": "adding a mkdirp before writing to the log file"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Oct 2024 20:26:19 GMT",
       "version": "1.2.11",
       "tag": "@lage-run/reporters_v1.2.11",

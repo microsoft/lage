@@ -2,6 +2,27 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 11 Oct 2024 22:09:18 GMT",
+      "version": "0.23.6",
+      "tag": "@lage-run/cli_v0.23.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "cd7a1ed3a889ba4f57205b9779eb292863685dec",
+            "comment": "moved the picker creation to be just once to be reused in a singletargetworker"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.2.12",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 10 Oct 2024 20:14:59 GMT",
       "version": "0.23.5",
       "tag": "@lage-run/cli_v0.23.5",

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Wed, 02 Oct 2024 20:26:19 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 11 Oct 2024 22:09:18 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.2.12
+
+Fri, 11 Oct 2024 22:09:18 GMT
+
+### Patches
+
+- adding a mkdirp before writing to the log file (kchau@microsoft.com)
 
 ## 1.2.11
 

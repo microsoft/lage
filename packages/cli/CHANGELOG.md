@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Thu, 10 Oct 2024 20:14:59 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 11 Oct 2024 22:09:18 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.23.6
+
+Fri, 11 Oct 2024 22:09:18 GMT
+
+### Patches
+
+- moved the picker creation to be just once to be reused in a singletargetworker (kchau@microsoft.com)
+- Bump @lage-run/reporters to v1.2.12
 
 ## 0.23.5
 
