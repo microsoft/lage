@@ -17,7 +17,8 @@ export async function serverAction(options: WorkerOptions) {
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
-  options.reporter = options.reporter ?? "json";
+  options.logFile = options.logFile ?? "node_modules/.cache/lage/server.log";
+  options.reporter = options.reporter ?? "verboseFileLog";
   initializeReporters(logger, options);
 
   logger.info(`Starting server on http://${host}:${port}`);
