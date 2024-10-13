@@ -106,7 +106,7 @@ export class TargetGraphBuilder {
 
   subgraph(entriesTargetIds: string[]) {
     const subgraphBuilder = new TargetGraphBuilder();
-    const visited: string[] = [];
+    const visited: Set<string> = new Set();
     const queue: string[] = [];
 
     for (const targetId of entriesTargetIds) {
@@ -119,11 +119,11 @@ export class TargetGraphBuilder {
 
     while (queue.length > 0) {
       const targetId = queue.shift()!;
-      if (visited.includes(targetId)) {
+      if (visited.has(targetId)) {
         continue;
       }
 
-      visited.push(targetId);
+      visited.add(targetId);
 
       const target = this.targets.get(targetId);
 
@@ -140,7 +140,9 @@ export class TargetGraphBuilder {
           subgraphBuilder.addDependency(dependency, targetId);
         }
 
-        queue.push(dependency);
+        if (!visited.has(dependency)) {
+          queue.push(dependency);
+        }
       }
     }
 
