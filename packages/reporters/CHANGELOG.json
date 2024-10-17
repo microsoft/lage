@@ -2,6 +2,27 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Thu, 17 Oct 2024 20:33:04 GMT",
+      "version": "1.2.13",
+      "tag": "@lage-run/reporters_v1.2.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.17",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.9.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 11 Oct 2024 22:09:18 GMT",
       "version": "1.2.12",
       "tag": "@lage-run/reporters_v1.2.12",

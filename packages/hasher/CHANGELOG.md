@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Wed, 02 Oct 2024 20:26:19 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 17 Oct 2024 20:33:04 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.6.1
+
+Thu, 17 Oct 2024 20:33:04 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.9.1
 
 ## 1.6.0
 

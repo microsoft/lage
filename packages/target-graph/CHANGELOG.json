@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Thu, 17 Oct 2024 20:33:04 GMT",
+      "version": "0.9.1",
+      "tag": "@lage-run/target-graph_v0.9.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ronakjain.public@gmail.com",
+            "package": "@lage-run/target-graph",
+            "commit": "bd7270ead871ca1c65349671cb26eb3b1e35ef0b",
+            "comment": "Optimize subgraph build"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Oct 2024 20:26:19 GMT",
       "version": "0.9.0",
       "tag": "@lage-run/target-graph_v0.9.0",

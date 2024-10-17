@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/target-graph",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Target for Lage",
   "repository": {
     "type": "git",
