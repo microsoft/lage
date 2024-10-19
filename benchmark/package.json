@@ -11,7 +11,7 @@
     "multimatch": "^7.0.0",
     "micromatch": "^4.0.7",
     "execa": "^9.3.0",
-    "workspace-tools": "^0.36.4",
+    "workspace-tools": "^0.37.0",
     "array-differ": "^4.0.0"
   },
   "type": "module",
