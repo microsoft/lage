@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Optimize transitive reduction",
+      "packageName": "@lage-run/target-graph",
+      "email": "ronakjain.public@gmail.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
