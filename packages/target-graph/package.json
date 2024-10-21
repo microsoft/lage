@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/target-graph",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Target for Lage",
   "repository": {
     "type": "git",
@@ -20,7 +20,8 @@
     "workspace-tools": "0.37.0"
   },
   "devDependencies": {
-    "@lage-run/monorepo-scripts": "*"
+    "@lage-run/monorepo-scripts": "*",
+    "jest-diff": "^29.5.0"
   },
   "publishConfig": {
     "access": "public"

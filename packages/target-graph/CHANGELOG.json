@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Mon, 21 Oct 2024 22:18:54 GMT",
+      "version": "0.9.2",
+      "tag": "@lage-run/target-graph_v0.9.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "ronakjain.public@gmail.com",
+            "package": "@lage-run/target-graph",
+            "commit": "afe5d34e1be6c245907aaed059995dd8ce48d278",
+            "comment": "Optimize transitive reduction"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 17 Oct 2024 20:33:04 GMT",
       "version": "0.9.1",
       "tag": "@lage-run/target-graph_v0.9.1",
