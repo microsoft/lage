@@ -1919,6 +1919,7 @@ __metadata:
   resolution: "@lage-run/target-graph@workspace:packages/target-graph"
   dependencies:
     "@lage-run/monorepo-scripts": "npm:*"
+    jest-diff: "npm:^29.5.0"
     workspace-tools: "npm:0.36.4"
   languageName: unknown
   linkType: soft

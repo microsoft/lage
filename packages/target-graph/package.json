@@ -20,7 +20,8 @@
     "workspace-tools": "0.36.4"
   },
   "devDependencies": {
-    "@lage-run/monorepo-scripts": "*"
+    "@lage-run/monorepo-scripts": "*",
+    "jest-diff": "^29.5.0"
   },
   "publishConfig": {
     "access": "public"
