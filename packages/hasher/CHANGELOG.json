@@ -2,6 +2,27 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Tue, 22 Oct 2024 15:19:29 GMT",
+      "version": "1.6.3",
+      "tag": "@lage-run/hasher_v1.6.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/hasher",
+            "commit": "067b34dac0e6621e6dab889b4ecb3ffb96ed3b7c",
+            "comment": "Update dependency workspace-tools to v0.37.0"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.9.3",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 21 Oct 2024 22:18:54 GMT",
       "version": "1.6.2",
       "tag": "@lage-run/hasher_v1.6.2",

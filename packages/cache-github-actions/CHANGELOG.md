@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache-github-actions
 
-This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
+<!-- This log was last generated on Tue, 22 Oct 2024 15:19:29 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.1.21
+
+Tue, 22 Oct 2024 15:19:29 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.37.0 (email not defined)
 
 ## 0.1.20
 

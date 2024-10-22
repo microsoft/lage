@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Tue, 22 Oct 2024 15:19:29 GMT",
+      "version": "0.1.21",
+      "tag": "@lage-run/cache-github-actions_v0.1.21",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "067b34dac0e6621e6dab889b4ecb3ffb96ed3b7c",
+            "comment": "Update dependency workspace-tools to v0.37.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Sep 2024 20:30:48 GMT",
       "version": "0.1.20",
       "tag": "@lage-run/cache-github-actions_v0.1.20",
