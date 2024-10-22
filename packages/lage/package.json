@@ -29,7 +29,7 @@
     "dts-bundle-generator": "^9.5.1",
     "esbuild": "^0.21.5",
     "esbuild-plugin-alias": "^0.2.1",
-    "workspace-tools": "0.36.4"
+    "workspace-tools": "0.37.0"
   },
   "files": [
     "dist/*.d.ts",
