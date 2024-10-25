@@ -16,7 +16,7 @@ module.exports = async function transpile(data) {
   }
 
   const queue = [target.cwd];
-
+  console.log("queue: " + queue[0]);
   while (queue.length > 0) {
     const dir = queue.shift();
 
@@ -29,10 +29,12 @@ module.exports = async function transpile(data) {
         queue.push(fullPath);
       } else if (entry.isFile() && (entry.name.endsWith(".ts") || entry.name.endsWith(".tsx"))) {
         const swcOutput = await swc.transformFile(fullPath, swcOptions);
-        const dest = fullPath
-          .replace(/([/\\])src/, "$1lib")
+        const targetRelativePath = path.relative(target.cwd, fullPath)
+          .replace("src" + path.sep, "lib" + path.sep)
           .replace(".tsx", ".js")
           .replace(".ts", ".js");
+        const dest = path.join(target.cwd, targetRelativePath);
+        console.log(fullPath + " ==> " + dest);
         await fsPromises.mkdir(path.dirname(dest), { recursive: true });
         await fsPromises.writeFile(dest, swcOutput.code);
       }
