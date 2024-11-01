@@ -191,7 +191,7 @@ function generateCommand(
     if (script && script.startsWith("node")) {
       const parsed = parse(script);
       if (parsed.length > 0 && parsed.every((entry) => typeof entry === "string")) {
-        return parsed as string[];
+        return [...(parsed as string[]), ...taskArgs];
       }
     }
 
