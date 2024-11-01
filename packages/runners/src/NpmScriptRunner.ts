@@ -1,6 +1,7 @@
 import { join } from "path";
 import { readFile } from "fs/promises";
 import { spawn, type ChildProcess } from "child_process";
+import os from "os";
 import type { TargetRunner, TargetRunnerOptions } from "./types/TargetRunner.js";
 import type { Target } from "@lage-run/target-graph";
 
@@ -103,7 +104,7 @@ export class NpmScriptRunner implements TargetRunner {
         cwd: target.cwd,
         stdio: ["inherit", "pipe", "pipe"],
         // This is required for Windows due to https://nodejs.org/en/blog/vulnerability/april-2024-security-releases-2
-        shell: true,
+        ...(os.platform() === "win32" && { shell: true }),
         env: {
           ...(process.stdout.isTTY && { FORCE_COLOR: "1" }), // allow user env to override this
           ...process.env,

@@ -1716,11 +1716,13 @@ __metadata:
     "@lage-run/target-graph": "npm:^0.9.3"
     "@lage-run/worker-threads-pool": "npm:^0.8.4"
     "@types/proper-lockfile": "npm:^4.1.4"
+    "@types/shell-quote": "npm:^1.7.5"
     chokidar: "npm:3.5.3"
     commander: "npm:9.5.0"
     execa: "npm:5.1.1"
     fast-glob: "npm:3.3.2"
     proper-lockfile: "npm:^4.1.2"
+    shell-quote: "npm:^1.8.1"
     workspace-tools: "npm:0.37.0"
   bin:
     lage: ./bin/lage.js
@@ -2347,6 +2349,13 @@ __metadata:
   version: 7.3.13
   resolution: "@types/semver@npm:7.3.13"
   checksum: 10c0/73295bb1fee46f8c76c7a759feeae5a3022f5bedfdc17d16982092e4b33af17560234fb94861560c20992a702a1e1b9a173bb623a96f95f80892105f5e7d25e3
+  languageName: node
+  linkType: hard
+
+"@types/shell-quote@npm:^1.7.5":
+  version: 1.7.5
+  resolution: "@types/shell-quote@npm:1.7.5"
+  checksum: 10c0/ddcf225e85e5520e3f44411d7d79eee0e56477fab705d0d93e293b61b9f8de2a57db6e859d492a24bc9e0d071c0490271efeae832756e2ac0d4d255922ac281d
   languageName: node
   linkType: hard
 
@@ -7678,6 +7687,13 @@ __metadata:
   version: 3.0.0
   resolution: "shebang-regex@npm:3.0.0"
   checksum: 10c0/1dbed0726dd0e1152a92696c76c7f06084eb32a90f0528d11acd764043aacf76994b2fb30aa1291a21bd019d6699164d048286309a278855ee7bec06cf6fb690
+  languageName: node
+  linkType: hard
+
+"shell-quote@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "shell-quote@npm:1.8.1"
+  checksum: 10c0/8cec6fd827bad74d0a49347057d40dfea1e01f12a6123bf82c4649f3ef152fc2bc6d6176e6376bffcd205d9d0ccb4f1f9acae889384d20baff92186f01ea455a
   languageName: node
   linkType: hard
 
