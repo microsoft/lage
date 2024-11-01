@@ -1,8 +1,19 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Tue, 22 Oct 2024 15:19:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 01 Nov 2024 08:07:38 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.23.10
+
+Fri, 01 Nov 2024 08:07:38 GMT
+
+### Patches
+
+- skip using npm client if running a node script (kchau@microsoft.com)
+- Bump @lage-run/config to v0.4.7
+- Bump @lage-run/runners to v1.0.7
+- Bump @lage-run/scheduler to v1.3.7
 
 ## 0.23.9
 

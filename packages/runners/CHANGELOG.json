@@ -2,6 +2,21 @@
   "name": "@lage-run/runners",
   "entries": [
     {
+      "date": "Fri, 01 Nov 2024 08:07:38 GMT",
+      "version": "1.0.7",
+      "tag": "@lage-run/runners_v1.0.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "0266df845498d81e8bfb2bd88abd5d4ad4177f6a",
+            "comment": "added a fix so that the \"shell\" command is only applied on windows"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 22 Oct 2024 15:19:29 GMT",
       "version": "1.0.6",
       "tag": "@lage-run/runners_v1.0.6",

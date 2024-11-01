@@ -1,8 +1,16 @@
 # Change Log - @lage-run/runners
 
-<!-- This log was last generated on Tue, 22 Oct 2024 15:19:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 01 Nov 2024 08:07:38 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.7
+
+Fri, 01 Nov 2024 08:07:38 GMT
+
+### Patches
+
+- added a fix so that the "shell" command is only applied on windows (kchau@microsoft.com)
 
 ## 1.0.6
 
