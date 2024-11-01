@@ -3,11 +3,12 @@ import { createTargetGraph } from "../run/createTargetGraph.js";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import type { ConfigOptions } from "@lage-run/config";
 import { getConfig } from "@lage-run/config";
-import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { type PackageInfos, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
 import { removeNodes, transitiveReduction } from "@lage-run/target-graph";
 import path from "path";
+import { parse } from "shell-quote";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { TargetGraph, Target } from "@lage-run/target-graph";
@@ -122,7 +123,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
 
   const optimizedTargets = await optimizeTargetGraph(targetGraph, runnerPicker);
   const binPaths = getBinPaths();
-  const packageTasks = optimizedTargets.map((target) => generatePackageTask(target, taskArgs, config, options, binPaths));
+  const packageTasks = optimizedTargets.map((target) => generatePackageTask(target, taskArgs, config, options, binPaths, packageInfos));
 
   logger.info("info", {
     command: command.args,
@@ -153,9 +154,10 @@ function generatePackageTask(
   taskArgs: string[],
   config: ConfigOptions,
   options: InfoActionOptions,
-  binPaths: { lage: string; "lage-server": string }
+  binPaths: { lage: string; "lage-server": string },
+  packageInfos: PackageInfos
 ): PackageTask {
-  const command = generateCommand(target, taskArgs, config, options, binPaths);
+  const command = generateCommand(target, taskArgs, config, options, binPaths, packageInfos);
   const workingDirectory = getWorkingDirectory(target);
 
   const packageTask: PackageTask = {
@@ -175,12 +177,24 @@ function generateCommand(
   taskArgs: string[],
   config: ConfigOptions,
   options: InfoActionOptions,
-  binPaths: { lage: string; "lage-server": string }
+  binPaths: { lage: string; "lage-server": string },
+  packageInfos: PackageInfos
 ) {
   const shouldRunWorkersAsService =
     (typeof process.env.LAGE_WORKER_SERVER === "string" && process.env.LAGE_WORKER_SERVER !== "false") || !!options.server;
 
   if (target.type === "npmScript") {
+    const script = target.packageName !== undefined ? packageInfos[target.packageName]?.scripts?.[target.task] : undefined;
+
+    // If the script is a node script, and that it does not have any shell operators (&&, ||, etc)
+    // then we can simply pass this along to info command rather than using npm client to run it.
+    if (script && script.startsWith("node")) {
+      const parsed = parse(script);
+      if (parsed.length > 0 && parsed.every((entry) => typeof entry === "string")) {
+        return parsed as string[];
+      }
+    }
+
     const npmClient = config.npmClient ?? "npm";
     const command = [npmClient, ...getNpmArgs(target.task, taskArgs)];
     return command;
