@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "added a fix so that the \"shell\" command is only applied on windows",
+      "packageName": "@lage-run/runners",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
