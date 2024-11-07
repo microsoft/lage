@@ -35,7 +35,7 @@ export async function createCache(options: CreateCacheOptions) {
           }),
     remoteCacheProvider: hasRemoteCacheConfig ? new BackfillCacheProvider({ logger, root, cacheOptions: cacheOptions ?? {} }) : undefined,
     writeRemoteCache:
-      cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI,
+      (cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI) && String(process.env.LAGE_WRITE_CACHE).toLowerCase() !== "false",
   });
 
   return { cacheProvider };
