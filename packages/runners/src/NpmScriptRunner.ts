@@ -48,7 +48,19 @@ export class NpmScriptRunner implements TargetRunner {
 
   async shouldRun(target: Target) {
     // By convention, do not run anything if there is no script for this task defined in package.json (counts as "success")
-    return await this.hasNpmScript(target);
+    const hasNpmScript = await this.hasNpmScript(target);
+
+    if (target.options?.shouldRun) {
+      const result = target.options.shouldRun(target, hasNpmScript);
+
+      if (result.then) {
+        return await result;
+      }
+
+      return result;
+    }
+
+    return hasNpmScript;
   }
 
   async run(runOptions: TargetRunnerOptions) {
