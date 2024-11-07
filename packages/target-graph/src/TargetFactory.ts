@@ -67,9 +67,11 @@ export class TargetFactory {
       environmentGlob,
       weight: 1,
       options,
+      shouldRun: true,
     };
 
     target.weight = getWeight(target, weight, maxWorkers);
+    target.shouldRun = this.shouldRun(config, target);
 
     return target;
   }
@@ -95,10 +97,20 @@ export class TargetFactory {
       environmentGlob,
       weight: 1,
       options,
+      shouldRun: true,
     };
 
     target.weight = getWeight(target, weight, maxWorkers);
+    target.shouldRun = this.shouldRun(config, target);
 
     return target;
+  }
+
+  shouldRun(config: TargetConfig, target: Target) {
+    if (typeof config.shouldRun === "function") {
+      return config.shouldRun(target);
+    }
+
+    return true;
   }
 }
