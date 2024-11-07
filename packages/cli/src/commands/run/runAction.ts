@@ -49,7 +49,7 @@ export async function runAction(options: RunOptions, command: Command) {
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
-  const targetGraph = createTargetGraph({
+  const targetGraph = await createTargetGraph({
     logger,
     root,
     dependencies: options.dependencies,

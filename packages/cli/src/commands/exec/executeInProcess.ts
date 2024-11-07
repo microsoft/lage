@@ -106,7 +106,9 @@ export async function executeInProcess({ cwd, args, nodeArg, logger }: ExecuteIn
 
   const definition = expandTargetDefinition(isGlobal ? undefined : info.name, task, pipeline, config.cacheOptions.outputGlob ?? []);
 
-  const target = isGlobal ? factory.createGlobalTarget(task, definition) : factory.createPackageTarget(info.name, task, definition);
+  const target = isGlobal
+    ? await factory.createGlobalTarget(task, definition)
+    : await factory.createPackageTarget(info.name, task, definition);
   const pickerOptions = runnerPickerOptions(nodeArg, config.npmClient, taskArgs);
 
   const runnerPicker = new TargetRunnerPicker(pickerOptions);

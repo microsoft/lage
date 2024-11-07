@@ -75,5 +75,5 @@ export interface TargetConfig {
    */
   options?: Record<string, any>;
 
-  shouldRun?: (target: Target) => boolean;
+  shouldRun?: (target: Target) => boolean | Promise<boolean>;
 }

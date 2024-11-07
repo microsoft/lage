@@ -60,21 +60,21 @@ export class WorkspaceTargetGraphBuilder {
    * @param id
    * @param targetDefinition
    */
-  addTargetConfig(id: string, config: TargetConfig = {}): void {
+  async addTargetConfig(id: string, config: TargetConfig = {}) {
     // Generates a target definition from the target config
     if (id.startsWith("//") || id.startsWith("#")) {
-      const target = this.targetFactory.createGlobalTarget(id, config);
+      const target = await this.targetFactory.createGlobalTarget(id, config);
       this.graphBuilder.addTarget(target);
       this.hasRootTarget = true;
     } else if (id.includes("#")) {
       const { packageName, task } = getPackageAndTask(id);
-      const target = this.targetFactory.createPackageTarget(packageName!, task, config);
+      const target = await this.targetFactory.createPackageTarget(packageName!, task, config);
       this.graphBuilder.addTarget(target);
     } else {
       const packages = Object.keys(this.packageInfos);
       for (const packageName of packages) {
         const task = id;
-        const target = this.targetFactory.createPackageTarget(packageName!, task, config);
+        const target = await this.targetFactory.createPackageTarget(packageName!, task, config);
         this.graphBuilder.addTarget(target);
       }
     }
