@@ -33,7 +33,10 @@ module.exports = async function transpile(data) {
           .replace(".tsx", ".js")
           .replace(".ts", ".js");
 
-        const swcOutput = await swc.transformFile(fullPath, { ...swcOptions, sourceFileName: path.relative(path.dirname(dest), fullPath).replace(/\\/g, "/") });
+        const swcOutput = await swc.transformFile(fullPath, {
+          ...swcOptions,
+          sourceFileName: path.relative(path.dirname(dest), fullPath).replace(/\\/g, "/"),
+        });
 
         const destMap = dest + ".map";
         await fsPromises.mkdir(path.dirname(dest), { recursive: true });
