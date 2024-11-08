@@ -1,8 +1,17 @@
 # Change Log - @lage-run/runners
 
-<!-- This log was last generated on Fri, 01 Nov 2024 08:07:38 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 08 Nov 2024 19:45:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.1.0
+
+Fri, 08 Nov 2024 19:45:09 GMT
+
+### Minor changes
+
+- add "shouldRun()" config to the target config (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.10.0
 
 ## 1.0.7
 

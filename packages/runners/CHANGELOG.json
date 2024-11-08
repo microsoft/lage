@@ -2,6 +2,27 @@
   "name": "@lage-run/runners",
   "entries": [
     {
+      "date": "Fri, 08 Nov 2024 19:45:09 GMT",
+      "version": "1.1.0",
+      "tag": "@lage-run/runners_v1.1.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "9b607e71231095c06d49b69e9d5fecb72a542bdd",
+            "comment": "add \"shouldRun()\" config to the target config"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.10.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 Nov 2024 08:07:38 GMT",
       "version": "1.0.7",
       "tag": "@lage-run/runners_v1.0.7",

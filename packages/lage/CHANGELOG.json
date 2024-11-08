@@ -2,6 +2,27 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 08 Nov 2024 19:45:09 GMT",
+      "version": "2.11.12",
+      "tag": "lage_v2.11.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.24.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/runners to v1.1.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 08 Nov 2024 19:27:44 GMT",
       "version": "2.11.11",
       "tag": "lage_v2.11.11",

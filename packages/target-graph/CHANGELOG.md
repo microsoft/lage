@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-<!-- This log was last generated on Tue, 22 Oct 2024 15:19:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 08 Nov 2024 19:45:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.10.0
+
+Fri, 08 Nov 2024 19:45:09 GMT
+
+### Minor changes
+
+- add "shouldRun()" config to the target config (kchau@microsoft.com)
 
 ## 0.9.3
 

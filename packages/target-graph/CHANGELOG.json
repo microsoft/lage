@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Fri, 08 Nov 2024 19:45:09 GMT",
+      "version": "0.10.0",
+      "tag": "@lage-run/target-graph_v0.10.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "9b607e71231095c06d49b69e9d5fecb72a542bdd",
+            "comment": "add \"shouldRun()\" config to the target config"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 22 Oct 2024 15:19:29 GMT",
       "version": "0.9.3",
       "tag": "@lage-run/target-graph_v0.9.3",
