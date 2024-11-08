@@ -1922,6 +1922,7 @@ __metadata:
   dependencies:
     "@lage-run/monorepo-scripts": "npm:*"
     jest-diff: "npm:^29.5.0"
+    p-limit: "npm:^3.1.0"
     workspace-tools: "npm:0.37.0"
   languageName: unknown
   linkType: soft

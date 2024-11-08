@@ -38,16 +38,16 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
 
   for (const [id, definition] of Object.entries(pipeline)) {
     if (Array.isArray(definition)) {
-      await builder.addTargetConfig(id, {
+      builder.addTargetConfig(id, {
         cache: true,
         dependsOn: definition,
         options: {},
         outputs,
       });
     } else {
-      await builder.addTargetConfig(id, definition);
+      builder.addTargetConfig(id, definition);
     }
   }
 
-  return builder.build(tasks, packages);
+  return await builder.build(tasks, packages);
 }

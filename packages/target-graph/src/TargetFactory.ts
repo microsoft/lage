@@ -42,7 +42,7 @@ export class TargetFactory {
    * @param config
    * @returns a package task `Target`
    */
-  async createPackageTarget(packageName: string, task: string, config: TargetConfig): Promise<Target> {
+  createPackageTarget(packageName: string, task: string, config: TargetConfig): Target {
     const { resolve } = this.options;
     const { options, deps, dependsOn, cache, inputs, priority, maxWorkers, environmentGlob, weight } = config;
     const cwd = resolve(packageName);
@@ -75,7 +75,7 @@ export class TargetFactory {
     return target;
   }
 
-  async createGlobalTarget(id: string, config: TargetConfig): Promise<Target> {
+  createGlobalTarget(id: string, config: TargetConfig): Target {
     const { root } = this.options;
     const { options, deps, dependsOn, cache, inputs, outputs, priority, maxWorkers, environmentGlob, weight } = config;
     const { task } = getPackageAndTask(id);
