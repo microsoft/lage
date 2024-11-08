@@ -74,4 +74,6 @@ export interface TargetConfig {
    * Run options for the Target Runner. (e.g. `{ env: ...process.env, colors: true, ... }`)
    */
   options?: Record<string, any>;
+
+  shouldRun?: (target: Target) => boolean | Promise<boolean>;
 }

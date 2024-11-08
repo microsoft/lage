@@ -71,7 +71,7 @@ async function initialize({ cwd, logger, serverControls, nodeArg, taskArgs, maxW
     const packageInfos = getPackageInfos(root);
     const tasks = findAllTasks(pipeline);
 
-    const targetGraph = createTargetGraph({
+    const targetGraph = await createTargetGraph({
       logger,
       root,
       dependencies: false,

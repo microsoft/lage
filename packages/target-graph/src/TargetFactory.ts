@@ -67,6 +67,7 @@ export class TargetFactory {
       environmentGlob,
       weight: 1,
       options,
+      shouldRun: true,
     };
 
     target.weight = getWeight(target, weight, maxWorkers);
@@ -95,6 +96,7 @@ export class TargetFactory {
       environmentGlob,
       weight: 1,
       options,
+      shouldRun: true,
     };
 
     target.weight = getWeight(target, weight, maxWorkers);

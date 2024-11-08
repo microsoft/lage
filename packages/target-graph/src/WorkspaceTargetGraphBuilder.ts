@@ -6,9 +6,11 @@ import path from "path";
 
 import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
 import type { PackageInfos } from "workspace-tools";
+import type { Target } from "./types/Target.js";
 import type { TargetConfig } from "./types/TargetConfig.js";
 import { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 import { TargetFactory } from "./TargetFactory.js";
+import pLimit from "p-limit";
 
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
@@ -32,6 +34,8 @@ export class WorkspaceTargetGraphBuilder {
   private targetFactory: TargetFactory;
 
   private hasRootTarget = false;
+
+  private targetConfigMap = new Map<string, TargetConfig>();
 
   /**
    * Initializes the builder with package infos
@@ -60,24 +64,35 @@ export class WorkspaceTargetGraphBuilder {
    * @param id
    * @param targetDefinition
    */
-  addTargetConfig(id: string, config: TargetConfig = {}): void {
+  async addTargetConfig(id: string, config: TargetConfig = {}) {
     // Generates a target definition from the target config
     if (id.startsWith("//") || id.startsWith("#")) {
       const target = this.targetFactory.createGlobalTarget(id, config);
       this.graphBuilder.addTarget(target);
+      this.targetConfigMap.set(id, config);
       this.hasRootTarget = true;
     } else if (id.includes("#")) {
       const { packageName, task } = getPackageAndTask(id);
       const target = this.targetFactory.createPackageTarget(packageName!, task, config);
       this.graphBuilder.addTarget(target);
+      this.targetConfigMap.set(id, config);
     } else {
       const packages = Object.keys(this.packageInfos);
       for (const packageName of packages) {
         const task = id;
         const target = this.targetFactory.createPackageTarget(packageName!, task, config);
         this.graphBuilder.addTarget(target);
+        this.targetConfigMap.set(id, config);
       }
     }
+  }
+
+  shouldRun(config: TargetConfig, target: Target) {
+    if (typeof config.shouldRun === "function") {
+      return config.shouldRun(target);
+    }
+
+    return true;
   }
 
   /**
@@ -93,7 +108,7 @@ export class WorkspaceTargetGraphBuilder {
    * @param scope
    * @returns
    */
-  build(tasks: string[], scope?: string[]) {
+  async build(tasks: string[], scope?: string[]) {
     // Expands the dependency specs from the target definitions
     const fullDependencies = expandDepSpecs(this.graphBuilder.targets, this.dependencyMap);
 
@@ -123,6 +138,21 @@ export class WorkspaceTargetGraphBuilder {
     }
 
     const subGraph = this.graphBuilder.subgraph(subGraphEntries);
+
+    const limit = pLimit(8);
+    const setShouldRunPromises: Promise<void>[] = [];
+    for (const target of subGraph.targets.values()) {
+      const config = this.targetConfigMap.get(target.id);
+      if (config) {
+        setShouldRunPromises.push(
+          limit(async () => {
+            target.shouldRun = await this.shouldRun(config, target);
+          })
+        );
+      }
+    }
+
+    await Promise.all(setShouldRunPromises);
 
     return {
       targets: subGraph.targets,

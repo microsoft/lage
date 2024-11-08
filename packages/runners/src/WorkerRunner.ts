@@ -50,10 +50,10 @@ export class WorkerRunner implements TargetRunner {
     const scriptModule = await this.getScriptModule(target);
 
     if (typeof scriptModule.shouldRun === "function") {
-      return await scriptModule.shouldRun(target);
+      return (await scriptModule.shouldRun(target)) && (target.shouldRun ?? true);
     }
 
-    return true;
+    return target.shouldRun ?? true;
   }
 
   async run(runOptions: TargetRunnerOptions) {

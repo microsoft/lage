@@ -17,6 +17,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
+    "p-limit": "^3.1.0",
     "workspace-tools": "0.37.0"
   },
   "devDependencies": {

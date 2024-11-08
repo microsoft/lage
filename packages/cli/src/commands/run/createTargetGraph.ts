@@ -19,7 +19,7 @@ interface CreateTargetGraphOptions {
   packageInfos: PackageInfos;
 }
 
-export function createTargetGraph(options: CreateTargetGraphOptions) {
+export async function createTargetGraph(options: CreateTargetGraphOptions) {
   const { logger, root, dependencies, dependents, since, scope, repoWideChanges, ignore, pipeline, outputs, tasks, packageInfos } = options;
 
   const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
@@ -49,5 +49,5 @@ export function createTargetGraph(options: CreateTargetGraphOptions) {
     }
   }
 
-  return builder.build(tasks, packages);
+  return await builder.build(tasks, packages);
 }
