@@ -1,8 +1,16 @@
 # Change Log - lage
 
-<!-- This log was last generated on Fri, 01 Nov 2024 08:07:38 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 08 Nov 2024 19:27:44 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.11.11
+
+Fri, 08 Nov 2024 19:27:44 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.23.11
 
 ## 2.11.10
 

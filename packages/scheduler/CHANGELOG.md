@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-<!-- This log was last generated on Fri, 01 Nov 2024 08:07:38 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 08 Nov 2024 19:27:44 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.8
+
+Fri, 08 Nov 2024 19:27:44 GMT
+
+### Patches
+
+- Escape with env.LAGE_WRITE_CACHE (brunoru@microsoft.com)
 
 ## 1.3.7
 
