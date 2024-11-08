@@ -71,7 +71,6 @@ export class TargetFactory {
     };
 
     target.weight = getWeight(target, weight, maxWorkers);
-    target.shouldRun = await this.shouldRun(config, target);
 
     return target;
   }
@@ -101,16 +100,7 @@ export class TargetFactory {
     };
 
     target.weight = getWeight(target, weight, maxWorkers);
-    target.shouldRun = await this.shouldRun(config, target);
 
     return target;
-  }
-
-  shouldRun(config: TargetConfig, target: Target) {
-    if (typeof config.shouldRun === "function") {
-      return config.shouldRun(target);
-    }
-
-    return true;
   }
 }

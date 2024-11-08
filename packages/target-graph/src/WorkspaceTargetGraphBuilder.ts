@@ -80,6 +80,14 @@ export class WorkspaceTargetGraphBuilder {
     }
   }
 
+  shouldRun(config: TargetConfig, target: Target) {
+    if (typeof config.shouldRun === "function") {
+      return config.shouldRun(target);
+    }
+
+    return true;
+  }
+
   /**
    * Builds a scoped target graph for given tasks and packages
    *
