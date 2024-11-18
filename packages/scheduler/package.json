@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/scheduler",
-  "version": "1.3.9",
+  "version": "1.3.10",
   "description": "Scheduler for Lage",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
   "dependencies": {
     "@lage-run/cache": "^1.3.8",
     "@lage-run/config": "^0.4.8",
-    "@lage-run/hasher": "^1.6.4",
+    "@lage-run/hasher": "^1.6.5",
     "@lage-run/logger": "^1.3.1",
     "@lage-run/runners": "^1.1.0",
     "@lage-run/target-graph": "^0.10.0",
