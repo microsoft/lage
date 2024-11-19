@@ -75,5 +75,25 @@ export interface TargetConfig {
    */
   options?: Record<string, any>;
 
+  /**
+   * An optionally async function that determines whether a target should run or not.
+   */
   shouldRun?: (target: Target) => boolean | Promise<boolean>;
+
+  /**
+   * Whether this task is one that can be run as a task that runs over a list of git staged files
+   * e.g. `lage run --since origin/master`, when encountering this task, it'll add this single task into the graph instead of
+   * package tasks.
+   */
+  stagedTarget?: Omit<TargetConfig, "stagedTask" | "stagedTargetThreshold" | "runEvenNotStaged">;
+
+  /**
+   * The number of staged files that causes this target to not be run as a staged target, and instead be run as a package task.
+   */
+  stagedTargetThreshold?: number;
+
+  /**
+   * Whether to always run this target event if it's not staged
+   */
+  runEvenNotStaged?: boolean;
 }
