@@ -2,7 +2,7 @@ import { join } from "path";
 import { readFile } from "fs/promises";
 import { spawn, type ChildProcess } from "child_process";
 import os from "os";
-import type { TargetRunner, TargetRunnerOptions } from "./types/TargetRunner.js";
+import type { RunnerResult, TargetRunner, TargetRunnerOptions } from "./types/TargetRunner.js";
 import type { Target } from "@lage-run/target-graph";
 
 export interface NpmScriptRunnerOptions {
@@ -53,7 +53,7 @@ export class NpmScriptRunner implements TargetRunner {
     return hasNpmScript && (target.shouldRun ?? true);
   }
 
-  async run(runOptions: TargetRunnerOptions) {
+  async run(runOptions: TargetRunnerOptions): Promise<RunnerResult> {
     const { target, weight, abortSignal } = runOptions;
     const { nodeOptions, npmCmd, taskArgs } = this.options;
     const task = target.options?.script ?? target.task;
@@ -66,7 +66,7 @@ export class NpmScriptRunner implements TargetRunner {
      */
     if (abortSignal) {
       if (abortSignal.aborted) {
-        return;
+        return { exitCode: 1 };
       }
 
       const abortSignalHandler = () => {
@@ -101,7 +101,7 @@ export class NpmScriptRunner implements TargetRunner {
     const npmRunArgs = this.getNpmArgs(task, taskArgs);
     const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter((str) => str).join(" ");
 
-    await new Promise<void>((resolve, reject) => {
+    return await new Promise<RunnerResult>((resolve, reject) => {
       childProcess = spawn(npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: ["inherit", "pipe", "pipe"],
@@ -134,10 +134,10 @@ export class NpmScriptRunner implements TargetRunner {
         childProcess?.stdin?.destroy();
 
         if (code === 0) {
-          return resolve();
+          return resolve({ exitCode: code });
         }
 
-        reject(new Error(`NPM Script Runner: ${npmCmd} ${npmRunArgs.join(" ")} exited with code ${code}`));
+        reject({ exitCode: code, error: new Error(`NPM Script Runner: ${npmCmd} ${npmRunArgs.join(" ")} exited with code ${code}`) });
       };
 
       const { pid } = childProcess;

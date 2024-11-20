@@ -1,4 +1,4 @@
-import type { TargetRunner, TargetRunnerOptions } from "./types/TargetRunner.js";
+import type { RunnerResult, TargetRunner, TargetRunnerOptions } from "./types/TargetRunner.js";
 import type { Target } from "@lage-run/target-graph";
 import { pathToFileURL } from "url";
 
@@ -56,7 +56,7 @@ export class WorkerRunner implements TargetRunner {
     return target.shouldRun ?? true;
   }
 
-  async run(runOptions: TargetRunnerOptions) {
+  async run(runOptions: TargetRunnerOptions): Promise<RunnerResult> {
     const { target, weight, abortSignal } = runOptions;
     const { taskArgs } = this.options;
 
