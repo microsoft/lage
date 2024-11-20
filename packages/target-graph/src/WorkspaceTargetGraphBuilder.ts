@@ -7,7 +7,7 @@ import path from "path";
 import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
 import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target.js";
-import type { TargetConfig } from "./types/TargetConfig.js";
+import type { StagedTargetConfig, TargetConfig } from "./types/TargetConfig.js";
 import { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 import { TargetFactory } from "./TargetFactory.js";
 import pLimit from "p-limit";
@@ -86,6 +86,8 @@ export class WorkspaceTargetGraphBuilder {
       }
     }
   }
+
+  async addStagedTargetConfig(id: string, config: StagedTargetConfig = {}) {}
 
   shouldRun(config: TargetConfig, target: Target) {
     if (typeof config.shouldRun === "function") {

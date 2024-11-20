@@ -85,15 +85,48 @@ export interface TargetConfig {
    * e.g. `lage run --since origin/master`, when encountering this task, it'll add this single task into the graph instead of
    * package tasks.
    */
-  stagedTarget?: Omit<TargetConfig, "stagedTask" | "stagedTargetThreshold" | "runEvenNotStaged">;
+  stagedTarget?: StagedTargetConfig;
+}
+
+export interface StagedTargetConfig {
+  /**
+   * The type of the target - The configuration parser will use the id of the target to determine the type.
+   * e.g. npmScript, worker
+   */
+  type?: string;
 
   /**
-   * The number of staged files that causes this target to not be run as a staged target, and instead be run as a package task.
+   * The dependencies of the target. Dependencies are target specs in one of these forms:
+   * - "pkg-a#build"
+   * - "build"
+   * - "^build"
+   * - "^^build"
    */
-  stagedTargetThreshold?: number;
+  dependsOn?: string[];
 
   /**
-   * Whether to always run this target event if it's not staged
+   * Priority of the target. A priority of >0 will always be prioritized over the default targets in queue
    */
-  runEvenNotStaged?: boolean;
+  priority?: number;
+
+  /**
+   * Weight of a target - used to determine the number of "worker slots" to dedicate to a target
+   *
+   * Even if we have workers "free", we might not want to dedicate them to a target that is very heavy (i.e. takes multiple CPU cores).
+   * An example is jest targets that can take up multiple cores with its own worker pool.
+   *
+   * This weight will be "culled" to the max number of workers (concurrency) for the target type. (i.e. maxWorkers above)
+   */
+  weight?: number | ((target: Target, maxWorkers?: number) => number);
+
+  /**
+   * Run options for the Target Runner. (e.g. `{ env: ...process.env, colors: true, ... }`)
+   */
+  options?: Record<string, any>;
+
+  /**
+   * A threshold of changed files that determines whether a target should run or not. Target will only run if number of changed files
+   * is below this threshold.
+   */
+  threshold?: number;
 }

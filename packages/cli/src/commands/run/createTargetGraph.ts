@@ -1,14 +1,7 @@
 import type { Logger } from "@lage-run/logger";
 import { WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
-import type {
-  PackageInfos} from "workspace-tools";
-import {
-  getBranchChanges,
-  getDefaultRemoteBranch,
-  getStagedChanges,
-  getUnstagedChanges,
-  getUntrackedChanges,
-} from "workspace-tools";
+import type { PackageInfos } from "workspace-tools";
+import { getBranchChanges, getDefaultRemoteBranch, getStagedChanges, getUnstagedChanges, getUntrackedChanges } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import type { PipelineDefinition } from "@lage-run/config";
 
@@ -73,13 +66,8 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
         outputs,
       });
     } else {
-      if (
-        since &&
-        changedFiles.length > 0 &&
-        changedFiles.length <= (definition.stagedTargetThreshold ?? 0) &&
-        !definition.runEvenNotStaged
-      ) {
-        builder.addTargetConfig(id, definition.stagedTarget);
+      if (since && changedFiles.length > 0 && changedFiles.length <= (definition.stagedTarget?.threshold ?? 0)) {
+        builder.addStagedTargetConfig(id, definition.stagedTarget);
       } else {
         builder.addTargetConfig(id, definition);
       }
