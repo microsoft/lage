@@ -1,8 +1,17 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Mon, 18 Nov 2024 23:22:30 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 20 Nov 2024 08:12:37 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.6.6
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.1 (email not defined)
+- Bump @lage-run/target-graph to v0.10.1
 
 ## 1.6.5
 

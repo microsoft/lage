@@ -1,8 +1,18 @@
 # Change Log - lage
 
-<!-- This log was last generated on Wed, 20 Nov 2024 02:43:43 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 20 Nov 2024 08:12:37 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.11.15
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.1 (email not defined)
+- Bump @lage-run/cli to v0.24.3
+- Bump @lage-run/runners to v1.1.2
 
 ## 2.11.14
 

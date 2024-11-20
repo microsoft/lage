@@ -2,6 +2,33 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Wed, 20 Nov 2024 08:12:37 GMT",
+      "version": "2.11.15",
+      "tag": "lage_v2.11.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "c6e9f4e5339a897dd06a54fe528a1fadd75db243",
+            "comment": "Update dependency workspace-tools to v0.38.1"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.24.3",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/runners to v1.1.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Nov 2024 02:43:43 GMT",
       "version": "2.11.14",
       "tag": "lage_v2.11.14",
