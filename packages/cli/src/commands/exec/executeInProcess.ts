@@ -114,11 +114,18 @@ export async function executeInProcess({ cwd, args, nodeArg, logger }: ExecuteIn
 
   if (await runner.shouldRun(target)) {
     logger.info("Running target", { target });
-    await runner.run({
+    const result = await runner.run({
       target,
       weight: 1,
       abortSignal: new AbortController().signal,
     });
+
+    if (typeof result?.exitCode !== "undefined" && result.exitCode !== 0) {
+      logger.error("Failed", { target });
+      process.exitCode = result.exitCode;
+      return;
+    }
+
     logger.info("Finished", { target });
   }
 }
