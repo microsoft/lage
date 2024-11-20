@@ -1,8 +1,16 @@
 # Change Log - @lage-run/runners
 
-<!-- This log was last generated on Fri, 08 Nov 2024 19:45:09 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 20 Nov 2024 02:43:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.1.1
+
+Wed, 20 Nov 2024 02:43:43 GMT
+
+### Patches
+
+- adding exit code support for executeInProcess (kchau@microsoft.com)
 
 ## 1.1.0
 

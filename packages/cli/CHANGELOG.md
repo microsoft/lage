@@ -1,8 +1,19 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Mon, 18 Nov 2024 23:22:30 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 20 Nov 2024 02:43:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.24.2
+
+Wed, 20 Nov 2024 02:43:43 GMT
+
+### Patches
+
+- adding exit code support for executeInProcess (kchau@microsoft.com)
+- Bump @lage-run/config to v0.4.9
+- Bump @lage-run/runners to v1.1.1
+- Bump @lage-run/scheduler to v1.3.11
 
 ## 0.24.1
 

@@ -2,6 +2,21 @@
   "name": "@lage-run/runners",
   "entries": [
     {
+      "date": "Wed, 20 Nov 2024 02:43:43 GMT",
+      "version": "1.1.1",
+      "tag": "@lage-run/runners_v1.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "d2ddec2c03ec7dd371d2f3300fb44061ac966cbc",
+            "comment": "adding exit code support for executeInProcess"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 08 Nov 2024 19:45:09 GMT",
       "version": "1.1.0",
       "tag": "@lage-run/runners_v1.1.0",
