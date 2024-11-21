@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Wed, 20 Nov 2024 08:12:37 GMT",
+      "version": "0.10.1",
+      "tag": "@lage-run/target-graph_v0.10.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "c6e9f4e5339a897dd06a54fe528a1fadd75db243",
+            "comment": "Update dependency workspace-tools to v0.38.1"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 08 Nov 2024 19:45:09 GMT",
       "version": "0.10.0",
       "tag": "@lage-run/target-graph_v0.10.0",
