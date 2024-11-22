@@ -2,7 +2,7 @@ import type { StagedTargetConfig, TargetConfig } from "./types/TargetConfig.js";
 import type { Target } from "./types/Target.js";
 import type { PackageInfos } from "workspace-tools";
 
-import { getPackageAndTask, getTargetId } from "./targetId.js";
+import { getPackageAndTask, getStagedTargetId, getTargetId } from "./targetId.js";
 import { getWeight } from "./getWeight.js";
 
 export interface TargetFactoryOptions {
@@ -124,7 +124,7 @@ export class TargetFactory {
         break;
     }
 
-    const id = `#${task}Δ`;
+    const id = getStagedTargetId(task);
     const target = {
       id,
       label: id,

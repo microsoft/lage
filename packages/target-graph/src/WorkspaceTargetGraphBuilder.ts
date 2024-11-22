@@ -1,5 +1,5 @@
 import { createDependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
-import { getPackageAndTask, getTargetId } from "./targetId.js";
+import { getPackageAndTask, getStagedTargetId, getTargetId } from "./targetId.js";
 import { expandDepSpecs } from "./expandDepSpecs.js";
 
 import path from "path";
@@ -34,6 +34,8 @@ export class WorkspaceTargetGraphBuilder {
   private targetFactory: TargetFactory;
 
   private hasRootTarget = false;
+
+  private hasStagedTarget = false;
 
   private targetConfigMap = new Map<string, TargetConfig>();
 
@@ -107,19 +109,28 @@ export class WorkspaceTargetGraphBuilder {
       return;
     }
 
+    this.hasStagedTarget = true;
+
     // First convert the parent to be a NO-OP, not cached, and should run always
     parentTarget.type = "noop";
     parentTarget.cache = false;
-    parentTarget.shouldRun = true;
+    parentTarget.shouldRun = false;
 
     // Create a staged target for the parent target
-    const stagedTarget = this.targetFactory.createStagedTarget(parentTarget.task, config.stagedTarget, changedFiles);
+    const id = getStagedTargetId(parentTarget.task);
+    const stagedTarget = this.graphBuilder.targets.has(id)
+      ? this.graphBuilder.targets.get(id)!
+      : this.targetFactory.createStagedTarget(parentTarget.task, config.stagedTarget, changedFiles);
 
     // Add the staged target to the graph
     this.graphBuilder.addTarget(stagedTarget);
 
-    // Add all the parent target dependencies as the staged dependencies
-    stagedTarget.dependencies = parentTarget.dependencies;
+    // Add all the parent target dependencies as the staged dependencies as unique set
+    const depSet = new Set<string>(stagedTarget.dependencies);
+    for (const dep of parentTarget.dependencies) {
+      depSet.add(dep);
+    }
+    stagedTarget.dependencies = Array.from(depSet);
 
     // If parent target has dependents, we need to throw an error
     if (parentTarget.dependents.length > 0) {
@@ -175,6 +186,13 @@ export class WorkspaceTargetGraphBuilder {
         const globalTargetId = getTargetId(undefined, task);
         if (this.graphBuilder.targets.has(globalTargetId)) {
           subGraphEntries.push(globalTargetId);
+        }
+      }
+
+      if (this.hasStagedTarget) {
+        const stagedTargetId = getStagedTargetId(task);
+        if (this.graphBuilder.targets.has(stagedTargetId)) {
+          subGraphEntries.push(stagedTargetId);
         }
       }
     }

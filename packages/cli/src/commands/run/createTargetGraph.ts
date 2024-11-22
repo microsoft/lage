@@ -54,6 +54,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
 
   let changedFiles: string[] = [];
   if (since) {
+    // TODO: enhancement would be for workspace-tools to implement a "getChangedPackageFromChangedFiles()" type function
     changedFiles = getChangedFiles(since, root);
   }
 

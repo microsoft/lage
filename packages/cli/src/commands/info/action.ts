@@ -6,17 +6,17 @@ import { getConfig } from "@lage-run/config";
 import { type PackageInfos, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
-import { removeNodes, transitiveReduction } from "@lage-run/target-graph";
 import path from "path";
 import { parse } from "shell-quote";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import type { TargetGraph, Target } from "@lage-run/target-graph";
+import type { Target } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
 import { TargetRunnerPicker } from "@lage-run/runners";
 import { getBinPaths } from "../../getBinPaths.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { parseServerOption } from "../parseServerOption.js";
+import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
 
 interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
@@ -130,23 +130,6 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
     scope,
     packageTasks,
   });
-}
-
-async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: TargetRunnerPicker) {
-  const targetMinimizedNodes = await removeNodes([...graph.targets.values()], async (target) => {
-    if (target.type === "noop") {
-      return true;
-    }
-
-    const runner = await runnerPicker.pick(target);
-    if (!(await runner.shouldRun(target))) {
-      return true;
-    }
-
-    return false;
-  });
-
-  return transitiveReduction(targetMinimizedNodes);
 }
 
 function generatePackageTask(
