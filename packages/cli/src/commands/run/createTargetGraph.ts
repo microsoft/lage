@@ -59,18 +59,18 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
 
   for (const [id, definition] of Object.entries(pipeline)) {
     if (Array.isArray(definition)) {
-      builder.addTargetConfig(id, {
-        cache: true,
-        dependsOn: definition,
-        options: {},
-        outputs,
-      });
+      builder.addTargetConfig(
+        id,
+        {
+          cache: true,
+          dependsOn: definition,
+          options: {},
+          outputs,
+        },
+        changedFiles
+      );
     } else {
-      if (since && changedFiles.length > 0 && changedFiles.length <= (definition.stagedTarget?.threshold ?? 0)) {
-        builder.addStagedTargetConfig(id, definition.stagedTarget);
-      } else {
-        builder.addTargetConfig(id, definition);
-      }
+      builder.addTargetConfig(id, definition, changedFiles);
     }
   }
 

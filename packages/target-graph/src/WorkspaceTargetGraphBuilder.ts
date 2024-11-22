@@ -64,18 +64,22 @@ export class WorkspaceTargetGraphBuilder {
    * @param id
    * @param targetDefinition
    */
-  async addTargetConfig(id: string, config: TargetConfig = {}) {
+  async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]) {
     // Generates a target definition from the target config
     if (id.startsWith("//") || id.startsWith("#")) {
       const target = this.targetFactory.createGlobalTarget(id, config);
       this.graphBuilder.addTarget(target);
       this.targetConfigMap.set(id, config);
       this.hasRootTarget = true;
+
+      this.processStagedConfig(target, config, changedFiles);
     } else if (id.includes("#")) {
       const { packageName, task } = getPackageAndTask(id);
       const target = this.targetFactory.createPackageTarget(packageName!, task, config);
       this.graphBuilder.addTarget(target);
       this.targetConfigMap.set(id, config);
+
+      this.processStagedConfig(target, config, changedFiles);
     } else {
       const packages = Object.keys(this.packageInfos);
       for (const packageName of packages) {
@@ -83,11 +87,47 @@ export class WorkspaceTargetGraphBuilder {
         const target = this.targetFactory.createPackageTarget(packageName!, task, config);
         this.graphBuilder.addTarget(target);
         this.targetConfigMap.set(id, config);
+
+        this.processStagedConfig(target, config, changedFiles);
       }
     }
   }
 
-  async addStagedTargetConfig(id: string, config: StagedTargetConfig = {}) {}
+  /**
+   * Side effects function on the passed in target
+   * @param parentTarget
+   * @param config
+   */
+  async processStagedConfig(parentTarget: Target, config: TargetConfig, changedFiles?: string[]) {
+    if (typeof config.stagedTarget === "undefined") {
+      return;
+    }
+
+    if (typeof changedFiles === "undefined" || changedFiles.length === 0) {
+      return;
+    }
+
+    // First convert the parent to be a NO-OP, not cached, and should run always
+    parentTarget.type = "noop";
+    parentTarget.cache = false;
+    parentTarget.shouldRun = true;
+
+    // Create a staged target for the parent target
+    const stagedTarget = this.targetFactory.createStagedTarget(parentTarget.task, config.stagedTarget, changedFiles);
+
+    // Add the staged target to the graph
+    this.graphBuilder.addTarget(stagedTarget);
+
+    // Add all the parent target dependencies as the staged dependencies
+    stagedTarget.dependencies = parentTarget.dependencies;
+
+    // If parent target has dependents, we need to throw an error
+    if (parentTarget.dependents.length > 0) {
+      throw new Error(
+        `Parent target ${parentTarget.id} cannot have dependents when it has a staged target while running with a --since flag`
+      );
+    }
+  }
 
   shouldRun(config: TargetConfig, target: Target) {
     if (typeof config.shouldRun === "function") {
