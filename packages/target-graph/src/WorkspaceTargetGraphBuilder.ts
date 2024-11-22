@@ -7,11 +7,12 @@ import path from "path";
 import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
 import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target.js";
-import type { StagedTargetConfig, TargetConfig } from "./types/TargetConfig.js";
+import type { TargetConfig } from "./types/TargetConfig.js";
 import { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 import { TargetFactory } from "./TargetFactory.js";
 import pLimit from "p-limit";
 
+const DEFAULT_STAGED_TARGET_THRESHOLD = 50;
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
  * generate a topological graph of targets (package + task) and their dependencies.
@@ -105,7 +106,11 @@ export class WorkspaceTargetGraphBuilder {
       return;
     }
 
-    if (typeof changedFiles === "undefined" || changedFiles.length === 0) {
+    if (
+      typeof changedFiles === "undefined" ||
+      changedFiles.length === 0 ||
+      changedFiles.length > (config.stagedTarget.threshold ?? DEFAULT_STAGED_TARGET_THRESHOLD)
+    ) {
       return;
     }
 
