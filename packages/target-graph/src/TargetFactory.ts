@@ -103,4 +103,33 @@ export class TargetFactory {
 
     return target;
   }
+
+  createStagedTarget(task: string, parentTargetId: string, config: TargetConfig): Target {
+    const { root } = this.options;
+    const { options, deps, dependsOn, cache, inputs, outputs, priority, maxWorkers, environmentGlob, weight } = config;
+    const id = `#${task}Δ`;
+    const target = {
+      id,
+      label: id,
+      type: "noop",
+      task,
+      cache: cache !== false,
+      cwd: root,
+      depSpecs: dependsOn ?? deps ?? [],
+      dependencies: [],
+      dependents: [],
+      inputs,
+      outputs,
+      priority,
+      maxWorkers,
+      environmentGlob,
+      weight: 1,
+      options,
+      shouldRun: true,
+    };
+
+    target.weight = getWeight(target, weight, maxWorkers);
+
+    return target;
+  }
 }
