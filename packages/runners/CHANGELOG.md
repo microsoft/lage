@@ -1,8 +1,17 @@
 # Change Log - @lage-run/runners
 
-<!-- This log was last generated on Wed, 20 Nov 2024 08:12:37 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 02 Dec 2024 17:23:22 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.2.0
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Minor changes
+
+- adds the ability to create stagedTargets (kchau@microsoft.com)
+- Bump @lage-run/target-graph to v0.11.0
 
 ## 1.1.2
 

@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Mon, 02 Dec 2024 17:23:22 GMT",
+      "version": "0.11.0",
+      "tag": "@lage-run/target-graph_v0.11.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "51d453bb81eb36a37656502fb716f611860d910e",
+            "comment": "adds the ability to create stagedTargets"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Nov 2024 08:12:37 GMT",
       "version": "0.10.1",
       "tag": "@lage-run/target-graph_v0.10.1",

@@ -2,6 +2,27 @@
   "name": "@lage-run/runners",
   "entries": [
     {
+      "date": "Mon, 02 Dec 2024 17:23:22 GMT",
+      "version": "1.2.0",
+      "tag": "@lage-run/runners_v1.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "51d453bb81eb36a37656502fb716f611860d910e",
+            "comment": "adds the ability to create stagedTargets"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.11.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Nov 2024 08:12:37 GMT",
       "version": "1.1.2",
       "tag": "@lage-run/runners_v1.1.2",
