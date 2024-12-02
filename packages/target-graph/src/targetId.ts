@@ -19,7 +19,9 @@ export function getTargetId(pkgName: string | undefined, task: string) {
  * @returns
  */
 export function getPackageAndTask(targetId: string) {
-  if (targetId.includes("#")) {
+  if (targetId.startsWith("Δ")) {
+    return { packageName: undefined, task: targetId.slice(1) };
+  } else if (targetId.includes("#")) {
     const parts = targetId.split("#");
 
     // `//#<task-name>` or `#<task-name>` means root by convention
@@ -36,4 +38,8 @@ export function getPackageAndTask(targetId: string) {
 const START_TARGET_ID = "__start";
 export function getStartTargetId() {
   return START_TARGET_ID;
+}
+
+export function getStagedTargetId(task: string) {
+  return `Δ${task}`;
 }

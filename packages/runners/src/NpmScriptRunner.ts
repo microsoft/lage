@@ -34,8 +34,8 @@ export class NpmScriptRunner implements TargetRunner {
 
   constructor(private options: NpmScriptRunnerOptions) {}
 
-  private getNpmArgs(task: string, taskTargs: string[]) {
-    const extraArgs = taskTargs.length > 0 ? ["--", ...taskTargs] : [];
+  private getNpmArgs(task: string, taskArgs: string[]) {
+    const extraArgs = taskArgs.length > 0 ? ["--", ...taskArgs] : [];
     return ["run", task, ...extraArgs];
   }
 
@@ -98,7 +98,9 @@ export class NpmScriptRunner implements TargetRunner {
     /**
      * Actually spawn the npm client to run the task
      */
-    const npmRunArgs = this.getNpmArgs(task, taskArgs);
+    const args = [...taskArgs, ...(target.options?.taskArgs ?? [])];
+
+    const npmRunArgs = this.getNpmArgs(task, args);
     const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter((str) => str).join(" ");
 
     return await new Promise<RunnerResult>((resolve, reject) => {

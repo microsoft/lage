@@ -1,5 +1,5 @@
 import { createDependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
-import { getPackageAndTask, getTargetId } from "./targetId.js";
+import { getPackageAndTask, getStagedTargetId, getTargetId } from "./targetId.js";
 import { expandDepSpecs } from "./expandDepSpecs.js";
 
 import path from "path";
@@ -12,6 +12,7 @@ import { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 import { TargetFactory } from "./TargetFactory.js";
 import pLimit from "p-limit";
 
+const DEFAULT_STAGED_TARGET_THRESHOLD = 50;
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
  * generate a topological graph of targets (package + task) and their dependencies.
@@ -34,6 +35,8 @@ export class WorkspaceTargetGraphBuilder {
   private targetFactory: TargetFactory;
 
   private hasRootTarget = false;
+
+  private hasStagedTarget = false;
 
   private targetConfigMap = new Map<string, TargetConfig>();
 
@@ -64,18 +67,22 @@ export class WorkspaceTargetGraphBuilder {
    * @param id
    * @param targetDefinition
    */
-  async addTargetConfig(id: string, config: TargetConfig = {}) {
+  async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]) {
     // Generates a target definition from the target config
     if (id.startsWith("//") || id.startsWith("#")) {
       const target = this.targetFactory.createGlobalTarget(id, config);
       this.graphBuilder.addTarget(target);
       this.targetConfigMap.set(id, config);
       this.hasRootTarget = true;
+
+      this.processStagedConfig(target, config, changedFiles);
     } else if (id.includes("#")) {
       const { packageName, task } = getPackageAndTask(id);
       const target = this.targetFactory.createPackageTarget(packageName!, task, config);
       this.graphBuilder.addTarget(target);
       this.targetConfigMap.set(id, config);
+
+      this.processStagedConfig(target, config, changedFiles);
     } else {
       const packages = Object.keys(this.packageInfos);
       for (const packageName of packages) {
@@ -83,7 +90,58 @@ export class WorkspaceTargetGraphBuilder {
         const target = this.targetFactory.createPackageTarget(packageName!, task, config);
         this.graphBuilder.addTarget(target);
         this.targetConfigMap.set(id, config);
+
+        this.processStagedConfig(target, config, changedFiles);
       }
+    }
+  }
+
+  /**
+   * Side effects function on the passed in target
+   * @param parentTarget
+   * @param config
+   */
+  async processStagedConfig(parentTarget: Target, config: TargetConfig, changedFiles?: string[]) {
+    if (typeof config.stagedTarget === "undefined") {
+      return;
+    }
+
+    if (
+      typeof changedFiles === "undefined" ||
+      changedFiles.length === 0 ||
+      changedFiles.length > (config.stagedTarget.threshold ?? DEFAULT_STAGED_TARGET_THRESHOLD)
+    ) {
+      return;
+    }
+
+    this.hasStagedTarget = true;
+
+    // First convert the parent to be a NO-OP, not cached, and should run always
+    parentTarget.type = "noop";
+    parentTarget.cache = false;
+    parentTarget.shouldRun = false;
+
+    // Create a staged target for the parent target
+    const id = getStagedTargetId(parentTarget.task);
+    const stagedTarget = this.graphBuilder.targets.has(id)
+      ? this.graphBuilder.targets.get(id)!
+      : this.targetFactory.createStagedTarget(parentTarget.task, config.stagedTarget, changedFiles);
+
+    // Add the staged target to the graph
+    this.graphBuilder.addTarget(stagedTarget);
+
+    // Add all the parent target dependencies as the staged dependencies as unique set
+    const depSet = new Set<string>(stagedTarget.dependencies);
+    for (const dep of parentTarget.dependencies) {
+      depSet.add(dep);
+    }
+    stagedTarget.dependencies = Array.from(depSet);
+
+    // If parent target has dependents, we need to throw an error
+    if (parentTarget.dependents.length > 0) {
+      throw new Error(
+        `Parent target ${parentTarget.id} cannot have dependents when it has a staged target while running with a --since flag`
+      );
     }
   }
 
@@ -133,6 +191,13 @@ export class WorkspaceTargetGraphBuilder {
         const globalTargetId = getTargetId(undefined, task);
         if (this.graphBuilder.targets.has(globalTargetId)) {
           subGraphEntries.push(globalTargetId);
+        }
+      }
+
+      if (this.hasStagedTarget) {
+        const stagedTargetId = getStagedTargetId(task);
+        if (this.graphBuilder.targets.has(stagedTargetId)) {
+          subGraphEntries.push(stagedTargetId);
         }
       }
     }
