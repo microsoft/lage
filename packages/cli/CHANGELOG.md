@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Mon, 02 Dec 2024 17:23:22 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 04 Dec 2024 23:50:15 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.24.5
+
+Wed, 04 Dec 2024 23:50:15 GMT
+
+### Patches
+
+- Fixes the server worker model to use aggregated pool (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v1.4.1
+- Bump @lage-run/worker-threads-pool to v0.8.5
 
 ## 0.24.4
 

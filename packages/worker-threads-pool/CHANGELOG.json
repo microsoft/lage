@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Wed, 04 Dec 2024 23:50:15 GMT",
+      "version": "0.8.5",
+      "tag": "@lage-run/worker-threads-pool_v0.8.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "a512ef3dffa4e87edcd33a762e10418e0579ca02",
+            "comment": "Fixes the server worker model to use aggregated pool"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 09 Oct 2024 17:20:33 GMT",
       "version": "0.8.4",
       "tag": "@lage-run/worker-threads-pool_v0.8.4",
