@@ -1,10 +1,9 @@
-import { type ConfigOptions, getConfig, type PipelineDefinition, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
+import { type ConfigOptions, getConfig, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
 import type { Logger } from "@lage-run/logger";
 import type { ILageService } from "@lage-run/rpc";
 import { getTargetId, type TargetGraph } from "@lage-run/target-graph";
 import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
-import { getPackageAndTask } from "@lage-run/target-graph";
 import { type Readable } from "stream";
 import { type Pool, AggregatedPool } from "@lage-run/worker-threads-pool";
 import { getInputFiles, PackageTree } from "@lage-run/hasher";
@@ -14,19 +13,6 @@ import { glob } from "@lage-run/globby";
 import { MemoryStream } from "./MemoryStream.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
-
-function findAllTasks(pipeline: PipelineDefinition) {
-  const tasks = new Set<string>();
-  for (const key of Object.keys(pipeline)) {
-    if (key.includes("#") || key.startsWith("#") || key.endsWith("//")) {
-      const { task } = getPackageAndTask(key);
-      tasks.add(task);
-    } else {
-      tasks.add(key);
-    }
-  }
-  return Array.from(tasks);
-}
 
 interface LageServiceContext {
   config: ConfigOptions;
