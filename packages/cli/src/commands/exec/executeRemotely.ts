@@ -13,11 +13,13 @@ import lockfile from "proper-lockfile";
 import path from "path";
 import fs from "fs";
 import { getWorkspaceRoot } from "workspace-tools";
+import type { Command } from "commander";
 
 interface ExecRemotelyOptions extends ReporterInitOptions {
   cwd?: string;
   server?: string | boolean;
   timeout?: number;
+  tasks: string[];
 }
 
 async function tryCreateClient(host: string, port: number) {
@@ -115,10 +117,10 @@ function ensurePidFile(lockfilePath: string) {
   }
 }
 
-export async function executeRemotely(options: ExecRemotelyOptions, command) {
+export async function executeRemotely(options: ExecRemotelyOptions, command: Command) {
   // launch a 'lage-server.js' process, detached if it is not already running
   // send the command to the server process
-  const { server } = options;
+  const { server, tasks } = options;
   const timeout = options.timeout ?? 120;
 
   const { host, port } = parseServerOption(server);
@@ -134,6 +136,8 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
 
   let client = await tryCreateClient(host, port);
   const args = command.args;
+
+  logger.info(`Command args ${command.args.join(" ")}`);
 
   if (!client) {
     logger.info(`Starting server on http://${host}:${port}`);
@@ -160,7 +164,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command) {
     } else {
       const binPaths = getBinPaths();
       const lageServerBinPath = binPaths["lage-server"];
-      const lageServerArgs = ["--host", host, "--port", port, "--timeout", timeout, ...args];
+      const lageServerArgs = ["--tasks", ...tasks, "--host", host, "--port", `${port}`, "--timeout", `${timeout}`, ...args];
 
       logger.info(`Launching lage-server with these parameters: ${lageServerArgs.join(" ")}`);
       const child = execa(lageServerBinPath, lageServerArgs, {

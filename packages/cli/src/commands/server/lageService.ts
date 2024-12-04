@@ -1,4 +1,4 @@
-import { type ConfigOptions, getConfig, type PipelineDefinition } from "@lage-run/config";
+import { type ConfigOptions, getConfig, type PipelineDefinition, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
 import type { Logger } from "@lage-run/logger";
 import type { ILageService } from "@lage-run/rpc";
 import { getTargetId, type TargetGraph } from "@lage-run/target-graph";
@@ -6,13 +6,14 @@ import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { getPackageAndTask } from "@lage-run/target-graph";
 import { type Readable } from "stream";
-import { type Pool, WorkerPool } from "@lage-run/worker-threads-pool";
+import { type Pool, AggregatedPool } from "@lage-run/worker-threads-pool";
 import { getInputFiles, PackageTree } from "@lage-run/hasher";
 import { createDependencyMap } from "workspace-tools";
 import { getOutputFiles } from "./getOutputFiles.js";
 import { glob } from "@lage-run/globby";
 import { MemoryStream } from "./MemoryStream.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
+import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
 
 function findAllTasks(pipeline: PipelineDefinition) {
   const tasks = new Set<string>();
@@ -46,30 +47,45 @@ interface InitializeOptions {
   cwd: string;
   logger: Logger;
   serverControls: ServiceControls;
-  maxWorkers?: number;
+  concurrency?: number;
   nodeArg?: string;
   taskArgs: string[];
+  tasks: string[];
 }
+
+function formatBytes(bytes: number) {
+  return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
+}
+
 /**
  * Initializes the lageService: the extra "initializePromise" ensures only one initialization is done at a time across threads
  * @param cwd
  * @param logger
  * @returns
  */
-async function initialize({ cwd, logger, serverControls, nodeArg, taskArgs, maxWorkers }: InitializeOptions): Promise<LageServiceContext> {
-  if (initializedPromise) {
-    return await initializedPromise;
-  }
-
+async function initialize({
+  cwd,
+  logger,
+  serverControls,
+  nodeArg,
+  taskArgs,
+  concurrency,
+  tasks,
+}: InitializeOptions): Promise<LageServiceContext> {
   async function createInitializedPromise() {
-    logger.info("Initializing context");
+    if (initializedPromise) {
+      return initializedPromise;
+    }
+
     const config = await getConfig(cwd);
     const root = getWorkspaceRoot(cwd)!;
+    const maxWorkers = getConcurrency(concurrency, config.concurrency);
+
+    logger.info(`Initializing with ${maxWorkers} workers, tasks: ${tasks.join(", ")}`);
 
     const { pipeline } = config;
 
     const packageInfos = getPackageInfos(root);
-    const tasks = findAllTasks(pipeline);
 
     const targetGraph = await createTargetGraph({
       logger,
@@ -96,16 +112,23 @@ async function initialize({ cwd, logger, serverControls, nodeArg, taskArgs, maxW
     logger.info("Initializing Package Tree");
     await packageTree.initialize();
 
-    const pool = new WorkerPool({
-      script: require.resolve("./singleTargetWorker.js"),
+    const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
+
+    const pool = new AggregatedPool({
+      logger,
+      maxWorkersByGroup: new Map([...getMaxWorkersPerTask(filteredPipeline, maxWorkers)]),
+      groupBy: ({ target }) => target.task,
       maxWorkers,
+      script: require.resolve("./singleTargetWorker.js"),
       workerOptions: {
-        stderr: true,
         stdout: true,
+        stderr: true,
         workerData: {
           runners: {
             ...runnerPickerOptions(nodeArg, config.npmClient, taskArgs),
             ...config.runners,
+            shouldCache: false,
+            shouldResetCache: false,
           },
         },
       },
@@ -113,6 +136,10 @@ async function initialize({ cwd, logger, serverControls, nodeArg, taskArgs, maxW
 
     serverControls.abortController.signal.addEventListener("abort", () => {
       pool?.close();
+    });
+
+    pool?.on("freedWorker", () => {
+      logger.silly(`Max Worker Memory Usage: ${formatBytes(pool?.stats().maxWorkerMemoryUsage)}`);
     });
 
     pool?.on("idle", () => {
@@ -128,19 +155,21 @@ async function initialize({ cwd, logger, serverControls, nodeArg, taskArgs, maxW
   return await initializedPromise;
 }
 
+interface CreateLageServiceOptions {
+  cwd: string;
+  serverControls: ServiceControls;
+  logger: Logger;
+  concurrency?: number;
+  tasks: string[];
+}
+
 export async function createLageService({
   cwd,
   serverControls,
   logger,
-  maxWorkers,
-}: {
-  cwd: string;
-  serverControls: ServiceControls;
-  logger: Logger;
-  maxWorkers?: number;
-}): Promise<ILageService> {
-  logger.info(`Server started with ${maxWorkers} workers`);
-
+  concurrency,
+  tasks,
+}: CreateLageServiceOptions): Promise<ILageService> {
   return {
     async ping() {
       return { pong: true };
@@ -158,10 +187,9 @@ export async function createLageService({
         nodeArg: request.nodeOptions,
         taskArgs: request.taskArgs,
         serverControls,
-        maxWorkers,
+        concurrency,
+        tasks,
       });
-
-      logger.info("Running target", request);
 
       const runners = runnerPickerOptions(request.nodeOptions, config.npmClient, request.taskArgs);
 
@@ -175,8 +203,6 @@ export async function createLageService({
           exitCode: 1,
         };
       }
-
-      logger.info("Target found", { id });
 
       const target = targetGraph.targets.get(id)!;
       const task = {

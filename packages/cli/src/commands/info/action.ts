@@ -123,7 +123,9 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
 
   const optimizedTargets = await optimizeTargetGraph(targetGraph, runnerPicker);
   const binPaths = getBinPaths();
-  const packageTasks = optimizedTargets.map((target) => generatePackageTask(target, taskArgs, config, options, binPaths, packageInfos));
+  const packageTasks = optimizedTargets.map((target) =>
+    generatePackageTask(target, taskArgs, config, options, binPaths, packageInfos, tasks)
+  );
 
   logger.info("info", {
     command: command.args,
@@ -138,9 +140,10 @@ function generatePackageTask(
   config: ConfigOptions,
   options: InfoActionOptions,
   binPaths: { lage: string; "lage-server": string },
-  packageInfos: PackageInfos
+  packageInfos: PackageInfos,
+  tasks: string[]
 ): PackageTask {
-  const command = generateCommand(target, taskArgs, config, options, binPaths, packageInfos);
+  const command = generateCommand(target, taskArgs, config, options, binPaths, packageInfos, tasks);
   const workingDirectory = getWorkingDirectory(target);
 
   const packageTask: PackageTask = {
@@ -161,7 +164,8 @@ function generateCommand(
   config: ConfigOptions,
   options: InfoActionOptions,
   binPaths: { lage: string; "lage-server": string },
-  packageInfos: PackageInfos
+  packageInfos: PackageInfos,
+  tasks: string[]
 ) {
   const shouldRunWorkersAsService =
     (typeof process.env.LAGE_WORKER_SERVER === "string" && process.env.LAGE_WORKER_SERVER !== "false") || !!options.server;
@@ -183,7 +187,7 @@ function generateCommand(
     return command;
   } else if (target.type === "worker" && shouldRunWorkersAsService) {
     const { host, port } = parseServerOption(options.server);
-    const command = [binPaths["lage"], "exec", "--server", `${host}:${port}`];
+    const command = [binPaths["lage"], "exec", "--tasks", ...tasks, "--server", `${host}:${port}`];
     if (options.concurrency) {
       command.push("--concurrency", options.concurrency.toString());
     }
