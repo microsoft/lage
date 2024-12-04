@@ -14,6 +14,7 @@ import path from "path";
 import fs from "fs";
 import { getWorkspaceRoot } from "workspace-tools";
 import type { Command } from "commander";
+import { launchServerInBackground } from "../launchServerInBackground.js";
 
 interface ExecRemotelyOptions extends ReporterInitOptions {
   cwd?: string;
@@ -121,7 +122,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
   // launch a 'lage-server.js' process, detached if it is not already running
   // send the command to the server process
   const { server, tasks } = options;
-  const timeout = options.timeout ?? 120;
+  const timeout = options.timeout ?? 5 * 60;
 
   const { host, port } = parseServerOption(server);
 
@@ -132,56 +133,21 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
 
   const root = getWorkspaceRoot(options.cwd ?? process.cwd())!;
 
-  const lockfilePath = path.join(root, `node_modules/.cache/lage/.lage-server-${host}-${port}.pid`);
-
   let client = await tryCreateClient(host, port);
   const args = command.args;
 
   logger.info(`Command args ${command.args.join(" ")}`);
 
   if (!client) {
-    logger.info(`Starting server on http://${host}:${port}`);
-    logger.info(`acquiring lock: ${lockfilePath}`);
-
-    ensurePidFile(lockfilePath);
-
-    const releaseLock = await lockfile.lock(lockfilePath, {
-      stale: 1000 * 60 * 1,
-      retries: {
-        retries: 10,
-        factor: 3,
-        minTimeout: 0.5 * 1000,
-        maxTimeout: 60 * 1000,
-        randomize: true,
-      },
+    await launchServerInBackground({
+      host,
+      port,
+      tasks,
+      args,
+      timeout,
+      logger,
+      root,
     });
-
-    const pid = parseInt(fs.readFileSync(lockfilePath, "utf-8"));
-    const isServerRunning = pid && isAlive(pid);
-    logger.info("Checking if server is already running", { pid, isServerRunning });
-    if (pid && isServerRunning) {
-      logger.info("Server already running", { pid });
-    } else {
-      const binPaths = getBinPaths();
-      const lageServerBinPath = binPaths["lage-server"];
-      const lageServerArgs = ["--tasks", ...tasks, "--host", host, "--port", `${port}`, "--timeout", `${timeout}`, ...args];
-
-      logger.info(`Launching lage-server with these parameters: ${lageServerArgs.join(" ")}`);
-      const child = execa(lageServerBinPath, lageServerArgs, {
-        cwd: root,
-        detached: true,
-        stdio: "ignore",
-      });
-
-      if (child && child.pid) {
-        fs.writeFileSync(lockfilePath, child.pid.toString());
-      }
-
-      child.unref();
-      logger.info("Server started", { pid: child.pid });
-    }
-
-    await releaseLock();
 
     logger.info("Creating a client to connect to the background services");
     client = await tryCreateClientWithRetries(host, port, logger);

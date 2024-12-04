@@ -21,7 +21,7 @@ describe("lageserver", () => {
     const serverProcess = repo.runServer();
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const results = repo.run("lage", ["exec", "--server", "--", "a", "build"]);
+    const results = repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "a", "build"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
 
@@ -39,7 +39,7 @@ describe("lageserver", () => {
 
     repo.install();
 
-    const results = repo.run("lage", ["exec", "a", "build", "--server", "localhost:5112", "--timeout", "2"]);
+    const results = repo.run("lage", ["exec", "a", "build", "--tasks", "build", "--server", "localhost:5112", "--timeout", "2"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
     const started = jsonOutput.find((entry) => entry.data?.pid && entry.msg === "Server started");
