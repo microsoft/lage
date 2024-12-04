@@ -13,6 +13,8 @@ import { glob } from "@lage-run/globby";
 import { MemoryStream } from "./MemoryStream.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
+import type { TargetRun } from "@lage-run/scheduler-types";
+import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
 
 interface LageServiceContext {
   config: ConfigOptions;
@@ -201,6 +203,15 @@ export async function createLageService({
       let pipedStdout: Readable;
       let pipedStderr: Readable;
 
+      const targetRun: TargetRun = {
+        queueTime: process.hrtime(),
+        target,
+        duration: [0, 0],
+        startTime: [0, 0],
+        status: "queued",
+        threadId: 0,
+      };
+
       try {
         await pool.exec(
           task,
@@ -213,9 +224,18 @@ export async function createLageService({
 
             stdout.pipe(writableStdout);
             stderr.pipe(writableStderr);
+
+            targetRun.threadId = worker.threadId;
+            targetRun.status = "running";
+            targetRun.startTime = process.hrtime();
           },
           (worker) => {
-            logger.info(`[${worker.threadId}] ${request.packageName}#${request.task} end`);
+            targetRun.status = "success";
+            targetRun.duration = hrtimeDiff(targetRun.startTime, process.hrtime());
+
+            logger.info(
+              `[${worker.threadId}] ${request.packageName}#${request.task} end: ${formatDuration(hrToSeconds(targetRun.duration))}`
+            );
             pipedStdout.unpipe(writableStdout);
             pipedStderr.unpipe(writableStderr);
           }
