@@ -4,7 +4,8 @@ import type { Pool } from "./types/Pool.js";
 import type { Logger } from "@lage-run/logger";
 import type { IWorker } from "./types/WorkerQueue.js";
 
-import { WorkerPool } from "./WorkerPool.js";
+import { WorkerPool, WorkerPoolEvents } from "./WorkerPool.js";
+import EventEmitter from "events";
 
 interface AggregatedPoolOptions {
   groupBy: (data: any) => string;
@@ -16,11 +17,13 @@ interface AggregatedPoolOptions {
   workerIdleMemoryLimit?: number; // in bytes
 }
 
-export class AggregatedPool implements Pool {
+export class AggregatedPool extends EventEmitter implements Pool {
   readonly groupedPools: Map<string, WorkerPool> = new Map();
   readonly defaultPool: WorkerPool | undefined;
 
   constructor(private options: AggregatedPoolOptions) {
+    super();
+
     const { maxWorkers, maxWorkersByGroup, script, workerOptions } = options;
 
     let totalGroupedWorkers = 0;
@@ -57,6 +60,16 @@ export class AggregatedPool implements Pool {
         .map(([group, count]) => `${group} (${count})`)
         .join(", ")}`
     );
+
+    // Any time the idle event is emitted by any pool, dispatch an aggregated idle event if everything is idle
+    const pools = [...this.groupedPools.values(), this.defaultPool];
+    pools.forEach((pool) => {
+      pool?.on(WorkerPoolEvents.idle, () => {
+        if (pools.every((p) => p?.isIdle())) {
+          this.emit(WorkerPoolEvents.idle);
+        }
+      });
+    });
   }
 
   stats() {

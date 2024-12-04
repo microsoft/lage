@@ -7,7 +7,14 @@ import type { Pool } from "./types/Pool.js";
 import type { Readable } from "stream";
 import type { WorkerPoolOptions } from "./types/WorkerPoolOptions.js";
 
-const workerFreedEvent = "free";
+type WorkerPoolEvents = "freedWorker" | "idle" | "busy" | "restarting";
+
+export const WorkerPoolEvents = {
+  freedWorker: "freedWorker",
+  idle: "idle",
+  busy: "busy",
+  restarting: "restarting",
+} as const;
 
 export class WorkerPool extends EventEmitter implements Pool {
   workers: IWorker[] = [];
@@ -32,13 +39,18 @@ export class WorkerPool extends EventEmitter implements Pool {
 
     // Any time the workerFreedEvent is emitted, dispatch
     // the next task pending in the queue, if any.
-    this.on(workerFreedEvent, () => {
+    this.on(WorkerPoolEvents.freedWorker, () => {
       if (this.queue.length > 0) {
         this._exec();
-      } else if (this.workers.every((w) => w.status === "free")) {
-        this.emit("idle");
+        this.emit(WorkerPoolEvents.busy);
+      } else if (this.isIdle()) {
+        this.emit(WorkerPoolEvents.idle);
       }
     });
+  }
+
+  isIdle() {
+    return this.workers.every((w) => w.status === "free");
   }
 
   get workerRestarts() {
@@ -71,7 +83,7 @@ export class WorkerPool extends EventEmitter implements Pool {
       worker.on("free", (data) => {
         const { weight } = data;
         this.availability += weight;
-        this.emit(workerFreedEvent);
+        this.emit(WorkerPoolEvents.freedWorker);
       });
       this.workers.push(worker);
       return worker;

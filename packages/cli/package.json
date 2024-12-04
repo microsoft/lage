@@ -23,6 +23,7 @@
   "dependencies": {
     "@lage-run/cache": "^1.3.10",
     "@lage-run/config": "^0.4.11",
+    "@lage-run/format-hrtime": "^0.1.6",
     "@lage-run/globby": "^14.2.0",
     "@lage-run/hasher": "^1.6.7",
     "@lage-run/logger": "^1.3.1",

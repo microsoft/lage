@@ -10,10 +10,11 @@ interface WorkerOptions extends ReporterInitOptions {
   host?: string;
   timeout?: number;
   shutdown: boolean;
+  tasks: string[];
 }
 
 export async function serverAction(options: WorkerOptions) {
-  const { port = 5332, host = "localhost", timeout = 1 } = options;
+  const { port = 5332, host = "localhost", timeout = 1, tasks } = options;
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
@@ -33,7 +34,8 @@ export async function serverAction(options: WorkerOptions) {
       clearCountdown: clearTimer,
     },
     logger,
-    maxWorkers: options.concurrency,
+    concurrency: options.concurrency,
+    tasks,
   });
   const server = await createServer(lageService, abortController);
 
