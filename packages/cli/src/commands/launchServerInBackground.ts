@@ -49,6 +49,7 @@ export async function launchServerInBackground({ logger, root, host, port, tasks
       cwd: root,
       detached: true,
       stdio: "ignore",
+      maxBuffer: 1024 * 1024 * 100,
     });
 
     if (child && child.pid) {
