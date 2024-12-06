@@ -230,6 +230,16 @@ export async function createLageService({
             targetRun.startTime = process.hrtime();
           },
           (worker) => {
+            logger.info(`Max Worker Memory Usage: ${formatBytes(pool.stats().maxWorkerMemoryUsage)}`);
+
+            // logger.info the main process memory usage
+            const memoryUsage = process.memoryUsage();
+            logger.info(
+              `Main Process Memory Usage: RSS: ${formatBytes(memoryUsage.rss)} Heap Total: ${formatBytes(
+                memoryUsage.heapTotal
+              )} Heap Used: ${formatBytes(memoryUsage.heapUsed)}`
+            );
+
             targetRun.status = "success";
             targetRun.duration = hrtimeDiff(targetRun.startTime, process.hrtime());
 
