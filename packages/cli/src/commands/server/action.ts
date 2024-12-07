@@ -39,8 +39,9 @@ export async function serverAction(options: WorkerOptions) {
   });
   const server = await createServer(lageService, abortController);
 
-  await server.listen({ host, port });
-  logger.info(`Server listening on http://${host}:${port}, timeout in ${timeout} seconds`);
+  await server.listen({ host, port }, () => {
+    logger.info(`Server listening on tcp://${host}:${port}, timeout in ${timeout} seconds`);
+  });
 }
 
 let timeoutHandle: NodeJS.Timeout | undefined;
