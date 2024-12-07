@@ -44,9 +44,6 @@ function rpcCall(socket: net.Socket, method: string, params: any) {
     };
 
     socket.on("data", onData);
-
-    // Send the request
-    console.log("Sending request", request);
     socket.write(request + "\0");
   });
 }

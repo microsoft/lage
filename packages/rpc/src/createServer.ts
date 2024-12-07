@@ -41,7 +41,6 @@ export async function createServer(lageService: ILageService, abortController: A
           // Parse the incoming request
           const request = JSON.parse(completeMessage);
           const { id, method, params } = request;
-          console.log("method", method, params);
 
           // Check if the method exists
           if (lageService[method]) {
@@ -64,7 +63,10 @@ export async function createServer(lageService: ILageService, abortController: A
         } finally {
           // Clean up listener
           if (shouldCleanup) {
-            socket.removeListener("data", onData);
+            responseData = "";
+            socket.off("data", onData);
+            socket.destroy();
+            socket.unref();
             socket.end();
           }
         }
