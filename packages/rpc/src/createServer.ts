@@ -25,7 +25,6 @@ export async function createServer(lageService: ILageService, abortController: A
   // return server;
 
   const server = net.createServer((socket) => {
-    console.log("Client connected");
     let shouldCleanup = false;
     let responseData = "";
 

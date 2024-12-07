@@ -80,9 +80,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
         });
       } else if (data.type === "report-memory-usage") {
         this.maxWorkerMemoryUsage = Math.max(this.maxWorkerMemoryUsage, data.memoryUsage);
-
-        const limit = this.options.workerIdleMemoryLimit ?? os.totalmem();
-
+        const limit = this.options.workerIdleMemoryLimit ?? this.#worker.resourceLimits?.maxOldGenerationSizeMb * 1024 * 1024 * 0.8;
         if (limit && data.memoryUsage > limit) {
           this.restart();
         } else {

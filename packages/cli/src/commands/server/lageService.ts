@@ -105,6 +105,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
         },
       },
     },
+    workerIdleMemoryLimit: config.workerIdleMemoryLimit,
   });
 
   serverControls.abortController.signal.addEventListener("abort", () => {
@@ -155,6 +156,10 @@ export async function createLageService({
     },
 
     async runTarget(request) {
+      if (global.gc) {
+        global.gc();
+      }
+
       serverControls.clearCountdown();
 
       // THIS IS A BIG ASSUMPTION; TODO: memoize based on the parameters of the initialize() call
@@ -242,22 +247,26 @@ export async function createLageService({
           }
         );
 
-        const globalInputs = target.environmentGlob
-          ? glob(target.environmentGlob, { cwd: root, gitignore: true })
-          : config.cacheOptions?.environmentGlob
-          ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
-          : ["lage.config.js"];
-        const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
+        // const globalInputs = target.environmentGlob
+        //   ? glob(target.environmentGlob, { cwd: root, gitignore: true })
+        //   : config.cacheOptions?.environmentGlob
+        //   ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
+        //   : ["lage.config.js"];
+        // const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
 
         return {
           packageName: request.packageName,
           task: request.task,
           exitCode: 0,
           hash: "",
-          inputs,
-          outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
-          stdout: writableStdout.toString(),
-          stderr: writableStderr.toString(),
+          // inputs,
+          // outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
+          // stdout: writableStdout.toString(),
+          // stderr: writableStderr.toString(),
+          inputs: [],
+          outputs: [],
+          stdout: "",
+          stderr: "",
           id,
         };
       } catch (e) {
