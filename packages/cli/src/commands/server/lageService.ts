@@ -46,101 +46,92 @@ function formatBytes(bytes: number) {
   return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
 }
 
+async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, taskArgs, concurrency, tasks }: InitializeOptions) {
+  if (initializedPromise) {
+    return initializedPromise;
+  }
+
+  const config = await getConfig(cwd);
+  const root = getWorkspaceRoot(cwd)!;
+  const maxWorkers = getConcurrency(concurrency, config.concurrency);
+
+  logger.info(`Initializing with ${maxWorkers} workers, tasks: ${tasks.join(", ")}`);
+
+  const { pipeline } = config;
+
+  const packageInfos = getPackageInfos(root);
+
+  const targetGraph = await createTargetGraph({
+    logger,
+    root,
+    dependencies: false,
+    dependents: false,
+    ignore: [],
+    pipeline,
+    repoWideChanges: config.repoWideChanges,
+    scope: undefined,
+    since: undefined,
+    outputs: config.cacheOptions.outputGlob,
+    tasks,
+    packageInfos,
+  });
+
+  const dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
+  const packageTree = new PackageTree({
+    root,
+    packageInfos,
+    includeUntracked: true,
+  });
+
+  logger.info("Initializing Package Tree");
+  await packageTree.initialize();
+
+  const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
+
+  const pool = new AggregatedPool({
+    logger,
+    maxWorkersByGroup: new Map([...getMaxWorkersPerTask(filteredPipeline, maxWorkers)]),
+    groupBy: ({ target }) => target.task,
+    maxWorkers,
+    script: require.resolve("./singleTargetWorker.js"),
+    workerOptions: {
+      stdout: true,
+      stderr: true,
+      workerData: {
+        runners: {
+          ...runnerPickerOptions(nodeArg, config.npmClient, taskArgs),
+          ...config.runners,
+          shouldCache: false,
+          shouldResetCache: false,
+        },
+      },
+    },
+  });
+
+  serverControls.abortController.signal.addEventListener("abort", () => {
+    pool?.close();
+  });
+
+  pool?.on("freedWorker", () => {
+    logger.silly(`Max Worker Memory Usage: ${formatBytes(pool?.stats().maxWorkerMemoryUsage)}`);
+  });
+
+  pool?.on("idle", () => {
+    logger.info("All workers are idle, shutting down after timeout");
+    serverControls.countdownToShutdown();
+  });
+
+  return { config, targetGraph, packageTree, dependencyMap, root, pool };
+}
+
 /**
  * Initializes the lageService: the extra "initializePromise" ensures only one initialization is done at a time across threads
  * @param cwd
  * @param logger
  * @returns
  */
-async function initialize({
-  cwd,
-  logger,
-  serverControls,
-  nodeArg,
-  taskArgs,
-  concurrency,
-  tasks,
-}: InitializeOptions): Promise<LageServiceContext> {
-  async function createInitializedPromise() {
-    if (initializedPromise) {
-      return initializedPromise;
-    }
-
-    const config = await getConfig(cwd);
-    const root = getWorkspaceRoot(cwd)!;
-    const maxWorkers = getConcurrency(concurrency, config.concurrency);
-
-    logger.info(`Initializing with ${maxWorkers} workers, tasks: ${tasks.join(", ")}`);
-
-    const { pipeline } = config;
-
-    const packageInfos = getPackageInfos(root);
-
-    const targetGraph = await createTargetGraph({
-      logger,
-      root,
-      dependencies: false,
-      dependents: false,
-      ignore: [],
-      pipeline,
-      repoWideChanges: config.repoWideChanges,
-      scope: undefined,
-      since: undefined,
-      outputs: config.cacheOptions.outputGlob,
-      tasks,
-      packageInfos,
-    });
-
-    const dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
-    const packageTree = new PackageTree({
-      root,
-      packageInfos,
-      includeUntracked: true,
-    });
-
-    logger.info("Initializing Package Tree");
-    await packageTree.initialize();
-
-    const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
-
-    const pool = new AggregatedPool({
-      logger,
-      maxWorkersByGroup: new Map([...getMaxWorkersPerTask(filteredPipeline, maxWorkers)]),
-      groupBy: ({ target }) => target.task,
-      maxWorkers,
-      script: require.resolve("./singleTargetWorker.js"),
-      workerOptions: {
-        stdout: true,
-        stderr: true,
-        workerData: {
-          runners: {
-            ...runnerPickerOptions(nodeArg, config.npmClient, taskArgs),
-            ...config.runners,
-            shouldCache: false,
-            shouldResetCache: false,
-          },
-        },
-      },
-    });
-
-    serverControls.abortController.signal.addEventListener("abort", () => {
-      pool?.close();
-    });
-
-    pool?.on("freedWorker", () => {
-      logger.silly(`Max Worker Memory Usage: ${formatBytes(pool?.stats().maxWorkerMemoryUsage)}`);
-    });
-
-    pool?.on("idle", () => {
-      logger.info("All workers are idle, shutting down after timeout");
-      serverControls.countdownToShutdown();
-    });
-
-    return { config, targetGraph, packageTree, dependencyMap, root, pool };
-  }
-
-  initializedPromise = createInitializedPromise();
-
+async function initialize(options: InitializeOptions): Promise<LageServiceContext> {
+  initializedPromise = createInitializedPromise(options);
   return initializedPromise;
 }
 
