@@ -6,7 +6,7 @@ import { Readable } from "stream";
 import { TaskInfo } from "./TaskInfo.js";
 import { type TransferListItem, Worker } from "worker_threads";
 import crypto from "crypto";
-import os from "os";
+import v8 from "v8";
 import type { IWorker } from "./types/WorkerQueue.js";
 import type { QueueItem } from "./types/WorkerQueue.js";
 import type { WorkerOptions as ThreadWorkerOptions } from "worker_threads";
@@ -14,6 +14,7 @@ import type { WorkerOptions as ThreadWorkerOptions } from "worker_threads";
 export interface WorkerOptions {
   workerOptions?: ThreadWorkerOptions;
   workerIdleMemoryLimit?: number;
+  workerIdleMemoryLimitPercentage?: number;
 }
 
 interface StdioInfo {
@@ -23,6 +24,8 @@ interface StdioInfo {
 }
 
 const workerFreeEvent = "free";
+
+const maxOldSpaceSizeBytes = v8.getHeapStatistics().total_available_size;
 
 export class ThreadWorker extends EventEmitter implements IWorker {
   #taskInfo: TaskInfo | undefined;
@@ -40,6 +43,11 @@ export class ThreadWorker extends EventEmitter implements IWorker {
 
   constructor(private script: string, private options: WorkerOptions) {
     super();
+
+    if (!options.workerIdleMemoryLimitPercentage) {
+      options.workerIdleMemoryLimitPercentage = 80;
+    }
+
     this.#createNewWorker();
   }
 
@@ -81,7 +89,13 @@ export class ThreadWorker extends EventEmitter implements IWorker {
       } else if (data.type === "report-memory-usage") {
         this.maxWorkerMemoryUsage = Math.max(this.maxWorkerMemoryUsage, data.memoryUsage);
 
-        const limit = this.options.workerIdleMemoryLimit ?? os.totalmem();
+        const workerMaxOldGenSizeMb = this.#worker.resourceLimits?.maxOldGenerationSizeMb;
+
+        const limit =
+          this.options.workerIdleMemoryLimit ??
+          ((workerMaxOldGenSizeMb ? workerMaxOldGenSizeMb * 1024 * 1024 : maxOldSpaceSizeBytes) *
+            (this.options.workerIdleMemoryLimitPercentage as number)) /
+            100;
 
         if (limit && data.memoryUsage > limit) {
           this.restart();

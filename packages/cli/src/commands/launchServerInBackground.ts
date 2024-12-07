@@ -13,9 +13,19 @@ export interface launchServerInBackgroundOptions {
   tasks: string[];
   timeout: number;
   args: string[];
+  nodeArg?: string;
 }
 
-export async function launchServerInBackground({ logger, root, host, port, tasks, timeout, args }: launchServerInBackgroundOptions) {
+export async function launchServerInBackground({
+  logger,
+  root,
+  host,
+  port,
+  tasks,
+  timeout,
+  args,
+  nodeArg,
+}: launchServerInBackgroundOptions) {
   const lockfilePath = path.join(root, `node_modules/.cache/lage/.lage-server-${host}-${port}.pid`);
 
   logger.info(`Starting server on http://${host}:${port}`);
@@ -41,11 +51,24 @@ export async function launchServerInBackground({ logger, root, host, port, tasks
     logger.info("Server already running", { pid });
   } else {
     const binPaths = getBinPaths();
+
     const lageServerBinPath = binPaths["lage-server"];
-    const lageServerArgs = ["--tasks", ...tasks, "--host", host, "--port", `${port}`, "--timeout", `${timeout}`, ...args];
+    const lageServerArgs = [
+      ...(nodeArg ? ["--node-arg", nodeArg] : []),
+      lageServerBinPath,
+      "--tasks",
+      ...tasks,
+      "--host",
+      host,
+      "--port",
+      `${port}`,
+      "--timeout",
+      `${timeout}`,
+      ...args,
+    ];
 
     logger.info(`Launching lage-server with these parameters: ${lageServerArgs.join(" ")}`);
-    const child = execa(lageServerBinPath, lageServerArgs, {
+    const child = execa("node", lageServerArgs, {
       cwd: root,
       detached: true,
       stdio: "ignore",

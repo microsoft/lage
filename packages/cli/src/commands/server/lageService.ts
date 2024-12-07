@@ -45,102 +45,94 @@ function formatBytes(bytes: number) {
   return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
 }
 
+async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, taskArgs, concurrency, tasks }: InitializeOptions) {
+  if (initializedPromise) {
+    return initializedPromise;
+  }
+
+  const config = await getConfig(cwd);
+  const root = getWorkspaceRoot(cwd)!;
+  const maxWorkers = getConcurrency(concurrency, config.concurrency);
+
+  logger.info(`Initializing with ${maxWorkers} workers, tasks: ${tasks.join(", ")}`);
+
+  const { pipeline } = config;
+
+  const packageInfos = getPackageInfos(root);
+
+  const targetGraph = await createTargetGraph({
+    logger,
+    root,
+    dependencies: false,
+    dependents: false,
+    ignore: [],
+    pipeline,
+    repoWideChanges: config.repoWideChanges,
+    scope: undefined,
+    since: undefined,
+    outputs: config.cacheOptions.outputGlob,
+    tasks,
+    packageInfos,
+  });
+
+  const dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
+  const packageTree = new PackageTree({
+    root,
+    packageInfos,
+    includeUntracked: true,
+  });
+
+  logger.info("Initializing Package Tree");
+  await packageTree.initialize();
+
+  const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
+
+  const pool = new AggregatedPool({
+    logger,
+    maxWorkersByGroup: new Map([...getMaxWorkersPerTask(filteredPipeline, maxWorkers)]),
+    groupBy: ({ target }) => target.task,
+    maxWorkers,
+    script: require.resolve("./singleTargetWorker.js"),
+    workerOptions: {
+      stdout: true,
+      stderr: true,
+      workerData: {
+        runners: {
+          ...runnerPickerOptions(nodeArg, config.npmClient, taskArgs),
+          ...config.runners,
+          shouldCache: false,
+          shouldResetCache: false,
+        },
+      },
+    },
+    workerIdleMemoryLimit: config.workerIdleMemoryLimit,
+  });
+
+  serverControls.abortController.signal.addEventListener("abort", () => {
+    pool?.close();
+  });
+
+  pool?.on("freedWorker", () => {
+    logger.silly(`Max Worker Memory Usage: ${formatBytes(pool?.stats().maxWorkerMemoryUsage)}`);
+  });
+
+  pool?.on("idle", () => {
+    logger.info("All workers are idle, shutting down after timeout");
+    serverControls.countdownToShutdown();
+  });
+
+  return { config, targetGraph, packageTree, dependencyMap, root, pool };
+}
+
 /**
  * Initializes the lageService: the extra "initializePromise" ensures only one initialization is done at a time across threads
  * @param cwd
  * @param logger
  * @returns
  */
-async function initialize({
-  cwd,
-  logger,
-  serverControls,
-  nodeArg,
-  taskArgs,
-  concurrency,
-  tasks,
-}: InitializeOptions): Promise<LageServiceContext> {
-  async function createInitializedPromise() {
-    if (initializedPromise) {
-      return initializedPromise;
-    }
-
-    const config = await getConfig(cwd);
-    const root = getWorkspaceRoot(cwd)!;
-    const maxWorkers = getConcurrency(concurrency, config.concurrency);
-
-    logger.info(`Initializing with ${maxWorkers} workers, tasks: ${tasks.join(", ")}`);
-
-    const { pipeline } = config;
-
-    const packageInfos = getPackageInfos(root);
-
-    const targetGraph = await createTargetGraph({
-      logger,
-      root,
-      dependencies: false,
-      dependents: false,
-      ignore: [],
-      pipeline,
-      repoWideChanges: config.repoWideChanges,
-      scope: undefined,
-      since: undefined,
-      outputs: config.cacheOptions.outputGlob,
-      tasks,
-      packageInfos,
-    });
-
-    const dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
-    const packageTree = new PackageTree({
-      root,
-      packageInfos,
-      includeUntracked: true,
-    });
-
-    logger.info("Initializing Package Tree");
-    await packageTree.initialize();
-
-    const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
-
-    const pool = new AggregatedPool({
-      logger,
-      maxWorkersByGroup: new Map([...getMaxWorkersPerTask(filteredPipeline, maxWorkers)]),
-      groupBy: ({ target }) => target.task,
-      maxWorkers,
-      script: require.resolve("./singleTargetWorker.js"),
-      workerOptions: {
-        stdout: true,
-        stderr: true,
-        workerData: {
-          runners: {
-            ...runnerPickerOptions(nodeArg, config.npmClient, taskArgs),
-            ...config.runners,
-            shouldCache: false,
-            shouldResetCache: false,
-          },
-        },
-      },
-    });
-
-    serverControls.abortController.signal.addEventListener("abort", () => {
-      pool?.close();
-    });
-
-    pool?.on("freedWorker", () => {
-      logger.silly(`Max Worker Memory Usage: ${formatBytes(pool?.stats().maxWorkerMemoryUsage)}`);
-    });
-
-    pool?.on("idle", () => {
-      logger.info("All workers are idle, shutting down after timeout");
-      serverControls.countdownToShutdown();
-    });
-
-    return { config, targetGraph, packageTree, dependencyMap, root, pool };
-  }
-
-  initializedPromise = createInitializedPromise();
-
-  return await initializedPromise;
+async function initialize(options: InitializeOptions): Promise<LageServiceContext> {
+  initializedPromise = createInitializedPromise(options);
+  return initializedPromise;
 }
 
 interface CreateLageServiceOptions {
@@ -164,6 +156,10 @@ export async function createLageService({
     },
 
     async runTarget(request) {
+      if (global.gc) {
+        global.gc();
+      }
+
       serverControls.clearCountdown();
 
       // THIS IS A BIG ASSUMPTION; TODO: memoize based on the parameters of the initialize() call
@@ -230,6 +226,16 @@ export async function createLageService({
             targetRun.startTime = process.hrtime();
           },
           (worker) => {
+            logger.info(`Max Worker Memory Usage: ${formatBytes(pool.stats().maxWorkerMemoryUsage)}`);
+
+            // logger.info the main process memory usage
+            const memoryUsage = process.memoryUsage();
+            logger.info(
+              `Main Process Memory Usage: RSS: ${formatBytes(memoryUsage.rss)} Heap Total: ${formatBytes(
+                memoryUsage.heapTotal
+              )} Heap Used: ${formatBytes(memoryUsage.heapUsed)}`
+            );
+
             targetRun.status = "success";
             targetRun.duration = hrtimeDiff(targetRun.startTime, process.hrtime());
 
@@ -241,22 +247,26 @@ export async function createLageService({
           }
         );
 
-        const globalInputs = target.environmentGlob
-          ? glob(target.environmentGlob, { cwd: root, gitignore: true })
-          : config.cacheOptions?.environmentGlob
-          ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
-          : ["lage.config.js"];
-        const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
+        // const globalInputs = target.environmentGlob
+        //   ? glob(target.environmentGlob, { cwd: root, gitignore: true })
+        //   : config.cacheOptions?.environmentGlob
+        //   ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
+        //   : ["lage.config.js"];
+        // const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
 
         return {
           packageName: request.packageName,
           task: request.task,
           exitCode: 0,
           hash: "",
-          inputs,
-          outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
-          stdout: writableStdout.toString(),
-          stderr: writableStderr.toString(),
+          // inputs,
+          // outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
+          // stdout: writableStdout.toString(),
+          // stderr: writableStderr.toString(),
+          inputs: [],
+          outputs: [],
+          stdout: "",
+          stderr: "",
           id,
         };
       } catch (e) {
