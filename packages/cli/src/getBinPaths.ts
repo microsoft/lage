@@ -42,9 +42,9 @@ export function getBinScripts() {
     };
   } else {
     // the case for CLI package during development
-    return {      
+    return {
       lage: path.join(thisPackagePath, "bin", "lage.js"),
       "lage-server": path.join(thisPackagePath, "bin", "lage-server.js"),
-    }
+    };
   }
 }
