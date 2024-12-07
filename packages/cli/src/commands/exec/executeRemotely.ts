@@ -6,10 +6,7 @@ import type { LageClient } from "@lage-run/rpc";
 import { ConnectError, createClient } from "@lage-run/rpc";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { simulateFileAccess } from "./simulateFileAccess.js";
-import execa from "execa";
-import { getBinPaths } from "../../getBinPaths.js";
 import { parseServerOption } from "../parseServerOption.js";
-import lockfile from "proper-lockfile";
 import path from "path";
 import fs from "fs";
 import { getWorkspaceRoot } from "workspace-tools";
@@ -26,7 +23,7 @@ interface ExecRemotelyOptions extends ReporterInitOptions {
 async function tryCreateClient(host: string, port: number) {
   const client = createClient({
     baseUrl: `http://${host}:${port}`,
-    httpVersion: "2",
+    httpVersion: "1.1",
   });
 
   try {
@@ -91,29 +88,6 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
       logger.error("Error connecting to server", { error });
     } else {
       logger.error("Error running task", { error });
-    }
-  }
-}
-
-function isAlive(pid: number) {
-  try {
-    return process.kill(pid, 0);
-  } catch {
-    return false;
-  }
-}
-
-function ensurePidFile(lockfilePath: string) {
-  if (!fs.existsSync(path.dirname(lockfilePath))) {
-    fs.mkdirSync(path.dirname(lockfilePath), { recursive: true });
-  }
-
-  if (!fs.existsSync(lockfilePath)) {
-    try {
-      const fd = fs.openSync(lockfilePath, "w");
-      fs.closeSync(fd);
-    } catch {
-      // ignore
     }
   }
 }

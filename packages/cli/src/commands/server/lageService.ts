@@ -15,6 +15,7 @@ import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
 import type { TargetRun } from "@lage-run/scheduler-types";
 import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
+import type { TargetRunnerPickerOptions } from "@lage-run/runners";
 
 interface LageServiceContext {
   config: ConfigOptions;
@@ -140,7 +141,7 @@ async function initialize({
 
   initializedPromise = createInitializedPromise();
 
-  return await initializedPromise;
+  return initializedPromise;
 }
 
 interface CreateLageServiceOptions {
@@ -158,6 +159,7 @@ export async function createLageService({
   concurrency,
   tasks,
 }: CreateLageServiceOptions): Promise<ILageService> {
+  let runners: TargetRunnerPickerOptions | undefined;
   return {
     async ping() {
       return { pong: true };
@@ -179,7 +181,9 @@ export async function createLageService({
         tasks,
       });
 
-      const runners = runnerPickerOptions(request.nodeOptions, config.npmClient, request.taskArgs);
+      if (!runners) {
+        runners = runnerPickerOptions(request.nodeOptions, config.npmClient, request.taskArgs);
+      }
 
       const id = getTargetId(request.packageName, request.task);
 

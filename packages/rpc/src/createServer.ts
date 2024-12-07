@@ -1,22 +1,16 @@
-import { fastify } from "fastify";
-import { fastifyConnectPlugin } from "@connectrpc/connect-fastify";
+import { connectNodeAdapter } from "@connectrpc/connect-node";
 import { createRoutes } from "./createRoutes.js";
+import http from "http";
 import type { ILageService } from "./types/ILageService.js";
 
 export async function createServer(lageService: ILageService, abortController: AbortController) {
-  const server = fastify({
-    http2: true,
-  });
-  await server.register(fastifyConnectPlugin, {
-    routes: createRoutes(lageService),
-    shutdownSignal: abortController.signal,
-    compressMinBytes: 512,
-    grpc: true,
-  });
+  http.globalAgent.maxSockets = 10;
+  const server = http.createServer(
+    connectNodeAdapter({ routes: createRoutes(lageService) }) // responds with 404 for other requests
+  );
 
-  server.get("/", (_, reply) => {
-    reply.type("text/plain");
-    reply.send("lage service");
+  abortController.signal.addEventListener("abort", () => {
+    server.close();
   });
 
   return server;
