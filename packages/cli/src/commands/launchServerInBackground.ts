@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import lockfile from "proper-lockfile";
 import execa from "execa";
-import { getBinPaths } from "../getBinPaths.js";
+import { getBinPaths, getBinScripts } from "../getBinPaths.js";
 
 export interface launchServerInBackgroundOptions {
   logger: Logger;
@@ -50,9 +50,9 @@ export async function launchServerInBackground({
   if (pid && isServerRunning) {
     logger.info("Server already running", { pid });
   } else {
-    const binPaths = getBinPaths();
+    const binScripts = getBinScripts();
 
-    const lageServerBinPath = binPaths["lage-server"];
+    const lageServerBinPath = binScripts["lage-server"];
     const lageServerArgs = [
       ...(nodeArg ? ["--node-arg", nodeArg] : []),
       lageServerBinPath,
