@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Sun, 08 Dec 2024 00:07:28 GMT",
+      "version": "0.8.6",
+      "tag": "@lage-run/worker-threads-pool_v0.8.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "e6eaba8d27f25d746caed332198519a7dc4a218e",
+            "comment": "adds the ability to do workerIdleMemoryLimit"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 04 Dec 2024 23:50:15 GMT",
       "version": "0.8.5",
       "tag": "@lage-run/worker-threads-pool_v0.8.5",

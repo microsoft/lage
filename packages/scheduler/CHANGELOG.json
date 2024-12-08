@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Sun, 08 Dec 2024 00:07:28 GMT",
+      "version": "1.4.2",
+      "tag": "@lage-run/scheduler_v1.4.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.8.6",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 04 Dec 2024 23:50:15 GMT",
       "version": "1.4.1",
       "tag": "@lage-run/scheduler_v1.4.1",
