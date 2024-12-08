@@ -4,6 +4,10 @@ import { serverAction } from "./action.js";
 import { addLoggerOptions } from "../addLoggerOptions.js";
 
 const serverCommand = new Command("server");
+serverCommand.option(
+  "-n|--node-arg <arg>",
+  "node argument to pass to worker, just a single string to be passed into node like a NODE_OPTIONS setting"
+);
 serverCommand.option("-c|--concurrency <number>", "max jobs to run at a time", (v) => parseInt(v));
 serverCommand.option("-h|--host <host>", "lage server host", "localhost");
 serverCommand.option<number>("-p|--port <port>", "lage worker server port", (v) => parseInt(v), 5332);

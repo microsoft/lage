@@ -6,12 +6,7 @@ import type { LageClient } from "@lage-run/rpc";
 import { ConnectError, createClient } from "@lage-run/rpc";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { simulateFileAccess } from "./simulateFileAccess.js";
-import execa from "execa";
-import { getBinPaths } from "../../getBinPaths.js";
 import { parseServerOption } from "../parseServerOption.js";
-import lockfile from "proper-lockfile";
-import path from "path";
-import fs from "fs";
 import { getWorkspaceRoot } from "workspace-tools";
 import type { Command } from "commander";
 import { launchServerInBackground } from "../launchServerInBackground.js";
@@ -21,6 +16,7 @@ interface ExecRemotelyOptions extends ReporterInitOptions {
   server?: string | boolean;
   timeout?: number;
   tasks: string[];
+  nodeArg?: string;
 }
 
 async function tryCreateClient(host: string, port: number) {
@@ -95,33 +91,10 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
   }
 }
 
-function isAlive(pid: number) {
-  try {
-    return process.kill(pid, 0);
-  } catch {
-    return false;
-  }
-}
-
-function ensurePidFile(lockfilePath: string) {
-  if (!fs.existsSync(path.dirname(lockfilePath))) {
-    fs.mkdirSync(path.dirname(lockfilePath), { recursive: true });
-  }
-
-  if (!fs.existsSync(lockfilePath)) {
-    try {
-      const fd = fs.openSync(lockfilePath, "w");
-      fs.closeSync(fd);
-    } catch {
-      // ignore
-    }
-  }
-}
-
 export async function executeRemotely(options: ExecRemotelyOptions, command: Command) {
   // launch a 'lage-server.js' process, detached if it is not already running
   // send the command to the server process
-  const { server, tasks } = options;
+  const { server, tasks, nodeArg } = options;
   const timeout = options.timeout ?? 5 * 60;
 
   const { host, port } = parseServerOption(server);
@@ -147,6 +120,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
       timeout,
       logger,
       root,
+      nodeArg,
     });
 
     logger.info("Creating a client to connect to the background services");
