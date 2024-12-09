@@ -1,5 +1,5 @@
 import { createClient as createConnectClient } from "@connectrpc/connect";
-import { createConnectTransport } from "@connectrpc/connect-node";
+import { createGrpcTransport } from "@connectrpc/connect-node";
 import { LageService } from "./gen/lage/v1/lage_pb.js";
 
 export interface CreateClientOptions {
@@ -9,9 +9,9 @@ export interface CreateClientOptions {
 
 export type LageClient = ReturnType<typeof createClient>;
 
-export function createClient({ baseUrl, httpVersion }: CreateClientOptions) {
-  const transport = createConnectTransport({
-    httpVersion,
+export function createClient({ baseUrl }: CreateClientOptions) {
+  const transport = createGrpcTransport({
+    // httpVersion,
     baseUrl,
   });
 
