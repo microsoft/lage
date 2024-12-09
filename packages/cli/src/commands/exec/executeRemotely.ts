@@ -96,11 +96,8 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
 
     process.on("SIGPIPE", () => {
       clearTimeout(handler);
-
       const results = JSON.parse(fs.readFileSync(resultsFile, "utf8"));
-
       fs.unlinkSync(resultsFile);
-
       return responsePromiseResolve(results);
     });
   }).catch((reason) => {
@@ -115,7 +112,6 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
   });
 
   const results = await responsePromise;
-  await new Promise((resolve) => setTimeout(resolve, 15000));
 
   return results;
 }
