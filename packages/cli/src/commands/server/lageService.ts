@@ -247,26 +247,22 @@ export async function createLageService({
           }
         );
 
-        // const globalInputs = target.environmentGlob
-        //   ? glob(target.environmentGlob, { cwd: root, gitignore: true })
-        //   : config.cacheOptions?.environmentGlob
-        //   ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
-        //   : ["lage.config.js"];
-        // const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
+        const globalInputs = target.environmentGlob
+          ? glob(target.environmentGlob, { cwd: root, gitignore: true })
+          : config.cacheOptions?.environmentGlob
+          ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
+          : ["lage.config.js"];
+        const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
 
         return {
           packageName: request.packageName,
           task: request.task,
           exitCode: 0,
           hash: "",
-          // inputs,
-          // outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
-          // stdout: writableStdout.toString(),
-          // stderr: writableStderr.toString(),
-          inputs: [],
-          outputs: [],
-          stdout: "",
-          stderr: "",
+          inputs,
+          outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
+          stdout: writableStdout.toString(),
+          stderr: writableStderr.toString(),
           id,
         };
       } catch (e) {
