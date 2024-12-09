@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Wed, 04 Dec 2024 23:50:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sun, 08 Dec 2024 00:07:28 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.24.6
+
+Sun, 08 Dec 2024 00:07:28 GMT
+
+### Patches
+
+- adds the ability to do workerIdleMemoryLimit (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v1.4.2
+- Bump @lage-run/worker-threads-pool to v0.8.6
 
 ## 0.24.5
 

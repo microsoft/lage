@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Sun, 08 Dec 2024 00:07:28 GMT",
+      "version": "0.24.6",
+      "tag": "@lage-run/cli_v0.24.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "e6eaba8d27f25d746caed332198519a7dc4a218e",
+            "comment": "adds the ability to do workerIdleMemoryLimit"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.4.2",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.8.6",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 04 Dec 2024 23:50:15 GMT",
       "version": "0.24.5",
       "tag": "@lage-run/cli_v0.24.5",
