@@ -28,7 +28,7 @@ message PingResponse {
 
 
 service LageService {
-  rpc RunTarget(RunTargetRequest) returns (RunTargetResponse) {}
+  rpc RunTarget(RunTargetRequest) returns (stream RunTargetResponse) {}
 
   // a ping function to check if the server is up
   rpc Ping(PingRequest) returns (PingResponse) {}  

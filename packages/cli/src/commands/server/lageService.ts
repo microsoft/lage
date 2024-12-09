@@ -182,9 +182,14 @@ export async function createLageService({
       if (!targetGraph.targets.has(id)) {
         logger.info(`Target not found: ${request.packageName}#${request.task}`);
         return {
+          id: `${request.packageName}#${request.task}`,
           packageName: request.packageName,
           task: request.task,
           exitCode: 1,
+          inputs: [],
+          outputs: [],
+          stdout: "",
+          stderr: `Target not found: ${request.packageName}#${request.task}`,
         };
       }
 

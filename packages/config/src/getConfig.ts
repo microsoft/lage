@@ -8,7 +8,7 @@ import type { CacheOptions } from "./types/CacheOptions.js";
  */
 export async function getConfig(cwd: string): Promise<ConfigOptions> {
   const config = (await readConfigFile(cwd)) || ({} as Partial<ConfigOptions>);
-  const availableParallelism = "availableParallelism" in os ? (os as any)["availableParallelism"]() : os.cpus().length - 1;
+  const availableParallelism = "availableParallelism" in os ? (os as any)["availableParallelism"]() : (os as any).cpus().length - 1;
   return {
     cacheOptions: config?.cacheOptions ?? ({} as CacheOptions),
     ignore: config?.ignore ?? [],

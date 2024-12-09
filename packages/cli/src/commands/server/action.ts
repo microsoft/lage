@@ -37,7 +37,7 @@ export async function serverAction(options: WorkerOptions) {
     concurrency: options.concurrency,
     tasks,
   });
-  const server = await createServer(lageService, abortController);
+  const server = await createServer(lageService);
 
   await server.listen({ host, port });
   logger.info(`Server listening on http://${host}:${port}, timeout in ${timeout} seconds`);

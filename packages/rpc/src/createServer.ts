@@ -1,22 +1,37 @@
 import { fastify } from "fastify";
-import { fastifyConnectPlugin } from "@connectrpc/connect-fastify";
-import { createRoutes } from "./createRoutes.js";
-import type { ILageService } from "./types/ILageService.js";
+import fs from "fs";
+import path from "path";
+import { getWorkspaceRoot } from "workspace-tools";
+import type { ILageService, RunTargetRequest } from "./types/ILageService.js";
 
-export async function createServer(lageService: ILageService, abortController: AbortController) {
-  const server = fastify({
-    http2: true,
-  });
-  await server.register(fastifyConnectPlugin, {
-    routes: createRoutes(lageService),
-    shutdownSignal: abortController.signal,
-    compressMinBytes: 512,
-    grpc: true,
+export async function createServer(lageService: ILageService) {
+  const root = getWorkspaceRoot(process.cwd())!;
+
+  const server = fastify();
+
+  server.post("/run-target", async (req, res) => {
+    const request: RunTargetRequest = req.body as any;
+
+    lageService.runTarget(request).then((results) => {
+      const { packageName, task } = request;
+      const resultsFile = path.join(root, `node_modules/.cache/lage/results/${packageName ?? ""}#${task}.json`);
+      const resultsDir = path.dirname(resultsFile);
+
+      if (!fs.existsSync(resultsDir)) {
+        fs.mkdirSync(resultsDir, { recursive: true });
+      }
+
+      fs.writeFileSync(resultsFile, JSON.stringify(results, null, 0));
+
+      // send SIGPIPE to the client process to notify that the results are ready
+      process.kill(request.clientPid, "SIGPIPE");
+    });
+
+    res.send({ queued: true });
   });
 
-  server.get("/", (_, reply) => {
-    reply.type("text/plain");
-    reply.send("lage service");
+  server.get("/ping", (req, res) => {
+    res.send(`{"pong":true}`);
   });
 
   return server;

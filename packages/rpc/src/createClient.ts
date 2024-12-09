@@ -1,6 +1,9 @@
-import { createPromiseClient } from "@connectrpc/connect";
-import { createGrpcTransport } from "@connectrpc/connect-node";
-import { LageService } from "./gen/lage/v1/lage_connect.js";
+// import { createPromiseClient } from "@connectrpc/connect";
+// import { createGrpcTransport } from "@connectrpc/connect-node";
+// import { LageService } from "./gen/lage/v1/lage_connect.js";
+// import { createFetchClient } from "@connectrpc/connect/protocol";
+
+import type { RunTargetResponse } from "./types/ILageService.js";
 
 export interface CreateClientOptions {
   baseUrl: string;
@@ -9,11 +12,46 @@ export interface CreateClientOptions {
 
 export type LageClient = ReturnType<typeof createClient>;
 
-export function createClient({ baseUrl, httpVersion }: CreateClientOptions) {
-  const transport = createGrpcTransport({
-    httpVersion,
-    baseUrl,
-  });
+export function createClient({ baseUrl }: CreateClientOptions) {
+  return {
+    async runTarget({
+      packageName,
+      task,
+      taskArgs,
+      clientPid,
+    }: {
+      packageName?: string;
+      task: string;
+      taskArgs: string[];
+      clientPid: number;
+    }) {
+      const res = await fetch(`${baseUrl}/run-target`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...(packageName && { packageName }),
+          task,
+          taskArgs,
+          clientPid,
+        }),
+      });
 
-  return createPromiseClient(LageService, transport);
+      const json = await res.json();
+
+      return json as RunTargetResponse;
+    },
+
+    async ping() {
+      const res = await fetch(`${baseUrl}/ping`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      return (await res.json()) as { pong: boolean };
+    },
+  };
 }
