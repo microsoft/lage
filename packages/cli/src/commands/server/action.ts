@@ -45,17 +45,16 @@ export async function serverAction(options: WorkerOptions) {
 
 let timeoutHandle: NodeJS.Timeout | undefined;
 function resetTimer(logger: Logger, timeout: number, abortController: AbortController, server: any) {
-  clearTimer();
-
-  timeoutHandle = globalThis.setTimeout(() => {
-    logger.info(`Server timed out after ${timeout} seconds`);
-    abortController.abort();
-    server.close();
-  }, timeout * 1000);
+  // clearTimer();
+  // timeoutHandle = globalThis.setTimeout(() => {
+  //   logger.info(`Server timed out after ${timeout} seconds`);
+  //   abortController.abort();
+  //   server.close();
+  // }, timeout * 1000);
 }
 
 function clearTimer() {
-  if (timeoutHandle) {
-    globalThis.clearTimeout(timeoutHandle);
-  }
+  // if (timeoutHandle) {
+  //   globalThis.clearTimeout(timeoutHandle);
+  // }
 }
