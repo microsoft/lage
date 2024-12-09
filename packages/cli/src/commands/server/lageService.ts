@@ -250,15 +250,15 @@ export async function createLageService({
           }
         );
 
-        const globalInputs = target.environmentGlob
-          ? glob(target.environmentGlob, { cwd: root, gitignore: true })
-          : config.cacheOptions?.environmentGlob
-          ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
-          : ["lage.config.js"];
-        const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
+        // const globalInputs = target.environmentGlob
+        //   ? glob(target.environmentGlob, { cwd: root, gitignore: true })
+        //   : config.cacheOptions?.environmentGlob
+        //   ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
+        //   : ["lage.config.js"];
+        // const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
 
-        const stdout = writableStdout.toString();
-        const stderr = writableStderr.toString();
+        // const stdout = writableStdout.toString();
+        // const stderr = writableStderr.toString();
 
         writableStdout.destroy();
         writableStderr.destroy();
@@ -268,10 +268,12 @@ export async function createLageService({
           task: request.task,
           exitCode: 0,
           hash: "",
-          inputs,
-          outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
-          stdout,
-          stderr,
+          // inputs,
+          // outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
+          // stdout,
+          // stderr,
+          stdout: "",
+          stderr: "",
           id,
         };
       } catch (e) {
