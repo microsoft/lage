@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Mon, 09 Dec 2024 06:21:52 GMT",
+      "version": "0.24.7",
+      "tag": "@lage-run/cli_v0.24.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "4584a7356e544bd87a0c79180baa9f14cd971baf",
+            "comment": "fixing the outputs so it includes files I/O"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 08 Dec 2024 00:07:28 GMT",
       "version": "0.24.6",
       "tag": "@lage-run/cli_v0.24.6",
