@@ -116,10 +116,10 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     logger.silly(`Max Worker Memory Usage: ${formatBytes(pool?.stats().maxWorkerMemoryUsage)}`);
   });
 
-  // pool?.on("idle", () => {
-  //   logger.info("All workers are idle, shutting down after timeout");
-  //   serverControls.countdownToShutdown();
-  // });
+  pool?.on("idle", () => {
+    logger.info("All workers are idle, shutting down after timeout");
+    serverControls.countdownToShutdown();
+  });
 
   return { config, targetGraph, packageTree, dependencyMap, root, pool };
 }
@@ -160,7 +160,7 @@ export async function createLageService({
         global.gc();
       }
 
-      // serverControls.clearCountdown();
+      serverControls.clearCountdown();
 
       // THIS IS A BIG ASSUMPTION; TODO: memoize based on the parameters of the initialize() call
       // The first request sets up the nodeArg and taskArgs - we are assuming that all requests to run this target are coming from the same
