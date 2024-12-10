@@ -194,10 +194,11 @@ export async function createLageService({
         runners,
       };
 
-      const writableStdout = new MemoryStream();
-      const writableStderr = new MemoryStream();
-      let pipedStdout: Readable;
-      let pipedStderr: Readable;
+      // const writableStdout = new MemoryStream();
+      // const writableStderr = new MemoryStream();
+
+      let pipedStdout: WeakRef<Readable>;
+      let pipedStderr: WeakRef<Readable>;
 
       const targetRun: TargetRun = {
         queueTime: process.hrtime(),
@@ -215,11 +216,14 @@ export async function createLageService({
           (worker, stdout, stderr) => {
             logger.info(`[${worker.threadId}] ${request.packageName}#${request.task} start`);
 
-            pipedStdout = stdout;
-            pipedStderr = stderr;
+            pipedStdout = new WeakRef(stdout);
+            pipedStderr = new WeakRef(stderr);
 
-            stdout.pipe(writableStdout);
-            stderr.pipe(writableStderr);
+            // stdout.pipe(writableStdout);
+            // stderr.pipe(writableStderr);
+
+            stdout.pipe(process.stdout);
+            stderr.pipe(process.stderr);
 
             targetRun.threadId = worker.threadId;
             targetRun.status = "running";
@@ -242,8 +246,9 @@ export async function createLageService({
             logger.info(
               `[${worker.threadId}] ${request.packageName}#${request.task} end: ${formatDuration(hrToSeconds(targetRun.duration))}`
             );
-            pipedStdout.unpipe(writableStdout);
-            pipedStderr.unpipe(writableStderr);
+
+            pipedStdout.deref()?.unpipe(process.stdout).destroy();
+            pipedStderr.deref()?.unpipe(process.stderr).destroy();
           }
         );
 
@@ -261,8 +266,8 @@ export async function createLageService({
           hash: "",
           inputs,
           outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
-          stdout: writableStdout.toString(),
-          stderr: writableStderr.toString(),
+          stdout: "", // writableStdout.toString(),
+          stderr: "", // writableStderr.toString(),
           id,
         };
       } catch (e) {

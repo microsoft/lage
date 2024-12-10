@@ -19,15 +19,20 @@ interface ExecRemotelyOptions extends ReporterInitOptions {
   nodeArg?: string;
 }
 
-async function tryCreateClient(host: string, port: number) {
+async function tryCreateClient(host: string, port: number, logger: Logger) {
+  const baseUrl = `http://${host}:${port}`;
+
+  logger.info(`Creating client to ${baseUrl}`);
+
   const client = createClient({
-    baseUrl: `http://${host}:${port}`,
+    baseUrl,
     httpVersion: "2",
   });
 
   try {
     const success = await client.ping({});
     if (success.pong) {
+      logger.info(`Background service connected to ${baseUrl}`);
       return client;
     }
   } catch (e) {
@@ -44,20 +49,22 @@ async function tryCreateClient(host: string, port: number) {
 async function tryCreateClientWithRetries(host: string, port: number, logger: Logger) {
   let client: ReturnType<typeof createClient> | undefined;
 
-  const start = Date.now();
-  while (Date.now() - start < 5 * 1000) {
+  let attempt = 0;
+  while (attempt < 5) {
+    attempt++;
     try {
-      client = await tryCreateClient(host, port);
+      client = await tryCreateClient(host, port, logger);
 
       if (client) {
         return client;
       }
     } catch (e) {
       if (e instanceof ConnectError) {
-        logger.error("Error connecting to server", e);
+        logger.warn(`Cannot connecting to server, attempt ${attempt}`);
       }
     }
 
+    // wait a second before trying again
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
@@ -106,7 +113,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
 
   const root = getWorkspaceRoot(options.cwd ?? process.cwd())!;
 
-  let client = await tryCreateClient(host, port);
+  let client = await tryCreateClient(host, port, logger);
   const args = command.args;
 
   logger.info(`Command args ${command.args.join(" ")}`);

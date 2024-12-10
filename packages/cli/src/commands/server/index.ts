@@ -1,4 +1,3 @@
-import os from "os";
 import { Command } from "commander";
 import { serverAction } from "./action.js";
 import { addLoggerOptions } from "../addLoggerOptions.js";
