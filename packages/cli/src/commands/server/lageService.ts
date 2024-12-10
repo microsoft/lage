@@ -1,5 +1,5 @@
 import { type ConfigOptions, getConfig, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
-import type { Logger } from "@lage-run/logger";
+import { LogLevel, Logger } from "@lage-run/logger";
 import type { ILageService } from "@lage-run/rpc";
 import { getTargetId, type TargetGraph } from "@lage-run/target-graph";
 import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
@@ -200,6 +200,9 @@ export async function createLageService({
       let pipedStdout: WeakRef<Readable>;
       let pipedStderr: WeakRef<Readable>;
 
+      let stdoutUnstream: () => void;
+      let stderrUnstream: () => void;
+
       const targetRun: TargetRun = {
         queueTime: process.hrtime(),
         target,
@@ -221,9 +224,10 @@ export async function createLageService({
 
             // stdout.pipe(writableStdout);
             // stderr.pipe(writableStderr);
-
-            stdout.pipe(process.stdout);
-            stderr.pipe(process.stderr);
+            stdoutUnstream = logger.stream(LogLevel.info, stdout);
+            stderrUnstream = logger.stream(LogLevel.info, stderr);
+            // stdout.pipe(process.stdout);
+            // stderr.pipe(process.stderr);
 
             targetRun.threadId = worker.threadId;
             targetRun.status = "running";
@@ -247,8 +251,11 @@ export async function createLageService({
               `[${worker.threadId}] ${request.packageName}#${request.task} end: ${formatDuration(hrToSeconds(targetRun.duration))}`
             );
 
-            pipedStdout.deref()?.unpipe(process.stdout).destroy();
-            pipedStderr.deref()?.unpipe(process.stderr).destroy();
+            // pipedStdout.deref()?.unpipe(process.stdout).destroy();
+            // pipedStderr.deref()?.unpipe(process.stderr).destroy();
+
+            stdoutUnstream();
+            stderrUnstream();
           }
         );
 
