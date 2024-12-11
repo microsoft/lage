@@ -2,23 +2,19 @@
   "name": "@lage-run/globby",
   "version": "14.2.0",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "transpile": "esbuild src/index.mts --bundle --platform=node --target=node14 --format=cjs --outfile=lib/index.js",
-    "types": "yarn tsc && node scripts/rename.js && yarn dts-bundle-generator --config ./dts-bundle.config.js"
+    "build": "tsc",
+    "start": "tsc -w --preserveWatchOutput",
+    "test": "jest",
+    "lint": "monorepo-scripts lint"
   },
   "license": "MIT",
   "devDependencies": {
-    "dts-bundle-generator": "^9.5.1",
-    "esbuild": "^0.21.5",
-    "globby": "^14.0.2",
+    "globby": "^11.1.0",
     "typescript": "~5.0.3"
   },
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./lib/index.js",
-      "require": "./lib/index.js",
-      "source": "./src/index.mts"
-    }
+  "publishConfig": {
+    "access": "public"
   }
 }

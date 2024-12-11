@@ -1,10 +1,4 @@
-// import { createPromiseClient } from "@connectrpc/connect";
-// import { createGrpcTransport } from "@connectrpc/connect-node";
-// import { LageService } from "./gen/lage/v1/lage_connect.js";
-// import { createFetchClient } from "@connectrpc/connect/protocol";
-
 import type { RunTargetResponse } from "./types/ILageService.js";
-
 export interface CreateClientOptions {
   baseUrl: string;
   httpVersion: "1.1" | "2";
