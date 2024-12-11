@@ -159,17 +159,16 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
   logger.info(`Executing on server http://${host}:${port}`);
   const response = await executeOnServer(args, client, logger, root);
 
-  // if (response) {
-  //   process.stdout.write(response.stdout);
-  //   process.stderr.write(response.stderr);
-  //   process.exitCode = response.exitCode;
+  if (response) {
+    process.stdout.write(response.stdout);
+    process.stderr.write(response.stderr);
+    process.exitCode = response.exitCode;
 
-  //   if (response.exitCode === 0) {
-  //     await simulateFileAccess(logger, response.inputs, response.outputs);
-  //   }
-  // } else {
-  //   process.exitCode = 1;
-  // }
+    // we will simulate file access even if exit code may be non-zero
+    await simulateFileAccess(logger, response.inputs, response.outputs);
+  } else {
+    process.exitCode = 1;
+  }
 
   logger.info("Task execution finished");
 }

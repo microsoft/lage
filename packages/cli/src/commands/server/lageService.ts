@@ -213,6 +213,14 @@ export async function createLageService({
         threadId: 0,
       };
 
+      const globalInputs = target.environmentGlob
+        ? glob(target.environmentGlob, { cwd: root, gitignore: true })
+        : config.cacheOptions?.environmentGlob
+        ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
+        : ["lage.config.js"];
+
+      const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
+
       try {
         await pool.exec(
           task,
@@ -252,12 +260,7 @@ export async function createLageService({
           }
         );
 
-        const globalInputs = target.environmentGlob
-          ? glob(target.environmentGlob, { cwd: root, gitignore: true })
-          : config.cacheOptions?.environmentGlob
-          ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
-          : ["lage.config.js"];
-        const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
+        const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
 
         return {
           packageName: request.packageName,
@@ -265,19 +268,21 @@ export async function createLageService({
           exitCode: 0,
           hash: "",
           inputs,
-          outputs: getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree),
+          outputs,
           stdout: writableStdout.toString(),
           stderr: writableStderr.toString(),
           id,
         };
       } catch (e) {
+        const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
+
         return {
           packageName: request.packageName,
           task: request.task,
           exitCode: 1,
           hash: "",
-          inputs: [],
-          outputs: [],
+          inputs,
+          outputs,
           stdout: "",
           stderr: e instanceof Error ? e.toString() : "",
           id,
