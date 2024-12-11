@@ -10,7 +10,7 @@ export async function createServer(lageService: ILageService, abortController: A
     routes: createRoutes(lageService),
     shutdownSignal: abortController.signal,
     compressMinBytes: 512,
-    grpc: true,
+    connect: true,
   });
 
   server.get("/", (_, reply) => {

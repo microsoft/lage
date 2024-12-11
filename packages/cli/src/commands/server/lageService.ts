@@ -9,7 +9,7 @@ import { type Pool, AggregatedPool } from "@lage-run/worker-threads-pool";
 import { getInputFiles, PackageTree } from "@lage-run/hasher";
 import { createDependencyMap } from "workspace-tools";
 import { getOutputFiles } from "./getOutputFiles.js";
-import { globNoCache, glob } from "@lage-run/globby";
+import { glob } from "@lage-run/globby";
 import { MemoryStream } from "./MemoryStream.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
