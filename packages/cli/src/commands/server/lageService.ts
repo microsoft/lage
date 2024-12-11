@@ -16,6 +16,10 @@ import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
 import type { TargetRun } from "@lage-run/scheduler-types";
 import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
 
+// import v8 from "v8";
+
+// let counter = 0;
+
 interface LageServiceContext {
   config: ConfigOptions;
   targetGraph: TargetGraph;
@@ -253,6 +257,14 @@ export async function createLageService({
           ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
           : ["lage.config.js"];
         const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
+        // if (global.gc) {
+        //   global.gc();
+        // }
+
+        // counter++;
+        // if (counter > 45 && counter < 50) {
+        //   v8.writeHeapSnapshot(`node_modules/.cache/lage/${counter++}.heapsnapshot`);
+        // }
 
         return {
           packageName: request.packageName,

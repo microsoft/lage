@@ -3,9 +3,8 @@
   "compilerOptions": {
     "outDir": "./lib",
     "emitDeclarationOnly": true,
-    "module": "Node16"
+    "module": "CommonJS",
+    "moduleResolution": "Node"
   },
-  "files": [],
-  "include": ["src/index.mts"],
-  "exclude": ["lib/**/*.mts"]
+  "include": ["src/index.ts"]
 }

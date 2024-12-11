@@ -46,7 +46,6 @@ export async function serverAction(options: WorkerOptions) {
 let timeoutHandle: NodeJS.Timeout | undefined;
 function resetTimer(logger: Logger, timeout: number, abortController: AbortController, server: any) {
   clearTimer();
-
   timeoutHandle = globalThis.setTimeout(() => {
     logger.info(`Server timed out after ${timeout} seconds`);
     abortController.abort();
