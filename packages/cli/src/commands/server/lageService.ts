@@ -9,16 +9,12 @@ import { type Pool, AggregatedPool } from "@lage-run/worker-threads-pool";
 import { getInputFiles, PackageTree } from "@lage-run/hasher";
 import { createDependencyMap } from "workspace-tools";
 import { getOutputFiles } from "./getOutputFiles.js";
-import { glob } from "@lage-run/globby";
+import { globNoCache as glob } from "@lage-run/globby";
 import { MemoryStream } from "./MemoryStream.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
 import type { TargetRun } from "@lage-run/scheduler-types";
 import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
-
-// import v8 from "v8";
-
-// let counter = 0;
 
 interface LageServiceContext {
   config: ConfigOptions;
@@ -257,14 +253,6 @@ export async function createLageService({
           ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
           : ["lage.config.js"];
         const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
-        // if (global.gc) {
-        //   global.gc();
-        // }
-
-        // counter++;
-        // if (counter > 45 && counter < 50) {
-        //   v8.writeHeapSnapshot(`node_modules/.cache/lage/${counter++}.heapsnapshot`);
-        // }
 
         return {
           packageName: request.packageName,

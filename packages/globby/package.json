@@ -14,11 +14,7 @@
     "globby": "^11.1.0",
     "typescript": "~5.0.3"
   },
-  "exports": {
-    ".": {
-      "types": "./lib/index.d.ts",
-      "require": "./lib/index.js",
-      "source": "./src/index.ts"
-    }
+  "publishConfig": {
+    "access": "public"
   }
 }

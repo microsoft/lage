@@ -1769,14 +1769,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/globby@npm:^14.2.0":
-  version: 14.2.0
-  resolution: "@lage-run/globby@npm:14.2.0"
-  checksum: 10c0/66be0a1236f56ef532324f530fa50727de6d711ab013c6720d42de480154a2e7c008302f66f9069cddf5c64251ec98f247ed52bf8e796e132482bb5b274a05fe
-  languageName: node
-  linkType: hard
-
-"@lage-run/globby@workspace:packages/globby":
+"@lage-run/globby@npm:^14.2.0, @lage-run/globby@workspace:packages/globby":
   version: 0.0.0-use.local
   resolution: "@lage-run/globby@workspace:packages/globby"
   dependencies:

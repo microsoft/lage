@@ -4,9 +4,8 @@ import { createRoutes } from "./createRoutes.js";
 import type { ILageService } from "./types/ILageService.js";
 
 export async function createServer(lageService: ILageService, abortController: AbortController) {
-  const server = fastify({
-    http2: true,
-  });
+  const server = fastify();
+
   await server.register(fastifyConnectPlugin, {
     routes: createRoutes(lageService),
     shutdownSignal: abortController.signal,
