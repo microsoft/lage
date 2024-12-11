@@ -1,38 +1,74 @@
-import { fastify } from "fastify";
 import fs from "fs";
 import path from "path";
 import { getWorkspaceRoot } from "workspace-tools";
 import type { ILageService, RunTargetRequest } from "./types/ILageService.js";
+import { normalizeTargetFileName } from "./normalizeTargetFileName.js";
+
+const HEARTBEAT_INTERVAL = 1500;
+export const TodoRelativeDir = `node_modules/.cache/lage/server/todo`;
+export const ResultsRelativeDir = `node_modules/.cache/lage/server/results`;
 
 export async function createServer(lageService: ILageService) {
-  const root = getWorkspaceRoot(process.cwd())!;
+  return new Server(lageService);
+}
 
-  const server = fastify();
+class Server {
+  private root: string;
+  private todoDir: string;
+  private resultsDir: string;
+  private interval?: NodeJS.Timeout;
 
-  server.post("/run-target", async (req, res) => {
-    const request: RunTargetRequest = req.body as any;
+  constructor(private lageService: ILageService) {
+    this.root = getWorkspaceRoot(process.cwd())!;
+    this.todoDir = path.join(this.root, TodoRelativeDir);
+    this.resultsDir = path.join(this.root, ResultsRelativeDir);
 
-    lageService.runTarget(request).then((results) => {
-      const { packageName, task } = request;
-      const resultsFile = path.join(root, `node_modules/.cache/lage/results/${packageName ?? ""}#${task}.json`);
-      const resultsDir = path.dirname(resultsFile);
+    if (!fs.existsSync(this.resultsDir)) {
+      fs.mkdirSync(this.resultsDir, { recursive: true });
+    }
 
-      if (!fs.existsSync(resultsDir)) {
-        fs.mkdirSync(resultsDir, { recursive: true });
-      }
+    if (!fs.existsSync(this.todoDir)) {
+      fs.mkdirSync(this.todoDir, { recursive: true });
+    }
 
-      fs.writeFileSync(resultsFile, JSON.stringify(results, null, 0));
-
-      // send SIGPIPE to the client process to notify that the results are ready
-      process.kill(request.clientPid, "SIGPIPE");
+    process.on("exit", () => {
+      this.close();
+      fs.rmdirSync(this.todoDir, { recursive: true });
+      fs.rmdirSync(this.resultsDir, { recursive: true });
     });
+  }
 
-    res.send({ queued: true });
-  });
+  listen() {
+    this.interval = setInterval(this.onHeartbeat.bind(this), HEARTBEAT_INTERVAL);
+  }
 
-  server.get("/ping", (req, res) => {
-    res.send(`{"pong":true}`);
-  });
+  close() {
+    clearInterval(this.interval);
+  }
 
-  return server;
+  private onHeartbeat() {
+    const { todoDir, resultsDir, lageService } = this;
+
+    const todoFiles = fs.readdirSync(todoDir);
+
+    console.log("todoFiles", todoFiles);
+
+    for (const todoFile of todoFiles) {
+      const todo = JSON.parse(fs.readFileSync(path.join(todoDir, todoFile), "utf-8")) as RunTargetRequest;
+      fs.unlinkSync(path.join(todoDir, todoFile));
+
+      lageService.runTarget(todo).then((results) => {
+        const resultsFile = path.join(resultsDir, normalizeTargetFileName(`${todo.packageName ?? ""}#${todo.task}.json`));
+
+        fs.writeFileSync(resultsFile, JSON.stringify(results, null, 0));
+
+        // send SIGPIPE to the client process to notify that the results are ready
+        try {
+          process.kill(todo.clientPid, "SIGPIPE");
+        } catch (e) {
+          console.error(`Error sending SIGPIPE ${todo.clientPid}`, e);
+        }
+      });
+    }
+  }
 }

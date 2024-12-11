@@ -23,10 +23,11 @@ interface ExecRemotelyOptions extends ReporterInitOptions {
   nodeArg?: string;
 }
 
-async function tryCreateClient(host: string, port: number) {
+async function tryCreateClient(host: string, port: number, root: string) {
   const client = createClient({
     baseUrl: `http://${host}:${port}`,
     httpVersion: "1.1",
+    root,
   });
 
   try {
@@ -45,13 +46,13 @@ async function tryCreateClient(host: string, port: number) {
   return undefined;
 }
 
-async function tryCreateClientWithRetries(host: string, port: number, logger: Logger) {
+async function tryCreateClientWithRetries(host: string, port: number, logger: Logger, root: string) {
   let client: ReturnType<typeof createClient> | undefined;
 
   const start = Date.now();
   while (Date.now() - start < 5 * 1000) {
     try {
-      client = await tryCreateClient(host, port);
+      client = await tryCreateClient(host, port, root);
 
       if (client) {
         return client;
@@ -68,11 +69,7 @@ async function tryCreateClientWithRetries(host: string, port: number, logger: Lo
   return undefined;
 }
 
-process.on("exit", (c) => {
-  process.stdout.write("exiting " + c + "\n");
-});
-
-async function executeOnServer(args: string[], client: LageClient, logger: Logger, root: string) {
+async function executeOnServer(args: string[], client: LageClient, logger: Logger) {
   const task = args.length === 1 ? args[0] : args[1];
   const packageName = args.length > 1 ? args[0] : undefined;
 
@@ -82,36 +79,14 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
 
   const { taskArgs } = filterArgsForTasks(args ?? []);
 
-  const resultsFile = path.join(root, `node_modules/.cache/lage/results/${packageName ?? ""}#${task}.json`);
-  const resultsDir = path.dirname(resultsFile);
-  if (!fs.existsSync(resultsDir)) {
-    fs.mkdirSync(resultsDir, { recursive: true });
-  }
-
   logger.info(`Running task ${JSON.stringify({ packageName, task, taskArgs, clientPid: process.pid })}`);
-  const responsePromise = new Promise<RunTargetResponse>((responsePromiseResolve, reject) => {
-    const handler = setTimeout(() => {
-      reject("timeout");
-    }, 30 * 60 * 1000);
 
-    process.on("SIGPIPE", () => {
-      clearTimeout(handler);
-      const results = JSON.parse(fs.readFileSync(resultsFile, "utf8"));
-      fs.unlinkSync(resultsFile);
-      return responsePromiseResolve(results);
-    });
-  }).catch((reason) => {
-    logger.info(`response promise rejected, ${reason}`);
-  });
-
-  await client.runTarget({
+  const results = await client.runTarget({
     packageName,
     task,
     taskArgs,
     clientPid: process.pid,
   });
-
-  const results = await responsePromise;
 
   return results;
 }
@@ -131,7 +106,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
 
   const root = getWorkspaceRoot(options.cwd ?? process.cwd())!;
 
-  let client = await tryCreateClient(host, port);
+  let client = await tryCreateClient(host, port, root);
   const args = command.args;
 
   logger.info(`Command args ${command.args.join(" ")}`);
@@ -149,7 +124,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
     });
 
     logger.info("Creating a client to connect to the background services");
-    client = await tryCreateClientWithRetries(host, port, logger);
+    client = await tryCreateClientWithRetries(host, port, logger, root);
 
     if (!client) {
       throw new Error("Server could not be started");
@@ -157,7 +132,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
   }
 
   logger.info(`Executing on server http://${host}:${port}`);
-  const response = await executeOnServer(args, client, logger, root);
+  const response = await executeOnServer(args, client, logger);
 
   if (response) {
     process.stdout.write(response.stdout);

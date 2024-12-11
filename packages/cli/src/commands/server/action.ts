@@ -39,7 +39,7 @@ export async function serverAction(options: WorkerOptions) {
   });
   const server = await createServer(lageService);
 
-  await server.listen({ host, port });
+  await server.listen();
   logger.info(`Server listening on http://${host}:${port}, timeout in ${timeout} seconds`);
 }
 
