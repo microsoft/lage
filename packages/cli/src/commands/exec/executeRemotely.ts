@@ -139,9 +139,8 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
     process.stderr.write(response.stderr);
     process.exitCode = response.exitCode;
 
-    if (response.exitCode === 0) {
-      await simulateFileAccess(logger, response.inputs, response.outputs);
-    }
+    // we will simulate file access even if exit code may be non-zero
+    await simulateFileAccess(logger, response.inputs, response.outputs);
   } else {
     process.exitCode = 1;
   }
