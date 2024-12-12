@@ -103,6 +103,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
     outputs: config.cacheOptions.outputGlob,
     tasks,
     packageInfos,
+    priorities: config.priorities,
   });
 
   const scope = getFilteredPackages({

@@ -3,7 +3,7 @@ import { WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
 import type { PackageInfos } from "workspace-tools";
 import { getBranchChanges, getDefaultRemoteBranch, getStagedChanges, getUnstagedChanges, getUntrackedChanges } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
-import type { PipelineDefinition } from "@lage-run/config";
+import type { PipelineDefinition, Priority } from "@lage-run/config";
 import { hasRepoChanged } from "../../filter/hasRepoChanged.js";
 
 interface CreateTargetGraphOptions {
@@ -19,6 +19,7 @@ interface CreateTargetGraphOptions {
   outputs: string[];
   tasks: string[];
   packageInfos: PackageInfos;
+  priorities: Priority[];
 }
 
 function getChangedFiles(since: string, cwd: string) {
@@ -37,7 +38,21 @@ function getChangedFiles(since: string, cwd: string) {
 }
 
 export async function createTargetGraph(options: CreateTargetGraphOptions) {
-  const { logger, root, dependencies, dependents, since, scope, repoWideChanges, ignore, pipeline, outputs, tasks, packageInfos } = options;
+  const {
+    logger,
+    root,
+    dependencies,
+    dependents,
+    since,
+    scope,
+    repoWideChanges,
+    ignore,
+    pipeline,
+    outputs,
+    tasks,
+    packageInfos,
+    priorities,
+  } = options;
 
   const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
 
@@ -80,5 +95,5 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
     }
   }
 
-  return await builder.build(tasks, packages);
+  return await builder.build(tasks, packages, priorities);
 }

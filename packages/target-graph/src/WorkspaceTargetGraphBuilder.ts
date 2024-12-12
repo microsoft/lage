@@ -164,9 +164,9 @@ export class WorkspaceTargetGraphBuilder {
    *
    * @param tasks
    * @param scope
-   * @returns
+   * @param priorities the set of global priorities for the workspace.
    */
-  async build(tasks: string[], scope?: string[]) {
+  async build(tasks: string[], scope?: string[], priorities?: { package?: string; task: string; priority: number }[]) {
     // Expands the dependency specs from the target definitions
     const fullDependencies = expandDepSpecs(this.graphBuilder.targets, this.dependencyMap);
 
@@ -203,6 +203,19 @@ export class WorkspaceTargetGraphBuilder {
     }
 
     const subGraph = this.graphBuilder.subgraph(subGraphEntries);
+
+    if (priorities) {
+      for (const priorityConfig of priorities) {
+        // Right now we are only handling global priorities where the package name is set
+        if (priorityConfig.package) {
+          const targetId = getTargetId(priorityConfig.package, priorityConfig.task);
+          const target = subGraph.targets.get(targetId);
+          if (target) {
+            target.priority = target.priority ? Math.max(target.priority, priorityConfig.priority) : priorityConfig.priority;
+          }
+        }
+      }
+    }
 
     const limit = pLimit(8);
     const setShouldRunPromises: Promise<void>[] = [];
