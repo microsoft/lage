@@ -2,7 +2,7 @@
   "changes": [
     {
       "type": "patch",
-      "comment": "Fix bug where priorities where not being correctly set on tasks",
+      "comment": "Fix bug where priorities were not being correctly set on tasks",
       "packageName": "@lage-run/cli",
       "email": "1581488+christiango@users.noreply.github.com",
       "dependentChangeType": "patch"
