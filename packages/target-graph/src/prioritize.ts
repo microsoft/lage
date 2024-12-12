@@ -61,14 +61,16 @@ export function prioritize(targets: Map<string, Target>) {
   /**
    * What is this loop doing?
    *
-   * Now that we have reverse topologically sorted the nodes, we examine the each node
-   * and update the cumulative priority of all the nodes that depend on it.
+   * We want to make sure that all nodes with high priority are scheduled earlier. This means we need to make sure everything a node with high priority needs to ensure that all nodes it depends on has at least as high a priority set on them.
+   * We go through all the nodes in reverse topological sort order, meaning we will visit a node before we visit any nodes it depends on. For each node, we will look at all the nodes that depend on the current task. All dependents will have
+   * already been visited by the reverse topological sort so their priority is final. We will then take the maximum priority of all dependents and set the current nodes priority equal to the maximum priority plus the current node priority.
    */
   for (const currentNodeId of reverseTopoSortedNodeIds) {
     const node = targets.get(currentNodeId)!;
     // The default priority for a node is zero
     const currentNodePriority = node.priority || 0;
 
+    // Let's find the dependent with the highest priority and make sure the current node has a priority at least as high as that
     const childrenPriorities = node.dependents.map((childId) => {
       const childCumulativePriority = nodeCumulativePriorities.get(childId);
       if (childCumulativePriority === undefined) {
