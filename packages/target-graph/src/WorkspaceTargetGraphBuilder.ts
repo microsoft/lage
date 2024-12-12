@@ -202,20 +202,21 @@ export class WorkspaceTargetGraphBuilder {
       }
     }
 
-    const subGraph = this.graphBuilder.subgraph(subGraphEntries);
-
+    // Add all the global priorities for individual targets
     if (priorities) {
       for (const priorityConfig of priorities) {
         // Right now we are only handling global priorities where the package name is set
         if (priorityConfig.package) {
           const targetId = getTargetId(priorityConfig.package, priorityConfig.task);
-          const target = subGraph.targets.get(targetId);
+          const target = this.graphBuilder.targets.get(targetId);
           if (target) {
             target.priority = target.priority ? Math.max(target.priority, priorityConfig.priority) : priorityConfig.priority;
           }
         }
       }
     }
+
+    const subGraph = this.graphBuilder.subgraph(subGraphEntries);
 
     const limit = pLimit(8);
     const setShouldRunPromises: Promise<void>[] = [];

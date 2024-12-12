@@ -50,7 +50,7 @@ describe("workspace target graph builder", () => {
 
     // Ensure priorities were set from the global priority argument
     expect(Array.from(targetGraph.targets.values())).toEqual([
-      expect.objectContaining({ id: "__start", priority: 0 }),
+      expect.objectContaining({ id: "__start", priority: 100 }),
       expect.objectContaining({ id: "a#build", priority: 0 }),
       expect.objectContaining({ id: "b#build", priority: 100 }),
     ]);
