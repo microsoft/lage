@@ -18,10 +18,10 @@ function getNewDependsOnMap(pGraphDependencyMap: Map<string, Target>): Map<strin
 }
 
 /**
- * Topologically sort the nodes in a graph - starting with nodes with no dependencies
- * @returns a list of ids in order
+ * Topologically sort the nodes in a graph in reverse order. Leaf nodes are at the beginning of the list and nodes with no dependencies are at the end of the list
+ * @returns a list of ids in reverse topological order
  */
-function topologicalSort(targets: Map<string, Target>, nodesWithNoDependencies: string[]): string[] {
+function reverseTopoSort(targets: Map<string, Target>, nodesWithNoDependencies: string[]): string[] {
   const sortedList: string[] = [];
 
   const dependsOnMap = getNewDependsOnMap(targets);
@@ -30,7 +30,7 @@ function topologicalSort(targets: Map<string, Target>, nodesWithNoDependencies: 
   while (nodesWithNoDependenciesClone.length > 0) {
     const currentId = nodesWithNoDependenciesClone.pop()!;
 
-    sortedList.push(currentId);
+    sortedList.unshift(currentId);
 
     const node = targets.get(currentId)!;
 
@@ -50,26 +50,26 @@ function topologicalSort(targets: Map<string, Target>, nodesWithNoDependencies: 
 }
 
 /**
- * Priorities for a target is actually the MAX of all the priorities of the targets that depend on it.
+ * Priorities for a target is actually the MAX of all the priorities of the targets that depend on it plus the current priority.
  */
 export function prioritize(targets: Map<string, Target>) {
   const nodeCumulativePriorities = new Map<string, number>();
 
   const nodesWithNoDependencies = getNodesWithNoDependencies(targets);
-  const topoSortedNodeIds = topologicalSort(targets, nodesWithNoDependencies);
+  const reverseTopoSortedNodeIds = reverseTopoSort(targets, nodesWithNoDependencies);
 
   /**
    * What is this loop doing?
    *
-   * Now that we have topologically sorted the nodes, we examine the each node
+   * Now that we have reverse topologically sorted the nodes, we examine the each node
    * and update the cumulative priority of all the nodes that depend on it.
    */
-  for (const currentNodeId of topoSortedNodeIds) {
+  for (const currentNodeId of reverseTopoSortedNodeIds) {
     const node = targets.get(currentNodeId)!;
     // The default priority for a node is zero
     const currentNodePriority = node.priority || 0;
 
-    const childrenPriorities = node.dependencies.map((childId) => {
+    const childrenPriorities = node.dependents.map((childId) => {
       const childCumulativePriority = nodeCumulativePriorities.get(childId);
       if (childCumulativePriority === undefined) {
         throw new Error(`Expected to have already computed the cumulative priority for node ${childId}`);

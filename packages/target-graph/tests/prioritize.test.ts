@@ -31,6 +31,14 @@ function createTarget({
 describe("prioritize", () => {
   it("should prioritize targets", () => {
     const targets = new Map<string, Target>();
+    // This graph should read that the first task is required to run before the second task in the tuple.
+    // This would be the order these tasks run where the items depend on the tasks to their left
+    // _start#x --> a#build --> b#build --> c#build --> d#build
+    //                      --> e#build
+    //          --> a#lint
+    //          --> b#lint
+    //          --> c#lint
+    //          --> d#lint
     const edges = [
       ["a#build", "b#build"],
       ["a#build", "e#build"],
@@ -58,8 +66,8 @@ describe("prioritize", () => {
         targets.set(to, createTarget({ packageName: packageName!, task, dependencies: [], dependents: [], priority: 1 }));
       }
 
-      targets.get(from)!.dependencies.push(to);
-      targets.get(to)!.dependents.push(from);
+      targets.get(to)!.dependencies.push(from);
+      targets.get(from)!.dependents.push(to);
     }
 
     targets.get("c#build")!.priority = 10;

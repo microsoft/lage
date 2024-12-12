@@ -20,6 +20,9 @@ describe("transitiveReduction", () => {
     builder.addDependency(target2.id, target3.id);
     builder.addDependency(target4.id, target1.id);
 
+    // Graph to build
+    // _start --> d#build --> a#build --> b#build --> c#build
+
     const targetGraph = builder.subgraph(["c#build"]);
 
     const targets = [...targetGraph.targets.values()];
@@ -40,7 +43,7 @@ describe("transitiveReduction", () => {
               "d#build",
             ],
             "id": "__start",
-            "priority": 0,
+            "priority": 4,
           },
           Object {
             "dependencies": Array [
@@ -50,7 +53,7 @@ describe("transitiveReduction", () => {
             ],
             "dependents": Array [],
             "id": "c#build",
-            "priority": 4,
+            "priority": 1,
           },
           Object {
             "dependencies": Array [
@@ -62,7 +65,7 @@ describe("transitiveReduction", () => {
               "b#build",
             ],
             "id": "a#build",
-            "priority": 2,
+            "priority": 3,
           },
           Object {
             "dependencies": Array [
@@ -73,7 +76,7 @@ describe("transitiveReduction", () => {
               "c#build",
             ],
             "id": "b#build",
-            "priority": 3,
+            "priority": 2,
           },
           Object {
             "dependencies": Array [
@@ -83,7 +86,7 @@ describe("transitiveReduction", () => {
               "a#build",
             ],
             "id": "d#build",
-            "priority": 1,
+            "priority": 4,
           },
         ]"
     `);
