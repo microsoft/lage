@@ -1,8 +1,41 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Tue, 22 Oct 2024 15:19:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 02 Dec 2024 17:23:22 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.6.7
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.11.0
+
+## 1.6.6
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.1 (email not defined)
+- Bump @lage-run/target-graph to v0.10.1
+
+## 1.6.5
+
+Mon, 18 Nov 2024 23:22:30 GMT
+
+### Patches
+
+- Fix git command for getting untracked files in PackageTree.ts (slivanov@microsoft.com)
+
+## 1.6.4
+
+Fri, 08 Nov 2024 19:45:09 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.10.0
 
 ## 1.6.3
 

@@ -1,4 +1,4 @@
-import type { TargetRunner, TargetRunnerOptions } from "./types/TargetRunner.js";
+import type { RunnerResult, TargetRunner, TargetRunnerOptions } from "./types/TargetRunner.js";
 import type { Target } from "@lage-run/target-graph";
 import { pathToFileURL } from "url";
 
@@ -50,13 +50,13 @@ export class WorkerRunner implements TargetRunner {
     const scriptModule = await this.getScriptModule(target);
 
     if (typeof scriptModule.shouldRun === "function") {
-      return await scriptModule.shouldRun(target);
+      return (await scriptModule.shouldRun(target)) && (target.shouldRun ?? true);
     }
 
-    return true;
+    return target.shouldRun ?? true;
   }
 
-  async run(runOptions: TargetRunnerOptions) {
+  async run(runOptions: TargetRunnerOptions): Promise<RunnerResult> {
     const { target, weight, abortSignal } = runOptions;
     const { taskArgs } = this.options;
 

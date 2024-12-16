@@ -1,8 +1,24 @@
 # Change Log - @lage-run/worker-threads-pool
 
-<!-- This log was last generated on Wed, 09 Oct 2024 17:20:33 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sun, 08 Dec 2024 00:07:28 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.8.6
+
+Sun, 08 Dec 2024 00:07:28 GMT
+
+### Patches
+
+- adds the ability to do workerIdleMemoryLimit (kchau@microsoft.com)
+
+## 0.8.5
+
+Wed, 04 Dec 2024 23:50:15 GMT
+
+### Patches
+
+- Fixes the server worker model to use aggregated pool (kchau@microsoft.com)
 
 ## 0.8.4
 

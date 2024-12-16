@@ -62,7 +62,7 @@ export class PackageTree {
 
     if (includeUntracked) {
       // Also get all untracked files in the workspace according to git
-      const lsOtherResults = await execa("git", ["ls-files", "-o", "--exclude-standard"], { cwd: root });
+      const lsOtherResults = await execa("git", ["ls-files", "-o", "-z", "--exclude-standard"], { cwd: root });
       if (lsOtherResults.exitCode === 0) {
         const files = lsOtherResults.stdout.split("\0").filter(Boolean);
         this.addToPackageTree(files);

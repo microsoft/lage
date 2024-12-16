@@ -1,8 +1,8 @@
-import type { TargetConfig } from "./types/TargetConfig.js";
+import type { StagedTargetConfig, TargetConfig } from "./types/TargetConfig.js";
 import type { Target } from "./types/Target.js";
 import type { PackageInfos } from "workspace-tools";
 
-import { getPackageAndTask, getTargetId } from "./targetId.js";
+import { getPackageAndTask, getStagedTargetId, getTargetId } from "./targetId.js";
 import { getWeight } from "./getWeight.js";
 
 export interface TargetFactoryOptions {
@@ -67,6 +67,7 @@ export class TargetFactory {
       environmentGlob,
       weight: 1,
       options,
+      shouldRun: true,
     };
 
     target.weight = getWeight(target, weight, maxWorkers);
@@ -95,9 +96,54 @@ export class TargetFactory {
       environmentGlob,
       weight: 1,
       options,
+      shouldRun: true,
     };
 
     target.weight = getWeight(target, weight, maxWorkers);
+
+    return target;
+  }
+
+  /**
+   * Creates a target that operates on files that are "staged" (git index)
+   */
+  createStagedTarget(task: string, config: StagedTargetConfig, changedFiles: string[]): Target {
+    const { root } = this.options;
+    const { dependsOn, priority } = config;
+
+    // Clone & modify the options to include the changed files as taskArgs
+    const options = { ...config.options };
+
+    switch (config.type) {
+      case "noop":
+        break;
+
+      default:
+        options.taskArgs = options.taskArgs ?? [];
+        options.taskArgs.push(...changedFiles);
+        break;
+    }
+
+    const id = getStagedTargetId(task);
+    const target = {
+      id,
+      label: id,
+      type: config.type,
+      task,
+      cache: false,
+      cwd: root,
+      depSpecs: dependsOn ?? [],
+      dependencies: [],
+      dependents: [],
+      inputs: [],
+      outputs: [],
+      priority,
+      maxWorkers: 1,
+      environmentGlob: [],
+      weight: 1,
+      options,
+      shouldRun: true,
+    };
 
     return target;
   }

@@ -1,8 +1,32 @@
 # Change Log - @lage-run/target-graph
 
-<!-- This log was last generated on Tue, 22 Oct 2024 15:19:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 02 Dec 2024 17:23:22 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.11.0
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Minor changes
+
+- adds the ability to create stagedTargets (kchau@microsoft.com)
+
+## 0.10.1
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.1 (email not defined)
+
+## 0.10.0
+
+Fri, 08 Nov 2024 19:45:09 GMT
+
+### Minor changes
+
+- add "shouldRun()" config to the target config (kchau@microsoft.com)
 
 ## 0.9.3
 

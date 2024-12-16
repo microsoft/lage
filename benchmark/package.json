@@ -12,7 +12,7 @@
     "globby": "^14.0.1",
     "micromatch": "^4.0.7",
     "multimatch": "^7.0.0",
-    "workspace-tools": "^0.37.0"
+    "workspace-tools": "^0.38.0"
   },
   "type": "module",
   "module": "index.js"

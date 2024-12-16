@@ -1,7 +1,8 @@
 import { join } from "path";
 import { readFile } from "fs/promises";
 import { spawn, type ChildProcess } from "child_process";
-import type { TargetRunner, TargetRunnerOptions } from "./types/TargetRunner.js";
+import os from "os";
+import type { RunnerResult, TargetRunner, TargetRunnerOptions } from "./types/TargetRunner.js";
 import type { Target } from "@lage-run/target-graph";
 
 export interface NpmScriptRunnerOptions {
@@ -33,8 +34,8 @@ export class NpmScriptRunner implements TargetRunner {
 
   constructor(private options: NpmScriptRunnerOptions) {}
 
-  private getNpmArgs(task: string, taskTargs: string[]) {
-    const extraArgs = taskTargs.length > 0 ? ["--", ...taskTargs] : [];
+  private getNpmArgs(task: string, taskArgs: string[]) {
+    const extraArgs = taskArgs.length > 0 ? ["--", ...taskArgs] : [];
     return ["run", task, ...extraArgs];
   }
 
@@ -47,10 +48,12 @@ export class NpmScriptRunner implements TargetRunner {
 
   async shouldRun(target: Target) {
     // By convention, do not run anything if there is no script for this task defined in package.json (counts as "success")
-    return await this.hasNpmScript(target);
+    const hasNpmScript = await this.hasNpmScript(target);
+
+    return hasNpmScript && (target.shouldRun ?? true);
   }
 
-  async run(runOptions: TargetRunnerOptions) {
+  async run(runOptions: TargetRunnerOptions): Promise<RunnerResult> {
     const { target, weight, abortSignal } = runOptions;
     const { nodeOptions, npmCmd, taskArgs } = this.options;
     const task = target.options?.script ?? target.task;
@@ -63,7 +66,7 @@ export class NpmScriptRunner implements TargetRunner {
      */
     if (abortSignal) {
       if (abortSignal.aborted) {
-        return;
+        return { exitCode: 1 };
       }
 
       const abortSignalHandler = () => {
@@ -95,15 +98,17 @@ export class NpmScriptRunner implements TargetRunner {
     /**
      * Actually spawn the npm client to run the task
      */
-    const npmRunArgs = this.getNpmArgs(task, taskArgs);
+    const args = [...taskArgs, ...(target.options?.taskArgs ?? [])];
+
+    const npmRunArgs = this.getNpmArgs(task, args);
     const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter((str) => str).join(" ");
 
-    await new Promise<void>((resolve, reject) => {
+    return await new Promise<RunnerResult>((resolve, reject) => {
       childProcess = spawn(npmCmd, npmRunArgs, {
         cwd: target.cwd,
         stdio: ["inherit", "pipe", "pipe"],
         // This is required for Windows due to https://nodejs.org/en/blog/vulnerability/april-2024-security-releases-2
-        shell: true,
+        ...(os.platform() === "win32" && { shell: true }),
         env: {
           ...(process.stdout.isTTY && { FORCE_COLOR: "1" }), // allow user env to override this
           ...process.env,
@@ -131,10 +136,10 @@ export class NpmScriptRunner implements TargetRunner {
         childProcess?.stdin?.destroy();
 
         if (code === 0) {
-          return resolve();
+          return resolve({ exitCode: code });
         }
 
-        reject(new Error(`NPM Script Runner: ${npmCmd} ${npmRunArgs.join(" ")} exited with code ${code}`));
+        reject({ exitCode: code, error: new Error(`NPM Script Runner: ${npmCmd} ${npmRunArgs.join(" ")} exited with code ${code}`) });
       };
 
       const { pid } = childProcess;

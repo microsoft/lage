@@ -10,6 +10,11 @@ interface ExecOptions extends ReporterInitOptions {
   server?: boolean | string;
   timeout?: number;
   nodeArg?: string;
+  tasks?: string[];
+}
+
+interface ExecRemoteOptions extends ExecOptions {
+  tasks: string[];
 }
 
 export async function execAction(options: ExecOptions, command: Command) {
@@ -22,7 +27,12 @@ export async function execAction(options: ExecOptions, command: Command) {
   const { server } = options;
   if (server) {
     logger.info("Running in server mode");
-    await executeRemotely(options, command);
+
+    if (typeof options.tasks === "undefined") {
+      throw new Error("No tasks specified, this is required for when running in server mode");
+    }
+
+    await executeRemotely(options as ExecRemoteOptions, command);
   } else {
     await executeInProcess({ logger, args: command.args, cwd: options.cwd, nodeArg: options.nodeArg });
   }

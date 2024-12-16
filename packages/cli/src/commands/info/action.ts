@@ -3,19 +3,20 @@ import { createTargetGraph } from "../run/createTargetGraph.js";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import type { ConfigOptions } from "@lage-run/config";
 import { getConfig } from "@lage-run/config";
-import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { type PackageInfos, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
-import { removeNodes, transitiveReduction } from "@lage-run/target-graph";
 import path from "path";
+import { parse } from "shell-quote";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import type { TargetGraph, Target } from "@lage-run/target-graph";
+import type { Target } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
 import { TargetRunnerPicker } from "@lage-run/runners";
 import { getBinPaths } from "../../getBinPaths.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { parseServerOption } from "../parseServerOption.js";
+import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
 
 interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
@@ -89,7 +90,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
-  const targetGraph = createTargetGraph({
+  const targetGraph = await createTargetGraph({
     logger,
     root,
     dependencies: options.dependencies,
@@ -122,7 +123,9 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
 
   const optimizedTargets = await optimizeTargetGraph(targetGraph, runnerPicker);
   const binPaths = getBinPaths();
-  const packageTasks = optimizedTargets.map((target) => generatePackageTask(target, taskArgs, config, options, binPaths));
+  const packageTasks = optimizedTargets.map((target) =>
+    generatePackageTask(target, taskArgs, config, options, binPaths, packageInfos, tasks)
+  );
 
   logger.info("info", {
     command: command.args,
@@ -131,31 +134,16 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   });
 }
 
-async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: TargetRunnerPicker) {
-  const targetMinimizedNodes = await removeNodes([...graph.targets.values()], async (target) => {
-    if (target.type === "noop") {
-      return true;
-    }
-
-    const runner = await runnerPicker.pick(target);
-    if (!(await runner.shouldRun(target))) {
-      return true;
-    }
-
-    return false;
-  });
-
-  return transitiveReduction(targetMinimizedNodes);
-}
-
 function generatePackageTask(
   target: Target,
   taskArgs: string[],
   config: ConfigOptions,
   options: InfoActionOptions,
-  binPaths: { lage: string; "lage-server": string }
+  binPaths: { lage: string; "lage-server": string },
+  packageInfos: PackageInfos,
+  tasks: string[]
 ): PackageTask {
-  const command = generateCommand(target, taskArgs, config, options, binPaths);
+  const command = generateCommand(target, taskArgs, config, options, binPaths, packageInfos, tasks);
   const workingDirectory = getWorkingDirectory(target);
 
   const packageTask: PackageTask = {
@@ -175,18 +163,31 @@ function generateCommand(
   taskArgs: string[],
   config: ConfigOptions,
   options: InfoActionOptions,
-  binPaths: { lage: string; "lage-server": string }
+  binPaths: { lage: string; "lage-server": string },
+  packageInfos: PackageInfos,
+  tasks: string[]
 ) {
   const shouldRunWorkersAsService =
     (typeof process.env.LAGE_WORKER_SERVER === "string" && process.env.LAGE_WORKER_SERVER !== "false") || !!options.server;
 
   if (target.type === "npmScript") {
+    const script = target.packageName !== undefined ? packageInfos[target.packageName]?.scripts?.[target.task] : undefined;
+
+    // If the script is a node script, and that it does not have any shell operators (&&, ||, etc)
+    // then we can simply pass this along to info command rather than using npm client to run it.
+    if (script && script.startsWith("node")) {
+      const parsed = parse(script);
+      if (parsed.length > 0 && parsed.every((entry) => typeof entry === "string")) {
+        return [...(parsed as string[]), ...taskArgs];
+      }
+    }
+
     const npmClient = config.npmClient ?? "npm";
     const command = [npmClient, ...getNpmArgs(target.task, taskArgs)];
     return command;
   } else if (target.type === "worker" && shouldRunWorkersAsService) {
     const { host, port } = parseServerOption(options.server);
-    const command = [binPaths["lage"], "exec", "--server", `${host}:${port}`];
+    const command = [binPaths["lage"], "exec", "--tasks", ...tasks, "--server", `${host}:${port}`];
     if (options.concurrency) {
       command.push("--concurrency", options.concurrency.toString());
     }

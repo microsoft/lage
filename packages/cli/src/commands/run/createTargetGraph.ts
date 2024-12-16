@@ -1,8 +1,10 @@
 import type { Logger } from "@lage-run/logger";
 import { WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
 import type { PackageInfos } from "workspace-tools";
+import { getBranchChanges, getDefaultRemoteBranch, getStagedChanges, getUnstagedChanges, getUntrackedChanges } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import type { PipelineDefinition } from "@lage-run/config";
+import { hasRepoChanged } from "../../filter/hasRepoChanged.js";
 
 interface CreateTargetGraphOptions {
   logger: Logger;
@@ -19,7 +21,22 @@ interface CreateTargetGraphOptions {
   packageInfos: PackageInfos;
 }
 
-export function createTargetGraph(options: CreateTargetGraphOptions) {
+function getChangedFiles(since: string, cwd: string) {
+  const targetBranch = since || getDefaultRemoteBranch({ cwd });
+
+  const changes = [
+    ...new Set([
+      ...(getUntrackedChanges(cwd) || []),
+      ...(getUnstagedChanges(cwd) || []),
+      ...(getBranchChanges(targetBranch, cwd) || []),
+      ...(getStagedChanges(cwd) || []),
+    ]),
+  ];
+
+  return changes;
+}
+
+export async function createTargetGraph(options: CreateTargetGraphOptions) {
   const { logger, root, dependencies, dependents, since, scope, repoWideChanges, ignore, pipeline, outputs, tasks, packageInfos } = options;
 
   const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
@@ -36,18 +53,32 @@ export function createTargetGraph(options: CreateTargetGraphOptions) {
     sinceIgnoreGlobs: ignore,
   });
 
-  for (const [id, definition] of Object.entries(pipeline)) {
-    if (Array.isArray(definition)) {
-      builder.addTargetConfig(id, {
-        cache: true,
-        dependsOn: definition,
-        options: {},
-        outputs,
-      });
-    } else {
-      builder.addTargetConfig(id, definition);
+  let changedFiles: string[] = [];
+
+  // TODO: enhancement would be for workspace-tools to implement a "getChangedPackageFromChangedFiles()" type function
+  // TODO: optimize this so that we don't double up the work to determine if repo has changed
+  if (since) {
+    if (!hasRepoChanged(since, root, repoWideChanges, logger)) {
+      changedFiles = getChangedFiles(since, root);
     }
   }
 
-  return builder.build(tasks, packages);
+  for (const [id, definition] of Object.entries(pipeline)) {
+    if (Array.isArray(definition)) {
+      builder.addTargetConfig(
+        id,
+        {
+          cache: true,
+          dependsOn: definition,
+          options: {},
+          outputs,
+        },
+        changedFiles
+      );
+    } else {
+      builder.addTargetConfig(id, definition, changedFiles);
+    }
+  }
+
+  return await builder.build(tasks, packages);
 }

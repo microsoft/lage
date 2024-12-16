@@ -28,13 +28,23 @@ module.exports = async function transpile(data) {
       if (entry.isDirectory() && entry.name !== "node_modules" && entry.name !== "lib" && entry.name !== "tests" && entry.name !== "dist") {
         queue.push(fullPath);
       } else if (entry.isFile() && (entry.name.endsWith(".ts") || entry.name.endsWith(".tsx"))) {
-        const swcOutput = await swc.transformFile(fullPath, swcOptions);
         const dest = fullPath
           .replace(/([/\\])src/, "$1lib")
           .replace(".tsx", ".js")
           .replace(".ts", ".js");
+
+        const swcOutput = await swc.transformFile(fullPath, {
+          ...swcOptions,
+          sourceFileName: path.relative(path.dirname(dest), fullPath).replace(/\\/g, "/"),
+        });
+
+        const destMap = dest + ".map";
         await fsPromises.mkdir(path.dirname(dest), { recursive: true });
         await fsPromises.writeFile(dest, swcOutput.code);
+
+        if (swcOutput.map) {
+          await fsPromises.writeFile(destMap, swcOutput.map);
+        }
       }
     }
   }

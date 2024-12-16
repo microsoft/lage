@@ -2,6 +2,105 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Mon, 02 Dec 2024 17:23:22 GMT",
+      "version": "0.4.11",
+      "tag": "@lage-run/config_v0.4.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/runners to v1.2.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/target-graph to v0.11.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Nov 2024 08:12:37 GMT",
+      "version": "0.4.10",
+      "tag": "@lage-run/config_v0.4.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/config",
+            "commit": "c6e9f4e5339a897dd06a54fe528a1fadd75db243",
+            "comment": "Update dependency workspace-tools to v0.38.1"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/runners to v1.1.2",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/target-graph to v0.10.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Nov 2024 02:43:43 GMT",
+      "version": "0.4.9",
+      "tag": "@lage-run/config_v0.4.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/runners to v1.1.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Nov 2024 19:45:09 GMT",
+      "version": "0.4.8",
+      "tag": "@lage-run/config_v0.4.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/runners to v1.1.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/target-graph to v0.10.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Nov 2024 08:07:38 GMT",
+      "version": "0.4.7",
+      "tag": "@lage-run/config_v0.4.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/config",
+            "comment": "Bump @lage-run/runners to v1.0.7",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 22 Oct 2024 15:19:29 GMT",
       "version": "0.4.6",
       "tag": "@lage-run/config_v0.4.6",

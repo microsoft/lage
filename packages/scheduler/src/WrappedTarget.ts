@@ -193,7 +193,9 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
 
       return this.#result;
     } catch (e) {
-      logger.error(String(e), { target });
+      if (e instanceof Error) {
+        logger.error(String(e), { target });
+      }
 
       if (abortSignal.aborted) {
         this.onAbort();

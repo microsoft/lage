@@ -2,6 +2,93 @@
   "name": "@lage-run/runners",
   "entries": [
     {
+      "date": "Mon, 02 Dec 2024 17:23:22 GMT",
+      "version": "1.2.0",
+      "tag": "@lage-run/runners_v1.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "51d453bb81eb36a37656502fb716f611860d910e",
+            "comment": "adds the ability to create stagedTargets"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.11.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Nov 2024 08:12:37 GMT",
+      "version": "1.1.2",
+      "tag": "@lage-run/runners_v1.1.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.10.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Nov 2024 02:43:43 GMT",
+      "version": "1.1.1",
+      "tag": "@lage-run/runners_v1.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "d2ddec2c03ec7dd371d2f3300fb44061ac966cbc",
+            "comment": "adding exit code support for executeInProcess"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Nov 2024 19:45:09 GMT",
+      "version": "1.1.0",
+      "tag": "@lage-run/runners_v1.1.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "9b607e71231095c06d49b69e9d5fecb72a542bdd",
+            "comment": "add \"shouldRun()\" config to the target config"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.10.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Nov 2024 08:07:38 GMT",
+      "version": "1.0.7",
+      "tag": "@lage-run/runners_v1.0.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "0266df845498d81e8bfb2bd88abd5d4ad4177f6a",
+            "comment": "added a fix so that the \"shell\" command is only applied on windows"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 22 Oct 2024 15:19:29 GMT",
       "version": "1.0.6",
       "tag": "@lage-run/runners_v1.0.6",

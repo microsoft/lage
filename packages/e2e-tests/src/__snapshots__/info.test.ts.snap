@@ -18,9 +18,8 @@ exports[`info command basic info test case 1`] = `
         },
         {
           "command": [
-            "yarn",
-            "run",
-            "test",
+            "node",
+            "./test.js",
           ],
           "dependencies": [
             "a#build",
@@ -32,9 +31,8 @@ exports[`info command basic info test case 1`] = `
         },
         {
           "command": [
-            "yarn",
-            "run",
-            "test",
+            "node",
+            "./test.js",
           ],
           "dependencies": [
             "b#build",
@@ -46,9 +44,8 @@ exports[`info command basic info test case 1`] = `
         },
         {
           "command": [
-            "yarn",
-            "run",
-            "build",
+            "node",
+            "./build.js",
           ],
           "dependencies": [
             "b#build",
@@ -60,9 +57,8 @@ exports[`info command basic info test case 1`] = `
         },
         {
           "command": [
-            "yarn",
-            "run",
-            "build",
+            "node",
+            "./build.js",
           ],
           "dependencies": [
             "__start",
@@ -102,9 +98,8 @@ exports[`info command scoped info test case 1`] = `
         },
         {
           "command": [
-            "yarn",
-            "run",
-            "test",
+            "node",
+            "./test.js",
           ],
           "dependencies": [
             "b#build",
@@ -116,9 +111,8 @@ exports[`info command scoped info test case 1`] = `
         },
         {
           "command": [
-            "yarn",
-            "run",
-            "build",
+            "node",
+            "./build.js",
           ],
           "dependencies": [
             "__start",

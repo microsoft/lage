@@ -1,8 +1,32 @@
 # Change Log - @lage-run/cache
 
-<!-- This log was last generated on Tue, 22 Oct 2024 15:19:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 02 Dec 2024 17:23:22 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.10
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.11.0
+
+## 1.3.9
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.10.1
+
+## 1.3.8
+
+Fri, 08 Nov 2024 19:45:09 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.10.0
 
 ## 1.3.7
 
