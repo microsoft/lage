@@ -110,6 +110,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
     outputs: config.cacheOptions.outputGlob,
     tasks,
     packageInfos,
+    enableTargetConfigMerging: config.enableTargetConfigMerging,
   });
 
   const scope = getFilteredPackages({

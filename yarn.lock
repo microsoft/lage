@@ -1923,6 +1923,7 @@ __metadata:
   dependencies:
     "@lage-run/monorepo-scripts": "npm:*"
     jest-diff: "npm:^29.5.0"
+    mergician: "npm:^2.0.2"
     p-limit: "npm:^3.1.0"
     workspace-tools: "npm:0.38.1"
   languageName: unknown
@@ -6395,6 +6396,13 @@ __metadata:
   version: 1.4.1
   resolution: "merge2@npm:1.4.1"
   checksum: 10c0/254a8a4605b58f450308fc474c82ac9a094848081bf4c06778200207820e5193726dc563a0d2c16468810516a5c97d9d3ea0ca6585d23c58ccfff2403e8dbbeb
+  languageName: node
+  linkType: hard
+
+"mergician@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "mergician@npm:2.0.2"
+  checksum: 10c0/ced960df3de520bef21caf219a6f7cc3efd8395719fb5cf5153361fd27913f9bbaf80ad301f2b6d43f7d0d4ff5d484fc223f3182cc12dc52b33b89063f83692e
   languageName: node
   linkType: hard
 

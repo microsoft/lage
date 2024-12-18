@@ -9,12 +9,10 @@ import { getFilteredPackages } from "../src/filter/getFilteredPackages.js";
 import { getBinPaths } from "../src/getBinPaths.js";
 
 describe("createTargetGraph", () => {
-  const logger = new Logger();
-
   it("Basic graph, seperate nodes", async () => {
     const packageInfos: PackageInfos = {
-      foo1: stubPackage({ name: "foo1", deps: ["foo2"] }),
-      foo2: stubPackage({ name: "foo2" }),
+      foo1: stubPackage({ name: "foo1", scripts: ["build"], deps: ["foo2"] }),
+      foo2: stubPackage({ name: "foo2", scripts: ["build"] }),
     };
 
     const pipeline: PipelineDefinition = {
@@ -28,8 +26,8 @@ describe("createTargetGraph", () => {
 
   it("Basic graph, spanning tasks", async () => {
     const packageInfos: PackageInfos = {
-      foo1: stubPackage({ name: "foo1", deps: ["foo2"] }),
-      foo2: stubPackage({ name: "foo2" }),
+      foo1: stubPackage({ name: "foo1", scripts: ["build"], deps: ["foo2"] }),
+      foo2: stubPackage({ name: "foo2", scripts: ["build"] }),
     };
 
     const pipeline: PipelineDefinition = {
@@ -41,18 +39,43 @@ describe("createTargetGraph", () => {
     expect(result).toMatchSnapshot();
   });
 
-  it("PackageJsonOverrideForTargetDeps", async () => {
+  it("Merging Dependencies in pipeline and package.json override", async () => {
     const packageInfos: PackageInfos = {
-      foo1: stubPackage({ name: "foo1", deps: ["foo2"] }),
-      foo2: stubPackage({ name: "foo2", fields: { lage: { test: ["build"] } } }),
+      foo1: stubPackage({ name: "foo1", scripts: ["build"], deps: ["foo2"], fields: { lage: { build: ["foo4#build"] } } }),
+      foo2: stubPackage({ name: "foo2", scripts: ["build"] }),
+      foo3: stubPackage({ name: "foo3", scripts: ["build"] }),
+      foo4: stubPackage({ name: "foo4", scripts: ["build"] }),
     };
 
     const pipeline: PipelineDefinition = {
       build: ["^build"],
-      test: [],
+      "foo1#build": ["foo3#build"],
     };
 
-    const result = await createAndPrintPackageTasks(["build", "test"], packageInfos, pipeline, ["id", "dependencies"]);
+    const result = await createAndPrintPackageTasks(["build"], packageInfos, pipeline, ["id", "dependencies"]);
+    expect(result).toMatchSnapshot();
+  });
+
+  it("Merging inputs and outputs in pipeline and package.json override", async () => {
+    const packageInfos: PackageInfos = {
+      foo1: stubPackage({
+        name: "foo1",
+        deps: ["foo2"],
+        scripts: ["build"],
+        fields: { lage: { build: { inputs: ["tsconfig.json"], outputs: ["dist/**"] } } },
+      }),
+      foo2: stubPackage({ name: "foo2", scripts: ["build"] }),
+    };
+
+    const pipeline: PipelineDefinition = {
+      build: { inputs: ["src/**"], outputs: ["lib/**"] },
+      "foo1#build": {
+        inputs: ["src/**", "myTool.config"],
+        dependsOn: ["foo2#build"],
+      },
+    };
+
+    const result = await createAndPrintPackageTasks(["build"], packageInfos, pipeline, ["id", "dependencies", "inputs", "outputs"]);
     expect(result).toMatchSnapshot();
   });
 });
@@ -64,7 +87,7 @@ async function createAndPrintPackageTasks(
   fields: string[]
 ): Promise<string> {
   const packageTasks = await createPackageTasks(tasks, packageInfos, pipeline);
-  const expected = filterObjects(packageTasks, ["id", "dependencies"]);
+  const expected = filterObjects(packageTasks, fields);
   return JSON.stringify(expected, null, 2);
 }
 
@@ -114,6 +137,7 @@ async function createPackageTasks(tasks: string[], packageInfos: PackageInfos, p
     outputs: config.cacheOptions.outputGlob,
     tasks,
     packageInfos,
+    enableTargetConfigMerging: true,
   });
 
   const scope = getFilteredPackages({
