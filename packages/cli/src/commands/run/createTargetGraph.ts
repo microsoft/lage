@@ -19,6 +19,7 @@ interface CreateTargetGraphOptions {
   outputs: string[];
   tasks: string[];
   packageInfos: PackageInfos;
+  enableTargetConfigMerging: boolean;
 }
 
 function getChangedFiles(since: string, cwd: string) {
@@ -37,9 +38,23 @@ function getChangedFiles(since: string, cwd: string) {
 }
 
 export async function createTargetGraph(options: CreateTargetGraphOptions) {
-  const { logger, root, dependencies, dependents, since, scope, repoWideChanges, ignore, pipeline, outputs, tasks, packageInfos } = options;
+  const {
+    logger,
+    root,
+    dependencies,
+    dependents,
+    enableTargetConfigMerging,
+    since,
+    scope,
+    repoWideChanges,
+    ignore,
+    pipeline,
+    outputs,
+    tasks,
+    packageInfos,
+  } = options;
 
-  const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
+  const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, enableTargetConfigMerging);
 
   const packages = getFilteredPackages({
     root,

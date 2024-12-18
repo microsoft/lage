@@ -58,7 +58,43 @@ exports[`createTargetGraph Basic graph, spanning tasks 1`] = `
 ]"
 `;
 
-exports[`createTargetGraph PackageJsonOverrideForTargetDeps 1`] = `
+exports[`createTargetGraph Merging Dependencies in pipeline and package.json override 1`] = `
+"[
+  {
+    "id": "__start",
+    "dependencies": []
+  },
+  {
+    "id": "foo1#build",
+    "dependencies": [
+      "__start",
+      "foo2#build",
+      "foo3#build",
+      "foo4#build"
+    ]
+  },
+  {
+    "id": "foo2#build",
+    "dependencies": [
+      "__start"
+    ]
+  },
+  {
+    "id": "foo3#build",
+    "dependencies": [
+      "__start"
+    ]
+  },
+  {
+    "id": "foo4#build",
+    "dependencies": [
+      "__start"
+    ]
+  }
+]"
+`;
+
+exports[`createTargetGraph Merging inputs and outputs in pipeline and package.json override 1`] = `
 "[
   {
     "id": "__start",
@@ -69,25 +105,28 @@ exports[`createTargetGraph PackageJsonOverrideForTargetDeps 1`] = `
     "dependencies": [
       "__start",
       "foo2#build"
+    ],
+    "inputs": [
+      "src/**",
+      "src/**",
+      "myTool.config",
+      "tsconfig.json"
+    ],
+    "outputs": [
+      "lib/**",
+      "dist/**"
     ]
   },
   {
     "id": "foo2#build",
     "dependencies": [
       "__start"
-    ]
-  },
-  {
-    "id": "foo1#test",
-    "dependencies": [
-      "__start"
-    ]
-  },
-  {
-    "id": "foo2#test",
-    "dependencies": [
-      "__start",
-      "foo2#build"
+    ],
+    "inputs": [
+      "src/**"
+    ],
+    "outputs": [
+      "lib/**"
     ]
   }
 ]"
