@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createTargetGraph Basic graph, seperate nodes 1`] = `
+"[
+  {
+    "id": "__start",
+    "dependencies": []
+  },
+  {
+    "id": "foo1#build",
+    "dependencies": [
+      "__start",
+      "foo2#build"
+    ]
+  },
+  {
+    "id": "foo2#build",
+    "dependencies": [
+      "__start"
+    ]
+  }
+]"
+`;
+
+exports[`createTargetGraph Basic graph, spanning tasks 1`] = `
+"[
+  {
+    "id": "__start",
+    "dependencies": []
+  },
+  {
+    "id": "foo1#build",
+    "dependencies": [
+      "__start",
+      "foo2#build"
+    ]
+  },
+  {
+    "id": "foo2#build",
+    "dependencies": [
+      "__start"
+    ]
+  },
+  {
+    "id": "foo1#test",
+    "dependencies": [
+      "__start",
+      "foo1#build"
+    ]
+  },
+  {
+    "id": "foo2#test",
+    "dependencies": [
+      "__start",
+      "foo2#build"
+    ]
+  }
+]"
+`;
+
+exports[`createTargetGraph PackageJsonOverrideForTargetDeps 1`] = `
+"[
+  {
+    "id": "__start",
+    "dependencies": []
+  },
+  {
+    "id": "foo1#build",
+    "dependencies": [
+      "__start",
+      "foo2#build"
+    ]
+  },
+  {
+    "id": "foo2#build",
+    "dependencies": [
+      "__start"
+    ]
+  },
+  {
+    "id": "foo1#test",
+    "dependencies": [
+      "__start"
+    ]
+  },
+  {
+    "id": "foo2#test",
+    "dependencies": [
+      "__start",
+      "foo2#build"
+    ]
+  }
+]"
+`;

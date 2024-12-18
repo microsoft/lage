@@ -18,7 +18,7 @@ import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { parseServerOption } from "../parseServerOption.js";
 import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
 
-interface InfoActionOptions extends ReporterInitOptions {
+export interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
   dependents: boolean;
   since: string;
@@ -141,7 +141,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   });
 }
 
-function generatePackageTask(
+export function generatePackageTask(
   target: Target,
   taskArgs: string[],
   config: ConfigOptions,
