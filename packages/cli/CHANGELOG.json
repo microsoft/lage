@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 20 Dec 2024 19:42:00 GMT",
+      "version": "0.24.10",
+      "tag": "@lage-run/cli_v0.24.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "f4de24eb3e7968b547590e7e66a3f2929e4d26cf",
+            "comment": "adds the directory probing as well"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Dec 2024 15:53:46 GMT",
       "version": "0.24.9",
       "tag": "@lage-run/cli_v0.24.9",
