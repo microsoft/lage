@@ -18,7 +18,7 @@ import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { parseServerOption } from "../parseServerOption.js";
 import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
 
-interface InfoActionOptions extends ReporterInitOptions {
+export interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
   dependents: boolean;
   since: string;
@@ -37,6 +37,10 @@ interface PackageTask {
   workingDirectory: string;
   package: string;
   task: string;
+  inputs?: string[];
+  outputs?: string[];
+  options?: Record<string, any>;
+  weight?: number;
 }
 
 /**
@@ -61,7 +65,10 @@ interface PackageTask {
  *       "workingDirectory": "packages/foo",
  *       "dependencies": [
  *           "bar##build"
- *       ]
+ *       ],
+ *       "weight": 3,
+ *       "inputs": ["src//**/ /*.ts"],
+ *       "inputs": ["lib//**/ /*.js", "lib//**/ /*.d.ts]"
  *   },
  *   {
  *       "id": "foo##test",
@@ -103,6 +110,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
     outputs: config.cacheOptions.outputGlob,
     tasks,
     packageInfos,
+    enableTargetConfigMerging: config.enableTargetConfigMerging,
   });
 
   const scope = getFilteredPackages({
@@ -134,7 +142,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   });
 }
 
-function generatePackageTask(
+export function generatePackageTask(
   target: Target,
   taskArgs: string[],
   config: ConfigOptions,
@@ -153,6 +161,10 @@ function generatePackageTask(
     workingDirectory,
     package: target.packageName ?? "",
     task: target.task,
+    inputs: target.inputs,
+    outputs: target.outputs,
+    options: target.options,
+    weight: target.weight,
   };
 
   return packageTask;
