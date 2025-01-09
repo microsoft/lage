@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-<!-- This log was last generated on Sun, 08 Dec 2024 00:07:28 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 19 Dec 2024 15:53:46 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.3
+
+Thu, 19 Dec 2024 15:53:46 GMT
+
+### Patches
+
+- Report the correct percentage for progress logger up front instead of only adding tasks after they start running (1581488+christiango@users.noreply.github.com)
 
 ## 1.4.2
 
