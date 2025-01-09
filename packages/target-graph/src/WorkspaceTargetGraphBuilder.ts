@@ -12,6 +12,9 @@ import { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 import { TargetFactory } from "./TargetFactory.js";
 import pLimit from "p-limit";
 
+//eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports -- mergician is a dual-mode library with CJS and ESM export but a single .d.ts file. Without type="module" on this packge.json typescript gets confused. See: https://github.com/microsoft/TypeScript/issues/50466
+const { mergician } = require("mergician");
+
 const DEFAULT_STAGED_TARGET_THRESHOLD = 50;
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
@@ -45,7 +48,7 @@ export class WorkspaceTargetGraphBuilder {
    * @param root the root directory of the workspace
    * @param packageInfos the package infos for the workspace
    */
-  constructor(root: string, private packageInfos: PackageInfos) {
+  constructor(root: string, private packageInfos: PackageInfos, private enableTargetConfigMerging: boolean) {
     this.dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
     this.graphBuilder = new TargetGraphBuilder();
     this.targetFactory = new TargetFactory({
@@ -70,30 +73,56 @@ export class WorkspaceTargetGraphBuilder {
   async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]) {
     // Generates a target definition from the target config
     if (id.startsWith("//") || id.startsWith("#")) {
-      const target = this.targetFactory.createGlobalTarget(id, config);
+      const targetConfig = this.determineFinalTargetConfig(id, config);
+      const target = this.targetFactory.createGlobalTarget(id, targetConfig);
       this.graphBuilder.addTarget(target);
-      this.targetConfigMap.set(id, config);
       this.hasRootTarget = true;
 
       this.processStagedConfig(target, config, changedFiles);
     } else if (id.includes("#")) {
       const { packageName, task } = getPackageAndTask(id);
-      const target = this.targetFactory.createPackageTarget(packageName!, task, config);
+      const targetConfig = this.determineFinalTargetConfig(id, config);
+      const target = this.targetFactory.createPackageTarget(packageName!, task, targetConfig);
       this.graphBuilder.addTarget(target);
-      this.targetConfigMap.set(id, config);
 
       this.processStagedConfig(target, config, changedFiles);
     } else {
       const packages = Object.keys(this.packageInfos);
       for (const packageName of packages) {
         const task = id;
-        const target = this.targetFactory.createPackageTarget(packageName!, task, config);
+        const targetConfig = this.determineFinalTargetConfig(getTargetId(packageName, task), config);
+        const target = this.targetFactory.createPackageTarget(packageName!, task, targetConfig);
         this.graphBuilder.addTarget(target);
-        this.targetConfigMap.set(id, config);
 
         this.processStagedConfig(target, config, changedFiles);
       }
     }
+  }
+
+  // memoizes the merge function to avoid creating a new function for each target config
+  deepCloneTargetConfig = mergician({
+    appendArrays: true,
+    onCircular: () => {
+      throw new Error(`Circular object reference detected in TargetConfig`);
+    },
+  });
+
+  /**
+   * Given the config passed in and if merging is enabled, this logic will
+   * merge the current config object with the new config object and store it in the targetConfigMap.
+   * @param id The Id of the target to merge
+   * @param config The TargetConfig settings that will be merged if this target has already been seen before
+   * @returns The merged TargetConfig object.
+   */
+  determineFinalTargetConfig(targetId: string, config: TargetConfig): TargetConfig {
+    let finalConfig = config;
+    if (this.enableTargetConfigMerging && this.targetConfigMap.has(targetId)) {
+      const existingConfig = this.targetConfigMap.get(targetId)!;
+      finalConfig = this.deepCloneTargetConfig(existingConfig, config);
+    }
+
+    this.targetConfigMap.set(targetId, finalConfig);
+    return finalConfig;
   }
 
   /**
