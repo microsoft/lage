@@ -80,11 +80,14 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     if (this.target.id === getStartTargetId()) {
       this.#status = "success";
     }
+
+    this.options.logger.info("", { target: this.target, status: this.status });
   }
 
   onQueued() {
     this.#status = "queued";
     this.queueTime = process.hrtime();
+    this.options.logger.info("", { target: this.target, status: "queued" });
   }
 
   onAbort() {

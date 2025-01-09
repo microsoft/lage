@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Thu, 19 Dec 2024 15:53:46 GMT",
+      "version": "1.4.3",
+      "tag": "@lage-run/scheduler_v1.4.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/scheduler",
+            "commit": "684d1b6f3686b38d198541850345485b14bea318",
+            "comment": "Report the correct percentage for progress logger up front instead of only adding tasks after they start running"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 08 Dec 2024 00:07:28 GMT",
       "version": "1.4.2",
       "tag": "@lage-run/scheduler_v1.4.2",
