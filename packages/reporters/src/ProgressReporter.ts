@@ -83,6 +83,12 @@ export class ProgressReporter implements Reporter {
 
     if (entry.data && entry.data.schedulerRun) {
       this.startTime = entry.data.schedulerRun.startTime;
+      const { targets } = entry.data.schedulerRun;
+
+      for (const target of targets) {
+        const task = this.taskReporter.addTask(target.label, true);
+        this.tasks.set(target.id, task);
+      }
     }
 
     if (entry.data && entry.data.status && entry.data.target) {
