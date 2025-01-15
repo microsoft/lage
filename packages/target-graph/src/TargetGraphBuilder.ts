@@ -3,6 +3,7 @@ import { prioritize } from "./prioritize.js";
 import { detectCycles } from "./detectCycles.js";
 
 import type { Target } from "./types/Target.js";
+import type { TargetGraph } from "./types/TargetGraph.js";
 
 /**
  * Target graph builder
@@ -89,9 +90,7 @@ export class TargetGraphBuilder {
   /**
    * Builds a target graph for given tasks and packages
    */
-  build(): {
-      targets: Map<string, Target>;
-  } {
+  build(): TargetGraph {
     // Ensure we do not have cycles in the subgraph
     const cycleInfo = detectCycles(this.targets);
     if (cycleInfo.hasCycle) {
@@ -106,9 +105,7 @@ export class TargetGraphBuilder {
     };
   }
 
-  subgraph(entriesTargetIds: string[]): {
-      targets: Map<string, Target>;
-  } {
+  subgraph(entriesTargetIds: string[]): TargetGraph {
     const subgraphBuilder = new TargetGraphBuilder();
     const visited: Set<string> = new Set();
     const queue: string[] = [];

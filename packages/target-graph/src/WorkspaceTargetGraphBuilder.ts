@@ -8,6 +8,7 @@ import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMa
 import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target.js";
 import type { TargetConfig } from "./types/TargetConfig.js";
+import type { TargetGraph } from "./types/TargetGraph.js";
 import { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 import { TargetFactory } from "./TargetFactory.js";
 import pLimit from "p-limit";
@@ -166,9 +167,11 @@ export class WorkspaceTargetGraphBuilder {
    * @param scope
    * @param priorities the set of global priorities for the workspace.
    */
-  async build(tasks: string[], scope?: string[], priorities?: { package?: string; task: string; priority: number }[]): Promise<{
-      targets: Map<string, Target>;
-  }> {
+  async build(
+    tasks: string[],
+    scope?: string[],
+    priorities?: { package?: string; task: string; priority: number }[]
+  ): Promise<TargetGraph> {
     // Expands the dependency specs from the target definitions
     const fullDependencies = expandDepSpecs(this.graphBuilder.targets, this.dependencyMap);
 

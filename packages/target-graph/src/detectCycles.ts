@@ -5,11 +5,8 @@ import type { Target } from "./types/Target.js";
  * Otherwise it returns the chain of nodes where the cycle was detected.
  */
 export function detectCycles(targets: Map<string, Target>): {
-    hasCycle: boolean;
-    cycle: string[];
-} | {
-    hasCycle: boolean;
-    cycle?: undefined;
+  hasCycle: boolean;
+  cycle?: string[];
 } {
   /**
    *  A map to keep track of the visited and visiting nodes.

@@ -19,11 +19,8 @@ export function getTargetId(pkgName: string | undefined, task: string) {
  * @returns
  */
 export function getPackageAndTask(targetId: string): {
-    packageName: undefined;
-    task: string;
-} | {
-    packageName: string;
-    task: string;
+  packageName?: string;
+  task: string;
 } {
   if (targetId.startsWith("Δ")) {
     return { packageName: undefined, task: targetId.slice(1) };
