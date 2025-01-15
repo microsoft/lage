@@ -1,6 +1,6 @@
 import { formatDuration, hrtimeDiff, hrToSeconds } from "@lage-run/format-hrtime";
 import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
-import { LogLevel } from "@lage-run/logger";
+import { LogLevel, type LogStructuredData } from "@lage-run/logger";
 import ansiRegex from "ansi-regex";
 import chalk from "chalk";
 import type { Chalk } from "chalk";
@@ -79,13 +79,13 @@ function normalize(prefixOrMessage: string, message?: string) {
 export class LogReporter implements Reporter {
   logStream: Writable = process.stdout;
   private logEntries = new Map<string, LogEntry[]>();
-  readonly groupedEntries = new Map<string, LogEntry[]>();
+  readonly groupedEntries: Map<string, LogEntry<LogStructuredData>[]> = new Map<string, LogEntry[]>();
 
   constructor(private options: { logLevel?: LogLevel; grouped?: boolean }) {
     options.logLevel = options.logLevel || LogLevel.info;
   }
 
-  log(entry: LogEntry<any>) {
+  log(entry: LogEntry<any>): void {
     // if "hidden", do not even attempt to record or report the entry
     if (entry?.data?.target?.hidden) {
       return;
@@ -190,11 +190,11 @@ export class LogReporter implements Reporter {
     }
   }
 
-  hr() {
+  hr(): void {
     this.print("┈".repeat(80));
   }
 
-  summarize(schedulerRunSummary: SchedulerRunSummary) {
+  summarize(schedulerRunSummary: SchedulerRunSummary): void {
     const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
     const { failed, aborted, skipped, success, pending } = targetRunByStatus;
 
@@ -281,7 +281,7 @@ export class LogReporter implements Reporter {
     this.print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
   }
 
-  resetLogEntries() {
+  resetLogEntries(): void {
     this.logEntries.clear();
   }
 }
