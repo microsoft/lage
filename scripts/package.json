@@ -4,7 +4,7 @@
   "private": true,
   "bin": "bin/monorepo-scripts.js",
   "dependencies": {
-    "@swc/core": "^1.9.1",
+    "@swc/core": "^1.10.7",
     "@swc/jest": "^0.2.37",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
