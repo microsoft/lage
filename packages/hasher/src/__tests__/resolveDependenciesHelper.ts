@@ -4,7 +4,7 @@ const fixturesPath = path.join(__dirname, "..", "__fixtures__");
 
 import { getYarnWorkspaces, getPnpmWorkspaces, getRushWorkspaces } from "workspace-tools";
 
-export async function filterDependenciesInYarnFixture(fixture: string, filterFunction: any) {
+export async function filterDependenciesInYarnFixture(fixture: string, filterFunction: any): Promise<any> {
   const monorepo = new Monorepo("monorepo");
   await monorepo.init(path.join(fixturesPath, fixture));
   const packageRoot = monorepo.root;
@@ -18,7 +18,7 @@ export async function filterDependenciesInYarnFixture(fixture: string, filterFun
   return filteredDependencies;
 }
 
-export async function filterDependenciesInPnpmFixture(fixture: string, filterFunction: any) {
+export async function filterDependenciesInPnpmFixture(fixture: string, filterFunction: any): Promise<any> {
   const monorepo = new Monorepo("monorepo");
   await monorepo.init(path.join(fixturesPath, fixture));
   const packageRoot = monorepo.root;
@@ -32,7 +32,7 @@ export async function filterDependenciesInPnpmFixture(fixture: string, filterFun
   return filteredDependencies;
 }
 
-export async function filterDependenciesInRushFixture(fixture: string, filterFunction: any) {
+export async function filterDependenciesInRushFixture(fixture: string, filterFunction: any): Promise<any> {
   const monorepo = new Monorepo("monorepo");
   await monorepo.init(path.join(fixturesPath, fixture));
   const packageRoot = monorepo.root;
