@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Wed, 15 Jan 2025 16:56:22 GMT",
+      "version": "0.11.1",
+      "tag": "@lage-run/target-graph_v0.11.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/target-graph",
+            "commit": "f4551ca0219cf233f7497a27dea7df57229eb02c",
+            "comment": "Fix bug where priorities were not being correctly set on tasks"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 02 Dec 2024 17:23:22 GMT",
       "version": "0.11.0",
       "tag": "@lage-run/target-graph_v0.11.0",

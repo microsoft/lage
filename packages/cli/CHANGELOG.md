@@ -1,8 +1,24 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Fri, 20 Dec 2024 19:42:00 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 15 Jan 2025 16:56:22 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.24.11
+
+Wed, 15 Jan 2025 16:56:22 GMT
+
+### Patches
+
+- Fix bug where priorities were not being correctly set on tasks (1581488+christiango@users.noreply.github.com)
+- Bump @lage-run/cache to v1.3.11
+- Bump @lage-run/config to v0.4.12
+- Bump @lage-run/hasher to v1.6.8
+- Bump @lage-run/reporters to v1.2.19
+- Bump @lage-run/runners to v1.2.1
+- Bump @lage-run/scheduler to v1.4.4
+- Bump @lage-run/scheduler-types to v0.3.23
+- Bump @lage-run/target-graph to v0.11.1
 
 ## 0.24.10
 
