@@ -58,7 +58,7 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
     };
   }
 
-  addReporter(reporter: Rep: voidorter:: void any:: void any:: void any:: void any:: void any) {
+  addReporter(reporter: Reporter): void {
     this.reporters.push(reporter);
   }
 }
