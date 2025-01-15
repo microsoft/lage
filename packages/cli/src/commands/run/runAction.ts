@@ -63,6 +63,7 @@ export async function runAction(options: RunOptions, command: Command) {
     outputs: config.cacheOptions.outputGlob,
     tasks,
     packageInfos,
+    priorities: config.priorities,
   });
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);
