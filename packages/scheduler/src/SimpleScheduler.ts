@@ -183,7 +183,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
    * Used by consumers of the scheduler to notify that the inputs to the target has changed
    * @param targetId
    */
-  markTargetAndDependentsPending(targetId): void {
+  markTargetAndDependentsPending(targetId: string): void {
     const queue = [targetId];
     while (queue.length > 0) {
       const current = queue.shift()!;
