@@ -49,26 +49,29 @@ export class WorkerPool extends EventEmitter implements Pool {
     });
   }
 
-  isIdle() {
+  isIdle(): boolean {
     return this.workers.every((w) => w.status === "free");
   }
 
-  get workerRestarts() {
+  get workerRestarts(): number {
     return this.workers.reduce((acc, worker) => acc + worker.restarts, 0);
   }
 
-  get maxWorkerMemoryUsage() {
+  get maxWorkerMemoryUsage(): number {
     return this.workers.reduce((acc, worker) => Math.max(acc, worker.maxWorkerMemoryUsage), 0);
   }
 
-  stats() {
+  stats(): {
+    maxWorkerMemoryUsage: number;
+    workerRestarts: number;
+  } {
     return {
       maxWorkerMemoryUsage: this.maxWorkerMemoryUsage,
       workerRestarts: this.workerRestarts,
     };
   }
 
-  createInitialWorkers() {
+  createInitialWorkers(): void {
     if (this.workers.length === 0) {
       for (let i = 0; i < this.minWorkers; i++) {
         this.addNewWorker();
@@ -76,7 +79,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     }
   }
 
-  addNewWorker() {
+  addNewWorker(): ThreadWorker | undefined {
     if (this.workers.length <= this.maxWorkers) {
       const { script, workerOptions } = this.options;
       const worker = new ThreadWorker(script, { workerOptions, workerIdleMemoryLimit: this.options.workerIdleMemoryLimit });
@@ -90,13 +93,13 @@ export class WorkerPool extends EventEmitter implements Pool {
     }
   }
 
-  exec(
+  exec<T>(
     task: Record<string, unknown>,
     weight: number,
     setup?: (worker: IWorker, stdout: Readable, stderr: Readable) => void,
     cleanup?: (worker: IWorker) => void,
     abortSignal?: AbortSignal
-  ) {
+  ): Promise<T | void> {
     if (abortSignal?.aborted) {
       return Promise.resolve();
     }
@@ -104,13 +107,13 @@ export class WorkerPool extends EventEmitter implements Pool {
     // cull the weight of the task to be [1, maxWorkers]
     weight = Math.min(Math.max(1, weight), this.maxWorkers);
 
-    return new Promise((resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
       this.queue.push({ task: { ...task, weight }, weight, resolve, reject, cleanup, setup });
       this._exec(abortSignal);
     });
   }
 
-  _exec(abortSignal?: AbortSignal) {
+  _exec(abortSignal?: AbortSignal): void {
     // find work that will fit the availability of workers
     const workIndex = this.queue.findIndex((item) => item.weight <= this.availability);
 
@@ -135,7 +138,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     }
   }
 
-  async close() {
+  async close(): Promise<void> {
     await Promise.all(this.workers.map((worker) => worker.terminate()));
   }
 }

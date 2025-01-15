@@ -72,7 +72,10 @@ export class AggregatedPool extends EventEmitter implements Pool {
     });
   }
 
-  stats() {
+  stats(): {
+    maxWorkerMemoryUsage: number;
+    workerRestarts: number;
+  } {
     const stats = [...this.groupedPools.values(), this.defaultPool].reduce(
       (acc, pool) => {
         if (pool) {
@@ -88,13 +91,13 @@ export class AggregatedPool extends EventEmitter implements Pool {
     return stats;
   }
 
-  async exec(
+  async exec<T>(
     data: Record<string, unknown>,
     weight: number,
     setup?: (worker: IWorker, stdout: Readable, stderr: Readable) => void,
     cleanup?: (args: any) => void,
     abortSignal?: AbortSignal
-  ): Promise<unknown> {
+  ): Promise<T | void> {
     const group = this.options.groupBy(data);
     const pool = this.groupedPools.get(group) ?? this.defaultPool;
 

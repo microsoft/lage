@@ -211,7 +211,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
     }
   }
 
-  start(work: QueueItem, abortSignal?: AbortSignal) {
+  start(work: QueueItem, abortSignal?: AbortSignal): void {
     this.status = "busy";
 
     const { task, resolve, reject, cleanup, setup } = work;
@@ -235,40 +235,40 @@ export class ThreadWorker extends EventEmitter implements IWorker {
     this.#worker.postMessage({ type: "start", task: { ...task, weight: work.weight }, id });
   }
 
-  get weight() {
+  get weight(): number {
     return this.#taskInfo?.weight ?? 1;
   }
 
-  get stdout() {
+  get stdout(): Readable {
     return this.#stdoutInfo.stream;
   }
 
-  get stderr() {
+  get stderr(): Readable {
     return this.#stderrInfo.stream;
   }
 
-  get resourceLimits() {
+  get resourceLimits(): import("worker_threads").ResourceLimits | undefined {
     return this.#worker.resourceLimits;
   }
 
-  get threadId() {
+  get threadId(): number {
     return this.#worker.threadId;
   }
 
-  terminate() {
+  terminate(): void {
     this.#worker.removeAllListeners();
     this.#worker.terminate();
     this.#worker.unref();
   }
 
-  restart() {
+  restart(): void {
     this.restarts++;
     this.status = "busy";
     this.#worker.terminate();
     this.#createNewWorker();
   }
 
-  async checkMemoryUsage() {
+  async checkMemoryUsage(): Promise<void> {
     this.#worker.postMessage({ type: "check-memory-usage" });
   }
 
