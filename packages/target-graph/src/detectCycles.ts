@@ -4,7 +4,13 @@ import type { Target } from "./types/Target.js";
  * Checks for any cycles in the dependency graph, returning `{ hasCycle: false }` if no cycles were detected.
  * Otherwise it returns the chain of nodes where the cycle was detected.
  */
-export function detectCycles(targets: Map<string, Target>) {
+export function detectCycles(targets: Map<string, Target>): {
+    hasCycle: boolean;
+    cycle: string[];
+} | {
+    hasCycle: boolean;
+    cycle?: undefined;
+} {
   /**
    *  A map to keep track of the visited and visiting nodes.
    * <node, true> entry means it is currently being visited.
