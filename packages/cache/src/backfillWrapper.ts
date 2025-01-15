@@ -9,8 +9,9 @@ import { CacheStorageConfig } from "backfill-config";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { CacheOptions } from "./types/CacheOptions.js";
 import { CredentialCache } from "./CredentialCache.js";
+import { BackfillCacheProviderOptions } from "./providers/BackfillCacheProvider.js";
 
-export function createBackfillLogger() {
+export function createBackfillLogger(): BackfillLogger {
   const stdout = process.stdout;
   const stderr = process.stderr;
   return makeLogger("error", {
@@ -28,7 +29,11 @@ export function createBackfillLogger() {
   });
 }
 
-export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<CacheOptions> = {}, backfillLogger: BackfillLogger) {
+export function createBackfillCacheConfig(
+  cwd: string,
+  cacheOptions: Partial<CacheOptions> = {},
+  backfillLogger: BackfillLogger
+): CacheOptions {
   const envConfig = getEnvConfig(backfillLogger);
   const mergedConfig = {
     ...createDefaultConfig(cwd),
