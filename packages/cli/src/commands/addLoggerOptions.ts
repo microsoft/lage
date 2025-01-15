@@ -1,7 +1,7 @@
 import type { Command } from "commander";
 import { Option } from "commander";
 
-export function addLoggerOptions(program: Command) {
+export function addLoggerOptions(program: Command): Command {
   const isCI = process.env.CI || process.env.TF_BUILD;
 
   return program

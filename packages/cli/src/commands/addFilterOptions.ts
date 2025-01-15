@@ -1,6 +1,6 @@
 import type { Command } from "commander";
 
-export function addFilterOptions(program: Command) {
+export function addFilterOptions(program: Command): Command {
   return program
     .option("--scope <scope...>", "scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)")
     .option("--no-deps|--no-dependents", "disables running any dependents of the scoped packages")

@@ -1,8 +1,8 @@
 import { createReporter } from "./createReporter.js";
-import type { Logger } from "@lage-run/logger";
+import type { LogStructuredData, Logger, Reporter } from "@lage-run/logger";
 import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
 
-export function initializeReporters(logger: Logger, options: ReporterInitOptions) {
+export function initializeReporters(logger: Logger, options: ReporterInitOptions): Reporter<LogStructuredData>[] {
   const { reporter } = options;
 
   // filter out falsy values (e.g. undefined) from the reporter array

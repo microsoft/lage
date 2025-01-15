@@ -2,7 +2,7 @@ import { Command, Option } from "commander";
 import { addLoggerOptions } from "../addLoggerOptions.js";
 import { cacheAction } from "./action.js";
 
-const cacheCommand = new Command("cache");
+const cacheCommand: Command = new Command("cache");
 
 addLoggerOptions(cacheCommand)
   .action(cacheAction)

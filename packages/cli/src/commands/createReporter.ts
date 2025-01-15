@@ -1,4 +1,4 @@
-import { LogLevel } from "@lage-run/logger";
+import { LogLevel, type Reporter } from "@lage-run/logger";
 import {
   JsonReporter,
   AdoReporter,
@@ -12,7 +12,7 @@ import { findPackageRoot } from "workspace-tools";
 import { readFileSync } from "fs";
 import path from "path";
 
-export function createReporter(reporter: string, options: ReporterInitOptions) {
+export function createReporter(reporter: string, options: ReporterInitOptions): Reporter {
   const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress, logFile } = options;
   const logLevel = LogLevel[logLevelName];
 

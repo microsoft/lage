@@ -4,7 +4,7 @@ import { addLoggerOptions } from "../addLoggerOptions.js";
 import { isRunningFromCI } from "../isRunningFromCI.js";
 import { addFilterOptions } from "../addFilterOptions.js";
 
-const runCommand = new Command("run");
+const runCommand: Command = new Command("run");
 
 addFilterOptions(addLoggerOptions(runCommand))
   .action(action)

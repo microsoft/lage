@@ -80,7 +80,7 @@ function parsePackageInfoFromArgs(root: string, cwd: string | undefined, package
   };
 }
 
-export async function executeInProcess({ cwd, args, nodeArg, logger }: ExecuteInProcessOptions) {
+export async function executeInProcess({ cwd, args, nodeArg, logger }: ExecuteInProcessOptions): Promise<void> {
   const root = getWorkspaceRoot(process.cwd())!;
   const config = await getConfig(root);
   const { pipeline } = config;

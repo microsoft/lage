@@ -3,7 +3,7 @@ import { infoAction } from "./action.js";
 import { addFilterOptions } from "../addFilterOptions.js";
 import { addLoggerOptions } from "../addLoggerOptions.js";
 
-const infoCommand = new Command("info");
+const infoCommand: Command = new Command("info");
 
 addFilterOptions(addLoggerOptions(infoCommand));
 infoCommand.description("Display information about a target graph in a workspace.\n" + "It is used by BuildXL to build a pip-graph");

@@ -10,7 +10,9 @@ interface CreateCacheOptions {
   cliArgs: string[];
 }
 
-export async function createCache(options: CreateCacheOptions) {
+export async function createCache(options: CreateCacheOptions): Promise<{
+    hasher: TargetHasher;
+}> {
   const { cacheOptions, root, cliArgs, logger } = options;
 
   const hasher = new TargetHasher({

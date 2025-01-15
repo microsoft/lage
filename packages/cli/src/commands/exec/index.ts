@@ -3,7 +3,7 @@ import { execAction } from "./action.js";
 import { addLoggerOptions } from "../addLoggerOptions.js";
 import os from "os";
 
-const execCommand = new Command("exec");
+const execCommand: Command = new Command("exec");
 execCommand.option(
   "-n|--node-arg <arg>",
   "node argument to pass to worker, just a single string to be passed into node like a NODE_OPTIONS setting"

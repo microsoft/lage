@@ -13,7 +13,7 @@ interface WorkerOptions extends ReporterInitOptions {
   tasks: string[];
 }
 
-export async function serverAction(options: WorkerOptions) {
+export async function serverAction(options: WorkerOptions): Promise<void> {
   const { port = 5332, host = "localhost", timeout = 1, tasks } = options;
 
   const logger = createLogger();

@@ -2,7 +2,7 @@ import { Command } from "commander";
 import { addFilterOptions } from "../addFilterOptions.js";
 import { affectedAction } from "./action.js";
 
-const affectedCommand = new Command("affected");
+const affectedCommand: Command = new Command("affected");
 
 addFilterOptions(affectedCommand)
   .action(affectedAction)

@@ -17,7 +17,7 @@ interface ExecRemoteOptions extends ExecOptions {
   tasks: string[];
 }
 
-export async function execAction(options: ExecOptions, command: Command) {
+export async function execAction(options: ExecOptions, command: Command): Promise<void> {
   const logger = createLogger();
   options.cwd = options.cwd ?? process.cwd();
   options.logLevel = options.logLevel ?? "info";

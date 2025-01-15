@@ -1,6 +1,12 @@
 import { type PipelineDefinition } from "@lage-run/config";
+import { type TargetConfig } from "@lage-run/target-graph";
 
-export function expandTargetDefinition(packageName: string | undefined, task: string, pipeline: PipelineDefinition, outputs: string[]) {
+export function expandTargetDefinition(
+  packageName: string | undefined,
+  task: string,
+  pipeline: PipelineDefinition,
+  outputs: string[]
+): TargetConfig {
   const id = packageName ? `${packageName}#${task}` : task;
   const emptyDefinition = {
     cache: false,

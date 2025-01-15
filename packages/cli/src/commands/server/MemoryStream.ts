@@ -8,7 +8,7 @@ export class MemoryStream extends Writable {
     this.chunks = [];
   }
 
-  _write(chunk: any, encoding: BufferEncoding) {
+  _write(chunk: any, encoding: BufferEncoding): void {
     this.chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, encoding));
   }
 

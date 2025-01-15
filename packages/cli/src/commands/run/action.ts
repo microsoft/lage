@@ -23,7 +23,7 @@ interface RunOptions extends ReporterInitOptions {
   allowNoTargetRuns: boolean;
 }
 
-export async function action(options: RunOptions, command: Command) {
+export async function action(options: RunOptions, command: Command): Promise<void> {
   if (options.watch) {
     return watchAction(options, command);
   } else {

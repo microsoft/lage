@@ -10,7 +10,7 @@ export interface ClearCacheOptions {
   concurrency: number;
 }
 
-export async function clearCache(options: ClearCacheOptions) {
+export async function clearCache(options: ClearCacheOptions): Promise<void> {
   const { logger, cwd } = options;
 
   const config = await getConfig(cwd);
