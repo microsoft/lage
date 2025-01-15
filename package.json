@@ -44,7 +44,7 @@
     "prettier": "^2.8.6",
     "syncpack": "^9.0.0",
     "ts-node": "^10.9.1",
-    "typescript": "~5.0.3"
+    "typescript": "~5.7.3"
   },
   "lint-staged": {
     "!(*test).{ts,js}": "eslint --fix",

@@ -6,7 +6,7 @@ import { createInterface } from "readline";
 export class Logger<TLogStructuredData extends LogStructuredData = LogStructuredData> {
   reporters: Reporter[] = [];
 
-  log(level: LogLevel, msg: string, data?: TLogStructuredData) {
+  log(level: LogLevel, msg: string, data?: TLogStructuredData): void {
     const entry = {
       timestamp: Date.now(),
       level,
@@ -19,23 +19,23 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
     }
   }
 
-  info(msg: string, data?: TLogStructuredData) {
+  info(msg: string, data?: TLogStructuredData): void {
     this.log(LogLevel.info, msg, data);
   }
 
-  warn(msg: string, data?: TLogStructuredData) {
+  warn(msg: string, data?: TLogStructuredData): void {
     this.log(LogLevel.warn, msg, data);
   }
 
-  error(msg: string, data?: TLogStructuredData) {
+  error(msg: string, data?: TLogStructuredData): void {
     this.log(LogLevel.error, msg, data);
   }
 
-  verbose(msg: string, data?: TLogStructuredData) {
+  verbose(msg: string, data?: TLogStructuredData): void {
     this.log(LogLevel.verbose, msg, data);
   }
 
-  silly(msg: string, data?: TLogStructuredData) {
+  silly(msg: string, data?: TLogStructuredData): void {
     this.log(LogLevel.silly, msg, data);
   }
 
@@ -52,13 +52,13 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
 
     readline.on("line", lineLogger);
 
-    return () => {
+    return (): void => {
       readline.off("line", lineLogger);
       readline.close();
     };
   }
 
-  addReporter(reporter: Reporter) {
+  addReporter(reporter: Rep: voidorter:: void any:: void any:: void any:: void any:: void any) {
     this.reporters.push(reporter);
   }
 }

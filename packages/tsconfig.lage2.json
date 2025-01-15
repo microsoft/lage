@@ -14,6 +14,8 @@
     "skipLibCheck": true,
     "noUnusedLocals": false,
     "sourceMap": true,
-    "typeRoots": ["../node_modules/@types", "../types", "node_modules/@types"]
+    "typeRoots": ["../node_modules/@types", "../types", "node_modules/@types"],
+    "isolatedDeclarations": true,
+    "isolatedModules": true
   }
 }
