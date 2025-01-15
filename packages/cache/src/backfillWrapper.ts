@@ -31,7 +31,7 @@ export function createBackfillLogger(): BackfillLogger {
 
 export function createBackfillCacheConfig(
   cwd: string,
-  cacheOptions: Partial<CacheOptions> = {},
+  cacheOptions: Partial<CacheOptions> | undefined = {},
   backfillLogger: BackfillLogger
 ): CacheOptions {
   const envConfig = getEnvConfig(backfillLogger);
