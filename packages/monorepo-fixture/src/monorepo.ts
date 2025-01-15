@@ -5,13 +5,13 @@ import * as path from "path";
 import execa from "execa";
 
 export class Monorepo {
-  static tmpdir = os.tmpdir();
+  static tmpdir: string = os.tmpdir();
 
   root: string;
 
   lagePath: string;
 
-  get nodeModulesPath() {
+  get nodeModulesPath(): string {
     return path.join(this.root, "node_modules");
   }
 
@@ -20,7 +20,7 @@ export class Monorepo {
     this.lagePath = path.join(this.nodeModulesPath, "@lage-run");
   }
 
-  async init(fixturePath?: string) {
+  async init(fixturePath?: string): Promise<void> {
     const options = { cwd: this.root };
     const cwd = this.root;
     await execa("git", ["init"], options);
@@ -39,7 +39,7 @@ export class Monorepo {
     }
   }
 
-  async install() {
+  async install(): Promise<void> {
     if (!existsSync(this.nodeModulesPath)) {
       await fs.mkdir(this.nodeModulesPath, { recursive: true });
     }
@@ -66,7 +66,7 @@ export class Monorepo {
   /**
    * Simulates a "yarn" call by linking internal packages and generates a yarn.lock file
    */
-  async linkPackages() {
+  async linkPackages(): Promise<void> {
     const pkgs = await fs.readdir(path.join(this.root, "packages"));
 
     if (!existsSync(this.nodeModulesPath)) {
@@ -94,7 +94,7 @@ export class Monorepo {
     await this.commitFiles({ "yarn.lock": yarnYaml });
   }
 
-  async generateRepoFiles() {
+  async generateRepoFiles(): Promise<void> {
     const lagePath = path.join(this.nodeModulesPath, "lage/lib/cli");
 
     await this.commitFiles({
@@ -127,13 +127,13 @@ export class Monorepo {
     });
   }
 
-  async setLageConfig(contents: string) {
+  async setLageConfig(contents: string): Promise<void> {
     await this.commitFiles({
       "lage.config.js": contents,
     });
   }
 
-  async addPackage(name: string, internalDeps: string[] = [], scripts?: { [script: string]: string }) {
+  async addPackage(name: string, internalDeps: string[] = [], scripts?: { [script: string]: string }): Promise<void> {
     return await this.commitFiles({
       [`packages/${name}/build.js`]: `console.log('building ${name}');`,
       [`packages/${name}/test.js`]: `console.log('building ${name}');`,
@@ -156,15 +156,15 @@ export class Monorepo {
     });
   }
 
-  clone(origin: string) {
+  clone(origin: string): execa.ExecaChildProcess<string> {
     return execa("git", ["clone", origin], { cwd: this.root });
   }
 
-  push(origin: string, branch: string) {
+  push(origin: string, branch: string): execa.ExecaChildProcess<string> {
     return execa("git", ["push", origin, branch], { cwd: this.root });
   }
 
-  async writeFiles(files: { [file: string]: string | object }, options: { executable?: boolean } = {}) {
+  async writeFiles(files: { [file: string]: string | object }, options: { executable?: boolean } = {}): Promise<void> {
     for (const [file, contents] of Object.entries(files)) {
       let out = "";
       if (typeof contents !== "string") {
@@ -187,7 +187,7 @@ export class Monorepo {
     }
   }
 
-  async readFiles(files: string[]) {
+  async readFiles(files: string[]): Promise<{}> {
     const contents = {};
     for (const file of files) {
       const fullPath = path.isAbsolute(file) ? file : path.join(this.root, file);
@@ -200,7 +200,7 @@ export class Monorepo {
     return contents;
   }
 
-  async commitFiles(files: { [name: string]: string | object }, options: { executable?: boolean } = {}) {
+  async commitFiles(files: { [name: string]: string | object }, options: { executable?: boolean } = {}): Promise<void> {
     await this.writeFiles(files, options);
     await execa("git", ["add", "--", ...Object.keys(files)], {
       cwd: this.root,
@@ -208,14 +208,14 @@ export class Monorepo {
     await execa("git", ["commit", "-m", "commit files"], { cwd: this.root });
   }
 
-  run(command: string, args?: string[], silent?: boolean) {
+  run(command: string, args?: string[], silent?: boolean): execa.ExecaChildProcess<string> {
     return execa("yarn", [...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
       shell: true,
     });
   }
 
-  async cleanup() {
+  async cleanup(): Promise<void> {
     const maxRetries = 5;
     let attempts = 0;
 
