@@ -1,4 +1,4 @@
-export function formatDuration(seconds: string) {
+export function formatDuration(seconds: string): string {
   const raw = parseFloat(seconds);
   if (raw > 60) {
     const minutes = Math.floor(raw / 60);
@@ -10,7 +10,7 @@ export function formatDuration(seconds: string) {
   }
 }
 
-export function hrToSeconds(hrtime: [number, number]) {
+export function hrToSeconds(hrtime: [number, number]): string {
   const raw = hrtime[0] + hrtime[1] / 1e9;
   return raw.toFixed(2);
 }
