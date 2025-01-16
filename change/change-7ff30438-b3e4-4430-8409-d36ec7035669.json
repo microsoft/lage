@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Update dependency @azure/identity to ^4.6.0",
+      "packageName": "@lage-run/cache",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
