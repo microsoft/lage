@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Fri, 17 Jan 2025 21:57:32 GMT",
+      "version": "1.6.9",
+      "tag": "@lage-run/hasher_v1.6.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "0cb67940795a8b1366c91a27959b123d4fd056c2",
+            "comment": "Make package tree handle nested packages"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Jan 2025 16:56:22 GMT",
       "version": "1.6.8",
       "tag": "@lage-run/hasher_v1.6.8",
