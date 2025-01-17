@@ -15,7 +15,12 @@ function isBetterCandidateThanCurrent(current: QueueItem | undefined, candidate:
   return false;
 }
 
-/** Finds the index of an available task from the queue to run. Returns -1 if there are no eligible tasks */
+/**
+ * Finds the index of an available task from the queue to run.
+ * A task is eligible if it has a weight less than or equal to the availability and there are no other tasks with higher priority.
+ * There are no eligible tasks when the queue is empty, there is no availability, there are no tasks with a weight lower than the availability, or the tasks with the highest priority have a weight higher than the availability.
+ * @returns the index of the task to run or -1 if no eligible task is available.
+ */
 export function pickTaskFromQueue(queue: QueueItem[], availability: number) {
   let maxPrioritySeenSoFar: undefined | number = undefined;
   let bestCandidateTask: undefined | { queueItem: QueueItem; index: number } = undefined;
