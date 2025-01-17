@@ -41,7 +41,8 @@ export function pickTaskFromQueue(queue: QueueItem[], availability: number) {
     }
   }
 
-  if (bestCandidateTask && bestCandidateTask.queueItem.priority == maxPrioritySeenSoFar) {
+  // Confirm the candidate task has a priority equal to the highest priority seen across all tasks
+  if (bestCandidateTask && (maxPrioritySeenSoFar === undefined || bestCandidateTask.queueItem.priority === maxPrioritySeenSoFar)) {
     return bestCandidateTask.index;
   }
 
