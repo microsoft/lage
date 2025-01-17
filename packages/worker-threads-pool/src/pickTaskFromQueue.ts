@@ -35,7 +35,7 @@ export function pickTaskFromQueue(queue: QueueItem[], availability: number) {
       }
     }
 
-    if (taskToConsider.priority) {
+    if (taskToConsider.priority !== undefined) {
       maxPrioritySeenSoFar =
         maxPrioritySeenSoFar !== undefined ? Math.max(maxPrioritySeenSoFar, taskToConsider.priority) : taskToConsider.priority;
     }
