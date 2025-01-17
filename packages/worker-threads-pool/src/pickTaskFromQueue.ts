@@ -1,25 +1,43 @@
 import type { QueueItem } from "./types/WorkerQueue.js";
 
+function isBetterCandidateThanCurrent(current: QueueItem | undefined, candidate: QueueItem): boolean {
+  // If we don't have any current candidates, the new candidate is better by definition
+  if (!current) {
+    return true;
+  }
+
+  // If the new candidate has a higher priority than the current candidate, it is better
+  if (candidate.priority && (current.priority == undefined || candidate.priority > current.priority)) {
+    return true;
+  }
+
+  // Otherwise stick with the current candidate
+  return false;
+}
+
 /** Finds the index of an available task from the queue to run. Returns -1 if there are no eligible tasks */
 export function pickTaskFromQueue(queue: QueueItem[], availability: number) {
-  // A key assumption here is that items are inserted into the queue in priority order
-  let maxPrioritySeenSoFar: number | undefined;
+  let maxPrioritySeenSoFar: undefined | number = undefined;
+  let bestCandidateTask: undefined | { queueItem: QueueItem; index: number } = undefined;
   for (let i = 0; i < queue.length; i++) {
-    const candidateTask = queue[i];
+    const taskToConsider = queue[i];
 
-    if (candidateTask.weight <= availability) {
+    // A task is not a candidate if there is not enough availability to run it
+    if (taskToConsider.weight <= availability) {
       // If we have enough availability and there have been no higher priority tasks before this one, we can execute this task;
-      if (maxPrioritySeenSoFar === undefined || candidateTask.priority === maxPrioritySeenSoFar) {
-        return i;
+      if (isBetterCandidateThanCurrent(bestCandidateTask?.queueItem, taskToConsider)) {
+        bestCandidateTask = { queueItem: taskToConsider, index: i };
       }
-
-      return -1;
     }
 
-    if (candidateTask.priority) {
+    if (taskToConsider.priority) {
       maxPrioritySeenSoFar =
-        maxPrioritySeenSoFar !== undefined ? Math.max(maxPrioritySeenSoFar, candidateTask.priority) : candidateTask.priority;
+        maxPrioritySeenSoFar !== undefined ? Math.max(maxPrioritySeenSoFar, taskToConsider.priority) : taskToConsider.priority;
     }
+  }
+
+  if (bestCandidateTask && bestCandidateTask.queueItem.priority == maxPrioritySeenSoFar) {
+    return bestCandidateTask.index;
   }
 
   return -1;

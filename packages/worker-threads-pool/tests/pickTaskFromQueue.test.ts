@@ -20,11 +20,14 @@ describe("pickTaskFromQueue tests", () => {
   });
 
   it("should not schedule a task with lower priority before one with a higher priority", () => {
-    // We will wait for enough workers to free up for a higher priority task rather than schedule a lower priority task
     expect(pickTaskFromQueue([createMockQueueItem({ weight: 2, priority: 100 }), createMockQueueItem({ weight: 1 })], 1)).toEqual(-1);
     expect(
       pickTaskFromQueue([createMockQueueItem({ weight: 2, priority: 100 }), createMockQueueItem({ weight: 1, priority: 80 })], 1)
     ).toEqual(-1);
+    expect(
+      pickTaskFromQueue([createMockQueueItem({ weight: 1, priority: 80 }), createMockQueueItem({ weight: 1, priority: 100 })], 1)
+    ).toEqual(1);
+    expect(pickTaskFromQueue([createMockQueueItem({ weight: 1 }), createMockQueueItem({ weight: 1, priority: 100 })], 1)).toEqual(1);
   });
 
   it("should handle tasks with equal priority correctly", () => {
