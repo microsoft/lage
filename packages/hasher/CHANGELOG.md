@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Wed, 15 Jan 2025 16:56:22 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 17 Jan 2025 21:57:32 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.6.9
+
+Fri, 17 Jan 2025 21:57:32 GMT
+
+### Patches
+
+- Make package tree handle nested packages (kchau@microsoft.com)
 
 ## 1.6.8
 
