@@ -1,6 +1,6 @@
 export function parseServerOption(server: boolean | string | undefined): {
-    host: string;
-    port: number;
+  host: string;
+  port: number;
 } {
   const isBooleanAndTrue = typeof server === "boolean" && server;
   const isEmptyServer = typeof server === "undefined" || server === false;

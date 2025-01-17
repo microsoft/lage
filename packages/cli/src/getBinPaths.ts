@@ -15,8 +15,8 @@ function findUp(name: string, dir: string) {
 }
 
 export function getBinPaths(): {
-    lage: string;
-    "lage-server": string;
+  lage: string;
+  "lage-server": string;
 } {
   const bins = os.platform() === "win32" ? ["lage.cmd", "lage-server.cmd"] : ["lage", "lage-server"];
   const binPaths = bins.map((bin) => findUp("node_modules/.bin/" + bin, __dirname));
@@ -29,8 +29,8 @@ export function getBinPaths(): {
 }
 
 export function getBinScripts(): {
-    lage: string;
-    "lage-server": string;
+  lage: string;
+  "lage-server": string;
 } {
   const thisPackageJsonPath = findUp("package.json", __dirname);
 

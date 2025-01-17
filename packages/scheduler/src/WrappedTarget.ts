@@ -289,8 +289,8 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
    * @returns
    */
   toJSON(): {
-      target: string;
-      status: TargetStatus;
+    target: string;
+    status: TargetStatus;
   } {
     return {
       target: this.target.id,

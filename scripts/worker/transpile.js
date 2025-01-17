@@ -32,7 +32,6 @@ module.exports = async function transpile(data) {
           .replace(".tsx", ".js")
           .replace(".ts", ".js");
 
-
         const swcOutput = await swc.transformFile(fullPath, {
           configFile: path.join(root, ".swcrc"),
           sourceFileName: path.relative(path.dirname(dest), fullPath).replace(/\\/g, "/"),
@@ -46,9 +45,9 @@ module.exports = async function transpile(data) {
           await fsPromises.writeFile(destMap, swcOutput.map);
         }
 
-        // @ts-expect-error 
+        // @ts-expect-error
         if (swcOutput.output) {
-          // @ts-expect-error 
+          // @ts-expect-error
           const output = JSON.parse(swcOutput.output);
           const decls = dest.replace(/\.js$/, ".d.ts");
           // @ts-ignore

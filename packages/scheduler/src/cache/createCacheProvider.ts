@@ -12,7 +12,7 @@ interface CreateCacheOptions {
 }
 
 export async function createCache(options: CreateCacheOptions): Promise<{
-    cacheProvider: RemoteFallbackCacheProvider;
+  cacheProvider: RemoteFallbackCacheProvider;
 }> {
   const { cacheOptions, logger, root, skipLocalCache } = options;
 

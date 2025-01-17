@@ -11,7 +11,7 @@ interface CreateCacheOptions {
 }
 
 export async function createCache(options: CreateCacheOptions): Promise<{
-    hasher: TargetHasher;
+  hasher: TargetHasher;
 }> {
   const { cacheOptions, root, cliArgs, logger } = options;
 
