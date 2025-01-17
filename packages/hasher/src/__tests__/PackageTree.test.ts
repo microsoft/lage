@@ -23,7 +23,7 @@ describe("PackageTree", () => {
 
     await packageTree.initialize();
 
-    const files = await packageTree.getPackageFiles("package-a", ["**/*"]);
+    const files = packageTree.getPackageFiles("package-a", ["**/*"]);
 
     expect(files).toHaveLength(3);
   });
@@ -43,7 +43,7 @@ describe("PackageTree", () => {
 
     await packageTree.initialize();
 
-    const files = await packageTree.getPackageFiles("package-a", ["**/*.ts"]);
+    const files = packageTree.getPackageFiles("package-a", ["**/*.ts"]);
 
     expect(files).toHaveLength(1);
   });
@@ -63,14 +63,14 @@ describe("PackageTree", () => {
 
     await packageTree.initialize();
 
-    const files = await packageTree.getPackageFiles("package-a", ["**/*.ts"]);
-    const allFiles = await packageTree.getPackageFiles("package-a", ["**/*"]);
+    const files = packageTree.getPackageFiles("package-a", ["**/*.ts"]);
+    const allFiles = packageTree.getPackageFiles("package-a", ["**/*"]);
 
-    expect(files).toHaveLength(1);
-    expect(allFiles).toHaveLength(3);
+    expect(files).toHaveLength(2);
+    expect(allFiles).toHaveLength(4);
 
-    const files2 = await packageTree.getPackageFiles("package-b", ["**/*.ts"]);
-    const allFiles2 = await packageTree.getPackageFiles("package-b", ["**/*"]);
+    const files2 = packageTree.getPackageFiles("package-b", ["**/*.ts"]);
+    const allFiles2 = packageTree.getPackageFiles("package-b", ["**/*"]);
 
     expect(files2).toHaveLength(1);
     expect(allFiles2).toHaveLength(3);

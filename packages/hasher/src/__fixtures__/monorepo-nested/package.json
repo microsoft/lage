@@ -5,7 +5,7 @@
   "workspaces": {
     "packages": [
       "packages/package-a",
-      "packages/package-a/package-b"
+      "packages/package-a/build/package-b"
     ]
   }
 }
