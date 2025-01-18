@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "isolated declarations",
+      "packageName": "@lage-run/cache-github-actions",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "isolated declarations",
+      "packageName": "@lage-run/scheduler-types",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
