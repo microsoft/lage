@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-<!-- This log was last generated on Sun, 08 Dec 2024 00:07:28 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 23 Jan 2025 17:38:05 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.9.0
+
+Thu, 23 Jan 2025 17:38:05 GMT
+
+### Minor changes
+
+- Add priority as a parameter to Pool APIs to support more optimal scheduling (1581488+christiango@users.noreply.github.com)
 
 ## 0.8.6
 

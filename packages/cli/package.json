@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cli",
-  "version": "0.24.12",
+  "version": "0.24.13",
   "description": "Command Line Interface for Lage",
   "repository": {
     "type": "git",
@@ -30,10 +30,10 @@
     "@lage-run/reporters": "^1.2.19",
     "@lage-run/rpc": "^1.2.3",
     "@lage-run/runners": "^1.2.1",
-    "@lage-run/scheduler": "^1.4.5",
+    "@lage-run/scheduler": "^1.5.0",
     "@lage-run/scheduler-types": "^0.3.23",
     "@lage-run/target-graph": "^0.11.1",
-    "@lage-run/worker-threads-pool": "^0.8.6",
+    "@lage-run/worker-threads-pool": "^0.9.0",
     "chokidar": "3.5.3",
     "commander": "9.5.0",
     "execa": "5.1.1",
