@@ -7,6 +7,7 @@ export interface QueueItem {
   cleanup?: (worker: IWorker) => void;
   task: Record<string, unknown>;
   weight: number;
+  priority?: number;
   resolve: (value?: unknown) => void;
   reject: (reason: unknown) => void;
 }

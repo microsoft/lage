@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Add priority as a parameter to Pool APIs to support more optimal scheduling",
+      "packageName": "@lage-run/scheduler",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Add priority as a parameter to Pool APIs to support more optimal scheduling",
+      "packageName": "@lage-run/worker-threads-pool",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
