@@ -20,10 +20,13 @@ const options = {
     ).default([]),
   },
   runner: {
-    nodeArg: new Option("-n|--node-arg <arg>", "node arguments just a single string to be passed into node like a NODE_OPTIONS setting"),
+    nodeArg: new Option(
+      "-n|--node-arg <arg>",
+      'node arguments as a string to be passed into node like a NODE_OPTIONS setting, (e.g. --nodearg="--max_old_space_size=1234 --heap-prof")'
+    ),
   },
   run: {
-    noCache: new Option("--no-cache", "disables the cache"),
+    cache: new Option("--no-cache", "disables the cache"),
     resetCache: new Option("--reset-cache", "resets the cache, filling it after a run"),
     skipLocalCache: new Option("--skip-local-cache", "skips caching locally (defaults to true in CI environments)").default(isCI),
     profile: new Option("--profile [profile]", "writes a run profile into a file that can be processed by Chromium devtool"),
@@ -61,8 +64,8 @@ const options = {
     ),
   },
   cache: {
-    cache: new Option("--cache", "cache the results of the run").default(false),
-    cacheDir: new Option("--cache-dir <dir>", "directory to store the cache").default(".lage-cache"),
+    prune: new Option("--prune <days>", "Prunes cache older than certain number of <days>").argParser(parseInt).conflicts("--clear"),
+    clear: new Option("--clear", "Clears the cache locally"),
   },
 } as const;
 
