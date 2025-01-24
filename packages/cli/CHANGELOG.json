@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 24 Jan 2025 23:04:32 GMT",
+      "version": "0.25.0",
+      "tag": "@lage-run/cli_v0.25.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "1816081df6da9541b52912354484d9bd2f198b03",
+            "comment": "Adds environment variables override for all CLI args. Get these from --help"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 23 Jan 2025 17:38:05 GMT",
       "version": "0.24.13",
       "tag": "@lage-run/cli_v0.24.13",
