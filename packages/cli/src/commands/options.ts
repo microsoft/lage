@@ -2,7 +2,7 @@ import { Option } from "commander";
 
 const isCI = process.env.CI || process.env.TF_BUILD;
 
-export const options = {
+const options = {
   logger: {
     reporter: new Option("--reporter <reporter...>", "reporter"),
     grouped: new Option("--grouped", "groups the logs").default(false),
@@ -65,4 +65,20 @@ export const options = {
     cache: new Option("--cache", "cache the results of the run").default(false),
     cacheDir: new Option("--cache-dir <dir>", "directory to store the cache").default(".lage-cache"),
   },
-};
+} as const;
+
+const optionsWithEnv = addEnvOptions(options);
+
+function addEnvOptions(opts: typeof options) {
+  for (const key in opts) {
+    for (const [name, option] of Object.entries<Option>(opts[key])) {
+      // convert the camel cased name to uppercase with underscores
+      const upperCaseSnakeName = name.replace(/([A-Z])/g, "_$1").toUpperCase();
+      option.env(`LAGE_${key.toUpperCase()}_${upperCaseSnakeName}`);
+    }
+  }
+
+  return opts;
+}
+
+export { optionsWithEnv as options };

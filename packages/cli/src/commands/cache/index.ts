@@ -1,12 +1,9 @@
-import { Command, Option } from "commander";
-import { addLoggerOptions } from "../addLoggerOptions.js";
+import { Command } from "commander";
 import { cacheAction } from "./action.js";
+import { addOptions } from "../addOptions.js";
 
 const cacheCommand = new Command("cache");
 
-addLoggerOptions(cacheCommand)
-  .action(cacheAction)
-  .addOption(new Option("--prune <days>", "Prunes cache older than certain number of <days>").argParser(parseInt).conflicts("--clear"))
-  .option("--clear", "Clears the cache locally");
+addOptions("cache", addOptions("logger", cacheCommand)).action(cacheAction);
 
 export { cacheCommand };
