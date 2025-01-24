@@ -14,10 +14,13 @@ const options = {
   pool: {
     concurrency: new Option("-c|--concurrency <number>", "max jobs to run at a time").argParser((v) => parseInt(v)),
     continue: new Option("--continue", "continue running even after encountering an error for one of the targets"),
-    nodeArg: new Option(
-      "-n|--node-arg <arg>",
-      "node argument to pass to worker, just a single string to be passed into node like a NODE_OPTIONS setting"
-    ),
+    maxWorkersPerTask: new Option(
+      "--max-workers-per-task <maxWorkersPerTarget...>",
+      "set max worker per task, e.g. --max-workers-per-task build=2 test=4"
+    ).default([]),
+  },
+  runner: {
+    nodeArg: new Option("-n|--node-arg <arg>", "node arguments just a single string to be passed into node like a NODE_OPTIONS setting"),
   },
   run: {
     noCache: new Option("--no-cache", "disables the cache"),
@@ -28,14 +31,10 @@ const options = {
     allowNoTargetRuns: new Option("--allow-no-target-runs"),
     watch: new Option("--watch", "runs in watch mode"),
   },
-  info: {
-    server: new Option("--server [host:port]", "Run targets of type 'worker' on a background service"),
-  },
   server: {
-    host: new Option("-h|--host <host>", "lage server host").default("localhost"),
-    port: new Option("-p|--port <port>", "lage worker server port").default(5332).argParser((v) => parseInt(v)),
-    timeout: new Option("-t|--timeout <seconds>", "lage server autoshutoff timeout").default(5 * 60).argParser((v) => parseInt(v)),
+    server: new Option("--server [host:port]", "Run targets of type 'worker' on a background service"),
     tasks: new Option("--tasks <tasks...>", "A list of tasks to run, separated by space e.g. 'build test'"),
+    timeout: new Option("-t|--timeout <seconds>", "lage server autoshutoff timeout").default(5 * 60).argParser((v) => parseInt(v)),
   },
   filter: {
     scope: new Option(
@@ -73,8 +72,9 @@ function addEnvOptions(opts: typeof options) {
   for (const key in opts) {
     for (const [name, option] of Object.entries<Option>(opts[key])) {
       // convert the camel cased name to uppercase with underscores
+      const upperCaseSnakeKey = key.replace(/([A-Z])/g, "_$1").toUpperCase();
       const upperCaseSnakeName = name.replace(/([A-Z])/g, "_$1").toUpperCase();
-      option.env(`LAGE_${key.toUpperCase()}_${upperCaseSnakeName}`);
+      option.env(`LAGE_${upperCaseSnakeKey}_${upperCaseSnakeName}`);
     }
   }
 
