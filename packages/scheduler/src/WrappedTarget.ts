@@ -190,8 +190,6 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
         }
 
         this.onSkipped(hash);
-      } else {
-        this.onComplete();
       }
 
       return this.#result;
@@ -265,6 +263,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
       },
       (worker) => {
         worker.off("message", msgHandler);
+        this.onComplete();
         releaseStdout();
         releaseStderr();
       },

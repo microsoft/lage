@@ -22,6 +22,10 @@ function isBetterCandidateThanCurrent(current: QueueItem | undefined, candidate:
  * @returns the index of the task to run or -1 if no eligible task is available.
  */
 export function pickTaskFromQueue(queue: QueueItem[], availability: number) {
+  if (availability === 0) {
+    return -1;
+  }
+
   let maxPrioritySeenSoFar: undefined | number = undefined;
   let bestCandidateTask: undefined | { queueItem: QueueItem; index: number } = undefined;
   for (let i = 0; i < queue.length; i++) {
