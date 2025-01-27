@@ -6,13 +6,6 @@
       "packageName": "@lage-run/scheduler",
       "email": "1581488+christiango@users.noreply.github.com",
       "dependentChangeType": "patch"
-    },
-    {
-      "type": "patch",
-      "comment": "Minor perf optimization to avoid work when there are no workers",
-      "packageName": "@lage-run/worker-threads-pool",
-      "email": "1581488+christiango@users.noreply.github.com",
-      "dependentChangeType": "patch"
     }
   ]
 }
