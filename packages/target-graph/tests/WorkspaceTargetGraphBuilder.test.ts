@@ -43,10 +43,17 @@ describe("workspace target graph builder", () => {
       dependsOn: ["^build"],
     });
 
-    const targetGraph = await builder.build(["build"]);
+    const targetGraph = await builder.build(["build"], undefined, [{ package: "b", task: "build", priority: 100 }]);
 
     // size is 3, because we also need to account for the root target node (start target ID)
     expect(targetGraph.targets.size).toBe(3);
+
+    // Ensure priorities were set from the global priority argument
+    expect(Array.from(targetGraph.targets.values())).toEqual([
+      expect.objectContaining({ id: "__start", priority: 100 }),
+      expect.objectContaining({ id: "a#build", priority: 0 }),
+      expect.objectContaining({ id: "b#build", priority: 100 }),
+    ]);
 
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [

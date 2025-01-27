@@ -2,6 +2,126 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 24 Jan 2025 23:04:32 GMT",
+      "version": "0.25.0",
+      "tag": "@lage-run/cli_v0.25.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "1816081df6da9541b52912354484d9bd2f198b03",
+            "comment": "Adds environment variables override for all CLI args. Get these from --help"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 23 Jan 2025 17:38:05 GMT",
+      "version": "0.24.13",
+      "tag": "@lage-run/cli_v0.24.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.5.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.9.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 17 Jan 2025 21:57:32 GMT",
+      "version": "0.24.12",
+      "tag": "@lage-run/cli_v0.24.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.6.9",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.4.5",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Jan 2025 16:56:22 GMT",
+      "version": "0.24.11",
+      "tag": "@lage-run/cli_v0.24.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/cli",
+            "commit": "f4551ca0219cf233f7497a27dea7df57229eb02c",
+            "comment": "Fix bug where priorities were not being correctly set on tasks"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.3.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.4.12",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.6.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.2.19",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/runners to v1.2.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.4.4",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.3.23",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.11.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 20 Dec 2024 19:42:00 GMT",
       "version": "0.24.10",
       "tag": "@lage-run/cli_v0.24.10",

@@ -1,8 +1,38 @@
 # Change Log - @lage-run/scheduler
 
-<!-- This log was last generated on Thu, 19 Dec 2024 15:53:46 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 23 Jan 2025 17:38:05 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.5.0
+
+Thu, 23 Jan 2025 17:38:05 GMT
+
+### Minor changes
+
+- Add priority as a parameter to Pool APIs to support more optimal scheduling (1581488+christiango@users.noreply.github.com)
+- Bump @lage-run/worker-threads-pool to v0.9.0
+
+## 1.4.5
+
+Fri, 17 Jan 2025 21:57:32 GMT
+
+### Patches
+
+- Bump @lage-run/hasher to v1.6.9
+
+## 1.4.4
+
+Wed, 15 Jan 2025 16:56:22 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.3.11
+- Bump @lage-run/config to v0.4.12
+- Bump @lage-run/hasher to v1.6.8
+- Bump @lage-run/runners to v1.2.1
+- Bump @lage-run/target-graph to v0.11.1
+- Bump @lage-run/scheduler-types to v0.3.23
 
 ## 1.4.3
 

@@ -268,7 +268,8 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
         releaseStdout();
         releaseStderr();
       },
-      abortSignal
+      abortSignal,
+      target.priority
     ) as Promise<{ value?: unknown; skipped: boolean; hash: string; id: string }>);
 
     return {

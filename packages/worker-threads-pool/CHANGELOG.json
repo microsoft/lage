@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Thu, 23 Jan 2025 17:38:05 GMT",
+      "version": "0.9.0",
+      "tag": "@lage-run/worker-threads-pool_v0.9.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "d237682b5454ef811a39fcaca56d1a28f064449d",
+            "comment": "Add priority as a parameter to Pool APIs to support more optimal scheduling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 08 Dec 2024 00:07:28 GMT",
       "version": "0.8.6",
       "tag": "@lage-run/worker-threads-pool_v0.8.6",

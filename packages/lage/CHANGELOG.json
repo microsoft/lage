@@ -2,6 +2,72 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 24 Jan 2025 23:04:32 GMT",
+      "version": "2.12.10",
+      "tag": "lage_v2.12.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.25.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 23 Jan 2025 17:38:05 GMT",
+      "version": "2.12.9",
+      "tag": "lage_v2.12.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.24.13",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 17 Jan 2025 21:57:32 GMT",
+      "version": "2.12.8",
+      "tag": "lage_v2.12.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.24.12",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Jan 2025 16:56:22 GMT",
+      "version": "2.12.7",
+      "tag": "lage_v2.12.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/cli to v0.24.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "lage",
+            "comment": "Bump @lage-run/runners to v1.2.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 20 Dec 2024 19:42:00 GMT",
       "version": "2.12.6",
       "tag": "lage_v2.12.6",

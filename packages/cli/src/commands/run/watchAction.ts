@@ -61,6 +61,7 @@ export async function watchAction(options: RunOptions, command: Command) {
     outputs: config.cacheOptions.outputGlob,
     tasks,
     packageInfos,
+    priorities: config.priorities,
   });
 
   // Make sure we do not attempt writeRemoteCache in watch mode

@@ -11,6 +11,7 @@ describe("Target Graph Builder", () => {
     builder.addTarget(target2);
     builder.addDependency(target1.id, target2.id);
 
+    // __start --> a#build --> b#build
     const targetGraph = builder.build();
 
     expect(simplify(targetGraph.targets)).toMatchInlineSnapshot(`
@@ -22,7 +23,7 @@ describe("Target Graph Builder", () => {
             "b#build",
           ],
           "id": "__start",
-          "priority": 0,
+          "priority": 2,
         },
         {
           "dependencies": [
@@ -32,7 +33,7 @@ describe("Target Graph Builder", () => {
             "b#build",
           ],
           "id": "a#build",
-          "priority": 1,
+          "priority": 2,
         },
         {
           "dependencies": [
@@ -41,7 +42,7 @@ describe("Target Graph Builder", () => {
           ],
           "dependents": [],
           "id": "b#build",
-          "priority": 2,
+          "priority": 1,
         },
       ]
     `);
@@ -62,6 +63,8 @@ describe("Target Graph Builder", () => {
     builder.addDependency(target1.id, target3.id);
     builder.addDependency(target4.id, target1.id);
 
+    // __start --> d#build --> a#build --> b#build
+    //                                 --> c#build
     const targetGraph = builder.subgraph(["a#build"]);
 
     expect(simplify(targetGraph.targets)).toMatchInlineSnapshot(`
@@ -73,7 +76,7 @@ describe("Target Graph Builder", () => {
             "d#build",
           ],
           "id": "__start",
-          "priority": 0,
+          "priority": 2,
         },
         {
           "dependencies": [
@@ -82,7 +85,7 @@ describe("Target Graph Builder", () => {
           ],
           "dependents": [],
           "id": "a#build",
-          "priority": 2,
+          "priority": 1,
         },
         {
           "dependencies": [
@@ -92,7 +95,7 @@ describe("Target Graph Builder", () => {
             "a#build",
           ],
           "id": "d#build",
-          "priority": 1,
+          "priority": 2,
         },
       ]
     `);
@@ -113,6 +116,9 @@ describe("Target Graph Builder", () => {
     builder.addDependency(target3.id, target1.id);
     builder.addDependency(target4.id, target1.id);
 
+    // __start --> b#build --> a#build
+    //         --> c#build --> a#build
+    //         --> d#build --> a#build
     const targetGraph = builder.subgraph(["a#build"]);
 
     expect(simplify(targetGraph.targets)).toMatchInlineSnapshot(`
@@ -126,7 +132,7 @@ describe("Target Graph Builder", () => {
             "d#build",
           ],
           "id": "__start",
-          "priority": 0,
+          "priority": 101,
         },
         {
           "dependencies": [
@@ -137,7 +143,7 @@ describe("Target Graph Builder", () => {
           ],
           "dependents": [],
           "id": "a#build",
-          "priority": 101,
+          "priority": 1,
         },
         {
           "dependencies": [
@@ -147,7 +153,7 @@ describe("Target Graph Builder", () => {
             "a#build",
           ],
           "id": "b#build",
-          "priority": 100,
+          "priority": 101,
         },
         {
           "dependencies": [
@@ -157,7 +163,7 @@ describe("Target Graph Builder", () => {
             "a#build",
           ],
           "id": "c#build",
-          "priority": 1,
+          "priority": 2,
         },
         {
           "dependencies": [
@@ -167,7 +173,7 @@ describe("Target Graph Builder", () => {
             "a#build",
           ],
           "id": "d#build",
-          "priority": 1,
+          "priority": 2,
         },
       ]
     `);

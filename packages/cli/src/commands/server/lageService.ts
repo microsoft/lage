@@ -73,6 +73,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     outputs: config.cacheOptions.outputGlob,
     tasks,
     packageInfos,
+    priorities: config.priorities,
   });
 
   const dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
