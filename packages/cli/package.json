@@ -34,7 +34,7 @@
     "@lage-run/scheduler-types": "^0.3.23",
     "@lage-run/target-graph": "^0.11.1",
     "@lage-run/worker-threads-pool": "^0.9.0",
-    "chokidar": "3.5.3",
+    "chokidar": "3.6.0",
     "commander": "9.5.0",
     "execa": "5.1.1",
     "fast-glob": "3.3.2",
