@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@actions/cache": "3.2.4",
-    "backfill-config": "6.4.2",
+    "backfill-config": "6.5.0",
     "backfill-logger": "5.2.1",
     "workspace-tools": "0.38.1"
   },
