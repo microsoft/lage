@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import { ThreadWorker } from "./ThreadWorker.js";
+import { pickTaskFromQueue } from "./pickTaskFromQueue.js";
 import os from "os";
 
 import type { IWorker, QueueItem } from "./types/WorkerQueue.js";
@@ -98,7 +99,8 @@ export class WorkerPool extends EventEmitter implements Pool {
     weight: number,
     setup?: (worker: IWorker, stdout: Readable, stderr: Readable) => void,
     cleanup?: (worker: IWorker) => void,
-    abortSignal?: AbortSignal
+    abortSignal?: AbortSignal,
+    priority?: number
   ): Promise<T | void> {
     if (abortSignal?.aborted) {
       return Promise.resolve();
@@ -108,14 +110,14 @@ export class WorkerPool extends EventEmitter implements Pool {
     weight = Math.min(Math.max(1, weight), this.maxWorkers);
 
     return new Promise<any>((resolve, reject) => {
-      this.queue.push({ task: { ...task, weight }, weight, resolve, reject, cleanup, setup });
+      this.queue.push({ task: { ...task, weight }, weight, resolve, reject, cleanup, setup, priority });
       this._exec(abortSignal);
     });
   }
 
   _exec(abortSignal?: AbortSignal): void {
     // find work that will fit the availability of workers
-    const workIndex = this.queue.findIndex((item) => item.weight <= this.availability);
+    const workIndex = pickTaskFromQueue(this.queue, this.availability);
 
     if (workIndex === -1) {
       return;

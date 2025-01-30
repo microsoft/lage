@@ -1,8 +1,24 @@
 # Change Log - lage
 
-<!-- This log was last generated on Fri, 17 Jan 2025 21:57:32 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 24 Jan 2025 23:04:32 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.12.10
+
+Fri, 24 Jan 2025 23:04:32 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.0
+
+## 2.12.9
+
+Thu, 23 Jan 2025 17:38:05 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.13
 
 ## 2.12.8
 

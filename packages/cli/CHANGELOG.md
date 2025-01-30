@@ -1,8 +1,25 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Fri, 17 Jan 2025 21:57:32 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 24 Jan 2025 23:04:32 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.25.0
+
+Fri, 24 Jan 2025 23:04:32 GMT
+
+### Minor changes
+
+- Adds environment variables override for all CLI args. Get these from --help (kchau@microsoft.com)
+
+## 0.24.13
+
+Thu, 23 Jan 2025 17:38:05 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v1.5.0
+- Bump @lage-run/worker-threads-pool to v0.9.0
 
 ## 0.24.12
 

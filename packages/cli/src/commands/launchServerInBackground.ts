@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import lockfile from "proper-lockfile";
 import execa from "execa";
-import { getBinPaths, getBinScripts } from "../getBinPaths.js";
+import { getBinScripts } from "../getBinPaths.js";
 
 export interface launchServerInBackgroundOptions {
   logger: Logger;
@@ -58,10 +58,8 @@ export async function launchServerInBackground({
       lageServerBinPath,
       "--tasks",
       ...tasks,
-      "--host",
-      host,
-      "--port",
-      `${port}`,
+      "--server",
+      `${host}:${port}`,
       "--timeout",
       `${timeout}`,
       ...args,
