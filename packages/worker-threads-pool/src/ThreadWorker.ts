@@ -9,7 +9,7 @@ import crypto from "crypto";
 import v8 from "v8";
 import type { IWorker } from "./types/WorkerQueue.js";
 import type { QueueItem } from "./types/WorkerQueue.js";
-import type { WorkerOptions as ThreadWorkerOptions } from "worker_threads";
+import type { ResourceLimits, WorkerOptions as ThreadWorkerOptions } from "worker_threads";
 
 export interface WorkerOptions {
   workerOptions?: ThreadWorkerOptions;
@@ -247,7 +247,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
     return this.#stderrInfo.stream;
   }
 
-  get resourceLimits(): import("worker_threads").ResourceLimits | undefined {
+  get resourceLimits(): ResourceLimits | undefined {
     return this.#worker.resourceLimits;
   }
 
