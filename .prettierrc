@@ -7,8 +7,10 @@
   "overrides": [
     {
       "files": "*.json5",
-      "options": { "parser": "json" }
+      "options": {
+        "parser": "json"
+      }
     }
   ],
-  "endOfLine": "auto"
+  "endOfLine": "lf"
 }
