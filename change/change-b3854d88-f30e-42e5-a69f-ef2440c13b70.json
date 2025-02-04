@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Fire the complete event at the correct time, fixes a bug where sometimes the start time of a task on the thread was before the end time of the previous task on that same thread",
+      "packageName": "@lage-run/scheduler",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
