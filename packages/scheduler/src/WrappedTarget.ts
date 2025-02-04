@@ -129,10 +129,6 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
   }
 
   onSkipped(hash?: string | undefined) {
-    if (this.startTime[0] !== 0 && this.startTime[1] !== 0) {
-      this.duration = process.hrtime(this.startTime);
-    }
-
     this.#status = "skipped";
 
     if (hash) {
@@ -262,6 +258,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
       },
       (worker) => {
         worker.off("message", msgHandler);
+        this.duration = process.hrtime(this.startTime);
         releaseStdout();
         releaseStderr();
       },
