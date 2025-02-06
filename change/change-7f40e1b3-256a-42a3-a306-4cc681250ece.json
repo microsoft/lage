@@ -1,0 +1,95 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/cache",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/cli",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/config",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/format-hrtime",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/globby",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/hasher",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/logger",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/reporters",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/rpc",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/runners",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/scheduler",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/target-graph",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Adding isolated-declarations flag everywhere",
+      "packageName": "@lage-run/worker-threads-pool",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

@@ -18,7 +18,10 @@ export function getTargetId(pkgName: string | undefined, task: string) {
  * @param targetId
  * @returns
  */
-export function getPackageAndTask(targetId: string) {
+export function getPackageAndTask(targetId: string): {
+  packageName?: string;
+  task: string;
+} {
   if (targetId.startsWith("Δ")) {
     return { packageName: undefined, task: targetId.slice(1) };
   } else if (targetId.includes("#")) {
@@ -36,7 +39,7 @@ export function getPackageAndTask(targetId: string) {
 }
 
 const START_TARGET_ID = "__start";
-export function getStartTargetId() {
+export function getStartTargetId(): string {
   return START_TARGET_ID;
 }
 

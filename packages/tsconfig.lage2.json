@@ -2,10 +2,9 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "CommonJS",
-    "moduleResolution": "Node16",
+    "moduleResolution": "node",
     "declaration": true,
     "lib": ["ES2020"],
-    "allowJs": true,
     "strict": true,
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
@@ -14,6 +13,8 @@
     "skipLibCheck": true,
     "noUnusedLocals": false,
     "sourceMap": true,
-    "typeRoots": ["../node_modules/@types", "../types", "node_modules/@types"]
+    "typeRoots": ["../node_modules/@types", "../types", "node_modules/@types"],
+    "isolatedDeclarations": true,
+    "isolatedModules": true
   }
 }

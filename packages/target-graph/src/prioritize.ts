@@ -52,7 +52,7 @@ function reverseTopoSort(targets: Map<string, Target>, nodesWithNoDependencies: 
 /**
  * Priorities for a target is actually the MAX of all the priorities of the targets that depend on it plus the current priority.
  */
-export function prioritize(targets: Map<string, Target>) {
+export function prioritize(targets: Map<string, Target>): void {
   const nodeCumulativePriorities = new Map<string, number>();
 
   const nodesWithNoDependencies = getNodesWithNoDependencies(targets);

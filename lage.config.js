@@ -7,11 +7,8 @@ module.exports = {
   pipeline: {
     "lage#bundle": ["^^transpile", "types"],
     types: {
-      type: "worker",
-      options: {
-        worker: path.join(__dirname, "scripts/worker/types.js"),
-      },
-      dependsOn: ["^types"],
+      type: "npmScript",
+      dependsOn: ["^^transpile"],
       outputs: ["lib/**/*.d.ts"],
     },
     isolatedTypes: {

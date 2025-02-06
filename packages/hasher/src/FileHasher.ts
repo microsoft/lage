@@ -27,7 +27,7 @@ export class FileHasher {
     this.#manifestFile = path.join(cacheDirectory, "file_hashes.manifest");
   }
 
-  async getHashesFromGit() {
+  async getHashesFromGit(): Promise<void> {
     const { root } = this.options;
     const fileHashes = await getPackageDeps(root);
     const files = [...fileHashes.keys()];
@@ -45,7 +45,7 @@ export class FileHasher {
     this.writeManifest();
   }
 
-  async readManifest() {
+  async readManifest(): Promise<void> {
     return new Promise<void>((resolve) => {
       if (!fs.existsSync(this.#manifestFile)) {
         this.getHashesFromGit().then(() => resolve());
@@ -77,7 +77,7 @@ export class FileHasher {
     });
   }
 
-  writeManifest() {
+  writeManifest(): void {
     fs.mkdirSync(path.dirname(this.#manifestFile), { recursive: true });
     const outputLines = Object.entries(this.#store).map(([relativePath, info]) => {
       return `${relativePath}\0${info.mtime.toString()}\0${info.size.toString()}\0${info.hash}`;
@@ -86,7 +86,7 @@ export class FileHasher {
     fs.writeFileSync(this.#manifestFile, outputLines.join("\n"), "utf-8");
   }
 
-  hash(files: string[]) {
+  hash(files: string[]): Record<string, string> {
     const hashes: Record<string, string> = {};
 
     const updatedFiles: string[] = [];

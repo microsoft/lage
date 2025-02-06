@@ -8,7 +8,7 @@ interface AffectedOptions extends FilterOptions {
   outputFormat?: "json" | "graph" | "default";
 }
 
-export async function affectedAction(options: AffectedOptions) {
+export async function affectedAction(options: AffectedOptions): Promise<void> {
   const { dependencies, dependents, since, scope, ignore, outputFormat } = options;
 
   const cwd = process.cwd();

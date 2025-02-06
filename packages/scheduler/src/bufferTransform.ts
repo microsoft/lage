@@ -1,6 +1,9 @@
 import { Transform } from "stream";
 
-export function bufferTransform() {
+export function bufferTransform(): {
+  readonly buffer: string;
+  transform: Transform;
+} {
   const chunks: string[] = [];
 
   return {

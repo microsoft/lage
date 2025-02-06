@@ -14,7 +14,7 @@ export function getFilteredPackages(options: {
   repoWideChanges: string[];
   includeDependents: boolean;
   includeDependencies: boolean;
-}) {
+}): string[] {
   const { scope, since, sinceIgnoreGlobs, repoWideChanges, includeDependents, includeDependencies, logger, packageInfos, root } = options;
 
   // If scoped is defined, get scoped packages
@@ -78,7 +78,7 @@ export function filterPackages(options: {
   includeDependencies: boolean;
   scopedPackages: string[] | undefined;
   changedPackages: string[] | undefined;
-}) {
+}): string[] {
   const { scopedPackages, changedPackages, packageInfos, includeDependents, includeDependencies, logger } = options;
 
   let filtered: string[] = [];

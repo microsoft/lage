@@ -6,7 +6,7 @@ function cacheKey(patterns: string[], options: Options = {}) {
   return JSON.stringify({ patterns, options });
 }
 
-export async function globAsync(patterns: string[], options?: Options) {
+export async function globAsync(patterns: string[], options?: Options): Promise<string[]> {
   const key = cacheKey(patterns, options);
   if (!cache.has(key)) {
     cache.set(key, await globby(patterns, options));
@@ -14,7 +14,7 @@ export async function globAsync(patterns: string[], options?: Options) {
   return cache.get(key) || [];
 }
 
-export function glob(patterns: string[], options?: Options) {
+export function glob(patterns: string[], options?: Options): string[] {
   const key = cacheKey(patterns, options);
   if (!cache.has(key)) {
     cache.set(key, globbySync(patterns, options));

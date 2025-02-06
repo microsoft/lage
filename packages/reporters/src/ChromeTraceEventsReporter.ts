@@ -58,11 +58,11 @@ export class ChromeTraceEventsReporter implements Reporter {
     this.logStream = fs.createWriteStream(this.outputFile, { flags: "w" });
   }
 
-  log() {
+  log(): void {
     // pass
   }
 
-  summarize(schedulerRunSummary: SchedulerRunSummary) {
+  summarize(schedulerRunSummary: SchedulerRunSummary): void {
     const { targetRuns, startTime } = schedulerRunSummary;
 
     // categorize events

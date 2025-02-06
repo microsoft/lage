@@ -1,7 +1,7 @@
 import { type Target } from "@lage-run/target-graph";
 import { type DependencyMap } from "workspace-tools";
 
-export function expandInputPatterns(patterns: string[], target: Target, dependencyMap: DependencyMap) {
+export function expandInputPatterns(patterns: string[], target: Target, dependencyMap: DependencyMap): Record<string, string[]> {
   const expandedPatterns: Record<string, string[]> = {};
 
   for (const pattern of patterns) {

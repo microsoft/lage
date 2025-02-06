@@ -76,7 +76,7 @@ interface PackageTask {
  *   ...
  * ]
  */
-export async function infoAction(options: InfoActionOptions, command: Command) {
+export async function infoAction(options: InfoActionOptions, command: Command): Promise<void> {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
   const logger = createLogger();

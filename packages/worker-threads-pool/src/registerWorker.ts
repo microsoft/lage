@@ -3,7 +3,7 @@ import { endMarker, startMarker } from "./stdioStreamMarkers.js";
 
 import type { MessagePort } from "worker_threads";
 
-export function registerWorker(fn: (data: any, abortSignal?: AbortSignal) => Promise<any> | any) {
+export function registerWorker(fn: (data: any, abortSignal?: AbortSignal) => Promise<any> | any): void {
   parentPort?.on("message", async (message) => {
     let abortController: AbortController | undefined;
 

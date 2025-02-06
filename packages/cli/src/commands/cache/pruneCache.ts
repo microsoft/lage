@@ -11,7 +11,7 @@ export interface PruneCacheOptions {
   pruneDays: number;
 }
 
-export async function pruneCache(options: PruneCacheOptions) {
+export async function pruneCache(options: PruneCacheOptions): Promise<void> {
   const { logger, cwd, pruneDays } = options;
 
   const config = await getConfig(cwd);

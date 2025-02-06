@@ -25,7 +25,7 @@ export async function launchServerInBackground({
   timeout,
   args,
   nodeArg,
-}: launchServerInBackgroundOptions) {
+}: launchServerInBackgroundOptions): Promise<void> {
   const lockfilePath = path.join(root, `node_modules/.cache/lage/.lage-server-${host}-${port}.pid`);
 
   logger.info(`Starting server on http://${host}:${port}`);

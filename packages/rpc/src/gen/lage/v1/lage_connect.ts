@@ -9,7 +9,31 @@ import { MethodKind } from "@bufbuild/protobuf";
 /**
  * @generated from service connectrpc.lage.v1.LageService
  */
-export const LageService = {
+export const LageService: {
+  readonly typeName: "connectrpc.lage.v1.LageService";
+  readonly methods: {
+    /**
+     * @generated from rpc connectrpc.lage.v1.LageService.RunTarget
+     */
+    readonly runTarget: {
+      readonly name: "RunTarget";
+      readonly I: typeof RunTargetRequest;
+      readonly O: typeof RunTargetResponse;
+      readonly kind: MethodKind.Unary;
+    };
+    /**
+     * a ping function to check if the server is up
+     *
+     * @generated from rpc connectrpc.lage.v1.LageService.Ping
+     */
+    readonly ping: {
+      readonly name: "Ping";
+      readonly I: typeof PingRequest;
+      readonly O: typeof PingResponse;
+      readonly kind: MethodKind.Unary;
+    };
+  };
+} = {
   typeName: "connectrpc.lage.v1.LageService",
   methods: {
     /**

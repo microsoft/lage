@@ -13,7 +13,8 @@
   "scripts": {
     "lint": "buf lint",
     "generate": "buf generate",
-    "build": "tsc"
+    "build": "monorepo-scripts tsc",
+    "types": "monorepo-scripts tsc"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^1.10.0",

@@ -1,5 +1,5 @@
 import type { Logger } from "@lage-run/logger";
-import { WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
+import { type TargetGraph, WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
 import type { PackageInfos } from "workspace-tools";
 import { getBranchChanges, getDefaultRemoteBranch, getStagedChanges, getUnstagedChanges, getUntrackedChanges } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
@@ -37,7 +37,7 @@ function getChangedFiles(since: string, cwd: string) {
   return changes;
 }
 
-export async function createTargetGraph(options: CreateTargetGraphOptions) {
+export async function createTargetGraph(options: CreateTargetGraphOptions): Promise<TargetGraph> {
   const {
     logger,
     root,

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-export function showHelp(msg: string) {
+export function showHelp(msg: string): void {
   console.error(msg);
 
   console.log(`

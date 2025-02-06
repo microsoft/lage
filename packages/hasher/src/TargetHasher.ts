@@ -73,7 +73,7 @@ export class TargetHasher {
     dependents: new Map(),
   };
 
-  getPackageInfos(workspacePackages: WorkspaceInfo) {
+  getPackageInfos(workspacePackages: WorkspaceInfo): PackageInfos {
     const { root } = this.options;
     const packageInfos: PackageInfos = {};
 
@@ -114,13 +114,13 @@ export class TargetHasher {
     }
   }
 
-  ensureInitialized() {
+  ensureInitialized(): void {
     if (!this.initializedPromise) {
       throw new Error("TargetHasher is not initialized");
     }
   }
 
-  async initialize() {
+  async initialize(): Promise<void> {
     const { environmentGlob, root } = this.options;
 
     if (this.initializedPromise) {
@@ -228,7 +228,7 @@ export class TargetHasher {
     return hashString;
   }
 
-  writeTargetHashesManifest() {
+  writeTargetHashesManifest(): void {
     for (const [id, { fileHashes, globalFileHashes }] of Object.entries(this.targetHashesLog)) {
       const targetHashesManifestPath = path.join(this.targetHashesDirectory, `${id}.json`);
       if (!fs.existsSync(path.dirname(targetHashesManifestPath))) {
@@ -238,7 +238,7 @@ export class TargetHasher {
     }
   }
 
-  async getEnvironmentGlobHashes(root: string, target: Target) {
+  async getEnvironmentGlobHashes(root: string, target: Target): Promise<Record<string, string>> {
     const globalFileHashes = target.environmentGlob
       ? this.fileHasher.hash(await globAsync(target.environmentGlob ?? [], { cwd: root }))
       : this.globalInputsHash ?? {};
@@ -246,7 +246,7 @@ export class TargetHasher {
     return globalFileHashes;
   }
 
-  async cleanup() {
+  async cleanup(): Promise<void> {
     this.writeTargetHashesManifest();
     await this.fileHasher.writeManifest();
   }

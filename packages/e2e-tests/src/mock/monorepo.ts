@@ -6,15 +6,15 @@ import * as execa from "execa";
 import { glob } from "@lage-run/globby";
 
 export class Monorepo {
-  static tmpdir = os.tmpdir();
+  static tmpdir: string = os.tmpdir();
 
   root: string;
   nodeModulesPath: string;
   yarnPath: string;
 
-  static externalPackageJsonGlobs = ["node_modules/glob-hasher/package.json", "node_modules/glob-hasher-*/package.json"];
+  static externalPackageJsonGlobs: string[] = ["node_modules/glob-hasher/package.json", "node_modules/glob-hasher-*/package.json"];
 
-  static externalPackageJsons = glob(Monorepo.externalPackageJsonGlobs, {
+  static externalPackageJsons: string[] = glob(Monorepo.externalPackageJsonGlobs, {
     cwd: path.join(__dirname, "..", "..", "..", ".."),
     gitignore: false,
   })!.map((f) => path.resolve(path.join(__dirname, "..", "..", "..", ".."), f));
@@ -25,7 +25,7 @@ export class Monorepo {
     this.yarnPath = path.join(this.root, ".yarn", "yarn.js");
   }
 
-  init() {
+  init(): void {
     const options = { cwd: this.root };
     execa.sync("git", ["init"], options);
     execa.sync("git", ["config", "user.email", "you@example.com"], options);
@@ -34,7 +34,7 @@ export class Monorepo {
     this.generateRepoFiles();
   }
 
-  install() {
+  install(): void {
     for (const packagePath of Monorepo.externalPackageJsons.map((p) => path.dirname(p))) {
       const name = JSON.parse(fs.readFileSync(path.join(packagePath, "package.json"), "utf-8")).name;
       fs.cpSync(packagePath, path.join(this.root, "node_modules", name), { recursive: true });
@@ -44,7 +44,7 @@ export class Monorepo {
     execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install"], { cwd: this.root, shell: true });
   }
 
-  generateRepoFiles() {
+  generateRepoFiles(): void {
     this.commitFiles({
       ".yarnrc": `yarn-path "${this.yarnPath}"`,
       "package.json": {
@@ -81,13 +81,13 @@ export class Monorepo {
     });
   }
 
-  setLageConfig(contents: string) {
+  setLageConfig(contents: string): void {
     this.commitFiles({
       "lage.config.js": contents,
     });
   }
 
-  addPackage(name: string, internalDeps: string[] = [], scripts?: { [script: string]: string }) {
+  addPackage(name: string, internalDeps: string[] = [], scripts?: { [script: string]: string }): void {
     return this.commitFiles({
       [`packages/${name}/build.js`]: `console.log('building ${name}');`,
       [`packages/${name}/test.js`]: `console.log('testing ${name}');`,
@@ -111,15 +111,15 @@ export class Monorepo {
     });
   }
 
-  clone(origin: string) {
+  clone(origin: string): execa.ExecaSyncReturnValue {
     return execa.sync("git", ["clone", origin], { cwd: this.root });
   }
 
-  push(origin: string, branch: string) {
+  push(origin: string, branch: string): execa.ExecaSyncReturnValue {
     return execa.sync("git", ["push", origin, branch], { cwd: this.root });
   }
 
-  commitFiles(files: { [name: string]: string | Record<string, unknown> }, options: { executable?: boolean } = {}) {
+  commitFiles(files: { [name: string]: string | Record<string, unknown> }, options: { executable?: boolean } = {}): void {
     for (const [file, contents] of Object.entries(files)) {
       let out = "";
       if (typeof contents !== "string") {
@@ -148,13 +148,13 @@ export class Monorepo {
     execa.sync("git", ["commit", "-m", "commit files"], { cwd: this.root });
   }
 
-  run(command: string, args?: string[], silent?: boolean) {
+  run(command: string, args?: string[], silent?: boolean): execa.ExecaSyncReturnValue {
     return execa.sync(process.execPath, [this.yarnPath, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
     });
   }
 
-  runServer() {
+  runServer(): execa.ExecaChildProcess<string> {
     return execa.default(process.execPath, [path.join(this.root, "node_modules/lage/dist/lage-server.js")], {
       cwd: this.root,
       detached: true,
@@ -162,7 +162,7 @@ export class Monorepo {
     });
   }
 
-  async cleanup() {
+  async cleanup(): Promise<void> {
     const maxRetries = 5;
     let attempts = 0;
 

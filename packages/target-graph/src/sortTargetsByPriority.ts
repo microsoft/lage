@@ -1,6 +1,6 @@
 import type { Target } from "./types/Target.js";
 
-export function sortTargetsByPriority(targets: Target[]) {
+export function sortTargetsByPriority(targets: Target[]): Target[] {
   return targets.sort((a, b) => {
     return (b.priority ?? 0) - (a.priority ?? 0);
   });

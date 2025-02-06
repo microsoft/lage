@@ -6,7 +6,7 @@ import execa from "execa";
 
 type WorkspaceManager = "rush" | "pnpm" | "yarn" | "npm";
 
-export async function initAction() {
+export async function initAction(): Promise<void> {
   const cwd = process.cwd();
 
   const config = await readConfigFile(cwd);

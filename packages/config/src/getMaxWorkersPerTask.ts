@@ -1,6 +1,6 @@
 import type { ConfigOptions } from "./types/ConfigOptions.js";
 
-export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], concurrency: number) {
+export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], concurrency: number): Map<string, number> {
   const maxWorkersPerTask = new Map<string, number>();
 
   let generalPoolCount = 0;
@@ -58,7 +58,7 @@ export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], 
   return maxWorkersPerTask;
 }
 
-export function getMaxWorkersPerTaskFromOptions(maxWorkersPerTask: string[]) {
+export function getMaxWorkersPerTaskFromOptions(maxWorkersPerTask: string[]): Map<string, number> {
   return new Map([
     ...maxWorkersPerTask.map((setting) => {
       const [task, maxWorkers] = setting.split(/[=:]/);

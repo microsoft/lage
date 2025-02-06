@@ -3,7 +3,7 @@ import path from "path";
 import fs from "fs";
 import { getWorkspaceRoot } from "workspace-tools";
 
-export async function simulateFileAccess(logger: Logger, inputs: string[], outputs: string[]) {
+export async function simulateFileAccess(logger: Logger, inputs: string[], outputs: string[]): Promise<void> {
   const root = getWorkspaceRoot(process.cwd())!;
   logger.silly("Now probing and touching inputs and outputs");
 

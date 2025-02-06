@@ -8,6 +8,7 @@ import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMa
 import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target.js";
 import type { TargetConfig } from "./types/TargetConfig.js";
+import type { TargetGraph } from "./types/TargetGraph.js";
 import { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 import { TargetFactory } from "./TargetFactory.js";
 import pLimit from "p-limit";
@@ -67,7 +68,7 @@ export class WorkspaceTargetGraphBuilder {
    * @param id
    * @param targetDefinition
    */
-  async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]) {
+  async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]): Promise<void> {
     // Generates a target definition from the target config
     if (id.startsWith("//") || id.startsWith("#")) {
       const target = this.targetFactory.createGlobalTarget(id, config);
@@ -101,7 +102,7 @@ export class WorkspaceTargetGraphBuilder {
    * @param parentTarget
    * @param config
    */
-  async processStagedConfig(parentTarget: Target, config: TargetConfig, changedFiles?: string[]) {
+  async processStagedConfig(parentTarget: Target, config: TargetConfig, changedFiles?: string[]): Promise<void> {
     if (typeof config.stagedTarget === "undefined") {
       return;
     }
@@ -145,7 +146,7 @@ export class WorkspaceTargetGraphBuilder {
     }
   }
 
-  shouldRun(config: TargetConfig, target: Target) {
+  shouldRun(config: TargetConfig, target: Target): boolean | Promise<boolean> {
     if (typeof config.shouldRun === "function") {
       return config.shouldRun(target);
     }
@@ -166,7 +167,11 @@ export class WorkspaceTargetGraphBuilder {
    * @param scope
    * @param priorities the set of global priorities for the workspace.
    */
-  async build(tasks: string[], scope?: string[], priorities?: { package?: string; task: string; priority: number }[]) {
+  async build(
+    tasks: string[],
+    scope?: string[],
+    priorities?: { package?: string; task: string; priority: number }[]
+  ): Promise<TargetGraph> {
     // Expands the dependency specs from the target definitions
     const fullDependencies = expandDepSpecs(this.graphBuilder.targets, this.dependencyMap);
 
