@@ -215,7 +215,21 @@ export async function createLageService({
         ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
         : ["lage.config.js"];
 
-      const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
+      const inputsSet = new Set<string>(getInputFiles(target, dependencyMap, packageTree) ?? []);
+
+      for (const globalInput of globalInputs) {
+        inputsSet.add(globalInput);
+      }
+
+      const targetDepsFiles = new Set<string>();
+      for (const dependency of target.dependencies) {
+        const depInputs = getInputFiles(targetGraph.targets.get(dependency)!, dependencyMap, packageTree);
+        if (depInputs) {
+          depInputs.forEach((file) => targetDepsFiles.add(file));
+        }
+      }
+
+      const inputs = Array.from(inputsSet);
 
       try {
         await pool.exec(
