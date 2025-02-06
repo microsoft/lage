@@ -46,7 +46,7 @@ export class Monorepo {
 
   generateRepoFiles() {
     this.commitFiles({
-      ".yarnrc": `yarn-path "${this.yarnPath}"`,
+      ".yarnrc.yml": `yarnPath: "${this.yarnPath}"\ncacheFolder: "${this.root}/.yarn/cache"\nnodeLinker: node-modules`,
       "package.json": {
         name: this.name.replace(/ /g, "-"),
         version: "0.1.0",

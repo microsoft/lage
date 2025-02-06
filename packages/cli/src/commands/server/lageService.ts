@@ -231,6 +231,17 @@ export async function createLageService({
 
       const inputs = Array.from(inputsSet);
 
+      let results: {
+        packageName?: string;
+        task: string;
+        exitCode: number;
+        inputs: string[];
+        outputs: string[];
+        stdout: string;
+        stderr: string;
+        id: string;
+      };
+
       try {
         await pool.exec(
           task,
@@ -272,11 +283,10 @@ export async function createLageService({
 
         const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
 
-        return {
+        results = {
           packageName: request.packageName,
           task: request.task,
           exitCode: 0,
-          hash: "",
           inputs,
           outputs,
           stdout: writableStdout.toString(),
@@ -286,11 +296,10 @@ export async function createLageService({
       } catch (e) {
         const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
 
-        return {
+        results = {
           packageName: request.packageName,
           task: request.task,
           exitCode: 1,
-          hash: "",
           inputs,
           outputs,
           stdout: "",
@@ -298,6 +307,10 @@ export async function createLageService({
           id,
         };
       }
+
+      logger.info(`${request.packageName}#${request.task} results`, results);
+
+      return results;
     },
   };
 }
