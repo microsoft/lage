@@ -37,6 +37,10 @@ interface PackageTask {
   workingDirectory: string;
   package: string;
   task: string;
+  inputs?: string[];
+  outputs?: string[];
+  options?: Record<string, any>;
+  weight?: number;
 }
 
 /**
@@ -61,7 +65,15 @@ interface PackageTask {
  *       "workingDirectory": "packages/foo",
  *       "dependencies": [
  *           "bar##build"
- *       ]
+ *       ],
+ *       "weight": 3,
+ *       "inputs": ["src//**/ /*.ts"],
+ *       "inputs": ["lib//**/ /*.js", "lib//**/ /*.d.ts]"
+ *       "options": {
+ *         "environment": {
+ *           "custom_env_var": "x",
+ *          }
+ *       }
  *   },
  *   {
  *       "id": "foo##test",
@@ -154,7 +166,17 @@ function generatePackageTask(
     workingDirectory,
     package: target.packageName ?? "",
     task: target.task,
+    inputs: target.inputs,
+    outputs: target.outputs,
   };
+
+  if (target.weight && target.weight !== 1) {
+    packageTask.weight = target.weight;
+  }
+
+  if (target.options && Object.keys(target.options).length != 0) {
+    packageTask.options = target.options;
+  }
 
   return packageTask;
 }

@@ -41,7 +41,8 @@ export class Monorepo {
     }
 
     fs.cpSync(path.resolve(__dirname, "..", "..", "yarn"), path.dirname(this.yarnPath), { recursive: true });
-    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install"], { cwd: this.root, shell: true });
+    // we use --force to install packages to avoid yarn cache not picking up the latest built files from the share.
+    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--force"], { cwd: this.root, shell: true });
   }
 
   generateRepoFiles() {
