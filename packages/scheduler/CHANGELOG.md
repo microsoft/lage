@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-<!-- This log was last generated on Thu, 23 Jan 2025 17:38:05 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 04 Feb 2025 18:31:49 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.5.1
+
+Tue, 04 Feb 2025 18:31:49 GMT
+
+### Patches
+
+- Fire the complete event at the correct time, fixes a bug where sometimes the start time of a task on the thread was before the end time of the previous task on that same thread (1581488+christiango@users.noreply.github.com)
 
 ## 1.5.0
 
