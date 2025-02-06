@@ -1,4 +1,4 @@
-export function waitFor(condition: () => boolean, maxWait: number = 5000) {
+export function waitFor(condition: () => boolean, maxWait: number = 5000): Promise<void> {
   let retries = 0;
   let timeout = 100;
   let maxRetries = maxWait / timeout;
