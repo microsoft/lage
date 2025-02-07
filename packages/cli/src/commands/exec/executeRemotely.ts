@@ -80,7 +80,7 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
       task,
       taskArgs,
     });
-    logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode} `);
+    logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode}`);
     return response;
   } catch (error) {
     if (error instanceof ConnectError) {

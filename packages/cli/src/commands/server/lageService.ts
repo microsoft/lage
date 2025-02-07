@@ -1,7 +1,7 @@
 import { type ConfigOptions, getConfig, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
 import type { Logger } from "@lage-run/logger";
 import type { ILageService } from "@lage-run/rpc";
-import { getTargetId, type TargetGraph } from "@lage-run/target-graph";
+import { getStartTargetId, getTargetId, type TargetGraph } from "@lage-run/target-graph";
 import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { type Readable } from "stream";
@@ -88,6 +88,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
 
   const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
 
+  logger.info("Initializing Pool");
   const pool = new AggregatedPool({
     logger,
     maxWorkersByGroup: new Map([...getMaxWorkersPerTask(filteredPipeline, maxWorkers)]),
@@ -122,6 +123,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     serverControls.countdownToShutdown();
   });
 
+  logger.info("done initializing");
   return { config, targetGraph, packageTree, dependencyMap, root, pool };
 }
 
@@ -215,7 +217,36 @@ export async function createLageService({
         ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
         : ["lage.config.js"];
 
-      const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
+      const inputsSet = new Set<string>(getInputFiles(target, dependencyMap, packageTree) ?? []);
+
+      for (const globalInput of globalInputs) {
+        inputsSet.add(globalInput);
+      }
+
+      for (const dependency of target.dependencies) {
+        if (dependency === getStartTargetId()) {
+          continue;
+        }
+
+        const depTarget = targetGraph.targets.get(dependency)!;
+        const depInputs = getInputFiles(depTarget, dependencyMap, packageTree);
+        if (depInputs) {
+          depInputs.forEach((file) => inputsSet.add(file));
+        }
+      }
+
+      const inputs = Array.from(inputsSet);
+
+      let results: {
+        packageName?: string;
+        task: string;
+        exitCode: number;
+        inputs: string[];
+        outputs: string[];
+        stdout: string;
+        stderr: string;
+        id: string;
+      };
 
       try {
         await pool.exec(
@@ -258,11 +289,10 @@ export async function createLageService({
 
         const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
 
-        return {
+        results = {
           packageName: request.packageName,
           task: request.task,
           exitCode: 0,
-          hash: "",
           inputs,
           outputs,
           stdout: writableStdout.toString(),
@@ -272,11 +302,10 @@ export async function createLageService({
       } catch (e) {
         const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
 
-        return {
+        results = {
           packageName: request.packageName,
           task: request.task,
           exitCode: 1,
-          hash: "",
           inputs,
           outputs,
           stdout: "",
@@ -284,6 +313,10 @@ export async function createLageService({
           id,
         };
       }
+
+      logger.info(`${request.packageName}#${request.task} results: \n${JSON.stringify(results, null, 2)}\n------`, results);
+
+      return results;
     },
   };
 }
