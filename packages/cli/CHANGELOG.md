@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Tue, 04 Feb 2025 18:31:49 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 07 Feb 2025 02:50:58 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.25.2
+
+Fri, 07 Feb 2025 02:50:58 GMT
+
+### Patches
+
+- adding missing inputs from dependencies (kchau@microsoft.com)
 
 ## 0.25.1
 
