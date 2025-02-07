@@ -1,7 +1,7 @@
 import { type ConfigOptions, getConfig, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
 import type { Logger } from "@lage-run/logger";
 import type { ILageService } from "@lage-run/rpc";
-import { getStartTargetId, getTargetId, type TargetGraph } from "@lage-run/target-graph";
+import { getStartTargetId, getTargetId, type Target, type TargetGraph } from "@lage-run/target-graph";
 import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { type Readable } from "stream";
@@ -15,6 +15,7 @@ import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
 import type { TargetRun } from "@lage-run/scheduler-types";
 import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
+import { getTransitiveTargetInputs } from "./getTransitiveTargetInputs.js";
 
 interface LageServiceContext {
   config: ConfigOptions;
@@ -23,6 +24,7 @@ interface LageServiceContext {
   dependencyMap: DependencyMap;
   root: string;
   pool: Pool;
+  globalInputs: string[];
 }
 
 let initializedPromise: Promise<LageServiceContext> | undefined;
@@ -123,8 +125,14 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     serverControls.countdownToShutdown();
   });
 
+  const globalInputs = config.cacheOptions?.environmentGlob
+    ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
+    : ["lage.config.js"];
+
+  logger.info(`Environment glob inputs: \n${JSON.stringify(globalInputs)}\n-------`);
+
   logger.info("done initializing");
-  return { config, targetGraph, packageTree, dependencyMap, root, pool };
+  return { config, targetGraph, packageTree, dependencyMap, root, pool, globalInputs };
 }
 
 /**
@@ -168,7 +176,7 @@ export async function createLageService({
       // THIS IS A BIG ASSUMPTION; TODO: memoize based on the parameters of the initialize() call
       // The first request sets up the nodeArg and taskArgs - we are assuming that all requests to run this target are coming from the same
       // `lage info` call
-      const { config, targetGraph, dependencyMap, packageTree, root, pool } = await initialize({
+      const { config, targetGraph, dependencyMap, packageTree, root, pool, globalInputs } = await initialize({
         cwd,
         logger,
         nodeArg: request.nodeOptions,
@@ -211,31 +219,9 @@ export async function createLageService({
         threadId: 0,
       };
 
-      const globalInputs = target.environmentGlob
-        ? glob(target.environmentGlob, { cwd: root, gitignore: true })
-        : config.cacheOptions?.environmentGlob
-        ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
-        : ["lage.config.js"];
+      const targetGlobalInputs = target.environmentGlob ? glob(target.environmentGlob, { cwd: root, gitignore: true }) : globalInputs;
 
-      const inputsSet = new Set<string>(getInputFiles(target, dependencyMap, packageTree) ?? []);
-
-      for (const globalInput of globalInputs) {
-        inputsSet.add(globalInput);
-      }
-
-      for (const dependency of target.dependencies) {
-        if (dependency === getStartTargetId()) {
-          continue;
-        }
-
-        const depTarget = targetGraph.targets.get(dependency)!;
-        const depInputs = getInputFiles(depTarget, dependencyMap, packageTree);
-        if (depInputs) {
-          depInputs.forEach((file) => inputsSet.add(file));
-        }
-      }
-
-      const inputs = Array.from(inputsSet);
+      const inputs = getTransitiveTargetInputs(target, targetGraph, dependencyMap, packageTree);
 
       let results: {
         packageName?: string;
@@ -246,6 +232,7 @@ export async function createLageService({
         stdout: string;
         stderr: string;
         id: string;
+        globalInputs: string[];
       };
 
       try {
@@ -298,6 +285,7 @@ export async function createLageService({
           stdout: writableStdout.toString(),
           stderr: writableStderr.toString(),
           id,
+          globalInputs: targetGlobalInputs,
         };
       } catch (e) {
         const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
@@ -311,10 +299,28 @@ export async function createLageService({
           stdout: "",
           stderr: e instanceof Error ? e.toString() : "",
           id,
+          globalInputs: targetGlobalInputs,
         };
       }
 
-      logger.info(`${request.packageName}#${request.task} results: \n${JSON.stringify(results, null, 2)}\n------`, results);
+      logger.info(
+        `${request.packageName}#${request.task} results: \n${JSON.stringify(
+          {
+            packageName: results.packageName,
+            task: results.task,
+            exitCode: results.exitCode,
+            inputs: results.inputs,
+            outputs: results.outputs,
+            id: results.id,
+            globalInputs: `(${target.environmentGlob ? "custom target env glob used" : "general global inputs used"}): ${
+              results.globalInputs.length
+            } files`,
+          },
+          null,
+          2
+        )}\n------`,
+        results
+      );
 
       return results;
     },
