@@ -46,7 +46,10 @@ export class Monorepo {
 
   generateRepoFiles() {
     this.commitFiles({
-      ".yarnrc.yml": `yarnPath: "${this.yarnPath.replace(/\\/g, "/")}"\ncacheFolder: "${this.root.replace(/\\/g, "/")}/.yarn/cache"\nnodeLinker: node-modules`,
+      ".yarnrc.yml": `yarnPath: "${this.yarnPath.replace(/\\/g, "/")}"\ncacheFolder: "${this.root.replace(
+        /\\/g,
+        "/"
+      )}/.yarn/cache"\nnodeLinker: node-modules`,
       "package.json": {
         name: this.name.replace(/ /g, "-"),
         version: "0.1.0",
@@ -154,12 +157,18 @@ export class Monorepo {
     });
   }
 
-  runServer() {
-    return execa.default(process.execPath, [path.join(this.root, "node_modules/lage/dist/lage-server.js")], {
+  runServer(tasks: string[]) {
+    const cp = execa.default(process.execPath, [path.join(this.root, "node_modules/lage/dist/lage-server.js"), "--tasks", ...tasks], {
       cwd: this.root,
       detached: true,
       stdio: "ignore",
     });
+
+    if (cp && !cp.pid) {
+      throw new Error("Failed to start server");
+    }
+
+    return cp;
   }
 
   async cleanup() {

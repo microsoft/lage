@@ -1,7 +1,7 @@
 import { type ConfigOptions, getConfig, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
 import type { Logger } from "@lage-run/logger";
 import type { ILageService } from "@lage-run/rpc";
-import { getTargetId, type TargetGraph } from "@lage-run/target-graph";
+import { getStartTargetId, getTargetId, type TargetGraph } from "@lage-run/target-graph";
 import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { type Readable } from "stream";
@@ -88,6 +88,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
 
   const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
 
+  logger.info("Initializing Pool");
   const pool = new AggregatedPool({
     logger,
     maxWorkersByGroup: new Map([...getMaxWorkersPerTask(filteredPipeline, maxWorkers)]),
@@ -122,6 +123,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     serverControls.countdownToShutdown();
   });
 
+  logger.info("done initializing");
   return { config, targetGraph, packageTree, dependencyMap, root, pool };
 }
 
@@ -221,11 +223,15 @@ export async function createLageService({
         inputsSet.add(globalInput);
       }
 
-      const targetDepsFiles = new Set<string>();
       for (const dependency of target.dependencies) {
-        const depInputs = getInputFiles(targetGraph.targets.get(dependency)!, dependencyMap, packageTree);
+        if (dependency === getStartTargetId()) {
+          continue;
+        }
+
+        const depTarget = targetGraph.targets.get(dependency)!;
+        const depInputs = getInputFiles(depTarget, dependencyMap, packageTree);
         if (depInputs) {
-          depInputs.forEach((file) => targetDepsFiles.add(file));
+          depInputs.forEach((file) => inputsSet.add(file));
         }
       }
 
@@ -308,7 +314,7 @@ export async function createLageService({
         };
       }
 
-      logger.info(`${request.packageName}#${request.task} results`, results);
+      logger.info(`${request.packageName}#${request.task} results: \n${JSON.stringify(results, null, 2)}\n------`, results);
 
       return results;
     },
