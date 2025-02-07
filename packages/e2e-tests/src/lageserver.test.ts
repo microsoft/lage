@@ -51,13 +51,14 @@ describe("lageserver", () => {
     await repo.cleanup();
   });
 
-  it("reports inputs for targets and their dependencies' files", async () => {
+  it.only("reports inputs for targets and their transitive dependencies' files", async () => {
     const repo = new Monorepo("basics");
 
     repo.init();
 
     repo.addPackage("a", ["b"]);
-    repo.addPackage("b");
+    repo.addPackage("b", ["c"]);
+    repo.addPackage("c");
 
     repo.install();
 
@@ -66,6 +67,8 @@ describe("lageserver", () => {
       "packages/a/alt/extra.ts": "console.log('a');",
       "packages/b/alt/index.ts": "console.log('b');",
       "packages/b/src/extra.ts": "console.log('b');",
+      "packages/c/src/index.ts": "console.log('c');",
+      "packages/c/alt/extra.ts": "console.log('c');",
     });
 
     repo.setLageConfig(
@@ -75,9 +78,12 @@ describe("lageserver", () => {
             inputs: ["src/**"],
             dependsOn: ["^build"],
           },
-
           "b#build": {
             inputs: ["alt/**"],
+            dependsOn: ["^build"],
+          },
+          "c#build": {
+            inputs: ["src/**"],
             dependsOn: ["^build"],
           },
         },
@@ -86,7 +92,7 @@ describe("lageserver", () => {
 
     const results = repo.run("lage", [
       "exec",
-      "b",
+      "c",
       "build",
       "--tasks",
       "build",
@@ -103,6 +109,7 @@ describe("lageserver", () => {
     const started = jsonOutput.find((entry) => entry.data?.pid && entry.msg === "Server started");
     expect(started?.data.pid).not.toBeUndefined();
 
+    repo.run("lage", ["exec", "b", "build", "--tasks", "build", "--server", "localhost:5111", "--timeout", "2", "--reporter", "json"]);
     repo.run("lage", ["exec", "a", "build", "--tasks", "build", "--server", "localhost:5111", "--timeout", "2", "--reporter", "json"]);
 
     try {
@@ -133,10 +140,14 @@ describe("lageserver", () => {
     });
 
     expect(aResults.inputs.find((input) => input === "packages/a/src/index.ts")).toBeTruthy();
+    expect(aResults.inputs.find((input) => input === "packages/b/alt/index.ts")).toBeTruthy();
+    expect(aResults.inputs.find((input) => input === "packages/c/src/index.ts")).toBeTruthy();
+
     expect(aResults.inputs.find((input) => input === "packages/a/alt/extra.ts")).toBeUndefined();
+
     expect(bResults.inputs.find((input) => input === "packages/b/src/extra.ts")).toBeUndefined();
     expect(bResults.inputs.find((input) => input === "packages/b/alt/index.ts")).toBeTruthy();
 
     await repo.cleanup();
-  }, 20000);
+  }, 40000);
 });
