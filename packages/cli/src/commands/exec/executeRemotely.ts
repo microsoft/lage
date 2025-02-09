@@ -53,8 +53,6 @@ async function tryCreateClientWithRetries(host: string, port: number, logger: Lo
         return client;
       }
     } catch (e) {
-      logger.info(JSON.stringify(e));
-
       if (e instanceof ConnectError) {
         logger.error("Error connecting to server", e);
       }
@@ -77,7 +75,6 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
   const { taskArgs } = filterArgsForTasks(args ?? []);
 
   try {
-    logger.info(`Running task ${packageName} ${task}`);
     const response = await client.runTarget({
       packageName,
       task,
