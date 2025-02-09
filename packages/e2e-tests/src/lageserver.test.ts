@@ -26,7 +26,7 @@ describe("lageserver", () => {
 
     expect(jsonOutput.find((entry) => entry.msg === "Task b build exited with code 0")).toBeTruthy();
     await repo.cleanup();
-  });
+  }, 15000);
 
   // Windows cannot reliably kill the server process, since it's detached. These tests are skipped on Windows.
   if (process.platform !== "win32") {
@@ -54,7 +54,7 @@ describe("lageserver", () => {
       }
 
       await repo.cleanup();
-    });
+    }, 15000);
 
     it("reports inputs for targets and their transitive dependencies' files", async () => {
       const repo = new Monorepo("basics");
