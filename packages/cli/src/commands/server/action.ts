@@ -32,7 +32,7 @@ export async function serverAction(options: WorkerOptions) {
     cwd: process.cwd(),
     serverControls: {
       abortController,
-      countdownToShutdown: () => resetTimer(logger, timeout, abortController, server),
+      countdownToShutdown: () => resetTimer(logger, timeout, abortController, lageServer),
       clearCountdown: clearTimer,
     },
     logger,
