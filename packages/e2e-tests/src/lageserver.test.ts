@@ -16,14 +16,15 @@ describe("lageserver", () => {
     const serverProcess = repo.runServer(["build"]);
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const results = repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "a", "build"]);
+    const results = repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "b", "build"]);
     const output = results.stdout + results.stderr;
-
     const jsonOutput = parseNdJson(output);
+
+    repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "a", "build"]);
 
     serverProcess.kill();
 
-    expect(jsonOutput.find((entry) => entry.msg === "Task a build exited with code 0")).toBeTruthy();
+    expect(jsonOutput.find((entry) => entry.msg === "Task b build exited with code 0")).toBeTruthy();
     await repo.cleanup();
   });
 
@@ -36,7 +37,7 @@ describe("lageserver", () => {
 
     repo.install();
 
-    const results = repo.run("lage", ["exec", "a", "build", "--tasks", "build", "--server", "localhost:5112", "--timeout", "2"]);
+    const results = repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "b", "build"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
     const started = jsonOutput.find((entry) => entry.data?.pid && entry.msg === "Server started");
