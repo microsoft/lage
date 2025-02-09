@@ -182,7 +182,7 @@ export class Monorepo {
       } catch (error) {
         attempts++;
         if (attempts >= maxRetries) {
-          // ignore this
+          throw error;
         }
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
