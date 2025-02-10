@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Mon, 10 Feb 2025 00:35:53 GMT",
+      "version": "0.25.6",
+      "tag": "@lage-run/cli_v0.25.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "031ad89ab6a0c64d46c79318377399d15e730e84",
+            "comment": "tracks the transitive inputs rather just one level deep"
+          },
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "031ad89ab6a0c64d46c79318377399d15e730e84",
+            "comment": "simulate transitives by doing our own hashing"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/rpc to v1.2.7",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 07 Feb 2025 02:50:58 GMT",
       "version": "0.25.2",
       "tag": "@lage-run/cli_v0.25.2",

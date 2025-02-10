@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Fri, 07 Feb 2025 02:50:58 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 10 Feb 2025 00:35:53 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.25.6
+
+Mon, 10 Feb 2025 00:35:53 GMT
+
+### Patches
+
+- tracks the transitive inputs rather just one level deep (kchau@microsoft.com)
+- simulate transitives by doing our own hashing (kchau@microsoft.com)
+- Bump @lage-run/rpc to v1.2.7
 
 ## 0.25.2
 
