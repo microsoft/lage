@@ -1,8 +1,17 @@
 # Change Log - @lage-run/rpc
 
-<!-- This log was last generated on Fri, 04 Oct 2024 23:41:44 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 10 Feb 2025 00:35:53 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.2.7
+
+Mon, 10 Feb 2025 00:35:53 GMT
+
+### Patches
+
+- adding some global inputs to be separately tracked in the protocol (kchau@microsoft.com)
+- simulate transitives by doing our own hashing (kchau@microsoft.com)
 
 ## 1.2.3
 

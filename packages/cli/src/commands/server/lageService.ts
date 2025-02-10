@@ -1,13 +1,12 @@
 import { type ConfigOptions, getConfig, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
 import type { Logger } from "@lage-run/logger";
-import type { ILageService } from "@lage-run/rpc";
-import { getTargetId, type TargetGraph } from "@lage-run/target-graph";
+import { ConnectError, Code, type ILageService } from "@lage-run/rpc";
+import { getStartTargetId, getTargetId, type Target, type TargetGraph } from "@lage-run/target-graph";
 import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { type Readable } from "stream";
 import { type Pool, AggregatedPool } from "@lage-run/worker-threads-pool";
-import { getInputFiles, PackageTree } from "@lage-run/hasher";
-import { createDependencyMap } from "workspace-tools";
+import { getInputFiles, type PackageTree, TargetHasher } from "@lage-run/hasher";
 import { getOutputFiles } from "./getOutputFiles.js";
 import { glob } from "@lage-run/globby";
 import { MemoryStream } from "./MemoryStream.js";
@@ -15,6 +14,8 @@ import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
 import type { TargetRun } from "@lage-run/scheduler-types";
 import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
+import path from "path";
+import fs from "fs";
 
 interface LageServiceContext {
   config: ConfigOptions;
@@ -23,6 +24,8 @@ interface LageServiceContext {
   dependencyMap: DependencyMap;
   root: string;
   pool: Pool;
+  globalInputs: string[];
+  targetHasher: TargetHasher;
 }
 
 let initializedPromise: Promise<LageServiceContext> | undefined;
@@ -60,6 +63,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
 
   const packageInfos = getPackageInfos(root);
 
+  logger.info("Initializing target graph");
   const targetGraph = await createTargetGraph({
     logger,
     root,
@@ -76,18 +80,25 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     priorities: config.priorities,
   });
 
-  const dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
-  const packageTree = new PackageTree({
+  const targetHasher = new TargetHasher({
     root,
-    packageInfos,
-    includeUntracked: true,
+    environmentGlob: config.cacheOptions?.environmentGlob ?? [],
+    logger,
+    cacheKey: config.cacheOptions?.cacheKey,
+    cliArgs: taskArgs,
   });
 
-  logger.info("Initializing Package Tree");
-  await packageTree.initialize();
+  logger.info("Initializing hasher");
+  await targetHasher.initialize();
+
+  logger.info("Initializing dependency map");
+
+  const packageTree = targetHasher.packageTree!;
+  const dependencyMap = targetHasher.dependencyMap;
 
   const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
 
+  logger.info("Initializing Pool");
   const pool = new AggregatedPool({
     logger,
     maxWorkersByGroup: new Map([...getMaxWorkersPerTask(filteredPipeline, maxWorkers)]),
@@ -122,7 +133,14 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     serverControls.countdownToShutdown();
   });
 
-  return { config, targetGraph, packageTree, dependencyMap, root, pool };
+  const globalInputs = config.cacheOptions?.environmentGlob
+    ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
+    : ["lage.config.js"];
+
+  logger.info(`Environment glob inputs: \n${JSON.stringify(globalInputs)}\n-------`);
+
+  logger.info("done initializing");
+  return { config, targetGraph, packageTree, dependencyMap, root, pool, globalInputs, targetHasher };
 }
 
 /**
@@ -142,6 +160,10 @@ interface CreateLageServiceOptions {
   logger: Logger;
   concurrency?: number;
   tasks: string[];
+}
+
+function getHashFilePath(target: Target) {
+  return path.join(`node_modules/.lage/hash_${target.task}`);
 }
 
 export async function createLageService({
@@ -166,7 +188,7 @@ export async function createLageService({
       // THIS IS A BIG ASSUMPTION; TODO: memoize based on the parameters of the initialize() call
       // The first request sets up the nodeArg and taskArgs - we are assuming that all requests to run this target are coming from the same
       // `lage info` call
-      const { config, targetGraph, dependencyMap, packageTree, root, pool } = await initialize({
+      const { config, targetGraph, dependencyMap, packageTree, root, pool, globalInputs, targetHasher } = await initialize({
         cwd,
         logger,
         nodeArg: request.nodeOptions,
@@ -189,6 +211,8 @@ export async function createLageService({
         };
       }
 
+      logger.info(`Running target: ${request.packageName}#${request.task}`);
+
       const target = targetGraph.targets.get(id)!;
       const task = {
         target,
@@ -209,13 +233,43 @@ export async function createLageService({
         threadId: 0,
       };
 
-      const globalInputs = target.environmentGlob
-        ? glob(target.environmentGlob, { cwd: root, gitignore: true })
-        : config.cacheOptions?.environmentGlob
-        ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
-        : ["lage.config.js"];
+      const targetGlobalInputs = target.environmentGlob ? glob(target.environmentGlob, { cwd: root, gitignore: true }) : globalInputs;
 
-      const inputs = (getInputFiles(target, dependencyMap, packageTree) ?? []).concat(globalInputs);
+      let results: {
+        packageName?: string;
+        task: string;
+        exitCode: number;
+        inputs: string[];
+        outputs: string[];
+        stdout: string;
+        stderr: string;
+        id: string;
+        globalInputs: string[];
+      };
+
+      const inputs = getInputFiles(target, dependencyMap, packageTree);
+
+      for (const dep of target.dependencies) {
+        if (dep === getStartTargetId()) {
+          continue;
+        }
+
+        const depTarget = targetGraph.targets.get(dep)!;
+        inputs.push(path.join(path.relative(root, depTarget.cwd), getHashFilePath(depTarget)).replace(/\\/g, "/"));
+      }
+
+      const targetHashFile = getHashFilePath(target);
+      const targetHashFullPath = path.join(target.cwd, targetHashFile);
+
+      try {
+        if (!fs.existsSync(path.dirname(targetHashFullPath))) {
+          fs.mkdirSync(path.dirname(targetHashFullPath), { recursive: true });
+        }
+
+        fs.writeFileSync(targetHashFullPath, await targetHasher.hash(target));
+      } catch (e) {
+        throw new ConnectError(`Error writing target hash file: ${targetHashFullPath}`, Code.Internal);
+      }
 
       try {
         await pool.exec(
@@ -257,33 +311,59 @@ export async function createLageService({
         );
 
         const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
+        outputs.push(targetHashFile);
 
-        return {
+        results = {
           packageName: request.packageName,
           task: request.task,
           exitCode: 0,
-          hash: "",
           inputs,
           outputs,
           stdout: writableStdout.toString(),
           stderr: writableStderr.toString(),
           id,
+          globalInputs: targetGlobalInputs,
         };
       } catch (e) {
         const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
+        outputs.push(targetHashFile);
 
-        return {
+        targetRun.status = "failed";
+        targetRun.duration = hrtimeDiff(targetRun.startTime, process.hrtime());
+
+        results = {
           packageName: request.packageName,
           task: request.task,
           exitCode: 1,
-          hash: "",
           inputs,
           outputs,
           stdout: "",
           stderr: e instanceof Error ? e.toString() : "",
           id,
+          globalInputs: targetGlobalInputs,
         };
       }
+
+      logger.info(
+        `${request.packageName}#${request.task} results: \n${JSON.stringify(
+          {
+            packageName: results.packageName,
+            task: results.task,
+            exitCode: results.exitCode,
+            inputs: results.inputs,
+            outputs: results.outputs,
+            id: results.id,
+            globalInputs: `(${target.environmentGlob ? "custom target env glob used" : "general global inputs used"}): ${
+              results.globalInputs.length
+            } files`,
+          },
+          null,
+          2
+        )}\n------`,
+        results
+      );
+
+      return results;
     },
   };
 }

@@ -2,6 +2,27 @@
   "name": "@lage-run/rpc",
   "entries": [
     {
+      "date": "Mon, 10 Feb 2025 00:35:53 GMT",
+      "version": "1.2.7",
+      "tag": "@lage-run/rpc_v1.2.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "031ad89ab6a0c64d46c79318377399d15e730e84",
+            "comment": "adding some global inputs to be separately tracked in the protocol"
+          },
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "031ad89ab6a0c64d46c79318377399d15e730e84",
+            "comment": "simulate transitives by doing our own hashing"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 04 Oct 2024 23:41:44 GMT",
       "version": "1.2.3",
       "tag": "@lage-run/rpc_v1.2.3",

@@ -41,13 +41,15 @@ export class Monorepo {
     }
 
     fs.cpSync(path.resolve(__dirname, "..", "..", "yarn"), path.dirname(this.yarnPath), { recursive: true });
-    // we use --force to install packages to avoid yarn cache not picking up the latest built files from the share.
-    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--force"], { cwd: this.root, shell: true });
+    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
   }
 
   generateRepoFiles() {
     this.commitFiles({
-      ".yarnrc": `yarn-path "${this.yarnPath}"`,
+      ".yarnrc.yml": `yarnPath: "${this.yarnPath.replace(/\\/g, "/")}"\ncacheFolder: "${this.root.replace(
+        /\\/g,
+        "/"
+      )}/.yarn/cache"\nnodeLinker: node-modules`,
       "package.json": {
         name: this.name.replace(/ /g, "-"),
         version: "0.1.0",
@@ -155,12 +157,18 @@ export class Monorepo {
     });
   }
 
-  runServer() {
-    return execa.default(process.execPath, [path.join(this.root, "node_modules/lage/dist/lage-server.js")], {
+  runServer(tasks: string[]) {
+    const cp = execa.default(process.execPath, [path.join(this.root, "node_modules/lage/dist/lage-server.js"), "--tasks", ...tasks], {
       cwd: this.root,
       detached: true,
       stdio: "ignore",
     });
+
+    if (cp && !cp.pid) {
+      throw new Error("Failed to start server");
+    }
+
+    return cp;
   }
 
   async cleanup() {

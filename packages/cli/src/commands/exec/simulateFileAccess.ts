@@ -12,15 +12,23 @@ export async function simulateFileAccess(logger: Logger, inputs: string[], outpu
   // probe input files
   let fd: number;
   for (const input of inputs) {
-    fd = fs.openSync(path.join(root, input), "r");
-    fs.closeSync(fd);
+    try {
+      fd = fs.openSync(path.join(root, input), "r");
+      fs.closeSync(fd);
+    } catch (e) {
+      // ignore
+    }
 
     inputDirectories.add(path.dirname(input));
   }
 
   for (const directory of inputDirectories) {
-    fd = fs.openSync(path.join(root, directory), "r");
-    fs.closeSync(fd);
+    try {
+      fd = fs.openSync(path.join(root, directory), "r");
+      fs.closeSync(fd);
+    } catch (e) {
+      // ignore
+    }
   }
 
   // touch output files

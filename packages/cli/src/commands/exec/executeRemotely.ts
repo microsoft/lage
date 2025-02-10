@@ -80,7 +80,7 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
       task,
       taskArgs,
     });
-    logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode} `);
+    logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode}`);
     return response;
   } catch (error) {
     if (error instanceof ConnectError) {
@@ -140,7 +140,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
     process.exitCode = response.exitCode;
 
     // we will simulate file access even if exit code may be non-zero
-    await simulateFileAccess(logger, response.inputs, response.outputs);
+    await simulateFileAccess(logger, [...response.inputs, ...response.globalInputs], response.outputs);
   } else {
     process.exitCode = 1;
   }
