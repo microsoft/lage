@@ -1,0 +1,32 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Pin dependencies",
+      "packageName": "@lage-run/cache",
+      "email": "renovate@whitesourcesoftware.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Pin dependencies",
+      "packageName": "@lage-run/cli",
+      "email": "renovate@whitesourcesoftware.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Pin dependencies",
+      "packageName": "@lage-run/rpc",
+      "email": "renovate@whitesourcesoftware.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Pin dependencies",
+      "packageName": "@lage-run/target-graph",
+      "email": "renovate@whitesourcesoftware.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
