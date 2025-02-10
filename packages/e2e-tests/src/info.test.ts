@@ -66,4 +66,75 @@ describe("info command", () => {
 
     await repo.cleanup();
   });
+
+  it("custom inputs, outputs and weight value", async () => {
+    const repo = new Monorepo("scoped-info");
+
+    repo.init();
+    repo.setLageConfig(
+      `module.exports = {
+        pipeline: {
+          build: {
+            inputs: ["src/**", "*"],
+            outputs: ["lib/**"],
+            dependsOn: ["^build"],
+          },
+          outputs: ["log/**"],
+          test: {
+           inputs: ["src/**/*.test.ts", "*", "^lib/**"],
+           dependsOn: ["build"],
+           weight: 5
+          }
+        },
+        cache: true,
+      };`
+    );
+
+    repo.addPackage("a", ["b"]);
+    repo.addPackage("b");
+    repo.install();
+    const results = repo.run("writeInfo", ["test", "build"]);
+    const output = results.stdout + results.stderr;
+    const jsonOutput = parseNdJson(output);
+    expect(jsonOutput).toMatchSnapshot();
+
+    await repo.cleanup();
+  });
+
+  it("custom options", async () => {
+    const repo = new Monorepo("scoped-info");
+
+    repo.init();
+    repo.setLageConfig(
+      `module.exports = {
+        pipeline: {
+          build: ["^build"],
+          test: {
+           dependsOn: ["build"],
+           options: {
+              environment: {
+                custom_env_var_number: 1,
+                custom_env_var_string: "string",
+                custom_env_var_bool: true,
+                custom_env_var_array: [1, true, "string", {x:1}, []],
+              }
+           }
+          }
+        },
+        cache: true,
+      };`
+    );
+
+    repo.addPackage("a", ["b"]);
+    repo.addPackage("b");
+
+    repo.install();
+
+    const results = repo.run("writeInfo", ["test", "build"]);
+    const output = results.stdout + results.stderr;
+    const jsonOutput = parseNdJson(output);
+    expect(jsonOutput).toMatchSnapshot();
+
+    await repo.cleanup();
+  });
 });
