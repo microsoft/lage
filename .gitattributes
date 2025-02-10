@@ -3,3 +3,5 @@
 *.jpg binary
 *.gif binary
 *.jpeg binary
+*.ttf binary
+*.webm binary
