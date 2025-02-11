@@ -2,7 +2,8 @@
 
 import { hrToSeconds } from "@lage-run/format-hrtime";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
-import type { LogEntry, LogLevel, Reporter } from "@lage-run/logger";
+import { type LogEntry, LogLevel, type Reporter } from "@lage-run/logger";
+
 import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
 
 export class JsonReporter implements Reporter {
@@ -14,7 +15,8 @@ export class JsonReporter implements Reporter {
     }
 
     if (this.options.logLevel >= entry.level) {
-      console.log(JSON.stringify(entry));
+      const shouldIndent = this.options.logLevel >= LogLevel.verbose;
+      console.log(JSON.stringify(entry, null, shouldIndent ? 2 : 0));
     }
   }
 
