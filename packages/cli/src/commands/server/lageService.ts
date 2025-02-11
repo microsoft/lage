@@ -311,7 +311,8 @@ export async function createLageService({
         );
 
         const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
-        outputs.push(targetHashFile);
+        const targetHashFileRelativePath = path.relative(root, targetHashFullPath).replace(/\\/g, "/");
+        outputs.push(targetHashFileRelativePath);
 
         results = {
           packageName: request.packageName,
@@ -326,7 +327,8 @@ export async function createLageService({
         };
       } catch (e) {
         const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
-        outputs.push(targetHashFile);
+        const targetHashFileRelativePath = path.relative(root, targetHashFullPath).replace(/\\/g, "/");
+        outputs.push(targetHashFileRelativePath);
 
         targetRun.status = "failed";
         targetRun.duration = hrtimeDiff(targetRun.startTime, process.hrtime());
