@@ -156,7 +156,7 @@ describe("lageserver", () => {
       expect(bResults.inputs.find((input) => input === "packages/b/alt/index.ts")).toBeTruthy();
       expect(bResults.inputs.find((input) => input === "packages/c/node_modules/.lage/hash_build")).toBeTruthy();
 
-      expect(aResults.outputs.find((output) => output === "packages/b/node_modules/.lage/hash_build")).toBeTruthy();
+      expect(bResults.outputs.find((output) => output === "packages/b/node_modules/.lage/hash_build")).toBeTruthy();
 
       await repo.cleanup();
     }, 40000);
