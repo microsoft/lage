@@ -22,7 +22,7 @@ describe("JsonReporter", () => {
       rawLogs.push(JSON.parse(message));
     });
 
-    const reporter = new JsonReporter({ logLevel: LogLevel.verbose });
+    const reporter = new JsonReporter({ logLevel: LogLevel.verbose, indented: false });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -352,7 +352,7 @@ describe("JsonReporter", () => {
       rawLogs.push(JSON.parse(message));
     });
 
-    const reporter = new JsonReporter({ logLevel: LogLevel.verbose });
+    const reporter = new JsonReporter({ logLevel: LogLevel.verbose, indented: false });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
