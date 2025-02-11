@@ -2,7 +2,7 @@ import path from "path";
 import { Monorepo } from "./mock/monorepo.js";
 import { parseNdJson } from "./parseNdJson.js";
 import fs from "fs";
-import { killDetachedProcess } from "./killProcess.js";
+import { killDetachedProcess } from "./killDetachedProcess.js";
 
 describe("lageserver", () => {
   it("connects to a running server", async () => {
