@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "none",
+      "comment": "Update devDependency esbuild to ^0.25.0 [SECURITY]",
+      "packageName": "@lage-run/globby",
+      "email": "email not defined",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Update devDependency esbuild to ^0.25.0 [SECURITY]",
+      "packageName": "lage",
+      "email": "email not defined",
+      "dependentChangeType": "none"
+    }
+  ]
+}
