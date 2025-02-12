@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Wed, 12 Feb 2025 00:04:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 12 Feb 2025 00:08:30 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.27.0
+
+Wed, 12 Feb 2025 00:08:30 GMT
+
+### Minor changes
+
+- Add support to json formatter to pretty print and indent the json when the log level is set to verbose or silly... (dannyvv@microsoft.com)
+- Bump @lage-run/reporters to v1.3.0
 
 ## 0.26.0
 
