@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cli",
-  "version": "0.25.7",
+  "version": "0.26.0",
   "description": "Command Line Interface for Lage",
   "repository": {
     "type": "git",

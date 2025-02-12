@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Tue, 11 Feb 2025 05:40:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 12 Feb 2025 00:04:29 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.26.0
+
+Wed, 12 Feb 2025 00:04:29 GMT
+
+### Minor changes
+
+- Add extra info to lage info for #815 (dannyvv@microsoft.com)
 
 ## 0.25.7
 

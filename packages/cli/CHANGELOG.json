@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 12 Feb 2025 00:04:29 GMT",
+      "version": "0.26.0",
+      "tag": "@lage-run/cli_v0.26.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "7842bdc237e410aad82b7e692ed4411cd8a38c72",
+            "comment": "Add extra info to lage info for #815"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 11 Feb 2025 05:40:29 GMT",
       "version": "0.25.7",
       "tag": "@lage-run/cli_v0.25.7",
