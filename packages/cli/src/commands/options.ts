@@ -10,6 +10,7 @@ const options = {
     logLevel: new Option("--log-level <level>", "log level").choices(["info", "warn", "error", "verbose", "silly"]).conflicts("verbose"),
     logFile: new Option("--log-file <file>", "when used with --reporter vfl, writes verbose, ungrouped logs to the specified file"),
     verbose: new Option("--verbose", "verbose output").default(false),
+    indented: new Option("--indented", "enabled indentation of the JSON output").default(false),
   },
   pool: {
     concurrency: new Option("-c|--concurrency <number>", "max jobs to run at a time").argParser((v) => parseInt(v)),
