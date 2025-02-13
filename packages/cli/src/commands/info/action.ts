@@ -134,7 +134,14 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
 
   const runnerPicker = new TargetRunnerPicker(pickerOptions);
 
-  const optimizedTargets = await optimizeTargetGraph(targetGraph, runnerPicker);
+  // This is a temporary flag to allow backwards compatibility with the old lage graph format used by BuildXL (formerly known as Domino).
+  // I initially worked on a commandline flag, but threading that through requires 3 different releases (lage, buildxl, ohome).
+  // This is a temp solution to be able to upgrade to Lage V2 without breaking the BuildXL integration. And allow us
+  // to update to lage v2.
+  // Unfortunately this is the only variable that we can use to not break any other customers
+  const createBackwardsCompatGraph = process.env["DOMINO"] === "1";
+
+  const optimizedTargets = await optimizeTargetGraph(targetGraph, runnerPicker, createBackwardsCompatGraph);
   const binPaths = getBinPaths();
   const packageTasks = optimizedTargets.map((target) =>
     generatePackageTask(target, taskArgs, config, options, binPaths, packageInfos, tasks)
