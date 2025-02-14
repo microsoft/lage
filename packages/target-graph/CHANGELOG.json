@@ -2,6 +2,51 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Wed, 15 Jan 2025 16:56:22 GMT",
+      "version": "0.11.1",
+      "tag": "@lage-run/target-graph_v0.11.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/target-graph",
+            "commit": "f4551ca0219cf233f7497a27dea7df57229eb02c",
+            "comment": "Fix bug where priorities were not being correctly set on tasks"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 02 Dec 2024 17:23:22 GMT",
+      "version": "0.11.0",
+      "tag": "@lage-run/target-graph_v0.11.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "51d453bb81eb36a37656502fb716f611860d910e",
+            "comment": "adds the ability to create stagedTargets"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Nov 2024 08:12:37 GMT",
+      "version": "0.10.1",
+      "tag": "@lage-run/target-graph_v0.10.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "c6e9f4e5339a897dd06a54fe528a1fadd75db243",
+            "comment": "Update dependency workspace-tools to v0.38.1"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 08 Nov 2024 19:45:09 GMT",
       "version": "0.10.0",
       "tag": "@lage-run/target-graph_v0.10.0",

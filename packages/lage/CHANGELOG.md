@@ -1,8 +1,166 @@
 # Change Log - lage
 
-<!-- This log was last generated on Mon, 18 Nov 2024 23:22:30 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 12 Feb 2025 00:08:30 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.12.19
+
+Wed, 12 Feb 2025 00:08:30 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.27.0
+
+## 2.12.18
+
+Wed, 12 Feb 2025 00:04:29 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.26.0
+
+## 2.12.17
+
+Tue, 11 Feb 2025 05:40:29 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.7
+
+## 2.12.16
+
+Mon, 10 Feb 2025 00:35:53 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.6
+
+## 2.12.12
+
+Fri, 07 Feb 2025 02:50:58 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.2
+
+## 2.12.11
+
+Tue, 04 Feb 2025 18:31:49 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.1
+
+## 2.12.10
+
+Fri, 24 Jan 2025 23:04:32 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.0
+
+## 2.12.9
+
+Thu, 23 Jan 2025 17:38:05 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.13
+
+## 2.12.8
+
+Fri, 17 Jan 2025 21:57:32 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.12
+
+## 2.12.7
+
+Wed, 15 Jan 2025 16:56:22 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.11
+- Bump @lage-run/runners to v1.2.1
+
+## 2.12.6
+
+Fri, 20 Dec 2024 19:42:00 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.10
+
+## 2.12.5
+
+Thu, 19 Dec 2024 15:53:46 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.9
+
+## 2.12.4
+
+Tue, 10 Dec 2024 23:38:54 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.8
+
+## 2.12.3
+
+Mon, 09 Dec 2024 06:21:52 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.7
+
+## 2.12.2
+
+Sun, 08 Dec 2024 00:07:28 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.6
+
+## 2.12.1
+
+Wed, 04 Dec 2024 23:50:15 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.5
+
+## 2.12.0
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Minor changes
+
+- adds the ability to create stagedTargets (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.24.4
+- Bump @lage-run/runners to v1.2.0
+
+## 2.11.15
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.1 (email not defined)
+- Bump @lage-run/cli to v0.24.3
+- Bump @lage-run/runners to v1.1.2
+
+## 2.11.14
+
+Wed, 20 Nov 2024 02:43:43 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.2
+- Bump @lage-run/runners to v1.1.1
 
 ## 2.11.13
 

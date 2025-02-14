@@ -19,6 +19,7 @@ message RunTargetResponse {
   repeated string outputs = 6;
   string stdout = 7;
   string stderr = 8;
+  repeated string global_inputs = 9;
 }
 
 message PingRequest {}

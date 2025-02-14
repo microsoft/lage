@@ -11,7 +11,8 @@ export interface Pool {
     weight: number,
     setup?: (worker: IWorker, stdout: Readable, stderr: Readable) => void,
     cleanup?: (worker: IWorker) => void,
-    abortSignal?: AbortSignal
+    abortSignal?: AbortSignal,
+    priority?: number
   ): Promise<unknown>;
 
   stats(): PoolStats;

@@ -9,4 +9,5 @@ export interface ReporterInitOptions {
   logLevel: keyof typeof LogLevel;
   profile?: boolean | string;
   logFile?: string;
+  indented?: boolean;
 }

@@ -24,3 +24,27 @@ export function getBinPaths() {
 
   return { lage: binPaths[0]!, "lage-server": binPaths[1]! };
 }
+
+export function getBinScripts() {
+  const thisPackageJsonPath = findUp("package.json", __dirname);
+
+  if (!thisPackageJsonPath) {
+    throw new Error("Could not find package.json of this packageF");
+  }
+
+  const thisPackagePath = path.dirname(thisPackageJsonPath);
+
+  if (fs.existsSync(path.join(thisPackagePath, "dist", "lage.js"))) {
+    // the case for CLI package after build
+    return {
+      lage: path.join(thisPackagePath, "dist", "lage.js"),
+      "lage-server": path.join(thisPackagePath, "dist", "lage-server.js"),
+    };
+  } else {
+    // the case for CLI package during development
+    return {
+      lage: path.join(thisPackagePath, "bin", "lage.js"),
+      "lage-server": path.join(thisPackagePath, "bin", "lage-server.js"),
+    };
+  }
+}

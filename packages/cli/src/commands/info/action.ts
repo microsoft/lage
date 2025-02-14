@@ -6,17 +6,17 @@ import { getConfig } from "@lage-run/config";
 import { type PackageInfos, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
-import { removeNodes, transitiveReduction } from "@lage-run/target-graph";
 import path from "path";
 import { parse } from "shell-quote";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import type { TargetGraph, Target } from "@lage-run/target-graph";
+import type { Target } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
 import { TargetRunnerPicker } from "@lage-run/runners";
 import { getBinPaths } from "../../getBinPaths.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { parseServerOption } from "../parseServerOption.js";
+import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
 
 interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
@@ -37,6 +37,10 @@ interface PackageTask {
   workingDirectory: string;
   package: string;
   task: string;
+  inputs?: string[];
+  outputs?: string[];
+  options?: Record<string, any>;
+  weight?: number;
 }
 
 /**
@@ -61,7 +65,15 @@ interface PackageTask {
  *       "workingDirectory": "packages/foo",
  *       "dependencies": [
  *           "bar##build"
- *       ]
+ *       ],
+ *       "weight": 3,
+ *       "inputs": ["src//**/ /*.ts"],
+ *       "inputs": ["lib//**/ /*.js", "lib//**/ /*.d.ts]"
+ *       "options": {
+ *         "environment": {
+ *           "custom_env_var": "x",
+ *          }
+ *       }
  *   },
  *   {
  *       "id": "foo##test",
@@ -103,6 +115,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
     outputs: config.cacheOptions.outputGlob,
     tasks,
     packageInfos,
+    priorities: config.priorities,
   });
 
   const scope = getFilteredPackages({
@@ -123,7 +136,9 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
 
   const optimizedTargets = await optimizeTargetGraph(targetGraph, runnerPicker);
   const binPaths = getBinPaths();
-  const packageTasks = optimizedTargets.map((target) => generatePackageTask(target, taskArgs, config, options, binPaths, packageInfos));
+  const packageTasks = optimizedTargets.map((target) =>
+    generatePackageTask(target, taskArgs, config, options, binPaths, packageInfos, tasks)
+  );
 
   logger.info("info", {
     command: command.args,
@@ -132,32 +147,16 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   });
 }
 
-async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: TargetRunnerPicker) {
-  const targetMinimizedNodes = await removeNodes([...graph.targets.values()], async (target) => {
-    if (target.type === "noop") {
-      return true;
-    }
-
-    const runner = await runnerPicker.pick(target);
-    if (!(await runner.shouldRun(target))) {
-      return true;
-    }
-
-    return false;
-  });
-
-  return transitiveReduction(targetMinimizedNodes);
-}
-
 function generatePackageTask(
   target: Target,
   taskArgs: string[],
   config: ConfigOptions,
   options: InfoActionOptions,
   binPaths: { lage: string; "lage-server": string },
-  packageInfos: PackageInfos
+  packageInfos: PackageInfos,
+  tasks: string[]
 ): PackageTask {
-  const command = generateCommand(target, taskArgs, config, options, binPaths, packageInfos);
+  const command = generateCommand(target, taskArgs, config, options, binPaths, packageInfos, tasks);
   const workingDirectory = getWorkingDirectory(target);
 
   const packageTask: PackageTask = {
@@ -167,7 +166,17 @@ function generatePackageTask(
     workingDirectory,
     package: target.packageName ?? "",
     task: target.task,
+    inputs: target.inputs,
+    outputs: target.outputs,
   };
+
+  if (target.weight && target.weight !== 1) {
+    packageTask.weight = target.weight;
+  }
+
+  if (target.options && Object.keys(target.options).length != 0) {
+    packageTask.options = target.options;
+  }
 
   return packageTask;
 }
@@ -178,7 +187,8 @@ function generateCommand(
   config: ConfigOptions,
   options: InfoActionOptions,
   binPaths: { lage: string; "lage-server": string },
-  packageInfos: PackageInfos
+  packageInfos: PackageInfos,
+  tasks: string[]
 ) {
   const shouldRunWorkersAsService =
     (typeof process.env.LAGE_WORKER_SERVER === "string" && process.env.LAGE_WORKER_SERVER !== "false") || !!options.server;
@@ -200,7 +210,7 @@ function generateCommand(
     return command;
   } else if (target.type === "worker" && shouldRunWorkersAsService) {
     const { host, port } = parseServerOption(options.server);
-    const command = [binPaths["lage"], "exec", "--server", `${host}:${port}`];
+    const command = [binPaths["lage"], "exec", "--tasks", ...tasks, "--server", `${host}:${port}`];
     if (options.concurrency) {
       command.push("--concurrency", options.concurrency.toString());
     }

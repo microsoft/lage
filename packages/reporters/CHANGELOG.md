@@ -1,8 +1,43 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Fri, 08 Nov 2024 19:45:09 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 12 Feb 2025 00:08:30 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.0
+
+Wed, 12 Feb 2025 00:08:30 GMT
+
+### Minor changes
+
+- Add support to json formatter to pretty print and indent the json when the log level is set to verbose or silly... (dannyvv@microsoft.com)
+
+## 1.2.19
+
+Wed, 15 Jan 2025 16:56:22 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.23
+- Bump @lage-run/target-graph to v0.11.1
+
+## 1.2.18
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.22
+- Bump @lage-run/target-graph to v0.11.0
+
+## 1.2.17
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.21
+- Bump @lage-run/target-graph to v0.10.1
 
 ## 1.2.16
 

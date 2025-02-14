@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/scheduler",
-  "version": "1.3.10",
+  "version": "1.5.1",
   "description": "Scheduler for Lage",
   "repository": {
     "type": "git",
@@ -17,17 +17,17 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/cache": "^1.3.8",
-    "@lage-run/config": "^0.4.8",
-    "@lage-run/hasher": "^1.6.5",
+    "@lage-run/cache": "^1.3.11",
+    "@lage-run/config": "^0.4.12",
+    "@lage-run/hasher": "^1.6.9",
     "@lage-run/logger": "^1.3.1",
-    "@lage-run/runners": "^1.1.0",
-    "@lage-run/target-graph": "^0.10.0",
-    "@lage-run/worker-threads-pool": "^0.8.4"
+    "@lage-run/runners": "^1.2.1",
+    "@lage-run/target-graph": "^0.11.1",
+    "@lage-run/worker-threads-pool": "^0.9.0"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "*",
-    "@lage-run/scheduler-types": "^0.3.20"
+    "@lage-run/scheduler-types": "^0.3.23"
   },
   "publishConfig": {
     "access": "public"

@@ -2,6 +2,72 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Fri, 17 Jan 2025 21:57:32 GMT",
+      "version": "1.6.9",
+      "tag": "@lage-run/hasher_v1.6.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "0cb67940795a8b1366c91a27959b123d4fd056c2",
+            "comment": "Make package tree handle nested packages"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Jan 2025 16:56:22 GMT",
+      "version": "1.6.8",
+      "tag": "@lage-run/hasher_v1.6.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.11.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 02 Dec 2024 17:23:22 GMT",
+      "version": "1.6.7",
+      "tag": "@lage-run/hasher_v1.6.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.11.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Nov 2024 08:12:37 GMT",
+      "version": "1.6.6",
+      "tag": "@lage-run/hasher_v1.6.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/hasher",
+            "commit": "c6e9f4e5339a897dd06a54fe528a1fadd75db243",
+            "comment": "Update dependency workspace-tools to v0.38.1"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.10.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 18 Nov 2024 23:22:30 GMT",
       "version": "1.6.5",
       "tag": "@lage-run/hasher_v1.6.5",

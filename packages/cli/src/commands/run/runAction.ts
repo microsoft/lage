@@ -17,6 +17,7 @@ import type { TargetGraph } from "@lage-run/target-graph";
 import { NoTargetFoundError } from "../../types/errors.js";
 import { createCache } from "../../cache/createCacheProvider.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
+import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
 
 interface RunOptions extends ReporterInitOptions, FilterOptions {
   concurrency: number;
@@ -62,6 +63,7 @@ export async function runAction(options: RunOptions, command: Command) {
     outputs: config.cacheOptions.outputGlob,
     tasks,
     packageInfos,
+    priorities: config.priorities,
   });
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);
@@ -101,7 +103,12 @@ export async function runAction(options: RunOptions, command: Command) {
     workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
   });
 
-  const summary = await scheduler.run(root, targetGraph);
+  const optimizedTargets = await optimizeTargetGraph(targetGraph, scheduler.runnerPicker);
+  const optimizedGraph: TargetGraph = {
+    targets: new Map(optimizedTargets.map((target) => [target.id, target])),
+  };
+
+  const summary = await scheduler.run(root, optimizedGraph);
   await scheduler.cleanup();
 
   displaySummaryAndExit(summary, logger.reporters);

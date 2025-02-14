@@ -1,8 +1,44 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Fri, 08 Nov 2024 19:45:09 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 15 Jan 2025 16:56:22 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.4.12
+
+Wed, 15 Jan 2025 16:56:22 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.2.1
+- Bump @lage-run/target-graph to v0.11.1
+
+## 0.4.11
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.2.0
+- Bump @lage-run/target-graph to v0.11.0
+
+## 0.4.10
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.1 (email not defined)
+- Bump @lage-run/runners to v1.1.2
+- Bump @lage-run/target-graph to v0.10.1
+
+## 0.4.9
+
+Wed, 20 Nov 2024 02:43:43 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.1.1
 
 ## 0.4.8
 
