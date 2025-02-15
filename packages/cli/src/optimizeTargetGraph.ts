@@ -1,14 +1,18 @@
 import type { TargetRunnerPicker } from "@lage-run/runners";
-import { type TargetGraph, removeNodes, transitiveReduction, getStartTargetId } from "@lage-run/target-graph";
+import { type TargetGraph, removeNodes, transitiveReduction, getStartTargetId, type Target } from "@lage-run/target-graph";
 
-export async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: TargetRunnerPicker) {
+export async function optimizeTargetGraph(
+  graph: TargetGraph,
+  runnerPicker: TargetRunnerPicker,
+  createBackCompatGraph: boolean
+): Promise<Target[]> {
   const targetMinimizedNodes = await removeNodes([...graph.targets.values()], async (target) => {
     if (target.type === "noop") {
       return true;
     }
 
     if (target.id === getStartTargetId()) {
-      return false;
+      return createBackCompatGraph ? true : false;
     }
 
     const runner = await runnerPicker.pick(target);
@@ -18,6 +22,10 @@ export async function optimizeTargetGraph(graph: TargetGraph, runnerPicker: Targ
 
     return true;
   });
+
+  if (createBackCompatGraph) {
+    return targetMinimizedNodes;
+  }
 
   const reduced = transitiveReduction(targetMinimizedNodes);
 
