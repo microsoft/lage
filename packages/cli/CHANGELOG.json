@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Sat, 15 Feb 2025 20:04:19 GMT",
+      "version": "0.28.0",
+      "tag": "@lage-run/cli_v0.28.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "84c942fb7008f722709e81f00b50295a3f65e5a7",
+            "comment": "Add backwards compate lage info emit hack"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 12 Feb 2025 00:08:30 GMT",
       "version": "0.27.0",
       "tag": "@lage-run/cli_v0.27.0",
