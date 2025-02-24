@@ -134,7 +134,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
   });
 
   const globalInputs = config.cacheOptions?.environmentGlob
-    ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
+    ? glob(config.cacheOptions?.environmentGlob, { cwd: root })
     : ["lage.config.js"];
 
   logger.info(`Environment glob inputs: \n${JSON.stringify(globalInputs)}\n-------`);
@@ -233,7 +233,7 @@ export async function createLageService({
         threadId: 0,
       };
 
-      const targetGlobalInputs = target.environmentGlob ? glob(target.environmentGlob, { cwd: root, gitignore: true }) : globalInputs;
+      const targetGlobalInputs = target.environmentGlob ? glob(target.environmentGlob, { cwd: root }) : globalInputs;
 
       let results: {
         packageName?: string;
