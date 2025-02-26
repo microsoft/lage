@@ -9,7 +9,7 @@ module.exports = {
     types: {
       type: "npmScript",
       dependsOn: ["^^transpile"],
-      outputs: ["lib/**/*.d.ts"],
+      outputs: [],
     },
     isolatedTypes: {
       type: "worker",
@@ -24,7 +24,7 @@ module.exports = {
       options: {
         worker: path.join(__dirname, "scripts/worker/transpile.js"),
       },
-      outputs: ["lib/**/*.js"],
+      outputs: ["lib/**/*.js", "lib/**/*.map", "lib/**/*.d.ts"],
     },
     test: {
       type: "worker",
