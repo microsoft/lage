@@ -352,6 +352,7 @@ export async function createLageService({
           {
             packageName: results.packageName,
             task: results.task,
+            cwd: results.cwd,
             exitCode: results.exitCode,
             inputs: results.inputs,
             outputs: results.outputs,

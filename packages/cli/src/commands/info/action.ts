@@ -11,7 +11,7 @@ import fs from "fs";
 import { parse } from "shell-quote";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import type { Target } from "@lage-run/target-graph";
+import { Target, getStartTargetId, getTargetId } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
 import { TargetRunnerPicker } from "@lage-run/runners";
 import { getBinPaths } from "../../getBinPaths.js";
@@ -183,12 +183,16 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
       : ["lage.config.js"];
 
     for (const target of optimizedTargets) {
+      if (target.id === getStartTargetId()) {
+        continue;
+      }
+
       const targetGlobalInputsHash = target.environmentGlob
         ? globHashWithCache(target.environmentGlob, { cwd: root })
         : globHashWithCache(globalInputs, { cwd: root });
 
-      const targetGlobalInputsHashFile = getGlobalInputHashFilePath(target);
-      const targetGlobalInputsHashFileDir = path.join(target.cwd, path.dirname(targetGlobalInputsHashFile));
+      const targetGlobalInputsHashFile = path.join(target.cwd, getGlobalInputHashFilePath(target));
+      const targetGlobalInputsHashFileDir = path.dirname(targetGlobalInputsHashFile);
 
       // Make sure the directory exists
       if (!fs.existsSync(targetGlobalInputsHashFileDir)) {
