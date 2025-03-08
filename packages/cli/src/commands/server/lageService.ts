@@ -8,7 +8,6 @@ import { type Readable } from "stream";
 import { type Pool, AggregatedPool } from "@lage-run/worker-threads-pool";
 import { getInputFiles, type PackageTree, TargetHasher } from "@lage-run/hasher";
 import { getOutputFiles } from "./getOutputFiles.js";
-import { glob } from "@lage-run/globby";
 import { MemoryStream } from "./MemoryStream.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
@@ -25,7 +24,6 @@ interface LageServiceContext {
   dependencyMap: DependencyMap;
   root: string;
   pool: Pool;
-  globalInputs: string[];
   targetHasher: TargetHasher;
 }
 
@@ -134,14 +132,8 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     serverControls.countdownToShutdown();
   });
 
-  const globalInputs = config.cacheOptions?.environmentGlob
-    ? glob(config.cacheOptions?.environmentGlob, { cwd: root })
-    : ["lage.config.js"];
-
-  logger.info(`Environment glob inputs: \n${JSON.stringify(globalInputs)}\n-------`);
-
   logger.info("done initializing");
-  return { config, targetGraph, packageTree, dependencyMap, root, pool, globalInputs, targetHasher };
+  return { config, targetGraph, packageTree, dependencyMap, root, pool, targetHasher };
 }
 
 /**
@@ -185,7 +177,7 @@ export async function createLageService({
       // THIS IS A BIG ASSUMPTION; TODO: memoize based on the parameters of the initialize() call
       // The first request sets up the nodeArg and taskArgs - we are assuming that all requests to run this target are coming from the same
       // `lage info` call
-      const { config, targetGraph, dependencyMap, packageTree, root, pool, globalInputs, targetHasher } = await initialize({
+      const { config, targetGraph, dependencyMap, packageTree, root, pool, targetHasher } = await initialize({
         cwd,
         logger,
         nodeArg: request.nodeOptions,
