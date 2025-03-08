@@ -7,6 +7,7 @@ import { type PackageInfos, getPackageInfos, getWorkspaceRoot } from "workspace-
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
 import path from "path";
+import fs from "fs";
 import { parse } from "shell-quote";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
@@ -17,6 +18,10 @@ import { getBinPaths } from "../../getBinPaths.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { parseServerOption } from "../parseServerOption.js";
 import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
+import { glob } from "@lage-run/globby";
+import { FileHasher } from "@lage-run/hasher/lib/FileHasher.js";
+import { hashStrings } from "@lage-run/hasher";
+import { getGlobalInputHashFilePath } from "../targetHashFilePath.js";
 
 interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
@@ -147,6 +152,54 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
     generatePackageTask(target, taskArgs, config, options, binPaths, packageInfos, tasks)
   );
 
+  // In worker server mode, we need to actually speed up the BuildXL runs with presupplied global input hashes so that it doesn't try to read it over and over again
+  // This is an important optimization for BuildXL for large amount of env glob matches in non-well-behaved monorepos
+  // (e.g. repos that have files listed in env glob to avoid circular dependencies in package graph)
+  if (shouldRunWorkersAsService(options)) {
+    // For each target in the target graph, we need to create a global input hash file in this kind of location:
+    // ${target.cwd}/.lage/global_inputs_hash
+    // We will use glob for these files and use the FileHasher to generate these hashes.
+    const fileHasher = new FileHasher({
+      root,
+    });
+
+    const globHashCache = new Map<string, string>();
+    const globHashWithCache = (patterns: string[], options: { cwd: string }) => {
+      const key = patterns.join("###");
+      if (globHashCache.has(key)) {
+        return globHashCache.get(key)!;
+      }
+
+      const files = glob(patterns, options);
+      const hash = hashStrings(Object.values(fileHasher.hash(files.map((file) => path.join(root, file)))));
+
+      globHashCache.set(key, hash);
+
+      return hash;
+    };
+
+    const globalInputs = config.cacheOptions?.environmentGlob
+      ? glob(config.cacheOptions?.environmentGlob, { cwd: root })
+      : ["lage.config.js"];
+
+    for (const target of optimizedTargets) {
+      const targetGlobalInputsHash = target.environmentGlob
+        ? globHashWithCache(target.environmentGlob, { cwd: root })
+        : globHashWithCache(globalInputs, { cwd: root });
+
+      const targetGlobalInputsHashFile = getGlobalInputHashFilePath(target);
+      const targetGlobalInputsHashFileDir = path.join(target.cwd, path.dirname(targetGlobalInputsHashFile));
+
+      // Make sure the directory exists
+      if (!fs.existsSync(targetGlobalInputsHashFileDir)) {
+        fs.mkdirSync(targetGlobalInputsHashFileDir, { recursive: true });
+      }
+
+      // Write the hash to the file
+      fs.writeFileSync(targetGlobalInputsHashFile, targetGlobalInputsHash);
+    }
+  }
+
   logger.info("info", {
     command: command.args,
     scope,
@@ -188,6 +241,10 @@ function generatePackageTask(
   return packageTask;
 }
 
+function shouldRunWorkersAsService(options: InfoActionOptions) {
+  return (typeof process.env.LAGE_WORKER_SERVER === "string" && process.env.LAGE_WORKER_SERVER !== "false") || !!options.server;
+}
+
 function generateCommand(
   target: Target,
   taskArgs: string[],
@@ -197,9 +254,6 @@ function generateCommand(
   packageInfos: PackageInfos,
   tasks: string[]
 ) {
-  const shouldRunWorkersAsService =
-    (typeof process.env.LAGE_WORKER_SERVER === "string" && process.env.LAGE_WORKER_SERVER !== "false") || !!options.server;
-
   if (target.type === "npmScript") {
     const script = target.packageName !== undefined ? packageInfos[target.packageName]?.scripts?.[target.task] : undefined;
 
@@ -215,7 +269,7 @@ function generateCommand(
     const npmClient = config.npmClient ?? "npm";
     const command = [npmClient, ...getNpmArgs(target.task, taskArgs)];
     return command;
-  } else if (target.type === "worker" && shouldRunWorkersAsService) {
+  } else if (target.type === "worker" && shouldRunWorkersAsService(options)) {
     const { host, port } = parseServerOption(options.server);
     const command = [binPaths["lage"], "exec", "--tasks", ...tasks, "--server", `${host}:${port}`];
     if (options.concurrency) {

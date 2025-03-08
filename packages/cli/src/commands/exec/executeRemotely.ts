@@ -1,3 +1,4 @@
+import path from "path";
 import type { Logger } from "@lage-run/logger";
 import createLogger from "@lage-run/logger";
 import { initializeReporters } from "../initializeReporters.js";
@@ -140,7 +141,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
     process.exitCode = response.exitCode;
 
     // we will simulate file access even if exit code may be non-zero
-    await simulateFileAccess(logger, [...response.inputs, ...response.globalInputs], response.outputs);
+    await simulateFileAccess(logger, [...response.inputs, path.join(response.cwd, response.globalInputHashFile)], response.outputs);
   } else {
     process.exitCode = 1;
   }

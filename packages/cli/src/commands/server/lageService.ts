@@ -1,7 +1,7 @@
 import { type ConfigOptions, getConfig, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
 import type { Logger } from "@lage-run/logger";
 import { ConnectError, Code, type ILageService } from "@lage-run/rpc";
-import { getStartTargetId, getTargetId, type Target, type TargetGraph } from "@lage-run/target-graph";
+import { getStartTargetId, getTargetId, type TargetGraph } from "@lage-run/target-graph";
 import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { type Readable } from "stream";
@@ -16,6 +16,7 @@ import type { TargetRun } from "@lage-run/scheduler-types";
 import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
 import path from "path";
 import fs from "fs";
+import { getGlobalInputHashFilePath, getHashFilePath } from "../targetHashFilePath.js";
 
 interface LageServiceContext {
   config: ConfigOptions;
@@ -162,10 +163,6 @@ interface CreateLageServiceOptions {
   tasks: string[];
 }
 
-function getHashFilePath(target: Target) {
-  return path.join(`node_modules/.lage/hash_${target.task}`);
-}
-
 export async function createLageService({
   cwd,
   serverControls,
@@ -233,18 +230,17 @@ export async function createLageService({
         threadId: 0,
       };
 
-      const targetGlobalInputs = target.environmentGlob ? glob(target.environmentGlob, { cwd: root }) : globalInputs;
-
       let results: {
         packageName?: string;
         task: string;
+        cwd: string;
         exitCode: number;
         inputs: string[];
         outputs: string[];
         stdout: string;
         stderr: string;
         id: string;
-        globalInputs: string[];
+        globalInputHashFile: string;
       };
 
       const inputs = getInputFiles(target, dependencyMap, packageTree);
@@ -258,6 +254,7 @@ export async function createLageService({
         inputs.push(path.join(path.relative(root, depTarget.cwd), getHashFilePath(depTarget)).replace(/\\/g, "/"));
       }
 
+      // Write the target hash to a file for its dependants to use
       const targetHashFile = getHashFilePath(target);
       const targetHashFullPath = path.join(target.cwd, targetHashFile);
 
@@ -270,6 +267,8 @@ export async function createLageService({
       } catch (e) {
         throw new ConnectError(`Error writing target hash file: ${targetHashFullPath}`, Code.Internal);
       }
+
+      const targetGlobalInputHashRelativePath = getGlobalInputHashFilePath(target);
 
       try {
         await pool.exec(
@@ -317,13 +316,14 @@ export async function createLageService({
         results = {
           packageName: request.packageName,
           task: request.task,
+          cwd: target.cwd,
           exitCode: 0,
           inputs,
           outputs,
           stdout: writableStdout.toString(),
           stderr: writableStderr.toString(),
           id,
-          globalInputs: targetGlobalInputs,
+          globalInputHashFile: targetGlobalInputHashRelativePath,
         };
       } catch (e) {
         const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
@@ -336,13 +336,14 @@ export async function createLageService({
         results = {
           packageName: request.packageName,
           task: request.task,
+          cwd: target.cwd,
           exitCode: 1,
           inputs,
           outputs,
           stdout: "",
           stderr: e instanceof Error ? e.toString() : "",
           id,
-          globalInputs: targetGlobalInputs,
+          globalInputHashFile: targetGlobalInputHashRelativePath,
         };
       }
 
@@ -355,9 +356,7 @@ export async function createLageService({
             inputs: results.inputs,
             outputs: results.outputs,
             id: results.id,
-            globalInputs: `(${target.environmentGlob ? "custom target env glob used" : "general global inputs used"}): ${
-              results.globalInputs.length
-            } files`,
+            globalInputHashFile: targetGlobalInputHashRelativePath,
           },
           null,
           2
