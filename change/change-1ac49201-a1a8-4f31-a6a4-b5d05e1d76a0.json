@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL",
+      "packageName": "@lage-run/cli",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL",
+      "packageName": "@lage-run/hasher",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL",
+      "packageName": "@lage-run/rpc",
+      "email": "kchau@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
