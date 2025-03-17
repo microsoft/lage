@@ -79,7 +79,7 @@ export class WorkerRunner implements TargetRunner {
     const scriptFile = target.options?.worker ?? target.options?.script;
 
     if (!scriptFile) {
-      throw new Error('WorkerRunner: "script" configuration is required - e.g. { type: "worker", script: "./worker.js" }');
+      throw new Error('WorkerRunner: "worker" configuration is required - e.g. { type: "worker", options: { worker: "path/to/worker.js" } }');
     }
 
     let importScript = scriptFile;
