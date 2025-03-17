@@ -13,6 +13,15 @@ import { TargetFactory } from "./TargetFactory.js";
 import pLimit from "p-limit";
 
 const DEFAULT_STAGED_TARGET_THRESHOLD = 50;
+
+const defaultShouldRun = (config: TargetConfig, target: Target) => {
+  if (typeof config.shouldRun === "function") {
+    return config.shouldRun(target);
+  }
+
+  return true;
+}
+
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
  * generate a topological graph of targets (package + task) and their dependencies.
@@ -45,7 +54,7 @@ export class WorkspaceTargetGraphBuilder {
    * @param root the root directory of the workspace
    * @param packageInfos the package infos for the workspace
    */
-  constructor(root: string, private packageInfos: PackageInfos) {
+  constructor(root: string, private packageInfos: PackageInfos, private shouldRun: (config: TargetConfig, target: Target) => boolean | Promise<boolean> = defaultShouldRun) {
     this.dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
     this.graphBuilder = new TargetGraphBuilder();
     this.targetFactory = new TargetFactory({
@@ -75,23 +84,25 @@ export class WorkspaceTargetGraphBuilder {
       this.targetConfigMap.set(id, config);
       this.hasRootTarget = true;
 
-      this.processStagedConfig(target, config, changedFiles);
+      await this.processStagedConfig(target, config, changedFiles);
     } else if (id.includes("#")) {
       const { packageName, task } = getPackageAndTask(id);
       const target = this.targetFactory.createPackageTarget(packageName!, task, config);
       this.graphBuilder.addTarget(target);
       this.targetConfigMap.set(id, config);
 
-      this.processStagedConfig(target, config, changedFiles);
+      await this.processStagedConfig(target, config, changedFiles);
     } else {
       const packages = Object.keys(this.packageInfos);
       for (const packageName of packages) {
         const task = id;
         const target = this.targetFactory.createPackageTarget(packageName!, task, config);
-        this.graphBuilder.addTarget(target);
-        this.targetConfigMap.set(id, config);
+        if(await this.shouldRun(config, target)) {
+          this.graphBuilder.addTarget(target);
+          this.targetConfigMap.set(id, config);
 
-        this.processStagedConfig(target, config, changedFiles);
+          await this.processStagedConfig(target, config, changedFiles);
+        }
       }
     }
   }
@@ -143,14 +154,6 @@ export class WorkspaceTargetGraphBuilder {
         `Parent target ${parentTarget.id} cannot have dependents when it has a staged target while running with a --since flag`
       );
     }
-  }
-
-  shouldRun(config: TargetConfig, target: Target) {
-    if (typeof config.shouldRun === "function") {
-      return config.shouldRun(target);
-    }
-
-    return true;
   }
 
   /**
@@ -225,7 +228,7 @@ export class WorkspaceTargetGraphBuilder {
       if (config) {
         setShouldRunPromises.push(
           limit(async () => {
-            target.shouldRun = await this.shouldRun(config, target);
+            target.shouldRun = await defaultShouldRun(config, target);
           })
         );
       }

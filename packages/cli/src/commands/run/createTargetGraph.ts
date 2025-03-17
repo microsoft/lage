@@ -1,5 +1,5 @@
 import type { Logger } from "@lage-run/logger";
-import { WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
+import { type Target, type TargetConfig, WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
 import type { PackageInfos } from "workspace-tools";
 import { getBranchChanges, getDefaultRemoteBranch, getStagedChanges, getUnstagedChanges, getUntrackedChanges } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
@@ -20,6 +20,7 @@ interface CreateTargetGraphOptions {
   tasks: string[];
   packageInfos: PackageInfos;
   priorities: Priority[];
+  shouldRun: (config: TargetConfig, target: Target) => boolean | Promise<boolean>;
 }
 
 function getChangedFiles(since: string, cwd: string) {
@@ -52,9 +53,10 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
     tasks,
     packageInfos,
     priorities,
+    shouldRun,
   } = options;
 
-  const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
+  const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, shouldRun);
 
   const packages = getFilteredPackages({
     root,
@@ -80,7 +82,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
 
   for (const [id, definition] of Object.entries(pipeline)) {
     if (Array.isArray(definition)) {
-      builder.addTargetConfig(
+      await builder.addTargetConfig(
         id,
         {
           cache: true,
@@ -91,7 +93,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
         changedFiles
       );
     } else {
-      builder.addTargetConfig(id, definition, changedFiles);
+      await builder.addTargetConfig(id, definition, changedFiles);
     }
   }
 
