@@ -121,14 +121,26 @@ export class PackageTree {
     const key = `${packageName}\0${patterns.join("\0")}`;
 
     if (!this.#memoizedPackageFiles[key]) {
-      const packagePatterns = patterns.map((pattern) => {
-        if (pattern.startsWith("!")) {
-          return `!${path.join(packagePath, pattern.slice(1)).replace(/\\/g, "/")}`;
+      const packagePatterns: string[] = [];
+      const simplePaths: string[] = [];
+      for(const pattern of patterns) {
+        // If the input is a pattern, we have to run micromatch to convert that into a list of files
+        if(/[{}*?\[\]!+()]|@\(/.test(pattern)) {
+          if (pattern.startsWith("!")) {
+            packagePatterns.push(`!${path.join(packagePath, pattern.slice(1)).replace(/\\/g, "/")}`);
+          } else {
+            packagePatterns.push(path.join(packagePath, pattern).replace(/\\/g, "/"));
+          }
+        } else {
+          // No special characters, so no need to do pattern matching, just take the file exactly as is, and
+          // assume it could/should exist
+          simplePaths.push(pattern);
         }
-
-        return path.join(packagePath, pattern).replace(/\\/g, "/");
-      });
-      this.#memoizedPackageFiles[key] = micromatch(packageFiles, packagePatterns, { dot: true });
+      }
+      this.#memoizedPackageFiles[key] = [
+        ...simplePaths,
+        ...(packagePatterns.length ? micromatch(packageFiles, packagePatterns, { dot: true }) : []),
+      ].sort();
     }
 
     return this.#memoizedPackageFiles[key];
