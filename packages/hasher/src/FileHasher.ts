@@ -107,12 +107,18 @@ export class FileHasher {
     const updatedHashes = fastHash(updatedFiles, { cwd: this.options.root, concurrency: 4 }) ?? {};
 
     for (const [file, hash] of Object.entries(updatedHashes)) {
-      const stat = fs.statSync(path.join(this.options.root, file), { bigint: true });
-      this.#store[file] = {
-        mtime: stat.mtimeMs,
-        size: Number(stat.size),
-        hash: hash ?? "",
-      };
+      try {
+        const stat = fs.statSync(path.join(this.options.root, file), { bigint: true });
+        this.#store[file] = {
+          mtime: stat.mtimeMs,
+          size: Number(stat.size),
+          hash: hash ?? "",
+        };
+      } catch(e) {
+        if(e.code !== "ENOENT") {
+          throw e;
+        }
+      }
       hashes[file] = hash ?? "";
     }
 
