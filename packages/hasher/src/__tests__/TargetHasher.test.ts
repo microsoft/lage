@@ -173,6 +173,22 @@ describe("The main Hasher class", () => {
     monorepo1.cleanup();
   });
 
+  it("creates different hashes when file path is different but files do not exist", async () => {
+    const monorepo1 = await setupFixture("monorepo-with-global-files");
+    const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
+    const target = createTarget(monorepo1.root, "package-a", "build");
+    target.inputs = ["file1.txt"];
+    const target2 = createTarget(monorepo1.root, "package-a", "build");
+    target2.inputs = ["file2.txt"];
+
+    const hash = await getHash(hasher, target);
+    const hash2 = await getHash(hasher, target2);
+
+    expect(hash).not.toEqual(hash2);
+
+    monorepo1.cleanup();
+  });
+
   it("creates different hashes when file path is different but file content is the same", async () => {
     const content = "THIS IS CONTENT";
     const monorepo1 = await setupFixture("monorepo-with-global-files");
