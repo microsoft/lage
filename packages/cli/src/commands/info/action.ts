@@ -11,9 +11,9 @@ import fs from "fs";
 import { parse } from "shell-quote";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import { type Target, getStartTargetId } from "@lage-run/target-graph";
+import { type Target, getStartTargetId, type TargetConfig } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
-import { TargetRunnerPicker } from "@lage-run/runners";
+import { TargetRunnerPicker, type TargetRunnerPickerOptions } from "@lage-run/runners";
 import { getBinPaths } from "../../getBinPaths.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { parseServerOption } from "../parseServerOption.js";
@@ -22,6 +22,7 @@ import { glob } from "@lage-run/globby";
 import { FileHasher } from "@lage-run/hasher/lib/FileHasher.js";
 import { hashStrings } from "@lage-run/hasher";
 import { getGlobalInputHashFilePath } from "../targetHashFilePath.js";
+import { shouldRun } from "../shouldRun";
 
 interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
@@ -109,6 +110,8 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
+  const pickerOptions = runnerPickerOptions(options.nodeArg, config.npmClient, taskArgs);
+
   const targetGraph = await createTargetGraph({
     logger,
     root,
@@ -123,6 +126,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
     tasks,
     packageInfos,
     priorities: config.priorities,
+    shouldRun: shouldRun(pickerOptions),
   });
 
   const scope = getFilteredPackages({
@@ -136,8 +140,6 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
     repoWideChanges: config.repoWideChanges,
     sinceIgnoreGlobs: options.ignore.concat(config.ignore),
   });
-
-  const pickerOptions = runnerPickerOptions(options.nodeArg, config.npmClient, taskArgs);
 
   const runnerPicker = new TargetRunnerPicker(pickerOptions);
 
