@@ -1,7 +1,7 @@
 ---
 sidebar_position: 7
 
-title: 7. Priorities
+title: Priorities
 ---
 
 In a large monorepo, you'll need to do some [profiling](./profile.md) to understand bottlenecks. Sometimes, the package tasks are not scheduled in the order that will produce the most optimized run times.
@@ -25,7 +25,7 @@ module.exports = {
 
 ## Legacy (v1 + v2) way of configuring priority
 
-To manually pick a package task to be higher priority, simply place a [`priorities` configuration](../Reference/config.md) in the `lage.config.js`:
+To manually pick a package task to be higher priority, simply place a [`priorities` configuration](../reference/config.md) in the `lage.config.js`:
 
 ```js
 module.exports = {

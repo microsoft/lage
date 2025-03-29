@@ -1,8 +1,7 @@
 ---
+title: Introduction
 sidebar_position: 1
-sidebar_label: Introduction
 sidebar_class_name: green
-slug: Introduction
 ---
 
 import ThemedImage from "@theme/ThemedImage";
@@ -39,7 +38,7 @@ So how does `lage` make builds faster? To fully appreciate how `lage` gives you 
 import Mermaid from "@theme/Mermaid";
 
 <Mermaid
-  chart={`
+  value={`
 graph TD
   FooCore --> BuildTool
   BarCore --> BuildTool
@@ -54,7 +53,7 @@ graph TD
 First, let's take a look at the typical workspace runners. `Lerna` (before), `pnpm recursive`, `rush` and `wsrun` all will run one task at a time. This creates a sort of "build phase" effect where `test` scripts are not allowed to run until `build`.
 
 <Mermaid
-  chart={`gantt
+  value={`gantt
   title Level 1: Typical Lerna or Workspace Runners
   dateFormat  s
   axisFormat  %S
@@ -94,7 +93,7 @@ First, let's take a look at the typical workspace runners. `Lerna` (before), `pn
 One of the first ways to speeding up build jobs is to use "scoping." Usually a change only affects a subset of the graph. We can get rid of the builds of `FooCore`, `FooApp1` and `FooApp2` if the only changes are inside `BarCore`. However, we'll note that `BarPage` is still affected, resulting in this.
 
 <Mermaid
-  chart={`gantt
+  value={`gantt
   title Level 2: Scoping
   dateFormat  s
   axisFormat  %S
@@ -129,7 +128,7 @@ One of the first ways to speeding up build jobs is to use "scoping." Usually a c
 To further improve build times, we can take advantage of build caches. If we had previously built certain packages, we should be able to speed up the build with a cache. Here, the `BarCore` packages have already been built and tested, and so
 
 <Mermaid
-  chart={`gantt
+  value={`gantt
   title Level 3: Caching
   dateFormat  s
   axisFormat  %S
@@ -165,7 +164,7 @@ To further improve build times, we can take advantage of build caches. If we had
 Finally, the last thing we can to speed things up is to break down the wall between build phases from the task runner. In `lage`, we define the relationship between scripts in the `pipeline` configuration.
 
 <Mermaid
-  chart={`gantt
+  value={`gantt
   title Level 4: Pipelining
   dateFormat  s
   axisFormat  %S

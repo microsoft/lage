@@ -1,7 +1,7 @@
 ---
 sidebar_position: 5
 
-title: 5. Remote Cache
+title: Remote cache
 ---
 
 As your repo grows in size and complexity, the build takes longer and longer even locally. `lage` elegantly provides an incremental build capability given a locally available cache. When we pair the caching capability of `lage` with a cloud storage provider, we can speed up local builds with remote cache made available by Continuous Integration, or CI, jobs.
@@ -16,7 +16,7 @@ Follow these steps to set up a remote cache.
 
 ### 1. Upgrade to latest `lage`
 
-See the [migration guide](Cookbook/migration.mdx) for more details.
+See the [migration guide](../cookbook/migration.mdx) for more details.
 
 ```
 yarn upgrade lage

@@ -1,14 +1,14 @@
 ---
 sidebar_position: 1
 
-title: 1. Installation
+title: Installation
 ---
 
 Getting started with `lage` is easy.
 
 ## Quick installation
 
-For automated quick installation instructions, see the [Quick Start](../quick-start.md) guide.
+For automated quick installation instructions, see the [quick start guide](../quick-start.md).
 
 ## Manual installation
 

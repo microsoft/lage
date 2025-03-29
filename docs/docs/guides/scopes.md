@@ -1,10 +1,10 @@
 ---
 sidebar_position: 3
 
-title: 3. Scoping by packages
+title: Scoping by packages
 ---
 
-By examining the [target graph](Introduction.mdx#how-does-lage-schedule-tasks), `lage` can understand which targets are not affected by a particular change being proposed in a pull request. In that case `lage` has a few CLI arguments controlling which target to run.
+By examining the [target graph](../introduction.mdx#how-does-lage-schedule-tasks), `lage` can understand which targets are not affected by a particular change being proposed in a pull request. In that case `lage` has a few CLI arguments controlling which target to run.
 
 :::info
 

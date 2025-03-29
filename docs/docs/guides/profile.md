@@ -1,10 +1,8 @@
 ---
 sidebar_position: 6
 
-title: 6. Profiling `lage`
+title: Profiling
 ---
-
-# Profiling `lage`
 
 A particularly complex monorepo can present opportunities for optimization. For example, when there are really large packages, it might be more efficient to break those up so the build can be split across different CPU cores. `lage` greatly enhances the ability for developers to see where the bottlenecks are.
 

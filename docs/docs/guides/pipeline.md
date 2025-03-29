@@ -1,10 +1,10 @@
 ---
 sidebar_position: 2
 
-title: 2. Pipeline
+title: Pipelines
 ---
 
-In this step, you'll learn about how to influence how `lage` schedules which "target" runs at which time. For full details on how to configure pipelines, make sure to consult with the [reference for configuration](/docs/Reference/config).
+In this step, you'll learn about how to influence how `lage` schedules which "target" runs at which time. For full details on how to configure pipelines, make sure to consult with the [reference for configuration](../reference/config).
 
 ## What is a `lage` pipeline?
 
