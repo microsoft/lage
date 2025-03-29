@@ -1674,22 +1674,22 @@ __metadata:
   resolution: "@lage-run/cache-github-actions@workspace:packages/cache-github-actions"
   dependencies:
     "@actions/cache": "npm:3.2.4"
-    "@lage-run/monorepo-scripts": "npm:*"
+    "@lage-run/monorepo-scripts": "workspace:^"
     backfill-config: "npm:6.4.2"
     backfill-logger: "npm:5.2.1"
     workspace-tools: "npm:0.38.1"
   languageName: unknown
   linkType: soft
 
-"@lage-run/cache@npm:^1.3.11, @lage-run/cache@workspace:packages/cache":
+"@lage-run/cache@workspace:^, @lage-run/cache@workspace:packages/cache":
   version: 0.0.0-use.local
   resolution: "@lage-run/cache@workspace:packages/cache"
   dependencies:
     "@azure/identity": "npm:^4.0.1"
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/monorepo-fixture": "npm:*"
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/target-graph": "npm:^0.11.1"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-fixture": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
     backfill-cache: "npm:5.8.0"
     backfill-config: "npm:6.4.2"
     backfill-logger: "npm:5.2.1"
@@ -1697,25 +1697,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/cli@npm:^0.28.0, @lage-run/cli@workspace:packages/cli":
+"@lage-run/cli@workspace:^, @lage-run/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lage-run/cli@workspace:packages/cli"
   dependencies:
-    "@lage-run/cache": "npm:^1.3.11"
-    "@lage-run/config": "npm:^0.4.12"
-    "@lage-run/format-hrtime": "npm:^0.1.6"
-    "@lage-run/globby": "npm:^14.2.0"
-    "@lage-run/hasher": "npm:^1.6.9"
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/monorepo-fixture": "npm:*"
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/reporters": "npm:^1.3.0"
-    "@lage-run/rpc": "npm:^1.2.7"
-    "@lage-run/runners": "npm:^1.2.1"
-    "@lage-run/scheduler": "npm:^1.5.1"
-    "@lage-run/scheduler-types": "npm:^0.3.23"
-    "@lage-run/target-graph": "npm:^0.11.1"
-    "@lage-run/worker-threads-pool": "npm:^0.9.0"
+    "@lage-run/cache": "workspace:^"
+    "@lage-run/config": "workspace:^"
+    "@lage-run/format-hrtime": "workspace:^"
+    "@lage-run/globby": "workspace:^"
+    "@lage-run/hasher": "workspace:^"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-fixture": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/reporters": "workspace:^"
+    "@lage-run/rpc": "workspace:^"
+    "@lage-run/runners": "workspace:^"
+    "@lage-run/scheduler": "workspace:^"
+    "@lage-run/scheduler-types": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
+    "@lage-run/worker-threads-pool": "workspace:^"
     "@types/proper-lockfile": "npm:^4.1.4"
     "@types/shell-quote": "npm:^1.7.5"
     chokidar: "npm:3.5.3"
@@ -1731,14 +1731,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/config@npm:^0.4.12, @lage-run/config@workspace:packages/config":
+"@lage-run/config@workspace:^, @lage-run/config@workspace:packages/config":
   version: 0.0.0-use.local
   resolution: "@lage-run/config@workspace:packages/config"
   dependencies:
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/runners": "npm:^1.2.1"
-    "@lage-run/target-graph": "npm:^0.11.1"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/runners": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
     backfill-config: "npm:6.4.2"
     cosmiconfig: "npm:7.1.0"
     workspace-tools: "npm:0.38.1"
@@ -1751,11 +1751,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lage-run/e2e-tests@workspace:packages/e2e-tests"
   dependencies:
-    "@lage-run/cli": "npm:^0.28.0"
-    "@lage-run/globby": "npm:^14.2.0"
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/scheduler-types": "npm:^0.3.23"
-    "@lage-run/target-graph": "npm:^0.11.1"
+    "@lage-run/cli": "workspace:^"
+    "@lage-run/globby": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/scheduler-types": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
     execa: "npm:5.1.1"
     glob-hasher: "npm:^1.4.2"
   bin:
@@ -1763,13 +1763,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/format-hrtime@npm:^0.1.6, @lage-run/format-hrtime@workspace:packages/format-hrtime":
+"@lage-run/format-hrtime@workspace:^, @lage-run/format-hrtime@workspace:packages/format-hrtime":
   version: 0.0.0-use.local
   resolution: "@lage-run/format-hrtime@workspace:packages/format-hrtime"
   languageName: unknown
   linkType: soft
 
-"@lage-run/globby@npm:^14.2.0, @lage-run/globby@workspace:packages/globby":
+"@lage-run/globby@workspace:^, @lage-run/globby@workspace:packages/globby":
   version: 0.0.0-use.local
   resolution: "@lage-run/globby@workspace:packages/globby"
   dependencies:
@@ -1780,15 +1780,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/hasher@npm:^1.6.9, @lage-run/hasher@workspace:packages/hasher":
+"@lage-run/hasher@workspace:^, @lage-run/hasher@workspace:packages/hasher":
   version: 0.0.0-use.local
   resolution: "@lage-run/hasher@workspace:packages/hasher"
   dependencies:
-    "@lage-run/globby": "npm:^14.2.0"
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/monorepo-fixture": "npm:*"
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/target-graph": "npm:^0.11.1"
+    "@lage-run/globby": "workspace:^"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-fixture": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
     "@types/graceful-fs": "npm:^4.1.6"
     execa: "npm:5.1.1"
     glob-hasher: "npm:^1.4.2"
@@ -1808,7 +1808,7 @@ __metadata:
     fast-glob: "npm:3.3.2"
     gh-pages: "npm:^5.0.0"
     husky: "npm:^9.1.5"
-    lage-npm: "npm:lage@2.7.15"
+    lage-npm: "npm:lage@~2.12.0"
     lint-staged: "npm:^15.2.10"
     patch-package: "npm:^6.5.1"
     prettier: "npm:^2.8.6"
@@ -1818,22 +1818,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/logger@npm:^1.3.1, @lage-run/logger@workspace:packages/logger":
+"@lage-run/logger@workspace:^, @lage-run/logger@workspace:packages/logger":
   version: 0.0.0-use.local
   resolution: "@lage-run/logger@workspace:packages/logger"
   languageName: unknown
   linkType: soft
 
-"@lage-run/monorepo-fixture@npm:*, @lage-run/monorepo-fixture@workspace:packages/monorepo-fixture":
+"@lage-run/monorepo-fixture@workspace:^, @lage-run/monorepo-fixture@workspace:packages/monorepo-fixture":
   version: 0.0.0-use.local
   resolution: "@lage-run/monorepo-fixture@workspace:packages/monorepo-fixture"
   dependencies:
-    "@lage-run/monorepo-scripts": "npm:*"
+    "@lage-run/monorepo-scripts": "workspace:^"
     execa: "npm:5.1.1"
   languageName: unknown
   linkType: soft
 
-"@lage-run/monorepo-scripts@npm:*, @lage-run/monorepo-scripts@workspace:scripts":
+"@lage-run/monorepo-scripts@workspace:^, @lage-run/monorepo-scripts@workspace:scripts":
   version: 0.0.0-use.local
   resolution: "@lage-run/monorepo-scripts@workspace:scripts"
   dependencies:
@@ -1851,14 +1851,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/reporters@npm:^1.3.0, @lage-run/reporters@workspace:packages/reporters":
+"@lage-run/reporters@workspace:^, @lage-run/reporters@workspace:packages/reporters":
   version: 0.0.0-use.local
   resolution: "@lage-run/reporters@workspace:packages/reporters"
   dependencies:
-    "@lage-run/format-hrtime": "npm:^0.1.6"
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/scheduler-types": "npm:^0.3.23"
-    "@lage-run/target-graph": "npm:^0.11.1"
+    "@lage-run/format-hrtime": "workspace:^"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/scheduler-types": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
     "@ms-cloudpack/task-reporter": "npm:0.5.3"
     ansi-regex: "npm:5.0.1"
     chalk: "npm:4.1.2"
@@ -1867,7 +1867,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/rpc@npm:^1.2.7, @lage-run/rpc@workspace:packages/rpc":
+"@lage-run/rpc@workspace:^, @lage-run/rpc@workspace:packages/rpc":
   version: 0.0.0-use.local
   resolution: "@lage-run/rpc@workspace:packages/rpc"
   dependencies:
@@ -1878,62 +1878,62 @@ __metadata:
     "@connectrpc/connect-fastify": "npm:^1.4.0"
     "@connectrpc/connect-node": "npm:^1.4.0"
     "@connectrpc/protoc-gen-connect-es": "npm:^1.4.0"
-    "@lage-run/monorepo-scripts": "npm:*"
+    "@lage-run/monorepo-scripts": "workspace:^"
     fastify: "npm:^4.28.1"
   languageName: unknown
   linkType: soft
 
-"@lage-run/runners@npm:^1.2.1, @lage-run/runners@workspace:packages/runners":
+"@lage-run/runners@workspace:^, @lage-run/runners@workspace:packages/runners":
   version: 0.0.0-use.local
   resolution: "@lage-run/runners@workspace:packages/runners"
   dependencies:
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/target-graph": "npm:^0.11.1"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
   languageName: unknown
   linkType: soft
 
-"@lage-run/scheduler-types@npm:^0.3.23, @lage-run/scheduler-types@workspace:packages/scheduler-types":
+"@lage-run/scheduler-types@workspace:^, @lage-run/scheduler-types@workspace:packages/scheduler-types":
   version: 0.0.0-use.local
   resolution: "@lage-run/scheduler-types@workspace:packages/scheduler-types"
   dependencies:
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/target-graph": "npm:^0.11.1"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
   languageName: unknown
   linkType: soft
 
-"@lage-run/scheduler@npm:^1.5.1, @lage-run/scheduler@workspace:packages/scheduler":
+"@lage-run/scheduler@workspace:^, @lage-run/scheduler@workspace:packages/scheduler":
   version: 0.0.0-use.local
   resolution: "@lage-run/scheduler@workspace:packages/scheduler"
   dependencies:
-    "@lage-run/cache": "npm:^1.3.11"
-    "@lage-run/config": "npm:^0.4.12"
-    "@lage-run/hasher": "npm:^1.6.9"
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/runners": "npm:^1.2.1"
-    "@lage-run/scheduler-types": "npm:^0.3.23"
-    "@lage-run/target-graph": "npm:^0.11.1"
-    "@lage-run/worker-threads-pool": "npm:^0.9.0"
+    "@lage-run/cache": "workspace:^"
+    "@lage-run/config": "workspace:^"
+    "@lage-run/hasher": "workspace:^"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/runners": "workspace:^"
+    "@lage-run/scheduler-types": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
+    "@lage-run/worker-threads-pool": "workspace:^"
   languageName: unknown
   linkType: soft
 
-"@lage-run/target-graph@npm:^0.11.1, @lage-run/target-graph@workspace:packages/target-graph":
+"@lage-run/target-graph@workspace:^, @lage-run/target-graph@workspace:packages/target-graph":
   version: 0.0.0-use.local
   resolution: "@lage-run/target-graph@workspace:packages/target-graph"
   dependencies:
-    "@lage-run/monorepo-scripts": "npm:*"
+    "@lage-run/monorepo-scripts": "workspace:^"
     jest-diff: "npm:^29.5.0"
     p-limit: "npm:^3.1.0"
     workspace-tools: "npm:0.38.1"
   languageName: unknown
   linkType: soft
 
-"@lage-run/worker-threads-pool@npm:^0.9.0, @lage-run/worker-threads-pool@workspace:packages/worker-threads-pool":
+"@lage-run/worker-threads-pool@workspace:^, @lage-run/worker-threads-pool@workspace:packages/worker-threads-pool":
   version: 0.0.0-use.local
   resolution: "@lage-run/worker-threads-pool@workspace:packages/worker-threads-pool"
   dependencies:
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/monorepo-scripts": "npm:*"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -6089,9 +6089,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lage-npm@npm:lage@2.7.15":
-  version: 2.7.15
-  resolution: "lage@npm:2.7.15"
+"lage-npm@npm:lage@~2.12.0":
+  version: 2.12.21
+  resolution: "lage@npm:2.12.21"
   dependencies:
     fsevents: "npm:~2.3.2"
     glob-hasher: "npm:^1.4.2"
@@ -6100,7 +6100,8 @@ __metadata:
       optional: true
   bin:
     lage: dist/lage.js
-  checksum: 10c0/8654faf84a32f7a69c851036124dc0fac14172a0217adc766ed80c211db2d1f1ea2ffa411ffe21e14540ba457e08f3b5c1f30efedba99b7cb9c43b4461becd26
+    lage-server: dist/lage-server.js
+  checksum: 10c0/1eb319ea5cc4dfd3b7ecdee8753cdaa837345daea640f12e1139339ddccb68a7bc91e0e0ee363cae2e609839f98b6aca9c285a2b22ad4e8f2bfdf50ec7a0ef18
   languageName: node
   linkType: hard
 
@@ -6108,8 +6109,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "lage@workspace:packages/lage"
   dependencies:
-    "@lage-run/cli": "npm:^0.28.0"
-    "@lage-run/runners": "npm:^1.2.1"
+    "@lage-run/cli": "workspace:^"
+    "@lage-run/runners": "workspace:^"
     backfill-config: "npm:6.4.2"
     dts-bundle-generator: "npm:^9.5.1"
     esbuild: "npm:^0.21.5"

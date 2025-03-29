@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cli",
-  "version": "0.28.0",
+  "version": "0.29.0",
   "description": "Command Line Interface for Lage",
   "repository": {
     "type": "git",
@@ -21,19 +21,19 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/cache": "^1.3.11",
-    "@lage-run/config": "^0.4.12",
-    "@lage-run/format-hrtime": "^0.1.6",
-    "@lage-run/globby": "^14.2.0",
-    "@lage-run/hasher": "^1.6.9",
-    "@lage-run/logger": "^1.3.1",
-    "@lage-run/reporters": "^1.3.0",
-    "@lage-run/rpc": "^1.2.7",
-    "@lage-run/runners": "^1.2.1",
-    "@lage-run/scheduler": "^1.5.1",
-    "@lage-run/scheduler-types": "^0.3.23",
-    "@lage-run/target-graph": "^0.11.1",
-    "@lage-run/worker-threads-pool": "^0.9.0",
+    "@lage-run/cache": "workspace:^",
+    "@lage-run/config": "workspace:^",
+    "@lage-run/format-hrtime": "workspace:^",
+    "@lage-run/globby": "workspace:^",
+    "@lage-run/hasher": "workspace:^",
+    "@lage-run/logger": "workspace:^",
+    "@lage-run/reporters": "workspace:^",
+    "@lage-run/rpc": "workspace:^",
+    "@lage-run/runners": "workspace:^",
+    "@lage-run/scheduler": "workspace:^",
+    "@lage-run/scheduler-types": "workspace:^",
+    "@lage-run/target-graph": "workspace:^",
+    "@lage-run/worker-threads-pool": "workspace:^",
     "chokidar": "3.5.3",
     "commander": "9.5.0",
     "execa": "5.1.1",
@@ -43,8 +43,8 @@
     "workspace-tools": "0.38.1"
   },
   "devDependencies": {
-    "@lage-run/monorepo-fixture": "*",
-    "@lage-run/monorepo-scripts": "*",
+    "@lage-run/monorepo-fixture": "workspace:^",
+    "@lage-run/monorepo-scripts": "workspace:^",
     "@types/proper-lockfile": "^4.1.4",
     "@types/shell-quote": "^1.7.5"
   },
