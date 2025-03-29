@@ -76,7 +76,7 @@ export class BackfillCacheProvider implements CacheProvider {
     const cacheStorage = this.getTargetCacheStorageProvider(target.cwd, hash);
 
     try {
-      await cacheStorage.put(hash, target.outputs ?? this.options.cacheOptions.outputGlob ?? ["**/*"]);
+      await cacheStorage.put(hash, target.outputs ?? this.options.cacheOptions.outputGlob ?? []);
     } catch (error) {
       let message;
 
