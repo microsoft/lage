@@ -16,6 +16,8 @@ import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime
 import path from "path";
 import fs from "fs";
 import { getGlobalInputHashFilePath, getHashFilePath } from "../targetHashFilePath.js";
+import { shouldRun } from "../shouldRun";
+import type { TargetRunnerPickerOptions } from "@lage-run/runners";
 
 interface LageServiceContext {
   config: ConfigOptions;
@@ -62,6 +64,11 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
 
   const packageInfos = getPackageInfos(root);
 
+  const pickerOptions: TargetRunnerPickerOptions = {
+    ...runnerPickerOptions(nodeArg, config.npmClient, taskArgs),
+    ...config.runners,
+  };
+
   logger.info("Initializing target graph");
   const targetGraph = await createTargetGraph({
     logger,
@@ -77,6 +84,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     tasks,
     packageInfos,
     priorities: config.priorities,
+    shouldRun: shouldRun(pickerOptions)
   });
 
   const targetHasher = new TargetHasher({
@@ -98,6 +106,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
   const filteredPipeline = filterPipelineDefinitions(targetGraph.targets.values(), config.pipeline);
 
   logger.info("Initializing Pool");
+
   const pool = new AggregatedPool({
     logger,
     maxWorkersByGroup: new Map([...getMaxWorkersPerTask(filteredPipeline, maxWorkers)]),
@@ -109,8 +118,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
       stderr: true,
       workerData: {
         runners: {
-          ...runnerPickerOptions(nodeArg, config.npmClient, taskArgs),
-          ...config.runners,
+          ...pickerOptions,
           shouldCache: false,
           shouldResetCache: false,
         },
