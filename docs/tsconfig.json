@@ -5,8 +5,7 @@
     "lib": ["ES2022", "DOM"],
     "strict": true,
     "noImplicitAny": false,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src"]
 }
