@@ -1879,7 +1879,7 @@ __metadata:
     "@connectrpc/connect-node": "npm:^1.4.0"
     "@connectrpc/protoc-gen-connect-es": "npm:^1.4.0"
     "@lage-run/monorepo-scripts": "workspace:^"
-    fastify: "npm:^4.28.1"
+    fastify: "npm:^4.29.0"
   languageName: unknown
   linkType: soft
 
@@ -4325,9 +4325,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify@npm:^4.28.1":
-  version: 4.28.1
-  resolution: "fastify@npm:4.28.1"
+"fastify@npm:^4.29.0":
+  version: 4.29.0
+  resolution: "fastify@npm:4.29.0"
   dependencies:
     "@fastify/ajv-compiler": "npm:^3.5.0"
     "@fastify/error": "npm:^3.4.0"
@@ -4345,7 +4345,7 @@ __metadata:
     secure-json-parse: "npm:^2.7.0"
     semver: "npm:^7.5.4"
     toad-cache: "npm:^3.3.0"
-  checksum: 10c0/9c212e9a72c42a27ebc9b0bc7fda8f94ff208250158093374942b0e156a3f55fa848c926921f99bdf7f38f6f8103ac28ecc72cc507f33893cd121ce4f3eda069
+  checksum: 10c0/8bfdac5c4be943c57dfcc8d16b400f11a9bc8d4f096b4b28b06c9bb85ffedae1e5ec7a00eaa736813ebe075aa79f72a4b10d9744013229dd7cd3922c605e8e1f
   languageName: node
   linkType: hard
 
