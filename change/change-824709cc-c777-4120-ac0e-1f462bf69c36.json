@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Update dependency @azure/identity to ^4.8.0",
+      "packageName": "@lage-run/cache",
+      "email": "renovate@whitesourcesoftware.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
