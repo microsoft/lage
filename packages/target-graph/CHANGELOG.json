@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "0.11.1",
+      "tag": "@lage-run/target-graph_v0.11.1",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Jan 2025 16:56:22 GMT",
       "version": "0.11.1",
       "tag": "@lage-run/target-graph_v0.11.1",

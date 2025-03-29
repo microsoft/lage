@@ -1,8 +1,16 @@
 # Change Log - lage
 
-<!-- This log was last generated on Sat, 15 Feb 2025 20:04:19 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 29 Mar 2025 02:16:38 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.0
+
+Sat, 29 Mar 2025 02:16:38 GMT
+
+### Minor changes
+
+- cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL (kchau@microsoft.com)
 
 ## 2.12.20
 

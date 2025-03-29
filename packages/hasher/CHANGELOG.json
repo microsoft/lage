@@ -2,6 +2,29 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "1.8.0",
+      "tag": "@lage-run/hasher_v1.8.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 17 Jan 2025 21:57:32 GMT",
       "version": "1.6.9",
       "tag": "@lage-run/hasher_v1.6.9",
