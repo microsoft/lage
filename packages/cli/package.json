@@ -34,7 +34,7 @@
     "@lage-run/scheduler-types": "workspace:^",
     "@lage-run/target-graph": "workspace:^",
     "@lage-run/worker-threads-pool": "workspace:^",
-    "chokidar": "3.5.3",
+    "chokidar": "3.6.0",
     "commander": "9.5.0",
     "execa": "5.1.1",
     "fast-glob": "3.3.2",
