@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Add backwards compate lage info emit hack",
+      "packageName": "@lage-run/cli",
+      "email": "dannyvv@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

@@ -68,6 +68,10 @@ const options = {
     prune: new Option("--prune <days>", "Prunes cache older than certain number of <days>").argParser(parseInt).conflicts("--clear"),
     clear: new Option("--clear", "Clears the cache locally"),
   },
+  info: {
+    outputFile: new Option("-o|--output-file <file>", "Output the target graph as json to the specified file."),
+    noOptimizeGraph: new Option("--no-optimize-graph", "Do not optimize the target graph"),
+  },
 } as const;
 
 const optionsWithEnv = addEnvOptions(options);
