@@ -10,11 +10,16 @@ export const Quote = (
 ) => {
   // pt-8 is for the big quote mark
   return (
-    <aside className="max-sm:hidden pt-8 lg:px-32 xl:px-48">
+    <aside className="max-sm:hidden pt-8 lg:px-24 xl:px-32">
       <p className={cx(classNames.fontMdXl, "bigQuote w-3/4 mx-auto!")}>
         {props.children}
         <br />
-        <span className={cx(classNames.fontSmPlus, "inline-block pt-2")}>
+        <span
+          className={cx(
+            classNames.fontSmPlus,
+            "inline-block pt-2 md:pt-4 lg:pt-5"
+          )}
+        >
           —{props.author}, {props.organization}
         </span>
       </p>

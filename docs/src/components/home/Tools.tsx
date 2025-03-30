@@ -3,7 +3,7 @@ import React from "react";
 import { ToolList, type ToolInfo } from "../../data/ToolList";
 import { cx, classNames } from "../classNames";
 
-function Tool(props: ToolInfo) {
+const Tool = (props: ToolInfo) => {
   const { svg: Svg, title, description, link } = props;
   return (
     <div
@@ -26,7 +26,7 @@ function Tool(props: ToolInfo) {
       <p className={classNames.fontSm}>{description}</p>
     </div>
   );
-}
+};
 
 export const Tools = () => {
   return (

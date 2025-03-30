@@ -33,11 +33,12 @@ includes a CSS framework with resets and/or assumptions of its own.
   --text-s7: 1.875rem; /* 30px, text-3xl */
   --text-s7--line-height: 1.3;
   --text-s8: 2.25rem; /* 36px, text-4xl */
-  --text-s8--line-height: 1.2;
+  --text-s8--line-height: 1.25;
+  /* above here are currently only used for headers (londrina) which needs shorter line-height */
   --text-s9: 2.625rem; /* 42px */
   --text-s9--line-height: 1.15;
   --text-s10: 3rem; /* 48px, text-5xl */
-  --text-s10--line-height: 1.1;
+  --text-s10--line-height: 1.08;
   --text-s11: 3.75rem; /* 60px, text-6xl */
   --text-s11--line-height: 1;
 }
@@ -84,6 +85,8 @@ includes a CSS framework with resets and/or assumptions of its own.
   /* unset bahnschrift overrides */
   word-spacing: initial;
   letter-spacing: initial;
+
+  --text-s8--line-height: 1.2;
 }
 
 /* Color and size must be set here due to docusaurus specificity conflicts */
