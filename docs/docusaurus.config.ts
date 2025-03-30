@@ -3,24 +3,10 @@ import type {
   Options as ClassicPresetOptions,
   ThemeConfig as ClassicThemeConfig,
 } from "@docusaurus/preset-classic";
-import type {
-  Config as DocusaurusConfig,
-  PresetConfig as DocusaurusPresetConfig,
-  PluginConfig as DocusaurusPluginConfig,
-} from "@docusaurus/types";
+import type { Config } from "@docusaurus/types";
 import { createRequire } from "module";
 import { themes as prismThemes } from "prism-react-renderer";
 import tailwindcss from "@tailwindcss/postcss";
-
-type PresetConfig = ["classic", ClassicPresetOptions] | DocusaurusPresetConfig;
-type PluginConfig =
-  | ["@docusaurus/plugin-client-redirects", ClientRedirectsOptions]
-  | DocusaurusPluginConfig;
-type Config = Omit<DocusaurusConfig, "plugins" | "presets" | "themeConfig"> & {
-  plugins: PluginConfig[];
-  presets: PresetConfig[];
-  themeConfig: ClassicThemeConfig;
-};
 
 const require = createRequire(import.meta.url);
 
@@ -52,7 +38,7 @@ const config: Config = {
         theme: {
           customCss: [require.resolve("./src/css/custom.css")],
         },
-      },
+      } satisfies ClassicPresetOptions,
     ],
   ],
 
@@ -89,7 +75,7 @@ const config: Config = {
       },
       darkTheme: prismThemes.vsDark,
     },
-  },
+  } satisfies ClassicThemeConfig,
 
   plugins: [
     "@cmfcmf/docusaurus-search-local",
@@ -105,7 +91,7 @@ const config: Config = {
             return "/docs/Quick Start";
           }
         },
-      },
+      } satisfies ClientRedirectsOptions,
     ],
     () => ({
       name: "docusaurus-tailwindcss",

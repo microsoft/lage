@@ -1,16 +1,23 @@
 import React from "react";
+import { cx, classNames } from "../classNames";
 
-export const Quote = (props) => {
+/** Quote aside, hidden on xs, provides its own padding x */
+export const Quote = (
+  props: React.PropsWithChildren<{
+    author: string;
+    organization: string;
+  }>
+) => {
+  // pt-8 is for the big quote mark
   return (
-    <div className="py-24 md:px-24 lg:px-48 font-bahnschrift text-primary whitespace-pre-wrap text-xl md:text-4xl">
-      <div>
-        <p className="before:content-['“'] before:absolute before:text-6xl before:font-londrina before:-left-8 before:-top-8 relative w-3/4 mx-auto">
-          {props.children}
-        </p>
-        <p className="w-3/4 mx-auto text-lg md:text-2xl">
+    <aside className="max-sm:hidden pt-8 lg:px-32 xl:px-48">
+      <p className={cx(classNames.fontMdXl, "bigQuote w-3/4 mx-auto!")}>
+        {props.children}
+        <br />
+        <span className={cx(classNames.fontSmPlus, "inline-block pt-2")}>
           —{props.author}, {props.organization}
-        </p>
-      </div>
-    </div>
+        </span>
+      </p>
+    </aside>
   );
 };
