@@ -7,46 +7,52 @@ on:
   pull_request:
     branches: [master, v1]
 # Ignoring the docs prevents PRs touching only docs from succeeding.
-# Also, the docs do have a build step which must succeed for overall builds to succeed.
 #    paths-ignore:
 #      - "docs/**"
+
+concurrency:
+  # For PRs, use the ref (branch) in the concurrency group so that new pushes cancel any old runs.
+  # For pushes to master, ideally we wouldn't set a concurrency group, but github actions doesn't
+  # support conditional blocks of settings, so we use the SHA so the "group" is unique.
+  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/master' && github.sha || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
 
 jobs:
   build:
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node: [18.x, 20.x, 22.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node }}
 
-      - run: yarn
+      - run: yarn --immutable
 
       - name: Code Format Check
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.node == '22.x' }}
         run: yarn format:check
 
       - name: Check Change Files
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.node == '22.x' }}
         run: yarn checkchange
 
       # @see https://www.npmjs.com/package/syncpack
       - name: Check consistent package.json dep versions
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.node == '22.x' }}
         run: yarn syncpack list-mismatches
 
       - name: Dependency checks
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.node == '22.x' }}
         run: yarn lage depcheck
 
       - name: Build, Test, Lint

@@ -6,11 +6,11 @@ labels: dev design
 assignees: kenotron
 ---
 
-# Overview
+## Overview
 
 Provide a high level summary of the feature you are trying to build
 
-## Definitions of terms
+### Definitions of terms
 
 <dl>
   <dt>term 1</dt>
@@ -21,15 +21,15 @@ Provide a high level summary of the feature you are trying to build
   <dd>definition 1</dt>
 </dl>
 
-## Goals & non-goals
+### Goals & non-goals
 
-### Upstream dependencies
+#### Upstream dependencies
 
 1. dep 1
 2. dep 2
 3. dep 3
 
-### Downstream dependencies
+#### Downstream dependencies
 
 1. dep 1
 2. dep 2
@@ -37,7 +37,7 @@ Provide a high level summary of the feature you are trying to build
 
 </details>
 
-# Detailed Design
+## Detailed Design
 
 - Use diagrams
 
@@ -56,23 +56,23 @@ Use images by drag & drop
 - Describe different feature areas and how they are architected (designed)
 - Make sure another set of developer can roughly understand how your code will be organized after reading this section!
 
-# Test Plan
+## Test Plan
 
 - How will you make sure these features are to be tested
 - Specify if leveraging any NEW test framework or techniques
 
-# Performance, Resilience, Monitoring
+## Performance, Resilience, Monitoring
 
 - Discuss any impact on performance (both as a developer and as a consumer)
 - Any expected change in the ability to deal with spotty networks (resilience?)
 - How will you monitor or collect telemetry on the features?
 
-# Security & Privacy
+## Security & Privacy
 
 - Will the feature have any security or privacy issues?
 - What are some ways to mitigate these issues?
 
-# Accessibility
+## Accessibility
 
 - How will your feature conform to accessibility guidelines
 - Check on how you will handle:
@@ -82,12 +82,12 @@ Use images by drag & drop
   - High DPI support
   - High Contrast support
 
-# World Readiness
+## World Readiness
 
 - Globalization: how does yoru feature invoke display or manipulate display of currency, dates, timezones, names?
 - Localization: how does your feature address localization?
 
-# Execution Plan
+## Execution Plan
 
 List out the work items and/or PRs here:
 
