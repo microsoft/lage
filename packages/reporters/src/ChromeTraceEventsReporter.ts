@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import fs from "fs";
+import fs, { type WriteStream } from "fs";
 import path from "path";
 import type { Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler-types";
@@ -39,7 +39,7 @@ function getTimeBasedFilename(prefix: string) {
 }
 
 export class ChromeTraceEventsReporter implements Reporter {
-  logStream: Writable;
+  logStream: Writable | WriteStream;
   consoleLogStream: Writable = process.stdout;
 
   private events: TraceEventsObject = {
@@ -100,5 +100,14 @@ export class ChromeTraceEventsReporter implements Reporter {
         `\nProfiler output written to ${chalk.underline(this.outputFile)}, open it with chrome://tracing or edge://tracing\n`
       )
     );
+  }
+
+  cleanup() {
+    if ("close" in this.logStream) {
+      this.logStream.on("error", (err: any) => {
+        this.consoleLogStream.write(chalk.blueBright(`\nError closing ${chalk.underline(this.outputFile)}: ${err}\n`));
+      });
+      this.logStream.close();
+    }
   }
 }

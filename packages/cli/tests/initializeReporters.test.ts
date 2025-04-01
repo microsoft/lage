@@ -13,7 +13,9 @@ describe("initializeReporters", () => {
   });
 
   afterAll(() => {
-    fs.rmdirSync(tmpDir, { recursive: true });
+    /* eslint-disable no-console */
+    console.log("Deleting tmp", tmpDir);
+    fs.rmSync(tmpDir, { force: true, recursive: true });
   });
 
   it("should initialize progress reporter when param is progress passed as true", () => {
@@ -29,6 +31,7 @@ describe("initializeReporters", () => {
 
     expect(reporters.length).toBe(1);
     expect(reporters).toContainEqual(expect.any(ProgressReporter));
+    reporters.forEach((r) => r.cleanup?.());
   });
 
   it("should initialize old reporter when grouped", () => {
@@ -43,6 +46,7 @@ describe("initializeReporters", () => {
     });
     expect(reporters.length).toBe(1);
     expect(reporters).toContainEqual(expect.any(LogReporter));
+    reporters.forEach((r) => r.cleanup?.());
   });
 
   it("should initialize old reporter when verbose", () => {
@@ -57,6 +61,7 @@ describe("initializeReporters", () => {
     });
     expect(reporters.length).toBe(1);
     expect(reporters).toContainEqual(expect.any(LogReporter));
+    reporters.forEach((r) => r.cleanup?.());
   });
 
   it("should initialize profile reporter", () => {
@@ -73,6 +78,7 @@ describe("initializeReporters", () => {
 
     expect(reporters.length).toBe(2);
     expect(reporters).toContainEqual(expect.any(ChromeTraceEventsReporter));
+    reporters.forEach((r) => r.cleanup?.());
   });
 
   it("should initialize ADO reporter when reporter arg is adoLog", () => {
@@ -87,5 +93,6 @@ describe("initializeReporters", () => {
     });
     expect(reporters.length).toBe(1);
     expect(reporters).toContainEqual(expect.any(AdoReporter));
+    reporters.forEach((r) => r.cleanup?.());
   });
 });
