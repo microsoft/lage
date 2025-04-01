@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Sat, 29 Mar 2025 02:16:38 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 01 Apr 2025 19:21:22 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.31.0
+
+Tue, 01 Apr 2025 19:21:22 GMT
+
+### Minor changes
+
+- Add backwards compate lage info emit hack (dannyvv@microsoft.com)
 
 ## 0.30.0
 
