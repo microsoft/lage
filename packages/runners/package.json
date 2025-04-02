@@ -17,10 +17,10 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/target-graph": "^0.11.1"
+    "@lage-run/target-graph": "workspace:^"
   },
   "devDependencies": {
-    "@lage-run/monorepo-scripts": "*"
+    "@lage-run/monorepo-scripts": "workspace:^"
   },
   "publishConfig": {
     "access": "public"

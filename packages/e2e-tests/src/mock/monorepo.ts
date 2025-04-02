@@ -151,9 +151,10 @@ export class Monorepo {
     execa.sync("git", ["commit", "-m", "commit files"], { cwd: this.root });
   }
 
-  run(command: string, args?: string[], silent?: boolean) {
+  run(command: string, args?: string[], silent?: boolean, options?: Partial<execa.SyncOptions>) {
     return execa.sync(process.execPath, [this.yarnPath, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
+      ...options,
     });
   }
 
