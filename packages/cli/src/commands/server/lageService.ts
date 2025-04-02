@@ -1,14 +1,13 @@
 import { type ConfigOptions, getConfig, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
 import type { Logger } from "@lage-run/logger";
 import { ConnectError, Code, type ILageService } from "@lage-run/rpc";
-import { getStartTargetId, getTargetId, type Target, type TargetGraph } from "@lage-run/target-graph";
+import { getStartTargetId, getTargetId, type TargetGraph } from "@lage-run/target-graph";
 import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { type Readable } from "stream";
 import { type Pool, AggregatedPool } from "@lage-run/worker-threads-pool";
 import { getInputFiles, type PackageTree, TargetHasher } from "@lage-run/hasher";
 import { getOutputFiles } from "./getOutputFiles.js";
-import { glob } from "@lage-run/globby";
 import { MemoryStream } from "./MemoryStream.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
@@ -16,6 +15,7 @@ import type { TargetRun } from "@lage-run/scheduler-types";
 import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
 import path from "path";
 import fs from "fs";
+import { getGlobalInputHashFilePath, getHashFilePath } from "../targetHashFilePath.js";
 
 interface LageServiceContext {
   config: ConfigOptions;
@@ -24,7 +24,6 @@ interface LageServiceContext {
   dependencyMap: DependencyMap;
   root: string;
   pool: Pool;
-  globalInputs: string[];
   targetHasher: TargetHasher;
 }
 
@@ -133,14 +132,8 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     serverControls.countdownToShutdown();
   });
 
-  const globalInputs = config.cacheOptions?.environmentGlob
-    ? glob(config.cacheOptions?.environmentGlob, { cwd: root, gitignore: true })
-    : ["lage.config.js"];
-
-  logger.info(`Environment glob inputs: \n${JSON.stringify(globalInputs)}\n-------`);
-
   logger.info("done initializing");
-  return { config, targetGraph, packageTree, dependencyMap, root, pool, globalInputs, targetHasher };
+  return { config, targetGraph, packageTree, dependencyMap, root, pool, targetHasher };
 }
 
 /**
@@ -160,10 +153,6 @@ interface CreateLageServiceOptions {
   logger: Logger;
   concurrency?: number;
   tasks: string[];
-}
-
-function getHashFilePath(target: Target) {
-  return path.join(`node_modules/.lage/hash_${target.task}`);
 }
 
 export async function createLageService({
@@ -188,7 +177,7 @@ export async function createLageService({
       // THIS IS A BIG ASSUMPTION; TODO: memoize based on the parameters of the initialize() call
       // The first request sets up the nodeArg and taskArgs - we are assuming that all requests to run this target are coming from the same
       // `lage info` call
-      const { config, targetGraph, dependencyMap, packageTree, root, pool, globalInputs, targetHasher } = await initialize({
+      const { config, targetGraph, dependencyMap, packageTree, root, pool, targetHasher } = await initialize({
         cwd,
         logger,
         nodeArg: request.nodeOptions,
@@ -233,18 +222,17 @@ export async function createLageService({
         threadId: 0,
       };
 
-      const targetGlobalInputs = target.environmentGlob ? glob(target.environmentGlob, { cwd: root, gitignore: true }) : globalInputs;
-
       let results: {
         packageName?: string;
         task: string;
+        cwd: string;
         exitCode: number;
         inputs: string[];
         outputs: string[];
         stdout: string;
         stderr: string;
         id: string;
-        globalInputs: string[];
+        globalInputHashFile: string;
       };
 
       const inputs = getInputFiles(target, dependencyMap, packageTree);
@@ -258,6 +246,7 @@ export async function createLageService({
         inputs.push(path.join(path.relative(root, depTarget.cwd), getHashFilePath(depTarget)).replace(/\\/g, "/"));
       }
 
+      // Write the target hash to a file for its dependants to use
       const targetHashFile = getHashFilePath(target);
       const targetHashFullPath = path.join(target.cwd, targetHashFile);
 
@@ -270,6 +259,8 @@ export async function createLageService({
       } catch (e) {
         throw new ConnectError(`Error writing target hash file: ${targetHashFullPath}`, Code.Internal);
       }
+
+      const targetGlobalInputHashRelativePath = getGlobalInputHashFilePath(target);
 
       try {
         await pool.exec(
@@ -311,22 +302,25 @@ export async function createLageService({
         );
 
         const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
-        outputs.push(targetHashFile);
+        const targetHashFileRelativePath = path.relative(root, targetHashFullPath).replace(/\\/g, "/");
+        outputs.push(targetHashFileRelativePath);
 
         results = {
           packageName: request.packageName,
           task: request.task,
+          cwd: target.cwd,
           exitCode: 0,
           inputs,
           outputs,
           stdout: writableStdout.toString(),
           stderr: writableStderr.toString(),
           id,
-          globalInputs: targetGlobalInputs,
+          globalInputHashFile: targetGlobalInputHashRelativePath,
         };
       } catch (e) {
         const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
-        outputs.push(targetHashFile);
+        const targetHashFileRelativePath = path.relative(root, targetHashFullPath).replace(/\\/g, "/");
+        outputs.push(targetHashFileRelativePath);
 
         targetRun.status = "failed";
         targetRun.duration = hrtimeDiff(targetRun.startTime, process.hrtime());
@@ -334,13 +328,14 @@ export async function createLageService({
         results = {
           packageName: request.packageName,
           task: request.task,
+          cwd: target.cwd,
           exitCode: 1,
           inputs,
           outputs,
           stdout: "",
           stderr: e instanceof Error ? e.toString() : "",
           id,
-          globalInputs: targetGlobalInputs,
+          globalInputHashFile: targetGlobalInputHashRelativePath,
         };
       }
 
@@ -349,13 +344,12 @@ export async function createLageService({
           {
             packageName: results.packageName,
             task: results.task,
+            cwd: results.cwd,
             exitCode: results.exitCode,
             inputs: results.inputs,
             outputs: results.outputs,
             id: results.id,
-            globalInputs: `(${target.environmentGlob ? "custom target env glob used" : "general global inputs used"}): ${
-              results.globalInputs.length
-            } files`,
+            globalInputHashFile: targetGlobalInputHashRelativePath,
           },
           null,
           2

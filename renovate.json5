@@ -6,6 +6,7 @@
     "github>microsoft/m365-renovate-config:groupMore",
     "github>microsoft/m365-renovate-config:groupTypes",
     "github>microsoft/m365-renovate-config:keepFresh",
+    "github>microsoft/m365-renovate-config:pinActions",
     "github>microsoft/m365-renovate-config:restrictNode(14)"
   ],
 

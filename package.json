@@ -26,7 +26,7 @@
     "docs:build": "yarn --cwd docs build",
     "docs:test": "yarn --cwd docs build",
     "gh-pages": "gh-pages",
-    "format": "prettier --write . --",
+    "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky",
     "postinstall": "patch-package"
@@ -38,7 +38,7 @@
     "fast-glob": "3.3.3",
     "gh-pages": "^5.0.0",
     "husky": "^9.1.5",
-    "lage-npm": "npm:lage@2.7.15",
+    "lage-npm": "npm:lage@~2.12.0",
     "lint-staged": "^15.2.10",
     "patch-package": "^6.5.1",
     "prettier": "^2.8.6",
@@ -56,5 +56,5 @@
       "prod"
     ]
   },
-  "packageManager": "yarn@4.5.0"
+  "packageManager": "yarn@4.8.0"
 }

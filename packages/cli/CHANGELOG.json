@@ -2,6 +2,145 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 02 Apr 2025 00:48:44 GMT",
+      "version": "0.31.0",
+      "tag": "@lage-run/cli_v0.31.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "84c942fb7008f722709e81f00b50295a3f65e5a7",
+            "comment": "Add backwards compate lage info emit hack"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "0.30.0",
+      "tag": "@lage-run/cli_v0.30.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ],
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "fixes the lage-server to respect gitignored files for env globs"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 15 Feb 2025 20:04:19 GMT",
+      "version": "0.28.0",
+      "tag": "@lage-run/cli_v0.28.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "84c942fb7008f722709e81f00b50295a3f65e5a7",
+            "comment": "Add backwards compate lage info emit hack"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 12 Feb 2025 00:08:30 GMT",
+      "version": "0.27.0",
+      "tag": "@lage-run/cli_v0.27.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "b3a12316b89654f42153675b190626aeee6882f4",
+            "comment": "Add support to json formatter to pretty print and indent the json when the log level is set to verbose or silly..."
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.3.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 12 Feb 2025 00:04:29 GMT",
+      "version": "0.26.0",
+      "tag": "@lage-run/cli_v0.26.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "7842bdc237e410aad82b7e692ed4411cd8a38c72",
+            "comment": "Add extra info to lage info for #815"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Feb 2025 05:40:29 GMT",
+      "version": "0.25.7",
+      "tag": "@lage-run/cli_v0.25.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "55dce132215025f6dea54e36eabcd7853168de1b",
+            "comment": "fixing outputs to have correct outputs"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 10 Feb 2025 00:35:53 GMT",
+      "version": "0.25.6",
+      "tag": "@lage-run/cli_v0.25.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "031ad89ab6a0c64d46c79318377399d15e730e84",
+            "comment": "tracks the transitive inputs rather just one level deep"
+          },
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "031ad89ab6a0c64d46c79318377399d15e730e84",
+            "comment": "simulate transitives by doing our own hashing"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/rpc to v1.2.7",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 07 Feb 2025 02:50:58 GMT",
       "version": "0.25.2",
       "tag": "@lage-run/cli_v0.25.2",

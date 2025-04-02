@@ -1,27 +1,41 @@
-name: Test deployment
+name: Docs - PR
 
 on:
   pull_request:
     branches:
       - master
     paths:
+      - .github/workflows/docusaurus-pr.yml
       - "docs/**"
+
+concurrency:
+  # For PRs, use the ref (branch) in the concurrency group so that new pushes cancel any old runs.
+  # For pushes to master, ideally we wouldn't set a concurrency group, but github actions doesn't
+  # support conditional blocks of settings, so we use the SHA so the "group" is unique.
+  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/master' && github.sha || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
 
 jobs:
   test-deploy:
     name: Test deployment
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18.x
-      - name: Test build
+          node-version-file: .nvmrc
+
+      - run: yarn --immutable
         working-directory: docs
-        run: |
-          yarn install --frozen-lockfile
-          yarn build
-      - uses: actions/upload-artifact@v3
+
+      - name: Build website
+        working-directory: docs
+        run: yarn build
+
+      - uses: actions/upload-artifact@v4
         with:
           name: docs
           path: docs/build/**
