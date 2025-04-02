@@ -22,23 +22,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@actions/core@npm:^1.11.1":
+"@actions/core@npm:^1.11.1, @actions/core@npm:^1.2.6":
   version: 1.11.1
   resolution: "@actions/core@npm:1.11.1"
   dependencies:
     "@actions/exec": "npm:^1.1.1"
     "@actions/http-client": "npm:^2.0.1"
   checksum: 10c0/9aa30b397d8d0dbc74e69fe46b23fb105cab989beb420c57eacbfc51c6804abe8da0f46973ca9f639d532ea4c096d0f4d37da0223fbe94f304fa3c5f53537c30
-  languageName: node
-  linkType: hard
-
-"@actions/core@npm:^1.2.6":
-  version: 1.10.0
-  resolution: "@actions/core@npm:1.10.0"
-  dependencies:
-    "@actions/http-client": "npm:^2.0.1"
-    uuid: "npm:^8.3.2"
-  checksum: 10c0/9214d1e0cf5cf2a5d48b8f3b12488c6be9f6722ea60f2397409226e8410b5a3e12e558d9b66c93469d180399865ec20180119408a1770f026bd9ecac6965fcda
   languageName: node
   linkType: hard
 
