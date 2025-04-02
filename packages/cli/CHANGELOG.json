@@ -2,6 +2,52 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 02 Apr 2025 00:48:44 GMT",
+      "version": "0.31.0",
+      "tag": "@lage-run/cli_v0.31.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "84c942fb7008f722709e81f00b50295a3f65e5a7",
+            "comment": "Add backwards compate lage info emit hack"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "0.30.0",
+      "tag": "@lage-run/cli_v0.30.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ],
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "fixes the lage-server to respect gitignored files for env globs"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 15 Feb 2025 20:04:19 GMT",
       "version": "0.28.0",
       "tag": "@lage-run/cli_v0.28.0",

@@ -1,8 +1,28 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Sat, 15 Feb 2025 20:04:19 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 02 Apr 2025 00:48:44 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.31.0
+
+Wed, 02 Apr 2025 00:48:44 GMT
+
+### Minor changes
+
+- Add backwards compate lage info emit hack (dannyvv@microsoft.com)
+
+## 0.30.0
+
+Sat, 29 Mar 2025 02:16:38 GMT
+
+### Minor changes
+
+- cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL (kchau@microsoft.com)
+
+### Patches
+
+- fixes the lage-server to respect gitignored files for env globs (kchau@microsoft.com)
 
 ## 0.28.0
 
