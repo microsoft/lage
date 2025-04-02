@@ -1,8 +1,40 @@
 # Change Log - lage
 
-<!-- This log was last generated on Tue, 11 Feb 2025 05:40:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 29 Mar 2025 02:16:38 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.0
+
+Sat, 29 Mar 2025 02:16:38 GMT
+
+### Minor changes
+
+- cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL (kchau@microsoft.com)
+
+## 2.12.20
+
+Sat, 15 Feb 2025 20:04:19 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.28.0
+
+## 2.12.19
+
+Wed, 12 Feb 2025 00:08:30 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.27.0
+
+## 2.12.18
+
+Wed, 12 Feb 2025 00:04:29 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.26.0
 
 ## 2.12.17
 
