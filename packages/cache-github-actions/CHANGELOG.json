@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Wed, 02 Apr 2025 08:10:04 GMT",
+      "version": "0.1.23",
+      "tag": "@lage-run/cache-github-actions_v0.1.23",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "54e957d6b93381285d67ff8c23e134770b7a1512",
+            "comment": "Update dependency @actions/cache to v3.3.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 29 Mar 2025 02:16:38 GMT",
       "version": "0.1.22",
       "tag": "@lage-run/cache-github-actions_v0.1.22",

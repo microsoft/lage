@@ -1,8 +1,16 @@
 # Change Log - lage
 
-<!-- This log was last generated on Sat, 29 Mar 2025 02:16:38 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 02 Apr 2025 08:10:04 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.2
+
+Wed, 02 Apr 2025 08:10:04 GMT
+
+### Patches
+
+- Bundle with esbuild ^0.25.0 (email not defined)
 
 ## 2.14.0
 

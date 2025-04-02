@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Wed, 02 Apr 2025 08:10:04 GMT",
+      "version": "0.31.1",
+      "tag": "@lage-run/cli_v0.31.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "54e957d6b93381285d67ff8c23e134770b7a1512",
+            "comment": "Update dependency fast-glob to v3.3.3"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Apr 2025 00:48:44 GMT",
       "version": "0.31.0",
       "tag": "@lage-run/cli_v0.31.0",

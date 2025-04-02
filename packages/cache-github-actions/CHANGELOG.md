@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache-github-actions
 
-<!-- This log was last generated on Wed, 20 Nov 2024 08:12:37 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 02 Apr 2025 08:10:04 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.1.23
+
+Wed, 02 Apr 2025 08:10:04 GMT
+
+### Patches
+
+- Update dependency @actions/cache to v3.3.0 (renovate@whitesourcesoftware.com)
 
 ## 0.1.22
 

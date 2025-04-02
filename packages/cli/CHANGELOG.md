@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Wed, 02 Apr 2025 00:48:44 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 02 Apr 2025 08:10:04 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.31.1
+
+Wed, 02 Apr 2025 08:10:04 GMT
+
+### Patches
+
+- Update dependency fast-glob to v3.3.3 (renovate@whitesourcesoftware.com)
 
 ## 0.31.0
 
