@@ -31,10 +31,10 @@ jobs:
       shouldRelease: ${{ steps.shouldRelease.outputs.shouldRelease }}
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       # Cancel the release if a newer run is pending or no change files are present
-      - uses: ecraig12345/beachball-actions/should-release@v1
+      - uses: ecraig12345/beachball-actions/should-release@9b56d6fd4983b949be3313f95846788edb738c9b # v1
         id: shouldRelease
         with:
           token: ${{ github.token }}
@@ -51,12 +51,12 @@ jobs:
     environment: release
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           # Don't save creds in the git config (so it's easier to override later)
           persist-credentials: false
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4
         with:
           node-version-file: .nvmrc
 
