@@ -2,6 +2,141 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "0.3.23",
+      "tag": "@lage-run/scheduler-types_v0.3.23",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Jan 2025 16:56:22 GMT",
+      "version": "0.3.23",
+      "tag": "@lage-run/scheduler-types_v0.3.23",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.11.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 02 Dec 2024 17:23:22 GMT",
+      "version": "0.3.22",
+      "tag": "@lage-run/scheduler-types_v0.3.22",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.11.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Nov 2024 08:12:37 GMT",
+      "version": "0.3.21",
+      "tag": "@lage-run/scheduler-types_v0.3.21",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.10.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Nov 2024 19:45:09 GMT",
+      "version": "0.3.20",
+      "tag": "@lage-run/scheduler-types_v0.3.20",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.10.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 22 Oct 2024 15:19:29 GMT",
+      "version": "0.3.19",
+      "tag": "@lage-run/scheduler-types_v0.3.19",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.9.3",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 21 Oct 2024 22:18:54 GMT",
+      "version": "0.3.18",
+      "tag": "@lage-run/scheduler-types_v0.3.18",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.9.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 17 Oct 2024 20:33:04 GMT",
+      "version": "0.3.17",
+      "tag": "@lage-run/scheduler-types_v0.3.17",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.9.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Oct 2024 20:26:19 GMT",
+      "version": "0.3.16",
+      "tag": "@lage-run/scheduler-types_v0.3.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.9.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 13 Sep 2024 18:05:04 GMT",
       "version": "0.3.15",
       "tag": "@lage-run/scheduler-types_v0.3.15",

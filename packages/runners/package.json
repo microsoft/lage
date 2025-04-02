@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/runners",
-  "version": "1.0.2",
+  "version": "1.2.1",
   "description": "Runners for Lage",
   "repository": {
     "type": "git",
@@ -17,10 +17,10 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/target-graph": "^0.8.10"
+    "@lage-run/target-graph": "workspace:^"
   },
   "devDependencies": {
-    "@lage-run/monorepo-scripts": "*"
+    "@lage-run/monorepo-scripts": "workspace:^"
   },
   "publishConfig": {
     "access": "public"

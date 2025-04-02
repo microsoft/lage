@@ -1,6 +1,6 @@
 import type { Target } from "@lage-run/target-graph";
 import { hash } from "glob-hasher";
-import fg from "fast-glob";
+import { globAsync } from "@lage-run/globby";
 
 import fs from "fs";
 import path from "path";
@@ -21,6 +21,7 @@ import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
 import { FileHasher } from "./FileHasher.js";
 import type { Logger } from "@lage-run/logger";
 import { PackageTree } from "./PackageTree.js";
+import { getInputFiles } from "./getInputFiles.js";
 
 export interface TargetHasherOptions {
   root: string;
@@ -52,6 +53,9 @@ export interface TargetManifest {
  * Currently, it encapsulates the use of `backfill-hasher` to generate a hash.
  */
 export class TargetHasher {
+  targetHashesLog: Record<string, { fileHashes: Record<string, string>; globalFileHashes: Record<string, string> }> = {};
+  targetHashesDirectory: string;
+
   logger: Logger | undefined;
   fileHasher: FileHasher;
   packageTree: PackageTree | undefined;
@@ -68,20 +72,6 @@ export class TargetHasher {
     dependencies: new Map(),
     dependents: new Map(),
   };
-
-  memoizedEnvGlobResults = new Map<string, string[]>();
-
-  async getMemorizedEnvGlobResults(envGlob: string[]) {
-    const key = envGlob.join("\0ENV_GLOB\0");
-    const { root } = this.options;
-
-    if (!this.memoizedEnvGlobResults.has(key)) {
-      const files = await fg(envGlob, { cwd: root });
-      this.memoizedEnvGlobResults.set(key, files);
-    }
-
-    return this.memoizedEnvGlobResults.get(key) ?? [];
-  }
 
   getPackageInfos(workspacePackages: WorkspaceInfo) {
     const { root } = this.options;
@@ -109,49 +99,6 @@ export class TargetHasher {
     return packageInfos;
   }
 
-  expandInputPatterns(patterns: string[], target: Target) {
-    const expandedPatterns: Record<string, string[]> = {};
-
-    for (const pattern of patterns) {
-      if (pattern.startsWith("^") || pattern.startsWith("!^")) {
-        const matchPattern = pattern.replace("^", "");
-
-        // get all the packages that are transitive deps and add them to the list
-        const queue = [target.packageName];
-
-        const visited = new Set<string>();
-
-        while (queue.length > 0) {
-          const pkg = queue.pop()!;
-          if (visited.has(pkg)) {
-            continue;
-          }
-          visited.add(pkg);
-
-          if (pkg !== target.packageName) {
-            expandedPatterns[pkg] = expandedPatterns[pkg] ?? [];
-            expandedPatterns[pkg].push(matchPattern);
-          }
-
-          if (this.dependencyMap.dependencies.has(pkg)) {
-            const deps = this.dependencyMap.dependencies.get(pkg);
-            if (deps) {
-              for (const dep of deps) {
-                queue.push(dep);
-              }
-            }
-          }
-        }
-      } else {
-        const pkg = target.packageName!;
-        expandedPatterns[pkg] = expandedPatterns[pkg] ?? [];
-        expandedPatterns[pkg].push(pattern);
-      }
-    }
-
-    return expandedPatterns;
-  }
-
   constructor(private options: TargetHasherOptions) {
     const { root, logger } = options;
     this.logger = logger;
@@ -159,6 +106,12 @@ export class TargetHasher {
     this.fileHasher = new FileHasher({
       root,
     });
+
+    this.targetHashesDirectory = path.join(root, "node_modules", ".cache", "lage", "hashes");
+
+    if (!fs.existsSync(this.targetHashesDirectory)) {
+      fs.mkdirSync(this.targetHashesDirectory, { recursive: true });
+    }
   }
 
   ensureInitialized() {
@@ -178,7 +131,7 @@ export class TargetHasher {
     this.initializedPromise = Promise.all([
       this.fileHasher
         .readManifest()
-        .then(() => this.getMemorizedEnvGlobResults(environmentGlob))
+        .then(() => globAsync(environmentGlob, { cwd: root }))
         .then((files) => this.fileHasher.hash(files))
         .then((hash) => (this.globalInputsHash = hash)),
 
@@ -207,9 +160,6 @@ export class TargetHasher {
     if (this.logger !== undefined) {
       const globalInputsHash = hashStrings(Object.values(this.globalInputsHash ?? {}));
       this.logger.verbose(`Global inputs hash: ${globalInputsHash}`);
-      // Log global input hashs to log file
-      const globalInputsHashJson = JSON.stringify(this.globalInputsHash, null, 2);
-      this.logger.silly(globalInputsHashJson);
     }
   }
 
@@ -223,7 +173,7 @@ export class TargetHasher {
         throw new Error("Root-level targets must have `inputs` defined if it has cache enabled.");
       }
 
-      const files = await fg(target.inputs, { cwd: root });
+      const files = await globAsync(target.inputs, { cwd: root });
       const fileFashes = hash(files, { cwd: root }) ?? {};
 
       const hashes = Object.values(fileFashes) as string[];
@@ -247,28 +197,17 @@ export class TargetHasher {
     const externalDeps = resolveExternalDependencies(allDependencies, workspaceInfo, parsedLock);
     const resolvedDependencies = [...internalDeps, ...externalDeps].sort();
 
-    const inputs = target.inputs ?? ["**/*"];
-
-    const packagePatterns = this.expandInputPatterns(inputs, target);
-    const files: string[] = [];
-    for (const [pkg, patterns] of Object.entries(packagePatterns)) {
-      const packageFiles = this.packageTree!.getPackageFiles(pkg, patterns);
-      files.push(...packageFiles);
-    }
+    const files = getInputFiles(target, this.dependencyMap, this.packageTree!);
     const fileHashes = this.fileHasher.hash(files) ?? {}; // this list is sorted by file name
 
     // get target hashes
     const targetDepHashes = target.dependencies?.sort().map((targetDep) => this.targetHashes[targetDep]);
 
-    const envGlobFiles = Object.values(
-      target.environmentGlob
-        ? this.fileHasher.hash(await this.getMemorizedEnvGlobResults(target.environmentGlob))
-        : this.globalInputsHash ?? {}
-    );
+    const globalFileHashes = await this.getEnvironmentGlobHashes(root, target);
 
     const combinedHashes = [
       // Environmental hashes
-      ...envGlobFiles,
+      ...Object.values(globalFileHashes),
       `${target.id}|${JSON.stringify(this.options.cliArgs)}`,
       this.options.cacheKey || "",
 
@@ -284,10 +223,31 @@ export class TargetHasher {
 
     this.targetHashes[target.id] = hashString;
 
+    this.targetHashesLog[target.id] = { fileHashes, globalFileHashes };
+
     return hashString;
   }
 
+  writeTargetHashesManifest() {
+    for (const [id, { fileHashes, globalFileHashes }] of Object.entries(this.targetHashesLog)) {
+      const targetHashesManifestPath = path.join(this.targetHashesDirectory, `${id}.json`);
+      if (!fs.existsSync(path.dirname(targetHashesManifestPath))) {
+        fs.mkdirSync(path.dirname(targetHashesManifestPath), { recursive: true });
+      }
+      fs.writeFileSync(targetHashesManifestPath, JSON.stringify({ fileHashes, globalFileHashes }), "utf-8");
+    }
+  }
+
+  async getEnvironmentGlobHashes(root: string, target: Target) {
+    const globalFileHashes = target.environmentGlob
+      ? this.fileHasher.hash(await globAsync(target.environmentGlob ?? [], { cwd: root }))
+      : this.globalInputsHash ?? {};
+
+    return globalFileHashes;
+  }
+
   async cleanup() {
+    this.writeTargetHashesManifest();
     await this.fileHasher.writeManifest();
   }
 }

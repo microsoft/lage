@@ -92,4 +92,9 @@ export interface Target {
    * Whether the target should be displayed by reporters
    */
   hidden?: boolean;
+
+  /**
+   * Whether the target should be run
+   */
+  shouldRun?: boolean;
 }

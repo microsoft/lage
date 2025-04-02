@@ -1,0 +1,11 @@
+{
+  "name": "monorepo-nested",
+  "license": "MIT",
+  "version": "0.1.0",
+  "workspaces": {
+    "packages": [
+      "packages/package-a",
+      "packages/package-a/build/package-b"
+    ]
+  }
+}

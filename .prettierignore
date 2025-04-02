@@ -4,14 +4,16 @@
 
 # Generated or imported files
 change/*.json
+docs/build
 CHANGELOG.*
 LICENSE
 SECURITY.md
 *.snap
 yarn.lock
+**/.yarn
 # this is a test fixture
 yarn.js
-.yarn/**
+**/.rush/temp
 
 # These lines from .gitignore can be removed after prettier 3 update
 node_modules

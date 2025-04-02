@@ -3,83 +3,428 @@
 exports[`info command basic info test case 1`] = `
 [
   {
-    "cache": true,
-    "cwd": "/some/path/to/a",
-    "depSpecs": [
-      "build",
-    ],
-    "dependencies": [
-      "a#build",
-    ],
-    "dependents": [],
-    "id": "a#test",
-    "label": "a - test",
-    "options": {},
-    "packageName": "a",
-    "priority": 0,
-    "task": "test",
-    "type": "npmScript",
-    "weight": 1,
+    "data": {
+      "command": [
+        "test",
+      ],
+      "packageTasks": [
+        {
+          "command": [],
+          "dependencies": [],
+          "id": "__start",
+          "package": "",
+          "task": "__start",
+          "workingDirectory": "",
+        },
+        {
+          "command": [
+            "node",
+            "./test.js",
+          ],
+          "dependencies": [
+            "a#build",
+          ],
+          "id": "a#test",
+          "package": "a",
+          "task": "test",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./test.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "b#test",
+          "package": "b",
+          "task": "test",
+          "workingDirectory": "packages/b",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "a#build",
+          "package": "a",
+          "task": "build",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "__start",
+          ],
+          "id": "b#build",
+          "package": "b",
+          "task": "build",
+          "workingDirectory": "packages/b",
+        },
+      ],
+      "scope": [
+        "a",
+        "b",
+      ],
+    },
+    "level": 30,
+    "msg": "info",
   },
+]
+`;
+
+exports[`info command custom inputs, outputs and weight value 1`] = `
+[
   {
-    "cache": true,
-    "cwd": "/some/path/to/b",
-    "depSpecs": [
-      "build",
-    ],
-    "dependencies": [
-      "b#build",
-    ],
-    "dependents": [],
-    "id": "b#test",
-    "label": "b - test",
-    "options": {},
-    "packageName": "b",
-    "priority": 0,
-    "task": "test",
-    "type": "npmScript",
-    "weight": 1,
+    "data": {
+      "command": [
+        "test",
+        "build",
+      ],
+      "packageTasks": [
+        {
+          "command": [],
+          "dependencies": [],
+          "id": "__start",
+          "package": "",
+          "task": "__start",
+          "workingDirectory": "",
+        },
+        {
+          "command": [
+            "node",
+            "./test.js",
+          ],
+          "dependencies": [
+            "a#build",
+          ],
+          "id": "a#test",
+          "inputs": [
+            "src/**/*.test.ts",
+            "*",
+            "^lib/**",
+          ],
+          "package": "a",
+          "task": "test",
+          "weight": 5,
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./test.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "b#test",
+          "inputs": [
+            "src/**/*.test.ts",
+            "*",
+            "^lib/**",
+          ],
+          "package": "b",
+          "task": "test",
+          "weight": 5,
+          "workingDirectory": "packages/b",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "a#build",
+          "inputs": [
+            "src/**",
+            "*",
+          ],
+          "outputs": [
+            "lib/**",
+          ],
+          "package": "a",
+          "task": "build",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "__start",
+          ],
+          "id": "b#build",
+          "inputs": [
+            "src/**",
+            "*",
+          ],
+          "outputs": [
+            "lib/**",
+          ],
+          "package": "b",
+          "task": "build",
+          "workingDirectory": "packages/b",
+        },
+      ],
+      "scope": [
+        "a",
+        "b",
+      ],
+    },
+    "level": 30,
+    "msg": "info",
   },
+]
+`;
+
+exports[`info command custom options 1`] = `
+[
   {
-    "cache": true,
-    "cwd": "/some/path/to/a",
-    "depSpecs": [
-      "^build",
-    ],
-    "dependencies": [
-      "b#build",
-    ],
-    "dependents": [
-      "a#test",
-    ],
-    "id": "a#build",
-    "label": "a - build",
-    "options": {},
-    "packageName": "a",
-    "priority": 0,
-    "task": "build",
-    "type": "npmScript",
-    "weight": 1,
+    "data": {
+      "command": [
+        "test",
+        "build",
+      ],
+      "packageTasks": [
+        {
+          "command": [],
+          "dependencies": [],
+          "id": "__start",
+          "package": "",
+          "task": "__start",
+          "workingDirectory": "",
+        },
+        {
+          "command": [
+            "node",
+            "./test.js",
+          ],
+          "dependencies": [
+            "a#build",
+          ],
+          "id": "a#test",
+          "options": {
+            "environment": {
+              "custom_env_var_array": [
+                1,
+                true,
+                "string",
+                {
+                  "x": 1,
+                },
+                [],
+              ],
+              "custom_env_var_bool": true,
+              "custom_env_var_number": 1,
+              "custom_env_var_string": "string",
+            },
+          },
+          "package": "a",
+          "task": "test",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./test.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "b#test",
+          "options": {
+            "environment": {
+              "custom_env_var_array": [
+                1,
+                true,
+                "string",
+                {
+                  "x": 1,
+                },
+                [],
+              ],
+              "custom_env_var_bool": true,
+              "custom_env_var_number": 1,
+              "custom_env_var_string": "string",
+            },
+          },
+          "package": "b",
+          "task": "test",
+          "workingDirectory": "packages/b",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "a#build",
+          "package": "a",
+          "task": "build",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "__start",
+          ],
+          "id": "b#build",
+          "package": "b",
+          "task": "build",
+          "workingDirectory": "packages/b",
+        },
+      ],
+      "scope": [
+        "a",
+        "b",
+      ],
+    },
+    "level": 30,
+    "msg": "info",
   },
+]
+`;
+
+exports[`info command lage info drops direct dependencies when transtive and keeps __start 1`] = `
+[
   {
-    "cache": true,
-    "cwd": "/some/path/to/b",
-    "depSpecs": [
-      "^build",
-    ],
-    "dependencies": [],
-    "dependents": [
-      "b#test",
-      "a#build",
-    ],
-    "id": "b#build",
-    "label": "b - build",
-    "options": {},
-    "packageName": "b",
-    "priority": 0,
-    "task": "build",
-    "type": "npmScript",
-    "weight": 1,
+    "data": {
+      "command": [
+        "build",
+      ],
+      "packageTasks": [
+        {
+          "command": [],
+          "dependencies": [],
+          "id": "__start",
+          "package": "",
+          "task": "__start",
+          "workingDirectory": "",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "a#build",
+          "package": "a",
+          "task": "build",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "c#build",
+          ],
+          "id": "b#build",
+          "package": "b",
+          "task": "build",
+          "workingDirectory": "packages/b",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "__start",
+          ],
+          "id": "c#build",
+          "package": "c",
+          "task": "build",
+          "workingDirectory": "packages/c",
+        },
+      ],
+      "scope": [
+        "a",
+        "b",
+        "c",
+        "d",
+      ],
+    },
+    "level": 30,
+    "msg": "info",
+  },
+]
+`;
+
+exports[`info command lage info in back compat mode keeps direct dependencies and drops __start 1`] = `
+[
+  {
+    "data": {
+      "command": [
+        "build",
+      ],
+      "packageTasks": [
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "b#build",
+            "c#build",
+          ],
+          "id": "a#build",
+          "package": "a",
+          "task": "build",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "c#build",
+          ],
+          "id": "b#build",
+          "package": "b",
+          "task": "build",
+          "workingDirectory": "packages/b",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [],
+          "id": "c#build",
+          "package": "c",
+          "task": "build",
+          "workingDirectory": "packages/c",
+        },
+      ],
+      "scope": [
+        "a",
+        "b",
+        "c",
+        "d",
+      ],
+    },
+    "level": 30,
+    "msg": "info",
   },
 ]
 `;
@@ -87,42 +432,52 @@ exports[`info command basic info test case 1`] = `
 exports[`info command scoped info test case 1`] = `
 [
   {
-    "cache": true,
-    "cwd": "/some/path/to/b",
-    "depSpecs": [
-      "build",
-    ],
-    "dependencies": [
-      "b#build",
-    ],
-    "dependents": [],
-    "id": "b#test",
-    "label": "b - test",
-    "options": {},
-    "packageName": "b",
-    "priority": 0,
-    "task": "test",
-    "type": "npmScript",
-    "weight": 1,
-  },
-  {
-    "cache": true,
-    "cwd": "/some/path/to/b",
-    "depSpecs": [
-      "^build",
-    ],
-    "dependencies": [],
-    "dependents": [
-      "b#test",
-    ],
-    "id": "b#build",
-    "label": "b - build",
-    "options": {},
-    "packageName": "b",
-    "priority": 0,
-    "task": "build",
-    "type": "npmScript",
-    "weight": 1,
+    "data": {
+      "command": [
+        "test",
+      ],
+      "packageTasks": [
+        {
+          "command": [],
+          "dependencies": [],
+          "id": "__start",
+          "package": "",
+          "task": "__start",
+          "workingDirectory": "",
+        },
+        {
+          "command": [
+            "node",
+            "./test.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "b#test",
+          "package": "b",
+          "task": "test",
+          "workingDirectory": "packages/b",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "__start",
+          ],
+          "id": "b#build",
+          "package": "b",
+          "task": "build",
+          "workingDirectory": "packages/b",
+        },
+      ],
+      "scope": [
+        "b",
+      ],
+    },
+    "level": 30,
+    "msg": "info",
   },
 ]
 `;

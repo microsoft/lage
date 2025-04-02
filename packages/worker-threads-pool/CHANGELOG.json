@@ -2,6 +2,111 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "0.9.0",
+      "tag": "@lage-run/worker-threads-pool_v0.9.0",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 23 Jan 2025 17:38:05 GMT",
+      "version": "0.9.0",
+      "tag": "@lage-run/worker-threads-pool_v0.9.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "d237682b5454ef811a39fcaca56d1a28f064449d",
+            "comment": "Add priority as a parameter to Pool APIs to support more optimal scheduling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 08 Dec 2024 00:07:28 GMT",
+      "version": "0.8.6",
+      "tag": "@lage-run/worker-threads-pool_v0.8.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "e6eaba8d27f25d746caed332198519a7dc4a218e",
+            "comment": "adds the ability to do workerIdleMemoryLimit"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 04 Dec 2024 23:50:15 GMT",
+      "version": "0.8.5",
+      "tag": "@lage-run/worker-threads-pool_v0.8.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "a512ef3dffa4e87edcd33a762e10418e0579ca02",
+            "comment": "Fixes the server worker model to use aggregated pool"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 09 Oct 2024 17:20:33 GMT",
+      "version": "0.8.4",
+      "tag": "@lage-run/worker-threads-pool_v0.8.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "41964958d510982762eaa7a496cad7bbb560bcc5",
+            "comment": "fixed the workerpool to raise \"idle\" event only if all workers are freed"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Oct 2024 20:26:19 GMT",
+      "version": "0.8.3",
+      "tag": "@lage-run/worker-threads-pool_v0.8.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "6ecbd570669a07fa87429af5de13ec1adc58b864",
+            "comment": "adds an idle event emit"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 27 Sep 2024 20:03:49 GMT",
+      "version": "0.8.2",
+      "tag": "@lage-run/worker-threads-pool_v0.8.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "2919f9041f931dc6ef65017f7aedb9fef9dab66d",
+            "comment": "adds an idle event emit"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Sep 2024 20:30:48 GMT",
       "version": "0.8.1",
       "tag": "@lage-run/worker-threads-pool_v0.8.1",

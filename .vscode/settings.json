@@ -8,10 +8,14 @@
   "search.exclude": {
     "**/lib": true,
     "**/node_modules": true,
+    "**/.docusaurus": true,
+    "**/.yarn": true,
+    "**/yarn/yarn.js": true,
+    "**/docs/build": true,
     "**/*.code-search": true
   },
   "[typescript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"

@@ -5,14 +5,14 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "glob-hasher": "^1.4.2",
-    "fast-glob": "^3.3.2",
-    "globby": "^14.0.1",
-    "multimatch": "^7.0.0",
-    "micromatch": "^4.0.7",
+    "array-differ": "^4.0.0",
     "execa": "^9.3.0",
-    "workspace-tools": "^0.36.4",
-    "array-differ": "^4.0.0"
+    "fast-glob": "^3.3.2",
+    "glob-hasher": "^1.4.2",
+    "globby": "^14.0.1",
+    "micromatch": "^4.0.7",
+    "multimatch": "^7.0.0",
+    "workspace-tools": "^0.38.0"
   },
   "type": "module",
   "module": "index.js"

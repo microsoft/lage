@@ -1,8 +1,96 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Fri, 13 Sep 2024 18:05:04 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 12 Feb 2025 00:08:30 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.0
+
+Wed, 12 Feb 2025 00:08:30 GMT
+
+### Minor changes
+
+- Add support to json formatter to pretty print and indent the json when the log level is set to verbose or silly... (dannyvv@microsoft.com)
+
+## 1.2.19
+
+Wed, 15 Jan 2025 16:56:22 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.23
+- Bump @lage-run/target-graph to v0.11.1
+
+## 1.2.18
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.22
+- Bump @lage-run/target-graph to v0.11.0
+
+## 1.2.17
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.21
+- Bump @lage-run/target-graph to v0.10.1
+
+## 1.2.16
+
+Fri, 08 Nov 2024 19:45:09 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.20
+- Bump @lage-run/target-graph to v0.10.0
+
+## 1.2.15
+
+Tue, 22 Oct 2024 15:19:29 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.19
+- Bump @lage-run/target-graph to v0.9.3
+
+## 1.2.14
+
+Mon, 21 Oct 2024 22:18:54 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.18
+- Bump @lage-run/target-graph to v0.9.2
+
+## 1.2.13
+
+Thu, 17 Oct 2024 20:33:04 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.17
+- Bump @lage-run/target-graph to v0.9.1
+
+## 1.2.12
+
+Fri, 11 Oct 2024 22:09:18 GMT
+
+### Patches
+
+- adding a mkdirp before writing to the log file (kchau@microsoft.com)
+
+## 1.2.11
+
+Wed, 02 Oct 2024 20:26:19 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.3.16
+- Bump @lage-run/target-graph to v0.9.0
 
 ## 1.2.10
 

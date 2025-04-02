@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import { ThreadWorker } from "./ThreadWorker.js";
+import { pickTaskFromQueue } from "./pickTaskFromQueue.js";
 import os from "os";
 
 import type { IWorker, QueueItem } from "./types/WorkerQueue.js";
@@ -7,7 +8,14 @@ import type { Pool } from "./types/Pool.js";
 import type { Readable } from "stream";
 import type { WorkerPoolOptions } from "./types/WorkerPoolOptions.js";
 
-const workerFreedEvent = "free";
+type WorkerPoolEvents = "freedWorker" | "idle" | "busy" | "restarting";
+
+export const WorkerPoolEvents = {
+  freedWorker: "freedWorker",
+  idle: "idle",
+  busy: "busy",
+  restarting: "restarting",
+} as const;
 
 export class WorkerPool extends EventEmitter implements Pool {
   workers: IWorker[] = [];
@@ -32,11 +40,18 @@ export class WorkerPool extends EventEmitter implements Pool {
 
     // Any time the workerFreedEvent is emitted, dispatch
     // the next task pending in the queue, if any.
-    this.on(workerFreedEvent, () => {
+    this.on(WorkerPoolEvents.freedWorker, () => {
       if (this.queue.length > 0) {
         this._exec();
+        this.emit(WorkerPoolEvents.busy);
+      } else if (this.isIdle()) {
+        this.emit(WorkerPoolEvents.idle);
       }
     });
+  }
+
+  isIdle() {
+    return this.workers.every((w) => w.status === "free");
   }
 
   get workerRestarts() {
@@ -69,7 +84,7 @@ export class WorkerPool extends EventEmitter implements Pool {
       worker.on("free", (data) => {
         const { weight } = data;
         this.availability += weight;
-        this.emit(workerFreedEvent);
+        this.emit(WorkerPoolEvents.freedWorker);
       });
       this.workers.push(worker);
       return worker;
@@ -81,7 +96,8 @@ export class WorkerPool extends EventEmitter implements Pool {
     weight: number,
     setup?: (worker: IWorker, stdout: Readable, stderr: Readable) => void,
     cleanup?: (worker: IWorker) => void,
-    abortSignal?: AbortSignal
+    abortSignal?: AbortSignal,
+    priority?: number
   ) {
     if (abortSignal?.aborted) {
       return Promise.resolve();
@@ -91,14 +107,14 @@ export class WorkerPool extends EventEmitter implements Pool {
     weight = Math.min(Math.max(1, weight), this.maxWorkers);
 
     return new Promise((resolve, reject) => {
-      this.queue.push({ task: { ...task, weight }, weight, resolve, reject, cleanup, setup });
+      this.queue.push({ task: { ...task, weight }, weight, resolve, reject, cleanup, setup, priority });
       this._exec(abortSignal);
     });
   }
 
   _exec(abortSignal?: AbortSignal) {
     // find work that will fit the availability of workers
-    const workIndex = this.queue.findIndex((item) => item.weight <= this.availability);
+    const workIndex = pickTaskFromQueue(this.queue, this.availability);
 
     if (workIndex === -1) {
       return;

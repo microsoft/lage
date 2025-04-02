@@ -6,8 +6,12 @@ export interface TargetRunnerOptions {
   abortSignal?: AbortSignal;
 }
 
-export interface TargetRunner {
+export interface RunnerResult {
+  exitCode?: number;
+}
+
+export interface TargetRunner<T extends RunnerResult = RunnerResult> {
   shouldRun(target: Target): Promise<boolean>;
-  run(options: TargetRunnerOptions): Promise<unknown>;
+  run(options: TargetRunnerOptions): Promise<T | void>;
   cleanup?(): Promise<void> | void;
 }

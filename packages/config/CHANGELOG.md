@@ -1,8 +1,98 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Fri, 13 Sep 2024 18:05:04 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 15 Jan 2025 16:56:22 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.4.12
+
+Wed, 15 Jan 2025 16:56:22 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.2.1
+- Bump @lage-run/target-graph to v0.11.1
+
+## 0.4.11
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.2.0
+- Bump @lage-run/target-graph to v0.11.0
+
+## 0.4.10
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.1 (email not defined)
+- Bump @lage-run/runners to v1.1.2
+- Bump @lage-run/target-graph to v0.10.1
+
+## 0.4.9
+
+Wed, 20 Nov 2024 02:43:43 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.1.1
+
+## 0.4.8
+
+Fri, 08 Nov 2024 19:45:09 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.1.0
+- Bump @lage-run/target-graph to v0.10.0
+
+## 0.4.7
+
+Fri, 01 Nov 2024 08:07:38 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.0.7
+
+## 0.4.6
+
+Tue, 22 Oct 2024 15:19:29 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.37.0 (email not defined)
+- Bump @lage-run/runners to v1.0.6
+- Bump @lage-run/target-graph to v0.9.3
+
+## 0.4.5
+
+Mon, 21 Oct 2024 22:18:54 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.0.5
+- Bump @lage-run/target-graph to v0.9.2
+
+## 0.4.4
+
+Thu, 17 Oct 2024 20:33:04 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.0.4
+- Bump @lage-run/target-graph to v0.9.1
+
+## 0.4.3
+
+Wed, 02 Oct 2024 20:26:19 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.0.3
+- Bump @lage-run/target-graph to v0.9.0
 
 ## 0.4.2
 

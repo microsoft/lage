@@ -1,8 +1,24 @@
 # Change Log - @lage-run/globby
 
-This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
+<!-- This log was last generated on Wed, 02 Oct 2024 20:26:19 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 14.2.0
+
+Wed, 02 Oct 2024 20:26:19 GMT
+
+### Minor changes
+
+- packages into a bundled globby types (kchau@microsoft.com)
+
+## 14.1.0
+
+Fri, 27 Sep 2024 20:03:49 GMT
+
+### Minor changes
+
+- packages into a bundled globby types (kchau@microsoft.com)
 
 ## 14.0.3
 

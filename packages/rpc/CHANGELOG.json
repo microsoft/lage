@@ -2,6 +2,95 @@
   "name": "@lage-run/rpc",
   "entries": [
     {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "1.4.0",
+      "tag": "@lage-run/rpc_v1.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 10 Feb 2025 00:35:53 GMT",
+      "version": "1.2.7",
+      "tag": "@lage-run/rpc_v1.2.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "031ad89ab6a0c64d46c79318377399d15e730e84",
+            "comment": "adding some global inputs to be separately tracked in the protocol"
+          },
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "031ad89ab6a0c64d46c79318377399d15e730e84",
+            "comment": "simulate transitives by doing our own hashing"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 04 Oct 2024 23:41:44 GMT",
+      "version": "1.2.3",
+      "tag": "@lage-run/rpc_v1.2.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "5030c3eca2e52a4b31e4246b06dea37e126aa659",
+            "comment": "adds support for stdout / stderr output"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Oct 2024 20:26:19 GMT",
+      "version": "1.2.2",
+      "tag": "@lage-run/rpc_v1.2.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "6ecbd570669a07fa87429af5de13ec1adc58b864",
+            "comment": "Simulate file access for lage server"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 27 Sep 2024 20:03:49 GMT",
+      "version": "1.2.1",
+      "tag": "@lage-run/rpc_v1.2.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "2919f9041f931dc6ef65017f7aedb9fef9dab66d",
+            "comment": "Simulate file access for lage server"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 13 Sep 2024 18:05:04 GMT",
       "version": "1.2.0",
       "tag": "@lage-run/rpc_v1.2.0",

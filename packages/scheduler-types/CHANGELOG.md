@@ -1,8 +1,72 @@
 # Change Log - @lage-run/scheduler-types
 
-<!-- This log was last generated on Fri, 13 Sep 2024 18:05:04 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 15 Jan 2025 16:56:22 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.3.23
+
+Wed, 15 Jan 2025 16:56:22 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.11.1
+
+## 0.3.22
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.11.0
+
+## 0.3.21
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.10.1
+
+## 0.3.20
+
+Fri, 08 Nov 2024 19:45:09 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.10.0
+
+## 0.3.19
+
+Tue, 22 Oct 2024 15:19:29 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.9.3
+
+## 0.3.18
+
+Mon, 21 Oct 2024 22:18:54 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.9.2
+
+## 0.3.17
+
+Thu, 17 Oct 2024 20:33:04 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.9.1
+
+## 0.3.16
+
+Wed, 02 Oct 2024 20:26:19 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.9.0
 
 ## 0.3.15
 

@@ -106,6 +106,7 @@ async function setup(options: TargetWorkerDataOptions) {
 
     return {
       skipped: cacheHit,
+      id: data.target.id,
       hash,
       value,
     };

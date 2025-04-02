@@ -1,8 +1,326 @@
 # Change Log - lage
 
-<!-- This log was last generated on Fri, 13 Sep 2024 18:05:04 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 29 Mar 2025 02:16:38 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.0
+
+Sat, 29 Mar 2025 02:16:38 GMT
+
+### Minor changes
+
+- cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL (kchau@microsoft.com)
+
+## 2.12.20
+
+Sat, 15 Feb 2025 20:04:19 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.28.0
+
+## 2.12.19
+
+Wed, 12 Feb 2025 00:08:30 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.27.0
+
+## 2.12.18
+
+Wed, 12 Feb 2025 00:04:29 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.26.0
+
+## 2.12.17
+
+Tue, 11 Feb 2025 05:40:29 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.7
+
+## 2.12.16
+
+Mon, 10 Feb 2025 00:35:53 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.6
+
+## 2.12.12
+
+Fri, 07 Feb 2025 02:50:58 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.2
+
+## 2.12.11
+
+Tue, 04 Feb 2025 18:31:49 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.1
+
+## 2.12.10
+
+Fri, 24 Jan 2025 23:04:32 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.0
+
+## 2.12.9
+
+Thu, 23 Jan 2025 17:38:05 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.13
+
+## 2.12.8
+
+Fri, 17 Jan 2025 21:57:32 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.12
+
+## 2.12.7
+
+Wed, 15 Jan 2025 16:56:22 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.11
+- Bump @lage-run/runners to v1.2.1
+
+## 2.12.6
+
+Fri, 20 Dec 2024 19:42:00 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.10
+
+## 2.12.5
+
+Thu, 19 Dec 2024 15:53:46 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.9
+
+## 2.12.4
+
+Tue, 10 Dec 2024 23:38:54 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.8
+
+## 2.12.3
+
+Mon, 09 Dec 2024 06:21:52 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.7
+
+## 2.12.2
+
+Sun, 08 Dec 2024 00:07:28 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.6
+
+## 2.12.1
+
+Wed, 04 Dec 2024 23:50:15 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.5
+
+## 2.12.0
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Minor changes
+
+- adds the ability to create stagedTargets (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.24.4
+- Bump @lage-run/runners to v1.2.0
+
+## 2.11.15
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.1 (email not defined)
+- Bump @lage-run/cli to v0.24.3
+- Bump @lage-run/runners to v1.1.2
+
+## 2.11.14
+
+Wed, 20 Nov 2024 02:43:43 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.2
+- Bump @lage-run/runners to v1.1.1
+
+## 2.11.13
+
+Mon, 18 Nov 2024 23:22:30 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.1
+
+## 2.11.12
+
+Fri, 08 Nov 2024 19:45:09 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.24.0
+- Bump @lage-run/runners to v1.1.0
+
+## 2.11.11
+
+Fri, 08 Nov 2024 19:27:44 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.23.11
+
+## 2.11.10
+
+Fri, 01 Nov 2024 08:07:38 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.23.10
+- Bump @lage-run/runners to v1.0.7
+
+## 2.11.9
+
+Tue, 22 Oct 2024 15:19:29 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.37.0 (email not defined)
+- Bump @lage-run/cli to v0.23.9
+- Bump @lage-run/runners to v1.0.6
+
+## 2.11.8
+
+Mon, 21 Oct 2024 22:18:54 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.23.8
+- Bump @lage-run/runners to v1.0.5
+
+## 2.11.7
+
+Thu, 17 Oct 2024 20:33:04 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.23.7
+- Bump @lage-run/runners to v1.0.4
+
+## 2.11.6
+
+Fri, 11 Oct 2024 22:09:18 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.23.6
+
+## 2.11.5
+
+Fri, 11 Oct 2024 19:49:15 GMT
+
+### Patches
+
+- fixing the lage-server by publishing the correct files (kchau@microsoft.com)
+
+## 2.11.4
+
+Thu, 10 Oct 2024 20:14:59 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.23.5
+
+## 2.11.3
+
+Wed, 09 Oct 2024 17:20:33 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.23.4
+
+## 2.11.2
+
+Tue, 08 Oct 2024 20:03:36 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.23.3
+
+## 2.11.1
+
+Mon, 07 Oct 2024 19:33:13 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.23.2
+
+## 2.11.0
+
+Fri, 04 Oct 2024 23:41:44 GMT
+
+### Minor changes
+
+- adds the exec --server capability that would launch the background server (kchau@microsoft.com)
+- Bump @lage-run/cli to v0.23.1
+
+## 2.10.2
+
+Wed, 02 Oct 2024 20:26:19 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.23.0
+- Bump @lage-run/runners to v1.0.3
+
+## 2.10.1
+
+Fri, 27 Sep 2024 20:03:49 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.22.0
+
+## 2.10.0
+
+Wed, 25 Sep 2024 20:28:10 GMT
+
+### Minor changes
+
+- Bump @lage-run/cli to v0.21.0
 
 ## 2.9.0
 

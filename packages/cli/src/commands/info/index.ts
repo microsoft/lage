@@ -1,9 +1,13 @@
 import { Command } from "commander";
 import { infoAction } from "./action.js";
-import { addFilterOptions } from "../addFilterOptions.js";
-import { addLoggerOptions } from "../addLoggerOptions.js";
+import { addOptions } from "../addOptions.js";
 
-const infoCommand = new Command("info");
+const command = new Command("info");
+addOptions("server", command);
+addOptions("runner", command);
+addOptions("logger", command);
+addOptions("filter", command);
+addOptions("info", command);
+command.action(infoAction);
 
-addFilterOptions(addLoggerOptions(infoCommand)).action(infoAction);
-export { infoCommand };
+export { command as infoCommand };

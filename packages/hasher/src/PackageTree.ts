@@ -12,7 +12,11 @@ export interface PackageTreeOptions {
 }
 
 interface PathNode {
-  [key: string]: PathNode;
+  children: {
+    [key: string]: PathNode;
+  };
+
+  isPackage: boolean;
 }
 
 /**
@@ -21,7 +25,7 @@ interface PathNode {
  * TODO: add a watcher to make sure the tree is up to date during a "watched" run.
  */
 export class PackageTree {
-  #tree: PathNode = {};
+  #tree: PathNode = { children: {}, isPackage: true };
   #packageFiles: Record<string, string[]> = {};
   #memoizedPackageFiles: Record<string, string[]> = {};
 
@@ -29,7 +33,7 @@ export class PackageTree {
 
   reset() {
     // reset the internal state
-    this.#tree = {};
+    this.#tree = { children: {}, isPackage: true };
     this.#packageFiles = {};
     this.#memoizedPackageFiles = {};
   }
@@ -47,9 +51,12 @@ export class PackageTree {
       let currentNode = this.#tree;
 
       for (const part of pathParts) {
-        currentNode[part] = currentNode[part] || {};
-        currentNode = currentNode[part];
+        // initialize the children if not already done
+        currentNode.children[part] = currentNode.children[part] || { children: {}, isPackage: false };
+        currentNode = currentNode.children[part];
       }
+
+      currentNode.isPackage = true;
     }
 
     // Get all files in the workspace (scale: ~2000) according to git
@@ -62,7 +69,7 @@ export class PackageTree {
 
     if (includeUntracked) {
       // Also get all untracked files in the workspace according to git
-      const lsOtherResults = await execa("git", ["ls-files", "-o", "--exclude-standard"], { cwd: root });
+      const lsOtherResults = await execa("git", ["ls-files", "-o", "-z", "--exclude-standard"], { cwd: root });
       if (lsOtherResults.exitCode === 0) {
         const files = lsOtherResults.stdout.split("\0").filter(Boolean);
         this.addToPackageTree(files);
@@ -78,12 +85,18 @@ export class PackageTree {
       const pathParts = entry.split(/[\\/]/);
 
       let node = this.#tree;
-      const packagePathParts: string[] = [];
+
+      const pathPartsBuffer: string[] = [];
+      let packagePathParts: string[] = [];
 
       for (const part of pathParts) {
-        if (node[part]) {
-          node = node[part] as PathNode;
-          packagePathParts.push(part);
+        if (node.children[part]) {
+          node = node.children[part] as PathNode;
+          pathPartsBuffer.push(part);
+
+          if (node.isPackage) {
+            packagePathParts = [...pathPartsBuffer];
+          }
         } else {
           break;
         }

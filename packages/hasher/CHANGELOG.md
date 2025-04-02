@@ -1,8 +1,117 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Fri, 13 Sep 2024 18:05:04 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 29 Mar 2025 02:16:38 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.8.0
+
+Sat, 29 Mar 2025 02:16:38 GMT
+
+### Minor changes
+
+- cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL (kchau@microsoft.com)
+
+## 1.6.9
+
+Fri, 17 Jan 2025 21:57:32 GMT
+
+### Patches
+
+- Make package tree handle nested packages (kchau@microsoft.com)
+
+## 1.6.8
+
+Wed, 15 Jan 2025 16:56:22 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.11.1
+
+## 1.6.7
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.11.0
+
+## 1.6.6
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.1 (email not defined)
+- Bump @lage-run/target-graph to v0.10.1
+
+## 1.6.5
+
+Mon, 18 Nov 2024 23:22:30 GMT
+
+### Patches
+
+- Fix git command for getting untracked files in PackageTree.ts (slivanov@microsoft.com)
+
+## 1.6.4
+
+Fri, 08 Nov 2024 19:45:09 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.10.0
+
+## 1.6.3
+
+Tue, 22 Oct 2024 15:19:29 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.37.0 (email not defined)
+- Bump @lage-run/target-graph to v0.9.3
+
+## 1.6.2
+
+Mon, 21 Oct 2024 22:18:54 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.9.2
+
+## 1.6.1
+
+Thu, 17 Oct 2024 20:33:04 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.9.1
+
+## 1.6.0
+
+Wed, 02 Oct 2024 20:26:19 GMT
+
+### Minor changes
+
+- exposes getInputFiles, packageTrees (kchau@microsoft.com)
+- Bump @lage-run/globby to v14.2.0
+- Bump @lage-run/target-graph to v0.9.0
+
+## 1.5.0
+
+Fri, 27 Sep 2024 20:03:49 GMT
+
+### Minor changes
+
+- exposes getInputFiles, packageTrees (kchau@microsoft.com)
+- Bump @lage-run/globby to v14.1.0
+
+## 1.4.0
+
+Wed, 25 Sep 2024 20:28:10 GMT
+
+### Minor changes
+
+- writes out the "inputs" as hashes files inside node_modules\.cache\lage\hashes\** (kchau@microsoft.com)
 
 ## 1.3.4
 

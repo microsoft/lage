@@ -1674,22 +1674,22 @@ __metadata:
   resolution: "@lage-run/cache-github-actions@workspace:packages/cache-github-actions"
   dependencies:
     "@actions/cache": "npm:3.2.4"
-    "@lage-run/monorepo-scripts": "npm:*"
+    "@lage-run/monorepo-scripts": "workspace:^"
     backfill-config: "npm:6.4.2"
     backfill-logger: "npm:5.2.1"
-    workspace-tools: "npm:0.36.4"
+    workspace-tools: "npm:0.38.1"
   languageName: unknown
   linkType: soft
 
-"@lage-run/cache@npm:^1.3.3, @lage-run/cache@workspace:packages/cache":
+"@lage-run/cache@workspace:^, @lage-run/cache@workspace:packages/cache":
   version: 0.0.0-use.local
   resolution: "@lage-run/cache@workspace:packages/cache"
   dependencies:
     "@azure/identity": "npm:^4.0.1"
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/monorepo-fixture": "npm:*"
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/target-graph": "npm:^0.8.10"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-fixture": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
     backfill-cache: "npm:5.8.0"
     backfill-config: "npm:6.4.2"
     backfill-logger: "npm:5.2.1"
@@ -1697,44 +1697,51 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/cli@npm:^0.20.0, @lage-run/cli@workspace:packages/cli":
+"@lage-run/cli@workspace:^, @lage-run/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lage-run/cli@workspace:packages/cli"
   dependencies:
-    "@lage-run/cache": "npm:^1.3.3"
-    "@lage-run/config": "npm:^0.4.2"
-    "@lage-run/hasher": "npm:^1.3.4"
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/monorepo-fixture": "npm:*"
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/reporters": "npm:^1.2.10"
-    "@lage-run/rpc": "npm:^1.2.0"
-    "@lage-run/runners": "npm:^1.0.2"
-    "@lage-run/scheduler": "npm:^1.2.14"
-    "@lage-run/scheduler-types": "npm:^0.3.15"
-    "@lage-run/target-graph": "npm:^0.8.10"
-    "@lage-run/worker-threads-pool": "npm:^0.8.1"
+    "@lage-run/cache": "workspace:^"
+    "@lage-run/config": "workspace:^"
+    "@lage-run/format-hrtime": "workspace:^"
+    "@lage-run/globby": "workspace:^"
+    "@lage-run/hasher": "workspace:^"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-fixture": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/reporters": "workspace:^"
+    "@lage-run/rpc": "workspace:^"
+    "@lage-run/runners": "workspace:^"
+    "@lage-run/scheduler": "workspace:^"
+    "@lage-run/scheduler-types": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
+    "@lage-run/worker-threads-pool": "workspace:^"
+    "@types/proper-lockfile": "npm:^4.1.4"
+    "@types/shell-quote": "npm:^1.7.5"
     chokidar: "npm:3.5.3"
     commander: "npm:9.5.0"
     execa: "npm:5.1.1"
     fast-glob: "npm:3.3.2"
-    workspace-tools: "npm:0.36.4"
+    proper-lockfile: "npm:^4.1.2"
+    shell-quote: "npm:^1.8.1"
+    workspace-tools: "npm:0.38.1"
   bin:
-    lage: ./bin/lage
+    lage: ./bin/lage.js
+    lage-server: ./bin/lage-server.js
   languageName: unknown
   linkType: soft
 
-"@lage-run/config@npm:^0.4.2, @lage-run/config@workspace:packages/config":
+"@lage-run/config@workspace:^, @lage-run/config@workspace:packages/config":
   version: 0.0.0-use.local
   resolution: "@lage-run/config@workspace:packages/config"
   dependencies:
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/runners": "npm:^1.0.2"
-    "@lage-run/target-graph": "npm:^0.8.10"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/runners": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
     backfill-config: "npm:6.4.2"
     cosmiconfig: "npm:7.1.0"
-    workspace-tools: "npm:0.36.4"
+    workspace-tools: "npm:0.38.1"
   bin:
     lage: ./bin/lage
   languageName: unknown
@@ -1744,10 +1751,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lage-run/e2e-tests@workspace:packages/e2e-tests"
   dependencies:
-    "@lage-run/cli": "npm:^0.20.0"
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/scheduler-types": "npm:^0.3.15"
-    "@lage-run/target-graph": "npm:^0.8.10"
+    "@lage-run/cli": "workspace:^"
+    "@lage-run/globby": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/scheduler-types": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
     execa: "npm:5.1.1"
     glob-hasher: "npm:^1.4.2"
   bin:
@@ -1755,36 +1763,38 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/format-hrtime@npm:^0.1.6, @lage-run/format-hrtime@workspace:packages/format-hrtime":
+"@lage-run/format-hrtime@workspace:^, @lage-run/format-hrtime@workspace:packages/format-hrtime":
   version: 0.0.0-use.local
   resolution: "@lage-run/format-hrtime@workspace:packages/format-hrtime"
   languageName: unknown
   linkType: soft
 
-"@lage-run/globby@workspace:packages/globby":
+"@lage-run/globby@workspace:^, @lage-run/globby@workspace:packages/globby":
   version: 0.0.0-use.local
   resolution: "@lage-run/globby@workspace:packages/globby"
   dependencies:
+    dts-bundle-generator: "npm:^9.5.1"
     esbuild: "npm:^0.21.5"
-    globby: "npm:14.0.1"
+    globby: "npm:^14.0.2"
+    typescript: "npm:~5.0.3"
   languageName: unknown
   linkType: soft
 
-"@lage-run/hasher@npm:^1.3.4, @lage-run/hasher@workspace:packages/hasher":
+"@lage-run/hasher@workspace:^, @lage-run/hasher@workspace:packages/hasher":
   version: 0.0.0-use.local
   resolution: "@lage-run/hasher@workspace:packages/hasher"
   dependencies:
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/monorepo-fixture": "npm:*"
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/target-graph": "npm:^0.8.10"
+    "@lage-run/globby": "workspace:^"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-fixture": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
     "@types/graceful-fs": "npm:^4.1.6"
     execa: "npm:5.1.1"
-    fast-glob: "npm:3.3.2"
     glob-hasher: "npm:^1.4.2"
     graceful-fs: "npm:4.2.11"
     micromatch: "npm:4.0.8"
-    workspace-tools: "npm:0.36.4"
+    workspace-tools: "npm:0.38.1"
   languageName: unknown
   linkType: soft
 
@@ -1798,7 +1808,7 @@ __metadata:
     fast-glob: "npm:3.3.2"
     gh-pages: "npm:^5.0.0"
     husky: "npm:^9.1.5"
-    lage-npm: "npm:lage@2.7.15"
+    lage-npm: "npm:lage@~2.12.0"
     lint-staged: "npm:^15.2.10"
     patch-package: "npm:^6.5.1"
     prettier: "npm:^2.8.6"
@@ -1808,47 +1818,47 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/logger@npm:^1.3.1, @lage-run/logger@workspace:packages/logger":
+"@lage-run/logger@workspace:^, @lage-run/logger@workspace:packages/logger":
   version: 0.0.0-use.local
   resolution: "@lage-run/logger@workspace:packages/logger"
   languageName: unknown
   linkType: soft
 
-"@lage-run/monorepo-fixture@npm:*, @lage-run/monorepo-fixture@workspace:packages/monorepo-fixture":
+"@lage-run/monorepo-fixture@workspace:^, @lage-run/monorepo-fixture@workspace:packages/monorepo-fixture":
   version: 0.0.0-use.local
   resolution: "@lage-run/monorepo-fixture@workspace:packages/monorepo-fixture"
   dependencies:
-    "@lage-run/monorepo-scripts": "npm:*"
+    "@lage-run/monorepo-scripts": "workspace:^"
     execa: "npm:5.1.1"
   languageName: unknown
   linkType: soft
 
-"@lage-run/monorepo-scripts@npm:*, @lage-run/monorepo-scripts@workspace:scripts":
+"@lage-run/monorepo-scripts@workspace:^, @lage-run/monorepo-scripts@workspace:scripts":
   version: 0.0.0-use.local
   resolution: "@lage-run/monorepo-scripts@workspace:scripts"
   dependencies:
-    "@swc/core": "npm:^1.3.14"
-    "@swc/jest": "npm:^0.2.36"
+    "@swc/core": "npm:^1.9.1"
+    "@swc/jest": "npm:^0.2.37"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.7"
     "@typescript-eslint/parser": "npm:^5.30.7"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.20.0"
     eslint-plugin-file-extension-in-import-ts: "npm:^1.0.1"
     jest: "npm:^29.0.0"
-    workspace-tools: "npm:0.36.4"
+    workspace-tools: "npm:0.38.1"
   bin:
     monorepo-scripts: bin/monorepo-scripts.js
   languageName: unknown
   linkType: soft
 
-"@lage-run/reporters@npm:^1.2.10, @lage-run/reporters@workspace:packages/reporters":
+"@lage-run/reporters@workspace:^, @lage-run/reporters@workspace:packages/reporters":
   version: 0.0.0-use.local
   resolution: "@lage-run/reporters@workspace:packages/reporters"
   dependencies:
-    "@lage-run/format-hrtime": "npm:^0.1.6"
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/scheduler-types": "npm:^0.3.15"
-    "@lage-run/target-graph": "npm:^0.8.10"
+    "@lage-run/format-hrtime": "workspace:^"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/scheduler-types": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
     "@ms-cloudpack/task-reporter": "npm:0.5.3"
     ansi-regex: "npm:5.0.1"
     chalk: "npm:4.1.2"
@@ -1857,7 +1867,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/rpc@npm:^1.2.0, @lage-run/rpc@workspace:packages/rpc":
+"@lage-run/rpc@workspace:^, @lage-run/rpc@workspace:packages/rpc":
   version: 0.0.0-use.local
   resolution: "@lage-run/rpc@workspace:packages/rpc"
   dependencies:
@@ -1868,60 +1878,62 @@ __metadata:
     "@connectrpc/connect-fastify": "npm:^1.4.0"
     "@connectrpc/connect-node": "npm:^1.4.0"
     "@connectrpc/protoc-gen-connect-es": "npm:^1.4.0"
-    "@lage-run/monorepo-scripts": "npm:*"
+    "@lage-run/monorepo-scripts": "workspace:^"
     fastify: "npm:^4.28.1"
   languageName: unknown
   linkType: soft
 
-"@lage-run/runners@npm:^1.0.2, @lage-run/runners@workspace:packages/runners":
+"@lage-run/runners@workspace:^, @lage-run/runners@workspace:packages/runners":
   version: 0.0.0-use.local
   resolution: "@lage-run/runners@workspace:packages/runners"
   dependencies:
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/target-graph": "npm:^0.8.10"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
   languageName: unknown
   linkType: soft
 
-"@lage-run/scheduler-types@npm:^0.3.15, @lage-run/scheduler-types@workspace:packages/scheduler-types":
+"@lage-run/scheduler-types@workspace:^, @lage-run/scheduler-types@workspace:packages/scheduler-types":
   version: 0.0.0-use.local
   resolution: "@lage-run/scheduler-types@workspace:packages/scheduler-types"
   dependencies:
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/target-graph": "npm:^0.8.10"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
   languageName: unknown
   linkType: soft
 
-"@lage-run/scheduler@npm:^1.2.14, @lage-run/scheduler@workspace:packages/scheduler":
+"@lage-run/scheduler@workspace:^, @lage-run/scheduler@workspace:packages/scheduler":
   version: 0.0.0-use.local
   resolution: "@lage-run/scheduler@workspace:packages/scheduler"
   dependencies:
-    "@lage-run/cache": "npm:^1.3.3"
-    "@lage-run/config": "npm:^0.4.2"
-    "@lage-run/hasher": "npm:^1.3.4"
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/monorepo-scripts": "npm:*"
-    "@lage-run/runners": "npm:^1.0.2"
-    "@lage-run/scheduler-types": "npm:^0.3.15"
-    "@lage-run/target-graph": "npm:^0.8.10"
-    "@lage-run/worker-threads-pool": "npm:^0.8.1"
+    "@lage-run/cache": "workspace:^"
+    "@lage-run/config": "workspace:^"
+    "@lage-run/hasher": "workspace:^"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/runners": "workspace:^"
+    "@lage-run/scheduler-types": "workspace:^"
+    "@lage-run/target-graph": "workspace:^"
+    "@lage-run/worker-threads-pool": "workspace:^"
   languageName: unknown
   linkType: soft
 
-"@lage-run/target-graph@npm:^0.8.10, @lage-run/target-graph@workspace:packages/target-graph":
+"@lage-run/target-graph@workspace:^, @lage-run/target-graph@workspace:packages/target-graph":
   version: 0.0.0-use.local
   resolution: "@lage-run/target-graph@workspace:packages/target-graph"
   dependencies:
-    "@lage-run/monorepo-scripts": "npm:*"
-    workspace-tools: "npm:0.36.4"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    jest-diff: "npm:^29.5.0"
+    p-limit: "npm:^3.1.0"
+    workspace-tools: "npm:0.38.1"
   languageName: unknown
   linkType: soft
 
-"@lage-run/worker-threads-pool@npm:^0.8.1, @lage-run/worker-threads-pool@workspace:packages/worker-threads-pool":
+"@lage-run/worker-threads-pool@workspace:^, @lage-run/worker-threads-pool@workspace:packages/worker-threads-pool":
   version: 0.0.0-use.local
   resolution: "@lage-run/worker-threads-pool@workspace:packages/worker-threads-pool"
   dependencies:
-    "@lage-run/logger": "npm:^1.3.1"
-    "@lage-run/monorepo-scripts": "npm:*"
+    "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -2027,92 +2039,94 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.3.56":
-  version: 1.3.56
-  resolution: "@swc/core-darwin-arm64@npm:1.3.56"
+"@swc/core-darwin-arm64@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@swc/core-darwin-arm64@npm:1.9.1"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-x64@npm:1.3.56":
-  version: 1.3.56
-  resolution: "@swc/core-darwin-x64@npm:1.3.56"
+"@swc/core-darwin-x64@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@swc/core-darwin-x64@npm:1.9.1"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm-gnueabihf@npm:1.3.56":
-  version: 1.3.56
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.3.56"
+"@swc/core-linux-arm-gnueabihf@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.9.1"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-gnu@npm:1.3.56":
-  version: 1.3.56
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.3.56"
+"@swc/core-linux-arm64-gnu@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.9.1"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-musl@npm:1.3.56":
-  version: 1.3.56
-  resolution: "@swc/core-linux-arm64-musl@npm:1.3.56"
+"@swc/core-linux-arm64-musl@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@swc/core-linux-arm64-musl@npm:1.9.1"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-gnu@npm:1.3.56":
-  version: 1.3.56
-  resolution: "@swc/core-linux-x64-gnu@npm:1.3.56"
+"@swc/core-linux-x64-gnu@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@swc/core-linux-x64-gnu@npm:1.9.1"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-musl@npm:1.3.56":
-  version: 1.3.56
-  resolution: "@swc/core-linux-x64-musl@npm:1.3.56"
+"@swc/core-linux-x64-musl@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@swc/core-linux-x64-musl@npm:1.9.1"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@swc/core-win32-arm64-msvc@npm:1.3.56":
-  version: 1.3.56
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.3.56"
+"@swc/core-win32-arm64-msvc@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.9.1"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-win32-ia32-msvc@npm:1.3.56":
-  version: 1.3.56
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.3.56"
+"@swc/core-win32-ia32-msvc@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.9.1"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@swc/core-win32-x64-msvc@npm:1.3.56":
-  version: 1.3.56
-  resolution: "@swc/core-win32-x64-msvc@npm:1.3.56"
+"@swc/core-win32-x64-msvc@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@swc/core-win32-x64-msvc@npm:1.9.1"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@swc/core@npm:^1.3.14":
-  version: 1.3.56
-  resolution: "@swc/core@npm:1.3.56"
+"@swc/core@npm:^1.9.1":
+  version: 1.9.1
+  resolution: "@swc/core@npm:1.9.1"
   dependencies:
-    "@swc/core-darwin-arm64": "npm:1.3.56"
-    "@swc/core-darwin-x64": "npm:1.3.56"
-    "@swc/core-linux-arm-gnueabihf": "npm:1.3.56"
-    "@swc/core-linux-arm64-gnu": "npm:1.3.56"
-    "@swc/core-linux-arm64-musl": "npm:1.3.56"
-    "@swc/core-linux-x64-gnu": "npm:1.3.56"
-    "@swc/core-linux-x64-musl": "npm:1.3.56"
-    "@swc/core-win32-arm64-msvc": "npm:1.3.56"
-    "@swc/core-win32-ia32-msvc": "npm:1.3.56"
-    "@swc/core-win32-x64-msvc": "npm:1.3.56"
+    "@swc/core-darwin-arm64": "npm:1.9.1"
+    "@swc/core-darwin-x64": "npm:1.9.1"
+    "@swc/core-linux-arm-gnueabihf": "npm:1.9.1"
+    "@swc/core-linux-arm64-gnu": "npm:1.9.1"
+    "@swc/core-linux-arm64-musl": "npm:1.9.1"
+    "@swc/core-linux-x64-gnu": "npm:1.9.1"
+    "@swc/core-linux-x64-musl": "npm:1.9.1"
+    "@swc/core-win32-arm64-msvc": "npm:1.9.1"
+    "@swc/core-win32-ia32-msvc": "npm:1.9.1"
+    "@swc/core-win32-x64-msvc": "npm:1.9.1"
+    "@swc/counter": "npm:^0.1.3"
+    "@swc/types": "npm:^0.1.14"
   peerDependencies:
-    "@swc/helpers": ^0.5.0
+    "@swc/helpers": "*"
   dependenciesMeta:
     "@swc/core-darwin-arm64":
       optional: true
@@ -2137,7 +2151,7 @@ __metadata:
   peerDependenciesMeta:
     "@swc/helpers":
       optional: true
-  checksum: 10c0/c468e281f0249742bc0ba4b7cd4076cdbf87bfc82b8bd5ad1ca8940d36372ca22754df80ab54b22613121680718eab26b92c48c8c9f5f3abb24434f05e5e1ea0
+  checksum: 10c0/7b9a3da9bdd95216b031739ebe35983e69f17284809a62706c93edfd30ede0732060d944db23007aca9aebbc49859eb5784454c8882ae6fd04eb8bd15ac6a247
   languageName: node
   linkType: hard
 
@@ -2148,16 +2162,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/jest@npm:^0.2.36":
-  version: 0.2.36
-  resolution: "@swc/jest@npm:0.2.36"
+"@swc/jest@npm:^0.2.37":
+  version: 0.2.37
+  resolution: "@swc/jest@npm:0.2.37"
   dependencies:
     "@jest/create-cache-key-function": "npm:^29.7.0"
     "@swc/counter": "npm:^0.1.3"
     jsonc-parser: "npm:^3.2.0"
   peerDependencies:
     "@swc/core": "*"
-  checksum: 10c0/7f1993f9201420bb499c92ab28797352bcbf9e3a6c7b5a1806fdc34c9c3b46ea9e5b2f070c0e13fcf7f3c3fadbbc38777840baabb178f589bf1f67543763adb6
+  checksum: 10c0/abe10d87610bf7c172aa7ab14c64599a22e48c1f43a09d6e22733f85f25fb98e57cb4bb58b9554e60a3ac8629be559bd967d7a8601a3ceaacad618aecccebec2
+  languageName: node
+  linkType: hard
+
+"@swc/types@npm:^0.1.14":
+  version: 0.1.14
+  resolution: "@swc/types@npm:0.1.14"
+  dependencies:
+    "@swc/counter": "npm:^0.1.3"
+  checksum: 10c0/5ab5a213f25fbb038e8b2fa001a20c64363f81c199319373ed0228f316c046a996758fbaf906ba84d297b35e37727082d27974266db320e534da594716626529
   languageName: node
   linkType: hard
 
@@ -2319,10 +2342,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/proper-lockfile@npm:^4.1.4":
+  version: 4.1.4
+  resolution: "@types/proper-lockfile@npm:4.1.4"
+  dependencies:
+    "@types/retry": "npm:*"
+  checksum: 10c0/d597846d6f7860da2470623d3f11b6e5b39864719c3c18b5a5e55f783c5e432fe49dcdcf6341b3903428fdf103f2bdc68eba263ce1ce3cbe8070cbcb54bbf230
+  languageName: node
+  linkType: hard
+
+"@types/retry@npm:*":
+  version: 0.12.5
+  resolution: "@types/retry@npm:0.12.5"
+  checksum: 10c0/eaaca483cc62f2f02c0b8486847ee70986ca7f97afd7363037247dbe3e98df8bd56a5b50d58b1e96768a5a1be0307010d86e9991bd458d72e8df88be471bd720
+  languageName: node
+  linkType: hard
+
 "@types/semver@npm:^7.3.12":
   version: 7.3.13
   resolution: "@types/semver@npm:7.3.13"
   checksum: 10c0/73295bb1fee46f8c76c7a759feeae5a3022f5bedfdc17d16982092e4b33af17560234fb94861560c20992a702a1e1b9a173bb623a96f95f80892105f5e7d25e3
+  languageName: node
+  linkType: hard
+
+"@types/shell-quote@npm:^1.7.5":
+  version: 1.7.5
+  resolution: "@types/shell-quote@npm:1.7.5"
+  checksum: 10c0/ddcf225e85e5520e3f44411d7d79eee0e56477fab705d0d93e293b61b9f8de2a57db6e859d492a24bc9e0d071c0490271efeae832756e2ac0d4d255922ac281d
   languageName: node
   linkType: hard
 
@@ -3795,6 +3841,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"esbuild-plugin-alias@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "esbuild-plugin-alias@npm:0.2.1"
+  checksum: 10c0/a67bc6bc2744fc8637f7321f00c1f00e4fae86c182662421738ebfabf3ad344967b9c667185c6c34d9edd5b289807d34bfdceef94620e94e0a45683534af69e0
+  languageName: node
+  linkType: hard
+
 "esbuild@npm:^0.21.5":
   version: 0.21.5
   resolution: "esbuild@npm:0.21.5"
@@ -4847,20 +4900,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:14.0.1":
-  version: 14.0.1
-  resolution: "globby@npm:14.0.1"
-  dependencies:
-    "@sindresorhus/merge-streams": "npm:^2.1.0"
-    fast-glob: "npm:^3.3.2"
-    ignore: "npm:^5.2.4"
-    path-type: "npm:^5.0.0"
-    slash: "npm:^5.1.0"
-    unicorn-magic: "npm:^0.1.0"
-  checksum: 10c0/749a6be91cf455c161ebb5c9130df3991cb9fd7568425db850a8279a6cf45acd031c5069395beb7aeb4dd606b64f0d6ff8116c93726178d8e6182fee58c2736d
-  languageName: node
-  linkType: hard
-
 "globby@npm:^11.0.0, globby@npm:^11.1.0":
   version: 11.1.0
   resolution: "globby@npm:11.1.0"
@@ -4872,6 +4911,20 @@ __metadata:
     merge2: "npm:^1.4.1"
     slash: "npm:^3.0.0"
   checksum: 10c0/b39511b4afe4bd8a7aead3a27c4ade2b9968649abab0a6c28b1a90141b96ca68ca5db1302f7c7bd29eab66bf51e13916b8e0a3d0ac08f75e1e84a39b35691189
+  languageName: node
+  linkType: hard
+
+"globby@npm:^14.0.2":
+  version: 14.0.2
+  resolution: "globby@npm:14.0.2"
+  dependencies:
+    "@sindresorhus/merge-streams": "npm:^2.1.0"
+    fast-glob: "npm:^3.3.2"
+    ignore: "npm:^5.2.4"
+    path-type: "npm:^5.0.0"
+    slash: "npm:^5.1.0"
+    unicorn-magic: "npm:^0.1.0"
+  checksum: 10c0/3f771cd683b8794db1e7ebc8b6b888d43496d93a82aad4e9d974620f578581210b6c5a6e75ea29573ed16a1345222fab6e9b877a8d1ed56eeb147e09f69c6f78
   languageName: node
   linkType: hard
 
@@ -4888,7 +4941,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graceful-fs@npm:4.2.11, graceful-fs@npm:^4.1.11, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
+"graceful-fs@npm:4.2.11, graceful-fs@npm:^4.1.11, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
   checksum: 10c0/386d011a553e02bc594ac2ca0bd6d9e4c22d7fa8cfbfc448a6d148c59ea881b092db9dbe3547ae4b88e55f1b01f7c4a2ecc53b310c042793e63aa44cf6c257f2
@@ -6036,9 +6089,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lage-npm@npm:lage@2.7.15":
-  version: 2.7.15
-  resolution: "lage@npm:2.7.15"
+"lage-npm@npm:lage@~2.12.0":
+  version: 2.12.21
+  resolution: "lage@npm:2.12.21"
   dependencies:
     fsevents: "npm:~2.3.2"
     glob-hasher: "npm:^1.4.2"
@@ -6047,7 +6100,8 @@ __metadata:
       optional: true
   bin:
     lage: dist/lage.js
-  checksum: 10c0/8654faf84a32f7a69c851036124dc0fac14172a0217adc766ed80c211db2d1f1ea2ffa411ffe21e14540ba457e08f3b5c1f30efedba99b7cb9c43b4461becd26
+    lage-server: dist/lage-server.js
+  checksum: 10c0/1eb319ea5cc4dfd3b7ecdee8753cdaa837345daea640f12e1139339ddccb68a7bc91e0e0ee363cae2e609839f98b6aca9c285a2b22ad4e8f2bfdf50ec7a0ef18
   languageName: node
   linkType: hard
 
@@ -6055,14 +6109,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "lage@workspace:packages/lage"
   dependencies:
-    "@lage-run/cli": "npm:^0.20.0"
-    "@lage-run/runners": "npm:^1.0.2"
+    "@lage-run/cli": "workspace:^"
+    "@lage-run/runners": "workspace:^"
     backfill-config: "npm:6.4.2"
     dts-bundle-generator: "npm:^9.5.1"
     esbuild: "npm:^0.21.5"
+    esbuild-plugin-alias: "npm:^0.2.1"
     fsevents: "npm:~2.3.2"
     glob-hasher: "npm:^1.4.2"
-    workspace-tools: "npm:0.36.4"
+    workspace-tools: "npm:0.38.1"
   dependenciesMeta:
     fsevents:
       optional: true
@@ -7183,6 +7238,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proper-lockfile@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "proper-lockfile@npm:4.1.2"
+  dependencies:
+    graceful-fs: "npm:^4.2.4"
+    retry: "npm:^0.12.0"
+    signal-exit: "npm:^3.0.2"
+  checksum: 10c0/2f265dbad15897a43110a02dae55105c04d356ec4ed560723dcb9f0d34bc4fb2f13f79bb930e7561be10278e2314db5aca2527d5d3dcbbdee5e6b331d1571f6d
+  languageName: node
+  linkType: hard
+
 "protocols@npm:^2.0.0, protocols@npm:^2.0.1":
   version: 2.0.1
   resolution: "protocols@npm:2.0.1"
@@ -7638,7 +7704,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"signal-exit@npm:^3.0.3, signal-exit@npm:^3.0.7":
+"shell-quote@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "shell-quote@npm:1.8.1"
+  checksum: 10c0/8cec6fd827bad74d0a49347057d40dfea1e01f12a6123bf82c4649f3ef152fc2bc6d6176e6376bffcd205d9d0ccb4f1f9acae889384d20baff92186f01ea455a
+  languageName: node
+  linkType: hard
+
+"signal-exit@npm:^3.0.2, signal-exit@npm:^3.0.3, signal-exit@npm:^3.0.7":
   version: 3.0.7
   resolution: "signal-exit@npm:3.0.7"
   checksum: 10c0/25d272fa73e146048565e08f3309d5b942c1979a6f4a58a8c59d5fa299728e9c2fcd1a759ec870863b1fd38653670240cd420dad2ad9330c71f36608a6a1c912
@@ -7998,14 +8071,14 @@ __metadata:
   linkType: hard
 
 "tar-fs@npm:^2.1.0":
-  version: 2.1.1
-  resolution: "tar-fs@npm:2.1.1"
+  version: 2.1.2
+  resolution: "tar-fs@npm:2.1.2"
   dependencies:
     chownr: "npm:^1.1.1"
     mkdirp-classic: "npm:^0.5.2"
     pump: "npm:^3.0.0"
     tar-stream: "npm:^2.1.4"
-  checksum: 10c0/871d26a934bfb7beeae4c4d8a09689f530b565f79bd0cf489823ff0efa3705da01278160da10bb006d1a793fa0425cf316cec029b32a9159eacbeaff4965fb6d
+  checksum: 10c0/9c704bd4a53be7565caf34ed001d1428532457fe3546d8fc1233f0f0882c3d2403f8602e8046e0b0adeb31fe95336572a69fb28851a391523126b697537670fc
   languageName: node
   linkType: hard
 
@@ -8516,7 +8589,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"workspace-tools@npm:0.36.4, workspace-tools@npm:^0.36.3":
+"workspace-tools@npm:0.38.1":
+  version: 0.38.1
+  resolution: "workspace-tools@npm:0.38.1"
+  dependencies:
+    "@yarnpkg/lockfile": "npm:^1.1.0"
+    fast-glob: "npm:^3.3.1"
+    git-url-parse: "npm:^13.0.0"
+    globby: "npm:^11.0.0"
+    jju: "npm:^1.4.0"
+    js-yaml: "npm:^4.1.0"
+    micromatch: "npm:^4.0.0"
+  checksum: 10c0/2d6a1cf15b85de2449e4b58a6bc4abdc01fb7711e58add0621396fe9ad297d930d295af80800a38eafafcc8882ae291a3d53a55070d785e13db33b24df5815cb
+  languageName: node
+  linkType: hard
+
+"workspace-tools@npm:^0.36.3":
   version: 0.36.4
   resolution: "workspace-tools@npm:0.36.4"
   dependencies:

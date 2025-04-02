@@ -1,6 +1,6 @@
 import type { PackageInfos } from "workspace-tools";
-import { WorkspaceTargetGraphBuilder } from "../src/WorkspaceTargetGraphBuilder";
-import type { TargetGraph } from "../src/types/TargetGraph";
+import { WorkspaceTargetGraphBuilder } from "../src/WorkspaceTargetGraphBuilder.js";
+import type { TargetGraph } from "../src/types/TargetGraph.js";
 
 function createPackageInfo(packages: { [id: string]: string[] }) {
   const packageInfos: PackageInfos = {};
@@ -30,7 +30,7 @@ function getGraphFromTargets(targetGraph: TargetGraph) {
 }
 
 describe("workspace target graph builder", () => {
-  it("should build a target based on a simple package graph and task graph", () => {
+  it("should build a target based on a simple package graph and task graph", async () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
@@ -43,10 +43,17 @@ describe("workspace target graph builder", () => {
       dependsOn: ["^build"],
     });
 
-    const targetGraph = builder.build(["build"]);
+    const targetGraph = await builder.build(["build"], undefined, [{ package: "b", task: "build", priority: 100 }]);
 
     // size is 3, because we also need to account for the root target node (start target ID)
     expect(targetGraph.targets.size).toBe(3);
+
+    // Ensure priorities were set from the global priority argument
+    expect(Array.from(targetGraph.targets.values())).toEqual([
+      expect.objectContaining({ id: "__start", priority: 100 }),
+      expect.objectContaining({ id: "a#build", priority: 0 }),
+      expect.objectContaining({ id: "b#build", priority: 100 }),
+    ]);
 
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
@@ -66,7 +73,7 @@ describe("workspace target graph builder", () => {
     `);
   });
 
-  it("should generate target graphs for tasks that do not depend on each other", () => {
+  it("should generate target graphs for tasks that do not depend on each other", async () => {
     const root = "/repos/a";
     const packageInfos = createPackageInfo({
       a: ["b"],
@@ -77,7 +84,7 @@ describe("workspace target graph builder", () => {
     builder.addTargetConfig("test");
     builder.addTargetConfig("lint");
 
-    const targetGraph = builder.build(["test", "lint"]);
+    const targetGraph = await builder.build(["test", "lint"]);
 
     // includes the pseudo-target for the "start" target
     expect(targetGraph.targets.size).toBe(5);
@@ -103,7 +110,7 @@ describe("workspace target graph builder", () => {
     `);
   });
 
-  it("should generate targetGraph with some specific package task target dependencies, running against all packages", () => {
+  it("should generate targetGraph with some specific package task target dependencies, running against all packages", async () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
@@ -122,7 +129,7 @@ describe("workspace target graph builder", () => {
       dependsOn: [],
     });
 
-    const targetGraph = builder.build(["build"]);
+    const targetGraph = await builder.build(["build"]);
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
@@ -145,7 +152,7 @@ describe("workspace target graph builder", () => {
     `);
   });
 
-  it("should generate targetGraph with some specific package task target dependencies, running against a specific package", () => {
+  it("should generate targetGraph with some specific package task target dependencies, running against a specific package", async () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
@@ -164,7 +171,7 @@ describe("workspace target graph builder", () => {
       dependsOn: [],
     });
 
-    const targetGraph = builder.build(["build"], ["a", "b"]);
+    const targetGraph = await builder.build(["build"], ["a", "b"]);
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
@@ -179,7 +186,7 @@ describe("workspace target graph builder", () => {
     `);
   });
 
-  it("should generate targetGraph with transitive dependencies", () => {
+  it("should generate targetGraph with transitive dependencies", async () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
@@ -196,7 +203,7 @@ describe("workspace target graph builder", () => {
 
     builder.addTargetConfig("transpile");
 
-    const targetGraph = builder.build(["bundle"], ["a"]);
+    const targetGraph = await builder.build(["bundle"], ["a"]);
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
@@ -223,7 +230,7 @@ describe("workspace target graph builder", () => {
     `);
   });
 
-  it("should generate target graph for a general task on a specific target", () => {
+  it("should generate target graph for a general task on a specific target", async () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
@@ -242,7 +249,7 @@ describe("workspace target graph builder", () => {
     builder.addTargetConfig("common#copy");
     builder.addTargetConfig("common#build");
 
-    const targetGraph = builder.build(["build"]);
+    const targetGraph = await builder.build(["build"]);
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
         [
@@ -281,7 +288,7 @@ describe("workspace target graph builder", () => {
     `);
   });
 
-  it("should build a target graph with global task as a dependency", () => {
+  it("should build a target graph with global task as a dependency", async () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
@@ -298,7 +305,7 @@ describe("workspace target graph builder", () => {
       dependsOn: [],
     });
 
-    const targetGraph = builder.build(["build"]);
+    const targetGraph = await builder.build(["build"]);
 
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
@@ -330,7 +337,7 @@ describe("workspace target graph builder", () => {
     `);
   });
 
-  it("should build a target graph with global task on its own", () => {
+  it("should build a target graph with global task on its own", async () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
@@ -347,7 +354,7 @@ describe("workspace target graph builder", () => {
       dependsOn: [],
     });
 
-    const targetGraph = builder.build(["global:task"]);
+    const targetGraph = await builder.build(["global:task"]);
 
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [
@@ -359,7 +366,7 @@ describe("workspace target graph builder", () => {
     `);
   });
 
-  it("should build a target graph without including global task", () => {
+  it("should build a target graph without including global task", async () => {
     const root = "/repos/a";
 
     const packageInfos = createPackageInfo({
@@ -376,7 +383,7 @@ describe("workspace target graph builder", () => {
       dependsOn: [],
     });
 
-    const targetGraph = builder.build(["build"]);
+    const targetGraph = await builder.build(["build"]);
 
     expect(getGraphFromTargets(targetGraph)).toMatchInlineSnapshot(`
       [

@@ -6,7 +6,13 @@ export function parseNdJson(ndjson: string) {
     .split("\n")
     .map((line) => {
       try {
-        return JSON.parse(line);
+        const parsed = JSON.parse(line);
+
+        if (parsed.timestamp) {
+          delete parsed.timestamp;
+        }
+
+        return parsed;
       } catch (e) {
         return {};
       }

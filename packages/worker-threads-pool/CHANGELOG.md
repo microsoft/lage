@@ -1,8 +1,56 @@
 # Change Log - @lage-run/worker-threads-pool
 
-This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
+<!-- This log was last generated on Thu, 23 Jan 2025 17:38:05 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.9.0
+
+Thu, 23 Jan 2025 17:38:05 GMT
+
+### Minor changes
+
+- Add priority as a parameter to Pool APIs to support more optimal scheduling (1581488+christiango@users.noreply.github.com)
+
+## 0.8.6
+
+Sun, 08 Dec 2024 00:07:28 GMT
+
+### Patches
+
+- adds the ability to do workerIdleMemoryLimit (kchau@microsoft.com)
+
+## 0.8.5
+
+Wed, 04 Dec 2024 23:50:15 GMT
+
+### Patches
+
+- Fixes the server worker model to use aggregated pool (kchau@microsoft.com)
+
+## 0.8.4
+
+Wed, 09 Oct 2024 17:20:33 GMT
+
+### Patches
+
+- fixed the workerpool to raise "idle" event only if all workers are freed (kchau@microsoft.com)
+
+## 0.8.3
+
+Wed, 02 Oct 2024 20:26:19 GMT
+
+### Patches
+
+- adds an idle event emit (kchau@microsoft.com)
+
+## 0.8.2
+
+Fri, 27 Sep 2024 20:03:49 GMT
+
+### Patches
+
+- adds an idle event emit (kchau@microsoft.com)
 
 ## 0.8.1
 

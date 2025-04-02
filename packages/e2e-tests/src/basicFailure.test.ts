@@ -2,7 +2,7 @@ import { Monorepo } from "./mock/monorepo.js";
 import { filterEntry, parseNdJson } from "./parseNdJson.js";
 
 describe("basic failure case where a dependent target has failed", () => {
-  it("when a failure happens, halts all other targets", () => {
+  it("when a failure happens, halts all other targets", async () => {
     const repo = new Monorepo("basics-failure-halt-all");
 
     repo.init();
@@ -33,10 +33,10 @@ describe("basic failure case where a dependent target has failed", () => {
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "lint", "success"))).toBeFalsy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "c", "test", "success"))).toBeFalsy();
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 
-  it("when a failure happens in `--continue` mode, halts all other dependent targets but continue to build as much as possible", () => {
+  it("when a failure happens in `--continue` mode, halts all other dependent targets but continue to build as much as possible", async () => {
     const repo = new Monorepo("basics-failure-continue");
 
     repo.init();
@@ -67,10 +67,10 @@ describe("basic failure case where a dependent target has failed", () => {
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "lint", "success"))).toBeFalsy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "c", "test", "success"))).toBeTruthy();
 
-    // repo.cleanup();
+    await repo.cleanup();
   });
 
-  it("when a failure happens be sure to have exit code of !== 0", () => {
+  it("when a failure happens be sure to have exit code of !== 0", async () => {
     expect.hasAssertions();
     const repo = new Monorepo("basics-failure-exit-code");
 
@@ -92,10 +92,10 @@ describe("basic failure case where a dependent target has failed", () => {
       expect(results.exitCode).not.toBe(0);
     }
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 
-  it("when a failure happens in `--safe-exit`, be sure to have exit code of !== 0", () => {
+  it("when a failure happens in `--safe-exit`, be sure to have exit code of !== 0", async () => {
     expect.hasAssertions();
     const repo = new Monorepo("basics-safe-exit");
 
@@ -119,6 +119,6 @@ describe("basic failure case where a dependent target has failed", () => {
       expect(results.stderr).not.toContain("Cannot read property 'stack' of undefined");
     }
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 });

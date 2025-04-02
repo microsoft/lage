@@ -2,6 +2,141 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "0.11.1",
+      "tag": "@lage-run/target-graph_v0.11.1",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Jan 2025 16:56:22 GMT",
+      "version": "0.11.1",
+      "tag": "@lage-run/target-graph_v0.11.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/target-graph",
+            "commit": "f4551ca0219cf233f7497a27dea7df57229eb02c",
+            "comment": "Fix bug where priorities were not being correctly set on tasks"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 02 Dec 2024 17:23:22 GMT",
+      "version": "0.11.0",
+      "tag": "@lage-run/target-graph_v0.11.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "51d453bb81eb36a37656502fb716f611860d910e",
+            "comment": "adds the ability to create stagedTargets"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Nov 2024 08:12:37 GMT",
+      "version": "0.10.1",
+      "tag": "@lage-run/target-graph_v0.10.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "c6e9f4e5339a897dd06a54fe528a1fadd75db243",
+            "comment": "Update dependency workspace-tools to v0.38.1"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Nov 2024 19:45:09 GMT",
+      "version": "0.10.0",
+      "tag": "@lage-run/target-graph_v0.10.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "9b607e71231095c06d49b69e9d5fecb72a542bdd",
+            "comment": "add \"shouldRun()\" config to the target config"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 22 Oct 2024 15:19:29 GMT",
+      "version": "0.9.3",
+      "tag": "@lage-run/target-graph_v0.9.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "067b34dac0e6621e6dab889b4ecb3ffb96ed3b7c",
+            "comment": "Update dependency workspace-tools to v0.37.0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 21 Oct 2024 22:18:54 GMT",
+      "version": "0.9.2",
+      "tag": "@lage-run/target-graph_v0.9.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "ronakjain.public@gmail.com",
+            "package": "@lage-run/target-graph",
+            "commit": "afe5d34e1be6c245907aaed059995dd8ce48d278",
+            "comment": "Optimize transitive reduction"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 17 Oct 2024 20:33:04 GMT",
+      "version": "0.9.1",
+      "tag": "@lage-run/target-graph_v0.9.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ronakjain.public@gmail.com",
+            "package": "@lage-run/target-graph",
+            "commit": "bd7270ead871ca1c65349671cb26eb3b1e35ef0b",
+            "comment": "Optimize subgraph build"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Oct 2024 20:26:19 GMT",
+      "version": "0.9.0",
+      "tag": "@lage-run/target-graph_v0.9.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "6ecbd570669a07fa87429af5de13ec1adc58b864",
+            "comment": "add optimization functions for the graph"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 13 Sep 2024 18:05:04 GMT",
       "version": "0.8.10",
       "tag": "@lage-run/target-graph_v0.8.10",

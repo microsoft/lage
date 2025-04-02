@@ -2,6 +2,51 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "0.1.22",
+      "tag": "@lage-run/cache-github-actions_v0.1.22",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Nov 2024 08:12:37 GMT",
+      "version": "0.1.22",
+      "tag": "@lage-run/cache-github-actions_v0.1.22",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "c6e9f4e5339a897dd06a54fe528a1fadd75db243",
+            "comment": "Update dependency workspace-tools to v0.38.1"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 22 Oct 2024 15:19:29 GMT",
+      "version": "0.1.21",
+      "tag": "@lage-run/cache-github-actions_v0.1.21",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "067b34dac0e6621e6dab889b4ecb3ffb96ed3b7c",
+            "comment": "Update dependency workspace-tools to v0.37.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Sep 2024 20:30:48 GMT",
       "version": "0.1.20",
       "tag": "@lage-run/cache-github-actions_v0.1.20",

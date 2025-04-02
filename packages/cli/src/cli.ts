@@ -7,7 +7,6 @@ import { affectedCommand } from "./commands/affected/index.js";
 import { initCommand } from "./commands/init/index.js";
 import { infoCommand } from "./commands/info/index.js";
 import { execCommand } from "./commands/exec/index.js";
-import { serverCommand } from "./commands/server/index.js";
 
 async function main() {
   const program = new Command();

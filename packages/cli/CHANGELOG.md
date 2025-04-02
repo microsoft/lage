@@ -1,8 +1,407 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Fri, 13 Sep 2024 18:05:04 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 02 Apr 2025 00:48:44 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.31.0
+
+Wed, 02 Apr 2025 00:48:44 GMT
+
+### Minor changes
+
+- Add backwards compate lage info emit hack (dannyvv@microsoft.com)
+
+## 0.30.0
+
+Sat, 29 Mar 2025 02:16:38 GMT
+
+### Minor changes
+
+- cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL (kchau@microsoft.com)
+
+### Patches
+
+- fixes the lage-server to respect gitignored files for env globs (kchau@microsoft.com)
+
+## 0.28.0
+
+Sat, 15 Feb 2025 20:04:19 GMT
+
+### Minor changes
+
+- Add backwards compate lage info emit hack (dannyvv@microsoft.com)
+
+## 0.27.0
+
+Wed, 12 Feb 2025 00:08:30 GMT
+
+### Minor changes
+
+- Add support to json formatter to pretty print and indent the json when the log level is set to verbose or silly... (dannyvv@microsoft.com)
+- Bump @lage-run/reporters to v1.3.0
+
+## 0.26.0
+
+Wed, 12 Feb 2025 00:04:29 GMT
+
+### Minor changes
+
+- Add extra info to lage info for #815 (dannyvv@microsoft.com)
+
+## 0.25.7
+
+Tue, 11 Feb 2025 05:40:29 GMT
+
+### Patches
+
+- fixing outputs to have correct outputs (kchau@microsoft.com)
+
+## 0.25.6
+
+Mon, 10 Feb 2025 00:35:53 GMT
+
+### Patches
+
+- tracks the transitive inputs rather just one level deep (kchau@microsoft.com)
+- simulate transitives by doing our own hashing (kchau@microsoft.com)
+- Bump @lage-run/rpc to v1.2.7
+
+## 0.25.2
+
+Fri, 07 Feb 2025 02:50:58 GMT
+
+### Patches
+
+- adding missing inputs from dependencies (kchau@microsoft.com)
+
+## 0.25.1
+
+Tue, 04 Feb 2025 18:31:49 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v1.5.1
+
+## 0.25.0
+
+Fri, 24 Jan 2025 23:04:32 GMT
+
+### Minor changes
+
+- Adds environment variables override for all CLI args. Get these from --help (kchau@microsoft.com)
+
+## 0.24.13
+
+Thu, 23 Jan 2025 17:38:05 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v1.5.0
+- Bump @lage-run/worker-threads-pool to v0.9.0
+
+## 0.24.12
+
+Fri, 17 Jan 2025 21:57:32 GMT
+
+### Patches
+
+- Bump @lage-run/hasher to v1.6.9
+- Bump @lage-run/scheduler to v1.4.5
+
+## 0.24.11
+
+Wed, 15 Jan 2025 16:56:22 GMT
+
+### Patches
+
+- Fix bug where priorities were not being correctly set on tasks (1581488+christiango@users.noreply.github.com)
+- Bump @lage-run/cache to v1.3.11
+- Bump @lage-run/config to v0.4.12
+- Bump @lage-run/hasher to v1.6.8
+- Bump @lage-run/reporters to v1.2.19
+- Bump @lage-run/runners to v1.2.1
+- Bump @lage-run/scheduler to v1.4.4
+- Bump @lage-run/scheduler-types to v0.3.23
+- Bump @lage-run/target-graph to v0.11.1
+
+## 0.24.10
+
+Fri, 20 Dec 2024 19:42:00 GMT
+
+### Patches
+
+- adds the directory probing as well (kchau@microsoft.com)
+
+## 0.24.9
+
+Thu, 19 Dec 2024 15:53:46 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v1.4.3
+
+## 0.24.8
+
+Tue, 10 Dec 2024 23:38:54 GMT
+
+### Patches
+
+- makes sure the failing case also reports i/o of files (kchau@microsoft.com)
+
+## 0.24.7
+
+Mon, 09 Dec 2024 06:21:52 GMT
+
+### Patches
+
+- fixing the outputs so it includes files I/O (kchau@microsoft.com)
+
+## 0.24.6
+
+Sun, 08 Dec 2024 00:07:28 GMT
+
+### Patches
+
+- adds the ability to do workerIdleMemoryLimit (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v1.4.2
+- Bump @lage-run/worker-threads-pool to v0.8.6
+
+## 0.24.5
+
+Wed, 04 Dec 2024 23:50:15 GMT
+
+### Patches
+
+- Fixes the server worker model to use aggregated pool (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v1.4.1
+- Bump @lage-run/worker-threads-pool to v0.8.5
+
+## 0.24.4
+
+Mon, 02 Dec 2024 17:23:22 GMT
+
+### Patches
+
+- adds the ability to create stagedTargets (kchau@microsoft.com)
+- Bump @lage-run/cache to v1.3.10
+- Bump @lage-run/config to v0.4.11
+- Bump @lage-run/hasher to v1.6.7
+- Bump @lage-run/reporters to v1.2.18
+- Bump @lage-run/runners to v1.2.0
+- Bump @lage-run/scheduler to v1.4.0
+- Bump @lage-run/scheduler-types to v0.3.22
+- Bump @lage-run/target-graph to v0.11.0
+
+## 0.24.3
+
+Wed, 20 Nov 2024 08:12:37 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.1 (email not defined)
+- Bump @lage-run/cache to v1.3.9
+- Bump @lage-run/config to v0.4.10
+- Bump @lage-run/hasher to v1.6.6
+- Bump @lage-run/reporters to v1.2.17
+- Bump @lage-run/runners to v1.1.2
+- Bump @lage-run/scheduler to v1.3.12
+- Bump @lage-run/scheduler-types to v0.3.21
+- Bump @lage-run/target-graph to v0.10.1
+
+## 0.24.2
+
+Wed, 20 Nov 2024 02:43:43 GMT
+
+### Patches
+
+- adding exit code support for executeInProcess (kchau@microsoft.com)
+- Bump @lage-run/config to v0.4.9
+- Bump @lage-run/runners to v1.1.1
+- Bump @lage-run/scheduler to v1.3.11
+
+## 0.24.1
+
+Mon, 18 Nov 2024 23:22:30 GMT
+
+### Patches
+
+- Bump @lage-run/hasher to v1.6.5
+- Bump @lage-run/scheduler to v1.3.10
+
+## 0.24.0
+
+Fri, 08 Nov 2024 19:45:09 GMT
+
+### Minor changes
+
+- add "shouldRun()" config to the target config (kchau@microsoft.com)
+- Bump @lage-run/cache to v1.3.8
+- Bump @lage-run/config to v0.4.8
+- Bump @lage-run/hasher to v1.6.4
+- Bump @lage-run/reporters to v1.2.16
+- Bump @lage-run/runners to v1.1.0
+- Bump @lage-run/scheduler to v1.3.9
+- Bump @lage-run/scheduler-types to v0.3.20
+- Bump @lage-run/target-graph to v0.10.0
+
+## 0.23.11
+
+Fri, 08 Nov 2024 19:27:44 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler to v1.3.8
+
+## 0.23.10
+
+Fri, 01 Nov 2024 08:07:38 GMT
+
+### Patches
+
+- skip using npm client if running a node script (kchau@microsoft.com)
+- Bump @lage-run/config to v0.4.7
+- Bump @lage-run/runners to v1.0.7
+- Bump @lage-run/scheduler to v1.3.7
+
+## 0.23.9
+
+Tue, 22 Oct 2024 15:19:29 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.37.0 (email not defined)
+- Bump @lage-run/cache to v1.3.7
+- Bump @lage-run/config to v0.4.6
+- Bump @lage-run/hasher to v1.6.3
+- Bump @lage-run/reporters to v1.2.15
+- Bump @lage-run/runners to v1.0.6
+- Bump @lage-run/scheduler to v1.3.6
+- Bump @lage-run/scheduler-types to v0.3.19
+- Bump @lage-run/target-graph to v0.9.3
+
+## 0.23.8
+
+Mon, 21 Oct 2024 22:18:54 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.3.6
+- Bump @lage-run/config to v0.4.5
+- Bump @lage-run/hasher to v1.6.2
+- Bump @lage-run/reporters to v1.2.14
+- Bump @lage-run/runners to v1.0.5
+- Bump @lage-run/scheduler to v1.3.5
+- Bump @lage-run/scheduler-types to v0.3.18
+- Bump @lage-run/target-graph to v0.9.2
+
+## 0.23.7
+
+Thu, 17 Oct 2024 20:33:04 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.3.5
+- Bump @lage-run/config to v0.4.4
+- Bump @lage-run/hasher to v1.6.1
+- Bump @lage-run/reporters to v1.2.13
+- Bump @lage-run/runners to v1.0.4
+- Bump @lage-run/scheduler to v1.3.4
+- Bump @lage-run/scheduler-types to v0.3.17
+- Bump @lage-run/target-graph to v0.9.1
+
+## 0.23.6
+
+Fri, 11 Oct 2024 22:09:18 GMT
+
+### Patches
+
+- moved the picker creation to be just once to be reused in a singletargetworker (kchau@microsoft.com)
+- Bump @lage-run/reporters to v1.2.12
+
+## 0.23.5
+
+Thu, 10 Oct 2024 20:14:59 GMT
+
+### Patches
+
+- shutoff at 3 minutes (kchau@microsoft.com)
+
+## 0.23.4
+
+Wed, 09 Oct 2024 17:20:33 GMT
+
+### Patches
+
+- fixing up the lage integrate with buildxl to utilize lage-server (kchau@microsoft.com)
+- Bump @lage-run/scheduler to v1.3.3
+- Bump @lage-run/worker-threads-pool to v0.8.4
+
+## 0.23.3
+
+Tue, 08 Oct 2024 20:03:36 GMT
+
+### Patches
+
+- uses the shell scripts to have a different executable name (kchau@microsoft.com)
+
+## 0.23.2
+
+Mon, 07 Oct 2024 19:33:13 GMT
+
+### Patches
+
+- Fixing the action command generation to handle the case of launching as server without --server (kchau@microsoft.com)
+
+## 0.23.1
+
+Fri, 04 Oct 2024 23:41:44 GMT
+
+### Patches
+
+- Modified info command to accommodate a "LAGE_WORKER_SERVER" flag (also, --server) (kchau@microsoft.com)
+- Bump @lage-run/rpc to v1.2.3
+
+## 0.23.0
+
+Wed, 02 Oct 2024 20:26:19 GMT
+
+### Minor changes
+
+- Simulate file access for lage server (kchau@microsoft.com)
+- Bump @lage-run/cache to v1.3.4
+- Bump @lage-run/config to v0.4.3
+- Bump @lage-run/globby to v14.2.0
+- Bump @lage-run/hasher to v1.6.0
+- Bump @lage-run/reporters to v1.2.11
+- Bump @lage-run/rpc to v1.2.2
+- Bump @lage-run/runners to v1.0.3
+- Bump @lage-run/scheduler to v1.3.2
+- Bump @lage-run/scheduler-types to v0.3.16
+- Bump @lage-run/target-graph to v0.9.0
+- Bump @lage-run/worker-threads-pool to v0.8.3
+
+## 0.22.0
+
+Fri, 27 Sep 2024 20:03:49 GMT
+
+### Minor changes
+
+- Simulate file access for lage server (kchau@microsoft.com)
+- Bump @lage-run/globby to v14.1.0
+- Bump @lage-run/hasher to v1.5.0
+- Bump @lage-run/rpc to v1.2.1
+- Bump @lage-run/scheduler to v1.3.1
+- Bump @lage-run/worker-threads-pool to v0.8.2
+
+## 0.21.0
+
+Wed, 25 Sep 2024 20:28:10 GMT
+
+### Minor changes
+
+- Bump @lage-run/hasher to v1.4.0
+- Bump @lage-run/scheduler to v1.3.0
 
 ## 0.20.0
 

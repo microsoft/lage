@@ -2,7 +2,7 @@ import { Monorepo } from "./mock/monorepo.js";
 import { parseNdJson } from "./parseNdJson.js";
 
 describe("RemoteFallbackCacheProvider", () => {
-  it("should skip local cache population if --skip-local-cache is enabled", () => {
+  it("should skip local cache population if --skip-local-cache is enabled", async () => {
     const repo = new Monorepo("fallback");
 
     repo.init();
@@ -47,10 +47,10 @@ describe("RemoteFallbackCacheProvider", () => {
 
     expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))).toBeTruthy();
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 
-  it("should operate with local provider ONLY by default", () => {
+  it("should operate with local provider ONLY by default", async () => {
     const repo = new Monorepo("fallback-local-only");
 
     repo.init();
@@ -91,10 +91,10 @@ describe("RemoteFallbackCacheProvider", () => {
 
     expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))).toBeFalsy();
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 
-  it("should allow read-only mode when given a remote (or custom) cache config", () => {
+  it("should allow read-only mode when given a remote (or custom) cache config", async () => {
     const repo = new Monorepo("fallback-read-only");
 
     repo.init();
@@ -138,10 +138,10 @@ describe("RemoteFallbackCacheProvider", () => {
 
     expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))).toBeFalsy();
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 
-  it("should allow read-write mode when given a special environment variable", () => {
+  it("should allow read-write mode when given a special environment variable", async () => {
     const repo = new Monorepo("fallback-read-write-env-var");
 
     repo.init();
@@ -186,6 +186,6 @@ describe("RemoteFallbackCacheProvider", () => {
 
     expect(jsonOutput.find((entry) => entry.msg?.includes("remote fallback put"))).toBeTruthy();
 
-    repo.cleanup();
+    await repo.cleanup();
   });
 });

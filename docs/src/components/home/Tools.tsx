@@ -1,31 +1,36 @@
 import Link from "@docusaurus/Link";
 import React from "react";
-import { ToolList } from "../../data/ToolList";
+import { ToolList, type ToolInfo } from "../../data/ToolList";
+import { cx, classNames } from "../classNames";
 
-function Tool({ Svg, title, description, link }) {
+const Tool = (props: ToolInfo) => {
+  const { svg: Svg, title, description, link } = props;
   return (
-    <div className="text-center padding-horiz--md flex justify-center">
-      <Link href={link} target="_blank">
-        <div className="my-3 p-6 max-w-sm bg-tool rounded-lg h-72 lg:h-96">
-          <Svg
-            className="fill-black h-12 w-12 md:h-16 md:w-16 flex justify-center mx-auto my-4"
-            alt={title}
-          />
-          <div className="font-bahnschrift text-white mt-2 mb-4 text-2xl md:text-3xl">
-            {title}
-          </div>
-          <p className="font-bahnschrift mb-3 text-white text-lg md:text-xl">
-            {description}
-          </p>
-        </div>
+    <div
+      className={cx(
+        classNames.roundedBox,
+        "max-w-sm flex flex-col items-stretch p-6 bg-tealXDark"
+      )}
+    >
+      <Link
+        href={link}
+        target="_blank"
+        className={cx(
+          "text-white! underline-offset-4 flex flex-col items-center gap-3 md:gap-4 mb-3 md:mb-4",
+          classNames.fontMdLg
+        )}
+      >
+        <Svg className="h-12 w-12 md:h-16 md:w-16" aria-hidden />
+        {title}
       </Link>
+      <p className={classNames.fontSm}>{description}</p>
     </div>
   );
-}
+};
 
 export const Tools = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gaps-12 px-12 py-8">
+    <div className="grid px-4 gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
       {ToolList.map((props) => (
         <Tool key={props.title} {...props} />
       ))}
