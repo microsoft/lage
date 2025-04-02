@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Bundle with esbuild ^0.25.0",
+      "packageName": "@lage-run/globby",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Bundle with esbuild ^0.25.0",
+      "packageName": "lage",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
