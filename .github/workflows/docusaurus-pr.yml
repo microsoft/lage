@@ -1,5 +1,7 @@
 name: Docs - PR
 
+# This doesn't actually deploy, just builds the docs folder when it's modified.
+
 on:
   pull_request:
     branches:
@@ -9,17 +11,14 @@ on:
       - "docs/**"
 
 concurrency:
-  # For PRs, use the ref (branch) in the concurrency group so that new pushes cancel any old runs.
-  # For pushes to master, ideally we wouldn't set a concurrency group, but github actions doesn't
-  # support conditional blocks of settings, so we use the SHA so the "group" is unique.
-  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/master' && github.sha || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions: {}
 
 jobs:
-  test-deploy:
-    name: Test deployment
+  test-build:
+    name: Test build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
