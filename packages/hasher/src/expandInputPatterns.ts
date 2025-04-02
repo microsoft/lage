@@ -1,7 +1,7 @@
 import { type Target } from "@lage-run/target-graph";
 import { type DependencyMap } from "workspace-tools";
 
-export function expandInputPatterns(patterns: string[], target: Target, dependencyMap: DependencyMap) {
+export function expandInputPatterns(patterns: string[], target: Target, dependencyMap: DependencyMap): Record<string, string[]> {
   const expandedPatterns: Record<string, string[]> = {};
 
   for (const pattern of patterns) {
@@ -34,6 +34,11 @@ export function expandInputPatterns(patterns: string[], target: Target, dependen
           }
         }
       }
+    } else if (pattern.includes("#")) {
+      // In this case they specified a specific package which an input file will be pulled from
+      const [pkg, matchPattern] = pattern.split("#");
+      expandedPatterns[pkg] = expandedPatterns[pkg] ?? [];
+      expandedPatterns[pkg].push(matchPattern);
     } else {
       const pkg = target.packageName!;
       expandedPatterns[pkg] = expandedPatterns[pkg] ?? [];
