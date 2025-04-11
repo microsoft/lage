@@ -1,11 +1,22 @@
 import type { Logger } from "@lage-run/logger";
 import path from "path";
 import fs from "fs";
-import { getWorkspaceRoot } from "workspace-tools";
 
-export async function simulateFileAccess(logger: Logger, inputs: string[], outputs: string[]) {
-  const root = getWorkspaceRoot(process.cwd())!;
+export async function simulateFileAccess(logger: Logger, root: string, inputs: string[], outputs: string[]) {
   logger.silly("Now probing and touching inputs and outputs");
+
+  // Helper to get all directory parts up to root
+  const getAllDirectoryParts = (filePath: string): string[] => {
+    const parts: string[] = [];
+    let dirPath = path.dirname(filePath);
+
+    while (dirPath !== "." && dirPath !== "") {
+      parts.push(dirPath);
+      dirPath = path.dirname(dirPath);
+    }
+
+    return parts;
+  };
 
   const inputDirectories = new Set<string>();
 
@@ -19,7 +30,8 @@ export async function simulateFileAccess(logger: Logger, inputs: string[], outpu
       // ignore
     }
 
-    inputDirectories.add(path.dirname(input));
+    // Add all directory parts to the set
+    getAllDirectoryParts(input).forEach((dir) => inputDirectories.add(dir));
   }
 
   for (const directory of inputDirectories) {
@@ -35,7 +47,8 @@ export async function simulateFileAccess(logger: Logger, inputs: string[], outpu
   const time = new Date();
   const outputDirectories = new Set<string>();
   for (const output of outputs) {
-    outputDirectories.add(path.dirname(output));
+    // Add all directory parts to the set
+    getAllDirectoryParts(output).forEach((dir) => outputDirectories.add(dir));
 
     try {
       fs.utimesSync(path.join(root, output), time, time);
