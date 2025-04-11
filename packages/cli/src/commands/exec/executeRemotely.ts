@@ -142,7 +142,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
 
     // we will simulate file access even if exit code may be non-zero
     const relativeGlobalInputsForTarget = path.relative(root, path.join(response.cwd, response.globalInputHashFile));
-    await simulateFileAccess(logger, [...response.inputs, relativeGlobalInputsForTarget], response.outputs);
+    await simulateFileAccess(logger, root, [...response.inputs, relativeGlobalInputsForTarget], response.outputs);
   } else {
     process.exitCode = 1;
   }
