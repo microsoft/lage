@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Wed, 02 Apr 2025 08:10:04 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 12 Apr 2025 08:09:17 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.31.2
+
+Sat, 12 Apr 2025 08:09:17 GMT
+
+### Patches
+
+- make sure to touch / probe all directories deeply (kchau@microsoft.com)
 
 ## 0.31.1
 
