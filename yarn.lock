@@ -1690,7 +1690,7 @@ __metadata:
     "@lage-run/monorepo-scripts": "workspace:^"
     backfill-config: "npm:6.4.2"
     backfill-logger: "npm:5.2.1"
-    workspace-tools: "npm:0.38.1"
+    workspace-tools: "npm:0.38.3"
   languageName: unknown
   linkType: soft
 
@@ -1737,7 +1737,7 @@ __metadata:
     fast-glob: "npm:3.3.3"
     proper-lockfile: "npm:^4.1.2"
     shell-quote: "npm:^1.8.1"
-    workspace-tools: "npm:0.38.1"
+    workspace-tools: "npm:0.38.3"
   bin:
     lage: ./bin/lage.js
     lage-server: ./bin/lage-server.js
@@ -1754,7 +1754,7 @@ __metadata:
     "@lage-run/target-graph": "workspace:^"
     backfill-config: "npm:6.4.2"
     cosmiconfig: "npm:7.1.0"
-    workspace-tools: "npm:0.38.1"
+    workspace-tools: "npm:0.38.3"
   bin:
     lage: ./bin/lage
   languageName: unknown
@@ -1807,7 +1807,7 @@ __metadata:
     glob-hasher: "npm:^1.4.2"
     graceful-fs: "npm:4.2.11"
     micromatch: "npm:4.0.8"
-    workspace-tools: "npm:0.38.1"
+    workspace-tools: "npm:0.38.3"
   languageName: unknown
   linkType: soft
 
@@ -1858,7 +1858,7 @@ __metadata:
     eslint: "npm:^8.20.0"
     eslint-plugin-file-extension-in-import-ts: "npm:^1.0.1"
     jest: "npm:^29.0.0"
-    workspace-tools: "npm:0.38.1"
+    workspace-tools: "npm:0.38.3"
   bin:
     monorepo-scripts: bin/monorepo-scripts.js
   languageName: unknown
@@ -1937,7 +1937,7 @@ __metadata:
     "@lage-run/monorepo-scripts": "workspace:^"
     jest-diff: "npm:^29.5.0"
     p-limit: "npm:^3.1.0"
-    workspace-tools: "npm:0.38.1"
+    workspace-tools: "npm:0.38.3"
   languageName: unknown
   linkType: soft
 
@@ -6123,7 +6123,7 @@ __metadata:
     esbuild-plugin-alias: "npm:^0.2.1"
     fsevents: "npm:~2.3.2"
     glob-hasher: "npm:^1.4.2"
-    workspace-tools: "npm:0.38.1"
+    workspace-tools: "npm:0.38.3"
   dependenciesMeta:
     fsevents:
       optional: true
@@ -8586,9 +8586,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"workspace-tools@npm:0.38.1":
-  version: 0.38.1
-  resolution: "workspace-tools@npm:0.38.1"
+"workspace-tools@npm:0.38.3":
+  version: 0.38.3
+  resolution: "workspace-tools@npm:0.38.3"
   dependencies:
     "@yarnpkg/lockfile": "npm:^1.1.0"
     fast-glob: "npm:^3.3.1"
@@ -8597,7 +8597,7 @@ __metadata:
     jju: "npm:^1.4.0"
     js-yaml: "npm:^4.1.0"
     micromatch: "npm:^4.0.0"
-  checksum: 10c0/2d6a1cf15b85de2449e4b58a6bc4abdc01fb7711e58add0621396fe9ad297d930d295af80800a38eafafcc8882ae291a3d53a55070d785e13db33b24df5815cb
+  checksum: 10c0/7eb63f242bf2563a82db020e0fa964c56f8cdfde8a18653f4990ec418ebacca45d2d6199a29a0332f7e3103ae44407012844808da1107d3030971887572b275f
   languageName: node
   linkType: hard
 

@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "p-limit": "^3.1.0",
-    "workspace-tools": "0.38.1"
+    "workspace-tools": "0.38.3"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
