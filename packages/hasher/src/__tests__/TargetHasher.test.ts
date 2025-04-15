@@ -103,6 +103,29 @@ describe("The main Hasher class", () => {
     monorepo2.cleanup();
   });
 
+  it("creates different hashes when a src file identified without any wildcard is changed", async () => {
+    const monorepo1 = await setupFixture("monorepo");
+    const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
+    const target = createTarget(monorepo1.root, "package-a", "build");
+    target.inputs = ["package.json", "src/index.ts"];
+    const hash = await getHash(hasher, target);
+
+    const monorepo2 = await setupFixture("monorepo");
+    const hasher2 = new TargetHasher({ root: monorepo2.root, environmentGlob: [] });
+    const target2 = createTarget(monorepo2.root, "package-a", "build");
+    target2.inputs = ["package.json", "src/index.ts"];
+
+    await monorepo2.commitFiles({ "packages/package-a/src/index.ts": "console.log('hello world');" });
+
+    const hash2 = await getHash(hasher2, target2);
+
+    expect(hash).not.toEqual(hash2);
+
+    monorepo1.cleanup();
+    monorepo2.cleanup();
+  });
+
+
   it("creates different hashes when a src file has changed for a dependency", async () => {
     const monorepo1 = await setupFixture("monorepo-with-deps");
     const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });

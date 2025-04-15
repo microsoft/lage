@@ -134,7 +134,7 @@ export class PackageTree {
         } else {
           // No special characters, so no need to do pattern matching, just take the file exactly as is, and
           // assume it could/should exist
-          simplePaths.push(pattern);
+          simplePaths.push(path.join(packagePath, pattern));
         }
       }
       this.#memoizedPackageFiles[key] = [
