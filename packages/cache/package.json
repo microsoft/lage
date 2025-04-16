@@ -17,7 +17,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@azure/identity": "^4.0.1",
+    "@azure/identity": "^4.9.0",
     "@lage-run/logger": "workspace:^",
     "@lage-run/target-graph": "workspace:^",
     "backfill-cache": "5.8.0",
