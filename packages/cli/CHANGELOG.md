@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Sat, 12 Apr 2025 08:09:17 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 17 Apr 2025 08:10:01 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.31.3
+
+Thu, 17 Apr 2025 08:10:01 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.3 (email not defined)
+- Update dependency chokidar to v3.6.0 (renovate@whitesourcesoftware.com)
 
 ## 0.31.2
 

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-<!-- This log was last generated on Wed, 15 Jan 2025 16:56:22 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 17 Apr 2025 08:10:01 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.11.2
+
+Thu, 17 Apr 2025 08:10:01 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.3 (email not defined)
 
 ## 0.11.1
 

@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Thu, 17 Apr 2025 08:10:01 GMT",
+      "version": "1.3.12",
+      "tag": "@lage-run/cache_v1.3.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cache",
+            "commit": "00e45954e48cdddcb3fa4b68a6e732a43ec7bd57",
+            "comment": "Update backfill monorepo"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 29 Mar 2025 02:16:38 GMT",
       "version": "1.3.11",
       "tag": "@lage-run/cache_v1.3.11",

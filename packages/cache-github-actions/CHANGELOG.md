@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cache-github-actions
 
-<!-- This log was last generated on Wed, 02 Apr 2025 08:10:04 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 17 Apr 2025 08:10:01 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.1.24
+
+Thu, 17 Apr 2025 08:10:01 GMT
+
+### Patches
+
+- Update backfill monorepo (renovate@whitesourcesoftware.com)
+- Update dependency workspace-tools to v0.38.3 (email not defined)
 
 ## 0.1.23
 

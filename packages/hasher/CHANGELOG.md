@@ -1,8 +1,16 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Sat, 29 Mar 2025 02:16:38 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 17 Apr 2025 08:10:01 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.8.2
+
+Thu, 17 Apr 2025 08:10:01 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.3 (email not defined)
 
 ## 1.8.0
 

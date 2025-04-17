@@ -2,6 +2,27 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 17 Apr 2025 08:10:01 GMT",
+      "version": "0.31.3",
+      "tag": "@lage-run/cli_v0.31.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "00e45954e48cdddcb3fa4b68a6e732a43ec7bd57",
+            "comment": "Update dependency workspace-tools to v0.38.3"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "00e45954e48cdddcb3fa4b68a6e732a43ec7bd57",
+            "comment": "Update dependency chokidar to v3.6.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 12 Apr 2025 08:09:17 GMT",
       "version": "0.31.2",
       "tag": "@lage-run/cli_v0.31.2",
