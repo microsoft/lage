@@ -1688,8 +1688,8 @@ __metadata:
   dependencies:
     "@actions/cache": "npm:3.3.0"
     "@lage-run/monorepo-scripts": "workspace:^"
-    backfill-config: "npm:6.4.2"
-    backfill-logger: "npm:5.2.1"
+    backfill-config: "npm:6.6.0"
+    backfill-logger: "npm:5.3.0"
     workspace-tools: "npm:0.38.3"
   languageName: unknown
   linkType: soft
@@ -1703,9 +1703,9 @@ __metadata:
     "@lage-run/monorepo-fixture": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
-    backfill-cache: "npm:5.8.0"
-    backfill-config: "npm:6.4.2"
-    backfill-logger: "npm:5.2.1"
+    backfill-cache: "npm:5.10.0"
+    backfill-config: "npm:6.6.0"
+    backfill-logger: "npm:5.3.0"
     glob-hasher: "npm:^1.4.2"
   languageName: unknown
   linkType: soft
@@ -1752,7 +1752,7 @@ __metadata:
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/runners": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
-    backfill-config: "npm:6.4.2"
+    backfill-config: "npm:6.6.0"
     cosmiconfig: "npm:7.1.0"
     workspace-tools: "npm:0.38.3"
   bin:
@@ -2987,43 +2987,44 @@ __metadata:
   languageName: node
   linkType: hard
 
-"backfill-cache@npm:5.8.0":
-  version: 5.8.0
-  resolution: "backfill-cache@npm:5.8.0"
+"backfill-cache@npm:5.10.0":
+  version: 5.10.0
+  resolution: "backfill-cache@npm:5.10.0"
   dependencies:
     "@azure/core-http": "npm:^3.0.0"
     "@azure/storage-blob": "npm:^12.15.0"
-    backfill-config: "npm:^6.4.2"
-    backfill-logger: "npm:^5.2.1"
+    backfill-config: "npm:^6.6.0"
+    backfill-logger: "npm:^5.3.0"
     execa: "npm:^5.0.0"
     fs-extra: "npm:^8.1.0"
     globby: "npm:^11.0.0"
     p-limit: "npm:^3.0.0"
     tar-fs: "npm:^2.1.0"
-  checksum: 10c0/5e9d947c1b8a57e26dc4bcdef473e140f6b63c9056176bba1b86008ba17f7b2c09c48bc755da5af1b961efb48d7e677b2e59b2a5b4fc76ababee412742dee86e
+  checksum: 10c0/3ff11297b8bebc55ca75b1aa4511ddc02b8716cb8fc143235cd6a9bf860165bc9d3d3e8a7359698f658e92fb4ca0071c2bdc088521b6274fba0f44fb366ac8c6
   languageName: node
   linkType: hard
 
-"backfill-config@npm:6.4.2, backfill-config@npm:^6.4.2":
-  version: 6.4.2
-  resolution: "backfill-config@npm:6.4.2"
+"backfill-config@npm:6.6.0, backfill-config@npm:^6.6.0":
+  version: 6.6.0
+  resolution: "backfill-config@npm:6.6.0"
   dependencies:
     "@azure/core-http": "npm:^3.0.0"
-    backfill-logger: "npm:^5.2.1"
+    "@azure/storage-blob": "npm:^12.15.0"
+    backfill-logger: "npm:^5.3.0"
     find-up: "npm:^5.0.0"
     pkg-dir: "npm:^4.2.0"
-  checksum: 10c0/59f7aaf9b726b007089f71b63c6df2cbc03fba10a8b86e5177bfbe2b237de50d1288b07df1215d6b2348c5520d7d5d8c166c2114ffb02cb351374253803a0241
+  checksum: 10c0/5bbec052961c35dd7c0885ffd13b7ab3a03f7b33ad52cb97e4345bec19ec2c2eb903b13cc637a5a72fe4b3606d8404c886de78b428b9fbaf55d665942352bc02
   languageName: node
   linkType: hard
 
-"backfill-logger@npm:5.2.1, backfill-logger@npm:^5.2.1":
-  version: 5.2.1
-  resolution: "backfill-logger@npm:5.2.1"
+"backfill-logger@npm:5.3.0, backfill-logger@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "backfill-logger@npm:5.3.0"
   dependencies:
     chalk: "npm:^4.1.1"
     filenamify: "npm:^4.1.0"
     fs-extra: "npm:^8.1.0"
-  checksum: 10c0/5db0fe78dd7a683b788b7f92584c683e5283a5109cc2f57a62ed2bb4150719afa1228221649adadf01f7e9ce073d973c1a0fe4bc7657a7d7f4c611ec5c8a638a
+  checksum: 10c0/5d97cba2af6eae86f7823c1469aa90ff82eecc8d4621332f6041bca5afadc2a3d060ca61763e13625f41663891b1afd25a5ff500de46da999ca767351adf4817
   languageName: node
   linkType: hard
 
@@ -6117,7 +6118,7 @@ __metadata:
   dependencies:
     "@lage-run/cli": "workspace:^"
     "@lage-run/runners": "workspace:^"
-    backfill-config: "npm:6.4.2"
+    backfill-config: "npm:6.6.0"
     dts-bundle-generator: "npm:^9.5.1"
     esbuild: "npm:^0.25.0"
     esbuild-plugin-alias: "npm:^0.2.1"

@@ -23,7 +23,7 @@
     "@lage-run/logger": "workspace:^",
     "@lage-run/runners": "workspace:^",
     "@lage-run/target-graph": "workspace:^",
-    "backfill-config": "6.4.2",
+    "backfill-config": "6.6.0",
     "cosmiconfig": "7.1.0",
     "workspace-tools": "0.38.3"
   },
