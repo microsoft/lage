@@ -20,9 +20,9 @@
     "@azure/identity": "^4.0.1",
     "@lage-run/logger": "workspace:^",
     "@lage-run/target-graph": "workspace:^",
-    "backfill-cache": "5.8.0",
-    "backfill-config": "6.4.2",
-    "backfill-logger": "5.2.1",
+    "backfill-cache": "5.10.0",
+    "backfill-config": "6.6.0",
+    "backfill-logger": "5.3.0",
     "glob-hasher": "^1.4.2"
   },
   "devDependencies": {
