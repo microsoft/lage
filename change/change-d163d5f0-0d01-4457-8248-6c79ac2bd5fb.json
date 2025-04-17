@@ -1,0 +1,46 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Update dependency workspace-tools to v0.38.3",
+      "packageName": "@lage-run/cache-github-actions",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Update dependency workspace-tools to v0.38.3",
+      "packageName": "@lage-run/cli",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Update dependency workspace-tools to v0.38.3",
+      "packageName": "@lage-run/config",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Update dependency workspace-tools to v0.38.3",
+      "packageName": "@lage-run/hasher",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Update dependency workspace-tools to v0.38.3",
+      "packageName": "lage",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Update dependency workspace-tools to v0.38.3",
+      "packageName": "@lage-run/target-graph",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
