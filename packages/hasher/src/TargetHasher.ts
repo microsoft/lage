@@ -170,7 +170,7 @@ export class TargetHasher {
 
     if (target.cwd === root && target.cache) {
       if (!target.inputs) {
-        throw new Error(`Missing inputs on target ${target.id}; cannot cache.`);
+        throw new Error(`No "inputs" specified for target "${target.id}"; cannot cache.`);
       }
 
       const files = await globAsync(target.inputs, { cwd: root });
