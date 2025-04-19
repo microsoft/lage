@@ -110,7 +110,8 @@ export class PackageTree {
 
   getPackageFiles(packageName: string, patterns: string[]) {
     const { root, packageInfos } = this.options;
-    // If packageName is given, look up the directory if its package.json.  Otherwise, return files that are not in any package.
+    // Look up the directory of the specified package.  If packageName is "", that means they want to find a file
+    // relative to the root workspace.
     const packagePath = packageName
       ? path.relative(root, path.dirname(packageInfos[packageName].packageJsonPath)).replace(/\\/g, "/")
       : "";
