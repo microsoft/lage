@@ -1,26 +1,30 @@
 import fs from "fs";
 import path from "path";
 import os from "os";
-import { Logger } from "@lage-run/logger";
+import { Logger, LogStructuredData, Reporter } from "@lage-run/logger";
 import { AdoReporter, ChromeTraceEventsReporter, LogReporter, ProgressReporter } from "@lage-run/reporters";
 import { initializeReporters } from "../src/commands/initializeReporters.js";
 
 describe("initializeReporters", () => {
   let tmpDir: string;
+  let reporters: Reporter<LogStructuredData>[] | undefined;
+
+  afterEach(() => {
+    reporters.forEach((r) => r.cleanup?.());
+    reporters = undefined;
+  });
 
   beforeAll(() => {
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "lage-"));
   });
 
   afterAll(() => {
-    /* eslint-disable no-console */
-    console.log("Deleting tmp", tmpDir);
     fs.rmSync(tmpDir, { force: true, recursive: true });
   });
 
   it("should initialize progress reporter when param is progress passed as true", () => {
     const logger = new Logger();
-    const reporters = initializeReporters(logger, {
+    reporters = initializeReporters(logger, {
       concurrency: 1,
       grouped: false,
       logLevel: "info",
@@ -31,12 +35,11 @@ describe("initializeReporters", () => {
 
     expect(reporters.length).toBe(1);
     expect(reporters).toContainEqual(expect.any(ProgressReporter));
-    reporters.forEach((r) => r.cleanup?.());
   });
 
   it("should initialize old reporter when grouped", () => {
     const logger = new Logger();
-    const reporters = initializeReporters(logger, {
+    reporters = initializeReporters(logger, {
       concurrency: 1,
       grouped: true,
       logLevel: "info",
@@ -46,12 +49,11 @@ describe("initializeReporters", () => {
     });
     expect(reporters.length).toBe(1);
     expect(reporters).toContainEqual(expect.any(LogReporter));
-    reporters.forEach((r) => r.cleanup?.());
   });
 
   it("should initialize old reporter when verbose", () => {
     const logger = new Logger();
-    const reporters = initializeReporters(logger, {
+    reporters = initializeReporters(logger, {
       concurrency: 1,
       grouped: false,
       logLevel: "info",
@@ -61,12 +63,11 @@ describe("initializeReporters", () => {
     });
     expect(reporters.length).toBe(1);
     expect(reporters).toContainEqual(expect.any(LogReporter));
-    reporters.forEach((r) => r.cleanup?.());
   });
 
   it("should initialize profile reporter", () => {
     const logger = new Logger();
-    const reporters = initializeReporters(logger, {
+    reporters = initializeReporters(logger, {
       concurrency: 1,
       grouped: false,
       logLevel: "info",
@@ -78,12 +79,11 @@ describe("initializeReporters", () => {
 
     expect(reporters.length).toBe(2);
     expect(reporters).toContainEqual(expect.any(ChromeTraceEventsReporter));
-    reporters.forEach((r) => r.cleanup?.());
   });
 
   it("should initialize ADO reporter when reporter arg is adoLog", () => {
     const logger = new Logger();
-    const reporters = initializeReporters(logger, {
+    reporters = initializeReporters(logger, {
       concurrency: 1,
       grouped: false,
       logLevel: "info",
@@ -93,6 +93,5 @@ describe("initializeReporters", () => {
     });
     expect(reporters.length).toBe(1);
     expect(reporters).toContainEqual(expect.any(AdoReporter));
-    reporters.forEach((r) => r.cleanup?.());
   });
 });
