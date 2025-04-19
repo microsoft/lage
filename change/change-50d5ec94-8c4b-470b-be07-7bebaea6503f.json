@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "If target has no outputs set, and no global outputGlob set, assume no outputs",
+      "packageName": "@lage-run/cache",
+      "email": "dobes@formative.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
