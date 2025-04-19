@@ -1,5 +1,6 @@
 import { Monorepo } from "./mock/monorepo.js";
 import { filterEntry, parseNdJson } from "./parseNdJson.js";
+import { getTargetId } from "@lage-run/target-graph";
 
 describe("basics", () => {
   let repo: Monorepo | undefined;
@@ -129,5 +130,36 @@ describe("basics", () => {
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "success"))).toBeTruthy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "test", "success"))).toBeTruthy();
     expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "lint", "success"))).toBeFalsy();
+  });
+
+  it("handles multiple levels of noop tasks", async () => {
+    const repo = new Monorepo("noop-task-layers");
+
+    repo.init();
+    repo.setLageConfig(`module.exports = {
+      "pipeline": {
+        "build": [],
+        "_build": { "type": "noop", "dependsOn": ["build"] },
+        "__build": { "type": "noop", "dependsOn": ["_build", "^__build"] },
+        "test": ["__build"]         
+      },
+      npmClient: 'yarn'
+    }`);
+
+    repo.addPackage("a", ["b"]);
+    repo.addPackage("b");
+    repo.install();
+
+    const results = repo.run("test");
+    const output = results.stdout + results.stderr;
+
+    const jsonOutput = parseNdJson(output);
+
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "build", "success"))).toBeTruthy();
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "b", "test", "success"))).toBeTruthy();
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "build", "success"))).toBeTruthy();
+    expect(jsonOutput.find((entry) => filterEntry(entry.data, "a", "test", "success"))).toBeTruthy();
+
+    await repo.cleanup();
   });
 });
