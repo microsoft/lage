@@ -6,9 +6,6 @@
   "repository": {
     "url": "https://github.com/microsoft/lage"
   },
-  "bin": {
-    "lage": "./bin/lage"
-  },
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

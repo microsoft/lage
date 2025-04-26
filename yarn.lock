@@ -1755,8 +1755,6 @@ __metadata:
     backfill-config: "npm:6.6.0"
     cosmiconfig: "npm:7.1.0"
     workspace-tools: "npm:0.38.3"
-  bin:
-    lage: ./bin/lage
   languageName: unknown
   linkType: soft
 
@@ -1771,8 +1769,6 @@ __metadata:
     "@lage-run/target-graph": "workspace:^"
     execa: "npm:5.1.1"
     glob-hasher: "npm:^1.4.2"
-  bin:
-    lage: ./bin/lage
   languageName: unknown
   linkType: soft
 
