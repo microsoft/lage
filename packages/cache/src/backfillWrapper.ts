@@ -6,7 +6,7 @@ import * as os from "os";
 import { createDefaultConfig, getEnvConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
 import type { Logger as BackfillLogger } from "backfill-logger";
-import type { CacheOptions } from "./types/CacheOptions.js";
+import type { CacheOptions } from "@lage-run/config";
 import { CredentialCache } from "./CredentialCache.js";
 
 export function createBackfillLogger() {
