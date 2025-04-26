@@ -2,6 +2,21 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Sat, 26 Apr 2025 08:08:38 GMT",
+      "version": "0.4.14",
+      "tag": "@lage-run/config_v0.4.14",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "31b9b2861d9aa59d8dd5b6b2ceb2444b11198694",
+            "comment": "Remove incorrect bin entries"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 17 Apr 2025 08:10:01 GMT",
       "version": "0.4.13",
       "tag": "@lage-run/config_v0.4.13",
