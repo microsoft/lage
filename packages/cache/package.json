@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@azure/identity": "^4.0.1",
+    "@lage-run/config": "workspace:^",
     "@lage-run/logger": "workspace:^",
     "@lage-run/target-graph": "workspace:^",
     "backfill-cache": "5.10.0",

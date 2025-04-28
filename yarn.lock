@@ -1699,6 +1699,7 @@ __metadata:
   resolution: "@lage-run/cache@workspace:packages/cache"
   dependencies:
     "@azure/identity": "npm:^4.0.1"
+    "@lage-run/config": "workspace:^"
     "@lage-run/logger": "workspace:^"
     "@lage-run/monorepo-fixture": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
