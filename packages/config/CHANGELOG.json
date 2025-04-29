@@ -2,6 +2,21 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Tue, 29 Apr 2025 08:10:03 GMT",
+      "version": "0.4.15",
+      "tag": "@lage-run/config_v0.4.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "8cd955ef4910abb9fff6f0de40255fe842847a79",
+            "comment": "Make CacheOptions properties optional and document them"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 26 Apr 2025 08:08:38 GMT",
       "version": "0.4.14",
       "tag": "@lage-run/config_v0.4.14",
