@@ -68,3 +68,41 @@ sequenceDiagram
 Note: we're skipping all kinds of details about how BuildXL internally hashes, caches, and skips the pips in its execution.
 
 ### Server-worker
+
+For certain `lage` targets where it is infeasible to solely utilize hash & cache to speed up the performance, we may need to re-use certain objects in memory from target run to run. This calls for a feature with lage named "Server Worker". The difference is that `lage`
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant bxl
+    participant config.dsc
+    participant BuildXL Worker
+    participant lage
+    participant lage client
+    participant lage server
+    participant lage worker
+
+    User->>bxl: Invoke `bxl /c:config.dsc` (server mode enabled)
+    bxl->>config.dsc: Read configuration
+    bxl->>lage: Call `lage info --reporter json --server`
+    lage-->>bxl: Return target graph
+    bxl->>bxl: Convert target graph to pip graph
+    bxl->>BuildXL Worker: Distribute pip execution
+
+    BuildXL Worker->>lage client: Execute pip (as lage client, outside sandbox)
+    lage client->>lage server: Check if server exists
+    alt Server does not exist
+        lage client->>lage server: Start lage server
+        lage server->>lage worker: Start lage workers (potentially across machines via BXL)
+    end
+    lage client->>lage server: Send task details for pip
+    lage server->>lage worker: Dispatch task to available worker
+    lage worker->>lage worker: Perform build task
+    lage worker-->>lage server: Return results (inputs/outputs list)
+    lage server-->>lage client: Relay results
+    lage client->>BuildXL Worker: Simulate file reads/writes for sandbox
+    lage client-->>BuildXL Worker: Report pip completion
+
+    BuildXL Worker-->>bxl: Report pip completion
+    bxl-->>User: Final build results
+```
