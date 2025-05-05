@@ -1,0 +1,40 @@
+# Lage Monorepo Overview for LLMs and Newcomers
+
+This repository contains the source code for `lage`, a task runner optimized for JavaScript/TypeScript monorepos.
+
+## Core Concepts
+
+*   **Monorepo:** The entire project, including multiple packages, is managed within this single repository.
+*   **Lage:** The primary tool developed here. It's designed to efficiently run tasks (like building, testing, linting) across the packages in the monorepo, understanding the dependencies between them. Key configuration files are `lage.config.js` and `beachball.config.js` (likely for release management).
+*   **Packages:** The `packages/` directory contains individual, publishable libraries or applications that make up the `lage` tool and its ecosystem.
+
+## Key Directories
+
+*   `packages/`: Contains the individual packages.
+    *   `lage`: The core `lage` CLI tool package.
+    *   `cache`: Handles caching of task outputs.
+    *   `cli`: Command-line interface logic.
+    *   `config`: Configuration loading and validation.
+    *   `hasher`: Content hashing for cache invalidation.
+    *   `logger`: Logging utilities.
+    *   `scheduler`: Task scheduling logic.
+    *   `target-graph`: Building the dependency graph of tasks.
+    *   `worker-threads-pool`: Managing worker threads for parallel execution.
+    *   *(Other packages support various features like reporters, runners, etc.)*
+*   `docs/`: Contains the documentation website source code (likely built with Docusaurus).
+*   `scripts/`: Utility scripts for development and maintenance.
+*   `benchmark/`: Performance benchmarking tests.
+*   `e2e-tests/`: End-to-end tests for the `lage` CLI.
+
+## Getting Started
+
+1.  **Installation:** The project uses Yarn Berry (v4.9.1 specified in `.yarnrc.yml`). Run `yarn install` in the root directory to install dependencies.
+2.  **Building:** Likely involves running `yarn lage build` or similar commands defined in the root `package.json` or `lage.config.js`.
+3.  **Testing:** Run tests using `yarn lage test` or similar.
+4.  **Documentation:** The primary documentation is in the `docs/` directory. Refer to `docs/README.md` or the built website for detailed information.
+
+## Contribution
+
+See `CONTRIBUTING.mdx` in the `docs/docs` directory for guidelines on contributing to the project.
+
+This file provides a high-level overview. For detailed information, please refer to the documentation and the source code within each package.
