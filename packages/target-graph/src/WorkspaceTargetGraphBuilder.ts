@@ -88,10 +88,12 @@ export class WorkspaceTargetGraphBuilder {
       for (const packageName of packages) {
         const task = id;
         const target = this.targetFactory.createPackageTarget(packageName!, task, config);
-        this.graphBuilder.addTarget(target);
-        this.targetConfigMap.set(id, config);
+        if (!this.graphBuilder.targets.has(target.id)) {
+          this.graphBuilder.addTarget(target);
+          this.targetConfigMap.set(id, config);
 
-        this.processStagedConfig(target, config, changedFiles);
+          await this.processStagedConfig(target, config, changedFiles);
+        }
       }
     }
   }
