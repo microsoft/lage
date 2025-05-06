@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "none",
+      "comment": "Fix issue with tests failing during cleanup",
+      "packageName": "@lage-run/reporters",
+      "email": "dobes@formative.com",
+      "dependentChangeType": "none"
+    }
+  ]
+}
