@@ -106,3 +106,18 @@ sequenceDiagram
     BuildXL Worker-->>bxl: Report pip completion
     bxl-->>User: Final build results
 ```
+
+To enable this mode of operation, add an environment variable setting inside the `config.dsc`:
+
+```
+config({
+  resolvers: [
+      {
+        kind: "Lage",
+        ...
+        environment: Map.empty<string, (EnvironmentData | PassthroughEnvironmentVariable)>()
+            .add("LAGE_WORKER_SERVER", "true")
+      }
+  ]
+});
+```
