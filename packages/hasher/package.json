@@ -22,6 +22,7 @@
     "glob-hasher": "^1.4.2",
     "graceful-fs": "4.2.11",
     "micromatch": "4.0.8",
+    "sanitize-filename": "^1.6.3",
     "workspace-tools": "0.38.3"
   },
   "devDependencies": {

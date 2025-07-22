@@ -56,8 +56,5 @@
       "prod"
     ]
   },
-  "packageManager": "yarn@4.9.1",
-  "dependencies": {
-    "sanitize-filename": "^1.6.3"
-  }
+  "packageManager": "yarn@4.9.1"
 }
