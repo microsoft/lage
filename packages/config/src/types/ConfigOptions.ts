@@ -65,4 +65,9 @@ export interface ConfigOptions {
    * Allows for no targets run
    */
   allowNoTargetRuns: boolean;
+
+  /**
+   * Enables the merging of target config files, rather than simply replace it when multiple matches are encoutered
+   */
+  enableTargetConfigMerging: boolean;
 }
