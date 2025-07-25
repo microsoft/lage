@@ -62,6 +62,7 @@ export async function watchAction(options: RunOptions, command: Command) {
     tasks,
     packageInfos,
     priorities: config.priorities,
+    enableTargetConfigMerging: config.enableTargetConfigMerging,
   });
 
   // Make sure we do not attempt writeRemoteCache in watch mode

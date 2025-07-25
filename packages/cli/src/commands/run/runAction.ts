@@ -64,6 +64,7 @@ export async function runAction(options: RunOptions, command: Command) {
     tasks,
     packageInfos,
     priorities: config.priorities,
+    enableTargetConfigMerging: config.enableTargetConfigMerging,
   });
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);

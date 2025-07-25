@@ -20,6 +20,7 @@ interface CreateTargetGraphOptions {
   tasks: string[];
   packageInfos: PackageInfos;
   priorities: Priority[];
+  enableTargetConfigMerging: boolean;
 }
 
 function getChangedFiles(since: string, cwd: string) {
@@ -43,6 +44,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
     root,
     dependencies,
     dependents,
+    enableTargetConfigMerging,
     since,
     scope,
     repoWideChanges,
@@ -54,7 +56,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
     priorities,
   } = options;
 
-  const builder = new WorkspaceTargetGraphBuilder(root, packageInfos);
+  const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, enableTargetConfigMerging);
 
   const packages = getFilteredPackages({
     root,
@@ -78,7 +80,27 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
     }
   }
 
-  for (const [id, definition] of Object.entries(pipeline)) {
+  const pipelineEntries = Object.entries(pipeline);
+
+  // Add lage pipeline configuration in the package.json files.
+  // They are configured in the lage field, but without the package id.
+  // i.e. having this package.json
+  //    { "name": "@lage-run/globby", "lage": { "transpile": { type: "npmScript" } }}
+  // is equivalent to having the following in lage.config.js
+  // { pipeline: { "@lage-run/globby#transpile": { type: "npmScript" } }
+  // We conciously add these 'after' the ones in lage.config.js
+  // to indicate that the more specific package.json definition takes
+  //  precedence over the global lage.config.js.
+  for (const [packageId, packageInfo] of Object.entries(packageInfos)) {
+    const packageLageDefinition = packageInfo.lage as PipelineDefinition;
+    if (packageLageDefinition) {
+      for (const [id, definition] of Object.entries(packageLageDefinition)) {
+        pipelineEntries.push([packageId + "#" + id, definition]);
+      }
+    }
+  }
+
+  for (const [id, definition] of pipelineEntries) {
     if (Array.isArray(definition)) {
       builder.addTargetConfig(
         id,
