@@ -12,6 +12,6 @@
     "eslint": "^8.20.0",
     "eslint-plugin-file-extension-in-import-ts": "^1.0.1",
     "jest": "^29.0.0",
-    "workspace-tools": "0.38.3"
+    "workspace-tools": "0.38.4"
   }
 }
