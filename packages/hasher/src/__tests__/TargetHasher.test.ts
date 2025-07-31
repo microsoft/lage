@@ -172,4 +172,15 @@ describe("The main Hasher class", () => {
 
     monorepo1.cleanup();
   });
+
+  it("sanitizes target hashes filenames when the target contains special characters", async () => {
+    const monorepo1 = await setupFixture("monorepo");
+    const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
+    const target = createTarget(monorepo1.root, "package-a", "build:test");
+    const hash = await getHash(hasher, target);
+
+    expect(() => hasher.writeTargetHashesManifest()).not.toThrow();
+
+    monorepo1.cleanup();
+  });
 });

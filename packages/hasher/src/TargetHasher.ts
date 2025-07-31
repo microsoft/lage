@@ -1,6 +1,7 @@
 import type { Target } from "@lage-run/target-graph";
 import { hash } from "glob-hasher";
 import { globAsync } from "@lage-run/globby";
+import sanitize from "sanitize-filename";
 
 import fs from "fs";
 import path from "path";
@@ -230,7 +231,7 @@ export class TargetHasher {
 
   writeTargetHashesManifest() {
     for (const [id, { fileHashes, globalFileHashes }] of Object.entries(this.targetHashesLog)) {
-      const targetHashesManifestPath = path.join(this.targetHashesDirectory, `${id}.json`);
+      const targetHashesManifestPath = sanitize(path.join(this.targetHashesDirectory, `${id}.json`));
       if (!fs.existsSync(path.dirname(targetHashesManifestPath))) {
         fs.mkdirSync(path.dirname(targetHashesManifestPath), { recursive: true });
       }
