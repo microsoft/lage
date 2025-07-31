@@ -1502,7 +1502,7 @@ __metadata:
     "@lage-run/monorepo-scripts": "workspace:^"
     backfill-config: "npm:6.6.0"
     backfill-logger: "npm:5.3.0"
-    workspace-tools: "npm:0.38.3"
+    workspace-tools: "npm:0.38.4"
   languageName: unknown
   linkType: soft
 
@@ -1550,7 +1550,7 @@ __metadata:
     fast-glob: "npm:3.3.3"
     proper-lockfile: "npm:^4.1.2"
     shell-quote: "npm:^1.8.1"
-    workspace-tools: "npm:0.38.3"
+    workspace-tools: "npm:0.38.4"
   bin:
     lage: ./bin/lage.js
     lage-server: ./bin/lage-server.js
@@ -1567,7 +1567,7 @@ __metadata:
     "@lage-run/target-graph": "workspace:^"
     backfill-config: "npm:6.6.0"
     cosmiconfig: "npm:7.1.0"
-    workspace-tools: "npm:0.38.3"
+    workspace-tools: "npm:0.38.4"
   languageName: unknown
   linkType: soft
 
@@ -1616,7 +1616,7 @@ __metadata:
     glob-hasher: "npm:^1.4.2"
     graceful-fs: "npm:4.2.11"
     micromatch: "npm:4.0.8"
-    workspace-tools: "npm:0.38.3"
+    workspace-tools: "npm:0.38.4"
   languageName: unknown
   linkType: soft
 
@@ -1667,7 +1667,7 @@ __metadata:
     eslint: "npm:^8.20.0"
     eslint-plugin-file-extension-in-import-ts: "npm:^1.0.1"
     jest: "npm:^29.0.0"
-    workspace-tools: "npm:0.38.3"
+    workspace-tools: "npm:0.38.4"
   bin:
     monorepo-scripts: bin/monorepo-scripts.js
   languageName: unknown
@@ -1746,7 +1746,7 @@ __metadata:
     "@lage-run/monorepo-scripts": "workspace:^"
     jest-diff: "npm:^29.5.0"
     p-limit: "npm:^3.1.0"
-    workspace-tools: "npm:0.38.3"
+    workspace-tools: "npm:0.38.4"
   languageName: unknown
   linkType: soft
 
@@ -4506,16 +4506,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"git-up@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "git-up@npm:7.0.0"
-  dependencies:
-    is-ssh: "npm:^1.4.0"
-    parse-url: "npm:^8.1.0"
-  checksum: 10c0/a3fa02e1a63c7c824b5ebbf23f4a9a6b34dd80031114c5dd8adb7ef53493642e39d3d80dfef4025a452128400c35c2c138d20a0f6ae5d7d7ef70d9ba13083d34
-  languageName: node
-  linkType: hard
-
 "git-up@npm:^8.1.0":
   version: 8.1.1
   resolution: "git-up@npm:8.1.1"
@@ -4523,15 +4513,6 @@ __metadata:
     is-ssh: "npm:^1.4.0"
     parse-url: "npm:^9.2.0"
   checksum: 10c0/2cc4461d8565a3f7a1ecd3d262a58ddb8df0a67f7f7d4915df2913c460b2e88ae570a6ea810700a6d22fb3b9e4bea8dd10a8eb469900ddc12e35c62208608c03
-  languageName: node
-  linkType: hard
-
-"git-url-parse@npm:^13.0.0":
-  version: 13.1.1
-  resolution: "git-url-parse@npm:13.1.1"
-  dependencies:
-    git-up: "npm:^7.0.0"
-  checksum: 10c0/9304e6fbc1a6acf5e351e84ad87574fa6b840ccbe531afbbce9ba38e01fcacf6adf386ef7593daa037da59d9fd43b5d7c5232d5648638f8301cc2f18d00ad386
   languageName: node
   linkType: hard
 
@@ -5907,7 +5888,7 @@ __metadata:
     esbuild-plugin-alias: "npm:^0.2.1"
     fsevents: "npm:~2.3.2"
     glob-hasher: "npm:^1.4.2"
-    workspace-tools: "npm:0.38.3"
+    workspace-tools: "npm:0.38.4"
   dependenciesMeta:
     fsevents:
       optional: true
@@ -6726,15 +6707,6 @@ __metadata:
   dependencies:
     protocols: "npm:^2.0.0"
   checksum: 10c0/8c8c8b3019323d686e7b1cd6fd9653bc233404403ad68827836fbfe59dfe26aaef64ed4e0396d0e20c4a7e1469312ec969a679618960e79d5e7c652dc0da5a0f
-  languageName: node
-  linkType: hard
-
-"parse-url@npm:^8.1.0":
-  version: 8.1.0
-  resolution: "parse-url@npm:8.1.0"
-  dependencies:
-    parse-path: "npm:^7.0.0"
-  checksum: 10c0/68b95afdf4bbf72e57c7ab66f8757c935fff888f7e2b0f1e06098b4faa19e06b6b743bddaed5bc8df4f0c2de6fc475355d787373b2fdd40092be9e4e4b996648
   languageName: node
   linkType: hard
 
@@ -8279,22 +8251,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"workspace-tools@npm:0.38.3":
-  version: 0.38.3
-  resolution: "workspace-tools@npm:0.38.3"
-  dependencies:
-    "@yarnpkg/lockfile": "npm:^1.1.0"
-    fast-glob: "npm:^3.3.1"
-    git-url-parse: "npm:^13.0.0"
-    globby: "npm:^11.0.0"
-    jju: "npm:^1.4.0"
-    js-yaml: "npm:^4.1.0"
-    micromatch: "npm:^4.0.0"
-  checksum: 10c0/7eb63f242bf2563a82db020e0fa964c56f8cdfde8a18653f4990ec418ebacca45d2d6199a29a0332f7e3103ae44407012844808da1107d3030971887572b275f
-  languageName: node
-  linkType: hard
-
-"workspace-tools@npm:^0.38.2":
+"workspace-tools@npm:0.38.4, workspace-tools@npm:^0.38.2":
   version: 0.38.4
   resolution: "workspace-tools@npm:0.38.4"
   dependencies:
