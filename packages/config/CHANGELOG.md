@@ -1,8 +1,24 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Thu, 17 Apr 2025 08:10:01 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 29 Apr 2025 08:10:03 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.4.15
+
+Tue, 29 Apr 2025 08:10:03 GMT
+
+### Patches
+
+- Make CacheOptions properties optional and document them (elcraig@microsoft.com)
+
+## 0.4.14
+
+Sat, 26 Apr 2025 08:08:38 GMT
+
+### Patches
+
+- Remove incorrect bin entries (elcraig@microsoft.com)
 
 ## 0.4.13
 

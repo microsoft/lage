@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-<!-- This log was last generated on Thu, 17 Apr 2025 08:10:01 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 29 Apr 2025 08:10:03 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.13
+
+Tue, 29 Apr 2025 08:10:03 GMT
+
+### Patches
+
+- Remove duplicate CacheOptions interface (re-export from config package) (elcraig@microsoft.com)
 
 ## 1.3.12
 
