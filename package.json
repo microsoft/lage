@@ -46,6 +46,10 @@
     "ts-node": "^10.9.1",
     "typescript": "~5.0.3"
   },
+  "resolutions": {
+    "@types/node@npm:*": "^16.0.0",
+    "typescript@npm:>=5.0.2": "~5.0.3"
+  },
   "lint-staged": {
     "!(*test).{ts,js}": "eslint --fix",
     "*.{ts,json,md}": "prettier --write"
