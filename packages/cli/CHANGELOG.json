@@ -2,6 +2,27 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 01 Aug 2025 08:10:15 GMT",
+      "version": "0.31.6",
+      "tag": "@lage-run/cli_v0.31.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Export Target type"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update dependency workspace-tools to v0.38.4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 17 Apr 2025 08:10:01 GMT",
       "version": "0.31.3",
       "tag": "@lage-run/cli_v0.31.3",
