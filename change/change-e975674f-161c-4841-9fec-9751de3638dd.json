@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Support referencing files in a specific package or at the workspace level in inputs",
+      "packageName": "@lage-run/hasher",
+      "email": "dobes@formative.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
