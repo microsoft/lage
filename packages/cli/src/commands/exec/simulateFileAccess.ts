@@ -31,8 +31,7 @@ export async function simulateFileAccess(logger: Logger, root: string, inputs: s
         // Simulate a file content read by reading 1 byte of the opened file handle
         fs.readSync(fd, buffer, 0, 1, 0);
         fs.closeSync(fd);
-      }
-      else {
+      } else {
         inputDirectories.add(input);
       }
     } catch (e) {
