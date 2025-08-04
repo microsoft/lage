@@ -22,10 +22,10 @@ export async function simulateFileAccess(logger: Logger, root: string, inputs: s
 
   // read input files
   let fd: number;
-  let buffer: Buffer = Buffer.alloc(1);
+  const buffer: Buffer = Buffer.alloc(1);
   for (const input of inputs) {
     try {
-      let inputPath = path.join(root, input);
+      const inputPath = path.join(root, input);
       if (!fs.lstatSync(inputPath).isDirectory()) {
         fd = fs.openSync(inputPath, "r");
         // Simulate a file content read by reading 1 byte of the opened file handle
@@ -33,7 +33,7 @@ export async function simulateFileAccess(logger: Logger, root: string, inputs: s
         fs.closeSync(fd);
       }
       else {
-        inputDirectories.add(inputPath);
+        inputDirectories.add(input);
       }
     } catch (e) {
       // ignore

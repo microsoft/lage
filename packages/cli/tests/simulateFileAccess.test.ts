@@ -28,6 +28,7 @@ describe("simulateFileAccess", () => {
   let mockCloseSync: jest.SpyInstance;
   let mockReaddirSync: jest.SpyInstance;
   let mockUtimesSync: jest.SpyInstance;
+  let mockLstatSync: jest.SpyInstance;
 
   beforeEach(() => {
     mockRoot = path.join(os.tmpdir(), "lage-test-root");
@@ -37,6 +38,22 @@ describe("simulateFileAccess", () => {
     mockCloseSync = jest.spyOn(fs, "closeSync").mockImplementation(() => {});
     mockReaddirSync = jest.spyOn(fs, "readdirSync").mockImplementation(() => []);
     mockUtimesSync = jest.spyOn(fs, "utimesSync").mockImplementation(() => {});
+    mockLstatSync = jest.spyOn(fs, "lstatSync").mockImplementation((inputPath: any) => {
+      const strPath = Buffer.isBuffer(inputPath) ? inputPath.toString() : String(inputPath);
+      // Minimal Stats mock with all methods as no-ops/defaults
+      return {
+        isDirectory: () => strPath.endsWith("/"),
+        isFile: () => !strPath.endsWith("/"),
+        isBlockDevice: () => false,
+        isCharacterDevice: () => false,
+        isSymbolicLink: () => false,
+        isFIFO: () => false,
+        isSocket: () => false,
+        dev: 0, ino: 0, mode: 0, nlink: 0, uid: 0, gid: 0, rdev: 0, size: 0, blksize: 0, blocks: 0,
+        atimeMs: 0, mtimeMs: 0, ctimeMs: 0, birthtimeMs: 0,
+        atime: new Date(), mtime: new Date(), ctime: new Date(), birthtime: new Date(),
+      };
+    });
   });
 
   afterEach(() => {
