@@ -20,12 +20,21 @@ export async function simulateFileAccess(logger: Logger, root: string, inputs: s
 
   const inputDirectories = new Set<string>();
 
-  // probe input files
+  // read input files
   let fd: number;
+  let buffer: Buffer = Buffer.alloc(1);
   for (const input of inputs) {
     try {
-      fd = fs.openSync(path.join(root, input), "r");
-      fs.closeSync(fd);
+      let inputPath = path.join(root, input);
+      if (!fs.lstatSync(inputPath).isDirectory()) {
+        fd = fs.openSync(inputPath, "r");
+        // Simulate a file content read by reading 1 byte of the opened file handle
+        fs.readSync(fd, buffer, 0, 1, 0);
+        fs.closeSync(fd);
+      }
+      else {
+        inputDirectories.add(inputPath);
+      }
     } catch (e) {
       // ignore
     }
@@ -36,8 +45,8 @@ export async function simulateFileAccess(logger: Logger, root: string, inputs: s
 
   for (const directory of inputDirectories) {
     try {
-      fd = fs.openSync(path.join(root, directory), "r");
-      fs.closeSync(fd);
+      // Simulate enumerating a directory
+      fs.readdirSync(path.join(root, directory));
     } catch (e) {
       // ignore
     }
