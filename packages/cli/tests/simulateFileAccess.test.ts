@@ -14,7 +14,6 @@ const mockLogger = {
   error: jest.fn(),
   verbose: jest.fn(),
   debug: jest.fn(),
-  // Add required Logger properties for type compatibility
   reporters: [],
   log: jest.fn(),
   stream: () => () => {},
