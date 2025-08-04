@@ -14,10 +14,6 @@ const mockLogger = {
   error: jest.fn(),
   verbose: jest.fn(),
   debug: jest.fn(),
-  reporters: [],
-  log: jest.fn(),
-  stream: () => () => {},
-  addReporter: jest.fn(),
 };
 
 describe("simulateFileAccess", () => {
@@ -43,29 +39,6 @@ describe("simulateFileAccess", () => {
       return {
         isDirectory: () => strPath.endsWith("/"),
         isFile: () => !strPath.endsWith("/"),
-        isBlockDevice: () => false,
-        isCharacterDevice: () => false,
-        isSymbolicLink: () => false,
-        isFIFO: () => false,
-        isSocket: () => false,
-        dev: 0,
-        ino: 0,
-        mode: 0,
-        nlink: 0,
-        uid: 0,
-        gid: 0,
-        rdev: 0,
-        size: 0,
-        blksize: 0,
-        blocks: 0,
-        atimeMs: 0,
-        mtimeMs: 0,
-        ctimeMs: 0,
-        birthtimeMs: 0,
-        atime: new Date(),
-        mtime: new Date(),
-        ctime: new Date(),
-        birthtime: new Date(),
       };
     });
   });
