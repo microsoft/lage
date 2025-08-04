@@ -35,10 +35,8 @@ describe("simulateFileAccess", () => {
     mockUtimesSync = jest.spyOn(fs, "utimesSync").mockImplementation(() => {});
     mockLstatSync = jest.spyOn(fs, "lstatSync").mockImplementation((inputPath: any) => {
       const strPath = Buffer.isBuffer(inputPath) ? inputPath.toString() : String(inputPath);
-      // Minimal Stats mock with all methods as no-ops/defaults
       return {
         isDirectory: () => strPath.endsWith("/"),
-        isFile: () => !strPath.endsWith("/"),
       };
     });
   });
