@@ -1,50 +1,68 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: [
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
     "github>microsoft/m365-renovate-config:beachball",
     "github>microsoft/m365-renovate-config:disableEsmVersions",
     "github>microsoft/m365-renovate-config:groupMore",
     "github>microsoft/m365-renovate-config:groupTypes",
     "github>microsoft/m365-renovate-config:keepFresh",
     "github>microsoft/m365-renovate-config:pinActions",
-    "github>microsoft/m365-renovate-config:restrictNode(14)",
+    "github>microsoft/m365-renovate-config:restrictNode(14)"
   ],
-  labels: ["renovate"],
-  prHourlyLimit: 5,
-  semanticCommits: "disabled",
-  ignorePaths: ["**/node_modules/**", "**/__fixtures__/**"],
-  customManagers: [
-    {
-      customType: "regex",
-      managerFilePatterns: ["/^package.json$/"],
-      matchStrings: [
-        'lage-npm": "lage@(?<currentValue>[~^]?\\d+\\.\\d+\\.\\d+)',
-      ],
-      depNameTemplate: "lage-npm",
-      packageNameTemplate: "lage",
-      datasourceTemplate: "npm",
-      depTypeTemplate: "devDependencies",
-    },
+  "labels": ["renovate"],
+  "prHourlyLimit": 5,
+  "semanticCommits": "disabled",
+  "ignorePaths": [
+    "**/node_modules/**",
+    // incorrect manager is being used for fixtures, and most of them don't have real deps anyway
+    "**/__fixtures__/**"
   ],
-  packageRules: [
+  "customManagers": [
     {
-      groupName: "Docusaurus deps",
-      matchPackageNames: ["docusaurus{/,}**", "@docusaurus/*{/,}**"],
-    },
-    {
-      matchPackageNames: ["backfill", "workspace-tools", "backfill-{/,}**"],
-      matchUpdateTypes: ["major", "minor", "patch", "bump"],
-      dependencyDashboardApproval: false,
-    },
-    {
-      enabled: false,
-      matchPackageNames: ["@lage-run/{/,}**"],
-    },
-    {
-      rangeStrategy: "pin",
-      matchFileNames: ["packages/**"],
-      matchDepTypes: ["dependencies"],
-      matchPackageNames: ["!@lage-run/{/,}**", "!glob-hasher"],
-    },
+      "customType": "regex",
+      "managerFilePatterns": ["/^package.json$/"],
+      "matchStrings": ["lage-npm\": \"lage@(?<currentValue>[~^]?\\d+\\.\\d+\\.\\d+)"],
+      "depNameTemplate": "lage-npm",
+      "packageNameTemplate": "lage",
+      "datasourceTemplate": "npm",
+      "depTypeTemplate": "devDependencies"
+    }
   ],
+  "packageRules": [
+    {
+      "groupName": "Docusaurus deps",
+      "matchPackageNames": ["docusaurus*", "@docusaurus/*"]
+    },
+    {
+      "groupName": "connectrpc dependencies",
+      "matchPackageNames": ["@connectrpc/*"]
+    },
+    {
+      // Automatically pick up backfill and workspace-tools updates
+      "matchPackageNames": ["backfill", "workspace-tools", "backfill-*"],
+      "matchUpdateTypes": ["major", "minor", "patch", "bump"],
+      "dependencyDashboardApproval": false
+    },
+    {
+      // Don't try to pin or otherwise modify in-repo deps
+      "matchPackageNames": ["@lage-run/*"],
+      "enabled": false
+    },
+    {
+      // lage bundles its dependencies, so any updates should to dependencies should be explicit
+      // so that they trigger a new lage version (with proper documentation of included updates).
+      // The standard approach of using ^ dependencies and allowing implicit updates via the lock file
+      // (which with a published bundle, are guaranteed to affect consumers) makes it very hard to
+      // track when an issue was introduced if it's discovered in another repo.
+      "rangeStrategy": "pin",
+      "matchFileNames": ["packages/**"], // ignore this for docs, scripts, root
+      "matchDepTypes": ["dependencies"],
+      "matchPackageNames": [
+        // lage packages aren't an issue since they're within the repo and the latest version is always used.
+        "!@lage-run/*",
+        // glob-hasher is a runtime dependency of lage since it publishes binaries.
+        "!glob-hasher"
+      ]
+    }
+  ]
 }
