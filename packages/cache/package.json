@@ -21,9 +21,9 @@
     "@lage-run/config": "workspace:^",
     "@lage-run/logger": "workspace:^",
     "@lage-run/target-graph": "workspace:^",
-    "backfill-cache": "5.10.1",
-    "backfill-config": "6.6.1",
-    "backfill-logger": "5.3.0",
+    "backfill-cache": "5.11.1",
+    "backfill-config": "6.7.1",
+    "backfill-logger": "5.4.0",
     "glob-hasher": "^1.4.2"
   },
   "devDependencies": {
