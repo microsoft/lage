@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
-    "jest-diff": "^29.5.0"
+    "jest-diff": "^30.0.0"
   },
   "publishConfig": {
     "access": "public"

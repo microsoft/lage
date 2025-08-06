@@ -13,7 +13,7 @@ describe("chunking promises", () => {
     await chunkPromise(mockedPromiseFns, 2);
 
     for (const mockedPromiseFn of mockedPromiseFns) {
-      expect(mockedPromiseFn).toBeCalledTimes(1);
+      expect(mockedPromiseFn).toHaveBeenCalledTimes(1);
     }
   });
 
