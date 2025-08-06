@@ -30,12 +30,16 @@
   ],
   "packageRules": [
     {
-      "groupName": "Docusaurus deps",
+      "groupName": "Docusaurus packages",
       "matchPackageNames": ["docusaurus*", "@docusaurus/*"]
     },
     {
-      "groupName": "connectrpc dependencies",
+      "groupName": "connectrpc packages",
       "matchPackageNames": ["@connectrpc/*"]
+    },
+    {
+      "groupName": "bufbuild packages",
+      "matchPackageNames": ["@bufbuild/*"]
     },
     {
       // Automatically pick up backfill and workspace-tools updates
