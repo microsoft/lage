@@ -1,0 +1,46 @@
+diff --git a/build/index.d.mts b/build/index.d.mts
+index 42f2f85be8a5fc095c6ef966f48bbaf48d08fa93..6d1bd917bbb1483b3cedd1ea86fc69bc8eadd0b5 100644
+--- a/build/index.d.mts
++++ b/build/index.d.mts
+@@ -5,7 +5,18 @@
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  */
+-/// <reference lib="ESNext.Disposable" preserve="true" />
++
++// patching for older target
++declare global {
++  interface SymbolConstructor {
++      readonly dispose: unique symbol;
++      readonly asyncDispose: unique symbol;
++  }
++  interface Disposable {
++      [Symbol.dispose](): void;
++  }
++}
++
+ type MockMetadataType = 'object' | 'array' | 'regexp' | 'function' | 'constant' | 'collection' | 'null' | 'undefined';
+ type MockMetadata<T, MetadataType = MockMetadataType> = {
+   ref?: number;
+diff --git a/build/index.d.ts b/build/index.d.ts
+index 206eb393627cc1266afe963c874cc8094e813ee1..0c6bc8bc54ef81b6a2a085c4ba854c42fea81d5d 100644
+--- a/build/index.d.ts
++++ b/build/index.d.ts
+@@ -5,7 +5,16 @@
+  * LICENSE file in the root directory of this source tree.
+  */
+ 
+-/// <reference lib="ESNext.Disposable" />
++// patching for older target
++declare global {
++  interface SymbolConstructor {
++      readonly dispose: unique symbol;
++      readonly asyncDispose: unique symbol;
++  }
++  interface Disposable {
++      [Symbol.dispose](): void;
++  }
++}
+ 
+ export declare type ClassLike = new (...args: any) => any;
+ 
