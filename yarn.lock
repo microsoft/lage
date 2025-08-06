@@ -1681,7 +1681,7 @@ __metadata:
     "@lage-run/logger": "workspace:^"
     "@lage-run/scheduler-types": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
-    "@ms-cloudpack/task-reporter": "npm:0.5.3"
+    "@ms-cloudpack/task-reporter": "npm:0.17.2"
     ansi-regex: "npm:5.0.1"
     chalk: "npm:4.1.2"
     gradient-string: "npm:2.0.2"
@@ -1759,10 +1759,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ms-cloudpack/task-reporter@npm:0.5.3":
-  version: 0.5.3
-  resolution: "@ms-cloudpack/task-reporter@npm:0.5.3"
-  checksum: 10c0/b9b5df48b62ef7dcf088d513340ec30d59cab9dbb74f2ad0fd1bdb43dcc0c19b84746f81899abeb5c001cc039b08358ebe70759202ecaf4fa5524b8f172f03a3
+"@ms-cloudpack/task-reporter@npm:0.17.2":
+  version: 0.17.2
+  resolution: "@ms-cloudpack/task-reporter@npm:0.17.2"
+  dependencies:
+    picocolors: "npm:^1.1.1"
+  checksum: 10c0/1ac27e4c02fb898acea60da093dc680c1040e7131790033ee19c206ef3a6785f6e8b8763bfa95988aa22622dfacced4334b6a15c0f29dd28def353ea4ebcda23
   languageName: node
   linkType: hard
 
