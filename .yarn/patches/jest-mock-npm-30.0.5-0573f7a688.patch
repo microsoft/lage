@@ -1,14 +1,15 @@
 diff --git a/build/index.d.mts b/build/index.d.mts
-index 42f2f85be8a5fc095c6ef966f48bbaf48d08fa93..6d1bd917bbb1483b3cedd1ea86fc69bc8eadd0b5 100644
+index 42f2f85be8a5fc095c6ef966f48bbaf48d08fa93..167dae9b63df831d1b7564a73905fd6dd9037947 100644
 --- a/build/index.d.mts
 +++ b/build/index.d.mts
-@@ -5,7 +5,18 @@
+@@ -5,7 +5,19 @@
   * This source code is licensed under the MIT license found in the
   * LICENSE file in the root directory of this source tree.
   */
 -/// <reference lib="ESNext.Disposable" preserve="true" />
 +
-+// patching for older target
++// patching for TS 5.0 since lib="ESNext.Disposable" doesn't exist yet
++// (can be removed when typescript is updated to >= 5.2)
 +declare global {
 +  interface SymbolConstructor {
 +      readonly dispose: unique symbol;
@@ -23,15 +24,16 @@ index 42f2f85be8a5fc095c6ef966f48bbaf48d08fa93..6d1bd917bbb1483b3cedd1ea86fc69bc
  type MockMetadata<T, MetadataType = MockMetadataType> = {
    ref?: number;
 diff --git a/build/index.d.ts b/build/index.d.ts
-index 206eb393627cc1266afe963c874cc8094e813ee1..0c6bc8bc54ef81b6a2a085c4ba854c42fea81d5d 100644
+index 206eb393627cc1266afe963c874cc8094e813ee1..ece751ef031b206e75e1906355cb180cacb4e73b 100644
 --- a/build/index.d.ts
 +++ b/build/index.d.ts
-@@ -5,7 +5,16 @@
+@@ -5,7 +5,17 @@
   * LICENSE file in the root directory of this source tree.
   */
  
 -/// <reference lib="ESNext.Disposable" />
-+// patching for older target
++// patching for TS 5.0 since lib="ESNext.Disposable" doesn't exist yet
++// (can be removed when typescript is updated to >= 5.2)
 +declare global {
 +  interface SymbolConstructor {
 +      readonly dispose: unique symbol;

@@ -5616,12 +5616,12 @@ __metadata:
 
 "jest-mock@patch:jest-mock@npm%3A30.0.5#~/.yarn/patches/jest-mock-npm-30.0.5-0573f7a688.patch":
   version: 30.0.5
-  resolution: "jest-mock@patch:jest-mock@npm%3A30.0.5#~/.yarn/patches/jest-mock-npm-30.0.5-0573f7a688.patch::version=30.0.5&hash=d52140"
+  resolution: "jest-mock@patch:jest-mock@npm%3A30.0.5#~/.yarn/patches/jest-mock-npm-30.0.5-0573f7a688.patch::version=30.0.5&hash=9cd9dc"
   dependencies:
     "@jest/types": "npm:30.0.5"
     "@types/node": "npm:*"
     jest-util: "npm:30.0.5"
-  checksum: 10c0/f7dff07dd560d43b824f2a49198b5ac0edd4feb0b42ae7f173410cb6994acf830463f674ab1a9feae3717ddc3bba055fb7a842b4c04019e4687110dc4c9b0210
+  checksum: 10c0/312931d0b348230b74d7c69450cb7113280c3950532748f990b74a0c2d2e10c8961c517159ac8158d68b2522b554d80ea412007fb93d8cbe227eba1bf80e3a19
   languageName: node
   linkType: hard
 
