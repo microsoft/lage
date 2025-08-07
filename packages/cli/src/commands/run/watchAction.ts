@@ -13,10 +13,12 @@ import createLogger, { LogLevel } from "@lage-run/logger";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
-import type { Target } from "@lage-run/target-graph";
+import type { Target, TargetConfig } from "@lage-run/target-graph";
 import type { FilterOptions } from "../../types/FilterOptions.js";
 import { createCache } from "../../cache/createCacheProvider.js";
 import { runnerPickerOptions } from "../../runnerPickerOptions.js";
+import type { TargetRunnerPickerOptions } from "@lage-run/runners";
+import { shouldRun } from "../shouldRun";
 
 interface RunOptions extends ReporterInitOptions, FilterOptions {
   concurrency: number;
@@ -48,6 +50,11 @@ export async function watchAction(options: RunOptions, command: Command) {
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
+  const pickerOptions: TargetRunnerPickerOptions = {
+    ...runnerPickerOptions(options.nodeArg, config.npmClient, taskArgs),
+    ...config.runners,
+  };
+
   const targetGraph = await createTargetGraph({
     logger,
     root,
@@ -62,6 +69,7 @@ export async function watchAction(options: RunOptions, command: Command) {
     tasks,
     packageInfos,
     priorities: config.priorities,
+    shouldRun: shouldRun(pickerOptions),
   });
 
   // Make sure we do not attempt writeRemoteCache in watch mode
@@ -88,10 +96,7 @@ export async function watchAction(options: RunOptions, command: Command) {
       taskArgs,
       skipLocalCache: options.skipLocalCache,
       cacheOptions: config.cacheOptions,
-      runners: {
-        ...runnerPickerOptions(options.nodeArg, config.npmClient, taskArgs),
-        ...config.runners,
-      },
+      runners: pickerOptions,
     },
     shouldCache: options.cache,
     shouldResetCache: options.resetCache,
