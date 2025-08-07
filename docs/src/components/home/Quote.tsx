@@ -6,7 +6,7 @@ export const Quote = (
   props: React.PropsWithChildren<{
     author: string;
     organization: string;
-  }>
+  }>,
 ) => {
   // pt-8 is for the big quote mark
   return (
@@ -17,7 +17,7 @@ export const Quote = (
         <span
           className={cx(
             classNames.fontSmPlus,
-            "inline-block pt-2 md:pt-4 lg:pt-5"
+            "inline-block pt-2 md:pt-4 lg:pt-5",
           )}
         >
           —{props.author}, {props.organization}

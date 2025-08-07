@@ -45,7 +45,10 @@ export class WorkspaceTargetGraphBuilder {
    * @param root the root directory of the workspace
    * @param packageInfos the package infos for the workspace
    */
-  constructor(root: string, private packageInfos: PackageInfos) {
+  constructor(
+    root: string,
+    private packageInfos: PackageInfos
+  ) {
     this.dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
     this.graphBuilder = new TargetGraphBuilder();
     this.targetFactory = new TargetFactory({

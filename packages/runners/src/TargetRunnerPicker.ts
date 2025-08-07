@@ -36,10 +36,10 @@ export class TargetRunnerPicker {
         typeof runnerModule[runnerName] === "function"
           ? runnerModule[runnerName]
           : typeof runnerModule.default === "function"
-          ? runnerModule.default
-          : typeof runnerModule.default[runnerName] === "function"
-          ? runnerModule.default[runnerName]
-          : runnerModule;
+            ? runnerModule.default
+            : typeof runnerModule.default[runnerName] === "function"
+              ? runnerModule.default[runnerName]
+              : runnerModule;
 
       return new runner(options);
     }

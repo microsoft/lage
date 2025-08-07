@@ -41,7 +41,10 @@ export class ThreadWorker extends EventEmitter implements IWorker {
 
   maxWorkerMemoryUsage = 0;
 
-  constructor(private script: string, private options: WorkerOptions) {
+  constructor(
+    private script: string,
+    private options: WorkerOptions
+  ) {
     super();
 
     if (!options.workerIdleMemoryLimitPercentage) {
