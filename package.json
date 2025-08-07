@@ -39,10 +39,10 @@
     "gh-pages": "^5.0.0",
     "husky": "^9.1.5",
     "lage-npm": "npm:lage@2.14.6",
-    "lint-staged": "^15.2.10",
+    "lint-staged": "^16.0.0",
     "patch-package": "^6.5.1",
     "prettier": "^3.0.0",
-    "syncpack": "^9.0.0",
+    "syncpack": "^13.0.0",
     "ts-node": "^10.9.1",
     "typescript": "~5.0.3"
   },
