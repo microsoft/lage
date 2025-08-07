@@ -40,7 +40,7 @@
     "husky": "^9.1.5",
     "lage-npm": "npm:lage@2.14.6",
     "lint-staged": "^16.0.0",
-    "patch-package": "^6.5.1",
+    "patch-package": "^8.0.0",
     "prettier": "^2.8.6",
     "syncpack": "^13.0.0",
     "ts-node": "^10.9.1",
