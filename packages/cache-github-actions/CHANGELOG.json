@@ -2,6 +2,42 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Thu, 07 Aug 2025 08:10:10 GMT",
+      "version": "0.1.26",
+      "tag": "@lage-run/cache-github-actions_v0.1.26",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "7ca58c8121ab43d58ba76379e5e0c2320622cf5d",
+            "comment": "Update backfill monorepo"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Aug 2025 08:10:15 GMT",
+      "version": "0.1.25",
+      "tag": "@lage-run/cache-github-actions_v0.1.25",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update backfill monorepo"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update dependency workspace-tools to v0.38.4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 17 Apr 2025 08:10:01 GMT",
       "version": "0.1.24",
       "tag": "@lage-run/cache-github-actions_v0.1.24",

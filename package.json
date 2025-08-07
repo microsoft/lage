@@ -32,19 +32,24 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^16.18.3",
     "beachball": "^2.47.1",
     "fast-glob": "3.3.3",
     "gh-pages": "^5.0.0",
     "husky": "^9.1.5",
-    "lage-npm": "npm:lage@~2.12.0",
-    "lint-staged": "^15.2.10",
-    "patch-package": "^6.5.1",
-    "prettier": "^2.8.6",
-    "syncpack": "^9.0.0",
+    "lage-npm": "npm:lage@<2.14.8",
+    "lint-staged": "^16.0.0",
+    "patch-package": "^8.0.0",
+    "prettier": "^3.0.0",
+    "syncpack": "^13.0.0",
     "ts-node": "^10.9.1",
     "typescript": "~5.0.3"
+  },
+  "resolutions": {
+    "@types/node@npm:*": "^16.0.0",
+    "typescript@npm:>=5.0.2": "~5.0.3",
+    "jest-mock@npm:30.0.5": "patch:jest-mock@npm%3A30.0.5#~/.yarn/patches/jest-mock-npm-30.0.5-0573f7a688.patch"
   },
   "lint-staged": {
     "!(*test).{ts,js}": "eslint --fix",
@@ -56,5 +61,5 @@
       "prod"
     ]
   },
-  "packageManager": "yarn@4.9.1"
+  "packageManager": "yarn@4.9.2"
 }

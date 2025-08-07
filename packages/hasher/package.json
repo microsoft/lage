@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/hasher",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "description": "Hasher for Lage Targets",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -22,7 +22,7 @@
     "glob-hasher": "^1.4.2",
     "graceful-fs": "4.2.11",
     "micromatch": "4.0.8",
-    "workspace-tools": "0.38.3"
+    "workspace-tools": "0.38.4"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "workspace:^",

@@ -1,8 +1,25 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Tue, 29 Apr 2025 08:10:03 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 07 Aug 2025 08:10:10 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.4.17
+
+Thu, 07 Aug 2025 08:10:10 GMT
+
+### Patches
+
+- Update backfill monorepo (email not defined)
+
+## 0.4.16
+
+Fri, 01 Aug 2025 08:10:15 GMT
+
+### Patches
+
+- Update backfill monorepo (renovate@whitesourcesoftware.com)
+- Update dependency workspace-tools to v0.38.4 (renovate@whitesourcesoftware.com)
 
 ## 0.4.15
 

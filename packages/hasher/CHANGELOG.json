@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Fri, 01 Aug 2025 08:10:15 GMT",
+      "version": "1.8.3",
+      "tag": "@lage-run/hasher_v1.8.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/hasher",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update dependency workspace-tools to v0.38.4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 17 Apr 2025 08:10:01 GMT",
       "version": "1.8.2",
       "tag": "@lage-run/hasher_v1.8.2",

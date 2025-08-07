@@ -9,45 +9,50 @@
     "github>microsoft/m365-renovate-config:pinActions",
     "github>microsoft/m365-renovate-config:restrictNode(14)"
   ],
-
   "labels": ["renovate"],
-
   "prHourlyLimit": 5,
-
   "semanticCommits": "disabled",
-
   "ignorePaths": [
     "**/node_modules/**",
     // incorrect manager is being used for fixtures, and most of them don't have real deps anyway
     "**/__fixtures__/**"
   ],
-
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["^package.json$"],
-      "matchStrings": ["lage-npm\": \"lage@(?<currentValue>[~^]?\\d+\\.\\d+\\.\\d+)"],
+      // Handle updates for the lage-npm dev dep: it's set to the version < the current one because
+      // otherwise yarn v4 dedupes it with the local version, which won't work if the local version
+      // hasn't been built yet.
+      "customType": "regex",
+      "managerFilePatterns": ["/^package.json$/"],
+      "matchStrings": ["lage-npm\": \"lage@(?<currentValue>[<]\\d+\\.\\d+\\.\\d+)"],
       "depNameTemplate": "lage-npm",
       "packageNameTemplate": "lage",
       "datasourceTemplate": "npm",
       "depTypeTemplate": "devDependencies"
     }
   ],
-
   "packageRules": [
     {
-      "groupName": "Docusaurus deps",
-      "matchPackagePrefixes": ["docusaurus", "@docusaurus/*"]
+      "groupName": "Docusaurus packages",
+      "matchPackageNames": ["docusaurus*", "@docusaurus/*"]
+    },
+    {
+      "groupName": "connectrpc packages",
+      "matchPackageNames": ["@connectrpc/*"]
+    },
+    {
+      "groupName": "bufbuild packages",
+      "matchPackageNames": ["@bufbuild/*"]
     },
     {
       // Automatically pick up backfill and workspace-tools updates
-      "matchPackagePrefixes": ["backfill-"],
-      "matchPackageNames": ["backfill", "workspace-tools"],
+      "matchPackageNames": ["backfill", "workspace-tools", "backfill-*"],
       "matchUpdateTypes": ["major", "minor", "patch", "bump"],
       "dependencyDashboardApproval": false
     },
     {
       // Don't try to pin or otherwise modify in-repo deps
-      "matchPackagePrefixes": ["@lage-run/"],
+      "matchPackageNames": ["@lage-run/*"],
       "enabled": false
     },
     {
@@ -59,10 +64,12 @@
       "rangeStrategy": "pin",
       "matchFileNames": ["packages/**"], // ignore this for docs, scripts, root
       "matchDepTypes": ["dependencies"],
-      // lage packages aren't an issue since they're within the repo and the latest version is always used
-      "excludePackagePrefixes": ["@lage-run/"],
-      // this is a runtime dependency of lage since it publishes binaries
-      "excludePackageNames": ["glob-hasher"]
+      "matchPackageNames": [
+        // lage packages aren't an issue since they're within the repo and the latest version is always used.
+        "!@lage-run/*",
+        // glob-hasher is a runtime dependency of lage since it publishes binaries.
+        "!glob-hasher"
+      ]
     }
   ]
 }

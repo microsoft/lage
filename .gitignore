@@ -10,4 +10,5 @@ coverage
 **/.docusaurus/
 profile*.json
 .yarn/*
+!.yarn/patches/
 !.yarn/releases/

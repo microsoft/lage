@@ -65,8 +65,8 @@ export class WorkerRunner implements TargetRunner {
       typeof scriptModule.run === "function"
         ? scriptModule.run
         : typeof scriptModule.default === "function"
-        ? scriptModule.default
-        : scriptModule;
+          ? scriptModule.default
+          : scriptModule;
 
     if (typeof runFn !== "function") {
       throw new Error("WorkerRunner: worker script must export a function; you likely need to use `module.exports = function() {...}`");

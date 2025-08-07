@@ -2,6 +2,48 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 07 Aug 2025 08:10:10 GMT",
+      "version": "2.14.8",
+      "tag": "lage_v2.14.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "7ca58c8121ab43d58ba76379e5e0c2320622cf5d",
+            "comment": "Update backfill monorepo"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Aug 2025 08:10:15 GMT",
+      "version": "2.14.7",
+      "tag": "lage_v2.14.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update backfill monorepo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update dependencies"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update dependency workspace-tools to v0.38.4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 17 Apr 2025 08:10:01 GMT",
       "version": "2.14.4",
       "tag": "lage_v2.14.4",
