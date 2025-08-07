@@ -41,7 +41,7 @@
     "lage-npm": "npm:lage@2.14.6",
     "lint-staged": "^15.2.10",
     "patch-package": "^6.5.1",
-    "prettier": "^2.8.6",
+    "prettier": "^3.0.0",
     "syncpack": "^9.0.0",
     "ts-node": "^10.9.1",
     "typescript": "~5.0.3"
