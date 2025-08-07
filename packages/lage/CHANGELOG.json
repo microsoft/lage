@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 07 Aug 2025 08:10:10 GMT",
+      "version": "2.14.8",
+      "tag": "lage_v2.14.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "7ca58c8121ab43d58ba76379e5e0c2320622cf5d",
+            "comment": "Update backfill monorepo"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 Aug 2025 08:10:15 GMT",
       "version": "2.14.7",
       "tag": "lage_v2.14.7",

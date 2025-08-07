@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Thu, 07 Aug 2025 08:10:10 GMT",
+      "version": "0.11.3",
+      "tag": "@lage-run/target-graph_v0.11.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "7ca58c8121ab43d58ba76379e5e0c2320622cf5d",
+            "comment": "Update jest to v30"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 Aug 2025 08:10:15 GMT",
       "version": "0.11.3",
       "tag": "@lage-run/target-graph_v0.11.3",
