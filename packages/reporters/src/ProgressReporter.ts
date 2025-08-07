@@ -2,8 +2,8 @@ import EventEmitter from "events";
 import { type LogEntry, LogLevel, type Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 
-// @ts-ignore Ignoring ESM in CJS errors here, but still importing the types to be used
-// import type { TaskReporter as TaskReporterType, TaskReporterTask } from "@ms-cloudpack/task-reporter";
+// @ts-ignore -- this package has CJS via the exports map, but old TS might not recognize it?
+// (it works fine with the actual transpiling via SWC)
 import { TaskReporter, type TaskReporterTask } from "@ms-cloudpack/task-reporter";
 import type { Target } from "@lage-run/target-graph";
 import gradient from "gradient-string";
@@ -59,7 +59,6 @@ export class ProgressReporter implements Reporter {
       showConsoleWarn: true,
       showErrors: true,
       showPending: true,
-      showProgress: true,
       showStarted: true,
       showSummary: true,
       showTaskDetails: true,
