@@ -175,10 +175,8 @@ https://microsoft.github.io/lage/guide/getting-started.html
 
 1. npm scripts (build, test, lint) are at package level
 2. `npx lage init`
-
    - creates a `lage.config.js` - configure it
    - adds `lage` as a dep
-
 3. `yarn lage build` or `npm run lage build`
 
 ---

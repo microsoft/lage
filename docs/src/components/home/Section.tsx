@@ -19,7 +19,7 @@ export const Section = (
      * Set to true to reverse their order in that case.
      */
     reverseOnXS?: boolean;
-  }>
+  }>,
 ) => {
   const { illustrationSrc, illustrationFirst } = props;
 
@@ -46,7 +46,7 @@ export const Section = (
     <section
       className={cx(
         "flex items-center justify-center md:flex-row gap-8",
-        props.reverseOnXS ? "max-sm:flex-col-reverse" : "max-sm:flex-col"
+        props.reverseOnXS ? "max-sm:flex-col-reverse" : "max-sm:flex-col",
       )}
     >
       {illustrationFirst ? illustration : content}
@@ -62,7 +62,7 @@ export const Section = (
 export const SectionHeading = (
   props: React.PropsWithChildren<{
     isMainHeading?: boolean;
-  }>
+  }>,
 ) => {
   const { isMainHeading } = props;
   // h2 and h3 each have text styles applied in tailwind.css
@@ -73,7 +73,7 @@ export const SectionHeading = (
       className={cx(
         !isMainHeading && "lg:w-3/4",
         // get rid of extra space below the letters which throws things off visually
-        "mb-[-6px]!"
+        "mb-[-6px]!",
       )}
     >
       {props.children}
@@ -86,13 +86,13 @@ export const SectionDescription = (
   props: React.PropsWithChildren<{
     /** True if this is the description for the main heading */
     isMainHeading?: boolean;
-  }>
+  }>,
 ) => {
   return (
     <p
       className={cx(
         "py-6 md:py-8",
-        props.isMainHeading ? classNames.fontMdXl : classNames.fontMd
+        props.isMainHeading ? classNames.fontMdXl : classNames.fontMd,
       )}
     >
       {props.children}
@@ -107,7 +107,7 @@ export const SectionHighlight = (props: React.PropsWithChildren) => {
       className={cx(
         "bg-white text-center rounded-full px-6 md:px-8 py-2 md:py-4 lg:py-6",
         "font-bold text-tealMd",
-        classNames.fontSm
+        classNames.fontSm,
       )}
     >
       {props.children}
