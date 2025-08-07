@@ -13,11 +13,5 @@
     "**/yarn/yarn.js": true,
     "**/docs/build": true,
     "**/*.code-search": true
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
   }
 }
