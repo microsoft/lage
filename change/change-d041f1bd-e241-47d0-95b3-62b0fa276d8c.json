@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Pin dependency @bufbuild/protobuf to 1.10.1",
+      "packageName": "@lage-run/rpc",
+      "email": "renovate@whitesourcesoftware.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

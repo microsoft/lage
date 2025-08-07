@@ -1758,7 +1758,7 @@ __metadata:
   resolution: "@lage-run/rpc@workspace:packages/rpc"
   dependencies:
     "@bufbuild/buf": "npm:^1.39.0"
-    "@bufbuild/protobuf": "npm:^1.10.0"
+    "@bufbuild/protobuf": "npm:1.10.1"
     "@bufbuild/protoc-gen-es": "npm:^1.10.0"
     "@connectrpc/connect": "npm:^1.4.0"
     "@connectrpc/connect-fastify": "npm:^1.4.0"
