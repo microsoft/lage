@@ -2,6 +2,59 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 08 Aug 2025 08:10:13 GMT",
+      "version": "2.14.9",
+      "tag": "lage_v2.14.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "pgunasekara@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "Call read/readdir when simulating file accesses"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/reporters",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "Update dependency @ms-cloudpack/task-reporter to v0.17.2"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 07 Aug 2025 08:10:10 GMT",
       "version": "2.14.8",
       "tag": "lage_v2.14.8",

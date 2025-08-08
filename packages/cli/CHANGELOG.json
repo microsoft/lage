@@ -2,6 +2,29 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 08 Aug 2025 08:10:13 GMT",
+      "version": "0.31.8",
+      "tag": "@lage-run/cli_v0.31.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "pgunasekara@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "Call read/readdir when simulating file accesses"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 Aug 2025 08:10:15 GMT",
       "version": "0.31.6",
       "tag": "@lage-run/cli_v0.31.6",

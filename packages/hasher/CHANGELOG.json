@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Fri, 08 Aug 2025 08:10:13 GMT",
+      "version": "1.8.3",
+      "tag": "@lage-run/hasher_v1.8.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 Aug 2025 08:10:15 GMT",
       "version": "1.8.3",
       "tag": "@lage-run/hasher_v1.8.3",

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Fri, 01 Aug 2025 08:10:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 08 Aug 2025 08:10:13 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.31.8
+
+Fri, 08 Aug 2025 08:10:13 GMT
+
+### Patches
+
+- Call read/readdir when simulating file accesses (pgunasekara@microsoft.com)
 
 ## 0.31.6
 

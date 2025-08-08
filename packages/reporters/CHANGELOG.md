@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Wed, 12 Feb 2025 00:08:30 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 08 Aug 2025 08:10:13 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.3
+
+Fri, 08 Aug 2025 08:10:13 GMT
+
+### Patches
+
+- Update dependency @ms-cloudpack/task-reporter to v0.17.2 (email not defined)
 
 ## 1.3.0
 

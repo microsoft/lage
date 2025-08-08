@@ -1,8 +1,19 @@
 # Change Log - lage
 
-<!-- This log was last generated on Thu, 07 Aug 2025 08:10:10 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 08 Aug 2025 08:10:13 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.9
+
+Fri, 08 Aug 2025 08:10:13 GMT
+
+### Patches
+
+- `@lage-run/cli`
+  - Call read/readdir when simulating file accesses (pgunasekara@microsoft.com)
+- `@lage-run/reporters`
+  - Update dependency @ms-cloudpack/task-reporter to v0.17.2 (email not defined)
 
 ## 2.14.8
 
