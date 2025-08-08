@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Don't overwrite task specific tasks with the general one",
+      "packageName": "@lage-run/target-graph",
+      "email": "dobes@formative.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
