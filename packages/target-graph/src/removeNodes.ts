@@ -1,5 +1,14 @@
 import type { Target } from "./types/Target.js";
 
+/**
+ * Remove nodes from the graph that are not runnable.
+ *
+ * When a node is removed, dependencies on that node are replaced with dependencies on the node's own
+ * dependencies.
+ *
+ * @param dag Node graph to process
+ * @param shouldDelete Predicate function identifying nodes to remove
+ */
 export async function removeNodes(dag: Target[], shouldDelete: (node: Target) => boolean | Promise<boolean>): Promise<Target[]> {
   // Create a map for quick lookup of nodes by id
   const nodeMap = new Map<string, Target>();
@@ -24,13 +33,20 @@ export async function removeNodes(dag: Target[], shouldDelete: (node: Target) =>
 
   // Update dependencies of remaining nodes
   for (const node of nodeMap.values()) {
-    const newDependencies = new Set(node.dependencies);
-    for (const depId of node.dependencies) {
-      if (additionalDependencies.has(depId)) {
-        additionalDependencies.get(depId)!.forEach((subDepId) => newDependencies.add(subDepId));
+    const newDependencies = new Set<string>();
+
+    // Inherit the dependencies of removed nodes we depended on
+    const visitDependency = (depId: string) => {
+      if (nodeMap.has(depId)) {
+        // It's still a valid node, keep in dependencies list
+        newDependencies.add(depId);
+      } else {
+        // Node was removed, propagate dependencies from the removed node
+        additionalDependencies.get(depId)?.forEach(visitDependency);
       }
-    }
-    node.dependencies = Array.from(newDependencies).filter((depId) => nodeMap.has(depId));
+    };
+    node.dependencies.forEach(visitDependency);
+    node.dependencies = Array.from(newDependencies);
   }
 
   // Convert the map back to an array
