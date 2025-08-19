@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Pin dependencies",
+      "packageName": "@lage-run/rpc",
+      "email": "renovate@whitesourcesoftware.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
