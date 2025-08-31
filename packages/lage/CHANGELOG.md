@@ -1,8 +1,17 @@
 # Change Log - lage
 
-<!-- This log was last generated on Fri, 08 Aug 2025 08:10:13 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sun, 31 Aug 2025 08:08:39 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.10
+
+Sun, 31 Aug 2025 08:08:39 GMT
+
+### Patches
+
+- `@lage-run/reporters`
+  - Update dependency @ms-cloudpack/task-reporter to v0.17.4 (renovate@whitesourcesoftware.com)
 
 ## 2.14.9
 
