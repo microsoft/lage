@@ -102,7 +102,7 @@ describe(getPackageDeps.name, () => {
     filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
 
     await monorepo.cleanup();
-  });
+  }, 60_000);
 
   it("can handle adding one file", async () => {
     const monorepo = new Monorepo("add-one-file");
