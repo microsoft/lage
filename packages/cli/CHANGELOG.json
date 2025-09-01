@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Mon, 01 Sep 2025 08:10:36 GMT",
+      "version": "0.32.0",
+      "tag": "@lage-run/cli_v0.32.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "5f2d28335f9293a5cc44a3bc6a99f41f8f981e7c",
+            "comment": "Add merge logic for targetConfig"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 08 Aug 2025 08:10:13 GMT",
       "version": "0.31.8",
       "tag": "@lage-run/cli_v0.31.8",

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Fri, 08 Aug 2025 08:10:13 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 01 Sep 2025 08:10:36 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.32.0
+
+Mon, 01 Sep 2025 08:10:36 GMT
+
+### Minor changes
+
+- Add merge logic for targetConfig (dannyvv@microsoft.com)
 
 ## 0.31.8
 

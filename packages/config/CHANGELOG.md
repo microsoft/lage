@@ -1,8 +1,16 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Thu, 07 Aug 2025 08:10:10 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 01 Sep 2025 08:10:36 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.5.0
+
+Mon, 01 Sep 2025 08:10:36 GMT
+
+### Minor changes
+
+- Add merge logic for targetConfig (dannyvv@microsoft.com)
 
 ## 0.4.17
 

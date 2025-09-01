@@ -1,8 +1,23 @@
 # Change Log - lage
 
-<!-- This log was last generated on Sun, 31 Aug 2025 08:08:39 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 01 Sep 2025 08:10:36 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.11
+
+Mon, 01 Sep 2025 08:10:36 GMT
+
+### Minor changes
+
+- `@lage-run/cli`
+  - Add merge logic for targetConfig (dannyvv@microsoft.com)
+- `@lage-run/config`
+  - Add merge logic for targetConfig (dannyvv@microsoft.com)
+- `@lage-run/hasher`
+  - Add merge logic for targetConfig (dannyvv@microsoft.com)
+- `@lage-run/target-graph`
+  - Add merge logic for targetConfig (dannyvv@microsoft.com)
 
 ## 2.14.10
 

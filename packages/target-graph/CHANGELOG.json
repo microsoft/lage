@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Mon, 01 Sep 2025 08:10:36 GMT",
+      "version": "0.12.0",
+      "tag": "@lage-run/target-graph_v0.12.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "5f2d28335f9293a5cc44a3bc6a99f41f8f981e7c",
+            "comment": "Add merge logic for targetConfig"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 08 Aug 2025 08:10:13 GMT",
       "version": "0.11.3",
       "tag": "@lage-run/target-graph_v0.11.3",

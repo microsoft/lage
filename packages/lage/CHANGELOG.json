@@ -2,6 +2,39 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Mon, 01 Sep 2025 08:10:36 GMT",
+      "version": "2.14.11",
+      "tag": "lage_v2.14.11",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "5f2d28335f9293a5cc44a3bc6a99f41f8f981e7c",
+            "comment": "Add merge logic for targetConfig"
+          },
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "5f2d28335f9293a5cc44a3bc6a99f41f8f981e7c",
+            "comment": "Add merge logic for targetConfig"
+          },
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "5f2d28335f9293a5cc44a3bc6a99f41f8f981e7c",
+            "comment": "Add merge logic for targetConfig"
+          },
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "5f2d28335f9293a5cc44a3bc6a99f41f8f981e7c",
+            "comment": "Add merge logic for targetConfig"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 31 Aug 2025 08:08:39 GMT",
       "version": "2.14.10",
       "tag": "lage_v2.14.10",

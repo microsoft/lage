@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/scheduler-types",
-  "version": "0.3.25",
+  "version": "0.3.26",
   "description": "Scheduler types for Lage",
   "repository": {
     "type": "git",
