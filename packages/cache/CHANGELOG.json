@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Tue, 16 Sep 2025 21:17:08 GMT",
+      "version": "1.3.17",
+      "tag": "@lage-run/cache_v1.3.17",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cache",
+            "commit": "3b3518989c4697dbdd89f99952d734a472732bb7",
+            "comment": "Update dependency @azure/identity to ^4.12.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 07 Aug 2025 08:10:10 GMT",
       "version": "1.3.15",
       "tag": "@lage-run/cache_v1.3.15",

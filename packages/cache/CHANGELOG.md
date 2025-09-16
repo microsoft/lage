@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-<!-- This log was last generated on Thu, 07 Aug 2025 08:10:10 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 16 Sep 2025 21:17:08 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.17
+
+Tue, 16 Sep 2025 21:17:08 GMT
+
+### Patches
+
+- Update dependency @azure/identity to ^4.12.0 (email not defined)
 
 ## 1.3.15
 
