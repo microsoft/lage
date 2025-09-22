@@ -1,6 +1,5 @@
 import type { TokenCredential } from "@azure/core-auth";
 import {
-  DefaultAzureCredential,
   AzureCliCredential,
   ManagedIdentityCredential,
   VisualStudioCodeCredential,
@@ -9,14 +8,14 @@ import {
 } from "@azure/identity";
 import type { AzureCredentialName } from "@lage-run/config";
 
-// Canonical list of allowed credential names, matching the camelCase class names from @azure/identity
+// Canonical list of allowed credential names (order reflects selection precedence for docs/UI):
+// environmentCredential, workloadIdentityCredential, managedIdentityCredential, visualStudioCodeCredential, azureCliCredential
 const credentialNames = [
-  "defaultAzureCredential",
-  "azureCliCredential",
-  "managedIdentityCredential",
-  "visualStudioCodeCredential",
   "environmentCredential",
   "workloadIdentityCredential",
+  "managedIdentityCredential",
+  "visualStudioCodeCredential",
+  "azureCliCredential",
 ] as const;
 
 export class CredentialCache {
@@ -26,25 +25,20 @@ export class CredentialCache {
   public static readonly credentialNames = credentialNames as readonly AzureCredentialName[];
   /**
    * Returns a credential instance based on the provided name. Results are cached per name.
-   * If no name is provided (or it's unrecognized), DefaultAzureCredential is used.
-   *
-   * Supported names (case-insensitive):
-   * - default | defaultazurecredential
-   * - azureclicredential | cli | az
-   * - managedidentitycredential | managedidentity | mi
-   * - visualstudiocodecredential | vscode
-   * - environmentcredential | env
-   * - workloadidentitycredential | workload
+   * If no name is provided, EnvironmentCredential is used by default.
    */
   public static getInstance(credentialName?: AzureCredentialName): TokenCredential {
-    const key: AzureCredentialName = credentialName ?? "defaultAzureCredential";
+    const key: AzureCredentialName = credentialName ?? "environmentCredential";
     const existing = this.cache.get(key);
     if (existing) return existing;
 
     let credential: TokenCredential;
     switch (key) {
-      case "azureCliCredential":
-        credential = new AzureCliCredential();
+      case "environmentCredential":
+        credential = new EnvironmentCredential();
+        break;
+      case "workloadIdentityCredential":
+        credential = new WorkloadIdentityCredential();
         break;
       case "managedIdentityCredential":
         credential = new ManagedIdentityCredential();
@@ -52,15 +46,8 @@ export class CredentialCache {
       case "visualStudioCodeCredential":
         credential = new VisualStudioCodeCredential();
         break;
-      case "environmentCredential":
-        credential = new EnvironmentCredential();
-        break;
-      case "workloadIdentityCredential":
-        credential = new WorkloadIdentityCredential();
-        break;
-      case "defaultAzureCredential":
-      default:
-        credential = new DefaultAzureCredential();
+      case "azureCliCredential":
+        credential = new AzureCliCredential();
         break;
     }
 

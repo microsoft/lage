@@ -2,7 +2,6 @@ import type { Config as BackfillCacheOptions, CustomStorageConfig } from "backfi
 
 // Allowed credential names matching camelCase of @azure/identity credential class names
 export type AzureCredentialName =
-  | "defaultAzureCredential"
   | "azureCliCredential"
   | "managedIdentityCredential"
   | "visualStudioCodeCredential"
