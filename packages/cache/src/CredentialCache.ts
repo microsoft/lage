@@ -28,7 +28,7 @@ export class CredentialCache {
    * If no name is provided, EnvironmentCredential is used by default.
    */
   public static getInstance(credentialName?: AzureCredentialName): TokenCredential {
-    const key: AzureCredentialName = credentialName ?? "environmentCredential";
+    const key: AzureCredentialName = credentialName ?? "environmentCredential"; // Default Azure Credential if none provided
     const existing = this.cache.get(key);
     if (existing) return existing;
 
