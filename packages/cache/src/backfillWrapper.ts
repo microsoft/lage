@@ -7,6 +7,7 @@ import { createDefaultConfig, getEnvConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { CacheOptions } from "@lage-run/config";
+import type { AzureCredentialName } from "@lage-run/config";
 import { CredentialCache } from "./CredentialCache.js";
 
 export function createBackfillLogger() {
@@ -38,7 +39,19 @@ export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<Cac
   if (mergedConfig.cacheStorageConfig.provider === "azure-blob") {
     const azureOptions = mergedConfig.cacheStorageConfig.options;
     if ("connectionString" in azureOptions && !isTokenConnectionString(azureOptions.connectionString)) {
-      azureOptions.credential = CredentialCache.getInstance();
+      // Pass through optional credentialName from config to select a specific credential implementation
+      const name = azureOptions.credentialName as string | undefined;
+      if (name != null) {
+        if (!CredentialCache.credentialNames.includes(name as AzureCredentialName)) {
+          throw new Error(
+            `Invalid cacheStorageConfig.options.credentialName: "${name}". Allowed values: ${CredentialCache.credentialNames.join(", ")}`
+          );
+        }
+        azureOptions.credential = CredentialCache.getInstance(name as AzureCredentialName);
+      } else {
+        // No name provided: fall back to DefaultAzureCredential
+        azureOptions.credential = CredentialCache.getInstance();
+      }
     }
   }
 

@@ -1,11 +1,50 @@
 import type { Config as BackfillCacheOptions, CustomStorageConfig } from "backfill-config";
 
+// Allowed credential names matching camelCase of @azure/identity credential class names
+export type AzureCredentialName =
+  | "defaultAzureCredential"
+  | "azureCliCredential"
+  | "managedIdentityCredential"
+  | "visualStudioCodeCredential"
+  | "environmentCredential"
+  | "workloadIdentityCredential";
+
+// Locally augment only the Azure Blob connection-string options by adding an optional `credentialName`.
+// This does NOT modify upstream types; it narrows and re-composes the union for our config surface.
+type AzureBlobFromBackfill = Extract<
+  BackfillCacheOptions["cacheStorageConfig"],
+  { provider: "azure-blob" }
+>;
+
+type AugmentedAzureBlobConfig = AzureBlobFromBackfill extends {
+  provider: "azure-blob";
+  options: infer O;
+}
+  ? {
+      provider: "azure-blob";
+      options: O extends any
+        ? O extends { connectionString: string }
+          // Assumption: make `credentialName` optional to preserve backward compatibility
+          ? O & { credentialName?: AzureCredentialName }
+          : O
+        : never;
+    }
+  : never;
+
+// Recompose the cache storage config union to swap in our augmented Azure Blob type
+type ExtendedCacheStorageConfig =
+  | Exclude<
+      BackfillCacheOptions["cacheStorageConfig"],
+      { provider: "azure-blob" } | CustomStorageConfig
+    >
+  | AugmentedAzureBlobConfig;
+
 export type CacheOptions = Omit<BackfillCacheOptions, "cacheStorageConfig"> & {
   /**
    * Use this to specify a remote cache provider such as `'azure-blob'`.
    * @see https://github.com/microsoft/backfill#configuration
    */
-  cacheStorageConfig?: Exclude<BackfillCacheOptions["cacheStorageConfig"], CustomStorageConfig>;
+  cacheStorageConfig?: ExtendedCacheStorageConfig;
 
   /**
    * Whether to write to the remote cache - useful for continuous integration systems to provide build-over-build cache.
