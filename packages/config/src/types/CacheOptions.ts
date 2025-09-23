@@ -4,11 +4,11 @@ import type { Config as BackfillCacheOptions, CustomStorageConfig } from "backfi
  *  @see https://learn.microsoft.com/en-us/azure/developer/javascript/sdk/authentication/credential-chains
  */
 export type AzureCredentialName =
-  | "azureCliCredential"
-  | "managedIdentityCredential"
-  | "visualStudioCodeCredential"
-  | "environmentCredential"
-  | "workloadIdentityCredential";
+  | "environment-credential"
+  | "workload-identity-credential"
+  | "managed-identity-credential"
+  | "visual-studio-code-credential"
+  | "azure-cli-credential";
 
 /** Locally augment only the Azure Blob connection-string options by adding an optional `credentialName`.
  *  This does NOT modify upstream types; it narrows and re-composes the union for our config surface.
