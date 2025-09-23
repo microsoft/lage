@@ -40,7 +40,8 @@ export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<Cac
     const azureOptions = mergedConfig.cacheStorageConfig.options;
     if ("connectionString" in azureOptions && !isTokenConnectionString(azureOptions.connectionString)) {
       // Pass through optional credentialName from config to select a specific credential implementation
-      const name = azureOptions.credentialName as string | undefined;
+      // Type assertion: only the connection-string variant is augmented with credentialName in @lage-run/config
+      const name = (azureOptions as { credentialName?: AzureCredentialName }).credentialName as string | undefined;
       if (name != null) {
         if (!CredentialCache.credentialNames.includes(name as AzureCredentialName)) {
           throw new Error(
@@ -49,7 +50,7 @@ export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<Cac
         }
         azureOptions.credential = CredentialCache.getInstance(name as AzureCredentialName);
       } else {
-        // No name provided: fall back to DefaultAzureCredential
+        // No name provided: fall back to EnvironmentCredential
         azureOptions.credential = CredentialCache.getInstance();
       }
     }
