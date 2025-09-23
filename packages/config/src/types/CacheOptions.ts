@@ -10,10 +10,7 @@ export type AzureCredentialName =
 
 // Locally augment only the Azure Blob connection-string options by adding an optional `credentialName`.
 // This does NOT modify upstream types; it narrows and re-composes the union for our config surface.
-type AzureBlobFromBackfill = Extract<
-  BackfillCacheOptions["cacheStorageConfig"],
-  { provider: "azure-blob" }
->;
+type AzureBlobFromBackfill = Extract<BackfillCacheOptions["cacheStorageConfig"], { provider: "azure-blob" }>;
 
 type AugmentedAzureBlobConfig = AzureBlobFromBackfill extends {
   provider: "azure-blob";
@@ -23,8 +20,8 @@ type AugmentedAzureBlobConfig = AzureBlobFromBackfill extends {
       provider: "azure-blob";
       options: O extends any
         ? O extends { connectionString: string }
-          // Assumption: make `credentialName` optional to preserve backward compatibility
-          ? O & { credentialName?: AzureCredentialName }
+          ? // Assumption: make `credentialName` optional to preserve backward compatibility
+            O & { credentialName?: AzureCredentialName }
           : O
         : never;
     }
@@ -32,10 +29,7 @@ type AugmentedAzureBlobConfig = AzureBlobFromBackfill extends {
 
 // Recompose the cache storage config union to swap in our augmented Azure Blob type
 type ExtendedCacheStorageConfig =
-  | Exclude<
-      BackfillCacheOptions["cacheStorageConfig"],
-      { provider: "azure-blob" } | CustomStorageConfig
-    >
+  | Exclude<BackfillCacheOptions["cacheStorageConfig"], { provider: "azure-blob" } | CustomStorageConfig>
   | AugmentedAzureBlobConfig;
 
 export type CacheOptions = Omit<BackfillCacheOptions, "cacheStorageConfig"> & {
