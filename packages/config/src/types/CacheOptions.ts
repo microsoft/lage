@@ -24,7 +24,7 @@ type AugmentedAzureBlobConfig = AzureBlobFromBackfill extends {
       options: O extends any
         ? O extends { connectionString: string }
           ? // Assumption: make `credentialName` optional to preserve backward compatibility
-            O & { credentialName?: AzureCredentialName }
+            O & { credentialName?: AzureCredentialName } // default value is "environment-credential"
           : O
         : never;
     }
