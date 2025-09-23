@@ -79,6 +79,18 @@ Create a secret named "BACKFILL_CACHE_PROVIDER_OPTIONS":
 {"connectionString":"the **read-write** connection string","container":"CONTAINER NAME"}
 ```
 
+`process.env.BACKFILL_CACHE_PROVIDER_OPTIONS`is evaluated via backfill (see [getEnvConfig()](https://github.com/microsoft/backfill/blob/ba0e28394dc066a1c8313bb44295a6e0457a5468/packages/config/src/envConfig.ts#L82) in backfill-config).
+
+For "azure-blob" cache provider with a non-sas/key-based `connectionString`(storage account endpoint) requiring azure identity authentication do not use `BACKFILL_CACHE_PROVIDER_OPTIONS`, instead populate the required env variables according to the desired identity/environment. (See [Azure Idenity SDK](https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme)) and set `credentialName` property in the `lage.config.js` under `cacheOptions.cacheStorageConfig.options.credentialName` or via env var `AZURE_IDENTITY_CREDENTIAL_NAME` Supported options are:
+
+- `"azure-cli-credential"`
+- `"managed-identity-credential"`
+- `"visual-studio-code-credential"`
+- `"environment-credential"`
+- `"workload-identity-credential"`
+
+Note that all are part of the [DefaultAzureCredential](https://learn.microsoft.com/en-us/azure/developer/javascript/sdk/authentication/credential-chains#use-defaultazurecredential-for-flexibility) credential chain, but `DefaultAzureCredential` itself is not used.
+
 :::note
 
 ### Uploading cache to a remote is _not_ the default

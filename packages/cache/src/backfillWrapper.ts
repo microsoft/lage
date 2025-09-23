@@ -51,8 +51,20 @@ export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<Cac
         }
         azureOptions.credential = CredentialCache.getInstance(name as AzureCredentialName);
       } else {
-        // No name provided: fall back to EnvironmentCredential
-        azureOptions.credential = CredentialCache.getInstance();
+        /** No name provided in config: if env var AZURE_IDENTITY_CREDENTIAL_NAME is set, honor it; otherwise default to EnvironmentCredential
+         */
+        const envName = process.env.AZURE_IDENTITY_CREDENTIAL_NAME as string | undefined;
+        if (envName != null) {
+          if (!CredentialCache.credentialNames.includes(envName as AzureCredentialName)) {
+            throw new Error(
+              `Invalid AZURE_IDENTITY_CREDENTIAL_NAME: "${envName}". Allowed values: ${CredentialCache.credentialNames.join(", ")}`
+            );
+          }
+          azureOptions.credential = CredentialCache.getInstance(envName as AzureCredentialName);
+        } else {
+          // Fall back to EnvironmentCredential
+          azureOptions.credential = CredentialCache.getInstance();
+        }
       }
     }
   }
@@ -61,5 +73,5 @@ export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<Cac
 }
 
 function isTokenConnectionString(connectionString: string) {
-  return connectionString.includes("SharedAccessSignature");
+  return connectionString.includes("SharedAccessSignature") || connectionString.includes("AccountKey");
 }
