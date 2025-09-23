@@ -63,6 +63,8 @@ export async function runAction(options: RunOptions, command: Command) {
     outputs: config.cacheOptions.outputGlob,
     tasks,
     packageInfos,
+    priorities: config.priorities,
+    enableTargetConfigMerging: config.enableTargetConfigMerging,
   });
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);
@@ -102,7 +104,7 @@ export async function runAction(options: RunOptions, command: Command) {
     workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
   });
 
-  const optimizedTargets = await optimizeTargetGraph(targetGraph, scheduler.runnerPicker);
+  const optimizedTargets = await optimizeTargetGraph(targetGraph, scheduler.runnerPicker, false);
   const optimizedGraph: TargetGraph = {
     targets: new Map(optimizedTargets.map((target) => [target.id, target])),
   };

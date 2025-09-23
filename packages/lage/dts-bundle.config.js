@@ -53,7 +53,19 @@ module.exports = {
       libraries: {
         // Note that backfill-config itself must be in this list, or references to files within the
         // package will be treated as external and preserved as imports.
-        inlinedLibraries: ["backfill-config", "backfill-logger", "@azure/core-http", "@azure/abort-controller", "@azure/core-auth"],
+        inlinedLibraries: [
+          "backfill-config",
+          "backfill-logger",
+          "@azure/abort-controller",
+          "@azure/core-auth",
+          "@azure/core-http",
+          "@azure/core-lro",
+          "@azure/core-paging",
+          "@azure/core-tracing",
+          "@azure/core-util",
+          "@azure/logger",
+          "@azure/storage-blob",
+        ],
       },
       output: commonOutputOptions,
       noCheck: true,

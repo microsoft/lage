@@ -2,6 +2,21 @@
   "name": "@lage-run/globby",
   "entries": [
     {
+      "date": "Wed, 02 Apr 2025 08:10:04 GMT",
+      "version": "14.2.1",
+      "tag": "@lage-run/globby_v14.2.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/globby",
+            "commit": "54e957d6b93381285d67ff8c23e134770b7a1512",
+            "comment": "Bundle with esbuild ^0.25.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Oct 2024 20:26:19 GMT",
       "version": "14.2.0",
       "tag": "@lage-run/globby_v14.2.0",

@@ -12,6 +12,9 @@ import { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 import { TargetFactory } from "./TargetFactory.js";
 import pLimit from "p-limit";
 
+//eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports -- mergician is a dual-mode library with CJS and ESM export but a single .d.ts file. Without type="module" on this packge.json typescript gets confused. See: https://github.com/microsoft/TypeScript/issues/50466
+const { mergician } = require("mergician");
+
 const DEFAULT_STAGED_TARGET_THRESHOLD = 50;
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
@@ -45,7 +48,11 @@ export class WorkspaceTargetGraphBuilder {
    * @param root the root directory of the workspace
    * @param packageInfos the package infos for the workspace
    */
-  constructor(root: string, private packageInfos: PackageInfos) {
+  constructor(
+    root: string,
+    private packageInfos: PackageInfos,
+    private enableTargetConfigMerging: boolean
+  ) {
     this.dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
     this.graphBuilder = new TargetGraphBuilder();
     this.targetFactory = new TargetFactory({
@@ -70,30 +77,54 @@ export class WorkspaceTargetGraphBuilder {
   async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]) {
     // Generates a target definition from the target config
     if (id.startsWith("//") || id.startsWith("#")) {
-      const target = this.targetFactory.createGlobalTarget(id, config);
+      const targetConfig = this.determineFinalTargetConfig(id, config);
+      const target = this.targetFactory.createGlobalTarget(id, targetConfig);
       this.graphBuilder.addTarget(target);
-      this.targetConfigMap.set(id, config);
       this.hasRootTarget = true;
 
       this.processStagedConfig(target, config, changedFiles);
     } else if (id.includes("#")) {
       const { packageName, task } = getPackageAndTask(id);
-      const target = this.targetFactory.createPackageTarget(packageName!, task, config);
+      const targetConfig = this.determineFinalTargetConfig(id, config);
+      const target = this.targetFactory.createPackageTarget(packageName!, task, targetConfig);
       this.graphBuilder.addTarget(target);
-      this.targetConfigMap.set(id, config);
 
       this.processStagedConfig(target, config, changedFiles);
     } else {
       const packages = Object.keys(this.packageInfos);
       for (const packageName of packages) {
         const task = id;
-        const target = this.targetFactory.createPackageTarget(packageName!, task, config);
+        const targetConfig = this.determineFinalTargetConfig(getTargetId(packageName, task), config);
+        const target = this.targetFactory.createPackageTarget(packageName!, task, targetConfig);
         this.graphBuilder.addTarget(target);
-        this.targetConfigMap.set(id, config);
 
         this.processStagedConfig(target, config, changedFiles);
       }
     }
+  }
+
+  deepCloneTargetConfig = mergician({
+    appendArrays: true,
+    onCircular: () => {
+      throw new Error(`Circular object reference detected in TargetConfig`);
+    },
+  });
+
+  /**
+   * Merges
+   * @param id The Id of the target to merge
+   * @param config The TargetConfig settings that will be merged if this target has already been seen before
+   * @returns The merged TargetConfig object.
+   */
+  determineFinalTargetConfig(targetId: string, config: TargetConfig): TargetConfig {
+    let finalConfig = config;
+    if (this.enableTargetConfigMerging && this.targetConfigMap.has(targetId)) {
+      const existingConfig = this.targetConfigMap.get(targetId)!;
+      finalConfig = this.deepCloneTargetConfig(existingConfig, config);
+    }
+
+    this.targetConfigMap.set(targetId, finalConfig);
+    return finalConfig;
   }
 
   /**
@@ -164,9 +195,9 @@ export class WorkspaceTargetGraphBuilder {
    *
    * @param tasks
    * @param scope
-   * @returns
+   * @param priorities the set of global priorities for the workspace.
    */
-  async build(tasks: string[], scope?: string[]) {
+  async build(tasks: string[], scope?: string[], priorities?: { package?: string; task: string; priority: number }[]) {
     // Expands the dependency specs from the target definitions
     const fullDependencies = expandDepSpecs(this.graphBuilder.targets, this.dependencyMap);
 
@@ -198,6 +229,20 @@ export class WorkspaceTargetGraphBuilder {
         const stagedTargetId = getStagedTargetId(task);
         if (this.graphBuilder.targets.has(stagedTargetId)) {
           subGraphEntries.push(stagedTargetId);
+        }
+      }
+    }
+
+    // Add all the global priorities for individual targets
+    if (priorities) {
+      for (const priorityConfig of priorities) {
+        // Right now we are only handling global priorities where the package name is set
+        if (priorityConfig.package) {
+          const targetId = getTargetId(priorityConfig.package, priorityConfig.task);
+          const target = this.graphBuilder.targets.get(targetId);
+          if (target) {
+            target.priority = target.priority ? Math.max(target.priority, priorityConfig.priority) : priorityConfig.priority;
+          }
         }
       }
     }

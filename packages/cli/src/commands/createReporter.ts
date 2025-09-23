@@ -13,7 +13,7 @@ import { readFileSync } from "fs";
 import path from "path";
 
 export function createReporter(reporter: string, options: ReporterInitOptions) {
-  const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress, logFile } = options;
+  const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress, logFile, indented } = options;
   const logLevel = LogLevel[logLevelName];
 
   const root = findPackageRoot(__filename)!;
@@ -27,7 +27,7 @@ export function createReporter(reporter: string, options: ReporterInitOptions) {
         outputFile: typeof profile === "string" ? profile : undefined,
       });
     case "json":
-      return new JsonReporter({ logLevel });
+      return new JsonReporter({ logLevel, indented: indented ?? false });
     case "azureDevops":
     case "adoLog":
       return new AdoReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });

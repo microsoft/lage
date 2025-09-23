@@ -1,3 +1,4 @@
+import path from "path";
 import type { Logger } from "@lage-run/logger";
 import createLogger from "@lage-run/logger";
 import { initializeReporters } from "../initializeReporters.js";
@@ -80,7 +81,7 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
       task,
       taskArgs,
     });
-    logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode} `);
+    logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode}`);
     return response;
   } catch (error) {
     if (error instanceof ConnectError) {
@@ -140,7 +141,8 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
     process.exitCode = response.exitCode;
 
     // we will simulate file access even if exit code may be non-zero
-    await simulateFileAccess(logger, response.inputs, response.outputs);
+    const relativeGlobalInputsForTarget = path.relative(root, path.join(response.cwd, response.globalInputHashFile));
+    await simulateFileAccess(logger, root, [...response.inputs, relativeGlobalInputsForTarget], response.outputs);
   } else {
     process.exitCode = 1;
   }

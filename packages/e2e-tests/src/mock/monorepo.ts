@@ -41,12 +41,15 @@ export class Monorepo {
     }
 
     fs.cpSync(path.resolve(__dirname, "..", "..", "yarn"), path.dirname(this.yarnPath), { recursive: true });
-    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install"], { cwd: this.root, shell: true });
+    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
   }
 
   generateRepoFiles() {
     this.commitFiles({
-      ".yarnrc": `yarn-path "${this.yarnPath}"`,
+      ".yarnrc.yml": `yarnPath: "${this.yarnPath.replace(/\\/g, "/")}"\ncacheFolder: "${this.root.replace(
+        /\\/g,
+        "/"
+      )}/.yarn/cache"\nnodeLinker: node-modules`,
       "package.json": {
         name: this.name.replace(/ /g, "-"),
         version: "0.1.0",
@@ -148,18 +151,25 @@ export class Monorepo {
     execa.sync("git", ["commit", "-m", "commit files"], { cwd: this.root });
   }
 
-  run(command: string, args?: string[], silent?: boolean) {
+  run(command: string, args?: string[], silent?: boolean, options?: Partial<execa.SyncOptions>) {
     return execa.sync(process.execPath, [this.yarnPath, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
+      ...options,
     });
   }
 
-  runServer() {
-    return execa.default(process.execPath, [path.join(this.root, "node_modules/lage/dist/lage-server.js")], {
+  runServer(tasks: string[]) {
+    const cp = execa.default(process.execPath, [path.join(this.root, "node_modules/lage/dist/lage-server.js"), "--tasks", ...tasks], {
       cwd: this.root,
       detached: true,
       stdio: "ignore",
     });
+
+    if (cp && !cp.pid) {
+      throw new Error("Failed to start server");
+    }
+
+    return cp;
   }
 
   async cleanup() {

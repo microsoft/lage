@@ -86,7 +86,7 @@ export async function executeInProcess({ cwd, args, nodeArg, logger }: ExecuteIn
   const { pipeline } = config;
 
   const taskArg = args?.length === 1 ? args?.[0] : args?.[1];
-  const packageName = args?.length ?? 0 > 1 ? args?.[0] : undefined;
+  const packageName = (args?.length ?? 0 > 1) ? args?.[0] : undefined;
 
   if (!taskArg) {
     throw new Error("No task provided");

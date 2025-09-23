@@ -1,33 +1,62 @@
 import type { Logger } from "@lage-run/logger";
 import path from "path";
 import fs from "fs";
-import { getWorkspaceRoot } from "workspace-tools";
 
-export async function simulateFileAccess(logger: Logger, inputs: string[], outputs: string[]) {
-  const root = getWorkspaceRoot(process.cwd())!;
+export async function simulateFileAccess(logger: Logger, root: string, inputs: string[], outputs: string[]) {
   logger.silly("Now probing and touching inputs and outputs");
+
+  // Helper to get all directory parts up to root
+  const getAllDirectoryParts = (filePath: string): string[] => {
+    const parts: string[] = [];
+    let dirPath = path.dirname(filePath);
+
+    while (dirPath !== "." && dirPath !== "") {
+      parts.push(dirPath);
+      dirPath = path.dirname(dirPath);
+    }
+
+    return parts;
+  };
 
   const inputDirectories = new Set<string>();
 
-  // probe input files
+  // read input files
   let fd: number;
+  const buffer: Buffer = Buffer.alloc(1);
   for (const input of inputs) {
-    fd = fs.openSync(path.join(root, input), "r");
-    fs.closeSync(fd);
+    try {
+      const inputPath = path.join(root, input);
+      if (!fs.lstatSync(inputPath).isDirectory()) {
+        fd = fs.openSync(inputPath, "r");
+        // Simulate a file content read by reading 1 byte of the opened file handle
+        fs.readSync(fd, buffer, 0, 1, 0);
+        fs.closeSync(fd);
+      } else {
+        inputDirectories.add(input);
+      }
+    } catch (e) {
+      // ignore
+    }
 
-    inputDirectories.add(path.dirname(input));
+    // Add all directory parts to the set
+    getAllDirectoryParts(input).forEach((dir) => inputDirectories.add(dir));
   }
 
   for (const directory of inputDirectories) {
-    fd = fs.openSync(path.join(root, directory), "r");
-    fs.closeSync(fd);
+    try {
+      // Simulate enumerating a directory
+      fs.readdirSync(path.join(root, directory));
+    } catch (e) {
+      // ignore
+    }
   }
 
   // touch output files
   const time = new Date();
   const outputDirectories = new Set<string>();
   for (const output of outputs) {
-    outputDirectories.add(path.dirname(output));
+    // Add all directory parts to the set
+    getAllDirectoryParts(output).forEach((dir) => outputDirectories.add(dir));
 
     try {
       fs.utimesSync(path.join(root, output), time, time);

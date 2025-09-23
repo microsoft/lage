@@ -2,6 +2,51 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Fri, 08 Aug 2025 08:10:13 GMT",
+      "version": "0.9.0",
+      "tag": "@lage-run/worker-threads-pool_v0.9.0",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "0.9.0",
+      "tag": "@lage-run/worker-threads-pool_v0.9.0",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 23 Jan 2025 17:38:05 GMT",
+      "version": "0.9.0",
+      "tag": "@lage-run/worker-threads-pool_v0.9.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "d237682b5454ef811a39fcaca56d1a28f064449d",
+            "comment": "Add priority as a parameter to Pool APIs to support more optimal scheduling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 08 Dec 2024 00:07:28 GMT",
       "version": "0.8.6",
       "tag": "@lage-run/worker-threads-pool_v0.8.6",

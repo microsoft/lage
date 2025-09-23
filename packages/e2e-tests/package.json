@@ -6,9 +6,6 @@
   "repository": {
     "url": "https://github.com/microsoft/lage"
   },
-  "bin": {
-    "lage": "./bin/lage"
-  },
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -19,11 +16,11 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/cli": "^0.24.10",
-    "@lage-run/globby": "^14.2.0",
-    "@lage-run/monorepo-scripts": "*",
-    "@lage-run/scheduler-types": "^0.3.22",
-    "@lage-run/target-graph": "^0.11.0",
+    "@lage-run/cli": "workspace:^",
+    "@lage-run/globby": "workspace:^",
+    "@lage-run/monorepo-scripts": "workspace:^",
+    "@lage-run/scheduler-types": "workspace:^",
+    "@lage-run/target-graph": "workspace:^",
     "execa": "5.1.1",
     "glob-hasher": "^1.4.2"
   }

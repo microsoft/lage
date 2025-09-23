@@ -92,7 +92,6 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
 
   onAbort() {
     this.#status = "aborted";
-    this.duration = process.hrtime(this.startTime);
     this.options.logger.info("", { target: this.target, status: "aborted", threadId: this.threadId });
   }
 
@@ -107,7 +106,6 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
 
   onComplete() {
     this.#status = "success";
-    this.duration = process.hrtime(this.startTime);
     this.options.logger.info("", {
       target: this.target,
       status: "success",
@@ -118,7 +116,6 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
 
   onFail() {
     this.#status = "failed";
-    this.duration = process.hrtime(this.startTime);
     this.options.logger.info("", {
       target: this.target,
       status: "failed",
@@ -132,10 +129,6 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
   }
 
   onSkipped(hash?: string | undefined) {
-    if (this.startTime[0] !== 0 && this.startTime[1] !== 0) {
-      this.duration = process.hrtime(this.startTime);
-    }
-
     this.#status = "skipped";
 
     if (hash) {
@@ -265,10 +258,12 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
       },
       (worker) => {
         worker.off("message", msgHandler);
+        this.duration = process.hrtime(this.startTime);
         releaseStdout();
         releaseStderr();
       },
-      abortSignal
+      abortSignal,
+      target.priority
     ) as Promise<{ value?: unknown; skipped: boolean; hash: string; id: string }>);
 
     return {

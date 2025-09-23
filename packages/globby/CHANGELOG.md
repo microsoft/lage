@@ -1,8 +1,16 @@
 # Change Log - @lage-run/globby
 
-<!-- This log was last generated on Wed, 02 Oct 2024 20:26:19 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 02 Apr 2025 08:10:04 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 14.2.1
+
+Wed, 02 Apr 2025 08:10:04 GMT
+
+### Patches
+
+- Bundle with esbuild ^0.25.0 (email not defined)
 
 ## 14.2.0
 

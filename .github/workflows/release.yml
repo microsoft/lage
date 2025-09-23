@@ -1,14 +1,14 @@
 name: Release
 
 on:
+  # release daily at 8am UTC (midnight or 1am pacific)
+  # https://crontab-generator.org/
+  schedule:
+    - cron: "0 8 * * *"
+  # or manual trigger
   workflow_dispatch:
-  push:
-    branches: [master, v1]
-    paths-ignore:
-      - "docs/**"
 
-permissions:
-  contents: write
+permissions: {}
 
 # Only run one release at a time to avoid duplicate attempts to publish particular versions.
 # To avoid backups after multiple pushes in rapid succession, the prerelease job below emulates
@@ -21,51 +21,23 @@ concurrency:
   group: release-${{ github.ref }}
 
 jobs:
-  # Only run the actual release if change files are present.
-  # Also skip this run if there are any newer pending runs.
-  prerelease:
-    runs-on: ubuntu-latest
-    outputs:
-      shouldRelease: ${{ steps.shouldRelease.outputs.shouldRelease }}
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      # Cancel the release if a newer run is pending or no change files are present
-      - uses: ecraig12345/beachball-actions/should-release@v1
-        id: shouldRelease
-        with:
-          token: ${{ github.token }}
-          batch: true
-          mode: output
-
   release:
-    needs: prerelease
-    if: ${{ needs.prerelease.outputs.shouldRelease == 'yes' }}
-
     runs-on: ubuntu-latest
 
     # This environment contains secrets needed for publishing
     environment: release
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
         with:
           # Don't save creds in the git config (so it's easier to override later)
           persist-credentials: false
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: .nvmrc
 
-      - run: yarn
+      - run: yarn --immutable
 
       - run: yarn ci --concurrency 2 --verbose
 

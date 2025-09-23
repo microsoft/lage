@@ -93,7 +93,8 @@ export class AggregatedPool extends EventEmitter implements Pool {
     weight: number,
     setup?: (worker: IWorker, stdout: Readable, stderr: Readable) => void,
     cleanup?: (args: any) => void,
-    abortSignal?: AbortSignal
+    abortSignal?: AbortSignal,
+    priority?: number
   ): Promise<unknown> {
     const group = this.options.groupBy(data);
     const pool = this.groupedPools.get(group) ?? this.defaultPool;
@@ -102,7 +103,7 @@ export class AggregatedPool extends EventEmitter implements Pool {
       throw new Error(`No pool found to be able to run ${group} tasks, try adjusting the maxWorkers & concurrency values`);
     }
 
-    return pool.exec(data, weight, setup, cleanup, abortSignal);
+    return pool.exec(data, weight, setup, cleanup, abortSignal, priority);
   }
 
   async close(): Promise<unknown> {

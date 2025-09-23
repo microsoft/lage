@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/globby",
-  "version": "14.2.0",
+  "version": "14.2.1",
   "main": "lib/index.js",
   "scripts": {
     "transpile": "esbuild src/index.mts --bundle --platform=node --target=node14 --format=cjs --outfile=lib/index.js",
@@ -9,7 +9,7 @@
   "license": "MIT",
   "devDependencies": {
     "dts-bundle-generator": "^9.5.1",
-    "esbuild": "^0.21.5",
+    "esbuild": "^0.25.0",
     "globby": "^14.0.2",
     "typescript": "~5.0.3"
   },

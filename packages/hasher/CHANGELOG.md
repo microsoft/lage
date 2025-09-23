@@ -1,8 +1,56 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Mon, 02 Dec 2024 17:23:22 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 01 Sep 2025 08:10:36 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.9.0
+
+Mon, 01 Sep 2025 08:10:36 GMT
+
+### Minor changes
+
+- Add merge logic for targetConfig (dannyvv@microsoft.com)
+
+## 1.8.3
+
+Fri, 01 Aug 2025 08:10:15 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.4 (renovate@whitesourcesoftware.com)
+
+## 1.8.2
+
+Thu, 17 Apr 2025 08:10:01 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.3 (email not defined)
+
+## 1.8.0
+
+Sat, 29 Mar 2025 02:16:38 GMT
+
+### Minor changes
+
+- cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL (kchau@microsoft.com)
+
+## 1.6.9
+
+Fri, 17 Jan 2025 21:57:32 GMT
+
+### Patches
+
+- Make package tree handle nested packages (kchau@microsoft.com)
+
+## 1.6.8
+
+Wed, 15 Jan 2025 16:56:22 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.11.1
 
 ## 1.6.7
 

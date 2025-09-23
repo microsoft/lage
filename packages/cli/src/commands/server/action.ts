@@ -3,18 +3,20 @@ import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import { initializeReporters } from "../initializeReporters.js";
 import { createLageService } from "./lageService.js";
 import { createServer } from "@lage-run/rpc";
+import { parseServerOption } from "../parseServerOption.js";
 
 interface WorkerOptions extends ReporterInitOptions {
   nodeArg?: string[];
-  port?: number;
-  host?: string;
+  server?: string;
   timeout?: number;
   shutdown: boolean;
   tasks: string[];
 }
 
 export async function serverAction(options: WorkerOptions) {
-  const { port = 5332, host = "localhost", timeout = 1, tasks } = options;
+  const { server = "localhost:5332", timeout = 1, tasks } = options;
+
+  const { host, port } = parseServerOption(server);
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
@@ -30,16 +32,16 @@ export async function serverAction(options: WorkerOptions) {
     cwd: process.cwd(),
     serverControls: {
       abortController,
-      countdownToShutdown: () => resetTimer(logger, timeout, abortController, server),
+      countdownToShutdown: () => resetTimer(logger, timeout, abortController, lageServer),
       clearCountdown: clearTimer,
     },
     logger,
     concurrency: options.concurrency,
     tasks,
   });
-  const server = await createServer(lageService, abortController);
+  const lageServer = await createServer(lageService, abortController);
 
-  await server.listen({ host, port });
+  await lageServer.listen({ host, port });
   logger.info(`Server listening on http://${host}:${port}, timeout in ${timeout} seconds`);
 }
 

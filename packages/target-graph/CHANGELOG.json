@@ -2,6 +2,111 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Mon, 01 Sep 2025 08:10:36 GMT",
+      "version": "0.12.0",
+      "tag": "@lage-run/target-graph_v0.12.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "5f2d28335f9293a5cc44a3bc6a99f41f8f981e7c",
+            "comment": "Add merge logic for targetConfig"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Aug 2025 08:10:13 GMT",
+      "version": "0.11.3",
+      "tag": "@lage-run/target-graph_v0.11.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 07 Aug 2025 08:10:10 GMT",
+      "version": "0.11.3",
+      "tag": "@lage-run/target-graph_v0.11.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "7ca58c8121ab43d58ba76379e5e0c2320622cf5d",
+            "comment": "Update jest to v30"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Aug 2025 08:10:15 GMT",
+      "version": "0.11.3",
+      "tag": "@lage-run/target-graph_v0.11.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/target-graph",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update dependency workspace-tools to v0.38.4"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 17 Apr 2025 08:10:01 GMT",
+      "version": "0.11.2",
+      "tag": "@lage-run/target-graph_v0.11.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "00e45954e48cdddcb3fa4b68a6e732a43ec7bd57",
+            "comment": "Update dependency workspace-tools to v0.38.3"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "0.11.1",
+      "tag": "@lage-run/target-graph_v0.11.1",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Jan 2025 16:56:22 GMT",
+      "version": "0.11.1",
+      "tag": "@lage-run/target-graph_v0.11.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/target-graph",
+            "commit": "f4551ca0219cf233f7497a27dea7df57229eb02c",
+            "comment": "Fix bug where priorities were not being correctly set on tasks"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 02 Dec 2024 17:23:22 GMT",
       "version": "0.11.0",
       "tag": "@lage-run/target-graph_v0.11.0",
