@@ -39,8 +39,9 @@ export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<Cac
   if (mergedConfig.cacheStorageConfig.provider === "azure-blob") {
     const azureOptions = mergedConfig.cacheStorageConfig.options;
     if ("connectionString" in azureOptions && !isTokenConnectionString(azureOptions.connectionString)) {
-      // Pass through optional credentialName from config to select a specific credential implementation
-      // Type assertion: only the connection-string variant is augmented with credentialName in @lage-run/config
+      /** Pass through optional credentialName from config to select a specific credential implementation
+       * Type assertion: only the connection-string variant is augmented with credentialName in @lage-run/config
+       */
       const name = (azureOptions as { credentialName?: AzureCredentialName }).credentialName as string | undefined;
       if (name != null) {
         if (!CredentialCache.credentialNames.includes(name as AzureCredentialName)) {

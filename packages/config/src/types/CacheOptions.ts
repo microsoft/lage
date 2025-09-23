@@ -1,6 +1,8 @@
 import type { Config as BackfillCacheOptions, CustomStorageConfig } from "backfill-config";
 
-// Allowed credential names matching camelCase of @azure/identity credential class names
+/** Allowed credential names matching camelCase of @azure/identity credential class names
+ *  @see https://learn.microsoft.com/en-us/azure/developer/javascript/sdk/authentication/credential-chains
+ */
 export type AzureCredentialName =
   | "azureCliCredential"
   | "managedIdentityCredential"
@@ -8,8 +10,9 @@ export type AzureCredentialName =
   | "environmentCredential"
   | "workloadIdentityCredential";
 
-// Locally augment only the Azure Blob connection-string options by adding an optional `credentialName`.
-// This does NOT modify upstream types; it narrows and re-composes the union for our config surface.
+/** Locally augment only the Azure Blob connection-string options by adding an optional `credentialName`.
+ *  This does NOT modify upstream types; it narrows and re-composes the union for our config surface.
+ */
 type AzureBlobFromBackfill = Extract<BackfillCacheOptions["cacheStorageConfig"], { provider: "azure-blob" }>;
 
 type AugmentedAzureBlobConfig = AzureBlobFromBackfill extends {
@@ -27,7 +30,10 @@ type AugmentedAzureBlobConfig = AzureBlobFromBackfill extends {
     }
   : never;
 
-// Recompose the cache storage config union to swap in our augmented Azure Blob type
+/** Recompose the cache storage config union to swap in our augmented Azure Blob type
+ *  This is necessary because we want to add the `credentialName` property only to the Azure Blob config,
+ *  without affecting other cache storage configs.
+ */
 type ExtendedCacheStorageConfig =
   | Exclude<BackfillCacheOptions["cacheStorageConfig"], { provider: "azure-blob" } | CustomStorageConfig>
   | AugmentedAzureBlobConfig;
