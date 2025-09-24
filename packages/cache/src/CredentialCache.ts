@@ -13,11 +13,11 @@ import type { AzureCredentialName } from "@lage-run/config";
  */
 type CredentialFactoryMap = { [K in AzureCredentialName]: () => TokenCredential };
 const CREDENTIAL_FACTORY: CredentialFactoryMap = {
-  "environment-credential": () => new EnvironmentCredential(),
-  "workload-identity-credential": () => new WorkloadIdentityCredential(),
-  "managed-identity-credential": () => new ManagedIdentityCredential(),
-  "visual-studio-code-credential": () => new VisualStudioCodeCredential(),
-  "azure-cli-credential": () => new AzureCliCredential(),
+  environment: () => new EnvironmentCredential(),
+  "workload-identity": () => new WorkloadIdentityCredential(),
+  "managed-identity": () => new ManagedIdentityCredential(),
+  "visual-studio-code": () => new VisualStudioCodeCredential(),
+  "azure-cli": () => new AzureCliCredential(),
 };
 
 export class CredentialCache {
@@ -31,7 +31,7 @@ export class CredentialCache {
    * If no name is provided, EnvironmentCredential is used by default.
    */
   public static getInstance(credentialName?: AzureCredentialName): TokenCredential {
-    const key = (credentialName ?? "environment-credential") as AzureCredentialName;
+    const key = (credentialName ?? "environment") as AzureCredentialName;
     const existing = this.cache.get(key);
     if (existing) return existing;
 

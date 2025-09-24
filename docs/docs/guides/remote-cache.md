@@ -83,11 +83,11 @@ Create a secret named "BACKFILL_CACHE_PROVIDER_OPTIONS":
 
 For "azure-blob" cache provider with a non-sas/key-based `connectionString`(storage account endpoint) requiring azure identity authentication do not use `BACKFILL_CACHE_PROVIDER_OPTIONS`, instead populate the required env variables according to the desired identity/environment. (See [Azure Idenity SDK](https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme)) and set `credentialName` property in the `lage.config.js` under `cacheOptions.cacheStorageConfig.options.credentialName` or via env var `AZURE_IDENTITY_CREDENTIAL_NAME` Supported options are:
 
-- `"azure-cli-credential"`
-- `"managed-identity-credential"`
-- `"visual-studio-code-credential"`
-- `"environment-credential"`
-- `"workload-identity-credential"`
+- `"azure-cli"`
+- `"managed-identity"`
+- `"visual-studio-code"`
+- `"environment"`
+- `"workload-identity"`
 
 Note that all are part of the [DefaultAzureCredential](https://learn.microsoft.com/en-us/azure/developer/javascript/sdk/authentication/credential-chains#use-defaultazurecredential-for-flexibility) credential chain, but `DefaultAzureCredential` itself is not used.
 
