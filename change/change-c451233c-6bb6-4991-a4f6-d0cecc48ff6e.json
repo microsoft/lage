@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "azure identity - specify azure credential instead of using DefaultAzureCredential",
+      "packageName": "@lage-run/cache",
+      "email": "brunoru@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Enhance CredentialCache to support multiple Azure credential types and allow configuration of credentialName in cache options",
+      "packageName": "@lage-run/config",
+      "email": "brunoru@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
