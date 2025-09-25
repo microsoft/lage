@@ -791,7 +791,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connectrpc/connect-fastify@npm:^1.4.0":
+"@connectrpc/connect-fastify@npm:1.6.1":
   version: 1.6.1
   resolution: "@connectrpc/connect-fastify@npm:1.6.1"
   peerDependencies:
@@ -803,7 +803,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connectrpc/connect-node@npm:^1.4.0":
+"@connectrpc/connect-node@npm:1.6.1":
   version: 1.6.1
   resolution: "@connectrpc/connect-node@npm:1.6.1"
   dependencies:
@@ -815,7 +815,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connectrpc/connect@npm:^1.4.0":
+"@connectrpc/connect@npm:1.6.1":
   version: 1.6.1
   resolution: "@connectrpc/connect@npm:1.6.1"
   peerDependencies:
@@ -1738,9 +1738,9 @@ __metadata:
     "@bufbuild/buf": "npm:^1.39.0"
     "@bufbuild/protobuf": "npm:^1.10.0"
     "@bufbuild/protoc-gen-es": "npm:^1.10.0"
-    "@connectrpc/connect": "npm:^1.4.0"
-    "@connectrpc/connect-fastify": "npm:^1.4.0"
-    "@connectrpc/connect-node": "npm:^1.4.0"
+    "@connectrpc/connect": "npm:1.6.1"
+    "@connectrpc/connect-fastify": "npm:1.6.1"
+    "@connectrpc/connect-node": "npm:1.6.1"
     "@connectrpc/protoc-gen-connect-es": "npm:^1.4.0"
     "@lage-run/monorepo-scripts": "workspace:^"
     fastify: "npm:^4.28.1"
