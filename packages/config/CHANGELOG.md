@@ -1,8 +1,16 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Mon, 01 Sep 2025 08:10:36 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Sep 2025 18:00:51 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.6.0
+
+Thu, 25 Sep 2025 18:00:51 GMT
+
+### Minor changes
+
+- Enhance CredentialCache to support multiple Azure credential types and allow configuration of credentialName in cache options (brunoru@microsoft.com)
 
 ## 0.5.0
 

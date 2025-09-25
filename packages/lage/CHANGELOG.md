@@ -1,8 +1,19 @@
 # Change Log - lage
 
-<!-- This log was last generated on Tue, 16 Sep 2025 21:17:08 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Sep 2025 18:00:51 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.13
+
+Thu, 25 Sep 2025 18:00:51 GMT
+
+### Minor changes
+
+- `@lage-run/cache`
+  - azure identity - specify azure credential instead of using DefaultAzureCredential (brunoru@microsoft.com)
+- `@lage-run/config`
+  - Enhance CredentialCache to support multiple Azure credential types and allow configuration of credentialName in cache options (brunoru@microsoft.com)
 
 ## 2.14.12
 

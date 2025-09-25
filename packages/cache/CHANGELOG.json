@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Thu, 25 Sep 2025 18:00:51 GMT",
+      "version": "1.4.0",
+      "tag": "@lage-run/cache_v1.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "brunoru@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "38888a6891fa45232aeba64f222d17177114dd23",
+            "comment": "azure identity - specify azure credential instead of using DefaultAzureCredential"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 16 Sep 2025 21:17:08 GMT",
       "version": "1.3.17",
       "tag": "@lage-run/cache_v1.3.17",

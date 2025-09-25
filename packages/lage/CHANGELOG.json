@@ -2,6 +2,27 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 25 Sep 2025 18:00:51 GMT",
+      "version": "2.14.13",
+      "tag": "lage_v2.14.13",
+      "comments": {
+        "minor": [
+          {
+            "author": "brunoru@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "38888a6891fa45232aeba64f222d17177114dd23",
+            "comment": "azure identity - specify azure credential instead of using DefaultAzureCredential"
+          },
+          {
+            "author": "brunoru@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "38888a6891fa45232aeba64f222d17177114dd23",
+            "comment": "Enhance CredentialCache to support multiple Azure credential types and allow configuration of credentialName in cache options"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 16 Sep 2025 21:17:08 GMT",
       "version": "2.14.12",
       "tag": "lage_v2.14.12",

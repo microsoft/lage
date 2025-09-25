@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-<!-- This log was last generated on Tue, 16 Sep 2025 21:17:08 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Sep 2025 18:00:51 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.0
+
+Thu, 25 Sep 2025 18:00:51 GMT
+
+### Minor changes
+
+- azure identity - specify azure credential instead of using DefaultAzureCredential (brunoru@microsoft.com)
 
 ## 1.3.17
 
