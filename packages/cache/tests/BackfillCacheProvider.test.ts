@@ -22,7 +22,11 @@ describe("BackfillCacheProvider", () => {
       logger,
       root: monorepo.root,
       cacheOptions: {
-        outputGlob: ["output.txt"],
+        outputGlob: [
+          "output.txt",
+          // Backfill had a bug where it did not copy folders over with a . in the name, adding this as a test case
+          ".react-router/**",
+        ],
       },
     };
 
@@ -44,13 +48,15 @@ describe("BackfillCacheProvider", () => {
 
     await monorepo.writeFiles({
       [path.join(cacheDir, hash, "output.txt")]: "output",
+      [path.join(cacheDir, hash, ".react-router", "routes.d.ts")]: "route type info",
     });
 
     const fetchResult = await provider.fetch(hash, target);
 
-    const contents = await monorepo.readFiles(["packages/a/output.txt"]);
+    const contents = await monorepo.readFiles(["packages/a/output.txt", "packages/a/.react-router/routes.d.ts"]);
 
     expect(contents["packages/a/output.txt"]).toBe("output");
+    expect(contents["packages/a/.react-router/routes.d.ts"]).toBe("route type info");
     expect(fetchResult).toBeTruthy();
 
     await monorepo.cleanup();
