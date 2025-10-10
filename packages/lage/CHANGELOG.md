@@ -1,8 +1,17 @@
 # Change Log - lage
 
-<!-- This log was last generated on Thu, 25 Sep 2025 18:00:51 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 10 Oct 2025 07:48:07 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.14
+
+Fri, 10 Oct 2025 07:48:07 GMT
+
+### Patches
+
+- `@lage-run/cache`
+  - Update dependency backfill-cache to v5.11.2 (renovate@whitesourcesoftware.com)
 
 ## 2.14.13
 

@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 10 Oct 2025 07:48:07 GMT",
+      "version": "2.14.14",
+      "tag": "lage_v2.14.14",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cache",
+            "commit": "6e83c2b83aeb92647963adb2d6b9befe148d512d",
+            "comment": "Update dependency backfill-cache to v5.11.2"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 Sep 2025 18:00:51 GMT",
       "version": "2.14.13",
       "tag": "lage_v2.14.13",
