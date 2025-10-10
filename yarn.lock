@@ -1558,7 +1558,7 @@ __metadata:
     "@lage-run/monorepo-fixture": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
-    backfill-cache: "npm:5.11.1"
+    backfill-cache: "npm:5.11.2"
     backfill-config: "npm:6.7.1"
     backfill-logger: "npm:5.4.0"
     glob-hasher: "npm:^1.4.2"
@@ -3018,9 +3018,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"backfill-cache@npm:5.11.1":
-  version: 5.11.1
-  resolution: "backfill-cache@npm:5.11.1"
+"backfill-cache@npm:5.11.2":
+  version: 5.11.2
+  resolution: "backfill-cache@npm:5.11.2"
   dependencies:
     "@azure/storage-blob": "npm:^12.15.0"
     backfill-config: "npm:^6.7.1"
@@ -3030,7 +3030,7 @@ __metadata:
     globby: "npm:^11.0.0"
     p-limit: "npm:^3.0.0"
     tar-fs: "npm:^2.1.0"
-  checksum: 10c0/a8c12e7ab2b01b04a83dc12810148d97ed40c942f74620127b5c45c9cb47f5f7a96da9609ec563f234091241e86436681d7bc3238a19a8b0b25c8e3471c593b9
+  checksum: 10c0/2e57b265d3e63aa426dbd4ac41f91725f9fc002dcc11126dd3573e59f2fd5e0001ad5a16fb16ad1107904ef8a584f45645b580a5f399822f691828073c5d433d
   languageName: node
   linkType: hard
 
