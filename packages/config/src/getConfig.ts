@@ -29,5 +29,6 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
     concurrency: config?.concurrency ?? availableParallelism,
     allowNoTargetRuns: config?.allowNoTargetRuns ?? false,
     enableTargetConfigMerging: config?.enableTargetConfigMerging ?? false,
+    reporters: config?.reporters ?? {},
   };
 }

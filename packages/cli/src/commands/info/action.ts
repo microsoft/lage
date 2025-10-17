@@ -101,7 +101,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   options.logLevel = options.logLevel ?? "info";
   options.reporter = options.reporter ?? "json";
   options.server = typeof options.server === "boolean" && options.server ? "localhost:5332" : options.server;
-  initializeReporters(logger, options);
+  await initializeReporters(logger, options, config.reporters);
   const root = getWorkspaceRoot(cwd)!;
 
   const packageInfos = getPackageInfos(root);

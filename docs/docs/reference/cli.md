@@ -161,4 +161,30 @@ You can pick the reporter by passing the `--reporter` flag:
 lage build --reporter json
 ```
 
-Available reporters are: `azureDevops`, `json`. By default the log messages are formatted with the "default" reporter.
+Available built-in reporters are: `azureDevops`, `json`, `npmLog`, `verboseFileLog` (or `vfl`), and `profile`. By default the log messages are formatted with the "default" reporter.
+
+#### Custom Reporters
+
+You can also create and use your own custom reporters. Define them in your `lage.config.js`:
+
+```javascript
+module.exports = {
+  reporters: {
+    myReporter: "./reporters/my-custom-reporter.js"
+  }
+};
+```
+
+Then use them with the `--reporter` flag:
+
+```
+lage build --reporter myReporter
+```
+
+You can also combine multiple reporters:
+
+```
+lage build --reporter json --reporter myReporter
+```
+
+See the [Custom Reporters Guide](../guides/custom-reporters.md) for more details on creating custom reporters.

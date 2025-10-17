@@ -8,11 +8,17 @@ import {
   ChromeTraceEventsReporter,
 } from "@lage-run/reporters";
 import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
+import type { Reporter } from "@lage-run/logger";
 import { findPackageRoot } from "workspace-tools";
 import { readFileSync } from "fs";
 import path from "path";
+import { pathToFileURL } from "url";
 
-export function createReporter(reporter: string, options: ReporterInitOptions) {
+export async function createReporter(
+  reporter: string,
+  options: ReporterInitOptions,
+  customReporters: Record<string, string> = {}
+): Promise<Reporter> {
   const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress, logFile, indented } = options;
   const logLevel = LogLevel[logLevelName];
 
@@ -41,6 +47,33 @@ export function createReporter(reporter: string, options: ReporterInitOptions) {
       return new VerboseFileLogReporter(logFile);
 
     default:
+      // Check if it's a custom reporter defined in config
+      if (customReporters && customReporters[reporter]) {
+        const reporterPath = customReporters[reporter];
+        const resolvedPath = path.isAbsolute(reporterPath) ? reporterPath : path.resolve(process.cwd(), reporterPath);
+
+        try {
+          // Use dynamic import to load the custom reporter module
+          // This works with both ESM (.mjs, .js with type: module) and CommonJS (.cjs, .js) files
+          const reporterModule = await import(pathToFileURL(resolvedPath).href);
+
+          // Try different export patterns
+          const ReporterClass = reporterModule.default ?? reporterModule[reporter] ?? reporterModule;
+
+          if (typeof ReporterClass === "function") {
+            return new ReporterClass(options);
+          } else if (typeof ReporterClass === "object" && ReporterClass !== null) {
+            // If it's already an instance
+            return ReporterClass;
+          } else {
+            throw new Error(`Custom reporter "${reporter}" at "${resolvedPath}" does not export a valid reporter class or instance.`);
+          }
+        } catch (error) {
+          throw new Error(`Failed to load custom reporter "${reporter}" from "${resolvedPath}": ${error}`);
+        }
+      }
+
+      // Default reporter behavior
       if (progress && !(logLevel >= LogLevel.verbose || verbose || grouped)) {
         return new ProgressReporter({ concurrency, version });
       }
