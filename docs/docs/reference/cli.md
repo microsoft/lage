@@ -186,5 +186,3 @@ You can also combine multiple reporters:
 ```
 lage build --reporter json --reporter myReporter
 ```
-
-See the [Custom Reporters Guide](../guides/custom-reporters.md) for more details on creating custom reporters.
