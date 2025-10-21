@@ -19,7 +19,6 @@ export const WorkerPoolEvents = {
 
 export class WorkerPool extends EventEmitter implements Pool {
   workers: IWorker[] = [];
-  freeWorkers: IWorker[] = [];
   queue: QueueItem[] = [];
   minWorkers = 0;
   maxWorkers = 0;
@@ -33,7 +32,6 @@ export class WorkerPool extends EventEmitter implements Pool {
     this.availability = this.maxWorkers;
 
     this.workers = [];
-    this.freeWorkers = [];
     this.queue = [];
 
     this.createInitialWorkers();
