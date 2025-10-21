@@ -175,6 +175,8 @@ module.exports = {
 };
 ```
 
+The passed-in javascript file must be from a proper ESM module or `.mjs` file.
+
 Then use them with the `--reporter` flag:
 
 ```
