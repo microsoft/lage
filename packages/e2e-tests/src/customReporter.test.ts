@@ -315,6 +315,112 @@ This is not valid JavaScript {{{ ]]] ;;;
     }).toThrow();
   });
 
+  it("should error when custom reporter exports a non-function/non-class value", () => {
+    repo = new Monorepo("invalid-export");
+
+    repo.init();
+    repo.addPackage("a");
+
+    // Create a reporter that exports a number
+    repo.commitFiles({
+      "number-reporter.mjs": `
+export default 42;
+      `,
+    });
+
+    repo.setLageConfig(`module.exports = {
+  pipeline: {
+    build: ['^build'],
+  },
+  npmClient: 'yarn',
+  reporters: {
+    numberReporter: './number-reporter.mjs'
+  }
+};`);
+
+    repo.install();
+
+    // Should throw an error when trying to use a reporter that exports a primitive value
+    expect(() => {
+      repo!.run("build", ["--reporter", "numberReporter"]);
+    }).toThrow(/does not export a valid reporter class or instance/);
+  });
+
+  it("should error when custom reporter exports a string", () => {
+    repo = new Monorepo("string-export");
+
+    repo.init();
+    repo.addPackage("a");
+
+    // Create a reporter that exports a string
+    repo.commitFiles({
+      "string-reporter.mjs": `
+export default "not a reporter";
+      `,
+    });
+
+    repo.setLageConfig(`module.exports = {
+  pipeline: {
+    build: ['^build'],
+  },
+  npmClient: 'yarn',
+  reporters: {
+    stringReporter: './string-reporter.mjs'
+  }
+};`);
+
+    repo.install();
+
+    // Should throw an error when trying to use a reporter that exports a string
+    expect(() => {
+      repo!.run("build", ["--reporter", "stringReporter"]);
+    }).toThrow(/does not export a valid reporter class or instance/);
+  });
+
+  it("should work with custom reporter that exports an object instance", () => {
+    repo = new Monorepo("object-instance");
+
+    repo.init();
+    repo.addPackage("a");
+
+    // Create a reporter that exports an object instance (not a class)
+    repo.commitFiles({
+      "object-reporter.mjs": `
+const objectReporter = {
+  log(entry) {
+    // no-op
+  },
+  
+  summarize(summary) {
+    console.log(JSON.stringify({ 
+      objectInstance: true,
+      status: summary.results
+    }));
+  }
+};
+
+export default objectReporter;
+      `,
+    });
+
+    repo.setLageConfig(`module.exports = {
+  pipeline: {
+    build: ['^build'],
+  },
+  npmClient: 'yarn',
+  reporters: {
+    objectReporter: './object-reporter.mjs'
+  }
+};`);
+
+    repo.install();
+
+    const results = repo.run("build", ["--reporter", "objectReporter"]);
+    const output = results.stdout + results.stderr;
+
+    expect(output).toContain('"objectInstance":true');
+  });
+
   it("should work with CommonJS custom reporter", () => {
     repo = new Monorepo("commonjs-reporter");
 
