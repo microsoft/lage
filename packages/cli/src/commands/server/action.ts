@@ -4,6 +4,7 @@ import { initializeReporters } from "../initializeReporters.js";
 import { createLageService } from "./lageService.js";
 import { createServer } from "@lage-run/rpc";
 import { parseServerOption } from "../parseServerOption.js";
+import { getConfig } from "@lage-run/config";
 
 interface WorkerOptions extends ReporterInitOptions {
   nodeArg?: string[];
@@ -17,12 +18,14 @@ export async function serverAction(options: WorkerOptions) {
   const { server = "localhost:5332", timeout = 1, tasks } = options;
 
   const { host, port } = parseServerOption(server);
+  const cwd = process.cwd();
+  const config = await getConfig(cwd);
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
   options.logFile = options.logFile ?? "node_modules/.cache/lage/server.log";
   options.reporter = options.reporter ?? "verboseFileLog";
-  initializeReporters(logger, options);
+  await initializeReporters(logger, options, config.reporters);
 
   logger.info(`Starting server on http://${host}:${port}`);
 

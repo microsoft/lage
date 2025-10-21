@@ -8,6 +8,7 @@ import { ConnectError, createClient } from "@lage-run/rpc";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { simulateFileAccess } from "./simulateFileAccess.js";
 import { parseServerOption } from "../parseServerOption.js";
+import { getConfig } from "@lage-run/config";
 import { getWorkspaceRoot } from "workspace-tools";
 import type { Command } from "commander";
 import { launchServerInBackground } from "../launchServerInBackground.js";
@@ -99,11 +100,13 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
   const timeout = options.timeout ?? 5 * 60;
 
   const { host, port } = parseServerOption(server);
+  const cwd = options.cwd ?? process.cwd();
+  const config = await getConfig(cwd);
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
   options.reporter = options.reporter ?? "json";
-  initializeReporters(logger, options);
+  await initializeReporters(logger, options, config.reporters);
 
   const root = getWorkspaceRoot(options.cwd ?? process.cwd())!;
 
