@@ -15,8 +15,8 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "start": "tsc -w --preserveWatchOutput",
+    "build": "yarn run -T tsc",
+    "start": "yarn run -T tsc -w --preserveWatchOutput",
     "test": "monorepo-scripts jest",
     "lint": "monorepo-scripts lint"
   },
