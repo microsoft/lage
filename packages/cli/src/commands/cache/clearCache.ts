@@ -31,7 +31,7 @@ export async function clearCache(options: ClearCacheOptions) {
   // eslint-disable-next-line no-console
   console.log("Clearing Cache");
 
-  cacheProvider.clear(concurrency);
+  await cacheProvider.clear(concurrency);
 
   // eslint-disable-next-line no-console
   console.log("Cache Cleared");

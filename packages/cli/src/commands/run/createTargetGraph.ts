@@ -102,7 +102,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
 
   for (const [id, definition] of pipelineEntries) {
     if (Array.isArray(definition)) {
-      builder.addTargetConfig(
+      await builder.addTargetConfig(
         id,
         {
           cache: true,
@@ -113,7 +113,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions) {
         changedFiles
       );
     } else {
-      builder.addTargetConfig(id, definition, changedFiles);
+      await builder.addTargetConfig(id, definition, changedFiles);
     }
   }
 
