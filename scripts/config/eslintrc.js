@@ -13,6 +13,7 @@ module.exports = {
     "@typescript-eslint/no-require-imports": "error",
     "no-console": "error",
     "file-extension-in-import-ts/file-extension-in-import-ts": "error",
+    '@typescript-eslint/no-floating-promises': 'error',
   },
   parserOptions: {
     project: "./tsconfig.json",
