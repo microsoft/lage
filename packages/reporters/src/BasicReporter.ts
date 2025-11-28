@@ -40,7 +40,7 @@ function fancy(str: string) {
 }
 
 export class BasicReporter implements Reporter {
-  private taskData = new Map<string, { target: Target, status: TargetStatus, logEntries: LogEntry[] }>();
+  private taskData = new Map<string, { target: Target; status: TargetStatus; logEntries: LogEntry[] }>();
   private updateTimer: NodeJS.Timeout;
 
   constructor(options: { concurrency: number; version: string; frequency?: number } = { concurrency: 0, version: "0.0.0" }) {
@@ -118,7 +118,7 @@ export class BasicReporter implements Reporter {
     console.log(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
   }
 
-  private logCompletion(completion: { target: Target; status: CompletionStatus; duration: any; }) {
+  private logCompletion(completion: { target: Target; status: CompletionStatus; duration: any }) {
     const timestamp = this.getTimestamp();
     const icon = icons[completion.status];
     const statusColor = colors[completion.status];
@@ -146,14 +146,16 @@ export class BasicReporter implements Reporter {
 
     if (total > 0) {
       const percentage = Math.round((completed / total) * 100);
-      this.updateProgressLine(`${timestamp} Completed: ${completed}/${total} (${percentage}%) [${running} running, ${notStarted} not started]`);
+      this.updateProgressLine(
+        `${timestamp} Completed: ${completed}/${total} (${percentage}%) [${running} running, ${notStarted} not started]`
+      );
     } else {
       this.updateProgressLine(`${timestamp} Initializing build tasks...`);
     }
   }
 
   private getTimestamp(): string {
-    const time = new Date().toLocaleTimeString('en-US', { hour12: false });
+    const time = new Date().toLocaleTimeString("en-US", { hour12: false });
     return colors.timestamp(`[${time}]`);
   }
 
