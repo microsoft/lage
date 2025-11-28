@@ -45,7 +45,7 @@ export class BasicReporter implements Reporter {
 
   constructor(options: { concurrency: number; version: string; frequency?: number } = { concurrency: 0, version: "0.0.0" }) {
     const { concurrency, version, frequency = 500 } = options;
-    console.log(`${fancy("lage")} - Version ${version} - ${concurrency} Workers`);
+    this.print(`${fancy("lage")} - Version ${version} - ${concurrency} Workers`);
     this.updateTimer = setInterval(() => this.renderStatus(), frequency);
     this.updateTimer.unref();
   }
@@ -81,41 +81,41 @@ export class BasicReporter implements Reporter {
     const { failed, aborted, skipped, success, pending } = targetRunByStatus;
 
     if (targetRuns.size > 0) {
-      console.log(colors.summary(`\nSummary`));
-      console.log(hrLine);
-      console.log(
+      this.print(colors.summary(`\nSummary`));
+      this.print(hrLine);
+      this.print(
         `success: ${success.length}, skipped: ${skipped.length}, pending: ${pending.length}, aborted: ${aborted.length}, failed: ${failed.length}`
       );
 
-      console.log(
+      this.print(
         `worker restarts: ${schedulerRunSummary.workerRestarts}, max worker memory usage: ${formatBytes(schedulerRunSummary.maxWorkerMemoryUsage)}`
       );
     } else {
-      console.log("Nothing has been run.");
+      this.print("Nothing has been run.");
     }
 
-    console.log(hrLine);
+    this.print(hrLine);
 
     for (const targetId of failed) {
       const target = targetRuns.get(targetId)?.target;
       if (target) {
         const failureLogs = this.taskData.get(targetId)?.logEntries;
 
-        console.log(`[${colors.pkg(target.packageName ?? "<root>")} ${colors.task(target.task)}] ${colors.failed("ERROR DETECTED")}`);
+        this.print(`[${colors.pkg(target.packageName ?? "<root>")} ${colors.task(target.task)}] ${colors.failed("ERROR DETECTED")}`);
 
         if (failureLogs) {
           for (const entry of failureLogs) {
-            console.log(entry.msg);
+            this.print(entry.msg);
           }
         }
-        console.log(hrLine);
+        this.print(hrLine);
       }
     }
 
     const allCacheHits = [...targetRuns.values()].filter((run) => !run.target.hidden).length === skipped.length;
     const allCacheHitText = allCacheHits ? fancy(`All targets skipped!`) : "";
 
-    console.log(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
+    this.print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
   }
 
   private logCompletion(completion: { target: Target; status: CompletionStatus; duration: any }) {
@@ -161,8 +161,12 @@ export class BasicReporter implements Reporter {
 
   private logMessage(text: string) {
     logUpdate.clear();
-    console.log(text);
+    this.print(text);
     this.renderStatus();
+  }
+
+  private print(message: string) {
+    process.stdout.write(message + "\n");
   }
 
   private updateProgressLine(text: string) {
