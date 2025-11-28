@@ -50,6 +50,7 @@ export class BasicReporter implements Reporter {
     const { concurrency, version, frequency = 500 } = options;
     console.log(`${fancy("lage")} - Version ${version} - ${concurrency} Workers`);
     this.updateTimer = setInterval(() => this.renderStatus(), frequency);
+    this.updateTimer.unref();
   }
 
   log(entry: LogEntry<any>) {
