@@ -24,7 +24,8 @@
     "@ms-cloudpack/task-reporter": "0.17.4",
     "ansi-regex": "5.0.1",
     "chalk": "4.1.2",
-    "gradient-string": "2.0.2"
+    "gradient-string": "2.0.2",
+    "log-update": "^4.0.0"
   },
   "devDependencies": {
     "memory-streams": "^0.1.3"
