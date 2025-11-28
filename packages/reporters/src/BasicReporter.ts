@@ -42,9 +42,6 @@ function fancy(str: string) {
 export class BasicReporter implements Reporter {
   private taskData = new Map<string, { target: Target, status: TargetStatus, logEntries: LogEntry[] }>();
   private updateTimer: NodeJS.Timeout;
-  private taskStats: { total: number, completed: number, running: number, notStarted: number } | undefined;
-  private lastStatus: string = '';
-  
 
   constructor(options: { concurrency: number; version: string; frequency?: number } = { concurrency: 0, version: "0.0.0" }) {
     const { concurrency, version, frequency = 500 } = options;
@@ -62,14 +59,13 @@ export class BasicReporter implements Reporter {
         taskData = { target: target, status: "pending", logEntries: [] };
         this.taskData.set(target.id, taskData);
       }
-  
+
       taskData.logEntries.push(entry);
-      
+
       if (entry.data.status) {
         const { status, duration } = entry.data;
         taskData.status = status;
-        this.taskStats = undefined; // Invalidate cache, recalculate on next render
-        
+
         if (isCompletionStatus(status)) {
           this.logCompletion({ target, status, duration });
         }
@@ -123,36 +119,30 @@ export class BasicReporter implements Reporter {
   }
 
   private logCompletion(completion: { target: Target; status: CompletionStatus; duration: any; }) {
-      const timestamp = this.getTimestamp();
-      const icon = icons[completion.status];
-      const statusColor = colors[completion.status];
-      const durationText = completion.duration ? ` (${formatDuration(hrToSeconds(completion.duration))})` : "";
+    const timestamp = this.getTimestamp();
+    const icon = icons[completion.status];
+    const statusColor = colors[completion.status];
+    const durationText = completion.duration ? ` (${formatDuration(hrToSeconds(completion.duration))})` : "";
 
-      const message = `${timestamp} ${statusColor(`${icon} ${completion.status.padEnd(8)}`)} ${colors.label(completion.target.label)}${colors.duration(durationText)}`;
-      this.logMessage(message);
+    const message = `${timestamp} ${statusColor(`${icon} ${completion.status.padEnd(8)}`)} ${colors.label(completion.target.label)}${colors.duration(durationText)}`;
+    this.logMessage(message);
   }
 
   private renderStatus() {
-    if (!this.taskStats) {
-      const total = this.taskData.size;
-      let completed = 0;
-      let running = 0;
-      let notStarted = 0;
-
-      for (const data of this.taskData.values()) {
-        if (isCompletionStatus(data.status)) {
-          completed++;
-        } else if (data.status === "running") {
-          running++;
-        } else {
-          notStarted++;
-        }
+    const total = this.taskData.size;
+    let completed = 0;
+    let running = 0;
+    let notStarted = 0;
+    for (const data of this.taskData.values()) {
+      if (isCompletionStatus(data.status)) {
+        completed++;
+      } else if (data.status === "running") {
+        running++;
+      } else {
+        notStarted++;
       }
-      this.taskStats = { total, completed, running, notStarted };
     }
-
-    const { total, completed, running, notStarted } = this.taskStats;   
-    const timestamp = this.getTimestamp(); 
+    const timestamp = this.getTimestamp();
 
     if (total > 0) {
       const percentage = Math.round((completed / total) * 100);
@@ -170,11 +160,10 @@ export class BasicReporter implements Reporter {
   private logMessage(text: string) {
     logUpdate.clear();
     console.log(text);
-    logUpdate(this.lastStatus);
+    this.renderStatus();
   }
 
   private updateProgressLine(text: string) {
-    this.lastStatus = text;
     logUpdate(text);
   }
 }
