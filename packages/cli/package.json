@@ -40,7 +40,7 @@
     "fast-glob": "3.3.3",
     "proper-lockfile": "^4.1.2",
     "shell-quote": "^1.8.1",
-    "workspace-tools": "0.38.4"
+    "workspace-tools": "0.40.0"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "workspace:^",
