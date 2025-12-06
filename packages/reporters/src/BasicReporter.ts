@@ -54,16 +54,20 @@ const print = (message: string) => process.stdout.write(message + "\n");
 
 export class BasicReporter implements Reporter {
   private taskData = new Map<string, { target: Target; status: TargetStatus; logEntries: LogEntry[] }>();
-  private updateTimer: NodeJS.Timeout;
+  private updateTimer: NodeJS.Timeout | undefined;
+  private startTimer: () => void;
 
   constructor({ concurrency = 0, version = "0.0.0", frequency = 500 } = {}) {
     print(`${fancy("lage")} - Version ${version} - ${concurrency} Workers`);
 
+    this.startTimer = () => {
+      this.updateTimer = setInterval(() => this.renderStatus(), frequency);
+      this.updateTimer.unref();
+      this.startTimer = () => { };
+    };
+
     process.stdout.write(terminal.hideCursor);
     process.on("exit", () => process.stdout.write(terminal.showCursor));
-
-    this.updateTimer = setInterval(() => this.renderStatus(), frequency);
-    this.updateTimer.unref();
   }
 
   log(entry: LogEntry) {
@@ -76,6 +80,7 @@ export class BasicReporter implements Reporter {
       this.taskData.set(data.target.id, taskData);
     }
 
+    this.startTimer();
     taskData.logEntries.push(entry);
 
     if (data.status) {
@@ -152,12 +157,8 @@ export class BasicReporter implements Reporter {
     if (completedTaskMessage) {
       output += `${timestamp} ${completedTaskMessage}\n`;
     }
-    if (total > 0) {
-      const percentage = Math.round((completed / total) * 100);
-      output += `${timestamp} Completed: ${completed}/${total} (${percentage}%) [${running} running, ${pending} pending]`;
-    } else {
-      output += `${timestamp} Initializing build tasks...`;
-    }
+    const percentage = Math.round((completed / total) * 100);
+    output += `${timestamp} Completed: ${completed}/${total} (${percentage}%) [${running} running, ${pending} pending]`;
     process.stdout.write(output);
   }
 }
