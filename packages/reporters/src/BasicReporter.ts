@@ -63,7 +63,7 @@ export class BasicReporter implements Reporter {
     this.startTimer = () => {
       this.updateTimer = setInterval(() => this.renderStatus(), frequency);
       this.updateTimer.unref();
-      this.startTimer = () => { };
+      this.startTimer = () => {};
     };
 
     process.stdout.write(terminal.hideCursor);
