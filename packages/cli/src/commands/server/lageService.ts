@@ -121,7 +121,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
   });
 
   serverControls.abortController.signal.addEventListener("abort", () => {
-    pool?.close();
+    void pool?.close();
   });
 
   pool?.on("freedWorker", () => {

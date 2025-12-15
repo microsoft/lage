@@ -1,0 +1,46 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Add lint rule for no-floating-promises and fix several places",
+      "packageName": "@lage-run/cli",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Add lint rule for no-floating-promises and fix several places",
+      "packageName": "@lage-run/hasher",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Add lint rule for no-floating-promises and fix several places",
+      "packageName": "@lage-run/rpc",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Add lint rule for no-floating-promises and fix several places",
+      "packageName": "@lage-run/scheduler",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Add lint rule for no-floating-promises and fix several places",
+      "packageName": "@lage-run/target-graph",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Add lint rule for no-floating-promises and fix several places",
+      "packageName": "@lage-run/worker-threads-pool",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

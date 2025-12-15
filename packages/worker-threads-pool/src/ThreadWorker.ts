@@ -81,7 +81,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
         // In case of success: Call the callback that was passed to `runTask`,
         // remove the `TaskInfo` associated with the Worker, and mark it as free
         // again.
-        Promise.all([this.#stdoutInfo.promise, this.#stderrInfo.promise]).then(() => {
+        void Promise.all([this.#stdoutInfo.promise, this.#stderrInfo.promise]).then(() => {
           const { err, results } = data;
           if (this.#taskInfo) {
             this.#taskInfo.abortSignal?.removeEventListener("abort", this.#handleAbort);
@@ -101,7 +101,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
             100;
 
         if (limit && data.memoryUsage > limit) {
-          this.restart();
+          void this.restart();
         } else {
           this.#ready();
         }
@@ -260,18 +260,18 @@ export class ThreadWorker extends EventEmitter implements IWorker {
 
   terminate() {
     this.#worker.removeAllListeners();
-    this.#worker.terminate();
+    void this.#worker.terminate();
     this.#worker.unref();
   }
 
   restart() {
     this.restarts++;
     this.status = "busy";
-    this.#worker.terminate();
+    void this.#worker.terminate();
     this.#createNewWorker();
   }
 
-  async checkMemoryUsage() {
+  checkMemoryUsage() {
     this.#worker.postMessage({ type: "check-memory-usage" });
   }
 

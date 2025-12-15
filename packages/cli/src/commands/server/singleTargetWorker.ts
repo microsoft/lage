@@ -18,7 +18,7 @@ async function setup(options: SimpleTargetWorkerDataOptions) {
   };
 }
 
-(async () => {
+void (async () => {
   const { runnerPicker } = await setup(workerData);
   async function run(data: { target: Target }, abortSignal?: AbortSignal) {
     let value: unknown = undefined;

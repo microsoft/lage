@@ -33,7 +33,7 @@ export async function pruneCache(options: PruneCacheOptions) {
   // eslint-disable-next-line no-console
   console.log("Clearing Cache");
 
-  cacheProvider.purge(prunePeriod, concurrency);
+  await cacheProvider.purge(prunePeriod, concurrency);
 
   // eslint-disable-next-line no-console
   console.log("Cache Cleared");
