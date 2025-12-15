@@ -1,8 +1,19 @@
 # Change Log - lage
 
-<!-- This log was last generated on Fri, 10 Oct 2025 07:48:07 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 21 Oct 2025 23:42:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.15
+
+Tue, 21 Oct 2025 23:42:35 GMT
+
+### Minor changes
+
+- `@lage-run/cli`
+  - Add custom reporter capability to Lage (nemanjatesic@microsoft.com)
+- `@lage-run/config`
+  - Add custom reporter capability to Lage (nemanjatesic@microsoft.com)
 
 ## 2.14.14
 

@@ -2,7 +2,7 @@ import { createReporter } from "./createReporter.js";
 import type { Logger } from "@lage-run/logger";
 import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
 
-export function initializeReporters(logger: Logger, options: ReporterInitOptions) {
+export async function initializeReporters(logger: Logger, options: ReporterInitOptions, customReporters: Record<string, string> = {}) {
   const { reporter } = options;
 
   // filter out falsy values (e.g. undefined) from the reporter array
@@ -19,7 +19,7 @@ export function initializeReporters(logger: Logger, options: ReporterInitOptions
   }
 
   for (const reporterName of reporterOptions) {
-    const reporterInstance = createReporter(reporterName, options);
+    const reporterInstance = await createReporter(reporterName, options, customReporters);
     logger.addReporter(reporterInstance);
   }
 

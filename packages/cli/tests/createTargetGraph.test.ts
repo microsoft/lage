@@ -122,7 +122,7 @@ async function createPackageTasks(tasks: string[], packageInfos: PackageInfos, p
     optimizeGraph: false,
   };
 
-  initializeReporters(logger, options);
+  await initializeReporters(logger, options);
 
   const targetGraph = await createTargetGraph({
     logger,

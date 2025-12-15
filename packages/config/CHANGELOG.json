@@ -2,6 +2,21 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Tue, 21 Oct 2025 23:42:35 GMT",
+      "version": "0.7.0",
+      "tag": "@lage-run/config_v0.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "cd3ca59beba687a1d3c859524786e2aeeea09953",
+            "comment": "Add custom reporter capability to Lage"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 Sep 2025 18:00:51 GMT",
       "version": "0.6.0",
       "tag": "@lage-run/config_v0.6.0",

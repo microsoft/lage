@@ -49,7 +49,7 @@ module.exports = {
     "@lage-run/globby#transpile": {
       type: "npmScript",
     },
-    "@lage-run/globby#isoldatedTypes": {
+    "@lage-run/globby#isolatedTypes": {
       type: "npmScript",
       options: {
         script: "types",
