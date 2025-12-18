@@ -132,7 +132,7 @@ export class WorkspaceTargetGraphBuilder {
    * @param parentTarget
    * @param config
    */
-  async processStagedConfig(parentTarget: Target, config: TargetConfig, changedFiles?: string[]) {
+  processStagedConfig(parentTarget: Target, config: TargetConfig, changedFiles?: string[]) {
     if (typeof config.stagedTarget === "undefined") {
       return;
     }

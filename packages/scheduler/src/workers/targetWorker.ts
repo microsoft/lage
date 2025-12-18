@@ -46,7 +46,7 @@ async function setup(options: TargetWorkerDataOptions) {
   };
 }
 
-(async () => {
+void (async () => {
   const { cacheProvider, runnerPicker, options } = await setup(workerData);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

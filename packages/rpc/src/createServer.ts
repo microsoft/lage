@@ -15,8 +15,8 @@ export async function createServer(lageService: ILageService, abortController: A
   });
 
   server.get("/", (_, reply) => {
-    reply.type("text/plain");
-    reply.send("lage service");
+    void reply.type("text/plain");
+    void reply.send("lage service");
   });
 
   return server;

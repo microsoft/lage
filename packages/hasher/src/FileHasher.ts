@@ -46,9 +46,11 @@ export class FileHasher {
   }
 
   async readManifest() {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>((resolve, reject) => {
       if (!fs.existsSync(this.#manifestFile)) {
-        this.getHashesFromGit().then(() => resolve());
+        this.getHashesFromGit()
+          .then(() => resolve())
+          .catch(reject);
         return;
       }
 

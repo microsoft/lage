@@ -9,12 +9,12 @@ const testObject = {
 };
 
 describe("json reporter", () => {
-  it("indentedFalseShouldLogCondensed", () => {
+  it("indentedFalseShouldLogCondensed", async () => {
     jest.spyOn(Date, "now").mockImplementation(() => 0);
     const logSpy = jest.spyOn(console, "log");
 
     const logger = new Logger();
-    initializeReporters(logger, {
+    await initializeReporters(logger, {
       concurrency: 1,
       grouped: false,
       logLevel: "info",
@@ -32,12 +32,12 @@ describe("json reporter", () => {
     jest.clearAllMocks();
   });
 
-  it("indentedTrueShouldLogCondensed", () => {
+  it("indentedTrueShouldLogCondensed", async () => {
     jest.setSystemTime(new Date("2020-01-01"));
     const logSpy = jest.spyOn(console, "log");
 
     const logger = new Logger();
-    initializeReporters(logger, {
+    await initializeReporters(logger, {
       concurrency: 1,
       grouped: false,
       logLevel: "verbose",

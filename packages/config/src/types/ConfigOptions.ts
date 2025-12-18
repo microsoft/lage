@@ -70,4 +70,17 @@ export interface ConfigOptions {
    * Enables the merging of target config files, rather than simply replace it when multiple matches are encoutered
    */
   enableTargetConfigMerging: boolean;
+
+  /**
+   * Custom reporters that can be referenced by name in the --reporter CLI flag.
+   * The key is the reporter name, and the value is the path to the reporter module.
+   *
+   * Example:
+   * ```
+   * {
+   *   myReporter: "./custom-reporters/my-reporter.js"
+   * }
+   * ```
+   */
+  reporters: Record<string, string>;
 }

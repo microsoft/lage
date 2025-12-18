@@ -16,9 +16,9 @@ describe("initializeReporters", () => {
     fs.rmdirSync(tmpDir, { recursive: true });
   });
 
-  it("should initialize progress reporter when param is progress passed as true", () => {
+  it("should initialize progress reporter when param is progress passed as true", async () => {
     const logger = new Logger();
-    const reporters = initializeReporters(logger, {
+    const reporters = await initializeReporters(logger, {
       concurrency: 1,
       grouped: false,
       logLevel: "info",
@@ -31,9 +31,9 @@ describe("initializeReporters", () => {
     expect(reporters).toContainEqual(expect.any(ProgressReporter));
   });
 
-  it("should initialize old reporter when grouped", () => {
+  it("should initialize old reporter when grouped", async () => {
     const logger = new Logger();
-    const reporters = initializeReporters(logger, {
+    const reporters = await initializeReporters(logger, {
       concurrency: 1,
       grouped: true,
       logLevel: "info",
@@ -45,9 +45,9 @@ describe("initializeReporters", () => {
     expect(reporters).toContainEqual(expect.any(LogReporter));
   });
 
-  it("should initialize old reporter when verbose", () => {
+  it("should initialize old reporter when verbose", async () => {
     const logger = new Logger();
-    const reporters = initializeReporters(logger, {
+    const reporters = await initializeReporters(logger, {
       concurrency: 1,
       grouped: false,
       logLevel: "info",
@@ -59,9 +59,9 @@ describe("initializeReporters", () => {
     expect(reporters).toContainEqual(expect.any(LogReporter));
   });
 
-  it("should initialize profile reporter", () => {
+  it("should initialize profile reporter", async () => {
     const logger = new Logger();
-    const reporters = initializeReporters(logger, {
+    const reporters = await initializeReporters(logger, {
       concurrency: 1,
       grouped: false,
       logLevel: "info",
@@ -75,9 +75,9 @@ describe("initializeReporters", () => {
     expect(reporters).toContainEqual(expect.any(ChromeTraceEventsReporter));
   });
 
-  it("should initialize ADO reporter when reporter arg is adoLog", () => {
+  it("should initialize ADO reporter when reporter arg is adoLog", async () => {
     const logger = new Logger();
-    const reporters = initializeReporters(logger, {
+    const reporters = await initializeReporters(logger, {
       concurrency: 1,
       grouped: false,
       logLevel: "info",
