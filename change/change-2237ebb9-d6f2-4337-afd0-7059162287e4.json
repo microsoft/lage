@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Replace ProgressReporter as the default with a less fancy implementation",
+      "packageName": "@lage-run/cli",
+      "email": "crhaglun@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Replace ProgressReporter as the default with a less fancy implementation",
+      "packageName": "@lage-run/reporters",
+      "email": "crhaglun@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
