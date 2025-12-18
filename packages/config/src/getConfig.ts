@@ -28,5 +28,7 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
     workerIdleMemoryLimit: config?.workerIdleMemoryLimit ?? os.totalmem(), // 0 means no limit,
     concurrency: config?.concurrency ?? availableParallelism,
     allowNoTargetRuns: config?.allowNoTargetRuns ?? false,
+    enableTargetConfigMerging: config?.enableTargetConfigMerging ?? false,
+    reporters: config?.reporters ?? {},
   };
 }

@@ -2,6 +2,66 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Mon, 01 Sep 2025 08:10:36 GMT",
+      "version": "0.12.0",
+      "tag": "@lage-run/target-graph_v0.12.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "5f2d28335f9293a5cc44a3bc6a99f41f8f981e7c",
+            "comment": "Add merge logic for targetConfig"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Aug 2025 08:10:13 GMT",
+      "version": "0.11.3",
+      "tag": "@lage-run/target-graph_v0.11.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 07 Aug 2025 08:10:10 GMT",
+      "version": "0.11.3",
+      "tag": "@lage-run/target-graph_v0.11.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "7ca58c8121ab43d58ba76379e5e0c2320622cf5d",
+            "comment": "Update jest to v30"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Aug 2025 08:10:15 GMT",
+      "version": "0.11.3",
+      "tag": "@lage-run/target-graph_v0.11.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/target-graph",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update dependency workspace-tools to v0.38.4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 17 Apr 2025 08:10:01 GMT",
       "version": "0.11.2",
       "tag": "@lage-run/target-graph_v0.11.2",

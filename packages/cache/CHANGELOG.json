@@ -2,6 +2,96 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Fri, 10 Oct 2025 07:48:07 GMT",
+      "version": "1.4.1",
+      "tag": "@lage-run/cache_v1.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cache",
+            "commit": "6e83c2b83aeb92647963adb2d6b9befe148d512d",
+            "comment": "Update dependency backfill-cache to v5.11.2"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Sep 2025 18:00:51 GMT",
+      "version": "1.4.0",
+      "tag": "@lage-run/cache_v1.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "brunoru@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "38888a6891fa45232aeba64f222d17177114dd23",
+            "comment": "azure identity - specify azure credential instead of using DefaultAzureCredential"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 16 Sep 2025 21:17:08 GMT",
+      "version": "1.3.17",
+      "tag": "@lage-run/cache_v1.3.17",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cache",
+            "commit": "3b3518989c4697dbdd89f99952d734a472732bb7",
+            "comment": "Update dependency @azure/identity to ^4.12.0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 07 Aug 2025 08:10:10 GMT",
+      "version": "1.3.15",
+      "tag": "@lage-run/cache_v1.3.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cache",
+            "commit": "7ca58c8121ab43d58ba76379e5e0c2320622cf5d",
+            "comment": "Update backfill monorepo"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Aug 2025 08:10:15 GMT",
+      "version": "1.3.14",
+      "tag": "@lage-run/cache_v1.3.14",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cache",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update backfill monorepo"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 29 Apr 2025 08:10:03 GMT",
+      "version": "1.3.13",
+      "tag": "@lage-run/cache_v1.3.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "8cd955ef4910abb9fff6f0de40255fe842847a79",
+            "comment": "Remove duplicate CacheOptions interface (re-export from config package)"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 17 Apr 2025 08:10:01 GMT",
       "version": "1.3.12",
       "tag": "@lage-run/cache_v1.3.12",

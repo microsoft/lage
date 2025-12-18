@@ -1,11 +1,7 @@
 name: Release
 
+# Release on manual trigger only
 on:
-  # release daily at 8am UTC (midnight or 1am pacific)
-  # https://crontab-generator.org/
-  schedule:
-    - cron: "0 8 * * *"
-  # or manual trigger
   workflow_dispatch:
 
 permissions: {}
@@ -28,7 +24,7 @@ jobs:
     environment: release
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
         with:
           # Don't save creds in the git config (so it's easier to override later)
           persist-credentials: false

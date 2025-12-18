@@ -20,7 +20,10 @@ export class InProcPool implements Pool {
 
 export class SingleSchedulePool implements Pool {
   count = 0;
-  constructor(private runner: TargetRunner, private concurrency: number) {}
+  constructor(
+    private runner: TargetRunner,
+    private concurrency: number
+  ) {}
   exec({ target }: { target: Target }) {
     if (this.concurrency > this.count) {
       this.count++;

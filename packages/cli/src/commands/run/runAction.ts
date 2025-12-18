@@ -42,7 +42,7 @@ export async function runAction(options: RunOptions, command: Command) {
   // Configure logger
   const logger = createLogger();
 
-  const reporters = initializeReporters(logger, { ...options, concurrency });
+  const reporters = await initializeReporters(logger, { ...options, concurrency }, config.reporters);
 
   // Build Target Graph
   const root = getWorkspaceRoot(process.cwd())!;
@@ -64,6 +64,7 @@ export async function runAction(options: RunOptions, command: Command) {
     tasks,
     packageInfos,
     priorities: config.priorities,
+    enableTargetConfigMerging: config.enableTargetConfigMerging,
   });
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);

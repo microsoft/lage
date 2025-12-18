@@ -170,7 +170,7 @@ const GetStartedLinkButton = () => {
   const buttonClass = cx(
     classNames.fontSm,
     classNames.roundedBox,
-    "inline-block py-2 md:py-3 px-4 md:px-6 bg-white font-bold"
+    "inline-block py-2 md:py-3 px-4 md:px-6 bg-white font-bold",
   );
   return (
     <Link className={buttonClass} to="/docs/introduction">

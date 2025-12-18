@@ -241,7 +241,7 @@ export class TargetHasher {
   async getEnvironmentGlobHashes(root: string, target: Target) {
     const globalFileHashes = target.environmentGlob
       ? this.fileHasher.hash(await globAsync(target.environmentGlob ?? [], { cwd: root }))
-      : this.globalInputsHash ?? {};
+      : (this.globalInputsHash ?? {});
 
     return globalFileHashes;
   }

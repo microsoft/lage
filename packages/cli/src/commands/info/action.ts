@@ -19,11 +19,10 @@ import { runnerPickerOptions } from "../../runnerPickerOptions.js";
 import { parseServerOption } from "../parseServerOption.js";
 import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
 import { glob } from "@lage-run/globby";
-import { FileHasher } from "@lage-run/hasher/lib/FileHasher.js";
-import { hashStrings } from "@lage-run/hasher";
+import { FileHasher, hashStrings } from "@lage-run/hasher";
 import { getGlobalInputHashFilePath } from "../targetHashFilePath.js";
 
-interface InfoActionOptions extends ReporterInitOptions {
+export interface InfoActionOptions extends ReporterInitOptions {
   dependencies: boolean;
   dependents: boolean;
   since: string;
@@ -102,7 +101,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   options.logLevel = options.logLevel ?? "info";
   options.reporter = options.reporter ?? "json";
   options.server = typeof options.server === "boolean" && options.server ? "localhost:5332" : options.server;
-  initializeReporters(logger, options);
+  await initializeReporters(logger, options, config.reporters);
   const root = getWorkspaceRoot(cwd)!;
 
   const packageInfos = getPackageInfos(root);
@@ -123,6 +122,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
     tasks,
     packageInfos,
     priorities: config.priorities,
+    enableTargetConfigMerging: config.enableTargetConfigMerging,
   });
 
   const scope = getFilteredPackages({
@@ -225,7 +225,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   }
 }
 
-function generatePackageTask(
+export function generatePackageTask(
   target: Target,
   taskArgs: string[],
   config: ConfigOptions,

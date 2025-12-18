@@ -2,6 +2,80 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Tue, 21 Oct 2025 23:42:35 GMT",
+      "version": "0.33.0",
+      "tag": "@lage-run/cli_v0.33.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "cd3ca59beba687a1d3c859524786e2aeeea09953",
+            "comment": "Add custom reporter capability to Lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 01 Sep 2025 08:10:36 GMT",
+      "version": "0.32.0",
+      "tag": "@lage-run/cli_v0.32.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "5f2d28335f9293a5cc44a3bc6a99f41f8f981e7c",
+            "comment": "Add merge logic for targetConfig"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Aug 2025 08:10:13 GMT",
+      "version": "0.31.8",
+      "tag": "@lage-run/cli_v0.31.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "pgunasekara@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "Call read/readdir when simulating file accesses"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Aug 2025 08:10:15 GMT",
+      "version": "0.31.6",
+      "tag": "@lage-run/cli_v0.31.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Export Target type"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update dependency workspace-tools to v0.38.4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 17 Apr 2025 08:10:01 GMT",
       "version": "0.31.3",
       "tag": "@lage-run/cli_v0.31.3",

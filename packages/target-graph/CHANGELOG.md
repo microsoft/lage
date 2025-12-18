@@ -1,8 +1,24 @@
 # Change Log - @lage-run/target-graph
 
-<!-- This log was last generated on Thu, 17 Apr 2025 08:10:01 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 01 Sep 2025 08:10:36 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.12.0
+
+Mon, 01 Sep 2025 08:10:36 GMT
+
+### Minor changes
+
+- Add merge logic for targetConfig (dannyvv@microsoft.com)
+
+## 0.11.3
+
+Fri, 01 Aug 2025 08:10:15 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.4 (renovate@whitesourcesoftware.com)
 
 ## 0.11.2
 

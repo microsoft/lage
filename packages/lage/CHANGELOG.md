@@ -1,8 +1,101 @@
 # Change Log - lage
 
-<!-- This log was last generated on Thu, 17 Apr 2025 08:10:01 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 21 Oct 2025 23:42:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.15
+
+Tue, 21 Oct 2025 23:42:35 GMT
+
+### Minor changes
+
+- `@lage-run/cli`
+  - Add custom reporter capability to Lage (nemanjatesic@microsoft.com)
+- `@lage-run/config`
+  - Add custom reporter capability to Lage (nemanjatesic@microsoft.com)
+
+## 2.14.14
+
+Fri, 10 Oct 2025 07:48:07 GMT
+
+### Patches
+
+- `@lage-run/cache`
+  - Update dependency backfill-cache to v5.11.2 (renovate@whitesourcesoftware.com)
+
+## 2.14.13
+
+Thu, 25 Sep 2025 18:00:51 GMT
+
+### Minor changes
+
+- `@lage-run/cache`
+  - azure identity - specify azure credential instead of using DefaultAzureCredential (brunoru@microsoft.com)
+- `@lage-run/config`
+  - Enhance CredentialCache to support multiple Azure credential types and allow configuration of credentialName in cache options (brunoru@microsoft.com)
+
+## 2.14.12
+
+Tue, 16 Sep 2025 21:17:08 GMT
+
+### Patches
+
+- `@lage-run/cache`
+  - Update dependency @azure/identity to ^4.12.0 (email not defined)
+
+## 2.14.11
+
+Mon, 01 Sep 2025 08:10:36 GMT
+
+### Minor changes
+
+- `@lage-run/cli`
+  - Add merge logic for targetConfig (dannyvv@microsoft.com)
+- `@lage-run/config`
+  - Add merge logic for targetConfig (dannyvv@microsoft.com)
+- `@lage-run/hasher`
+  - Add merge logic for targetConfig (dannyvv@microsoft.com)
+- `@lage-run/target-graph`
+  - Add merge logic for targetConfig (dannyvv@microsoft.com)
+
+## 2.14.10
+
+Sun, 31 Aug 2025 08:08:39 GMT
+
+### Patches
+
+- `@lage-run/reporters`
+  - Update dependency @ms-cloudpack/task-reporter to v0.17.4 (renovate@whitesourcesoftware.com)
+
+## 2.14.9
+
+Fri, 08 Aug 2025 08:10:13 GMT
+
+### Patches
+
+- `@lage-run/cli`
+  - Call read/readdir when simulating file accesses (pgunasekara@microsoft.com)
+- `@lage-run/reporters`
+  - Update dependency @ms-cloudpack/task-reporter to v0.17.2 (email not defined)
+
+## 2.14.8
+
+Thu, 07 Aug 2025 08:10:10 GMT
+
+### Patches
+
+- Update backfill monorepo (email not defined)
+
+## 2.14.7
+
+Fri, 01 Aug 2025 08:10:15 GMT
+
+### Patches
+
+- Update backfill monorepo (renovate@whitesourcesoftware.com)
+- Update dependencies (elcraig@microsoft.com)
+- Update dependency workspace-tools to v0.38.4 (renovate@whitesourcesoftware.com)
 
 ## 2.14.4
 

@@ -1,6 +1,6 @@
 {
   "name": "lage",
-  "version": "2.14.4",
+  "version": "2.14.15",
   "repository": {
     "type": "git",
     "url": "https://github.com/microsoft/lage"
@@ -25,11 +25,11 @@
   "devDependencies": {
     "@lage-run/cli": "workspace:^",
     "@lage-run/runners": "workspace:^",
-    "backfill-config": "6.6.0",
+    "backfill-config": "6.7.1",
     "dts-bundle-generator": "^9.5.1",
     "esbuild": "^0.25.0",
     "esbuild-plugin-alias": "^0.2.1",
-    "workspace-tools": "0.38.3"
+    "workspace-tools": "0.38.4"
   },
   "files": [
     "dist/*.d.ts",

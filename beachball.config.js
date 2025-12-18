@@ -1,19 +1,18 @@
 // @ts-check
 /** @type {import('beachball').BeachballConfig}*/
-module.exports = {
-  groupChanges: true,
+const config = {
   access: "public",
-  ignorePatterns: [
-    "benchmark/**",
-    ".*ignore",
-    ".github/**",
-    "beachball.config.js",
-    "decks/**",
-    "docs/**",
-    "jasmine.json",
-    "packages/*/jest.config.js",
-    "packages/*/tests/**",
-    // This one is especially important (otherwise dependabot would be blocked by change file requirements)
-    "yarn.lock",
-  ],
+  groupChanges: true,
+  changelog: {
+    groups: [
+      {
+        // roll up all changes to the lage changelog (packages still have individual changelogs too)
+        masterPackageName: "lage",
+        include: ["packages/*"],
+        changelogPath: "packages/lage",
+      },
+    ],
+  },
+  ignorePatterns: [".*ignore", "jest.config.js", "**/__*/**/*", "**/tests/**/*"],
 };
+module.exports = config;

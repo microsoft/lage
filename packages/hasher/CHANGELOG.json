@@ -2,6 +2,51 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Mon, 01 Sep 2025 08:10:36 GMT",
+      "version": "1.9.0",
+      "tag": "@lage-run/hasher_v1.9.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "5f2d28335f9293a5cc44a3bc6a99f41f8f981e7c",
+            "comment": "Add merge logic for targetConfig"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Aug 2025 08:10:13 GMT",
+      "version": "1.8.3",
+      "tag": "@lage-run/hasher_v1.8.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Aug 2025 08:10:15 GMT",
+      "version": "1.8.3",
+      "tag": "@lage-run/hasher_v1.8.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/hasher",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update dependency workspace-tools to v0.38.4"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 17 Apr 2025 08:10:01 GMT",
       "version": "1.8.2",
       "tag": "@lage-run/hasher_v1.8.2",

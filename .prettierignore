@@ -1,3 +1,5 @@
+# Prettier v3 also respects .gitignore
+
 # Not formatted
 .*ignore
 *.proto
@@ -13,17 +15,3 @@ yarn.lock
 **/.yarn
 # this is a test fixture
 yarn.js
-**/.rush/temp
-
-# These lines from .gitignore can be removed after prettier 3 update
-node_modules
-src/**/*.js
-dist
-lib
-*.log
-.DS_Store
-*.pdf
-coverage
-.idea/
-**/.docusaurus/
-profile*.json

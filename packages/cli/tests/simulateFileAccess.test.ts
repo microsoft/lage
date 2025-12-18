@@ -19,15 +19,26 @@ const mockLogger = {
 describe("simulateFileAccess", () => {
   let mockRoot: string;
   let mockOpenSync: jest.SpyInstance;
+  let mockReadSync: jest.SpyInstance;
   let mockCloseSync: jest.SpyInstance;
+  let mockReaddirSync: jest.SpyInstance;
   let mockUtimesSync: jest.SpyInstance;
+  let mockLstatSync: jest.SpyInstance;
 
   beforeEach(() => {
     mockRoot = path.join(os.tmpdir(), "lage-test-root");
 
     mockOpenSync = jest.spyOn(fs, "openSync").mockReturnValue(123);
+    mockReadSync = jest.spyOn(fs, "readSync").mockImplementation(() => 1);
     mockCloseSync = jest.spyOn(fs, "closeSync").mockImplementation(() => {});
+    mockReaddirSync = jest.spyOn(fs, "readdirSync").mockImplementation(() => []);
     mockUtimesSync = jest.spyOn(fs, "utimesSync").mockImplementation(() => {});
+    mockLstatSync = jest.spyOn(fs, "lstatSync").mockImplementation((inputPath: any) => {
+      const strPath = Buffer.isBuffer(inputPath) ? inputPath.toString() : String(inputPath);
+      return {
+        isDirectory: () => strPath.endsWith(path.sep),
+      };
+    });
   });
 
   afterEach(() => {
@@ -44,17 +55,16 @@ describe("simulateFileAccess", () => {
     // Verify the files were probed
     expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/a/src/components/Button.tsx"), "r");
     expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/b/dist/index.js"), "r");
-
-    // Verify all parent directories were probed
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/a/src/components"), "r");
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/a/src"), "r");
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/a"), "r");
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "packages"), "r");
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/b/dist"), "r");
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/b"), "r");
-
-    // Verify close was called the same number of times as open
+    expect(mockReadSync).toHaveBeenCalledTimes(mockOpenSync.mock.calls.length);
     expect(mockCloseSync).toHaveBeenCalledTimes(mockOpenSync.mock.calls.length);
+
+    // Verify all parent directories were probed using readdirSync
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/a/src/components"));
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/a/src"));
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/a"));
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "packages"));
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/b/dist"));
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/b"));
   });
 
   test("should handle deeply nested directories", async () => {
@@ -67,12 +77,12 @@ describe("simulateFileAccess", () => {
     // Verify the file was probed
     expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "level1/level2/level3/level4/level5/file.txt"), "r");
 
-    // Verify all parent directories were probed
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "level1/level2/level3/level4/level5"), "r");
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "level1/level2/level3/level4"), "r");
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "level1/level2/level3"), "r");
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "level1/level2"), "r");
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "level1"), "r");
+    // Verify all parent directories were probed using readdirSync
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "level1/level2/level3/level4/level5"));
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "level1/level2/level3/level4"));
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "level1/level2/level3"));
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "level1/level2"));
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "level1"));
   });
 
   test("should update timestamps for output files and their directories", async () => {
@@ -102,10 +112,10 @@ describe("simulateFileAccess", () => {
     expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "src/components/Button.tsx"), "r");
     expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "src/utils/helpers.ts"), "r");
 
-    // Input directories should be opened and closed
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "src/components"), "r");
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "src/utils"), "r");
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "src"), "r");
+    // Input directories should be probed using readdirSync
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "src/components"));
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "src/utils"));
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "src"));
 
     // Output files should have timestamps updated
     expect(mockUtimesSync).toHaveBeenCalledWith(path.join(mockRoot, "dist/components/Button.js"), expect.any(Date), expect.any(Date));
@@ -120,6 +130,7 @@ describe("simulateFileAccess", () => {
   test("should handle errors during file operations", async () => {
     // Restore original mocks to allow error simulation
     mockOpenSync.mockRestore();
+    mockReadSync.mockRestore();
 
     // Set up a mock that fails for a specific file path
     const failingPath = path.join(mockRoot, "src/components/Missing.tsx");
@@ -129,6 +140,8 @@ describe("simulateFileAccess", () => {
       }
       return 123;
     });
+    jest.spyOn(fs, "readSync").mockImplementation(() => 1);
+    jest.spyOn(fs, "closeSync").mockImplementation(() => {});
 
     const inputs = [
       "src/components/Button.tsx",
@@ -151,14 +164,14 @@ describe("simulateFileAccess", () => {
 
     await simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
-    // Verify all directories were probed
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "empty-dir-1/"), "r");
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "empty-dir-2/"), "r");
+    // Verify all directories were enumerated using readdirSync
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "empty-dir-1/"));
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "empty-dir-2/"));
 
     // Verify the file was probed
     expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "empty-dir-3/single-file.txt"), "r");
 
-    // Verify parent directory was also probed
-    expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "empty-dir-3"), "r");
+    // Verify parent directory was also enumerated using readdirSync
+    expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "empty-dir-3"));
   });
 });

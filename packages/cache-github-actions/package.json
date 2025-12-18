@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cache-github-actions",
-  "version": "0.1.24",
+  "version": "0.1.26",
   "description": "Github Action Cache for Lage",
   "repository": {
     "type": "git",
@@ -17,9 +17,9 @@
   },
   "dependencies": {
     "@actions/cache": "3.3.0",
-    "backfill-config": "6.6.0",
-    "backfill-logger": "5.3.0",
-    "workspace-tools": "0.38.3"
+    "backfill-config": "6.7.1",
+    "backfill-logger": "5.4.0",
+    "workspace-tools": "0.38.4"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^"

@@ -77,6 +77,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     tasks,
     packageInfos,
     priorities: config.priorities,
+    enableTargetConfigMerging: config.enableTargetConfigMerging,
   });
 
   const targetHasher = new TargetHasher({
@@ -120,7 +121,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
   });
 
   serverControls.abortController.signal.addEventListener("abort", () => {
-    pool?.close();
+    void pool?.close();
   });
 
   pool?.on("freedWorker", () => {

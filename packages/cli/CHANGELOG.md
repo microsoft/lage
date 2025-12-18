@@ -1,8 +1,41 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Thu, 17 Apr 2025 08:10:01 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 21 Oct 2025 23:42:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.33.0
+
+Tue, 21 Oct 2025 23:42:35 GMT
+
+### Minor changes
+
+- Add custom reporter capability to Lage (nemanjatesic@microsoft.com)
+
+## 0.32.0
+
+Mon, 01 Sep 2025 08:10:36 GMT
+
+### Minor changes
+
+- Add merge logic for targetConfig (dannyvv@microsoft.com)
+
+## 0.31.8
+
+Fri, 08 Aug 2025 08:10:13 GMT
+
+### Patches
+
+- Call read/readdir when simulating file accesses (pgunasekara@microsoft.com)
+
+## 0.31.6
+
+Fri, 01 Aug 2025 08:10:15 GMT
+
+### Patches
+
+- Export Target type (email not defined)
+- Update dependency workspace-tools to v0.38.4 (renovate@whitesourcesoftware.com)
 
 ## 0.31.3
 

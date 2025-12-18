@@ -9,7 +9,7 @@ const Tool = (props: ToolInfo) => {
     <div
       className={cx(
         classNames.roundedBox,
-        "max-w-sm flex flex-col items-stretch p-6 bg-tealXDark"
+        "max-w-sm flex flex-col items-stretch p-6 bg-tealXDark",
       )}
     >
       <Link
@@ -17,7 +17,7 @@ const Tool = (props: ToolInfo) => {
         target="_blank"
         className={cx(
           "text-white! underline-offset-4 flex flex-col items-center gap-3 md:gap-4 mb-3 md:mb-4",
-          classNames.fontMdLg
+          classNames.fontMdLg,
         )}
       >
         <Svg className="h-12 w-12 md:h-16 md:w-16" aria-hidden />
