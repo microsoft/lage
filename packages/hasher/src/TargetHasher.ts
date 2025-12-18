@@ -231,7 +231,7 @@ export class TargetHasher {
 
   writeTargetHashesManifest() {
     for (const [id, { fileHashes, globalFileHashes }] of Object.entries(this.targetHashesLog)) {
-      const targetHashesManifestPath = sanitize(path.join(this.targetHashesDirectory, `${id}.json`));
+      const targetHashesManifestPath = path.join(this.targetHashesDirectory, `${sanitize(id)}.json`);
       if (!fs.existsSync(path.dirname(targetHashesManifestPath))) {
         fs.mkdirSync(path.dirname(targetHashesManifestPath), { recursive: true });
       }
