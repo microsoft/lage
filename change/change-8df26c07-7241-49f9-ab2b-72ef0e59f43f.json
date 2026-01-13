@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Fix issue with noop tasks that depend on other noop tasks",
+      "packageName": "@lage-run/target-graph",
+      "email": "dobes@formative.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
