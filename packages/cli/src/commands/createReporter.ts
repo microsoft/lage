@@ -4,6 +4,7 @@ import {
   AdoReporter,
   LogReporter,
   ProgressReporter,
+  BasicReporter,
   VerboseFileLogReporter,
   ChromeTraceEventsReporter,
 } from "@lage-run/reporters";
@@ -13,6 +14,7 @@ import { findPackageRoot } from "workspace-tools";
 import { readFileSync } from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
+import isInteractive from "is-interactive";
 
 export async function createReporter(
   reporter: string,
@@ -41,6 +43,9 @@ export async function createReporter(
     case "npmLog":
     case "old":
       return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+
+    case "fancy":
+      return new ProgressReporter({ concurrency, version });
 
     case "verboseFileLog":
     case "vfl":
@@ -74,8 +79,8 @@ export async function createReporter(
       }
 
       // Default reporter behavior
-      if (progress && !(logLevel >= LogLevel.verbose || verbose || grouped)) {
-        return new ProgressReporter({ concurrency, version });
+      if (progress && isInteractive() && !(logLevel >= LogLevel.verbose || verbose || grouped)) {
+        return new BasicReporter({ concurrency, version });
       }
 
       return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
