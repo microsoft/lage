@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Thu, 15 Jan 2026 23:24:00 GMT",
+      "version": "0.9.1",
+      "tag": "@lage-run/worker-threads-pool_v0.9.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Add lint rule for no-floating-promises and fix several places"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 08 Aug 2025 08:10:13 GMT",
       "version": "0.9.0",
       "tag": "@lage-run/worker-threads-pool_v0.9.0",

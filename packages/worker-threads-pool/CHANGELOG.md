@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-<!-- This log was last generated on Thu, 23 Jan 2025 17:38:05 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.9.1
+
+Thu, 15 Jan 2026 23:24:00 GMT
+
+### Patches
+
+- Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
 
 ## 0.9.0
 
