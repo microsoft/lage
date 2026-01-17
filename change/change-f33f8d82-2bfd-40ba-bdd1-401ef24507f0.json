@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Remove duplicate file operations in TargetHasher. It should be a bit faster now that it's not reading all package.json files twice on initialization.",
+      "packageName": "@lage-run/hasher",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
