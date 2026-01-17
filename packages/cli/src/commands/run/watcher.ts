@@ -5,9 +5,11 @@ import { getWorkspaceRoot } from "workspace-tools";
 import type { PackageInfos } from "workspace-tools";
 import EventEmitter from "events";
 
-interface PathIndexItem {
+type PathIndexItem = {
   packageName?: string;
-}
+} & {
+  [pathPart: string]: PathIndexItem;
+};
 
 interface PathIndex {
   [pathPart: string]: PathIndexItem;

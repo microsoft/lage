@@ -1,6 +1,5 @@
 import * as path from "path";
 import * as fs from "fs";
-import { execSync } from "child_process";
 
 import { getPackageDeps, parseGitLsTree, parseGitFilename } from "../getPackageDeps";
 import { Monorepo } from "@lage-run/monorepo-fixture";

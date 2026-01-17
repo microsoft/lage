@@ -1,21 +1,21 @@
 import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
-import { getWorkspaceRoot, getPackageInfos } from "workspace-tools";
+// import fs from "fs";
+// import { fileURLToPath } from "url";
+import { getWorkspaceManagerRoot, getPackageInfos } from "workspace-tools";
 
 // strategies
-import fg from "fast-glob";
+// import fg from "fast-glob";
 import globby from "globby";
-import { glob } from "glob-hasher";
-import { execa } from "execa";
-import multimatch from "multimatch";
-import micromatch from "micromatch";
-import { diffArrays } from "diff";
+// import { glob } from "glob-hasher";
+// import { execa } from "execa";
+// import multimatch from "multimatch";
+// import micromatch from "micromatch";
+// import { diffArrays } from "diff";
 
 // Setup
 console.time("getting workspace info");
 const args = process.argv.slice(2);
-const cwd = getWorkspaceRoot(args[0] ?? process.cwd());
+const cwd = getWorkspaceManagerRoot(args[0] ?? process.cwd());
 const packageInfos = getPackageInfos(cwd);
 console.timeEnd("getting workspace info");
 

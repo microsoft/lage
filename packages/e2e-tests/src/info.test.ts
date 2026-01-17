@@ -1,5 +1,6 @@
 import { Monorepo } from "./mock/monorepo.js";
 import { parseNdJson } from "./parseNdJson.js";
+import type { Target } from "@lage-run/target-graph";
 
 describe("info command", () => {
   it("basic info test case", async () => {
@@ -50,12 +51,12 @@ describe("info command", () => {
 
     const output = results.stdout + results.stderr;
     const infoJsonOutput: any = parseNdJson(output)[0];
-    const { packageTasks } = infoJsonOutput.data;
+    const { packageTasks } = infoJsonOutput.data as { packageTasks: Target[] };
 
     // Check if task `a#build` depends on `c#build`, because package `b` doesn't
     // have a `build` task so dependencies are hoisted up.
     const task = packageTasks.find(({ id }) => id === "a#build");
-    expect(task.dependencies).toEqual(["c#build"]);
+    expect(task!.dependencies).toEqual(["c#build"]);
 
     // Make sure all dependencies points to an existing task.
     for (const task of packageTasks) {
@@ -80,12 +81,13 @@ describe("info command", () => {
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
+    const packageTasks = jsonOutput[0].data.packageTasks as Target[];
 
-    const taskA = jsonOutput[0].data.packageTasks.find(({ id }) => id === "a#build");
-    expect(taskA.dependencies).toEqual(["b#build"]);
+    const taskA = packageTasks.find(({ id }) => id === "a#build");
+    expect(taskA!.dependencies).toEqual(["b#build"]);
 
-    const taskC = jsonOutput[0].data.packageTasks.find(({ id }) => id === "c#build");
-    expect(taskC.dependencies).toEqual(["__start"]);
+    const taskC = packageTasks.find(({ id }) => id === "c#build");
+    expect(taskC!.dependencies).toEqual(["__start"]);
 
     expect(jsonOutput).toMatchSnapshot();
 
@@ -106,12 +108,13 @@ describe("info command", () => {
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
+    const packageTasks = jsonOutput[0].data.packageTasks as Target[];
 
-    const task = jsonOutput[0].data.packageTasks.find(({ id }) => id === "a#build");
-    expect(task.dependencies).toEqual(["b#build", "c#build"]);
+    const task = packageTasks.find(({ id }) => id === "a#build");
+    expect(task!.dependencies).toEqual(["b#build", "c#build"]);
 
-    const taskC = jsonOutput[0].data.packageTasks.find(({ id }) => id === "c#build");
-    expect(taskC.dependencies).toEqual([]);
+    const taskC = packageTasks.find(({ id }) => id === "c#build");
+    expect(taskC!.dependencies).toEqual([]);
 
     expect(jsonOutput).toMatchSnapshot();
 

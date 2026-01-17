@@ -3,10 +3,18 @@ import { Monorepo } from "./mock/monorepo.js";
 import { parseNdJson } from "./parseNdJson.js";
 import fs from "fs";
 import { killDetachedProcess } from "./killDetachedProcess.js";
+import type { Target } from "@lage-run/target-graph";
 
 describe("lageserver", () => {
+  let repo: Monorepo | undefined;
+
+  afterEach(async () => {
+    await repo?.cleanup();
+    repo = undefined;
+  });
+
   it("connects to a running server", async () => {
-    const repo = new Monorepo("basics");
+    repo = new Monorepo("basics");
 
     repo.init();
     repo.addPackage("a", ["b"]);
@@ -26,12 +34,11 @@ describe("lageserver", () => {
     serverProcess.kill();
 
     expect(jsonOutput.find((entry) => entry.msg === "Task b build exited with code 0")).toBeTruthy();
-    await repo.cleanup();
   }, 15000);
 
   // Windows cannot reliably kill the server process, since it's detached. These tests are skipped on Windows.
   it("launches a background server", async () => {
-    const repo = new Monorepo("basics");
+    repo = new Monorepo("basics");
 
     repo.init();
     repo.addPackage("a", ["b"]);
@@ -47,11 +54,10 @@ describe("lageserver", () => {
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
     killDetachedProcess(parseInt(started?.data.pid));
-    await repo.cleanup();
   }, 15000);
 
   it("reports inputs for targets and their transitive dependencies' files", async () => {
-    const repo = new Monorepo("basics");
+    repo = new Monorepo("basics");
 
     repo.init();
 
@@ -117,37 +123,35 @@ describe("lageserver", () => {
     const serverLogs = fs.readFileSync(path.join(repo.root, "node_modules/.cache/lage/server.log"), "utf-8");
 
     const lines = serverLogs.split("\n");
-    let aResults: any;
-    let bResults: any;
+    let aResults: Target;
+    let bResults: Target;
 
     lines.forEach((line, index) => {
       if (line.includes("a#build results:")) {
         // scan the next few lines until we see a "}", and then parse the JSON
-        const endToken = "}";
-        const endTokenLine = lines.findIndex((line, i) => i > index && line.startsWith(endToken));
+        const endTokenLine = lines.findIndex((line, i) => i > index && line.startsWith("}"));
         aResults = JSON.parse(lines.slice(index + 1, endTokenLine + 1).join("\n"));
       }
 
       if (line.includes("b#build results:")) {
-        const endToken = "}";
-        const endTokenLine = lines.findIndex((line, i) => i > index && line.startsWith(endToken));
+        const endTokenLine = lines.findIndex((line, i) => i > index && line.startsWith("}"));
         bResults = JSON.parse(lines.slice(index + 1, endTokenLine + 1).join("\n"));
       }
     });
 
-    expect(aResults.inputs.find((input) => input === "packages/a/src/index.ts")).toBeTruthy();
-    expect(aResults.inputs.find((input) => input === "packages/b/node_modules/.lage/hash_build")).toBeTruthy();
-    expect(aResults.inputs.find((input) => input === "packages/c/node_modules/.lage/hash_build")).toBeUndefined();
-    expect(aResults.inputs.find((input) => input === "packages/a/alt/extra.ts")).toBeUndefined();
+    expect(aResults!).toBeTruthy();
+    expect(aResults!.inputs).toContain("packages/a/src/index.ts");
+    expect(aResults!.inputs).toContain("packages/b/node_modules/.lage/hash_build");
+    expect(aResults!.inputs).not.toContain("packages/c/node_modules/.lage/hash_build");
+    expect(aResults!.inputs).not.toContain("packages/a/alt/extra.ts");
 
-    expect(aResults.outputs.find((output) => output === "packages/a/node_modules/.lage/hash_build")).toBeTruthy();
+    expect(aResults!.outputs).toContain("packages/a/node_modules/.lage/hash_build");
 
-    expect(bResults.inputs.find((input) => input === "packages/b/src/extra.ts")).toBeUndefined();
-    expect(bResults.inputs.find((input) => input === "packages/b/alt/index.ts")).toBeTruthy();
-    expect(bResults.inputs.find((input) => input === "packages/c/node_modules/.lage/hash_build")).toBeTruthy();
+    expect(bResults!).toBeTruthy();
+    expect(bResults!.inputs).not.toContain("packages/b/src/extra.ts");
+    expect(bResults!.inputs).toContain("packages/b/alt/index.ts");
+    expect(bResults!.inputs).toContain("packages/c/node_modules/.lage/hash_build");
 
-    expect(bResults.outputs.find((output) => output === "packages/b/node_modules/.lage/hash_build")).toBeTruthy();
-
-    await repo.cleanup();
+    expect(bResults!.outputs).toContain("packages/b/node_modules/.lage/hash_build");
   }, 400000);
 });

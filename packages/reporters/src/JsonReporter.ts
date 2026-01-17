@@ -22,26 +22,22 @@ export class JsonReporter implements Reporter {
 
   summarize(schedulerRunSummary: SchedulerRunSummary) {
     const { duration, targetRuns, targetRunByStatus } = schedulerRunSummary;
-    const summary: any = {};
-    const taskStats: any[] = [];
 
-    for (const targetRun of targetRuns.values()) {
-      taskStats.push({
+    const summary: Record<string, unknown> = {
+      duration: hrToSeconds(duration),
+      taskStats: [...targetRuns.values()].map((targetRun) => ({
         package: targetRun.target.packageName,
         task: targetRun.target.task,
         duration: hrToSeconds(targetRun.duration),
         status: targetRun.status,
-      });
-    }
+      })),
+    };
 
-    for (const status of Object.keys(targetRunByStatus)) {
-      if (targetRunByStatus[status] && targetRunByStatus[status].length.length > 0) {
+    for (const status of Object.keys(targetRunByStatus) as (keyof typeof targetRunByStatus)[]) {
+      if (targetRunByStatus[status] && targetRunByStatus[status].length) {
         summary[`${status}Targets`] = targetRunByStatus[status].length;
       }
     }
-
-    summary.duration = hrToSeconds(duration);
-    summary.taskStats = taskStats;
 
     console.log(JSON.stringify({ summary }));
   }
