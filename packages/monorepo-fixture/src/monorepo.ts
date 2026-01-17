@@ -221,7 +221,7 @@ export class Monorepo {
 
     while (attempts < maxRetries) {
       try {
-        fs.rmdirSync(this.root, { recursive: true });
+        fs.rmSync(this.root, { recursive: true });
         break;
       } catch (error) {
         attempts++;

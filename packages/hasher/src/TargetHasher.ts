@@ -5,18 +5,16 @@ import { globAsync } from "@lage-run/globby";
 import fs from "fs";
 import path from "path";
 import {
+  type DependencyMap,
   type ParsedLock,
-  type WorkspaceInfos,
   type PackageInfos,
-  getWorkspaceInfosAsync,
   parseLockFile,
   createDependencyMap,
+  getPackageInfo,
+  getPackageInfosAsync,
 } from "workspace-tools";
-import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
-import { infoFromPackageJson } from "workspace-tools/lib/infoFromPackageJson.js";
 
 import { hashStrings } from "./hashStrings.js";
-import { resolveInternalDependencies } from "./resolveInternalDependencies.js";
 import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
 import { FileHasher } from "./FileHasher.js";
 import type { Logger } from "@lage-run/logger";
@@ -49,55 +47,27 @@ export interface TargetManifest {
 
 /**
  * TargetHasher is a class that can be used to generate a hash of a target.
- *
- * Currently, it encapsulates the use of `backfill-hasher` to generate a hash.
+ * It uses `glob-hasher` internally.
  */
 export class TargetHasher {
-  targetHashesLog: Record<string, { fileHashes: Record<string, string>; globalFileHashes: Record<string, string> }> = {};
-  targetHashesDirectory: string;
+  private targetHashesLog: Record<string, { fileHashes: Record<string, string>; globalFileHashes: Record<string, string> }> = {};
+  private targetHashesDirectory: string;
 
-  logger: Logger | undefined;
-  fileHasher: FileHasher;
-  packageTree: PackageTree | undefined;
+  private logger: Logger | undefined;
+  private fileHasher: FileHasher;
+  public packageTree: PackageTree | undefined;
 
-  initializedPromise: Promise<unknown> | undefined;
+  private initializedPromise: Promise<unknown> | undefined;
 
-  packageInfos: PackageInfos = {};
-  workspaceInfo: WorkspaceInfos | undefined;
-  globalInputsHash: Record<string, string> | undefined;
-  lockInfo: ParsedLock | undefined;
-  targetHashes: Record<string, string> = {};
+  private packageInfos: PackageInfos = {};
+  private globalInputsHash: Record<string, string> | undefined;
+  private lockInfo: ParsedLock | undefined;
+  private targetHashes: Record<string, string> = {};
 
-  dependencyMap: DependencyMap = {
+  public dependencyMap: DependencyMap = {
     dependencies: new Map(),
     dependents: new Map(),
   };
-
-  getPackageInfos(workspacePackages: WorkspaceInfos): PackageInfos {
-    const { root } = this.options;
-    const packageInfos: PackageInfos = {};
-
-    if (workspacePackages.length) {
-      for (const pkg of workspacePackages) {
-        packageInfos[pkg.name] = pkg.packageJson;
-      }
-    } else {
-      const packageJsonPath = path.join(root, "package.json");
-      if (fs.existsSync(packageJsonPath)) {
-        try {
-          const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
-          const rootInfo = infoFromPackageJson(packageJson, packageJsonPath);
-          if (rootInfo) {
-            packageInfos[rootInfo.name] = rootInfo;
-          }
-        } catch (e) {
-          throw new Error(`Invalid package.json file detected ${packageJsonPath}: ${(e as Error)?.message || e}`);
-        }
-      }
-    }
-
-    return packageInfos;
-  }
 
   constructor(private options: TargetHasherOptions) {
     const { root, logger } = options;
@@ -114,13 +84,13 @@ export class TargetHasher {
     }
   }
 
-  ensureInitialized(): void {
+  private ensureInitialized(): void {
     if (!this.initializedPromise) {
       throw new Error("TargetHasher is not initialized");
     }
   }
 
-  async initialize(): Promise<void> {
+  public async initialize(): Promise<void> {
     const { environmentGlob, root } = this.options;
 
     if (this.initializedPromise) {
@@ -135,22 +105,27 @@ export class TargetHasher {
         .then((files) => this.fileHasher.hash(files))
         .then((hash) => (this.globalInputsHash = hash)),
 
-      getWorkspaceInfosAsync(root)
-        .then((workspaceInfo) => (this.workspaceInfo = workspaceInfo))
-        .then(() => {
-          this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
+      getPackageInfosAsync(root).then((packageInfos) => {
+        if (Object.keys(packageInfos).length) {
+          this.packageInfos = packageInfos;
+        } else {
+          const rootInfo = getPackageInfo(root);
+          if (rootInfo) {
+            this.packageInfos = { [rootInfo.name]: rootInfo };
+          }
+        }
 
-          this.dependencyMap = createDependencyMap(this.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
-          this.packageTree = new PackageTree({
-            root,
-            packageInfos: this.packageInfos,
+        this.dependencyMap = createDependencyMap(this.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
+        this.packageTree = new PackageTree({
+          root,
+          packageInfos: this.packageInfos,
 
-            // TODO: (optimization) false if process.env.TF_BUILD || process.env.CI
-            includeUntracked: true,
-          });
+          // TODO: (optimization) false if process.env.TF_BUILD || process.env.CI
+          includeUntracked: true,
+        });
 
-          return this.packageTree.initialize();
-        }),
+        return this.packageTree.initialize();
+      }),
 
       parseLockFile(root).then((lockInfo) => (this.lockInfo = lockInfo)),
     ]);
@@ -163,7 +138,7 @@ export class TargetHasher {
     }
   }
 
-  async hash(target: Target): Promise<string> {
+  public async hash(target: Target): Promise<string> {
     this.ensureInitialized();
 
     const { root } = this.options;
@@ -185,7 +160,6 @@ export class TargetHasher {
     // 2. add hash of target packages' internal and external deps
     const { dependencies, devDependencies } = this.packageInfos[target.packageName!];
 
-    const workspaceInfo = this.workspaceInfo!;
     const parsedLock = this.lockInfo!;
 
     const allDependencies: Record<string, string> = {
@@ -193,8 +167,8 @@ export class TargetHasher {
       ...devDependencies,
     };
 
-    const internalDeps = resolveInternalDependencies(allDependencies, workspaceInfo);
-    const externalDeps = resolveExternalDependencies(allDependencies, workspaceInfo, parsedLock);
+    const internalDeps = Object.keys(allDependencies).filter((dep) => this.packageInfos[dep]);
+    const externalDeps = resolveExternalDependencies(allDependencies, this.packageInfos, parsedLock);
     const resolvedDependencies = [...internalDeps, ...externalDeps].sort();
 
     const files = getInputFiles(target, this.dependencyMap, this.packageTree!);
@@ -228,7 +202,7 @@ export class TargetHasher {
     return hashString;
   }
 
-  writeTargetHashesManifest(): void {
+  private writeTargetHashesManifest(): void {
     for (const [id, { fileHashes, globalFileHashes }] of Object.entries(this.targetHashesLog)) {
       const targetHashesManifestPath = path.join(this.targetHashesDirectory, `${id}.json`);
       if (!fs.existsSync(path.dirname(targetHashesManifestPath))) {
@@ -238,7 +212,7 @@ export class TargetHasher {
     }
   }
 
-  async getEnvironmentGlobHashes(root: string, target: Target): Promise<Record<string, string>> {
+  private async getEnvironmentGlobHashes(root: string, target: Target): Promise<Record<string, string>> {
     const globalFileHashes = target.environmentGlob
       ? this.fileHasher.hash(await globAsync(target.environmentGlob ?? [], { cwd: root }))
       : (this.globalInputsHash ?? {});
@@ -246,8 +220,8 @@ export class TargetHasher {
     return globalFileHashes;
   }
 
-  async cleanup(): Promise<void> {
+  public async cleanup(): Promise<void> {
     this.writeTargetHashesManifest();
-    await this.fileHasher.writeManifest();
+    this.fileHasher.writeManifest();
   }
 }
