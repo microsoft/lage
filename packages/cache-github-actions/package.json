@@ -19,7 +19,7 @@
     "@actions/cache": "3.3.0",
     "backfill-config": "6.7.1",
     "backfill-logger": "5.4.0",
-    "workspace-tools": "0.40.0"
+    "workspace-tools": "0.40.3"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^"
