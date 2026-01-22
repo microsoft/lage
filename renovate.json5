@@ -45,20 +45,11 @@
       "enabled": false
     },
     {
-      // lage bundles its dependencies, so any updates should to dependencies should be explicit
-      // so that they trigger a new lage version (with proper documentation of included updates).
-      // The standard approach of using ^ dependencies and allowing implicit updates via the lock file
-      // (which with a published bundle, are guaranteed to affect consumers) makes it very hard to
-      // track when an issue was introduced if it's discovered in another repo.
+      // See syncpack.config.js for the rationale of pinning dependencies
       "rangeStrategy": "pin",
       "matchFileNames": ["packages/**"], // ignore this for docs, scripts, root
       "matchDepTypes": ["dependencies"],
-      "matchPackageNames": [
-        // lage packages aren't an issue since they're within the repo and the latest version is always used.
-        "!@lage-run/*",
-        // glob-hasher is a runtime dependency of lage since it publishes binaries.
-        "!glob-hasher"
-      ]
+      "matchPackageNames": ["!@lage-run/*", "!glob-hasher"] // see syncpack config
     },
     {
       "matchManagers": ["github-actions"],

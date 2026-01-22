@@ -13,19 +13,20 @@
   "scripts": {
     "lint": "buf lint",
     "generate": "buf generate",
-    "build": "tsc"
+    "build": "monorepo-scripts tsc"
   },
   "dependencies": {
-    "@bufbuild/protobuf": "^1.10.0",
-    "@connectrpc/connect": "^1.4.0",
-    "@connectrpc/connect-fastify": "^1.4.0",
-    "@connectrpc/connect-node": "^1.4.0",
-    "fastify": "^4.28.1"
+    "@bufbuild/protobuf": "1.10.1",
+    "@connectrpc/connect": "1.7.0",
+    "@connectrpc/connect-fastify": "1.7.0",
+    "@connectrpc/connect-node": "1.7.0",
+    "fastify": "4.29.1"
   },
   "devDependencies": {
     "@bufbuild/buf": "^1.39.0",
     "@bufbuild/protoc-gen-es": "^1.10.0",
-    "@connectrpc/protoc-gen-connect-es": "^1.4.0"
+    "@connectrpc/protoc-gen-connect-es": "1.7.0",
+    "@lage-run/monorepo-scripts": "workspace:^"
   },
   "publishConfig": {
     "access": "public"

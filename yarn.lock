@@ -189,7 +189,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/identity@npm:^4.12.0":
+"@azure/identity@npm:4.13.0":
   version: 4.13.0
   resolution: "@azure/identity@npm:4.13.0"
   dependencies:
@@ -794,7 +794,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connectrpc/connect-fastify@npm:^1.4.0":
+"@connectrpc/connect-fastify@npm:1.7.0":
   version: 1.7.0
   resolution: "@connectrpc/connect-fastify@npm:1.7.0"
   peerDependencies:
@@ -806,7 +806,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connectrpc/connect-node@npm:^1.4.0":
+"@connectrpc/connect-node@npm:1.7.0":
   version: 1.7.0
   resolution: "@connectrpc/connect-node@npm:1.7.0"
   dependencies:
@@ -818,7 +818,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connectrpc/connect@npm:^1.4.0":
+"@connectrpc/connect@npm:1.7.0":
   version: 1.7.0
   resolution: "@connectrpc/connect@npm:1.7.0"
   peerDependencies:
@@ -827,7 +827,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@connectrpc/protoc-gen-connect-es@npm:^1.4.0":
+"@connectrpc/protoc-gen-connect-es@npm:1.7.0":
   version: 1.7.0
   resolution: "@connectrpc/protoc-gen-connect-es@npm:1.7.0"
   dependencies:
@@ -1565,7 +1565,7 @@ __metadata:
   resolution: "@lage-run/cache@workspace:packages/cache"
   dependencies:
     "@azure/core-auth": "npm:1.10.1"
-    "@azure/identity": "npm:^4.12.0"
+    "@azure/identity": "npm:4.13.0"
     "@lage-run/config": "workspace:^"
     "@lage-run/logger": "workspace:^"
     "@lage-run/monorepo-fixture": "workspace:^"
@@ -1603,9 +1603,9 @@ __metadata:
     commander: "npm:9.5.0"
     execa: "npm:5.1.1"
     fast-glob: "npm:3.3.3"
-    is-interactive: "npm:^1.0.0"
-    proper-lockfile: "npm:^4.1.2"
-    shell-quote: "npm:^1.8.1"
+    is-interactive: "npm:1.0.0"
+    proper-lockfile: "npm:4.1.2"
+    shell-quote: "npm:1.8.3"
     workspace-tools: "npm:0.40.4"
   bin:
     lage: ./bin/lage.js
@@ -1760,13 +1760,14 @@ __metadata:
   resolution: "@lage-run/rpc@workspace:packages/rpc"
   dependencies:
     "@bufbuild/buf": "npm:^1.39.0"
-    "@bufbuild/protobuf": "npm:^1.10.0"
+    "@bufbuild/protobuf": "npm:1.10.1"
     "@bufbuild/protoc-gen-es": "npm:^1.10.0"
-    "@connectrpc/connect": "npm:^1.4.0"
-    "@connectrpc/connect-fastify": "npm:^1.4.0"
-    "@connectrpc/connect-node": "npm:^1.4.0"
-    "@connectrpc/protoc-gen-connect-es": "npm:^1.4.0"
-    fastify: "npm:^4.28.1"
+    "@connectrpc/connect": "npm:1.7.0"
+    "@connectrpc/connect-fastify": "npm:1.7.0"
+    "@connectrpc/connect-node": "npm:1.7.0"
+    "@connectrpc/protoc-gen-connect-es": "npm:1.7.0"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    fastify: "npm:4.29.1"
   languageName: unknown
   linkType: soft
 
@@ -1810,8 +1811,8 @@ __metadata:
   dependencies:
     "@lage-run/monorepo-scripts": "workspace:^"
     jest-diff: "npm:^30.0.0"
-    mergician: "npm:^2.0.2"
-    p-limit: "npm:^3.1.0"
+    mergician: "npm:2.0.2"
+    p-limit: "npm:3.1.0"
     workspace-tools: "npm:0.40.4"
   languageName: unknown
   linkType: soft
@@ -4369,7 +4370,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify@npm:^4.28.1":
+"fastify@npm:4.29.1":
   version: 4.29.1
   resolution: "fastify@npm:4.29.1"
   dependencies:
@@ -5228,7 +5229,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-interactive@npm:^1.0.0":
+"is-interactive@npm:1.0.0":
   version: 1.0.0
   resolution: "is-interactive@npm:1.0.0"
   checksum: 10c0/dd47904dbf286cd20aa58c5192161be1a67138485b9836d5a70433b21a45442e9611b8498b8ab1f839fc962c7620667a50535fdfb4a6bc7989b8858645c06b4d
@@ -6365,7 +6366,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mergician@npm:^2.0.2":
+"mergician@npm:2.0.2":
   version: 2.0.2
   resolution: "mergician@npm:2.0.2"
   checksum: 10c0/ced960df3de520bef21caf219a6f7cc3efd8395719fb5cf5153361fd27913f9bbaf80ad301f2b6d43f7d0d4ff5d484fc223f3182cc12dc52b33b89063f83692e
@@ -6783,21 +6784,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"p-limit@npm:3.1.0, p-limit@npm:^3.0.0, p-limit@npm:^3.0.2, p-limit@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "p-limit@npm:3.1.0"
+  dependencies:
+    yocto-queue: "npm:^0.1.0"
+  checksum: 10c0/9db675949dbdc9c3763c89e748d0ef8bdad0afbb24d49ceaf4c46c02c77d30db4e0652ed36d0a0a7a95154335fab810d95c86153105bb73b3a90448e2bb14e1a
+  languageName: node
+  linkType: hard
+
 "p-limit@npm:^2.2.0":
   version: 2.3.0
   resolution: "p-limit@npm:2.3.0"
   dependencies:
     p-try: "npm:^2.0.0"
   checksum: 10c0/8da01ac53efe6a627080fafc127c873da40c18d87b3f5d5492d465bb85ec7207e153948df6b9cbaeb130be70152f874229b8242ee2be84c0794082510af97f12
-  languageName: node
-  linkType: hard
-
-"p-limit@npm:^3.0.0, p-limit@npm:^3.0.2, p-limit@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "p-limit@npm:3.1.0"
-  dependencies:
-    yocto-queue: "npm:^0.1.0"
-  checksum: 10c0/9db675949dbdc9c3763c89e748d0ef8bdad0afbb24d49ceaf4c46c02c77d30db4e0652ed36d0a0a7a95154335fab810d95c86153105bb73b3a90448e2bb14e1a
   languageName: node
   linkType: hard
 
@@ -7134,7 +7135,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"proper-lockfile@npm:^4.1.2":
+"proper-lockfile@npm:4.1.2":
   version: 4.1.2
   resolution: "proper-lockfile@npm:4.1.2"
   dependencies:
@@ -7514,7 +7515,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shell-quote@npm:^1.8.1":
+"shell-quote@npm:1.8.3":
   version: 1.8.3
   resolution: "shell-quote@npm:1.8.3"
   checksum: 10c0/bee87c34e1e986cfb4c30846b8e6327d18874f10b535699866f368ade11ea4ee45433d97bf5eada22c4320c27df79c3a6a7eb1bf3ecfc47f2c997d9e5e2672fd

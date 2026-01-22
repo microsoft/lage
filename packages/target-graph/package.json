@@ -17,8 +17,8 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "mergician": "^2.0.2",
-    "p-limit": "^3.1.0",
+    "mergician": "2.0.2",
+    "p-limit": "3.1.0",
     "workspace-tools": "0.40.4"
   },
   "devDependencies": {
