@@ -48,11 +48,11 @@ jobs:
       # @see https://www.npmjs.com/package/syncpack
       - name: Check consistent package.json dep versions
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.node == '22.x' }}
-        run: yarn syncpack list-mismatches
+        run: yarn syncpack:check
 
       - name: Dependency checks
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.node == '22.x' }}
-        run: yarn lage depcheck
+        run: yarn deps:check
 
       - name: Build, Test, Lint
         run: yarn ci --concurrency 2 --verbose
