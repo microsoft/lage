@@ -1644,6 +1644,8 @@ __metadata:
 "@lage-run/format-hrtime@workspace:^, @lage-run/format-hrtime@workspace:packages/format-hrtime":
   version: 0.0.0-use.local
   resolution: "@lage-run/format-hrtime@workspace:packages/format-hrtime"
+  dependencies:
+    "@lage-run/monorepo-scripts": "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -1651,6 +1653,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lage-run/globby@workspace:packages/globby"
   dependencies:
+    "@lage-run/monorepo-scripts": "workspace:^"
     dts-bundle-generator: "npm:^9.5.1"
     esbuild: "npm:^0.25.0"
     globby: "npm:^14.0.2"
@@ -1685,9 +1688,9 @@ __metadata:
     "@types/node": "npm:^16.18.3"
     beachball: "npm:2.60.1"
     fast-glob: "npm:3.3.3"
-    gh-pages: "npm:^5.0.0"
     husky: "npm:^9.1.5"
-    lage-npm: "npm:lage@<2.14.8"
+    jest: "npm:^30.0.0"
+    lage-npm: "npm:lage@<2.14.16"
     lint-staged: "npm:^16.0.0"
     patch-package: "npm:^8.0.0"
     prettier: "npm:^3.0.0"
@@ -1700,6 +1703,8 @@ __metadata:
 "@lage-run/logger@workspace:^, @lage-run/logger@workspace:packages/logger":
   version: 0.0.0-use.local
   resolution: "@lage-run/logger@workspace:packages/logger"
+  dependencies:
+    "@lage-run/monorepo-scripts": "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -1718,12 +1723,15 @@ __metadata:
   dependencies:
     "@swc/core": "npm:^1.9.1"
     "@swc/jest": "npm:^0.2.39"
+    "@types/jest": "npm:^30.0.0"
+    "@types/node": "npm:^16.18.3"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.7"
     "@typescript-eslint/parser": "npm:^5.30.7"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.20.0"
     eslint-plugin-file-extension-in-import-ts: "npm:^1.0.1"
     jest: "npm:^30.0.0"
+    typescript: "npm:~5.0.3"
     workspace-tools: "npm:0.40.4"
   bin:
     monorepo-scripts: bin/monorepo-scripts.js
@@ -1736,6 +1744,7 @@ __metadata:
   dependencies:
     "@lage-run/format-hrtime": "workspace:^"
     "@lage-run/logger": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/scheduler-types": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
     "@ms-cloudpack/task-reporter": "npm:0.17.4"
@@ -1757,7 +1766,6 @@ __metadata:
     "@connectrpc/connect-fastify": "npm:^1.4.0"
     "@connectrpc/connect-node": "npm:^1.4.0"
     "@connectrpc/protoc-gen-connect-es": "npm:^1.4.0"
-    "@lage-run/monorepo-scripts": "workspace:^"
     fastify: "npm:^4.28.1"
   languageName: unknown
   linkType: soft
@@ -2884,26 +2892,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"array-union@npm:^1.0.1":
-  version: 1.0.2
-  resolution: "array-union@npm:1.0.2"
-  dependencies:
-    array-uniq: "npm:^1.0.1"
-  checksum: 10c0/18686767c0cfdae8dc4acf5ac119b0f0eacad82b7fcc0aa62cc41f93c5ad406d494b6a6e53d85e52e8f0349b67a4fec815feeb537e95c02510d747bc9a4157c7
-  languageName: node
-  linkType: hard
-
 "array-union@npm:^2.1.0":
   version: 2.1.0
   resolution: "array-union@npm:2.1.0"
   checksum: 10c0/429897e68110374f39b771ec47a7161fc6a8fc33e196857c0a396dc75df0b5f65e4d046674db764330b6bb66b39ef48dd7c53b6a2ee75cfb0681e0c1a7033962
-  languageName: node
-  linkType: hard
-
-"array-uniq@npm:^1.0.1":
-  version: 1.0.3
-  resolution: "array-uniq@npm:1.0.3"
-  checksum: 10c0/3acbaf9e6d5faeb1010e2db04ab171b8d265889e46c61762e502979bdc5e55656013726e9a61507de3c82d329a0dc1e8072630a3454b4f2b881cb19ba7fd8aa6
   languageName: node
   linkType: hard
 
@@ -2925,13 +2917,6 @@ __metadata:
   version: 1.0.0
   resolution: "async-generator-function@npm:1.0.0"
   checksum: 10c0/2c50ef856c543ad500d8d8777d347e3c1ba623b93e99c9263ecc5f965c1b12d2a140e2ab6e43c3d0b85366110696f28114649411cbcd10b452a92a2318394186
-  languageName: node
-  linkType: hard
-
-"async@npm:^3.2.4":
-  version: 3.2.6
-  resolution: "async@npm:3.2.6"
-  checksum: 10c0/36484bb15ceddf07078688d95e27076379cc2f87b10c03b6dd8a83e89475a3c8df5848859dd06a4c95af1e4c16fc973de0171a77f18ea00be899aca2a4f85e70
   languageName: node
   linkType: hard
 
@@ -3509,20 +3494,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^2.18.0":
-  version: 2.20.3
-  resolution: "commander@npm:2.20.3"
-  checksum: 10c0/74c781a5248c2402a0a3e966a0a2bba3c054aad144f5c023364be83265e796b20565aa9feff624132ff629aa64e16999fa40a743c10c12f7c61e96a794b99288
-  languageName: node
-  linkType: hard
-
-"commondir@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "commondir@npm:1.0.1"
-  checksum: 10c0/33a124960e471c25ee19280c9ce31ccc19574b566dc514fe4f4ca4c34fa8b0b57cf437671f5de380e11353ea9426213fca17687dd2ef03134fea2dbc53809fd6
-  languageName: node
-  linkType: hard
-
 "concat-map@npm:0.0.1":
   version: 0.0.1
   resolution: "concat-map@npm:0.0.1"
@@ -3811,13 +3782,6 @@ __metadata:
   version: 1.5.267
   resolution: "electron-to-chromium@npm:1.5.267"
   checksum: 10c0/0732bdb891b657f2e43266a3db8cf86fff6cecdcc8d693a92beff214e136cb5c2ee7dc5945ed75fa1db16e16bad0c38695527a020d15f39e79084e0b2e447621
-  languageName: node
-  linkType: hard
-
-"email-addresses@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "email-addresses@npm:5.0.0"
-  checksum: 10c0/fc8a6f84e378bbe601ce39a3d8d86bc7e4584030ae9eb1938e12943f7fb5207e5fd7ae449cced3bea70968a519ade560d55ca170208c3f1413d7d25d8613a577
   languageName: node
   linkType: hard
 
@@ -4476,7 +4440,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"filenamify@npm:^4.1.0, filenamify@npm:^4.3.0":
+"filenamify@npm:^4.1.0":
   version: 4.3.0
   resolution: "filenamify@npm:4.3.0"
   dependencies:
@@ -4493,17 +4457,6 @@ __metadata:
   dependencies:
     to-regex-range: "npm:^5.0.1"
   checksum: 10c0/b75b691bbe065472f38824f694c2f7449d7f5004aa950426a2c28f0306c60db9b880c0b0e4ed819997ffb882d1da02cfcfc819bddc94d71627f5269682edf018
-  languageName: node
-  linkType: hard
-
-"find-cache-dir@npm:^3.3.1":
-  version: 3.3.2
-  resolution: "find-cache-dir@npm:3.3.2"
-  dependencies:
-    commondir: "npm:^1.0.1"
-    make-dir: "npm:^3.0.2"
-    pkg-dir: "npm:^4.1.0"
-  checksum: 10c0/92747cda42bff47a0266b06014610981cfbb71f55d60f2c8216bc3108c83d9745507fb0b14ecf6ab71112bed29cd6fb1a137ee7436179ea36e11287e3159e587
   languageName: node
   linkType: hard
 
@@ -4763,24 +4716,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gh-pages@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "gh-pages@npm:5.0.0"
-  dependencies:
-    async: "npm:^3.2.4"
-    commander: "npm:^2.18.0"
-    email-addresses: "npm:^5.0.0"
-    filenamify: "npm:^4.3.0"
-    find-cache-dir: "npm:^3.3.1"
-    fs-extra: "npm:^8.1.0"
-    globby: "npm:^6.1.0"
-  bin:
-    gh-pages: bin/gh-pages.js
-    gh-pages-clean: bin/gh-pages-clean.js
-  checksum: 10c0/dbd3937758160c33644cd38a69d7896f478d36ab1ba0b5da76f787e21d900b693598c3b4b2a3e9dd07200891811738edf4c61b9ce2bd1831d214f2ca28b85122
-  languageName: node
-  linkType: hard
-
 "git-up@npm:^8.1.0":
   version: 8.1.1
   resolution: "git-up@npm:8.1.1"
@@ -4893,7 +4828,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^7.0.3, glob@npm:^7.1.3, glob@npm:^7.1.4":
+"glob@npm:^7.1.3, glob@npm:^7.1.4":
   version: 7.2.3
   resolution: "glob@npm:7.2.3"
   dependencies:
@@ -4965,19 +4900,6 @@ __metadata:
     slash: "npm:^5.1.0"
     unicorn-magic: "npm:^0.3.0"
   checksum: 10c0/527a1063c5958255969620c6fa4444a2b2e9278caddd571d46dfbfa307cb15977afb746e84d682ba5b6c94fc081e8997f80ff05dd235441ba1cb16f86153e58e
-  languageName: node
-  linkType: hard
-
-"globby@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "globby@npm:6.1.0"
-  dependencies:
-    array-union: "npm:^1.0.1"
-    glob: "npm:^7.0.3"
-    object-assign: "npm:^4.0.1"
-    pify: "npm:^2.0.0"
-    pinkie-promise: "npm:^2.0.0"
-  checksum: 10c0/656ad1f0d02c6ef378c07589519ed3ec27fe988ea177195c05b8aff280320f3d67b91fa0baa6f7e49288f9bf1f92fc84f783a79ac3ed66278f3fa082e627ed84
   languageName: node
   linkType: hard
 
@@ -6147,9 +6069,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lage-npm@npm:lage@<2.14.8":
-  version: 2.14.7
-  resolution: "lage@npm:2.14.7"
+"lage-npm@npm:lage@<2.14.16":
+  version: 2.14.15
+  resolution: "lage@npm:2.14.15"
   dependencies:
     fsevents: "npm:~2.3.2"
     glob-hasher: "npm:^1.4.2"
@@ -6159,7 +6081,7 @@ __metadata:
   bin:
     lage: dist/lage.js
     lage-server: dist/lage-server.js
-  checksum: 10c0/f320432a42b97042c28dde39634b1639f72694e13a32ac1788ccad51caa2e59ee7cd661823ce2581da9b9328aefa0716023bad13af26c500b60840580a504ef2
+  checksum: 10c0/002644c5e0318eaa3ac54a3689427cef3d772ed00c824484ac9bdc643153ce97ee7ee14f8ef82f9afbc9749bbd43680528b06d743ee9abe0999ae6f6e0962b21
   languageName: node
   linkType: hard
 
@@ -6168,6 +6090,7 @@ __metadata:
   resolution: "lage@workspace:packages/lage"
   dependencies:
     "@lage-run/cli": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/runners": "workspace:^"
     backfill-config: "npm:6.7.1"
     dts-bundle-generator: "npm:^9.5.1"
@@ -6377,15 +6300,6 @@ __metadata:
   dependencies:
     "@jridgewell/sourcemap-codec": "npm:^1.5.5"
   checksum: 10c0/299378e38f9a270069fc62358522ddfb44e94244baa0d6a8980ab2a9b2490a1d03b236b447eee309e17eb3bddfa482c61259d47960eb018a904f0ded52780c4a
-  languageName: node
-  linkType: hard
-
-"make-dir@npm:^3.0.2":
-  version: 3.1.0
-  resolution: "make-dir@npm:3.1.0"
-  dependencies:
-    semver: "npm:^6.0.0"
-  checksum: 10c0/56aaafefc49c2dfef02c5c95f9b196c4eb6988040cf2c712185c7fe5c99b4091591a7fc4d4eafaaefa70ff763a26f6ab8c3ff60b9e75ea19876f49b18667ecaa
   languageName: node
   linkType: hard
 
@@ -6780,13 +6694,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-assign@npm:^4.0.1":
-  version: 4.1.1
-  resolution: "object-assign@npm:4.1.1"
-  checksum: 10c0/1f4df9945120325d041ccf7b86f31e8bcc14e73d29171e37a7903050e96b81323784ec59f93f102ec635bcf6fa8034ba3ea0a8c7e69fa202b87ae3b6cec5a414
-  languageName: node
-  linkType: hard
-
 "object-keys@npm:^1.1.1":
   version: 1.1.1
   resolution: "object-keys@npm:1.1.1"
@@ -7098,29 +7005,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pify@npm:^2.0.0":
-  version: 2.3.0
-  resolution: "pify@npm:2.3.0"
-  checksum: 10c0/551ff8ab830b1052633f59cb8adc9ae8407a436e06b4a9718bcb27dc5844b83d535c3a8512b388b6062af65a98c49bdc0dd523d8b2617b188f7c8fee457158dc
-  languageName: node
-  linkType: hard
-
-"pinkie-promise@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "pinkie-promise@npm:2.0.1"
-  dependencies:
-    pinkie: "npm:^2.0.0"
-  checksum: 10c0/11b5e5ce2b090c573f8fad7b517cbca1bb9a247587306f05ae71aef6f9b2cd2b923c304aa9663c2409cfde27b367286179f1379bc4ec18a3fbf2bb0d473b160a
-  languageName: node
-  linkType: hard
-
-"pinkie@npm:^2.0.0":
-  version: 2.0.4
-  resolution: "pinkie@npm:2.0.4"
-  checksum: 10c0/25228b08b5597da42dc384221aa0ce56ee0fbf32965db12ba838e2a9ca0193c2f0609c45551ee077ccd2060bf109137fdb185b00c6d7e0ed7e35006d20fdcbc6
-  languageName: node
-  linkType: hard
-
 "pino-abstract-transport@npm:^2.0.0":
   version: 2.0.0
   resolution: "pino-abstract-transport@npm:2.0.0"
@@ -7165,7 +7049,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkg-dir@npm:^4.1.0, pkg-dir@npm:^4.2.0":
+"pkg-dir@npm:^4.2.0":
   version: 4.2.0
   resolution: "pkg-dir@npm:4.2.0"
   dependencies:
@@ -7587,7 +7471,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^6.0.0, semver@npm:^6.3.1":
+"semver@npm:^6.3.1":
   version: 6.3.1
   resolution: "semver@npm:6.3.1"
   bin:
