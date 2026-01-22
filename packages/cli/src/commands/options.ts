@@ -78,7 +78,7 @@ const optionsWithEnv = addEnvOptions(options);
 
 function addEnvOptions(opts: typeof options) {
   for (const key in opts) {
-    for (const [name, option] of Object.entries<Option>(opts[key])) {
+    for (const [name, option] of Object.entries<Option>((opts as any)[key])) {
       // convert the camel cased name to uppercase with underscores
       const upperCaseSnakeKey = key.replace(/([A-Z])/g, "_$1").toUpperCase();
       const upperCaseSnakeName = name.replace(/([A-Z])/g, "_$1").toUpperCase();

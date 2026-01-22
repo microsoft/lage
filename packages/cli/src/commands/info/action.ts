@@ -315,7 +315,7 @@ function generateCommand(
   return [];
 }
 
-function getWorkingDirectory(target) {
+function getWorkingDirectory(target: Target) {
   const cwd = process.cwd();
   const workingDirectory = path.relative(getWorkspaceRoot(cwd) ?? "", target.cwd).replace(/\\/g, "/");
   return workingDirectory;

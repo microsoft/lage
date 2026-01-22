@@ -46,7 +46,7 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
       terminal: false,
     });
 
-    const lineLogger = (line) => {
+    const lineLogger = (line: string) => {
       this.log(level, line, data);
     };
 

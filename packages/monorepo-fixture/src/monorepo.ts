@@ -188,7 +188,7 @@ export class Monorepo {
   }
 
   async readFiles(files: string[]) {
-    const contents = {};
+    const contents: Record<string, string> = {};
     for (const file of files) {
       const fullPath = path.isAbsolute(file) ? file : path.join(this.root, file);
       if (!existsSync(fullPath)) {
