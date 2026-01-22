@@ -37,7 +37,7 @@
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^16.18.3",
-    "beachball": "2.60.1",
+    "beachball": "2.62.0",
     "fast-glob": "3.3.3",
     "gh-pages": "^5.0.0",
     "husky": "^9.1.5",
