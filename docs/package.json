@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^1.2.0",
-    "@docusaurus/core": "^3.0.0",
-    "@docusaurus/plugin-client-redirects": "^3.7.0",
-    "@docusaurus/preset-classic": "^3.0.0",
-    "@docusaurus/theme-mermaid": "^3.7.0",
+    "@docusaurus/core": "3.8.1",
+    "@docusaurus/plugin-client-redirects": "3.8.1",
+    "@docusaurus/preset-classic": "3.8.1",
+    "@docusaurus/theme-mermaid": "3.8.1",
     "@mdx-js/react": "^3.1.0",
     "@tailwindcss/postcss": "^4.0.17",
     "@tsconfig/docusaurus": "^2.0.3",
@@ -28,7 +28,17 @@
     "typescript": "^5.0.0"
   },
   "resolutions": {
+    "@algolia/autocomplete-js@npm:^1.8.2": "1.17.9",
     "@cmfcmf/docusaurus-search-local@npm:1.2.0/cheerio": "1.0.0-rc.12"
+  },
+  "rationale": {
+    "dependencies": {
+      "@docusaurus/*@3.8.1": "3.9.0 introduces a Node 20 requirement"
+    },
+    "resolutions": {
+      "@algolia/autocomplete-js@npm:^1.8.2": "prevent pulling in tree that introduces versions inconsistent with @docsearch/react's old pinned deps",
+      "@cmfcmf/docusaurus-search-local@npm:1.2.0/cheerio": "docusaurus depends on a specific file path that was removed after this version"
+    }
   },
   "browserslist": {
     "production": [
