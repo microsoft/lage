@@ -8,7 +8,7 @@ import {
   VerboseFileLogReporter,
   ChromeTraceEventsReporter,
 } from "@lage-run/reporters";
-import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
+import type { BuiltInReporterName, ReporterInitOptions } from "../types/ReporterInitOptions.js";
 import type { Reporter } from "@lage-run/logger";
 import { findPackageRoot } from "workspace-tools";
 import { readFileSync } from "fs";
@@ -28,7 +28,7 @@ export async function createReporter(
   const packageJson = JSON.parse(readFileSync(path.join(root, "package.json"), "utf-8"));
   const version = packageJson.version;
 
-  switch (reporter) {
+  switch (reporter as BuiltInReporterName) {
     case "profile":
       return new ChromeTraceEventsReporter({
         concurrency,
@@ -50,39 +50,38 @@ export async function createReporter(
     case "verboseFileLog":
     case "vfl":
       return new VerboseFileLogReporter(logFile);
-
-    default:
-      // Check if it's a custom reporter defined in config
-      if (customReporters && customReporters[reporter]) {
-        const reporterPath = customReporters[reporter];
-        const resolvedPath = path.isAbsolute(reporterPath) ? reporterPath : path.resolve(process.cwd(), reporterPath);
-
-        try {
-          // Use dynamic import to load the custom reporter module
-          // This works with both ESM (.mjs, .js with type: module) and CommonJS (.cjs, .js) files
-          const reporterModule = await import(pathToFileURL(resolvedPath).href);
-
-          // Try different export patterns
-          const ReporterClass = reporterModule.default ?? reporterModule[reporter] ?? reporterModule;
-
-          if (typeof ReporterClass === "function") {
-            return new ReporterClass(options);
-          } else if (typeof ReporterClass === "object" && ReporterClass !== null) {
-            // If it's already an instance
-            return ReporterClass;
-          } else {
-            throw new Error(`Custom reporter "${reporter}" at "${resolvedPath}" does not export a valid reporter class or instance.`);
-          }
-        } catch (error) {
-          throw new Error(`Failed to load custom reporter "${reporter}" from "${resolvedPath}": ${error}`);
-        }
-      }
-
-      // Default reporter behavior
-      if (progress && isInteractive() && !(logLevel >= LogLevel.verbose || verbose || grouped)) {
-        return new BasicReporter({ concurrency, version });
-      }
-
-      return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
   }
+
+  // Check if it's a custom reporter defined in config
+  if (customReporters && customReporters[reporter]) {
+    const reporterPath = customReporters[reporter];
+    const resolvedPath = path.isAbsolute(reporterPath) ? reporterPath : path.resolve(process.cwd(), reporterPath);
+
+    try {
+      // Use dynamic import to load the custom reporter module
+      // This works with both ESM (.mjs, .js with type: module) and CommonJS (.cjs, .js) files
+      const reporterModule = await import(pathToFileURL(resolvedPath).href);
+
+      // Try different export patterns
+      const ReporterClass = reporterModule.default ?? reporterModule[reporter] ?? reporterModule;
+
+      if (typeof ReporterClass === "function") {
+        return new ReporterClass(options);
+      } else if (typeof ReporterClass === "object" && ReporterClass !== null) {
+        // If it's already an instance
+        return ReporterClass;
+      } else {
+        throw new Error(`Custom reporter "${reporter}" at "${resolvedPath}" does not export a valid reporter class or instance.`);
+      }
+    } catch (error) {
+      throw new Error(`Failed to load custom reporter "${reporter}" from "${resolvedPath}": ${error}`);
+    }
+  }
+
+  // Default reporter behavior
+  if (progress && isInteractive() && !(logLevel >= LogLevel.verbose || verbose || grouped)) {
+    return new BasicReporter({ concurrency, version });
+  }
+
+  return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
 }
