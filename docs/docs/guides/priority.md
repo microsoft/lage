@@ -25,19 +25,18 @@ module.exports = {
 
 ## Legacy (v1 + v2) way of configuring priority
 
-To manually pick a package task to be higher priority, simply place a [`priorities` configuration](../reference/config.md) in the `lage.config.js`:
+To manually pick a package task to be higher priority, simply add a [`priorities` configuration](../reference/config.md) in the `lage.config.js`:
 
 ```js
 module.exports = {
-  pipeline: { ... },
   priorities: [
     {
-      package: 'foo',
-      task: 'test',
+      package: "foo",
+      task: "test",
       priority: 100
     }
   ]
-}
+};
 ```
 
 The higher the priority number, the higher the priority. These numbers are relative to each other. Any task that is not listed in the priorities array is not prioritized.
