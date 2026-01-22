@@ -48,7 +48,7 @@ const { readFile } = require("fs/promises");
 /** this is the workspace root - find it however you want! */
 const PROJECT_ROOT = path.resolve(__dirname, "../..");
 
-/** @type {ESLint} */
+/** @type {ESLint|null} */
 let eslintInstance = null;
 
 /** caches an ESLint instance for the worker */
