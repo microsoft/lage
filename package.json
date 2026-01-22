@@ -37,7 +37,7 @@
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^16.18.3",
-    "beachball": "^2.47.1",
+    "beachball": "2.60.1",
     "fast-glob": "3.3.3",
     "gh-pages": "^5.0.0",
     "husky": "^9.1.5",
@@ -56,6 +56,9 @@
     "listr2@npm:^9.0.5": "9.0.3"
   },
   "rationale": {
+    "devDependencies": {
+      "beachball@2.60.1": "pin version until major release to fix tar issue"
+    },
     "resolutions": {
       "node-gyp@npm:latest": "Stop pulling in other newer deps",
       "listr2@npm:^9.0.5": "Prevent pulling in cli-truncate@5 => string-width@8 which requires Node 20"
