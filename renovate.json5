@@ -17,20 +17,6 @@
     // incorrect manager is being used for fixtures, and most of them don't have real deps anyway
     "**/__fixtures__/**"
   ],
-  "customManagers": [
-    {
-      // Handle updates for the lage-npm dev dep: it's set to the version < the current one because
-      // otherwise yarn v4 dedupes it with the local version, which won't work if the local version
-      // hasn't been built yet.
-      "customType": "regex",
-      "managerFilePatterns": ["/^package.json$/"],
-      "matchStrings": ["lage-npm\": \"lage@(?<currentValue>[<]\\d+\\.\\d+\\.\\d+)"],
-      "depNameTemplate": "lage-npm",
-      "packageNameTemplate": "lage",
-      "datasourceTemplate": "npm",
-      "depTypeTemplate": "devDependencies"
-    }
-  ],
   "packageRules": [
     {
       "groupName": "Docusaurus packages",
