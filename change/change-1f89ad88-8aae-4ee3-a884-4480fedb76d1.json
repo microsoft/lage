@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "none",
+      "comment": "Update tsconfig internals for dts bundle setup",
+      "packageName": "@lage-run/globby",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Update tsconfig internals for dts bundle setup",
+      "packageName": "lage",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    }
+  ]
+}

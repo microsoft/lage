@@ -34,7 +34,10 @@
   "packageRules": [
     {
       "groupName": "Docusaurus packages",
-      "matchPackageNames": ["docusaurus*", "@docusaurus/*"]
+      "matchPackageNames": ["docusaurus*", "@docusaurus/*"],
+      // Disable updates until lage updates from Node 18 to a newer version
+      // (newer than the specified docusaurus requires Node 20 without proper "engines" field)
+      "enabled": false
     },
     {
       "groupName": "connectrpc packages",
