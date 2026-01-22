@@ -1,1 +1,1 @@
-export * from "./monorepo.js";
+export { Monorepo } from "./monorepo.js";
