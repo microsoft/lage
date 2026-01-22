@@ -27,9 +27,9 @@ export class FileHasher {
     this.#manifestFile = path.join(cacheDirectory, "file_hashes.manifest");
   }
 
-  async getHashesFromGit() {
+  private async getHashesFromGit() {
     const { root } = this.options;
-    const fileHashes = await getPackageDeps(root);
+    const fileHashes = getPackageDeps(root);
     const files = [...fileHashes.keys()];
     const fileStats = stat(files, { cwd: root }) ?? {};
 

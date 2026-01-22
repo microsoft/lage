@@ -31,7 +31,7 @@ export class PackageTree {
 
   constructor(private options: PackageTreeOptions) {}
 
-  reset() {
+  private reset() {
     // reset the internal state
     this.#tree = { children: {}, isPackage: true };
     this.#packageFiles = {};
@@ -77,7 +77,7 @@ export class PackageTree {
     }
   }
 
-  addToPackageTree(filePaths: string[]) {
+  private addToPackageTree(filePaths: string[]) {
     // key: path/to/package (packageRoot), value: array of a tuple of [file, hash]
     const packageFiles = this.#packageFiles;
 
