@@ -5,12 +5,15 @@ import {
   type ReporterInitOptions,
   type ReporterName,
   builtInReporterNames,
+  logBuiltInReporterNames,
 } from "../types/ReporterInitOptions.js";
 
 export async function initializeReporters(logger: Logger, options: ReporterInitOptions, customReporters: Record<string, string> = {}) {
+  const customReporterNames = Object.keys(customReporters);
+
   // Mapping from lowercase reporter name to original name
   const supportedReportersLower = Object.fromEntries(
-    [...builtInReporterNames, ...Object.keys(customReporters)].map((name) => [name.toLowerCase(), name])
+    [...builtInReporterNames, ...customReporterNames].map((name) => [name.toLowerCase(), name])
   );
 
   // filter out falsy values (e.g. undefined) from the reporter array
@@ -30,9 +33,8 @@ export async function initializeReporters(logger: Logger, options: ReporterInitO
     // Validate the given name, but be flexible about the casing
     const reporterName = supportedReportersLower[rawReporterName.toLowerCase()];
     if (!reporterName) {
-      throw new Error(
-        `Invalid --reporter option: "${rawReporterName}". Supported reporters are: ${Object.keys(supportedReportersLower).join(", ")}`
-      );
+      const reportersList = [...logBuiltInReporterNames, ...customReporterNames].join(", ");
+      throw new Error(`Invalid --reporter option: "${rawReporterName}". Supported reporters are: ${reportersList}`);
     }
 
     const reporterInstance = await createReporter(reporterName, options, customReporters);

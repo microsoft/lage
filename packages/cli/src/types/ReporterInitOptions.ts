@@ -15,19 +15,27 @@ export type BuiltInReporterName =
 /** Built-in or custom reporter name */
 export type ReporterName = BuiltInReporterName | string;
 
-export const builtInReporterNames = Object.keys({
+/** Whether each built-in reporter name should be listed in doc output */
+const shouldListBuiltInReporters: Record<BuiltInReporterName, boolean> = {
   json: true,
   azureDevops: true,
   npmLog: true,
   verboseFileLog: true,
   vfl: true,
   adoLog: true,
-  old: true,
-  default: true,
-  profile: true,
   fancy: true,
-  // This verifies all reporters are listed
-} satisfies Record<BuiltInReporterName, true>);
+  default: true,
+  // Not encouraged
+  old: false,
+  // Intended to be set via --profile
+  profile: false,
+};
+
+/** All the built-in reporter names */
+export const builtInReporterNames = Object.keys(shouldListBuiltInReporters);
+
+/** Built-in reporter names that should be listed in doc output */
+export const logBuiltInReporterNames = builtInReporterNames.filter((name) => shouldListBuiltInReporters[name as BuiltInReporterName]);
 
 export interface ReporterInitOptions {
   reporter: ReporterName[] | ReporterName | undefined;

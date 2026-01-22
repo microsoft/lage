@@ -2,7 +2,7 @@
   "changes": [
     {
       "type": "patch",
-      "comment": "Better validation and docs of reporter names",
+      "comment": "Better validation and docs of reporter names. If you were using an invalid reporter name by accident, Lage will now exit with an error.",
       "packageName": "@lage-run/cli",
       "email": "elcraig@microsoft.com",
       "dependentChangeType": "patch"

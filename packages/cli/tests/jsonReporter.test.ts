@@ -9,8 +9,16 @@ const testObject = {
 };
 
 describe("json reporter", () => {
-  it("indentedFalseShouldLogCondensed", async () => {
+  beforeAll(() => {
+    jest.spyOn(console, "log").mockImplementation(() => {});
     jest.spyOn(Date, "now").mockImplementation(() => 0);
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("uses condensed output with indented: false", async () => {
     const logSpy = jest.spyOn(console, "log");
 
     const logger = new Logger();
@@ -32,8 +40,7 @@ describe("json reporter", () => {
     jest.clearAllMocks();
   });
 
-  it("indentedTrueShouldLogCondensed", async () => {
-    jest.setSystemTime(new Date("2020-01-01"));
+  it("formats output with indented: true", async () => {
     const logSpy = jest.spyOn(console, "log");
 
     const logger = new Logger();

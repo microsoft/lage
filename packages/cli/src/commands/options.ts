@@ -1,13 +1,11 @@
 import { Option } from "commander";
-import { builtInReporterNames } from "../types/ReporterInitOptions.js";
+import { logBuiltInReporterNames } from "../types/ReporterInitOptions.js";
 
 const isCI = process.env.CI || process.env.TF_BUILD;
 
-const reporterChoices = builtInReporterNames.filter((n) => n !== "default" && n !== "profile");
-
 const options = {
   logger: {
-    reporter: new Option("--reporter <reporter...>", `log reporter (built-in choices: ${reporterChoices.join(", ")})`),
+    reporter: new Option("--reporter <reporter...>", `log reporter (built-in choices: ${logBuiltInReporterNames.join(", ")})`),
     grouped: new Option("--grouped", "groups the logs").default(false),
     progress: new Option("--progress").conflicts(["reporter", "grouped", "verbose"]).default(!isCI),
     logLevel: new Option("--log-level <level>", "log level").choices(["info", "warn", "error", "verbose", "silly"]).conflicts("verbose"),
