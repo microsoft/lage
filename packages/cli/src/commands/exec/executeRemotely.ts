@@ -9,7 +9,7 @@ import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { simulateFileAccess } from "./simulateFileAccess.js";
 import { parseServerOption } from "../parseServerOption.js";
 import { getConfig } from "@lage-run/config";
-import { getWorkspaceRoot } from "workspace-tools";
+import { getWorkspaceManagerRoot } from "workspace-tools";
 import type { Command } from "commander";
 import { launchServerInBackground } from "../launchServerInBackground.js";
 
@@ -108,7 +108,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
   options.reporter = options.reporter ?? "json";
   await initializeReporters(logger, options, config.reporters);
 
-  const root = getWorkspaceRoot(options.cwd ?? process.cwd())!;
+  const root = getWorkspaceManagerRoot(options.cwd ?? process.cwd())!;
 
   let client = await tryCreateClient(host, port);
   const args = command.args;

@@ -2,7 +2,7 @@ import { type ConfigOptions, getConfig, getConcurrency, getMaxWorkersPerTask } f
 import type { Logger } from "@lage-run/logger";
 import { ConnectError, Code, type ILageService } from "@lage-run/rpc";
 import { getStartTargetId, getTargetId, type TargetGraph } from "@lage-run/target-graph";
-import { type DependencyMap, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { type DependencyMap, getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
 import { type Readable } from "stream";
 import { type Pool, AggregatedPool } from "@lage-run/worker-threads-pool";
@@ -53,7 +53,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
   }
 
   const config = await getConfig(cwd);
-  const root = getWorkspaceRoot(cwd)!;
+  const root = getWorkspaceManagerRoot(cwd)!;
   const maxWorkers = getConcurrency(concurrency, config.concurrency);
 
   logger.info(`Initializing with ${maxWorkers} workers, tasks: ${tasks.join(", ")}`);

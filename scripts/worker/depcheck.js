@@ -1,5 +1,6 @@
-const { getWorkspaceRoot } = require("workspace-tools");
-const root = getWorkspaceRoot(process.cwd());
+const { findProjectRoot } = require("workspace-tools");
+
+const root = findProjectRoot(process.cwd());
 const path = require("path");
 
 const depcheck = require("depcheck");
