@@ -22,7 +22,7 @@
     "@lage-run/target-graph": "workspace:^",
     "backfill-config": "6.7.1",
     "cosmiconfig": "7.1.0",
-    "workspace-tools": "0.40.3"
+    "workspace-tools": "0.40.4"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^"

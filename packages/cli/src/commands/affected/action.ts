@@ -1,5 +1,5 @@
 import createLogger from "@lage-run/logger";
-import { getPackageInfosAsync, getWorkspaceRoot, type PackageInfos } from "workspace-tools";
+import { getPackageInfosAsync, getWorkspaceManagerRoot, type PackageInfos } from "workspace-tools";
 import { getConfig } from "@lage-run/config";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import type { FilterOptions } from "../../types/FilterOptions.js";
@@ -15,7 +15,7 @@ export async function affectedAction(options: AffectedOptions) {
   const config = await getConfig(cwd);
   const logger = createLogger();
 
-  const root = getWorkspaceRoot(cwd)!;
+  const root = getWorkspaceManagerRoot(cwd)!;
   const packageInfos = await getPackageInfosAsync(root);
 
   const packages = getFilteredPackages({
@@ -79,7 +79,7 @@ function renderGraph(props: { packages: string[]; packageInfos: PackageInfos }) 
   return `
 digraph affected {
 ${adjacencies.map((entry) => `  "${entry[0]}" -> "${entry[1]}"`).join("\n")}
-}  
+}
 `;
 }
 
