@@ -2,6 +2,27 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Thu, 15 Jan 2026 23:24:00 GMT",
+      "version": "0.12.1",
+      "tag": "@lage-run/target-graph_v0.12.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/target-graph",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Update dependency workspace-tools to v0.40.0"
+          },
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Add lint rule for no-floating-promises and fix several places"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 01 Sep 2025 08:10:36 GMT",
       "version": "0.12.0",
       "tag": "@lage-run/target-graph_v0.12.0",

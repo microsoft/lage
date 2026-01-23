@@ -2,7 +2,7 @@ import { type LogEntry, type Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 import chalk from "chalk";
-import gradient from "gradient-string";
+import { gradient } from "./gradient.js";
 import { formatDuration, hrToSeconds } from "@lage-run/format-hrtime";
 import { formatBytes } from "./formatBytes.js";
 

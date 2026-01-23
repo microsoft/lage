@@ -20,25 +20,27 @@
     "release": "beachball publish -y --tag latest",
     "test": "lage test --verbose",
     "lint": "lage lint",
+    "deps:check": "lage depcheck",
     "decks:build": "npm exec --package=@marp-team/marp-cli -- marp -I decks --pdf -o decks/dist",
     "docs": "yarn --cwd docs start",
     "docs:install": "yarn --cwd docs",
     "docs:build": "yarn --cwd docs build",
     "docs:test": "yarn --cwd docs build",
-    "gh-pages": "gh-pages",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "syncpack:check": "syncpack list-mismatches",
+    "syncpack:update": "syncpack fix-mismatches",
     "prepare": "husky",
     "postinstall": "patch-package"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^16.18.3",
-    "beachball": "^2.47.1",
+    "beachball": "2.60.1",
     "fast-glob": "3.3.3",
-    "gh-pages": "^5.0.0",
     "husky": "^9.1.5",
-    "lage-npm": "npm:lage@<2.14.8",
+    "jest": "^30.0.0",
+    "lage-npm": "npm:lage@<2.14.16",
     "lint-staged": "^16.0.0",
     "patch-package": "^8.0.0",
     "prettier": "^3.0.0",
@@ -49,7 +51,17 @@
   "resolutions": {
     "@types/node@npm:*": "^16.0.0",
     "typescript@npm:>=5.0.2": "~5.0.3",
-    "jest-mock@npm:30.0.5": "patch:jest-mock@npm%3A30.0.5#~/.yarn/patches/jest-mock-npm-30.0.5-0573f7a688.patch"
+    "node-gyp@npm:latest": "^11.0.0",
+    "listr2@npm:^9.0.5": "9.0.3"
+  },
+  "rationale": {
+    "devDependencies": {
+      "beachball@2.60.1": "pin version until major release to fix tar issue"
+    },
+    "resolutions": {
+      "node-gyp@npm:latest": "Stop pulling in other newer deps",
+      "listr2@npm:^9.0.5": "Prevent pulling in cli-truncate@5 => string-width@8 which requires Node 20"
+    }
   },
   "lint-staged": {
     "!(*test).{ts,js}": "eslint --fix",

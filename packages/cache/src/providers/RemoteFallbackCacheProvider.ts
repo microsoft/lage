@@ -72,11 +72,11 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
     await Promise.all(putPromises);
   }
 
-  private isRemoteHit(hash) {
+  private isRemoteHit(hash: string) {
     return hash in RemoteFallbackCacheProvider.remoteHits && RemoteFallbackCacheProvider.remoteHits[hash];
   }
 
-  private isLocalHit(hash) {
+  private isLocalHit(hash: string) {
     return hash in RemoteFallbackCacheProvider.localHits && RemoteFallbackCacheProvider.localHits[hash];
   }
 

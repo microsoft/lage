@@ -2,7 +2,7 @@ import { getConfig } from "@lage-run/config";
 import { TargetFactory } from "@lage-run/target-graph";
 import path from "path";
 import fs from "fs";
-import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { expandTargetDefinition } from "./expandTargetDefinition.js";
 import { TargetRunnerPicker } from "@lage-run/runners";
@@ -81,7 +81,7 @@ function parsePackageInfoFromArgs(root: string, cwd: string | undefined, package
 }
 
 export async function executeInProcess({ cwd, args, nodeArg, logger }: ExecuteInProcessOptions) {
-  const root = getWorkspaceRoot(process.cwd())!;
+  const root = getWorkspaceManagerRoot(process.cwd())!;
   const config = await getConfig(root);
   const { pipeline } = config;
 

@@ -1,0 +1,12 @@
+// This is only used for dts-bundle-generator validation
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    // dts-bundle-generator checks with skipLibCheck: true to validate the dts bundle.
+    // This causes an error with typescript ~5.0.3 and newer jest types due to a reference to the
+    // built-in lib esnext.disposable in jest-mock types. Jest types aren't needed for these bundles,
+    // so just remove them.
+    "types": ["node"]
+  },
+  "include": []
+}

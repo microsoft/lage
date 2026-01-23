@@ -161,7 +161,7 @@ You can pick the reporter by passing the `--reporter` flag:
 lage build --reporter json
 ```
 
-Available built-in reporters are: `azureDevops`, `default`, `fancy`, `json`, `npmLog`, `verboseFileLog` (or `vfl`), and `profile`. By default the log messages are formatted with the "default" reporter.
+Available built-in reporters are: `default`, `azureDevops`, `fancy`, `json`, `npmLog`, `verboseFileLog` (or `vfl`), and `profile`. By default the log messages are formatted with the `default` reporter. The `profile` reporter is typically activated with the `--profile` option.
 
 #### Custom Reporters
 

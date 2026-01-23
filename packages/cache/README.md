@@ -9,13 +9,14 @@ This package provides:
 
 ```ts
 import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
+import { getWorkspaceManagerRoot } from "workspace-tools";
 
 const cacheOptions = {
   internalCacheFolder: ".cache",
   outputGlob: ["dist/**", "lib/**"]
 }
 
-const root = getWorkspaceRoot(cwd);
+const root = getWorkspaceManagerRoot(cwd);
 
 const remoteFallbackCacheProviderOptions = {
   root,

@@ -1,10 +1,9 @@
 import path from "path";
 
-import { PackageTree, TargetHasher } from "../index";
-import fs from "fs";
+import { PackageTree } from "../index";
 import { Monorepo } from "@lage-run/monorepo-fixture";
-import { Target } from "@lage-run/target-graph";
 import { getPackageInfos } from "workspace-tools";
+
 const fixturesPath = path.join(__dirname, "..", "__fixtures__");
 
 describe("PackageTree", () => {

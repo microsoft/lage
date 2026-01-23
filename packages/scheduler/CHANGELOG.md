@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-<!-- This log was last generated on Tue, 04 Feb 2025 18:31:49 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.5.15
+
+Thu, 15 Jan 2026 23:24:00 GMT
+
+### Patches
+
+- Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
 
 ## 1.5.1
 

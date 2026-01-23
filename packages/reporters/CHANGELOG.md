@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Sun, 31 Aug 2025 08:08:39 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.6
+
+Thu, 15 Jan 2026 23:24:00 GMT
+
+### Patches
+
+- Replace ProgressReporter as the default with a less fancy implementation (crhaglun@microsoft.com)
 
 ## 1.3.4
 

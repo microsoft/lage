@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/rpc",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "RPC server and client for Lage",
   "repository": {
     "type": "git",
@@ -25,8 +25,7 @@
   "devDependencies": {
     "@bufbuild/buf": "^1.39.0",
     "@bufbuild/protoc-gen-es": "^1.10.0",
-    "@connectrpc/protoc-gen-connect-es": "^1.4.0",
-    "@lage-run/monorepo-scripts": "workspace:^"
+    "@connectrpc/protoc-gen-connect-es": "^1.4.0"
   },
   "publishConfig": {
     "access": "public"

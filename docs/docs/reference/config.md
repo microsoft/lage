@@ -25,9 +25,9 @@ Roll over the various properties to tour the different configs
 
 ```js twoslash title="/lage.config.js"
 /// <reference types="node" />
-/** @type {import("@lage-run/cli").ConfigOptions} */
 // ---cut---
-module.exports = {
+/** @type {import("lage").ConfigOptions} */
+const config = {
   pipeline: {
     build: ["^build"],
     test: {
@@ -96,4 +96,6 @@ module.exports = {
    */
   repoWideChanges: ["yarn.lock"]
 };
+
+module.exports = config;
 ```

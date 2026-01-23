@@ -1,8 +1,16 @@
 # Change Log - @lage-run/rpc
 
-<!-- This log was last generated on Sat, 29 Mar 2025 02:16:38 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.1
+
+Thu, 15 Jan 2026 23:24:00 GMT
+
+### Patches
+
+- Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
 
 ## 1.4.0
 
