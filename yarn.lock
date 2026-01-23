@@ -1686,7 +1686,7 @@ __metadata:
   dependencies:
     "@types/jest": "npm:^30.0.0"
     "@types/node": "npm:^16.18.3"
-    beachball: "npm:2.60.1"
+    beachball: "npm:^2.63.0"
     fast-glob: "npm:3.3.3"
     husky: "npm:^9.1.5"
     jest: "npm:^30.0.0"
@@ -3081,24 +3081,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"beachball@npm:2.60.1":
-  version: 2.60.1
-  resolution: "beachball@npm:2.60.1"
+"beachball@npm:^2.63.0":
+  version: 2.63.0
+  resolution: "beachball@npm:2.63.0"
   dependencies:
     cosmiconfig: "npm:^9.0.0"
     execa: "npm:^5.0.0"
-    fs-extra: "npm:^11.1.1"
     minimatch: "npm:^3.0.4"
     p-graph: "npm:^1.1.2"
     p-limit: "npm:^3.0.2"
     prompts: "npm:^2.4.2"
     semver: "npm:^7.0.0"
     toposort: "npm:^2.0.2"
-    workspace-tools: "npm:^0.40.0"
+    workspace-tools: "npm:^0.40.2"
     yargs-parser: "npm:^21.0.0"
   bin:
     beachball: bin/beachball.js
-  checksum: 10c0/3552d854862cf6aa01d66b19d4d438327ee4bd1487df07d4cbcbc3ea0f8199bb06421499c6a5220653d196912d878a247f7638f59dd5f5df1e63975010eaf556
+  checksum: 10c0/d54af46a4db621550bb766a2e26e5fe1b1bd36846c5114fc16a4f5aeaca732be98dc39eaf6f4264a45ec4e70db0ba23a1463a3926ea91755469edbcae0a6690c
   languageName: node
   linkType: hard
 
@@ -4576,17 +4575,6 @@ __metadata:
     jsonfile: "npm:^6.0.1"
     universalify: "npm:^2.0.0"
   checksum: 10c0/5f579466e7109719d162a9249abbeffe7f426eb133ea486e020b89bc6d67a741134076bf439983f2eb79276ceaf6bd7b7c1e43c3fd67fe889863e69072fb0a5e
-  languageName: node
-  linkType: hard
-
-"fs-extra@npm:^11.1.1":
-  version: 11.3.3
-  resolution: "fs-extra@npm:11.3.3"
-  dependencies:
-    graceful-fs: "npm:^4.2.0"
-    jsonfile: "npm:^6.0.1"
-    universalify: "npm:^2.0.0"
-  checksum: 10c0/984924ff4104e3e9f351b658a864bf3b354b2c90429f57aec0acd12d92c4e6b762cbacacdffb4e745b280adce882e1f980c485d9f02c453f769ab4e7fc646ce3
   languageName: node
   linkType: hard
 
@@ -8430,7 +8418,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"workspace-tools@npm:0.40.4, workspace-tools@npm:^0.40.0":
+"workspace-tools@npm:0.40.4, workspace-tools@npm:^0.40.2":
   version: 0.40.4
   resolution: "workspace-tools@npm:0.40.4"
   dependencies:
