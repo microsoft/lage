@@ -31,7 +31,7 @@ interface RunOptions extends ReporterInitOptions, FilterOptions {
   allowNoTargetRuns: boolean;
 }
 
-export async function runAction(options: RunOptions, command: Command) {
+export async function runAction(options: RunOptions, command: Command): Promise<void> {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
 

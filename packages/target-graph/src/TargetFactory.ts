@@ -12,7 +12,7 @@ export interface TargetFactoryOptions {
 }
 
 export class TargetFactory {
-  packageScripts = new Set<string>();
+  packageScripts: Set<string> = new Set<string>();
 
   constructor(private options: TargetFactoryOptions) {
     const { packageInfos } = options;
@@ -23,7 +23,7 @@ export class TargetFactory {
     }
   }
 
-  getTargetType(task: string, config: TargetConfig) {
+  getTargetType(task: string, config: TargetConfig): string {
     if (!config.type) {
       if (this.packageScripts.has(task)) {
         return "npmScript";

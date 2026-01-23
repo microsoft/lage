@@ -3,7 +3,7 @@ import { Logger } from "@lage-run/logger";
 import { SimpleScheduler } from "../src/SimpleScheduler";
 import { InProcPool } from "./fixtures/pools";
 import { getTargetId, Target, TargetGraphBuilder } from "@lage-run/target-graph";
-import { TargetRunner } from "@lage-run/scheduler-types";
+import { TargetRunner } from "@lage-run/runners";
 
 import fs from "fs";
 import path from "path";

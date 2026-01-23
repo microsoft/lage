@@ -3,14 +3,14 @@
  */
 
 import * as os from "os";
-import { createDefaultConfig, getEnvConfig } from "backfill-config";
+import { type Config, createDefaultConfig, getEnvConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { CacheOptions } from "@lage-run/config";
 import type { AzureCredentialName } from "@lage-run/config";
 import { CredentialCache } from "./CredentialCache.js";
 
-export function createBackfillLogger() {
+export function createBackfillLogger(): BackfillLogger {
   const stdout = process.stdout;
   const stderr = process.stderr;
   return makeLogger("error", {
@@ -28,13 +28,17 @@ export function createBackfillLogger() {
   });
 }
 
-export function createBackfillCacheConfig(cwd: string, cacheOptions: Partial<CacheOptions> = {}, backfillLogger: BackfillLogger) {
+export function createBackfillCacheConfig(
+  cwd: string,
+  cacheOptions: Partial<CacheOptions> | undefined = {},
+  backfillLogger: BackfillLogger
+): Config {
   const envConfig = getEnvConfig(backfillLogger);
   const mergedConfig = {
     ...createDefaultConfig(cwd),
     ...cacheOptions,
     ...envConfig,
-  };
+  } as Config;
 
   if (mergedConfig.cacheStorageConfig.provider === "azure-blob") {
     const azureOptions = mergedConfig.cacheStorageConfig.options;

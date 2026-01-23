@@ -9,7 +9,7 @@ import crypto from "crypto";
 import v8 from "v8";
 import type { IWorker } from "./types/WorkerQueue.js";
 import type { QueueItem } from "./types/WorkerQueue.js";
-import type { WorkerOptions as ThreadWorkerOptions } from "worker_threads";
+import type { ResourceLimits, WorkerOptions as ThreadWorkerOptions } from "worker_threads";
 
 export interface WorkerOptions {
   workerOptions?: ThreadWorkerOptions;
@@ -225,7 +225,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
     }
   }
 
-  start(work: QueueItem, abortSignal?: AbortSignal) {
+  start(work: QueueItem, abortSignal?: AbortSignal): void {
     this.status = "busy";
 
     const { task, resolve, reject, cleanup, setup } = work;
@@ -249,44 +249,44 @@ export class ThreadWorker extends EventEmitter implements IWorker {
     this.#worker.postMessage({ type: "start", task: { ...task, weight: work.weight }, id });
   }
 
-  get weight() {
+  get weight(): number {
     return this.#taskInfo?.weight ?? 1;
   }
 
-  get stdout() {
+  get stdout(): Readable {
     return this.#stdoutInfo.stream;
   }
 
-  get stderr() {
+  get stderr(): Readable {
     return this.#stderrInfo.stream;
   }
 
-  get resourceLimits() {
+  get resourceLimits(): ResourceLimits | undefined {
     return this.#worker.resourceLimits;
   }
 
-  get threadId() {
+  get threadId(): number {
     return this.#worker.threadId;
   }
 
-  terminate() {
+  terminate(): void {
     this.#worker.removeAllListeners();
     void this.#worker.terminate();
     this.#worker.unref();
   }
 
-  restart() {
+  restart(): void {
     this.restarts++;
     this.status = "busy";
     void this.#worker.terminate();
     this.#createNewWorker();
   }
 
-  checkMemoryUsage() {
+  checkMemoryUsage(): void {
     this.#worker.postMessage({ type: "check-memory-usage" });
   }
 
-  postMessage(value: any, transferList?: readonly TransferListItem[] | undefined): void {
+  postMessage(value: unknown, transferList?: readonly TransferListItem[] | undefined): void {
     this.#worker.postMessage(value, transferList);
   }
 }

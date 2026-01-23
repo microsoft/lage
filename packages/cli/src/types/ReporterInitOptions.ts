@@ -32,10 +32,12 @@ const shouldListBuiltInReporters: Record<BuiltInReporterName, boolean> = {
 };
 
 /** All the built-in reporter names */
-export const builtInReporterNames = Object.keys(shouldListBuiltInReporters);
+export const builtInReporterNames: string[] = Object.keys(shouldListBuiltInReporters);
 
 /** Built-in reporter names that should be listed in doc output */
-export const logBuiltInReporterNames = builtInReporterNames.filter((name) => shouldListBuiltInReporters[name as BuiltInReporterName]);
+export const logBuiltInReporterNames: string[] = builtInReporterNames.filter(
+  (name) => shouldListBuiltInReporters[name as BuiltInReporterName]
+);
 
 export interface ReporterInitOptions {
   reporter: ReporterName[] | ReporterName | undefined;

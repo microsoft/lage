@@ -30,7 +30,7 @@ interface RunOptions extends ReporterInitOptions, FilterOptions {
   allowNoTargetRuns: boolean;
 }
 
-export async function watchAction(options: RunOptions, command: Command) {
+export async function watchAction(options: RunOptions, command: Command): Promise<void> {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
   const concurrency = getConcurrency(options.concurrency, config.concurrency);

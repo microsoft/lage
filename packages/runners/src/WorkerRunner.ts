@@ -75,7 +75,7 @@ export class WorkerRunner implements TargetRunner {
     return await runFn({ target, weight, taskArgs, abortSignal });
   }
 
-  async getScriptModule(target: Target) {
+  async getScriptModule(target: Target): Promise<any> {
     const scriptFile = target.options?.worker ?? target.options?.script;
 
     if (!scriptFile) {

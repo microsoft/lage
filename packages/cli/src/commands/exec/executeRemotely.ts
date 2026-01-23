@@ -93,7 +93,7 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
   }
 }
 
-export async function executeRemotely(options: ExecRemotelyOptions, command: Command) {
+export async function executeRemotely(options: ExecRemotelyOptions, command: Command): Promise<void> {
   // launch a 'lage-server.js' process, detached if it is not already running
   // send the command to the server process
   const { server, tasks, nodeArg } = options;

@@ -1,7 +1,7 @@
 import { AggregatedPool } from "@lage-run/worker-threads-pool";
 import { formatBytes } from "./formatBytes.js";
 import { categorizeTargetRuns } from "./categorizeTargetRuns.js";
-import { getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
+import { type Target, getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
 import { WrappedTarget } from "./WrappedTarget.js";
 import { TargetRunnerPicker } from "@lage-run/runners";
 
@@ -77,7 +77,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     this.runnerPicker = new TargetRunnerPicker(options.workerData.runners);
   }
 
-  getTargetsByPriority() {
+  getTargetsByPriority(): Target[] {
     return sortTargetsByPriority([...this.targetRuns.values()].map((run) => run.target));
   }
 
@@ -183,7 +183,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
    * Used by consumers of the scheduler to notify that the inputs to the target has changed
    * @param targetId
    */
-  markTargetAndDependentsPending(targetId: string) {
+  markTargetAndDependentsPending(targetId: string): void {
     const queue = [targetId];
     while (queue.length > 0) {
       const current = queue.shift()!;
@@ -203,7 +203,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     }
   }
 
-  getReadyTargets() {
+  getReadyTargets(): WrappedTarget[] {
     const readyTargets: Set<WrappedTarget> = new Set();
 
     for (const target of this.getTargetsByPriority()) {
@@ -233,7 +233,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     return [...readyTargets];
   }
 
-  isAllDone() {
+  isAllDone(): boolean {
     for (const t of this.targetRuns.values()) {
       if (t.status !== "skipped" && t.status !== "success" && t.target.id !== getStartTargetId()) {
         return false;
@@ -243,7 +243,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     return true;
   }
 
-  async scheduleReadyTargets() {
+  async scheduleReadyTargets(): Promise<void> {
     if (this.isAllDone() || this.abortSignal.aborted) {
       return Promise.resolve();
     }
@@ -260,7 +260,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     await Promise.all(promises);
   }
 
-  logProgress() {
+  logProgress(): void {
     const targetRunByStatus = categorizeTargetRuns(this.targetRuns.values());
     const total = [...this.targetRuns.values()].filter((t) => !t.target.hidden).length;
 
@@ -323,7 +323,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     await this.scheduleReadyTargets();
   }
 
-  async cleanup() {
+  async cleanup(): Promise<void> {
     this.options.logger.silly(`Max Worker Memory Usage: ${formatBytes(this.pool.stats().maxWorkerMemoryUsage)}`);
     await this.pool.close();
   }
@@ -331,8 +331,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
   /**
    * Abort the scheduler using the abort controller.
    */
-  abort() {
+  abort(): void {
     this.abortController.abort();
   }
 }
-encodeURI;

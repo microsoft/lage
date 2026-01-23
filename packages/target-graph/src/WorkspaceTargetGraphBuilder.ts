@@ -8,12 +8,15 @@ import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMa
 import type { PackageInfos } from "workspace-tools";
 import type { Target } from "./types/Target.js";
 import type { TargetConfig } from "./types/TargetConfig.js";
+import type { TargetGraph } from "./types/TargetGraph.js";
 import { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 import { TargetFactory } from "./TargetFactory.js";
 import pLimit from "p-limit";
+import * as mergicianModule from "mergician";
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports -- mergician is a dual-mode library with CJS and ESM export but a single .d.ts file. Without type="module" on this packge.json typescript gets confused. See: https://github.com/microsoft/TypeScript/issues/50466
-const { mergician } = require("mergician");
+// mergician is a dual-mode library with CJS and ESM export but a single .d.ts file.
+// Without type="module" on this packge.json typescript gets confused. See: https://github.com/microsoft/TypeScript/issues/50466
+const mergician = mergicianModule.mergician || (mergicianModule as unknown as { default: typeof mergicianModule }).default.mergician;
 
 const DEFAULT_STAGED_TARGET_THRESHOLD = 50;
 /**
@@ -74,7 +77,7 @@ export class WorkspaceTargetGraphBuilder {
    * @param id
    * @param targetDefinition
    */
-  async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]) {
+  public async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]): Promise<void> {
     // Generates a target definition from the target config
     if (id.startsWith("//") || id.startsWith("#")) {
       const targetConfig = this.determineFinalTargetConfig(id, config);
@@ -103,7 +106,8 @@ export class WorkspaceTargetGraphBuilder {
     }
   }
 
-  deepCloneTargetConfig = mergician({
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  private deepCloneTargetConfig: Function = mergician({
     appendArrays: true,
     onCircular: () => {
       throw new Error(`Circular object reference detected in TargetConfig`);
@@ -116,7 +120,7 @@ export class WorkspaceTargetGraphBuilder {
    * @param config The TargetConfig settings that will be merged if this target has already been seen before
    * @returns The merged TargetConfig object.
    */
-  determineFinalTargetConfig(targetId: string, config: TargetConfig): TargetConfig {
+  private determineFinalTargetConfig(targetId: string, config: TargetConfig): TargetConfig {
     let finalConfig = config;
     if (this.enableTargetConfigMerging && this.targetConfigMap.has(targetId)) {
       const existingConfig = this.targetConfigMap.get(targetId)!;
@@ -132,7 +136,7 @@ export class WorkspaceTargetGraphBuilder {
    * @param parentTarget
    * @param config
    */
-  processStagedConfig(parentTarget: Target, config: TargetConfig, changedFiles?: string[]) {
+  private processStagedConfig(parentTarget: Target, config: TargetConfig, changedFiles?: string[]): void {
     if (typeof config.stagedTarget === "undefined") {
       return;
     }
@@ -176,7 +180,7 @@ export class WorkspaceTargetGraphBuilder {
     }
   }
 
-  shouldRun(config: TargetConfig, target: Target) {
+  public shouldRun(config: TargetConfig, target: Target): boolean | Promise<boolean> {
     if (typeof config.shouldRun === "function") {
       return config.shouldRun(target);
     }
@@ -197,7 +201,11 @@ export class WorkspaceTargetGraphBuilder {
    * @param scope
    * @param priorities the set of global priorities for the workspace.
    */
-  async build(tasks: string[], scope?: string[], priorities?: { package?: string; task: string; priority: number }[]) {
+  public async build(
+    tasks: string[],
+    scope?: string[],
+    priorities?: { package?: string; task: string; priority: number }[]
+  ): Promise<TargetGraph> {
     // Expands the dependency specs from the target definitions
     const fullDependencies = expandDepSpecs(this.graphBuilder.targets, this.dependencyMap);
 

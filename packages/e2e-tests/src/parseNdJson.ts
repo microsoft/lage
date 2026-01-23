@@ -1,6 +1,6 @@
 import type { TargetStatus } from "@lage-run/scheduler-types";
 
-export function parseNdJson(ndjson: string) {
+export function parseNdJson(ndjson: string): any[] {
   const entries = ndjson.substr(ndjson.indexOf("{"));
   return entries
     .split("\n")
@@ -20,6 +20,12 @@ export function parseNdJson(ndjson: string) {
     .filter((entry) => Object.keys(entry).length > 0);
 }
 
-export function filterEntry(data: any, pkg: string, task: string, status: TargetStatus) {
+export function filterEntry(
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  data: any,
+  pkg: string,
+  task: string,
+  status: TargetStatus
+): boolean {
   return data?.target?.packageName === pkg && data?.target?.task === task && data.status === status;
 }
