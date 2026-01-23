@@ -29,7 +29,7 @@ Lage version 2 is now available at dist-tag `@latest`, featuring significant upd
 - `@lage-run/cache`: `backfill` based cache layer that adds the capability of remote fallback (from a cloud storage, such as Azure Blob Storage)
 - `@lage-run/find-npm-client`: finds the right npm binary (Windows, macOS, and Linux compatible)
 - `@lage-run/format-hrtime`: calculates diffs and formats high-resolution time as given by `process.hrtime()`
-- `@lage-run/haser`: a high performance repo-wide source code hasher
+- `@lage-run/hasher`: a high performance repo-wide source code hasher
 - `@lage-run/logger`: generic library that logs structured data to various `reporters`
 - `@lage-run/reporters`: actually outputs the log stream to some format like JSON, Chromium Traces, and even the new interactive lage UI
 - `@lage-run/scheduler`: a typed work scheduler that understands how to schedule work according to a `target-graph`

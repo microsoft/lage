@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/hasher",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "Hasher for Lage Targets",
   "repository": {
     "url": "https://github.com/microsoft/lage"
@@ -22,12 +22,13 @@
     "glob-hasher": "^1.4.2",
     "graceful-fs": "4.2.11",
     "micromatch": "4.0.8",
-    "workspace-tools": "0.38.4"
+    "workspace-tools": "0.40.4"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "workspace:^",
     "@lage-run/monorepo-scripts": "workspace:^",
-    "@types/graceful-fs": "^4.1.6"
+    "@types/graceful-fs": "^4.1.6",
+    "@types/micromatch": "^4.0.0"
   },
   "publishConfig": {
     "access": "public"

@@ -2,6 +2,33 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 15 Jan 2026 23:24:00 GMT",
+      "version": "0.33.1",
+      "tag": "@lage-run/cli_v0.33.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Update dependency workspace-tools to v0.40.0"
+          },
+          {
+            "author": "crhaglun@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Replace ProgressReporter as the default with a less fancy implementation"
+          },
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Add lint rule for no-floating-promises and fix several places"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 21 Oct 2025 23:42:35 GMT",
       "version": "0.33.0",
       "tag": "@lage-run/cli_v0.33.0",

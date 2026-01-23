@@ -1,5 +1,5 @@
-import type { ParsedLock, WorkspaceInfo } from "workspace-tools";
-import { queryLockFile, listOfWorkspacePackageNames } from "workspace-tools";
+import type { ParsedLock, WorkspaceInfos } from "workspace-tools";
+import { queryLockFile } from "workspace-tools";
 import { nameAtVersion } from "./nameAtVersion.js";
 
 export type Dependencies = { [key in string]: string };
@@ -9,8 +9,8 @@ export type ExternalDependenciesQueue = {
   versionRange: string;
 }[];
 
-export function filterExternalDependencies(dependencies: Dependencies, workspaces: WorkspaceInfo): Dependencies {
-  const workspacePackageNames = listOfWorkspacePackageNames(workspaces);
+export function filterExternalDependencies(dependencies: Dependencies, workspaces: WorkspaceInfos): Dependencies {
+  const workspacePackageNames = workspaces.map((ws) => ws.name);
   const externalDependencies: Dependencies = {};
 
   Object.entries(dependencies).forEach(([name, versionRange]) => {
@@ -42,7 +42,7 @@ export function addToQueue(dependencies: Dependencies | undefined, done: string[
   }
 }
 
-export function resolveExternalDependencies(allDependencies: Dependencies, workspaces: WorkspaceInfo, lockInfo: ParsedLock): string[] {
+export function resolveExternalDependencies(allDependencies: Dependencies, workspaces: WorkspaceInfos, lockInfo: ParsedLock): string[] {
   const externalDependencies = filterExternalDependencies(allDependencies, workspaces);
 
   const done: string[] = [];

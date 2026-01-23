@@ -28,10 +28,10 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6
         with:
           node-version: ${{ matrix.node }}
 
@@ -48,11 +48,11 @@ jobs:
       # @see https://www.npmjs.com/package/syncpack
       - name: Check consistent package.json dep versions
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.node == '22.x' }}
-        run: yarn syncpack list-mismatches
+        run: yarn syncpack:check
 
       - name: Dependency checks
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.node == '22.x' }}
-        run: yarn lage depcheck
+        run: yarn deps:check
 
       - name: Build, Test, Lint
         run: yarn ci --concurrency 2 --verbose

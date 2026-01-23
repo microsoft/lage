@@ -30,8 +30,8 @@ export class CustomTestReporter {
   }
 
   summarize(summary) {
-    console.log(JSON.stringify({ 
-      customReporter: true, 
+    console.log(JSON.stringify({
+      customReporter: true,
       type: "summary",
       status: summary.results,
       duration: summary.duration
@@ -85,7 +85,7 @@ export class CustomTestReporter {
   }
 
   summarize(summary) {
-    console.log(JSON.stringify({ 
+    console.log(JSON.stringify({
       customReporter: true,
       message: "Custom reporter summary"
     }));
@@ -140,7 +140,7 @@ export class NamedReporter {
   }
 
   summarize(summary) {
-    console.log(JSON.stringify({ 
+    console.log(JSON.stringify({
       namedExport: true,
       status: summary.results
     }));
@@ -170,7 +170,7 @@ export default NamedReporter;
     expect(output).toContain('"namedExport":true');
   });
 
-  it("should fallback to default reporter when custom reporter not found in config", () => {
+  it("should error when custom reporter file is invalid", async () => {
     repo = new Monorepo("reporter-not-found");
 
     repo.init();
@@ -179,11 +179,7 @@ export default NamedReporter;
     repo.install();
 
     // Request a reporter that doesn't exist in config
-    const results = repo.run("build", ["--reporter", "nonExistentReporter"]);
-    const output = results.stdout + results.stderr;
-
-    // Should not throw and should use default reporter
-    expect(output).toBeDefined();
+    expect(() => repo!.run("build", ["--reporter", "nonExistentReporter"])).toThrow('Invalid --reporter option: "nonExistentReporter"');
   });
 
   it("should handle custom reporter with relative path", () => {
@@ -205,7 +201,7 @@ export default class MyCustomReporter {
   }
 
   summarize(summary) {
-    console.log(JSON.stringify({ 
+    console.log(JSON.stringify({
       customPath: true,
       reporter: "my-custom-reporter"
     }));
@@ -253,7 +249,7 @@ export default class OptionsReporter {
   }
 
   summarize(summary) {
-    console.log(JSON.stringify({ 
+    console.log(JSON.stringify({
       receivedOptions: true,
       concurrency: this.options.concurrency,
       logLevel: this.options.logLevel,
@@ -390,9 +386,9 @@ const objectReporter = {
   log(entry) {
     // no-op
   },
-  
+
   summarize(summary) {
-    console.log(JSON.stringify({ 
+    console.log(JSON.stringify({
       objectInstance: true,
       status: summary.results
     }));
@@ -440,7 +436,7 @@ class CommonJSReporter {
   }
 
   summarize(summary) {
-    console.log(JSON.stringify({ 
+    console.log(JSON.stringify({
       commonJS: true,
       status: summary.results
     }));
@@ -495,7 +491,7 @@ export default class TrackingReporter {
   }
 
   summarize(summary) {
-    console.log(JSON.stringify({ 
+    console.log(JSON.stringify({
       trackingReporter: true,
       eventCount: this.events.length,
       summary: summary.results

@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/cli",
-  "version": "0.33.0",
+  "version": "0.33.1",
   "description": "Command Line Interface for Lage",
   "repository": {
     "type": "git",
@@ -38,9 +38,10 @@
     "commander": "9.5.0",
     "execa": "5.1.1",
     "fast-glob": "3.3.3",
+    "is-interactive": "^1.0.0",
     "proper-lockfile": "^4.1.2",
     "shell-quote": "^1.8.1",
-    "workspace-tools": "0.38.4"
+    "workspace-tools": "0.40.4"
   },
   "devDependencies": {
     "@lage-run/monorepo-fixture": "workspace:^",

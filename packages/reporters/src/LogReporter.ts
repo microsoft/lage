@@ -4,7 +4,7 @@ import { LogLevel } from "@lage-run/logger";
 import ansiRegex from "ansi-regex";
 import chalk from "chalk";
 import type { Chalk } from "chalk";
-import gradient from "gradient-string";
+import { gradient } from "./gradient.js";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";

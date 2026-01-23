@@ -1,7 +1,8 @@
-import { LogLevel } from "@lage-run/logger";
+import fs from "fs";
+import os from "os";
+import path from "path";
 import { ChromeTraceEventsReporter } from "../src/ChromeTraceEventsReporter";
 import streams from "memory-streams";
-import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry";
 
 function createTarget(packageName: string, task: string) {
   return {
@@ -17,12 +18,22 @@ function createTarget(packageName: string, task: string) {
 }
 
 describe("ChromeTraceEventsReporter", () => {
+  let tmpDir: string;
+  let outputFile: string;
+
+  beforeEach(() => {
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "lage-reporter-test-"));
+    outputFile = path.join(tmpDir, "profile.json");
+  });
+
+  afterEach(() => {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  });
+
   it("can group verbose messages, displaying summary", () => {
-    const writer = new streams.WritableStream();
     const consoleWriter = new streams.WritableStream();
 
-    const reporter = new ChromeTraceEventsReporter({ concurrency: 4, outputFile: "profile.json" });
-    reporter.logStream = writer;
+    const reporter = new ChromeTraceEventsReporter({ concurrency: 4, outputFile });
     reporter.consoleLogStream = consoleWriter;
 
     const aBuildTarget = createTarget("a", "build");
@@ -54,10 +65,10 @@ describe("ChromeTraceEventsReporter", () => {
       workerRestarts: 0,
     });
 
-    writer.end();
     consoleWriter.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    const fileContent = fs.readFileSync(outputFile, "utf-8");
+    expect(fileContent).toMatchInlineSnapshot(`
       "{
         "traceEvents": [
           {
@@ -93,7 +104,7 @@ describe("ChromeTraceEventsReporter", () => {
     `);
     expect(consoleWriter.toString()).toMatchInlineSnapshot(`
       "
-      Profiler output written to profile.json, open it with chrome://tracing or edge://tracing
+      Profiler output written to ${outputFile}, open it with chrome://tracing or edge://tracing
       "
     `);
   });

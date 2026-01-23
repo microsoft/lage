@@ -13,7 +13,10 @@ This package is concerned about the target graph. The target is a unit of work t
 For the case (the typical `lage` CLI case) where we want to use the shorthand syntax to specify a task graph combining with a package dependency graph, this is the right Builder implementation.
 
 ```typescript
-const rootDir = getWorkspaceRoot(process.cwd());
+import { WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
+import { findProjectRoot, getPackageInfos } from "workspace-tools";
+
+const rootDir = findProjectRoot(process.cwd());
 const packageInfos = getPackageInfos(rootDir);
 
 const builder = new WorkspaceTargetGraphBuilder(rootDir, packageInfos);

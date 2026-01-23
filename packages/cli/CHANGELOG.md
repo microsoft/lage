@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Tue, 21 Oct 2025 23:42:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.33.1
+
+Thu, 15 Jan 2026 23:24:00 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)
+- Replace ProgressReporter as the default with a less fancy implementation (crhaglun@microsoft.com)
+- Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
 
 ## 0.33.0
 
