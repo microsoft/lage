@@ -2,6 +2,21 @@
   "name": "@lage-run/rpc",
   "entries": [
     {
+      "date": "Thu, 15 Jan 2026 23:24:00 GMT",
+      "version": "1.4.1",
+      "tag": "@lage-run/rpc_v1.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Add lint rule for no-floating-promises and fix several places"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 29 Mar 2025 02:16:38 GMT",
       "version": "1.4.0",
       "tag": "@lage-run/rpc_v1.4.0",

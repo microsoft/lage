@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/runners",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Runners for Lage",
   "repository": {
     "type": "git",

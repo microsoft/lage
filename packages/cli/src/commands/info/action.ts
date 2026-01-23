@@ -3,7 +3,7 @@ import { createTargetGraph } from "../run/createTargetGraph.js";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import type { ConfigOptions } from "@lage-run/config";
 import { getConfig } from "@lage-run/config";
-import { type PackageInfos, getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { type PackageInfos, getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
 import path from "path";
@@ -102,7 +102,7 @@ export async function infoAction(options: InfoActionOptions, command: Command) {
   options.reporter = options.reporter ?? "json";
   options.server = typeof options.server === "boolean" && options.server ? "localhost:5332" : options.server;
   await initializeReporters(logger, options, config.reporters);
-  const root = getWorkspaceRoot(cwd)!;
+  const root = getWorkspaceManagerRoot(cwd)!;
 
   const packageInfos = getPackageInfos(root);
 
@@ -315,9 +315,9 @@ function generateCommand(
   return [];
 }
 
-function getWorkingDirectory(target) {
+function getWorkingDirectory(target: Target) {
   const cwd = process.cwd();
-  const workingDirectory = path.relative(getWorkspaceRoot(cwd) ?? "", target.cwd).replace(/\\/g, "/");
+  const workingDirectory = path.relative(getWorkspaceManagerRoot(cwd) ?? "", target.cwd).replace(/\\/g, "/");
   return workingDirectory;
 }
 

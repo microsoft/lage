@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Thu, 15 Jan 2026 23:24:00 GMT",
+      "version": "1.3.6",
+      "tag": "@lage-run/reporters_v1.3.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "crhaglun@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Replace ProgressReporter as the default with a less fancy implementation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 31 Aug 2025 08:08:39 GMT",
       "version": "1.3.4",
       "tag": "@lage-run/reporters_v1.3.4",

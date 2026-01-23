@@ -14,5 +14,6 @@ const config = {
     ],
   },
   ignorePatterns: [".*ignore", "jest.config.js", "**/__*/**/*", "**/tests/**/*"],
+  disallowedChangeTypes: ["major"],
 };
 module.exports = config;

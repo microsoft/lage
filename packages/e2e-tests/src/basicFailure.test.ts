@@ -94,31 +94,4 @@ describe("basic failure case where a dependent target has failed", () => {
 
     await repo.cleanup();
   });
-
-  it("when a failure happens in `--safe-exit`, be sure to have exit code of !== 0", async () => {
-    expect.hasAssertions();
-    const repo = new Monorepo("basics-safe-exit");
-
-    repo.init();
-
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b", [], {
-      build: 'node -e "process.exit(1);"',
-    });
-    repo.addPackage("c");
-    repo.addPackage("d");
-    repo.addPackage("e");
-    repo.install();
-
-    try {
-      repo.run("test", ["--safe-exit"]);
-    } catch (e) {
-      const results = e as any;
-
-      expect(results.exitCode).not.toBe(0);
-      expect(results.stderr).not.toContain("Cannot read property 'stack' of undefined");
-    }
-
-    await repo.cleanup();
-  });
 });

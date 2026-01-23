@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Thu, 15 Jan 2026 23:24:00 GMT",
+      "version": "1.5.15",
+      "tag": "@lage-run/scheduler_v1.5.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Add lint rule for no-floating-promises and fix several places"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 29 Mar 2025 02:16:38 GMT",
       "version": "1.5.3",
       "tag": "@lage-run/scheduler_v1.5.3",

@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/config",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Config management for Lage",
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
     "@lage-run/target-graph": "workspace:^",
     "backfill-config": "6.7.1",
     "cosmiconfig": "7.1.0",
-    "workspace-tools": "0.38.4"
+    "workspace-tools": "0.40.4"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^"

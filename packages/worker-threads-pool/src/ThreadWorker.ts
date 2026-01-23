@@ -23,6 +23,17 @@ interface StdioInfo {
   resolve: () => void;
 }
 
+type WorkerMessage =
+  | {
+      type: "status";
+      err: Error;
+      results: unknown;
+    }
+  | {
+      type: "report-memory-usage";
+      memoryUsage: number;
+    };
+
 const workerFreeEvent = "free";
 
 const maxOldSpaceSizeBytes = v8.getHeapStatistics().total_available_size;
@@ -76,7 +87,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
       resolve();
     });
 
-    const msgHandler = (data) => {
+    const msgHandler = (data: WorkerMessage) => {
       if (data.type === "status") {
         // In case of success: Call the callback that was passed to `runTask`,
         // remove the `TaskInfo` associated with the Worker, and mark it as free
@@ -112,7 +123,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
 
     worker.on("message", msgHandler);
 
-    const errHandler = (err) => {
+    const errHandler = (err: Error) => {
       // We likely have a worker that has crashed - many instances of this is due to out-of-memory errors, we need to fail fast!
       this.#stdoutInfo.resolve();
       this.#stderrInfo.resolve();
