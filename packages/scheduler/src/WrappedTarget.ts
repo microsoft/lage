@@ -50,15 +50,15 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
   target: Target;
   threadId = 0;
 
-  get result() {
+  get result(): WorkerResult | undefined {
     return this.#result;
   }
 
-  get status() {
+  get status(): TargetStatus {
     return this.#status;
   }
 
-  get abortController() {
+  get abortController(): AbortController {
     return this.options.abortController;
   }
 
@@ -66,11 +66,11 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     this.options.abortController = abortController;
   }
 
-  get successful() {
+  get successful(): boolean {
     return this.#status === "skipped" || this.#status === "success";
   }
 
-  get waiting() {
+  get waiting(): boolean {
     return this.#status === "pending" || this.#status === "queued";
   }
 
@@ -84,18 +84,18 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     this.options.logger.info("", { target: this.target, status: this.status });
   }
 
-  onQueued() {
+  onQueued(): void {
     this.#status = "queued";
     this.queueTime = process.hrtime();
     this.options.logger.info("", { target: this.target, status: "queued" });
   }
 
-  onAbort() {
+  onAbort(): void {
     this.#status = "aborted";
     this.options.logger.info("", { target: this.target, status: "aborted", threadId: this.threadId });
   }
 
-  onStart(threadId: number) {
+  onStart(threadId: number): void {
     if (this.status !== "running") {
       this.threadId = threadId;
       this.#status = "running";
@@ -104,7 +104,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     }
   }
 
-  onComplete() {
+  onComplete(): void {
     this.#status = "success";
     this.options.logger.info("", {
       target: this.target,
@@ -114,7 +114,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     });
   }
 
-  onFail() {
+  onFail(): void {
     this.#status = "failed";
     this.options.logger.info("", {
       target: this.target,
@@ -128,7 +128,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     }
   }
 
-  onSkipped(hash?: string | undefined) {
+  onSkipped(hash?: string | undefined): void {
     this.#status = "skipped";
 
     if (hash) {
@@ -142,7 +142,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     }
   }
 
-  async run() {
+  async run(): Promise<WorkerResult | undefined> {
     const { target, logger, shouldCache, abortController, root } = this.options;
 
     const abortSignal = abortController.signal;
@@ -283,7 +283,10 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
    *
    * @returns
    */
-  toJSON() {
+  toJSON(): {
+    target: string;
+    status: TargetStatus;
+  } {
     return {
       target: this.target.id,
       status: this.status,
@@ -293,7 +296,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
   /**
    * Reset the state of this wrapped target.
    */
-  reset() {
+  reset(): void {
     this.#result = undefined;
     this.#status = "pending";
   }

@@ -1,6 +1,6 @@
 import { execSync } from "child_process";
 
-export function killDetachedProcess(pid: number | string) {
+export function killDetachedProcess(pid: number | string): void {
   const pidNumber = typeof pid === "string" ? parseInt(pid) : pid;
   try {
     if (process.platform !== "win32") {

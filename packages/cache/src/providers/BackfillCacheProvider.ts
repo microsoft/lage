@@ -127,7 +127,7 @@ export class BackfillCacheProvider implements CacheProvider {
     );
   }
 
-  getCachePath(packagePath: string, hash: string) {
+  getCachePath(packagePath: string, hash: string): string {
     return path.relative(packagePath, getCacheDirectory(this.options.root, hash));
   }
 }

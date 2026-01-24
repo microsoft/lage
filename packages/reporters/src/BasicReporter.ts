@@ -57,7 +57,8 @@ export class BasicReporter implements Reporter {
   private updateTimer: NodeJS.Timeout | undefined;
   private startTimer: () => void;
 
-  constructor({ concurrency = 0, version = "0.0.0", frequency = 500 } = {}) {
+  constructor(params: { concurrency?: number; version?: string; frequency?: number } = {}) {
+    const { concurrency = 0, version = "0.0.0", frequency = 500 } = params;
     print(`${fancy("lage")} - Version ${version} - ${concurrency} Workers`);
 
     this.startTimer = () => {
@@ -70,7 +71,7 @@ export class BasicReporter implements Reporter {
     process.on("exit", () => process.stdout.write(terminal.showCursor));
   }
 
-  log(entry: LogEntry) {
+  log(entry: LogEntry): void {
     const data = entry.data;
     if (!data?.target || data.target.hidden) return;
 
@@ -91,7 +92,7 @@ export class BasicReporter implements Reporter {
     }
   }
 
-  summarize(schedulerRunSummary: SchedulerRunSummary) {
+  summarize(schedulerRunSummary: SchedulerRunSummary): void {
     clearInterval(this.updateTimer);
     process.stdout.write(terminal.clearLine);
 

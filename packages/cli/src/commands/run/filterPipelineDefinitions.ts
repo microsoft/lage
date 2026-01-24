@@ -1,7 +1,7 @@
 import type { Target } from "@lage-run/target-graph";
 import type { PipelineDefinition } from "@lage-run/config";
 
-export function filterPipelineDefinitions(targets: IterableIterator<Target>, pipeline: PipelineDefinition) {
+export function filterPipelineDefinitions(targets: IterableIterator<Target>, pipeline: PipelineDefinition): PipelineDefinition {
   const tasksSet = new Set<string>();
 
   for (const target of targets) {

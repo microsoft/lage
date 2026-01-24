@@ -1,19 +1,20 @@
-import { TargetRunner } from "@lage-run/scheduler-types";
+import { TargetRunner } from "@lage-run/runners";
 import { Target } from "@lage-run/target-graph";
 import { Pool } from "@lage-run/worker-threads-pool";
+import { PoolStats } from "@lage-run/worker-threads-pool";
 
 export class InProcPool implements Pool {
   constructor(private runner: TargetRunner) {}
-  exec({ target }: { target: Target }) {
+  exec({ target }: { target: Target }): Promise<unknown> {
     return this.runner.run({ target, weight: 1 });
   }
-  stats() {
+  stats(): PoolStats {
     return {
       workerRestarts: 0,
       maxWorkerMemoryUsage: 0,
     };
   }
-  close() {
+  close(): Promise<unknown> {
     return Promise.resolve();
   }
 }
@@ -24,7 +25,7 @@ export class SingleSchedulePool implements Pool {
     private runner: TargetRunner,
     private concurrency: number
   ) {}
-  exec({ target }: { target: Target }) {
+  exec({ target }: { target: Target }): Promise<unknown> {
     if (this.concurrency > this.count) {
       this.count++;
       return this.runner.run({ target, weight: 1 });
@@ -32,13 +33,13 @@ export class SingleSchedulePool implements Pool {
 
     return Promise.reject(new Error("Pool is full"));
   }
-  stats() {
+  stats(): PoolStats {
     return {
       workerRestarts: 0,
       maxWorkerMemoryUsage: 0,
     };
   }
-  close() {
+  close(): Promise<unknown> {
     return Promise.resolve();
   }
 }

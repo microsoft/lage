@@ -1,6 +1,6 @@
 import { formatDuration, hrToSeconds } from "@lage-run/format-hrtime";
 import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
-import { LogLevel } from "@lage-run/logger";
+import { LogLevel, type LogStructuredData } from "@lage-run/logger";
 import chalk from "chalk";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
@@ -52,13 +52,13 @@ export class AdoReporter implements Reporter {
   logStream: Writable = process.stdout;
 
   private logEntries = new Map<string, LogEntry[]>();
-  readonly groupedEntries = new Map<string, LogEntry[]>();
+  readonly groupedEntries: Map<string, LogEntry<LogStructuredData>[]> = new Map<string, LogEntry[]>();
 
   constructor(private options: { logLevel?: LogLevel; grouped?: boolean }) {
     options.logLevel = options.logLevel || LogLevel.info;
   }
 
-  log(entry: LogEntry<any>) {
+  log(entry: LogEntry<any>): boolean | void {
     if (entry.data && entry.data.target && entry.data.target.hidden) {
       return;
     }
@@ -159,7 +159,7 @@ export class AdoReporter implements Reporter {
     }
   }
 
-  summarize(schedulerRunSummary: SchedulerRunSummary) {
+  summarize(schedulerRunSummary: SchedulerRunSummary): void {
     const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
     const { failed, aborted, skipped, success, pending } = targetRunByStatus;
 

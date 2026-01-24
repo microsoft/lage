@@ -1,5 +1,5 @@
 import { createReporter } from "./createReporter.js";
-import type { Logger } from "@lage-run/logger";
+import type { LogStructuredData, Logger, Reporter } from "@lage-run/logger";
 import {
   type BuiltInReporterName,
   type ReporterInitOptions,
@@ -8,7 +8,11 @@ import {
   logBuiltInReporterNames,
 } from "../types/ReporterInitOptions.js";
 
-export async function initializeReporters(logger: Logger, options: ReporterInitOptions, customReporters: Record<string, string> = {}) {
+export async function initializeReporters(
+  logger: Logger,
+  options: ReporterInitOptions,
+  customReporters: Record<string, string> = {}
+): Promise<Reporter<LogStructuredData>[]> {
   const customReporterNames = Object.keys(customReporters);
 
   // Mapping from lowercase reporter name to original name

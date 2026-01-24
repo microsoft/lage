@@ -1,9 +1,7 @@
 import EventEmitter from "events";
-import { type LogEntry, LogLevel, type Reporter } from "@lage-run/logger";
+import { type LogEntry, LogLevel, type Reporter, type LogStructuredData } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 
-// @ts-expect-error -- this package has CJS via the exports map, but old TS might not recognize it?
-// (it works fine with the actual transpiling via SWC)
 import { TaskReporter, type TaskReporterTask } from "@ms-cloudpack/task-reporter";
 import type { Target } from "@lage-run/target-graph";
 import { gradient } from "./gradient.js";
@@ -35,7 +33,7 @@ export class ProgressReporter implements Reporter {
   startTime: [number, number] = [0, 0];
 
   logEvent: EventEmitter = new EventEmitter();
-  logEntries = new Map<string, LogEntry[]>();
+  logEntries: Map<string, LogEntry<LogStructuredData>[]> = new Map<string, LogEntry[]>();
 
   taskReporter: TaskReporter;
   tasks: Map<string, TaskReporterTask> = new Map();
@@ -46,7 +44,7 @@ export class ProgressReporter implements Reporter {
     this.print(`${fancy("lage")} - Version ${options.version} - ${options.concurrency} Workers`);
   }
 
-  createTaskReporter() {
+  createTaskReporter(): TaskReporter {
     return new TaskReporter({
       productName: "lage",
       version: this.options.version,
@@ -66,7 +64,7 @@ export class ProgressReporter implements Reporter {
     });
   }
 
-  log(entry: LogEntry<any>) {
+  log(entry: LogEntry<any>): void {
     // save the logs for errors
     if (entry.data?.target?.id) {
       if (!this.logEntries.has(entry.data.target.id)) {
@@ -121,11 +119,11 @@ export class ProgressReporter implements Reporter {
     this.logStream.write(message + "\n");
   }
 
-  hr() {
+  hr(): void {
     this.print("┈".repeat(80));
   }
 
-  summarize(schedulerRunSummary: SchedulerRunSummary) {
+  summarize(schedulerRunSummary: SchedulerRunSummary): void {
     const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
     const { failed, aborted, skipped, success, pending, running, queued } = targetRunByStatus;
 

@@ -1,1 +1,1 @@
-export const NoTargetFoundError = new Error("No target found");
+export const NoTargetFoundError: Error = new Error("No target found");

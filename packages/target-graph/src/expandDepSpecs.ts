@@ -5,7 +5,7 @@ import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId.js"
 /**
  * Expands the dependency graph by adding all transitive dependencies of the given targets.
  */
-export function expandDepSpecs(targets: Map<string, Target>, dependencyMap: DependencyMap) {
+export function expandDepSpecs(targets: Map<string, Target>, dependencyMap: DependencyMap): [string, string][] {
   const dependencies: [string, string][] = [];
 
   /**

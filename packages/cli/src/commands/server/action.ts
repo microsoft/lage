@@ -14,7 +14,7 @@ interface WorkerOptions extends ReporterInitOptions {
   tasks: string[];
 }
 
-export async function serverAction(options: WorkerOptions) {
+export async function serverAction(options: WorkerOptions): Promise<void> {
   const { server = "localhost:5332", timeout = 1, tasks } = options;
 
   const { host, port } = parseServerOption(server);

@@ -3,7 +3,20 @@ import { logBuiltInReporterNames } from "../types/ReporterInitOptions.js";
 
 const isCI = process.env.CI || process.env.TF_BUILD;
 
-const options = {
+interface Options {
+  // Groupings of options
+  logger: { [key: string]: Option };
+  pool: { [key: string]: Option };
+  runner: { [key: string]: Option };
+  run: { [key: string]: Option };
+  server: { [key: string]: Option };
+  filter: { [key: string]: Option };
+  affected: { [key: string]: Option };
+  cache: { [key: string]: Option };
+  info: { [key: string]: Option };
+}
+
+const options: Options = {
   logger: {
     reporter: new Option("--reporter <reporter...>", `log reporter (built-in choices: ${logBuiltInReporterNames.join(", ")})`),
     grouped: new Option("--grouped", "groups the logs").default(false),
@@ -75,7 +88,7 @@ const options = {
   },
 } as const;
 
-const optionsWithEnv = addEnvOptions(options);
+const optionsWithEnv: Options = addEnvOptions(options);
 
 function addEnvOptions(opts: typeof options) {
   for (const key in opts) {

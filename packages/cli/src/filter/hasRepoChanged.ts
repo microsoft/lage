@@ -2,7 +2,7 @@ import { getBranchChanges } from "workspace-tools";
 import * as fg from "fast-glob";
 import type { Logger } from "@lage-run/logger";
 
-export function hasRepoChanged(since: string, root: string, environmentGlob: string[], logger: Logger) {
+export function hasRepoChanged(since: string, root: string, environmentGlob: string[], logger: Logger): boolean {
   try {
     const changedFiles = getBranchChanges(since, root);
     const envFiles = fg.sync(environmentGlob, { cwd: root });

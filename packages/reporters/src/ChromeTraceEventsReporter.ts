@@ -51,11 +51,11 @@ export class ChromeTraceEventsReporter implements Reporter {
     this.outputFile = options.outputFile ?? getTimeBasedFilename("profile");
   }
 
-  log() {
+  log(): void {
     // pass
   }
 
-  summarize(schedulerRunSummary: SchedulerRunSummary) {
+  summarize(schedulerRunSummary: SchedulerRunSummary): void {
     const { targetRuns, startTime } = schedulerRunSummary;
 
     // categorize events

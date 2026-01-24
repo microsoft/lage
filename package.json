@@ -46,11 +46,11 @@
     "prettier": "^3.0.0",
     "syncpack": "^13.0.0",
     "ts-node": "^10.9.1",
-    "typescript": "~5.0.3"
+    "typescript": "~5.9.3"
   },
   "resolutions": {
     "@types/node@npm:*": "^16.0.0",
-    "typescript@npm:>=5.0.2": "~5.0.3",
+    "typescript@npm:>=5.0.2": "~5.9.3",
     "node-gyp@npm:latest": "^11.0.0",
     "listr2@npm:^9.0.5": "9.0.3"
   },

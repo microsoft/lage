@@ -29,11 +29,11 @@ export class VerboseFileLogReporter implements Reporter {
     this.fileStream = logFile ? fs.createWriteStream(logFile) : new Writable({ write() {} });
   }
 
-  cleanup() {
+  cleanup(): void {
     this.fileStream?.end();
   }
 
-  log(entry: LogEntry<any>) {
+  log(entry: LogEntry<any>): void {
     // if "hidden", do not even attempt to record or report the entry
     if (entry?.data?.target?.hidden) {
       return;
@@ -102,7 +102,7 @@ export class VerboseFileLogReporter implements Reporter {
     }
   }
 
-  summarize() {
+  summarize(): void {
     // No summary needed for VerboseFileLogReporter
   }
 }

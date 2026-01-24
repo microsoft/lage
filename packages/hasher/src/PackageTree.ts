@@ -31,14 +31,14 @@ export class PackageTree {
 
   constructor(private options: PackageTreeOptions) {}
 
-  reset() {
+  reset(): void {
     // reset the internal state
     this.#tree = { children: {}, isPackage: true };
     this.#packageFiles = {};
     this.#memoizedPackageFiles = {};
   }
 
-  async initialize() {
+  async initialize(): Promise<void> {
     const { root, includeUntracked, packageInfos } = this.options;
 
     this.reset();
@@ -77,7 +77,7 @@ export class PackageTree {
     }
   }
 
-  addToPackageTree(filePaths: string[]) {
+  addToPackageTree(filePaths: string[]): void {
     // key: path/to/package (packageRoot), value: array of a tuple of [file, hash]
     const packageFiles = this.#packageFiles;
 
@@ -108,7 +108,7 @@ export class PackageTree {
     }
   }
 
-  getPackageFiles(packageName: string, patterns: string[]) {
+  getPackageFiles(packageName: string, patterns: string[]): string[] {
     const { root, packageInfos } = this.options;
     const packagePath = path.relative(root, path.dirname(packageInfos[packageName].packageJsonPath)).replace(/\\/g, "/");
 
