@@ -1,8 +1,40 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Wed, 15 Jan 2025 16:56:22 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.6
+
+Thu, 15 Jan 2026 23:24:00 GMT
+
+### Patches
+
+- Replace ProgressReporter as the default with a less fancy implementation (crhaglun@microsoft.com)
+
+## 1.3.4
+
+Sun, 31 Aug 2025 08:08:39 GMT
+
+### Patches
+
+- Update dependency @ms-cloudpack/task-reporter to v0.17.4 (renovate@whitesourcesoftware.com)
+
+## 1.3.3
+
+Fri, 08 Aug 2025 08:10:13 GMT
+
+### Patches
+
+- Update dependency @ms-cloudpack/task-reporter to v0.17.2 (email not defined)
+
+## 1.3.0
+
+Wed, 12 Feb 2025 00:08:30 GMT
+
+### Minor changes
+
+- Add support to json formatter to pretty print and indent the json when the log level is set to verbose or silly... (dannyvv@microsoft.com)
 
 ## 1.2.19
 

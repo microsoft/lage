@@ -44,7 +44,7 @@ export async function initAction(): Promise<void> {
   const lageConfigFile = path.join(cwd, "lage.config.js");
   fs.writeFileSync(lageConfigFile, "module.exports = " + JSON.stringify(lageConfig, null, 2) + ";");
 
-  installLage(cwd, workspaceManager, pipeline);
+  await installLage(cwd, workspaceManager, pipeline);
 
   console.info(`Lage is initialized! You can now run: ${getBuildCommand(workspaceManager)}`);
 }

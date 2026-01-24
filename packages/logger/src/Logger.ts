@@ -39,14 +39,14 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
     this.log(LogLevel.silly, msg, data);
   }
 
-  stream(level: LogLevel, input: NodeJS.ReadableStream, data?: TLogStructuredData) {
+  stream(level: LogLevel, input: NodeJS.ReadableStream, data?: TLogStructuredData): () => void {
     const readline = createInterface({
       input,
       crlfDelay: Infinity,
       terminal: false,
     });
 
-    const lineLogger = (line) => {
+    const lineLogger = (line: string) => {
       this.log(level, line, data);
     };
 

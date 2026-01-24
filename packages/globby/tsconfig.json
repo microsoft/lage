@@ -1,22 +1,9 @@
 {
   "compilerOptions": {
     "outDir": "./lib",
-    "emitDeclarationOnly": true,
     "module": "Node16",
-    "target": "ES2020",
     "moduleResolution": "Node16",
-    "declaration": true,
-    "lib": ["ES2020"],
-    "strict": true,
-    "noImplicitAny": false,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "noUnusedLocals": false,
-    "sourceMap": true,
-    "typeRoots": ["../node_modules/@types", "../types", "node_modules/@types"],
-    "isolatedModules": true
+    "lib": ["ES2020"]
   },
   "include": ["src/index.mts"],
   "exclude": ["lib/**/*.mts"]

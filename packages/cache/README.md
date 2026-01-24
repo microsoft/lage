@@ -9,13 +9,14 @@ This package provides:
 
 ```ts
 import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
+import { getWorkspaceManagerRoot } from "workspace-tools";
 
 const cacheOptions = {
   internalCacheFolder: ".cache",
   outputGlob: ["dist/**", "lib/**"]
 }
 
-const root = getWorkspaceRoot(cwd);
+const root = getWorkspaceManagerRoot(cwd);
 
 const remoteFallbackCacheProviderOptions = {
   root,
@@ -32,9 +33,10 @@ const remoteFallbackCacheProviderOptions = {
       cacheStorageOptions: {
         provider: "azure-blob",
         options: {
-          connectionString: "asdfasdfasdfafds"; // Providing an un-authenitcated Blob Service Endpoint will force use of Azure DefualtAzureCredentials
+          connectionString: "asdfasdfasdfafds"; // Providing an un-authenitcated Blob Service Endpoint will force use of Azure EnvironmentCredential
           container: "container";
           maxSize?: 150;
+          credentialName?: "environment-credential" // Default value or ignored if connectionString carries credentials
         }
       },
       ...cacheOptions

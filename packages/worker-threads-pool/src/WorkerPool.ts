@@ -19,7 +19,6 @@ export const WorkerPoolEvents = {
 
 export class WorkerPool extends EventEmitter implements Pool {
   workers: IWorker[] = [];
-  freeWorkers: IWorker[] = [];
   queue: QueueItem[] = [];
   minWorkers = 0;
   maxWorkers = 0;
@@ -33,7 +32,6 @@ export class WorkerPool extends EventEmitter implements Pool {
     this.availability = this.maxWorkers;
 
     this.workers = [];
-    this.freeWorkers = [];
     this.queue = [];
 
     this.createInitialWorkers();
@@ -81,7 +79,7 @@ export class WorkerPool extends EventEmitter implements Pool {
   }
 
   addNewWorker(): ThreadWorker | undefined {
-    if (this.workers.length <= this.maxWorkers) {
+    if (this.workers.length < this.maxWorkers) {
       const { script, workerOptions } = this.options;
       const worker = new ThreadWorker(script, { workerOptions, workerIdleMemoryLimit: this.options.workerIdleMemoryLimit });
       worker.on("free", (data) => {

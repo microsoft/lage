@@ -1,8 +1,205 @@
 # Change Log - lage
 
-<!-- This log was last generated on Tue, 04 Feb 2025 18:31:49 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.16
+
+Thu, 15 Jan 2026 23:24:00 GMT
+
+### Patches
+
+- `@lage-run/cache-github-actions`
+  - Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)
+- `@lage-run/cli`
+  - Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)
+  - Replace ProgressReporter as the default with a less fancy implementation (crhaglun@microsoft.com)
+  - Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
+- `@lage-run/config`
+  - Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)
+- `@lage-run/hasher`
+  - Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)
+  - Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
+- `lage`
+  - Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)
+- `@lage-run/target-graph`
+  - Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)
+  - Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
+- `@lage-run/reporters`
+  - Replace ProgressReporter as the default with a less fancy implementation (crhaglun@microsoft.com)
+- `@lage-run/rpc`
+  - Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
+- `@lage-run/scheduler`
+  - Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
+- `@lage-run/worker-threads-pool`
+  - Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
+
+## 2.14.15
+
+Tue, 21 Oct 2025 23:42:35 GMT
+
+### Minor changes
+
+- `@lage-run/cli`
+  - Add custom reporter capability to Lage (nemanjatesic@microsoft.com)
+- `@lage-run/config`
+  - Add custom reporter capability to Lage (nemanjatesic@microsoft.com)
+
+## 2.14.14
+
+Fri, 10 Oct 2025 07:48:07 GMT
+
+### Patches
+
+- `@lage-run/cache`
+  - Update dependency backfill-cache to v5.11.2 (renovate@whitesourcesoftware.com)
+
+## 2.14.13
+
+Thu, 25 Sep 2025 18:00:51 GMT
+
+### Minor changes
+
+- `@lage-run/cache`
+  - azure identity - specify azure credential instead of using DefaultAzureCredential (brunoru@microsoft.com)
+- `@lage-run/config`
+  - Enhance CredentialCache to support multiple Azure credential types and allow configuration of credentialName in cache options (brunoru@microsoft.com)
+
+## 2.14.12
+
+Tue, 16 Sep 2025 21:17:08 GMT
+
+### Patches
+
+- `@lage-run/cache`
+  - Update dependency @azure/identity to ^4.12.0 (email not defined)
+
+## 2.14.11
+
+Mon, 01 Sep 2025 08:10:36 GMT
+
+### Minor changes
+
+- `@lage-run/cli`
+  - Add merge logic for targetConfig (dannyvv@microsoft.com)
+- `@lage-run/config`
+  - Add merge logic for targetConfig (dannyvv@microsoft.com)
+- `@lage-run/hasher`
+  - Add merge logic for targetConfig (dannyvv@microsoft.com)
+- `@lage-run/target-graph`
+  - Add merge logic for targetConfig (dannyvv@microsoft.com)
+
+## 2.14.10
+
+Sun, 31 Aug 2025 08:08:39 GMT
+
+### Patches
+
+- `@lage-run/reporters`
+  - Update dependency @ms-cloudpack/task-reporter to v0.17.4 (renovate@whitesourcesoftware.com)
+
+## 2.14.9
+
+Fri, 08 Aug 2025 08:10:13 GMT
+
+### Patches
+
+- `@lage-run/cli`
+  - Call read/readdir when simulating file accesses (pgunasekara@microsoft.com)
+- `@lage-run/reporters`
+  - Update dependency @ms-cloudpack/task-reporter to v0.17.2 (email not defined)
+
+## 2.14.8
+
+Thu, 07 Aug 2025 08:10:10 GMT
+
+### Patches
+
+- Update backfill monorepo (email not defined)
+
+## 2.14.7
+
+Fri, 01 Aug 2025 08:10:15 GMT
+
+### Patches
+
+- Update backfill monorepo (renovate@whitesourcesoftware.com)
+- Update dependencies (elcraig@microsoft.com)
+- Update dependency workspace-tools to v0.38.4 (renovate@whitesourcesoftware.com)
+
+## 2.14.4
+
+Thu, 17 Apr 2025 08:10:01 GMT
+
+### Patches
+
+- Update backfill monorepo (renovate@whitesourcesoftware.com)
+- Update dependency workspace-tools to v0.38.3 (email not defined)
+
+## 2.14.2
+
+Wed, 02 Apr 2025 08:10:04 GMT
+
+### Patches
+
+- Bundle with esbuild ^0.25.0 (email not defined)
+
+## 2.14.0
+
+Sat, 29 Mar 2025 02:16:38 GMT
+
+### Minor changes
+
+- cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL (kchau@microsoft.com)
+
+## 2.12.20
+
+Sat, 15 Feb 2025 20:04:19 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.28.0
+
+## 2.12.19
+
+Wed, 12 Feb 2025 00:08:30 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.27.0
+
+## 2.12.18
+
+Wed, 12 Feb 2025 00:04:29 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.26.0
+
+## 2.12.17
+
+Tue, 11 Feb 2025 05:40:29 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.7
+
+## 2.12.16
+
+Mon, 10 Feb 2025 00:35:53 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.6
+
+## 2.12.12
+
+Fri, 07 Feb 2025 02:50:58 GMT
+
+### Patches
+
+- Bump @lage-run/cli to v0.25.2
 
 ## 2.12.11
 

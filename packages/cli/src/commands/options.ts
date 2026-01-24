@@ -1,4 +1,5 @@
 import { Option } from "commander";
+import { logBuiltInReporterNames } from "../types/ReporterInitOptions.js";
 
 const isCI = process.env.CI || process.env.TF_BUILD;
 
@@ -12,16 +13,18 @@ interface Options {
   filter: { [key: string]: Option };
   affected: { [key: string]: Option };
   cache: { [key: string]: Option };
+  info: { [key: string]: Option };
 }
 
 const options: Options = {
   logger: {
-    reporter: new Option("--reporter <reporter...>", "reporter"),
+    reporter: new Option("--reporter <reporter...>", `log reporter (built-in choices: ${logBuiltInReporterNames.join(", ")})`),
     grouped: new Option("--grouped", "groups the logs").default(false),
     progress: new Option("--progress").conflicts(["reporter", "grouped", "verbose"]).default(!isCI),
     logLevel: new Option("--log-level <level>", "log level").choices(["info", "warn", "error", "verbose", "silly"]).conflicts("verbose"),
     logFile: new Option("--log-file <file>", "when used with --reporter vfl, writes verbose, ungrouped logs to the specified file"),
     verbose: new Option("--verbose", "verbose output").default(false),
+    indented: new Option("--indented", "enabled indentation of the JSON output").default(false),
   },
   pool: {
     concurrency: new Option("-c|--concurrency <number>", "max jobs to run at a time").argParser((v) => parseInt(v)),
@@ -79,13 +82,17 @@ const options: Options = {
     prune: new Option("--prune <days>", "Prunes cache older than certain number of <days>").argParser(parseInt).conflicts("--clear"),
     clear: new Option("--clear", "Clears the cache locally"),
   },
-};
+  info: {
+    outputFile: new Option("-o|--output-file <file>", "Output the target graph as json to the specified file."),
+    noOptimizeGraph: new Option("--no-optimize-graph", "Do not optimize the target graph"),
+  },
+} as const;
 
 const optionsWithEnv: Options = addEnvOptions(options);
 
 function addEnvOptions(opts: typeof options) {
   for (const key in opts) {
-    for (const [name, option] of Object.entries<Option>(opts[key])) {
+    for (const [name, option] of Object.entries<Option>((opts as any)[key])) {
       // convert the camel cased name to uppercase with underscores
       const upperCaseSnakeKey = key.replace(/([A-Z])/g, "_$1").toUpperCase();
       const upperCaseSnakeName = name.replace(/([A-Z])/g, "_$1").toUpperCase();

@@ -20,6 +20,12 @@ export function parseNdJson(ndjson: string): any[] {
     .filter((entry) => Object.keys(entry).length > 0);
 }
 
-export function filterEntry(data: any, pkg: string, task: string, status: TargetStatus): boolean {
+export function filterEntry(
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  data: any,
+  pkg: string,
+  task: string,
+  status: TargetStatus
+): boolean {
   return data?.target?.packageName === pkg && data?.target?.task === task && data.status === status;
 }

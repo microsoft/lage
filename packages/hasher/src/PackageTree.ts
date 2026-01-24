@@ -77,7 +77,7 @@ export class PackageTree {
     }
   }
 
-  async addToPackageTree(filePaths: string[]): Promise<void> {
+  addToPackageTree(filePaths: string[]): void {
     // key: path/to/package (packageRoot), value: array of a tuple of [file, hash]
     const packageFiles = this.#packageFiles;
 

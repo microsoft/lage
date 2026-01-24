@@ -7,6 +7,7 @@ addOptions("server", command);
 addOptions("runner", command);
 addOptions("logger", command);
 addOptions("filter", command);
+addOptions("info", command);
 command.action(infoAction);
 
 export { command as infoCommand };

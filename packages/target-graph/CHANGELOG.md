@@ -1,8 +1,41 @@
 # Change Log - @lage-run/target-graph
 
-<!-- This log was last generated on Wed, 15 Jan 2025 16:56:22 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.12.1
+
+Thu, 15 Jan 2026 23:24:00 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)
+- Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
+
+## 0.12.0
+
+Mon, 01 Sep 2025 08:10:36 GMT
+
+### Minor changes
+
+- Add merge logic for targetConfig (dannyvv@microsoft.com)
+
+## 0.11.3
+
+Fri, 01 Aug 2025 08:10:15 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.4 (renovate@whitesourcesoftware.com)
+
+## 0.11.2
+
+Thu, 17 Apr 2025 08:10:01 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.3 (email not defined)
 
 ## 0.11.1
 

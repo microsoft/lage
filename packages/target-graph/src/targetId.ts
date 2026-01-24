@@ -1,11 +1,7 @@
 /**
  * Generates a unique target id in this format: `<package-name>#<task-name>` or `//#<task-name>`
- *
- * @param pkgName
- * @param task
- * @returns
  */
-export function getTargetId(pkgName: string | undefined, task: string) {
+export function getTargetId(pkgName: string | undefined, task: string): string {
   return `${typeof pkgName === "string" ? pkgName : ""}#${task}`;
 }
 
@@ -15,8 +11,6 @@ export function getTargetId(pkgName: string | undefined, task: string) {
  * If the packageName is //, that means that the task is meant to be run at the repo root level.
  *
  * @internal
- * @param targetId
- * @returns
  */
 export function getPackageAndTask(targetId: string): {
   packageName?: string;
@@ -43,6 +37,6 @@ export function getStartTargetId(): string {
   return START_TARGET_ID;
 }
 
-export function getStagedTargetId(task: string) {
+export function getStagedTargetId(task: string): string {
   return `Δ${task}`;
 }

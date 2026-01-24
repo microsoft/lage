@@ -1,7 +1,7 @@
 import { TargetRunner } from "@lage-run/runners";
 import { Target } from "@lage-run/target-graph";
 import { Pool } from "@lage-run/worker-threads-pool";
-import { PoolStats } from "@lage-run/worker-threads-pool/lib/types/Pool";
+import { PoolStats } from "@lage-run/worker-threads-pool";
 
 export class InProcPool implements Pool {
   constructor(private runner: TargetRunner) {}
@@ -21,7 +21,10 @@ export class InProcPool implements Pool {
 
 export class SingleSchedulePool implements Pool {
   count = 0;
-  constructor(private runner: TargetRunner, private concurrency: number) {}
+  constructor(
+    private runner: TargetRunner,
+    private concurrency: number
+  ) {}
   exec({ target }: { target: Target }): Promise<unknown> {
     if (this.concurrency > this.count) {
       this.count++;

@@ -18,12 +18,12 @@ export function expandTargetDefinition(
     id in pipeline
       ? pipeline[id]
       : `#${task}` in pipeline
-      ? pipeline[`#${task}`]
-      : `//${task}` in pipeline
-      ? pipeline[`//${task}`]
-      : task in pipeline
-      ? pipeline[task]
-      : emptyDefinition;
+        ? pipeline[`#${task}`]
+        : `//${task}` in pipeline
+          ? pipeline[`//${task}`]
+          : task in pipeline
+            ? pipeline[task]
+            : emptyDefinition;
 
   if (Array.isArray(definition)) {
     return emptyDefinition;

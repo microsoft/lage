@@ -58,7 +58,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     return this.#status;
   }
 
-  get abortController() {
+  get abortController(): AbortController {
     return this.options.abortController;
   }
 
@@ -225,7 +225,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
           if (data.type === "log") {
             logger.log(data.level, data.msg, { target, threadId: worker.threadId });
           } else if (data.type === "hash") {
-            this.options.hasher.hash(target).then((hash) => {
+            void this.options.hasher.hash(target).then((hash) => {
               worker.postMessage({ type: "hash", hash });
             });
           } else if (this.options.onMessage) {

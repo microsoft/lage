@@ -1,5 +1,5 @@
 import { getConfig, getConcurrency } from "@lage-run/config";
-import { getWorkspaceRoot } from "workspace-tools";
+import { getWorkspaceManagerRoot } from "workspace-tools";
 import type { Logger } from "@lage-run/logger";
 import { BackfillCacheProvider } from "@lage-run/cache";
 
@@ -15,7 +15,7 @@ export async function clearCache(options: ClearCacheOptions): Promise<void> {
 
   const config = await getConfig(cwd);
 
-  const workspaceRoot = getWorkspaceRoot(cwd);
+  const workspaceRoot = getWorkspaceManagerRoot(cwd);
   const concurrency = getConcurrency(options.concurrency, config.concurrency);
 
   if (!workspaceRoot) {
@@ -23,7 +23,7 @@ export async function clearCache(options: ClearCacheOptions): Promise<void> {
   }
 
   const cacheProvider = new BackfillCacheProvider({
-    root: cwd,
+    root: workspaceRoot,
     cacheOptions: config.cacheOptions,
     logger,
   });
@@ -31,7 +31,7 @@ export async function clearCache(options: ClearCacheOptions): Promise<void> {
   // eslint-disable-next-line no-console
   console.log("Clearing Cache");
 
-  cacheProvider.clear(concurrency);
+  await cacheProvider.clear(concurrency);
 
   // eslint-disable-next-line no-console
   console.log("Cache Cleared");

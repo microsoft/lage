@@ -4,6 +4,7 @@ import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import { initializeReporters } from "../initializeReporters.js";
 import { executeInProcess } from "./executeInProcess.js";
 import { executeRemotely } from "./executeRemotely.js";
+import { getConfig } from "@lage-run/config";
 
 interface ExecOptions extends ReporterInitOptions {
   cwd?: string;
@@ -18,11 +19,13 @@ interface ExecRemoteOptions extends ExecOptions {
 }
 
 export async function execAction(options: ExecOptions, command: Command): Promise<void> {
+  const cwd = options.cwd ?? process.cwd();
+  const config = await getConfig(cwd);
   const logger = createLogger();
-  options.cwd = options.cwd ?? process.cwd();
+  options.cwd = cwd;
   options.logLevel = options.logLevel ?? "info";
   options.reporter = options.reporter ?? "json";
-  initializeReporters(logger, options);
+  await initializeReporters(logger, options, config.reporters);
 
   const { server } = options;
   if (server) {

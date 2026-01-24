@@ -1,3 +1,4 @@
+import path from "path";
 import type { Logger } from "@lage-run/logger";
 import createLogger from "@lage-run/logger";
 import { initializeReporters } from "../initializeReporters.js";
@@ -7,7 +8,8 @@ import { ConnectError, createClient } from "@lage-run/rpc";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { simulateFileAccess } from "./simulateFileAccess.js";
 import { parseServerOption } from "../parseServerOption.js";
-import { getWorkspaceRoot } from "workspace-tools";
+import { getConfig } from "@lage-run/config";
+import { getWorkspaceManagerRoot } from "workspace-tools";
 import type { Command } from "commander";
 import { launchServerInBackground } from "../launchServerInBackground.js";
 
@@ -80,7 +82,7 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
       task,
       taskArgs,
     });
-    logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode} `);
+    logger.info(`Task ${response.packageName} ${response.task} exited with code ${response.exitCode}`);
     return response;
   } catch (error) {
     if (error instanceof ConnectError) {
@@ -98,13 +100,15 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
   const timeout = options.timeout ?? 5 * 60;
 
   const { host, port } = parseServerOption(server);
+  const cwd = options.cwd ?? process.cwd();
+  const config = await getConfig(cwd);
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
   options.reporter = options.reporter ?? "json";
-  initializeReporters(logger, options);
+  await initializeReporters(logger, options, config.reporters);
 
-  const root = getWorkspaceRoot(options.cwd ?? process.cwd())!;
+  const root = getWorkspaceManagerRoot(options.cwd ?? process.cwd())!;
 
   let client = await tryCreateClient(host, port);
   const args = command.args;
@@ -140,7 +144,8 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
     process.exitCode = response.exitCode;
 
     // we will simulate file access even if exit code may be non-zero
-    await simulateFileAccess(logger, response.inputs, response.outputs);
+    const relativeGlobalInputsForTarget = path.relative(root, path.join(response.cwd, response.globalInputHashFile));
+    await simulateFileAccess(logger, root, [...response.inputs, relativeGlobalInputsForTarget], response.outputs);
   } else {
     process.exitCode = 1;
   }

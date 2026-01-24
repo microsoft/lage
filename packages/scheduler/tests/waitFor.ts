@@ -4,7 +4,7 @@ export function waitFor(condition: () => boolean, maxWait: number = 5000): Promi
   let maxRetries = maxWait / timeout;
 
   return new Promise<void>((resolve, reject) => {
-    const loop = (timer) => {
+    const loop = (timer: NodeJS.Timeout) => {
       clearTimeout(timer);
 
       retries++;
@@ -18,6 +18,6 @@ export function waitFor(condition: () => boolean, maxWait: number = 5000): Promi
       }
     };
 
-    const timer = setTimeout(() => loop(timer), timeout);
+    const timer: NodeJS.Timeout = setTimeout(() => loop(timer), timeout);
   });
 }

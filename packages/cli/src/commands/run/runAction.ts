@@ -3,7 +3,7 @@ import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
 import { getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions, getConcurrency } from "@lage-run/config";
-import { getPackageInfos, getWorkspaceRoot } from "workspace-tools";
+import { getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
 import { initializeReporters } from "../initializeReporters.js";
 import { SimpleScheduler } from "@lage-run/scheduler";
 
@@ -42,10 +42,10 @@ export async function runAction(options: RunOptions, command: Command): Promise<
   // Configure logger
   const logger = createLogger();
 
-  const reporters = initializeReporters(logger, { ...options, concurrency });
+  const reporters = await initializeReporters(logger, { ...options, concurrency }, config.reporters);
 
   // Build Target Graph
-  const root = getWorkspaceRoot(process.cwd())!;
+  const root = getWorkspaceManagerRoot(process.cwd())!;
   const packageInfos = getPackageInfos(root);
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
@@ -64,6 +64,7 @@ export async function runAction(options: RunOptions, command: Command): Promise<
     tasks,
     packageInfos,
     priorities: config.priorities,
+    enableTargetConfigMerging: config.enableTargetConfigMerging,
   });
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);
@@ -103,7 +104,7 @@ export async function runAction(options: RunOptions, command: Command): Promise<
     workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
   });
 
-  const optimizedTargets = await optimizeTargetGraph(targetGraph, scheduler.runnerPicker);
+  const optimizedTargets = await optimizeTargetGraph(targetGraph, scheduler.runnerPicker, false);
   const optimizedGraph: TargetGraph = {
     targets: new Map(optimizedTargets.map((target) => [target.id, target])),
   };

@@ -2,11 +2,9 @@ import EventEmitter from "events";
 import { type LogEntry, LogLevel, type Reporter, type LogStructuredData } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 
-// @ts-ignore Ignoring ESM in CJS errors here, but still importing the types to be used
-// import type { TaskReporter as TaskReporterType, TaskReporterTask } from "@ms-cloudpack/task-reporter";
 import { TaskReporter, type TaskReporterTask } from "@ms-cloudpack/task-reporter";
 import type { Target } from "@lage-run/target-graph";
-import gradient from "gradient-string";
+import { gradient } from "./gradient.js";
 import chalk from "chalk";
 import type { Writable } from "stream";
 import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
@@ -59,7 +57,6 @@ export class ProgressReporter implements Reporter {
       showConsoleWarn: true,
       showErrors: true,
       showPending: true,
-      showProgress: true,
       showStarted: true,
       showSummary: true,
       showTaskDetails: true,

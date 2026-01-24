@@ -2,6 +2,312 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 15 Jan 2026 23:24:00 GMT",
+      "version": "0.33.1",
+      "tag": "@lage-run/cli_v0.33.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Update dependency workspace-tools to v0.40.0"
+          },
+          {
+            "author": "crhaglun@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Replace ProgressReporter as the default with a less fancy implementation"
+          },
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Add lint rule for no-floating-promises and fix several places"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 21 Oct 2025 23:42:35 GMT",
+      "version": "0.33.0",
+      "tag": "@lage-run/cli_v0.33.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "cd3ca59beba687a1d3c859524786e2aeeea09953",
+            "comment": "Add custom reporter capability to Lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 01 Sep 2025 08:10:36 GMT",
+      "version": "0.32.0",
+      "tag": "@lage-run/cli_v0.32.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "5f2d28335f9293a5cc44a3bc6a99f41f8f981e7c",
+            "comment": "Add merge logic for targetConfig"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Aug 2025 08:10:13 GMT",
+      "version": "0.31.8",
+      "tag": "@lage-run/cli_v0.31.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "pgunasekara@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "Call read/readdir when simulating file accesses"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "733dbd23642c8ca7dc405de21a3c8b65b5a1aa5c",
+            "comment": "update formatting"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Aug 2025 08:10:15 GMT",
+      "version": "0.31.6",
+      "tag": "@lage-run/cli_v0.31.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Export Target type"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update dependency workspace-tools to v0.38.4"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 17 Apr 2025 08:10:01 GMT",
+      "version": "0.31.3",
+      "tag": "@lage-run/cli_v0.31.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "00e45954e48cdddcb3fa4b68a6e732a43ec7bd57",
+            "comment": "Update dependency workspace-tools to v0.38.3"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "00e45954e48cdddcb3fa4b68a6e732a43ec7bd57",
+            "comment": "Update dependency chokidar to v3.6.0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 12 Apr 2025 08:09:17 GMT",
+      "version": "0.31.2",
+      "tag": "@lage-run/cli_v0.31.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "f8331c07cbef78945014d941c7171d48aae0e25c",
+            "comment": "make sure to touch / probe all directories deeply"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Apr 2025 08:10:04 GMT",
+      "version": "0.31.1",
+      "tag": "@lage-run/cli_v0.31.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "54e957d6b93381285d67ff8c23e134770b7a1512",
+            "comment": "Update dependency fast-glob to v3.3.3"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Apr 2025 00:48:44 GMT",
+      "version": "0.31.0",
+      "tag": "@lage-run/cli_v0.31.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "84c942fb7008f722709e81f00b50295a3f65e5a7",
+            "comment": "Add backwards compate lage info emit hack"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "0.30.0",
+      "tag": "@lage-run/cli_v0.30.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ],
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "fixes the lage-server to respect gitignored files for env globs"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 15 Feb 2025 20:04:19 GMT",
+      "version": "0.28.0",
+      "tag": "@lage-run/cli_v0.28.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "84c942fb7008f722709e81f00b50295a3f65e5a7",
+            "comment": "Add backwards compate lage info emit hack"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 12 Feb 2025 00:08:30 GMT",
+      "version": "0.27.0",
+      "tag": "@lage-run/cli_v0.27.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "b3a12316b89654f42153675b190626aeee6882f4",
+            "comment": "Add support to json formatter to pretty print and indent the json when the log level is set to verbose or silly..."
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.3.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 12 Feb 2025 00:04:29 GMT",
+      "version": "0.26.0",
+      "tag": "@lage-run/cli_v0.26.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "7842bdc237e410aad82b7e692ed4411cd8a38c72",
+            "comment": "Add extra info to lage info for #815"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Feb 2025 05:40:29 GMT",
+      "version": "0.25.7",
+      "tag": "@lage-run/cli_v0.25.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "55dce132215025f6dea54e36eabcd7853168de1b",
+            "comment": "fixing outputs to have correct outputs"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 10 Feb 2025 00:35:53 GMT",
+      "version": "0.25.6",
+      "tag": "@lage-run/cli_v0.25.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "031ad89ab6a0c64d46c79318377399d15e730e84",
+            "comment": "tracks the transitive inputs rather just one level deep"
+          },
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "031ad89ab6a0c64d46c79318377399d15e730e84",
+            "comment": "simulate transitives by doing our own hashing"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/rpc to v1.2.7",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 07 Feb 2025 02:50:58 GMT",
+      "version": "0.25.2",
+      "tag": "@lage-run/cli_v0.25.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "142b1453ed530378d656c4f342fa4d16f2a4cb50",
+            "comment": "adding missing inputs from dependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 04 Feb 2025 18:31:49 GMT",
       "version": "0.25.1",
       "tag": "@lage-run/cli_v0.25.1",

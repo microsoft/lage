@@ -22,7 +22,7 @@ describe("JsonReporter", () => {
       rawLogs.push(JSON.parse(message));
     });
 
-    const reporter = new JsonReporter({ logLevel: LogLevel.verbose });
+    const reporter = new JsonReporter({ logLevel: LogLevel.verbose, indented: false });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -352,7 +352,7 @@ describe("JsonReporter", () => {
       rawLogs.push(JSON.parse(message));
     });
 
-    const reporter = new JsonReporter({ logLevel: LogLevel.verbose });
+    const reporter = new JsonReporter({ logLevel: LogLevel.verbose, indented: false });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -407,34 +407,34 @@ describe("JsonReporter", () => {
       workerRestarts: 0,
     });
 
-    expect(rawLogs).toMatchInlineSnapshot(`
-      [
-        {
-          "summary": {
-            "duration": "100.00",
-            "taskStats": [
-              {
-                "duration": "60.00",
-                "package": "a",
-                "status": "failed",
-                "task": "build",
-              },
-              {
-                "duration": "60.00",
-                "package": "a",
-                "status": "success",
-                "task": "test",
-              },
-              {
-                "duration": "60.00",
-                "package": "b",
-                "status": "success",
-                "task": "build",
-              },
-            ],
-          },
+    expect(rawLogs).toEqual([
+      {
+        summary: {
+          duration: "100.00",
+          failedTargets: 1,
+          successTargets: 2,
+          taskStats: [
+            {
+              duration: "60.00",
+              package: "a",
+              status: "failed",
+              task: "build",
+            },
+            {
+              duration: "60.00",
+              package: "a",
+              status: "success",
+              task: "test",
+            },
+            {
+              duration: "60.00",
+              package: "b",
+              status: "success",
+              task: "build",
+            },
+          ],
         },
-      ]
-    `);
+      },
+    ]);
   });
 });

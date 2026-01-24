@@ -2,6 +2,168 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Thu, 15 Jan 2026 23:24:00 GMT",
+      "version": "0.7.1",
+      "tag": "@lage-run/config_v0.7.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/config",
+            "commit": "3d7ac61faadf82097fb2996431b537b2a9baa0e3",
+            "comment": "Update dependency workspace-tools to v0.40.0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 21 Oct 2025 23:42:35 GMT",
+      "version": "0.7.0",
+      "tag": "@lage-run/config_v0.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "cd3ca59beba687a1d3c859524786e2aeeea09953",
+            "comment": "Add custom reporter capability to Lage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Sep 2025 18:00:51 GMT",
+      "version": "0.6.0",
+      "tag": "@lage-run/config_v0.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "brunoru@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "38888a6891fa45232aeba64f222d17177114dd23",
+            "comment": "Enhance CredentialCache to support multiple Azure credential types and allow configuration of credentialName in cache options"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 01 Sep 2025 08:10:36 GMT",
+      "version": "0.5.0",
+      "tag": "@lage-run/config_v0.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dannyvv@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "5f2d28335f9293a5cc44a3bc6a99f41f8f981e7c",
+            "comment": "Add merge logic for targetConfig"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 07 Aug 2025 08:10:10 GMT",
+      "version": "0.4.17",
+      "tag": "@lage-run/config_v0.4.17",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/config",
+            "commit": "7ca58c8121ab43d58ba76379e5e0c2320622cf5d",
+            "comment": "Update backfill monorepo"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Aug 2025 08:10:15 GMT",
+      "version": "0.4.16",
+      "tag": "@lage-run/config_v0.4.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/config",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update backfill monorepo"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/config",
+            "commit": "28308e0b441f625fb5a83daabadb55f49b208603",
+            "comment": "Update dependency workspace-tools to v0.38.4"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 29 Apr 2025 08:10:03 GMT",
+      "version": "0.4.15",
+      "tag": "@lage-run/config_v0.4.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "8cd955ef4910abb9fff6f0de40255fe842847a79",
+            "comment": "Make CacheOptions properties optional and document them"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 26 Apr 2025 08:08:38 GMT",
+      "version": "0.4.14",
+      "tag": "@lage-run/config_v0.4.14",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "31b9b2861d9aa59d8dd5b6b2ceb2444b11198694",
+            "comment": "Remove incorrect bin entries"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 17 Apr 2025 08:10:01 GMT",
+      "version": "0.4.13",
+      "tag": "@lage-run/config_v0.4.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/config",
+            "commit": "00e45954e48cdddcb3fa4b68a6e732a43ec7bd57",
+            "comment": "Update backfill monorepo"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/config",
+            "commit": "00e45954e48cdddcb3fa4b68a6e732a43ec7bd57",
+            "comment": "Update dependency workspace-tools to v0.38.3"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 29 Mar 2025 02:16:38 GMT",
+      "version": "0.4.12",
+      "tag": "@lage-run/config_v0.4.12",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "a680ab60dcddd84808f223a1b5f38a16e868b66f",
+            "comment": "Sync versions, and use workspace:^ versions for local deps"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Jan 2025 16:56:22 GMT",
       "version": "0.4.12",
       "tag": "@lage-run/config_v0.4.12",

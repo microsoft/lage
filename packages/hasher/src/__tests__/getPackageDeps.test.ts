@@ -1,6 +1,5 @@
 import * as path from "path";
 import * as fs from "fs";
-import { execSync } from "child_process";
 
 import { getPackageDeps, parseGitLsTree, parseGitFilename } from "../getPackageDeps";
 import { Monorepo } from "@lage-run/monorepo-fixture";
@@ -102,7 +101,7 @@ describe(getPackageDeps.name, () => {
     filePaths.forEach((filePath) => expect(results.get(filePath)).toEqual(expectedFiles[filePath]));
 
     await monorepo.cleanup();
-  });
+  }, 60_000);
 
   it("can handle adding one file", async () => {
     const monorepo = new Monorepo("add-one-file");

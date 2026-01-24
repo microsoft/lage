@@ -23,6 +23,17 @@ interface StdioInfo {
   resolve: () => void;
 }
 
+type WorkerMessage =
+  | {
+      type: "status";
+      err: Error;
+      results: unknown;
+    }
+  | {
+      type: "report-memory-usage";
+      memoryUsage: number;
+    };
+
 const workerFreeEvent = "free";
 
 const maxOldSpaceSizeBytes = v8.getHeapStatistics().total_available_size;
@@ -41,7 +52,10 @@ export class ThreadWorker extends EventEmitter implements IWorker {
 
   maxWorkerMemoryUsage = 0;
 
-  constructor(private script: string, private options: WorkerOptions) {
+  constructor(
+    private script: string,
+    private options: WorkerOptions
+  ) {
     super();
 
     if (!options.workerIdleMemoryLimitPercentage) {
@@ -73,12 +87,12 @@ export class ThreadWorker extends EventEmitter implements IWorker {
       resolve();
     });
 
-    const msgHandler = (data) => {
+    const msgHandler = (data: WorkerMessage) => {
       if (data.type === "status") {
         // In case of success: Call the callback that was passed to `runTask`,
         // remove the `TaskInfo` associated with the Worker, and mark it as free
         // again.
-        Promise.all([this.#stdoutInfo.promise, this.#stderrInfo.promise]).then(() => {
+        void Promise.all([this.#stdoutInfo.promise, this.#stderrInfo.promise]).then(() => {
           const { err, results } = data;
           if (this.#taskInfo) {
             this.#taskInfo.abortSignal?.removeEventListener("abort", this.#handleAbort);
@@ -98,7 +112,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
             100;
 
         if (limit && data.memoryUsage > limit) {
-          this.restart();
+          void this.restart();
         } else {
           this.#ready();
         }
@@ -109,7 +123,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
 
     worker.on("message", msgHandler);
 
-    const errHandler = (err) => {
+    const errHandler = (err: Error) => {
       // We likely have a worker that has crashed - many instances of this is due to out-of-memory errors, we need to fail fast!
       this.#stdoutInfo.resolve();
       this.#stderrInfo.resolve();
@@ -257,22 +271,22 @@ export class ThreadWorker extends EventEmitter implements IWorker {
 
   terminate(): void {
     this.#worker.removeAllListeners();
-    this.#worker.terminate();
+    void this.#worker.terminate();
     this.#worker.unref();
   }
 
   restart(): void {
     this.restarts++;
     this.status = "busy";
-    this.#worker.terminate();
+    void this.#worker.terminate();
     this.#createNewWorker();
   }
 
-  async checkMemoryUsage(): Promise<void> {
+  checkMemoryUsage(): void {
     this.#worker.postMessage({ type: "check-memory-usage" });
   }
 
-  postMessage(value: any, transferList?: readonly TransferListItem[] | undefined): void {
+  postMessage(value: unknown, transferList?: readonly TransferListItem[] | undefined): void {
     this.#worker.postMessage(value, transferList);
   }
 }

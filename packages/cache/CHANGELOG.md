@@ -1,8 +1,64 @@
 # Change Log - @lage-run/cache
 
-<!-- This log was last generated on Wed, 15 Jan 2025 16:56:22 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 10 Oct 2025 07:48:07 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.1
+
+Fri, 10 Oct 2025 07:48:07 GMT
+
+### Patches
+
+- Update dependency backfill-cache to v5.11.2 (renovate@whitesourcesoftware.com)
+
+## 1.4.0
+
+Thu, 25 Sep 2025 18:00:51 GMT
+
+### Minor changes
+
+- azure identity - specify azure credential instead of using DefaultAzureCredential (brunoru@microsoft.com)
+
+## 1.3.17
+
+Tue, 16 Sep 2025 21:17:08 GMT
+
+### Patches
+
+- Update dependency @azure/identity to ^4.12.0 (email not defined)
+
+## 1.3.15
+
+Thu, 07 Aug 2025 08:10:10 GMT
+
+### Patches
+
+- Update backfill monorepo (email not defined)
+
+## 1.3.14
+
+Fri, 01 Aug 2025 08:10:15 GMT
+
+### Patches
+
+- Update backfill monorepo (renovate@whitesourcesoftware.com)
+
+## 1.3.13
+
+Tue, 29 Apr 2025 08:10:03 GMT
+
+### Patches
+
+- Remove duplicate CacheOptions interface (re-export from config package) (elcraig@microsoft.com)
+
+## 1.3.12
+
+Thu, 17 Apr 2025 08:10:01 GMT
+
+### Patches
+
+- Update backfill monorepo (renovate@whitesourcesoftware.com)
 
 ## 1.3.11
 

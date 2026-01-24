@@ -7,6 +7,7 @@ import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEnt
 import { Writable } from "stream";
 import fs from "fs";
 import path from "path";
+import type { TargetStatus } from "@lage-run/scheduler-types";
 
 const stripAnsiRegex = ansiRegex();
 
@@ -84,13 +85,14 @@ export class VerboseFileLogReporter implements Reporter {
 
     if (isTargetStatusLogEntry(data)) {
       const { hash, duration, status } = data;
-      const statusMessages = {
+      const statusMessages: Record<TargetStatus, string> = {
         running: "➔ start",
         success: `✓ done - ${duration && formatDuration(hrToSeconds(duration))}`,
         failed: "✖ fail",
         skipped: `» skip - ${hash}`,
         aborted: "- aborted",
         queued: "… queued",
+        pending: "… pending",
       };
 
       return this.printEntry(entry, statusMessages[status]);

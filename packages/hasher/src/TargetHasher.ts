@@ -6,9 +6,9 @@ import fs from "fs";
 import path from "path";
 import {
   type ParsedLock,
-  type WorkspaceInfo,
+  type WorkspaceInfos,
   type PackageInfos,
-  getWorkspacesAsync,
+  getWorkspaceInfosAsync,
   parseLockFile,
   createDependencyMap,
 } from "workspace-tools";
@@ -63,7 +63,7 @@ export class TargetHasher {
   initializedPromise: Promise<unknown> | undefined;
 
   packageInfos: PackageInfos = {};
-  workspaceInfo: WorkspaceInfo | undefined;
+  workspaceInfo: WorkspaceInfos | undefined;
   globalInputsHash: Record<string, string> | undefined;
   lockInfo: ParsedLock | undefined;
   targetHashes: Record<string, string> = {};
@@ -73,7 +73,7 @@ export class TargetHasher {
     dependents: new Map(),
   };
 
-  getPackageInfos(workspacePackages: WorkspaceInfo): PackageInfos {
+  getPackageInfos(workspacePackages: WorkspaceInfos): PackageInfos {
     const { root } = this.options;
     const packageInfos: PackageInfos = {};
 
@@ -135,7 +135,7 @@ export class TargetHasher {
         .then((files) => this.fileHasher.hash(files))
         .then((hash) => (this.globalInputsHash = hash)),
 
-      getWorkspacesAsync(root)
+      getWorkspaceInfosAsync(root)
         .then((workspaceInfo) => (this.workspaceInfo = workspaceInfo))
         .then(() => {
           this.packageInfos = this.getPackageInfos(this.workspaceInfo!);
@@ -170,7 +170,7 @@ export class TargetHasher {
 
     if (target.cwd === root && target.cache) {
       if (!target.inputs) {
-        throw new Error("Root-level targets must have `inputs` defined if it has cache enabled.");
+        throw new Error(`No "inputs" specified for target "${target.id}"; cannot cache.`);
       }
 
       const files = await globAsync(target.inputs, { cwd: root });
@@ -241,7 +241,7 @@ export class TargetHasher {
   async getEnvironmentGlobHashes(root: string, target: Target): Promise<Record<string, string>> {
     const globalFileHashes = target.environmentGlob
       ? this.fileHasher.hash(await globAsync(target.environmentGlob ?? [], { cwd: root }))
-      : this.globalInputsHash ?? {};
+      : (this.globalInputsHash ?? {});
 
     return globalFileHashes;
   }

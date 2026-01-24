@@ -5,11 +5,10 @@
 import * as os from "os";
 import { createDefaultConfig, getEnvConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
-import { CacheStorageConfig } from "backfill-config";
 import type { Logger as BackfillLogger } from "backfill-logger";
-import type { CacheOptions } from "./types/CacheOptions.js";
+import type { CacheOptions } from "@lage-run/config";
+import type { AzureCredentialName } from "@lage-run/config";
 import { CredentialCache } from "./CredentialCache.js";
-import { BackfillCacheProviderOptions } from "./providers/BackfillCacheProvider.js";
 
 export function createBackfillLogger(): BackfillLogger {
   const stdout = process.stdout;
@@ -39,14 +38,38 @@ export function createBackfillCacheConfig(
     ...createDefaultConfig(cwd),
     ...cacheOptions,
     ...envConfig,
-  };
+  } as CacheOptions;
 
-  if (mergedConfig.cacheStorageConfig.provider === "azure-blob") {
-    if (
-      mergedConfig.cacheStorageConfig.options.connectionString &&
-      !isTokenConnectionString(mergedConfig.cacheStorageConfig.options.connectionString)
-    ) {
-      mergedConfig.cacheStorageConfig.options.credential = CredentialCache.getInstance();
+  if (mergedConfig.cacheStorageConfig?.provider === "azure-blob") {
+    const azureOptions = mergedConfig.cacheStorageConfig.options;
+    if ("connectionString" in azureOptions && !isTokenConnectionString(azureOptions.connectionString)) {
+      /** Pass through optional credentialName from config to select a specific credential implementation
+       * Type assertion: only the connection-string variant is augmented with credentialName in @lage-run/config
+       */
+      const name = (azureOptions as { credentialName?: AzureCredentialName }).credentialName as string | undefined;
+      if (name != null) {
+        if (!CredentialCache.credentialNames.includes(name as AzureCredentialName)) {
+          throw new Error(
+            `Invalid cacheStorageConfig.options.credentialName: "${name}". Allowed values: ${CredentialCache.credentialNames.join(", ")}`
+          );
+        }
+        azureOptions.credential = CredentialCache.getInstance(name as AzureCredentialName);
+      } else {
+        /** No name provided in config: if env var AZURE_IDENTITY_CREDENTIAL_NAME is set, honor it; otherwise default to EnvironmentCredential
+         */
+        const envName = process.env.AZURE_IDENTITY_CREDENTIAL_NAME as string | undefined;
+        if (envName != null) {
+          if (!CredentialCache.credentialNames.includes(envName as AzureCredentialName)) {
+            throw new Error(
+              `Invalid AZURE_IDENTITY_CREDENTIAL_NAME: "${envName}". Allowed values: ${CredentialCache.credentialNames.join(", ")}`
+            );
+          }
+          azureOptions.credential = CredentialCache.getInstance(envName as AzureCredentialName);
+        } else {
+          // Fall back to EnvironmentCredential
+          azureOptions.credential = CredentialCache.getInstance();
+        }
+      }
     }
   }
 
@@ -54,5 +77,5 @@ export function createBackfillCacheConfig(
 }
 
 function isTokenConnectionString(connectionString: string) {
-  return connectionString.includes("SharedAccessSignature");
+  return connectionString.includes("SharedAccessSignature") || connectionString.includes("AccountKey");
 }

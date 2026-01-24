@@ -2,9 +2,9 @@
 const path = require("path");
 
 /** @type {import('dts-bundle-generator/config-schema').BundlerConfig} */
-module.exports = {
+const config = {
   compilationOptions: {
-    preferredConfigPath: path.join(__dirname, "tsconfig.json"),
+    preferredConfigPath: require.resolve("@lage-run/monorepo-scripts/config/tsconfig.dts-bundle.json"),
   },
   entries: [
     {
@@ -23,3 +23,4 @@ module.exports = {
     },
   ],
 };
+module.exports = config;

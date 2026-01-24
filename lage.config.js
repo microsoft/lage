@@ -46,7 +46,7 @@ module.exports = {
     "@lage-run/globby#transpile": {
       type: "npmScript",
     },
-    "@lage-run/globby#isoldatedTypes": {
+    "@lage-run/globby#isolatedTypes": {
       type: "npmScript",
       options: {
         script: "types",
@@ -82,7 +82,7 @@ module.exports = {
       "lage.config.js",
       "package.json",
       "packages/tsconfig.lage2.json",
-      "patches/**/*",
+      "scripts/**/*",
       "yarn.lock",
     ],
     // Subset of files in package directories that will be saved into the cache.

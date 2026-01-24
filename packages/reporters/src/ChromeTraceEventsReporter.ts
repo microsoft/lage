@@ -39,7 +39,6 @@ function getTimeBasedFilename(prefix: string) {
 }
 
 export class ChromeTraceEventsReporter implements Reporter {
-  logStream: Writable;
   consoleLogStream: Writable = process.stdout;
 
   private events: TraceEventsObject = {
@@ -50,12 +49,6 @@ export class ChromeTraceEventsReporter implements Reporter {
 
   constructor(private options: ChromeTraceEventsReporterOptions) {
     this.outputFile = options.outputFile ?? getTimeBasedFilename("profile");
-
-    if (!fs.existsSync(path.dirname(this.outputFile))) {
-      fs.mkdirSync(path.dirname(this.outputFile), { recursive: true });
-    }
-
-    this.logStream = fs.createWriteStream(this.outputFile, { flags: "w" });
   }
 
   log(): void {
@@ -92,8 +85,11 @@ export class ChromeTraceEventsReporter implements Reporter {
       this.events.traceEvents.push(event);
     }
 
-    // write events to stream
-    this.logStream.write(JSON.stringify(this.events, null, 2));
+    if (!fs.existsSync(path.dirname(this.outputFile))) {
+      fs.mkdirSync(path.dirname(this.outputFile), { recursive: true });
+    }
+
+    fs.writeFileSync(this.outputFile, JSON.stringify(this.events, null, 2));
 
     this.consoleLogStream.write(
       chalk.blueBright(

@@ -1,5 +1,5 @@
 import type { Logger } from "@lage-run/logger";
-import { getWorkspaceRoot } from "workspace-tools";
+import { getWorkspaceManagerRoot } from "workspace-tools";
 import { getConfig, getConcurrency } from "@lage-run/config";
 import { BackfillCacheProvider } from "@lage-run/cache";
 
@@ -15,7 +15,7 @@ export async function pruneCache(options: PruneCacheOptions): Promise<void> {
   const { logger, cwd, pruneDays } = options;
 
   const config = await getConfig(cwd);
-  const workspaceRoot = getWorkspaceRoot(cwd);
+  const workspaceRoot = getWorkspaceManagerRoot(cwd);
   const concurrency = getConcurrency(options.concurrency, config.concurrency);
 
   if (!workspaceRoot) {
@@ -25,7 +25,7 @@ export async function pruneCache(options: PruneCacheOptions): Promise<void> {
   const prunePeriod = pruneDays || 30;
 
   const cacheProvider = new BackfillCacheProvider({
-    root: cwd,
+    root: workspaceRoot,
     cacheOptions: config.cacheOptions,
     logger,
   });
@@ -33,7 +33,7 @@ export async function pruneCache(options: PruneCacheOptions): Promise<void> {
   // eslint-disable-next-line no-console
   console.log("Clearing Cache");
 
-  cacheProvider.purge(prunePeriod, concurrency);
+  await cacheProvider.purge(prunePeriod, concurrency);
 
   // eslint-disable-next-line no-console
   console.log("Cache Cleared");

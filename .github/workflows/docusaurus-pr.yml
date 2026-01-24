@@ -1,27 +1,35 @@
-name: Test deployment
+name: Docs - PR
+
+# This doesn't actually deploy, just builds the docs folder when it's modified.
 
 on:
   pull_request:
     branches:
       - master
     paths:
+      - .github/workflows/docusaurus-pr.yml
       - "docs/**"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
 jobs:
-  test-deploy:
-    name: Test deployment
+  test-build:
+    name: Test build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6
         with:
-          node-version: 18.x
-      - name: Test build
+          node-version-file: .nvmrc
+
+      - run: yarn --immutable
         working-directory: docs
-        run: |
-          yarn install --frozen-lockfile
-          yarn build
-      - uses: actions/upload-artifact@v3
-        with:
-          name: docs
-          path: docs/build/**
+
+      - name: Build website
+        working-directory: docs
+        run: yarn build

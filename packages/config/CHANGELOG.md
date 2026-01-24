@@ -1,8 +1,82 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Wed, 15 Jan 2025 16:56:22 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.7.1
+
+Thu, 15 Jan 2026 23:24:00 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)
+
+## 0.7.0
+
+Tue, 21 Oct 2025 23:42:35 GMT
+
+### Minor changes
+
+- Add custom reporter capability to Lage (nemanjatesic@microsoft.com)
+
+## 0.6.0
+
+Thu, 25 Sep 2025 18:00:51 GMT
+
+### Minor changes
+
+- Enhance CredentialCache to support multiple Azure credential types and allow configuration of credentialName in cache options (brunoru@microsoft.com)
+
+## 0.5.0
+
+Mon, 01 Sep 2025 08:10:36 GMT
+
+### Minor changes
+
+- Add merge logic for targetConfig (dannyvv@microsoft.com)
+
+## 0.4.17
+
+Thu, 07 Aug 2025 08:10:10 GMT
+
+### Patches
+
+- Update backfill monorepo (email not defined)
+
+## 0.4.16
+
+Fri, 01 Aug 2025 08:10:15 GMT
+
+### Patches
+
+- Update backfill monorepo (renovate@whitesourcesoftware.com)
+- Update dependency workspace-tools to v0.38.4 (renovate@whitesourcesoftware.com)
+
+## 0.4.15
+
+Tue, 29 Apr 2025 08:10:03 GMT
+
+### Patches
+
+- Make CacheOptions properties optional and document them (elcraig@microsoft.com)
+
+## 0.4.14
+
+Sat, 26 Apr 2025 08:08:38 GMT
+
+### Patches
+
+- Remove incorrect bin entries (elcraig@microsoft.com)
+
+## 0.4.13
+
+Thu, 17 Apr 2025 08:10:01 GMT
+
+### Patches
+
+- Update backfill monorepo (renovate@whitesourcesoftware.com)
+- Update dependency workspace-tools to v0.38.3 (email not defined)
 
 ## 0.4.12
 

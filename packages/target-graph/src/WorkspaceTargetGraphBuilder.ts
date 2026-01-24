@@ -12,6 +12,11 @@ import type { TargetGraph } from "./types/TargetGraph.js";
 import { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 import { TargetFactory } from "./TargetFactory.js";
 import pLimit from "p-limit";
+import * as mergicianModule from "mergician";
+
+// mergician is a dual-mode library with CJS and ESM export but a single .d.ts file.
+// Without type="module" on this packge.json typescript gets confused. See: https://github.com/microsoft/TypeScript/issues/50466
+const mergician = mergicianModule.mergician || (mergicianModule as unknown as { default: typeof mergicianModule }).default.mergician;
 
 const DEFAULT_STAGED_TARGET_THRESHOLD = 50;
 /**
@@ -46,7 +51,11 @@ export class WorkspaceTargetGraphBuilder {
    * @param root the root directory of the workspace
    * @param packageInfos the package infos for the workspace
    */
-  constructor(root: string, private packageInfos: PackageInfos) {
+  constructor(
+    root: string,
+    private packageInfos: PackageInfos,
+    private enableTargetConfigMerging: boolean
+  ) {
     this.dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
     this.graphBuilder = new TargetGraphBuilder();
     this.targetFactory = new TargetFactory({
@@ -68,33 +77,58 @@ export class WorkspaceTargetGraphBuilder {
    * @param id
    * @param targetDefinition
    */
-  async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]): Promise<void> {
+  public async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]): Promise<void> {
     // Generates a target definition from the target config
     if (id.startsWith("//") || id.startsWith("#")) {
-      const target = this.targetFactory.createGlobalTarget(id, config);
+      const targetConfig = this.determineFinalTargetConfig(id, config);
+      const target = this.targetFactory.createGlobalTarget(id, targetConfig);
       this.graphBuilder.addTarget(target);
-      this.targetConfigMap.set(id, config);
       this.hasRootTarget = true;
 
       this.processStagedConfig(target, config, changedFiles);
     } else if (id.includes("#")) {
       const { packageName, task } = getPackageAndTask(id);
-      const target = this.targetFactory.createPackageTarget(packageName!, task, config);
+      const targetConfig = this.determineFinalTargetConfig(id, config);
+      const target = this.targetFactory.createPackageTarget(packageName!, task, targetConfig);
       this.graphBuilder.addTarget(target);
-      this.targetConfigMap.set(id, config);
 
       this.processStagedConfig(target, config, changedFiles);
     } else {
       const packages = Object.keys(this.packageInfos);
       for (const packageName of packages) {
         const task = id;
-        const target = this.targetFactory.createPackageTarget(packageName!, task, config);
+        const targetConfig = this.determineFinalTargetConfig(getTargetId(packageName, task), config);
+        const target = this.targetFactory.createPackageTarget(packageName!, task, targetConfig);
         this.graphBuilder.addTarget(target);
-        this.targetConfigMap.set(id, config);
 
         this.processStagedConfig(target, config, changedFiles);
       }
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  private deepCloneTargetConfig: Function = mergician({
+    appendArrays: true,
+    onCircular: () => {
+      throw new Error(`Circular object reference detected in TargetConfig`);
+    },
+  });
+
+  /**
+   * Merges
+   * @param id The Id of the target to merge
+   * @param config The TargetConfig settings that will be merged if this target has already been seen before
+   * @returns The merged TargetConfig object.
+   */
+  private determineFinalTargetConfig(targetId: string, config: TargetConfig): TargetConfig {
+    let finalConfig = config;
+    if (this.enableTargetConfigMerging && this.targetConfigMap.has(targetId)) {
+      const existingConfig = this.targetConfigMap.get(targetId)!;
+      finalConfig = this.deepCloneTargetConfig(existingConfig, config);
+    }
+
+    this.targetConfigMap.set(targetId, finalConfig);
+    return finalConfig;
   }
 
   /**
@@ -102,7 +136,7 @@ export class WorkspaceTargetGraphBuilder {
    * @param parentTarget
    * @param config
    */
-  async processStagedConfig(parentTarget: Target, config: TargetConfig, changedFiles?: string[]): Promise<void> {
+  private processStagedConfig(parentTarget: Target, config: TargetConfig, changedFiles?: string[]): void {
     if (typeof config.stagedTarget === "undefined") {
       return;
     }
@@ -146,7 +180,7 @@ export class WorkspaceTargetGraphBuilder {
     }
   }
 
-  shouldRun(config: TargetConfig, target: Target): boolean | Promise<boolean> {
+  public shouldRun(config: TargetConfig, target: Target): boolean | Promise<boolean> {
     if (typeof config.shouldRun === "function") {
       return config.shouldRun(target);
     }
@@ -167,7 +201,7 @@ export class WorkspaceTargetGraphBuilder {
    * @param scope
    * @param priorities the set of global priorities for the workspace.
    */
-  async build(
+  public async build(
     tasks: string[],
     scope?: string[],
     priorities?: { package?: string; task: string; priority: number }[]

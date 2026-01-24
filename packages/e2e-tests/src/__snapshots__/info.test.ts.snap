@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`info command basic info test case 1`] = `
 [
@@ -72,6 +72,355 @@ exports[`info command basic info test case 1`] = `
       "scope": [
         "a",
         "b",
+      ],
+    },
+    "level": 30,
+    "msg": "info",
+  },
+]
+`;
+
+exports[`info command custom inputs, outputs and weight value 1`] = `
+[
+  {
+    "data": {
+      "command": [
+        "test",
+        "build",
+      ],
+      "packageTasks": [
+        {
+          "command": [],
+          "dependencies": [],
+          "id": "__start",
+          "package": "",
+          "task": "__start",
+          "workingDirectory": "",
+        },
+        {
+          "command": [
+            "node",
+            "./test.js",
+          ],
+          "dependencies": [
+            "a#build",
+          ],
+          "id": "a#test",
+          "inputs": [
+            "src/**/*.test.ts",
+            "*",
+            "^lib/**",
+          ],
+          "package": "a",
+          "task": "test",
+          "weight": 5,
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./test.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "b#test",
+          "inputs": [
+            "src/**/*.test.ts",
+            "*",
+            "^lib/**",
+          ],
+          "package": "b",
+          "task": "test",
+          "weight": 5,
+          "workingDirectory": "packages/b",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "a#build",
+          "inputs": [
+            "src/**",
+            "*",
+          ],
+          "outputs": [
+            "lib/**",
+          ],
+          "package": "a",
+          "task": "build",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "__start",
+          ],
+          "id": "b#build",
+          "inputs": [
+            "src/**",
+            "*",
+          ],
+          "outputs": [
+            "lib/**",
+          ],
+          "package": "b",
+          "task": "build",
+          "workingDirectory": "packages/b",
+        },
+      ],
+      "scope": [
+        "a",
+        "b",
+      ],
+    },
+    "level": 30,
+    "msg": "info",
+  },
+]
+`;
+
+exports[`info command custom options 1`] = `
+[
+  {
+    "data": {
+      "command": [
+        "test",
+        "build",
+      ],
+      "packageTasks": [
+        {
+          "command": [],
+          "dependencies": [],
+          "id": "__start",
+          "package": "",
+          "task": "__start",
+          "workingDirectory": "",
+        },
+        {
+          "command": [
+            "node",
+            "./test.js",
+          ],
+          "dependencies": [
+            "a#build",
+          ],
+          "id": "a#test",
+          "options": {
+            "environment": {
+              "custom_env_var_array": [
+                1,
+                true,
+                "string",
+                {
+                  "x": 1,
+                },
+                [],
+              ],
+              "custom_env_var_bool": true,
+              "custom_env_var_number": 1,
+              "custom_env_var_string": "string",
+            },
+          },
+          "package": "a",
+          "task": "test",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./test.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "b#test",
+          "options": {
+            "environment": {
+              "custom_env_var_array": [
+                1,
+                true,
+                "string",
+                {
+                  "x": 1,
+                },
+                [],
+              ],
+              "custom_env_var_bool": true,
+              "custom_env_var_number": 1,
+              "custom_env_var_string": "string",
+            },
+          },
+          "package": "b",
+          "task": "test",
+          "workingDirectory": "packages/b",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "a#build",
+          "package": "a",
+          "task": "build",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "__start",
+          ],
+          "id": "b#build",
+          "package": "b",
+          "task": "build",
+          "workingDirectory": "packages/b",
+        },
+      ],
+      "scope": [
+        "a",
+        "b",
+      ],
+    },
+    "level": 30,
+    "msg": "info",
+  },
+]
+`;
+
+exports[`info command lage info drops direct dependencies when transtive and keeps __start 1`] = `
+[
+  {
+    "data": {
+      "command": [
+        "build",
+      ],
+      "packageTasks": [
+        {
+          "command": [],
+          "dependencies": [],
+          "id": "__start",
+          "package": "",
+          "task": "__start",
+          "workingDirectory": "",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "b#build",
+          ],
+          "id": "a#build",
+          "package": "a",
+          "task": "build",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "c#build",
+          ],
+          "id": "b#build",
+          "package": "b",
+          "task": "build",
+          "workingDirectory": "packages/b",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "__start",
+          ],
+          "id": "c#build",
+          "package": "c",
+          "task": "build",
+          "workingDirectory": "packages/c",
+        },
+      ],
+      "scope": [
+        "a",
+        "b",
+        "c",
+        "d",
+      ],
+    },
+    "level": 30,
+    "msg": "info",
+  },
+]
+`;
+
+exports[`info command lage info in back compat mode keeps direct dependencies and drops __start 1`] = `
+[
+  {
+    "data": {
+      "command": [
+        "build",
+      ],
+      "packageTasks": [
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "b#build",
+            "c#build",
+          ],
+          "id": "a#build",
+          "package": "a",
+          "task": "build",
+          "workingDirectory": "packages/a",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [
+            "c#build",
+          ],
+          "id": "b#build",
+          "package": "b",
+          "task": "build",
+          "workingDirectory": "packages/b",
+        },
+        {
+          "command": [
+            "node",
+            "./build.js",
+          ],
+          "dependencies": [],
+          "id": "c#build",
+          "package": "c",
+          "task": "build",
+          "workingDirectory": "packages/c",
+        },
+      ],
+      "scope": [
+        "a",
+        "b",
+        "c",
+        "d",
       ],
     },
     "level": 30,

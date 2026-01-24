@@ -1,20 +1,4 @@
+// References to this old config path will be removed in a later PR
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "declaration": true,
-    "lib": ["ES2020"],
-    "strict": true,
-    "noImplicitAny": false,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "noUnusedLocals": false,
-    "sourceMap": true,
-    "typeRoots": ["../node_modules/@types", "../types", "node_modules/@types"],
-    "isolatedDeclarations": true,
-    "isolatedModules": true
-  }
+  "extends": "../scripts/config/tsconfig.base.json"
 }

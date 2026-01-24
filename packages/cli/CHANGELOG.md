@@ -1,8 +1,147 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Tue, 04 Feb 2025 18:31:49 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.33.1
+
+Thu, 15 Jan 2026 23:24:00 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)
+- Replace ProgressReporter as the default with a less fancy implementation (crhaglun@microsoft.com)
+- Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
+
+## 0.33.0
+
+Tue, 21 Oct 2025 23:42:35 GMT
+
+### Minor changes
+
+- Add custom reporter capability to Lage (nemanjatesic@microsoft.com)
+
+## 0.32.0
+
+Mon, 01 Sep 2025 08:10:36 GMT
+
+### Minor changes
+
+- Add merge logic for targetConfig (dannyvv@microsoft.com)
+
+## 0.31.8
+
+Fri, 08 Aug 2025 08:10:13 GMT
+
+### Patches
+
+- Call read/readdir when simulating file accesses (pgunasekara@microsoft.com)
+
+## 0.31.6
+
+Fri, 01 Aug 2025 08:10:15 GMT
+
+### Patches
+
+- Export Target type (email not defined)
+- Update dependency workspace-tools to v0.38.4 (renovate@whitesourcesoftware.com)
+
+## 0.31.3
+
+Thu, 17 Apr 2025 08:10:01 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.3 (email not defined)
+- Update dependency chokidar to v3.6.0 (renovate@whitesourcesoftware.com)
+
+## 0.31.2
+
+Sat, 12 Apr 2025 08:09:17 GMT
+
+### Patches
+
+- make sure to touch / probe all directories deeply (kchau@microsoft.com)
+
+## 0.31.1
+
+Wed, 02 Apr 2025 08:10:04 GMT
+
+### Patches
+
+- Update dependency fast-glob to v3.3.3 (renovate@whitesourcesoftware.com)
+
+## 0.31.0
+
+Wed, 02 Apr 2025 00:48:44 GMT
+
+### Minor changes
+
+- Add backwards compate lage info emit hack (dannyvv@microsoft.com)
+
+## 0.30.0
+
+Sat, 29 Mar 2025 02:16:38 GMT
+
+### Minor changes
+
+- cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL (kchau@microsoft.com)
+
+### Patches
+
+- fixes the lage-server to respect gitignored files for env globs (kchau@microsoft.com)
+
+## 0.28.0
+
+Sat, 15 Feb 2025 20:04:19 GMT
+
+### Minor changes
+
+- Add backwards compate lage info emit hack (dannyvv@microsoft.com)
+
+## 0.27.0
+
+Wed, 12 Feb 2025 00:08:30 GMT
+
+### Minor changes
+
+- Add support to json formatter to pretty print and indent the json when the log level is set to verbose or silly... (dannyvv@microsoft.com)
+- Bump @lage-run/reporters to v1.3.0
+
+## 0.26.0
+
+Wed, 12 Feb 2025 00:04:29 GMT
+
+### Minor changes
+
+- Add extra info to lage info for #815 (dannyvv@microsoft.com)
+
+## 0.25.7
+
+Tue, 11 Feb 2025 05:40:29 GMT
+
+### Patches
+
+- fixing outputs to have correct outputs (kchau@microsoft.com)
+
+## 0.25.6
+
+Mon, 10 Feb 2025 00:35:53 GMT
+
+### Patches
+
+- tracks the transitive inputs rather just one level deep (kchau@microsoft.com)
+- simulate transitives by doing our own hashing (kchau@microsoft.com)
+- Bump @lage-run/rpc to v1.2.7
+
+## 0.25.2
+
+Fri, 07 Feb 2025 02:50:58 GMT
+
+### Patches
+
+- adding missing inputs from dependencies (kchau@microsoft.com)
 
 ## 0.25.1
 

@@ -2,9 +2,9 @@ import cache from "@actions/cache";
 import type { CustomStorageConfig } from "backfill-config";
 import type { Logger } from "backfill-logger";
 import path from "path";
-import { getWorkspaceRoot } from "workspace-tools";
+import { getWorkspaceManagerRoot } from "workspace-tools";
 
-const root = getWorkspaceRoot(process.cwd())!;
+const root = getWorkspaceManagerRoot(process.cwd())!;
 
 const cacheProvider: CustomStorageConfig = {
   provider: (_logger: Logger, cwd: string) => {

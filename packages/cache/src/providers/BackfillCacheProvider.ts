@@ -3,7 +3,8 @@ import { getCacheStorageProvider } from "backfill-cache";
 import { promisify } from "util";
 import * as fs from "fs";
 import * as path from "path";
-import type { CacheProvider, CacheProviderOptions } from "../types/CacheProvider.js";
+import type { CacheProvider } from "../types/CacheProvider.js";
+import type { CacheOptions } from "@lage-run/config";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { Target } from "@lage-run/target-graph";
 import type { Logger } from "@lage-run/logger";
@@ -19,7 +20,7 @@ const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
 export interface BackfillCacheProviderOptions {
   root: string;
   logger: Logger;
-  cacheOptions: Partial<CacheProviderOptions>;
+  cacheOptions: Partial<CacheOptions>;
 }
 
 export class BackfillCacheProvider implements CacheProvider {

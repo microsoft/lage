@@ -1,8 +1,49 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Fri, 17 Jan 2025 21:57:32 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.9.1
+
+Thu, 15 Jan 2026 23:24:00 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)
+- Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
+
+## 1.9.0
+
+Mon, 01 Sep 2025 08:10:36 GMT
+
+### Minor changes
+
+- Add merge logic for targetConfig (dannyvv@microsoft.com)
+
+## 1.8.3
+
+Fri, 01 Aug 2025 08:10:15 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.4 (renovate@whitesourcesoftware.com)
+
+## 1.8.2
+
+Thu, 17 Apr 2025 08:10:01 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.38.3 (email not defined)
+
+## 1.8.0
+
+Sat, 29 Mar 2025 02:16:38 GMT
+
+### Minor changes
+
+- cheat on optimization by leverage the fact that 'info' command is called before anything else ALWAYS in BXL (kchau@microsoft.com)
 
 ## 1.6.9
 

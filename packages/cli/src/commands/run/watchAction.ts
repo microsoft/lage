@@ -2,7 +2,7 @@ import type { Command } from "commander";
 import { createTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions, getConcurrency } from "@lage-run/config";
-import { getPackageInfosAsync, getWorkspaceRoot } from "workspace-tools";
+import { getPackageInfosAsync, getWorkspaceManagerRoot } from "workspace-tools";
 import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
 import { LogReporter } from "@lage-run/reporters";
 import { SimpleScheduler } from "@lage-run/scheduler";
@@ -43,7 +43,7 @@ export async function watchAction(options: RunOptions, command: Command): Promis
   logger.addReporter(reporter);
 
   // Build Target Graph
-  const root = getWorkspaceRoot(process.cwd())!;
+  const root = getWorkspaceManagerRoot(process.cwd())!;
   const packageInfos = await getPackageInfosAsync(root);
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
@@ -62,6 +62,7 @@ export async function watchAction(options: RunOptions, command: Command): Promis
     tasks,
     packageInfos,
     priorities: config.priorities,
+    enableTargetConfigMerging: config.enableTargetConfigMerging,
   });
 
   // Make sure we do not attempt writeRemoteCache in watch mode

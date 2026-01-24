@@ -1,27 +1,17 @@
+# Prettier v3 also respects .gitignore
+
 # Not formatted
 .*ignore
 *.proto
 
 # Generated or imported files
 change/*.json
+docs/build
 CHANGELOG.*
 LICENSE
 SECURITY.md
 *.snap
 yarn.lock
+**/.yarn
 # this is a test fixture
 yarn.js
-.yarn/**
-
-# These lines from .gitignore can be removed after prettier 3 update
-node_modules
-src/**/*.js
-dist
-lib
-*.log
-.DS_Store
-*.pdf
-coverage
-.idea/
-**/.docusaurus/
-profile*.json
