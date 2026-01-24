@@ -41,8 +41,7 @@
     },
     {
       // Don't try to pin or otherwise modify in-repo deps
-      // Also temporarily disable beachball updates until the tar issue is fixed
-      "matchPackageNames": ["@lage-run/*", "beachball"],
+      "matchPackageNames": ["@lage-run/*"],
       "enabled": false
     },
     {
