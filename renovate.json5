@@ -1,12 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
+    "github>microsoft/m365-renovate-config",
     "github>microsoft/m365-renovate-config:beachball",
     "github>microsoft/m365-renovate-config:disableEsmVersions",
     "github>microsoft/m365-renovate-config:groupMore",
     "github>microsoft/m365-renovate-config:groupTypes",
     "github>microsoft/m365-renovate-config:keepFresh",
-    "github>microsoft/m365-renovate-config:pinActions",
     "github>microsoft/m365-renovate-config:restrictNode(14)"
   ],
   "labels": ["renovate"],
@@ -40,21 +40,12 @@
       "dependencyDashboardApproval": false
     },
     {
-      // Don't try to pin or otherwise modify in-repo deps
-      "matchPackageNames": ["@lage-run/*"],
+      // There's a dev dep "lage-npm": "npm:lage@<..." intended to pull in a slightly older
+      // pre-built lage version for repo build orchestration (since local lage isn't built yet).
+      // Disable updating this with Renovate because it will choose a range that includes the
+      // latest version, which yarn will dedupe to the in-repo version.
+      "matchPackageNames": ["lage-npm"],
       "enabled": false
-    },
-    {
-      // See syncpack.config.js for the rationale of pinning dependencies
-      "rangeStrategy": "pin",
-      "matchFileNames": ["packages/**"], // ignore this for docs, scripts, root
-      "matchDepTypes": ["dependencies"],
-      "matchPackageNames": ["!@lage-run/*", "!glob-hasher"] // see syncpack config
-    },
-    {
-      "matchManagers": ["github-actions"],
-      "groupName": "GitHub actions",
-      "dependencyDashboardApproval": false
     }
   ]
 }
