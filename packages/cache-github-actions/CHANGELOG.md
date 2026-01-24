@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache-github-actions
 
-<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.1.28
+
+Sat, 24 Jan 2026 09:01:35 GMT
+
+### Patches
+
+- Update dependency workspace-tools to v0.40.4 and fix deprecated API usage (email not defined)
 
 ## 0.1.27
 

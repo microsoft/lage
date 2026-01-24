@@ -2,6 +2,41 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Sat, 24 Jan 2026 09:01:35 GMT",
+      "version": "0.9.2",
+      "tag": "@lage-run/worker-threads-pool_v0.9.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Remove freeWorkers array from WorkerPool"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Fix check for maxWorkers when trying to add a worker"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update internal types"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 15 Jan 2026 23:24:00 GMT",
       "version": "0.9.1",
       "tag": "@lage-run/worker-threads-pool_v0.9.1",

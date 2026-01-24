@@ -2,6 +2,35 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Sat, 24 Jan 2026 09:01:35 GMT",
+      "version": "1.3.7",
+      "tag": "@lage-run/reporters_v1.3.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Fix the `JsonReporter` summary's `${status}Targets` counts. Add internal typed wrapper for `gradient-string` package, and fix other missing types"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add missing devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 15 Jan 2026 23:24:00 GMT",
       "version": "1.3.6",
       "tag": "@lage-run/reporters_v1.3.6",

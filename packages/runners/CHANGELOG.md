@@ -1,8 +1,16 @@
 # Change Log - @lage-run/runners
 
-<!-- This log was last generated on Wed, 15 Jan 2025 16:56:22 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.2.6
+
+Sat, 24 Jan 2026 09:01:35 GMT
+
+### Patches
+
+- Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
 
 ## 1.2.1
 

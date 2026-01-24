@@ -2,6 +2,47 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Sat, 24 Jan 2026 09:01:35 GMT",
+      "version": "0.33.2",
+      "tag": "@lage-run/cli_v0.33.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Bump and pin dependencies locally, but unpin them when the package is published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Better validation and docs of reporter names. If you were using an invalid reporter name by accident, Lage will now exit with an error."
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update dependency workspace-tools to v0.40.4 and fix deprecated API usage"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update internal types"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 15 Jan 2026 23:24:00 GMT",
       "version": "0.33.1",
       "tag": "@lage-run/cli_v0.33.1",

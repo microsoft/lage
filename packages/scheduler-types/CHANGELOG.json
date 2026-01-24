@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Sat, 24 Jan 2026 09:01:35 GMT",
+      "version": "0.3.28",
+      "tag": "@lage-run/scheduler-types_v0.3.28",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Simplify SchedulerRunSummary type"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 29 Mar 2025 02:16:38 GMT",
       "version": "0.3.23",
       "tag": "@lage-run/scheduler-types_v0.3.23",

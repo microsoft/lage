@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/rpc",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "RPC server and client for Lage",
   "repository": {
     "type": "git",

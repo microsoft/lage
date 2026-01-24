@@ -2,6 +2,275 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Sat, 24 Jan 2026 09:01:35 GMT",
+      "version": "2.14.17",
+      "tag": "lage_v2.14.17",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Bump and pin dependencies locally, but unpin them when the package is published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Bump and pin dependencies locally, but unpin them when the package is published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Better validation and docs of reporter names. If you were using an invalid reporter name by accident, Lage will now exit with an error."
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update dependency workspace-tools to v0.40.4 and fix deprecated API usage"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/config",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update dependency workspace-tools to v0.40.4 and fix deprecated API usage"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/format-hrtime",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/hasher",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update dependency workspace-tools to v0.40.4 and fix deprecated API usage"
+          },
+          {
+            "author": "dobes@formative.com",
+            "package": "@lage-run/hasher",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Show target.id in error about missing inputs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Fix the `JsonReporter` summary's `${status}Targets` counts. Add internal typed wrapper for `gradient-string` package, and fix other missing types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Bump and pin dependencies locally, but unpin them when the package is published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Bump and pin dependencies locally, but unpin them when the package is published"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update dependency workspace-tools to v0.40.4 and fix deprecated API usage"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Remove freeWorkers array from WorkerPool"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Fix check for maxWorkers when trying to add a worker"
+          },
+          {
+            "author": "email not defined",
+            "package": "lage",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update dependency workspace-tools to v0.40.4 and fix deprecated API usage"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update dependency workspace-tools to v0.40.4 and fix deprecated API usage"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Simplify SchedulerRunSummary type"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update internal types and docs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update internal types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/format-hrtime",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add missing devDependencies"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update tsconfig internals for dts bundle setup"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add missing devDependencies"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add missing dev dep on micromatch types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add missing devDependencies"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update internal types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add missing devDependencies"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add missing devDependencies"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update internal types and docs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update internal types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update tsconfig internals for dts bundle setup"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add missing devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 15 Jan 2026 23:24:00 GMT",
       "version": "2.14.16",
       "tag": "lage_v2.14.16",

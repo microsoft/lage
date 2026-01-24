@@ -1,8 +1,17 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.7
+
+Sat, 24 Jan 2026 09:01:35 GMT
+
+### Patches
+
+- Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+- Fix the `JsonReporter` summary's `${status}Targets` counts. Add internal typed wrapper for `gradient-string` package, and fix other missing types (elcraig@microsoft.com)
 
 ## 1.3.6
 

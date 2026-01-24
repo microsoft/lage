@@ -1,8 +1,60 @@
 # Change Log - lage
 
-<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.17
+
+Sat, 24 Jan 2026 09:01:35 GMT
+
+### Patches
+
+- `@lage-run/cache`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+  - Bump and pin dependencies locally, but unpin them when the package is published (elcraig@microsoft.com)
+- `@lage-run/cli`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+  - Bump and pin dependencies locally, but unpin them when the package is published (elcraig@microsoft.com)
+  - Better validation and docs of reporter names. If you were using an invalid reporter name by accident, Lage will now exit with an error. (elcraig@microsoft.com)
+  - Update dependency workspace-tools to v0.40.4 and fix deprecated API usage (email not defined)
+- `@lage-run/config`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+  - Update dependency workspace-tools to v0.40.4 and fix deprecated API usage (email not defined)
+- `@lage-run/format-hrtime`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+- `@lage-run/globby`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+- `@lage-run/hasher`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+  - Update dependency workspace-tools to v0.40.4 and fix deprecated API usage (email not defined)
+  - Show target.id in error about missing inputs (dobes@formative.com)
+- `@lage-run/logger`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+- `@lage-run/reporters`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+  - Fix the `JsonReporter` summary's `${status}Targets` counts. Add internal typed wrapper for `gradient-string` package, and fix other missing types (elcraig@microsoft.com)
+- `@lage-run/rpc`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+  - Bump and pin dependencies locally, but unpin them when the package is published (elcraig@microsoft.com)
+- `@lage-run/runners`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+- `@lage-run/scheduler`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+- `@lage-run/target-graph`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+  - Bump and pin dependencies locally, but unpin them when the package is published (elcraig@microsoft.com)
+  - Update dependency workspace-tools to v0.40.4 and fix deprecated API usage (email not defined)
+- `@lage-run/worker-threads-pool`
+  - Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+  - Remove freeWorkers array from WorkerPool (email not defined)
+  - Fix check for maxWorkers when trying to add a worker (email not defined)
+- `lage`
+  - Update dependency workspace-tools to v0.40.4 and fix deprecated API usage (email not defined)
+- `@lage-run/cache-github-actions`
+  - Update dependency workspace-tools to v0.40.4 and fix deprecated API usage (email not defined)
+- `@lage-run/scheduler-types`
+  - Simplify SchedulerRunSummary type (elcraig@microsoft.com)
 
 ## 2.14.16
 

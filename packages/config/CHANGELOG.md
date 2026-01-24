@@ -1,8 +1,17 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.7.2
+
+Sat, 24 Jan 2026 09:01:35 GMT
+
+### Patches
+
+- Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+- Update dependency workspace-tools to v0.40.4 and fix deprecated API usage (email not defined)
 
 ## 0.7.1
 

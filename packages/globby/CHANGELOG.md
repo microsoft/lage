@@ -1,8 +1,16 @@
 # Change Log - @lage-run/globby
 
-<!-- This log was last generated on Wed, 02 Apr 2025 08:10:04 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 14.2.2
+
+Sat, 24 Jan 2026 09:01:35 GMT
+
+### Patches
+
+- Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
 
 ## 14.2.1
 

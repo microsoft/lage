@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler-types
 
-<!-- This log was last generated on Wed, 15 Jan 2025 16:56:22 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.3.28
+
+Sat, 24 Jan 2026 09:01:35 GMT
+
+### Patches
+
+- Simplify SchedulerRunSummary type (elcraig@microsoft.com)
 
 ## 0.3.23
 

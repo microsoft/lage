@@ -1,8 +1,16 @@
 # Change Log - @lage-run/format-hrtime
 
-This log was last generated on Wed, 11 Sep 2024 20:30:48 GMT and should not be manually modified.
+<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.1.7
+
+Sat, 24 Jan 2026 09:01:35 GMT
+
+### Patches
+
+- Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
 
 ## 0.1.6
 

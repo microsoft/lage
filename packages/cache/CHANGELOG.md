@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cache
 
-<!-- This log was last generated on Fri, 10 Oct 2025 07:48:07 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.4
+
+Sat, 24 Jan 2026 09:01:35 GMT
+
+### Patches
+
+- Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+- Bump and pin dependencies locally, but unpin them when the package is published (elcraig@microsoft.com)
 
 ## 1.4.1
 

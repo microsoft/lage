@@ -1,8 +1,17 @@
 # Change Log - @lage-run/rpc
 
-<!-- This log was last generated on Thu, 15 Jan 2026 23:24:00 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.2
+
+Sat, 24 Jan 2026 09:01:35 GMT
+
+### Patches
+
+- Add explicit module boundary types and update typescript version (elcraig@microsoft.com)
+- Bump and pin dependencies locally, but unpin them when the package is published (elcraig@microsoft.com)
 
 ## 1.4.1
 

@@ -2,6 +2,21 @@
   "name": "@lage-run/runners",
   "entries": [
     {
+      "date": "Sat, 24 Jan 2026 09:01:35 GMT",
+      "version": "1.2.6",
+      "tag": "@lage-run/runners_v1.2.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 08 Aug 2025 08:10:13 GMT",
       "version": "1.2.3",
       "tag": "@lage-run/runners_v1.2.3",

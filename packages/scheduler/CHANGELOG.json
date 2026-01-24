@@ -2,6 +2,29 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Sat, 24 Jan 2026 09:01:35 GMT",
+      "version": "1.5.16",
+      "tag": "@lage-run/scheduler_v1.5.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Add explicit module boundary types and update typescript version"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "092607a7d55561a9342ab3265ccab0142dd59b9b",
+            "comment": "Update internal types and docs"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 15 Jan 2026 23:24:00 GMT",
       "version": "1.5.15",
       "tag": "@lage-run/scheduler_v1.5.15",
