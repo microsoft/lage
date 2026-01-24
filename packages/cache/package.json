@@ -14,7 +14,8 @@
     "build": "monorepo-scripts tsc",
     "start": "monorepo-scripts tsc -w --preserveWatchOutput",
     "test": "monorepo-scripts jest",
-    "lint": "monorepo-scripts lint"
+    "lint": "monorepo-scripts lint",
+    "types": "monorepo-scripts tsc"
   },
   "dependencies": {
     "@azure/core-auth": "1.10.1",

@@ -1,12 +1,10 @@
 // @ts-check
 const path = require("path");
-const fs = require("fs");
 const fsPromises = require("fs/promises");
 const swc = require("@swc/core");
 const { findProjectRoot } = require("workspace-tools");
 
 const root = findProjectRoot(process.cwd()) ?? process.cwd();
-const swcOptions = JSON.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8"));
 
 module.exports = async function transpile(data) {
   const { target } = data;
@@ -37,7 +35,7 @@ module.exports = async function transpile(data) {
           .replace(".ts", ".js");
         const dest = path.join(target.cwd, targetRelativePath);
         const swcOutput = await swc.transformFile(fullPath, {
-          ...swcOptions,
+          configFile: path.join(root, ".swcrc"),
           sourceFileName: path.relative(path.dirname(dest), fullPath).replace(/\\/g, "/"),
         });
 
@@ -47,6 +45,15 @@ module.exports = async function transpile(data) {
 
         if (swcOutput.map) {
           await fsPromises.writeFile(destMap, swcOutput.map);
+        }
+
+        // @ts-expect-error
+        if (swcOutput.output) {
+          // @ts-expect-error
+          const output = JSON.parse(swcOutput.output);
+          const decls = dest.replace(/\.js$/, ".d.ts");
+          // @ts-ignore
+          await fsPromises.writeFile(decls, output.__swc_isolated_declarations__);
         }
       }
     }

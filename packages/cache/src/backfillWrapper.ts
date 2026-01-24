@@ -3,7 +3,7 @@
  */
 
 import * as os from "os";
-import { type Config, createDefaultConfig, getEnvConfig } from "backfill-config";
+import { createDefaultConfig, getEnvConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { CacheOptions } from "@lage-run/config";
@@ -32,15 +32,15 @@ export function createBackfillCacheConfig(
   cwd: string,
   cacheOptions: Partial<CacheOptions> | undefined = {},
   backfillLogger: BackfillLogger
-): Config {
+): CacheOptions {
   const envConfig = getEnvConfig(backfillLogger);
   const mergedConfig = {
     ...createDefaultConfig(cwd),
     ...cacheOptions,
     ...envConfig,
-  } as Config;
+  } as CacheOptions;
 
-  if (mergedConfig.cacheStorageConfig.provider === "azure-blob") {
+  if (mergedConfig.cacheStorageConfig?.provider === "azure-blob") {
     const azureOptions = mergedConfig.cacheStorageConfig.options;
     if ("connectionString" in azureOptions && !isTokenConnectionString(azureOptions.connectionString)) {
       /** Pass through optional credentialName from config to select a specific credential implementation

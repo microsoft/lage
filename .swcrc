@@ -6,7 +6,10 @@
       "tsx": false,
       "dynamicImport": true
     },
-    "target": "es2020"
+    "target": "es2020",
+    "experimental": {
+      "emitIsolatedDts": true
+    }
   },
   "module": {
     "type": "commonjs",

@@ -2,7 +2,6 @@
   "extends": "../tsconfig.lage2.json",
   "compilerOptions": {
     "outDir": "./lib",
-    "emitDeclarationOnly": true,
     "module": "Node16",
     "moduleResolution": "Node16",
     "lib": ["ES2020"]

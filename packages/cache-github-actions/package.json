@@ -13,7 +13,8 @@
   "scripts": {
     "build": "monorepo-scripts tsc",
     "start": "monorepo-scripts tsc -w --preserveWatchOutput",
-    "lint": "monorepo-scripts lint"
+    "lint": "monorepo-scripts lint",
+    "types": "monorepo-scripts tsc"
   },
   "dependencies": {
     "@actions/cache": "3.3.0",

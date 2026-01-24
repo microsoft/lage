@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "lage transpile types build bundle",
-    "watch": "lage transpile isolatedTypes --no-cache --verbose --unstable-watch",
+    "watch": "lage transpile types --no-cache --verbose --unstable-watch",
     "change": "beachball change",
     "checkchange": "beachball check",
     "ci": "lage transpile types build test lint bundle",

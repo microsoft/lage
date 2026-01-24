@@ -13,7 +13,8 @@
   "scripts": {
     "lint": "buf lint",
     "generate": "buf generate",
-    "build": "tsc"
+    "build": "monorepo-scripts tsc",
+    "types": "monorepo-scripts tsc"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^1.10.0",
@@ -25,7 +26,8 @@
   "devDependencies": {
     "@bufbuild/buf": "^1.39.0",
     "@bufbuild/protoc-gen-es": "^1.10.0",
-    "@connectrpc/protoc-gen-connect-es": "^1.4.0"
+    "@connectrpc/protoc-gen-connect-es": "^1.4.0",
+    "@lage-run/monorepo-scripts": "workspace:^"
   },
   "publishConfig": {
     "access": "public"

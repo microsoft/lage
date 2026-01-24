@@ -12,6 +12,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "monorepo-scripts tsc",
+    "types": "monorepo-scripts tsc",
     "start": "monorepo-scripts tsc -w --preserveWatchOutput",
     "test": "monorepo-scripts jest",
     "lint": "monorepo-scripts lint"
