@@ -64,11 +64,5 @@
     "!(*test).{ts,js}": "eslint --fix",
     "*.{ts,json,md}": "prettier --write"
   },
-  "syncpack": {
-    "dependencyTypes": [
-      "dev",
-      "prod"
-    ]
-  },
   "packageManager": "yarn@4.12.0"
 }

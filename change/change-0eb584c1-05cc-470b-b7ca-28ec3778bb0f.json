@@ -1,0 +1,32 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Bump and pin dependencies locally, but unpin them when the package is published",
+      "packageName": "@lage-run/cache",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Bump and pin dependencies locally, but unpin them when the package is published",
+      "packageName": "@lage-run/cli",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Bump and pin dependencies locally, but unpin them when the package is published",
+      "packageName": "@lage-run/rpc",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Bump and pin dependencies locally, but unpin them when the package is published",
+      "packageName": "@lage-run/target-graph",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
