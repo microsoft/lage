@@ -20,7 +20,7 @@ const options: Options = {
   logger: {
     reporter: new Option("--reporter <reporter...>", `log reporter (built-in choices: ${logBuiltInReporterNames.join(", ")})`),
     grouped: new Option("--grouped", "groups the logs").default(false),
-    progress: new Option("--progress").conflicts(["reporter", "grouped", "verbose"]).default(!isCI),
+    progress: new Option("--progress", "show progress").conflicts(["reporter", "grouped", "verbose"]).default(!isCI),
     logLevel: new Option("--log-level <level>", "log level").choices(["info", "warn", "error", "verbose", "silly"]).conflicts("verbose"),
     logFile: new Option("--log-file <file>", "when used with --reporter vfl, writes verbose, ungrouped logs to the specified file"),
     verbose: new Option("--verbose", "verbose output").default(false),
@@ -30,14 +30,14 @@ const options: Options = {
     concurrency: new Option("-c|--concurrency <number>", "max jobs to run at a time").argParser((v) => parseInt(v)),
     continue: new Option("--continue", "continue running even after encountering an error for one of the targets"),
     maxWorkersPerTask: new Option(
-      "--max-workers-per-task <maxWorkersPerTarget...>",
+      "--max-workers-per-task <values...>",
       "set max worker per task, e.g. --max-workers-per-task build=2 test=4"
     ).default([]),
   },
   runner: {
     nodeArg: new Option(
       "-n|--node-arg <arg>",
-      'node arguments as a string to be passed into node like a NODE_OPTIONS setting, (e.g. --nodearg="--max_old_space_size=1234 --heap-prof")'
+      'node arguments for workers and child processes (like NODE_OPTIONS) as a single string (e.g. --node-arg="--max_old_space_size=1234 --heap-prof")'
     ),
   },
   run: {
@@ -46,7 +46,7 @@ const options: Options = {
     skipLocalCache: new Option("--skip-local-cache", "skips caching locally (defaults to true in CI environments)").default(isCI),
     profile: new Option("--profile [profile]", "writes a run profile into a file that can be processed by Chromium devtool"),
     continue: new Option("--continue", "continues the run even on error"),
-    allowNoTargetRuns: new Option("--allow-no-target-runs"),
+    allowNoTargetRuns: new Option("--allow-no-target-runs", "succeed even if no targets match the given name"),
     watch: new Option("--watch", "runs in watch mode"),
   },
   server: {
@@ -74,7 +74,7 @@ const options: Options = {
   affected: {
     outputFormat: new Option(
       "--output-format <graph|json|default>",
-      `Generate a report about what packages are affected by the current change (defaults to human readable format) ` +
+      `Generate a report about what packages are affected by the current change (defaults to human readable format). ` +
         `"graph" will generate a GraphViz .dot file format`
     ),
   },
