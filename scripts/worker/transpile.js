@@ -1,6 +1,5 @@
 // @ts-check
 const path = require("path");
-const fs = require("fs");
 const fsPromises = require("fs/promises");
 const swc = require("@swc/core");
 const { findProjectRoot } = require("workspace-tools");
