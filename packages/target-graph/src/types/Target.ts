@@ -20,7 +20,8 @@ export interface Target {
   task: string;
 
   /**
-   * Type of the target. If not specified, it will default to "npmScript". Determines the runner for the target.
+   * Type of the target. Determines the runner for the target.
+   * @default "npmScript"
    */
   type?: string;
 
@@ -45,22 +46,23 @@ export interface Target {
   dependents: string[];
 
   /**
-   * Any custom priority for the target. A priority of >0 will always be prioritized over the default targets in queue
+   * Priority of the target. A priority of >0 will always be prioritized over the default targets in queue.
    */
   priority?: number;
 
   /**
-   * Outputs of this target (for cache purposes)
-   */
-  outputs?: string[];
-
-  /**
-   * Inputs for this target (for cache purposes)
+   * Inputs for this target. This is used to determine the hash key for caching
    */
   inputs?: string[];
 
   /**
+   * Outputs of this target. This is used to determine the files to be stored for caching
+   */
+  outputs?: string[];
+
+  /**
    * Whether to cache this target
+   * @default true
    */
   cache?: boolean;
 
@@ -84,7 +86,7 @@ export interface Target {
   weight?: number;
 
   /**
-   * Run options for the Target
+   * Run options for the Target Runner. (e.g. `{ env: ...process.env, colors: true, ... }`)
    */
   options?: Record<string, any>;
 

@@ -33,9 +33,14 @@ Tue, 21 Oct 2025 23:42:35 GMT
 
 Thu, 25 Sep 2025 18:00:51 GMT
 
+**Potential breaking change**: For the `"azure-blob"` cache storage provider (`CacheOptions.cacheStorageConfig.provider` or `BACKFILL_CACHE_PROVIDER`), usage of [`DefaultAzureCredential`](https://learn.microsoft.com/en-us/azure/developer/javascript/sdk/authentication/credential-chains#use-defaultazurecredential-for-flexibility) has been removed.
+
+If your `connectionString` in `cacheOptions.cacheStorageConfig.options` or `BACKFILL_CACHE_PROVIDER_OPTIONS` supplies a token or your credentials are provided as [environment variables](https://learn.microsoft.com/en-us/javascript/api/%40azure/identity/environmentcredential?view=azure-node-latest), nothing changes. Otherwise, you'll need to add a `credentialName` option (one of the type names formerly handled by the default credential, e.g. `'azure-cli'`) or a full `credential` object. `credentialName` can be added to the options object (either config file or env) or specified separately via `AZURE_IDENTITY_CREDENTIAL_NAME`. More advanced scenarios (such as chaining) with a `credential` object are only supported in code.
+
 ### Minor changes
 
 - Enhance CredentialCache to support multiple Azure credential types and allow configuration of credentialName in cache options (brunoru@microsoft.com)
+
 
 ## 0.5.0
 

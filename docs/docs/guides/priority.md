@@ -6,7 +6,9 @@ title: Priorities
 
 In a large monorepo, you'll need to do some [profiling](./profile.md) to understand bottlenecks. Sometimes, the package tasks are not scheduled in the order that will produce the most optimized run times.
 
-## v2 styled configuration for priority
+Lage provides the following options to customize the task priority. The higher the priority number, the higher the priority. These numbers are relative to each other. Any task that is not listed in the priorities array is not prioritized.
+
+## Configuration
 
 As of `lage` v2, you can now configure the priority inside the target pipeline configuration:
 
@@ -23,9 +25,9 @@ module.exports = {
 };
 ```
 
-## Legacy (v1 + v2) way of configuring priority
+## Legacy (v1 + v2) configuration
 
-To manually pick a package task to be higher priority, simply add a [`priorities` configuration](../reference/config.md) in the `lage.config.js`:
+To manually pick a package task to be higher priority, simply add a [`priorities` configuration](../reference/config.md) in `lage.config.js`:
 
 ```js
 module.exports = {
@@ -38,5 +40,3 @@ module.exports = {
   ]
 };
 ```
-
-The higher the priority number, the higher the priority. These numbers are relative to each other. Any task that is not listed in the priorities array is not prioritized.

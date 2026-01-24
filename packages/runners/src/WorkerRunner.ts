@@ -7,11 +7,9 @@ export interface WorkerRunnerOptions {
 }
 
 /**
- * Creates a workerpool per target task definition of "type: worker"
+ * Creates a worker pool per target task definition of "type: worker", to be run with `@lage-run/worker-threads-pool`.
  *
- * Target options are fed into `workerpool`, so target can customize the pool:
- *
- * https://www.npmjs.com/package/workerpool
+ * The worker script should export a function, which receives an object with target info.
  *
  * Example:
  *

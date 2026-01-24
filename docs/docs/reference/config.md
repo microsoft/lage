@@ -4,24 +4,30 @@ title: Configuration
 
 Configuration is provided by [Cosmiconfig](https://www.npmjs.com/package/cosmiconfig), so `lage` configuration is very flexible! We recommend the use of a `lage.config.js` because it is both concise and flexible.
 
-Create a `lage.config.js` file at the workspace root and place all your configurations there:
+Create a `lage.config.js` file at the workspace root and place all your configuration there.
+
+A short example:
 
 ```js title="/lage.config.js"
-module.exports = {
+/** @type {import("lage").ConfigOptions} */
+const config = {
   pipeline: {
     build: ["^build"],
     test: ["build"]
   }
 };
+module.exports = config;
 ```
 
-### A Complete Tour of the Config
+### Available properties
 
-:::tip
+See the source for [`ConfigOptions`](https://github.com/microsoft/lage/blob/master/packages/config/src/types/ConfigOptions.ts) and its sibling files for the complete list of available options.
 
-Roll over the various properties to tour the different configs
+Some options can also be set with [CLI options or environment variables](./cli).
 
-:::
+### Example
+
+This example demonstrates many of the available options, including some advanced cases. Your config probably doesn't need to be this complicated, at least starting out.
 
 ```js twoslash title="/lage.config.js"
 /// <reference types="node" />

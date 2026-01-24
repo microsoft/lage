@@ -18,24 +18,46 @@ Usage: `lage [run] <command1> [command2...commandN] [options]  run commands`
 
 ### Options
 
+**[Logging options](#logging-options)** also apply.
+
+#### Filtering options
+
+These can optionally be set with environment variables `LAGE_FILTER_*` (e.g. `LAGE_FILTER_SCOPE`).
+
 ```
-  --reporter <reporter...>                          reporter (default: "npmLog")
-  --log-level <level>                               log level (choices: "info", "warn", "error", "verbose", "silly")
-  --verbose                                         verbose output
-  -c, --concurrency <n>                             concurrency (default: os.cpus() - 1)
-  --scope <scope...>                                scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)
-  --no-dependents|--no-deps                         disables running any dependents of the scoped packages
-  --dependencies|--include-dependencies             adds the scoped packages dependencies as the "entry points" for the target graph run
-  --since <since>                                   only runs packages that have changed since the given commit, tag, or branch
-  --to <scope...>                                   runs up to a package (shorthand for --scope=<scope...> --no-dependents)
-  --grouped                                         groups the logs (default: false)
-  --no-cache                                        disables the cache
-  --reset-cache                                     resets the cache, filling it after a run
-  --skip-local-cache                                skips caching locally
-  --profile [profile]                               writes a run profile into a file that can be processed by Chromium devtool
-  --nodearg <nodeArg>                               arguments to be passed to node (e.g. --nodearg="--max_old_space_size=1234 --heap-prof" - set via "NODE_OPTIONS" environment variable)
-  --continue                                        continues the run even on error
-  -h, --help                                        display help for command
+--scope <scope...>         scopes the run to a subset of packages (by default, includes the dependencies and dependents as well)
+--no-deps|--no-dependents  disables running any dependents of the scoped packages (env: LAGE_FILTER_NO_DEPS)
+--include-dependencies     adds the scoped packages dependencies as the "entry points" for the target graph run
+   |--dependencies           (env: LAGE_FILTER_INCLUDE_DEPENDENCIES)
+--to <scope...>            runs up to a package (shorthand for --scope=<scope...> --no-dependents)
+--since <since>            only runs packages that have changed since the given commit, tag, or branch
+--ignore <ignore...>       ignores files when calculating the scope with `--since` in addition to the files specified in lage.config.js
+--grouped                  groups the logs (default: false)
+```
+
+#### Worker options
+
+These can optionally be set with environment variables `LAGE_POOL_*` (e.g. `LAGE_POOL_CONCURRENCY`).
+
+```
+-c|--concurrency <number>           max jobs to run at a time
+--max-workers-per-task <values...>  set max worker per task, e.g. --max-workers-per-task build=2 test=4
+```
+
+#### Other options
+
+These can optionally be set with environment variables `LAGE_RUN_*` (e.g. `LAGE_RUN_NODE_ARG`).
+
+```
+-n|--node-arg <arg>     node arguments for workers and child processes (like NODE_OPTIONS) as a single string
+                          (e.g. --nodearg="--max_old_space_size=1234 --heap-prof")
+--no-cache              disables the cache (env: LAGE_RUN_CACHE)
+--reset-cache           resets the cache, filling it after a run
+--skip-local-cache      skips caching locally (defaults to true in CI environments)
+--profile [profile]     writes a run profile into a file that can be processed by Chromium devtool
+--continue              continues the run even on error
+--allow-no-target-runs  succeed even if no targets match the given name
+--watch                 runs in watch mode
 ```
 
 ### Examples
@@ -62,6 +84,10 @@ Scoped to packages that have changed in the current branch against a target merg
 
     lage build test lint --since origin/master
 
+#### Providing node.js arguments for each command
+
+    lage build test lint --nodearg=--max_old_space_size=1234 --nodearg=--heap-prof
+
 #### Continue running even after encountering an error for one of the targets
 
     lage build test lint --continue
@@ -84,6 +110,14 @@ Choosing a different reporter while logging (e.g. nice outputs for Azure DevOps)
 
     lage build test lint --reporter=azureDevops
 
+Or combine multiple reporters (e.g. Azure DepOps with VerboseFileLog)
+
+    lage build test lint --reporter azureDevops --reporter vfl --log-file /my/verbose/log.file
+
+Ignoring files when calculating the scope with --since in addition to files specified in lage.config:
+
+    lage build test lint --since origin/master --ignore "package.json" "yarn.lock" "**/.azure-pipelines/**"
+
 ---
 
 ## Cache Command
@@ -96,13 +130,11 @@ lage build --no-cache
 
 ### Options
 
+[Logging options](#logging-options) also apply.
+
 ```
-  --reporter <reporter...>  reporter (default: "npmLog")
-  --log-level <level>       log level (choices: "info", "warn", "error", "verbose", "silly")
-  --verbose                 verbose output
-  --prune <days>            Prunes cache older than certain number of <days>
-  --clear                   Clears the cache locally
-  -h, --help                display help for command
+--prune <days>            Prunes cache older than certain number of <days>
+--clear                   Clears the cache locally
 ```
 
 ### Examples
@@ -121,39 +153,51 @@ lage cache --clear
 
 ---
 
-## Global Options
+## Common options
 
-These are options that apply to all commands.
+### Logging options
 
-### Verbosity, Log Levels, and Grouping
+Logging options apply to most commands, and can optionally be set with environment variables `LAGE_LOGGER_*` (e.g. `LAGE_LOGGER_REPORTER`).
 
-`lage` by default will hide the output from successful tasks. If you want to see the output as they are being generated, call `lage` with the `verbose` argument.
+```
+--reporter <reporter...>  reporter (choices: "default", "json", "azureDevops", "npmLog", "verboseFileLog", "vfl")
+--log-level <level>       log level (choices: "info", "warn", "error", "verbose", "silly")
+--log-file <file>         when used with --reporter vfl, writes verbose, ungrouped logs to the specified file
+--progress                show progress (default: true locally, false in CI)
+--verbose                 verbose output (default: false)
+--grouped                 groups the logs by package+task (default: false)
+--indented                enabled indentation of the JSON output (default: false)
+```
+
+#### Verbosity
+
+`lage` by default will hide the output from successful tasks. If you want to see all output as it's generated, use `--verbose`:
 
 ```
 lage build --verbose
 ```
 
-#### Log Levels
-
-You can control the log level instead of using "--verbose" argument. You can display `warn` messages and above (`error`) in the following example:
+You can also control the log level more specifically with `--log-level <level>`. This example will show `warn` messages and above (`error`):
 
 ```
 lage build --log-level warn
 ```
 
-Valid values here are `silly`, `verbose`, `info`, `warn`, `error`. If `error` is passed to `--log-level`, you'll receive the least amount of information. The default is `info`.
+Valid values are `silly`, `verbose`, `info`, `warn`, `error`. If `error` is passed to `--log-level`, you'll receive the least amount of information. The default is `info`.
 
-#### Grouped logs
+#### Grouping
 
-`lage` will interweave all the `stdout` and `stderr` from all active targets as they are running. This may become a mess, so `lage` can group output messages together. These messages will only be displayed when the target is completed:
+By default, `lage` will interweave all the `stdout` and `stderr` from all active targets as they are running.
+
+Use the `--grouped` This may become a mess, so `lage` can group output messages together. These messages will only be displayed when the target is completed:
 
 ```
 lage build --verbose --grouped
 ```
 
-### Reporter
+#### Reporter
 
-`lage` comes with various kinds of reporters. Reporters take the logged messages of the target runs, format them, and display them. The default one can group messages, and there are ones that would work well with various Continuous Integration systems like Azure DevOps.
+`lage` comes with various reporters which take the logged messages of the target runs, format them, and display them.
 
 You can pick the reporter by passing the `--reporter` flag:
 
@@ -163,7 +207,7 @@ lage build --reporter json
 
 Available built-in reporters are: `default`, `azureDevops`, `fancy`, `json`, `npmLog`, `verboseFileLog` (or `vfl`), and `profile`. By default the log messages are formatted with the `default` reporter. The `profile` reporter is typically activated with the `--profile` option.
 
-#### Custom Reporters
+#### Custom reporters
 
 You can also create and use your own custom reporters. Define them in your `lage.config.js`:
 

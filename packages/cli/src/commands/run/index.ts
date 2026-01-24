@@ -21,13 +21,13 @@ Runs a set of commands in a target graph. The targets are defined by packages an
 
 Examples
 ========
- 
+
 ### Basic case, running "build", "test", and "lint" against all packages
 
     $ lage build test lint
 
 ### Concurrency
-  
+
     $ lage build test lint --concurrency=4
 
 ### Filtering by certain packages
@@ -68,11 +68,11 @@ Show logs as grouped by each target:
 
 Choosing a different reporter while logging (e.g. nice outputs for Azure DevOps):
 
-    $ lage build test lint --reporter=azureDevOps
+    $ lage build test lint --reporter=azureDevops
 
 Or combine multiple reporters (e.g. Azure DepOps with VerboseFileLog)
 
-    $ lage build test lint --reporter azureDevOps --reporter vfl --log-file /my/verbose/log.file
+    $ lage build test lint --reporter azureDevops --reporter vfl --log-file /my/verbose/log.file
 
 Ignoring files when calculating the scope with --since in addition to files specified in lage.config:
 

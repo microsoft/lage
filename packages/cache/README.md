@@ -2,16 +2,18 @@
 
 This package provides:
 
-1. `Cache` interface
-2. a default cache provider that uses `backfill`
+1. `CacheProvider` interface
+2. a default cache provider that uses [`backfill`](https://www.npmjs.com/package/backfill)
 
 ## Usage
 
+The following example shows standalone cache usage. If you're using the `lage` CLI, provider creation is handled internally (though you can customize `cacheOptions` in `lage.config.js`).
+
 ```ts
-import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher } from "@lage-run/cache";
+import { BackfillCacheProvider, RemoteFallbackCacheProvider, TargetHasher, type CacheOptions } from "@lage-run/cache";
 import { getWorkspaceManagerRoot } from "workspace-tools";
 
-const cacheOptions = {
+const cacheOptions: CacheOptions = {
   internalCacheFolder: ".cache",
   outputGlob: ["dist/**", "lib/**"]
 }
@@ -33,10 +35,13 @@ const remoteFallbackCacheProviderOptions = {
       cacheStorageOptions: {
         provider: "azure-blob",
         options: {
-          connectionString: "asdfasdfasdfafds"; // Providing an un-authenitcated Blob Service Endpoint will force use of Azure EnvironmentCredential
+          // This connection string can optionally contain credentials.
+          // If no credentials are present, see credentialName below.
+          connectionString: "asdfasdfasdfafds";
           container: "container";
           maxSize?: 150;
-          credentialName?: "environment-credential" // Default value or ignored if connectionString carries credentials
+          // If connectionString doesn't have credentials, specify a supported credential type
+          credentialName?: "environment"
         }
       },
       ...cacheOptions
@@ -71,16 +76,14 @@ if (target.cache && !skipCaching) {
 await cacheProvider.put(hash, target);
 ```
 
-## Differentiating Cache
+## Differentiating cache
 
-To specifically differentiate the hash generated for the cache, between different steps the parameter `cacheKey` can be used. The parameter will be a part of the hash generation for the cache, and generated hash can be altered by modifying the parameter.
+`CacheOptions.cacheKey` is included in the hash and can be used to differentiate the hash generated for the cache between different steps, or to invalidate the cache.
 
-### Usage
+Example of usage in `lage.config.js`:
 
-Add the parameter in your `lage.config.js` as follows
-
-```ts
-{
+```js
+module.exports = {
   cacheOptions: {
     cacheKey: "some cache key";
   }

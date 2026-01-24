@@ -8,18 +8,26 @@ export type NpmClient = "npm" | "yarn" | "pnpm";
 
 export interface ConfigOptions {
   /**
-   * Defines the task pipeline, prefix with "^" character to denote a direct topological dependency,
-   * prefix with ^^ to denote a transitive topological dependency.
+   * Defines the task pipeline (task names, dependencies, and optional custom target configuration).
+   *
+   * Dependency syntax:
+   * - No prefix for dependencies on tasks for the same package.
+   * - Prefix with `^` to denote a direct package-topological dependency. (e.g. `^build` means run the `build` task
+   *   in topological order by package.)
+   * - Prefix with `^^` to denote a transitive package-topological dependency. (e.g. `^^transpile` means run the `transpile` task for nested dependencies, but *not* for the current package.)
+   * - Use `packageName#taskName` to denote a dependency on a specific package's task: in the example below,
+   *   package `foo`'s `build` task depends on package `bar`'s `bundle` task.
    *
    * Example:
    *
-   * ```
+   * ```js
    * {
    *   build: ["^build"],
    *   test: ["build"],
-   *   lint: []
+   *   lint: [],
    *   bundle: ["^^transpile"],
    *   transpile: [],
+   *   "foo#build": ["bar#bundle"]
    * }
    * ```
    */
@@ -28,16 +36,16 @@ export interface ConfigOptions {
   /** Backfill cache options */
   cacheOptions: CacheOptions;
 
-  /** Which files to ignore when calculating scopes with --since */
+  /** Which files to ignore when calculating scopes with `--since` */
   ignore: string[];
 
-  /** disables --since flag when any of this list of files changed */
+  /** Disable the `--since` flag when any of these files changed */
   repoWideChanges: string[];
 
   /** Which NPM Client to use when running npm lifecycle scripts */
   npmClient: NpmClient;
 
-  /** Optional priority to set on tasks in a package to make the scheduler give priority to tasks on the critical path for high priority tasks */
+  /** Optional package task priorities, to make the scheduler give higher priority to tasks on the critical path */
   priorities: Priority[];
 
   /**
@@ -52,9 +60,9 @@ export interface ConfigOptions {
   runners: TargetRunnerPickerOptions;
 
   /**
-   * Maximum worker idle memory, this would cause workers to restart if they exceed this limit. This is useful to prevent memory leaks.
+   * Maximum worker idle memory in bytes. If exceeded, the worker will be restarted. This is useful to mitigate memory leaks.
    */
-  workerIdleMemoryLimit: number; // in bytes
+  workerIdleMemoryLimit: number;
 
   /**
    * Maximum number of concurrent tasks to run
