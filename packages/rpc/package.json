@@ -26,7 +26,8 @@
   "devDependencies": {
     "@bufbuild/buf": "^1.39.0",
     "@bufbuild/protoc-gen-es": "^1.10.0",
-    "@connectrpc/protoc-gen-connect-es": "^1.4.0"
+    "@connectrpc/protoc-gen-connect-es": "^1.4.0",
+    "@lage-run/monorepo-scripts": "workspace:^"
   },
   "publishConfig": {
     "access": "public"

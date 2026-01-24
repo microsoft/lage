@@ -1,4 +1,4 @@
-import { LogLevel, type Reporter } from "@lage-run/logger";
+import { LogLevel } from "@lage-run/logger";
 import {
   JsonReporter,
   AdoReporter,

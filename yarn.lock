@@ -1766,6 +1766,7 @@ __metadata:
     "@connectrpc/connect-fastify": "npm:^1.4.0"
     "@connectrpc/connect-node": "npm:^1.4.0"
     "@connectrpc/protoc-gen-connect-es": "npm:^1.4.0"
+    "@lage-run/monorepo-scripts": "workspace:^"
     fastify: "npm:^4.28.1"
   languageName: unknown
   linkType: soft
