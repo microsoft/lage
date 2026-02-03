@@ -1,53 +1,55 @@
-import type { ParsedLock, WorkspaceInfos } from "workspace-tools";
-import { queryLockFile } from "workspace-tools";
-import { nameAtVersion } from "./nameAtVersion.js";
+import { queryLockFile, type PackageInfos, type ParsedLock } from "workspace-tools";
 
-export type Dependencies = { [key in string]: string };
+type Dependencies = Record<string, string>;
 
-export type ExternalDependenciesQueue = {
-  name: string;
-  versionRange: string;
-}[];
+export type DependencyQueue = [name: string, versionRange: string][];
 
-export function filterExternalDependencies(dependencies: Dependencies, workspaces: WorkspaceInfos): Dependencies {
-  const workspacePackageNames = workspaces.map((ws) => ws.name);
+export type DependencySpec = `${string}@${string}`;
+
+/** Filter the `dependencies` object to only contain deps from outside the repo. */
+export function _filterExternalDependencies(dependencies: Dependencies, packageInfos: PackageInfos): Dependencies {
   const externalDependencies: Dependencies = {};
 
-  Object.entries(dependencies).forEach(([name, versionRange]) => {
-    if (workspacePackageNames.indexOf(name) < 0) {
+  for (const [name, versionRange] of Object.entries(dependencies)) {
+    if (!packageInfos[name]) {
       externalDependencies[name] = versionRange;
     }
-  });
+  }
 
   return externalDependencies;
 }
 
-function isDone(done: string[], key: string): boolean {
-  return done.indexOf(key) >= 0;
+function isInQueue(queue: DependencyQueue, key: string): boolean {
+  return queue.some(([name, versionRange]) => `${name}@${versionRange}` === key);
 }
 
-function isInQueue(queue: [string, string][], key: string): boolean {
-  return Boolean(queue.find(([name, versionRange]) => nameAtVersion(name, versionRange) === key));
-}
-
-export function addToQueue(dependencies: Dependencies | undefined, done: string[], queue: [string, string][]): void {
+export function _addToQueue(dependencies: Dependencies | undefined, done: Set<DependencySpec>, queue: DependencyQueue): void {
   if (dependencies) {
-    Object.entries(dependencies).forEach(([name, versionRange]) => {
-      const versionRangeSignature = nameAtVersion(name, versionRange);
+    for (const [name, versionRange] of Object.entries(dependencies)) {
+      const versionRangeSignature = `${name}@${versionRange}` as const;
 
-      if (!isDone(done, versionRangeSignature) && !isInQueue(queue, versionRangeSignature)) {
+      if (!done.has(versionRangeSignature) && !isInQueue(queue, versionRangeSignature)) {
         queue.push([name, versionRange]);
       }
-    });
+    }
   }
 }
 
-export function resolveExternalDependencies(allDependencies: Dependencies, workspaces: WorkspaceInfos, lockInfo: ParsedLock): string[] {
-  const externalDependencies = filterExternalDependencies(allDependencies, workspaces);
+/**
+ * Resolve versions for external (outside repo) dependencies and their transitive dependencies
+ * using the lock file.
+ * @returns Array of strings in the format `name@version`
+ */
+export function resolveExternalDependencies(
+  allDependencies: Dependencies,
+  packageInfos: PackageInfos,
+  lockInfo: ParsedLock
+): DependencySpec[] {
+  const externalDependencies = _filterExternalDependencies(allDependencies, packageInfos);
 
-  const done: string[] = [];
-  const doneRange: string[] = [];
-  const queue = Object.entries(externalDependencies);
+  const done = new Set<DependencySpec>();
+  const doneRange = new Set<DependencySpec>();
+  const queue: DependencyQueue = Object.entries(externalDependencies);
 
   while (queue.length > 0) {
     const next = queue.shift();
@@ -57,19 +59,19 @@ export function resolveExternalDependencies(allDependencies: Dependencies, works
     }
 
     const [name, versionRange] = next;
-    doneRange.push(nameAtVersion(name, versionRange));
+    doneRange.add(`${name}@${versionRange}`);
 
     const lockFileResult = queryLockFile(name, versionRange, lockInfo);
 
     if (lockFileResult) {
       const { version, dependencies } = lockFileResult;
 
-      addToQueue(dependencies, doneRange, queue);
-      done.push(nameAtVersion(name, version));
+      _addToQueue(dependencies, doneRange, queue);
+      done.add(`${name}@${version}`);
     } else {
-      done.push(nameAtVersion(name, versionRange));
+      done.add(`${name}@${versionRange}`);
     }
   }
 
-  return done;
+  return [...done];
 }
