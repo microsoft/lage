@@ -16,7 +16,7 @@ __metadata:
     globby: "npm:^14.0.1"
     micromatch: "npm:^4.0.7"
     multimatch: "npm:^7.0.0"
-    workspace-tools: "npm:^0.40.0"
+    workspace-tools: "npm:^0.41.0"
   languageName: unknown
   linkType: soft
 
@@ -657,9 +657,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"workspace-tools@npm:^0.40.0":
-  version: 0.40.4
-  resolution: "workspace-tools@npm:0.40.4"
+"workspace-tools@npm:^0.41.0":
+  version: 0.41.0
+  resolution: "workspace-tools@npm:0.41.0"
   dependencies:
     "@yarnpkg/lockfile": "npm:^1.1.0"
     fast-glob: "npm:^3.3.1"
@@ -668,7 +668,7 @@ __metadata:
     jju: "npm:^1.4.0"
     js-yaml: "npm:^4.1.0"
     micromatch: "npm:^4.0.0"
-  checksum: 10c0/f149a08500263536fcacf81fce29d5f8e27f969fe46c7316083ea6cb698395e0017cd53b8cee411061fec8a4eb09591aa3cf11ceb80210920275370045193ce0
+  checksum: 10c0/407f0bc0596d4ddbf2837d511e98bcd0a83b195e437e84cac9615235fb771bd5bcc50018f24c7a104b9a01815a92f6a3bf514246a88472e8d48e4d7f1112b416
   languageName: node
   linkType: hard
 
