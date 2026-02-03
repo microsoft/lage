@@ -44,7 +44,7 @@
       // pre-built lage version for repo build orchestration (since local lage isn't built yet).
       // Disable updating this with Renovate because it will choose a range that includes the
       // latest version, which yarn will dedupe to the in-repo version.
-      "matchPackageNames": ["lage-npm"],
+      "matchPackageNames": ["lage", "lage-npm"],
       "enabled": false
     }
   ]
