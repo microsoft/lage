@@ -15,6 +15,7 @@ concurrency:
   # For pushes to master, ideally we wouldn't set a concurrency group, but github actions doesn't
   # support conditional blocks of settings, so we use the SHA so the "group" is unique.
   group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/master' && github.sha || github.ref }}
+  cancel-in-progress: true
 
 permissions: {}
 
