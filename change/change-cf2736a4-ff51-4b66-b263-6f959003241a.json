@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Update dependency @ms-cloudpack/task-reporter to v0.19.0",
+      "packageName": "@lage-run/reporters",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
