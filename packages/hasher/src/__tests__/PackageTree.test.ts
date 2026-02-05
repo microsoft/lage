@@ -1,8 +1,7 @@
-import path from "path";
-
-import { PackageTree } from "../index";
 import { Monorepo } from "@lage-run/monorepo-fixture";
+import path from "path";
 import { getPackageInfos } from "workspace-tools";
+import { PackageTree } from "../index.js";
 
 const fixturesPath = path.join(__dirname, "..", "__fixtures__");
 

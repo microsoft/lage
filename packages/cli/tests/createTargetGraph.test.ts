@@ -1,10 +1,9 @@
-import { getConfig, PipelineDefinition } from "@lage-run/config";
+import { getConfig, type PipelineDefinition } from "@lage-run/config";
 import createLogger from "@lage-run/logger";
+import type { PackageInfo, PackageInfos } from "workspace-tools";
+import { generatePackageTask, type InfoActionOptions, type PackageTask } from "../src/commands/info/action.js";
 import { initializeReporters } from "../src/commands/initializeReporters.js";
-import { generatePackageTask, type InfoActionOptions } from "../src/commands/info/action.js";
-import { PackageInfo, PackageInfos } from "workspace-tools";
 import { createTargetGraph } from "../src/commands/run/createTargetGraph.js";
-import { getFilteredPackages } from "../src/filter/getFilteredPackages.js";
 import { getBinPaths } from "../src/getBinPaths.js";
 
 describe("createTargetGraph", () => {
@@ -141,17 +140,18 @@ async function createPackageTasks(tasks: string[], packageInfos: PackageInfos, p
     priorities: config.priorities,
   });
 
-  const scope = getFilteredPackages({
-    root,
-    packageInfos,
-    logger,
-    includeDependencies: options.dependencies,
-    includeDependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
-    since: options.since,
-    scope: (options.scope ?? []).concat(options.to ?? []), // --to is a short hand for --scope + --no-dependents
-    repoWideChanges: config.repoWideChanges,
-    sinceIgnoreGlobs: options.ignore.concat(config.ignore),
-  });
+  // unused?
+  // const scope = getFilteredPackages({
+  //   root,
+  //   packageInfos,
+  //   logger,
+  //   includeDependencies: options.dependencies,
+  //   includeDependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
+  //   since: options.since,
+  //   scope: (options.scope ?? []).concat(options.to ?? []), // --to is a short hand for --scope + --no-dependents
+  //   repoWideChanges: config.repoWideChanges,
+  //   sinceIgnoreGlobs: options.ignore.concat(config.ignore),
+  // });
 
   const binPaths = getBinPaths();
   const targets = [...targetGraph.targets.values()];

@@ -1,6 +1,6 @@
 import { Logger } from "@lage-run/logger";
 import path from "path";
-import { AggregatedPool } from "../src/AggregatedPool";
+import { AggregatedPool } from "../src/AggregatedPool.js";
 
 describe("AggregatedPool", () => {
   it("should create multiple workerpools for defined groups", async () => {

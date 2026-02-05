@@ -1,6 +1,6 @@
-import { filterPackages } from "../src/filter/getFilteredPackages";
-import { PackageInfos, PackageInfo } from "workspace-tools";
 import { Logger } from "@lage-run/logger";
+import type { PackageInfo, PackageInfos } from "workspace-tools";
+import { filterPackages } from "../src/filter/getFilteredPackages.js";
 
 describe("filterPackages", () => {
   const logger = new Logger();

@@ -1,16 +1,16 @@
 import { PassThrough } from "stream";
-import createLogger, { LogEntry, LogLevel, LogStructuredData, Reporter } from "../src/index";
+import createLogger, { type LogEntry, LogLevel, type LogStructuredData, type Reporter } from "../src/index.js";
 
 describe("logger", () => {
   class TestReporter<T extends LogStructuredData = LogStructuredData> implements Reporter {
     logLevel = LogLevel.warn;
     entries: LogEntry<T>[] = [];
 
-    log(entry) {
+    log(entry: LogEntry<T>) {
       this.entries.push(entry);
     }
 
-    summarize<TContext>(_context: TContext): void {}
+    summarize(): void {}
   }
 
   it("should create a logger that reports to a single reporter", () => {

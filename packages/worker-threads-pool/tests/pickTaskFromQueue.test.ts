@@ -1,5 +1,5 @@
-import { pickTaskFromQueue } from "../src/pickTaskFromQueue";
-import type { QueueItem } from "../src/types/WorkerQueue";
+import { pickTaskFromQueue } from "../src/pickTaskFromQueue.js";
+import type { QueueItem } from "../src/types/WorkerQueue.js";
 
 function createMockQueueItem(partialProps: Partial<QueueItem>): QueueItem {
   return { task: {}, weight: 1, resolve: jest.fn(), reject: jest.fn(), ...partialProps };

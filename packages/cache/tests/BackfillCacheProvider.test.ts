@@ -1,11 +1,9 @@
-import { Target } from "@lage-run/target-graph";
-
-import { BackfillCacheProvider, BackfillCacheProviderOptions } from "../src/providers/BackfillCacheProvider";
-import { Monorepo } from "@lage-run/monorepo-fixture";
-import { _testResetEnvHash } from "../src/salt";
-import path from "path";
 import createLogger from "@lage-run/logger";
-import { getCacheDirectory, getLogsCacheDirectory } from "../src/getCacheDirectory";
+import { Monorepo } from "@lage-run/monorepo-fixture";
+import type { Target } from "@lage-run/target-graph";
+import path from "path";
+import { getCacheDirectory } from "../src/getCacheDirectory.js";
+import { BackfillCacheProvider, type BackfillCacheProviderOptions } from "../src/providers/BackfillCacheProvider.js";
 
 describe("BackfillCacheProvider", () => {
   it("should fetch a cache of the outputs as specified in the outputs folder in target", async () => {

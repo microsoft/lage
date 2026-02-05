@@ -1,13 +1,12 @@
 import { TargetHasher } from "@lage-run/hasher";
 import { Logger } from "@lage-run/logger";
-import { SimpleScheduler } from "../src/SimpleScheduler";
-import { InProcPool } from "./fixtures/pools";
-import { getTargetId, Target, TargetGraphBuilder } from "@lage-run/target-graph";
-import { TargetRunner } from "@lage-run/runners";
-
+import type { TargetRunner } from "@lage-run/runners";
+import { TargetGraphBuilder, getTargetId, type Target } from "@lage-run/target-graph";
 import fs from "fs";
-import path from "path";
 import os from "os";
+import path from "path";
+import { SimpleScheduler } from "../src/SimpleScheduler.js";
+import { InProcPool } from "./fixtures/pools.js";
 
 function createTarget(packageName: string, task: string): Target {
   const id = getTargetId(packageName, task);

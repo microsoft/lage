@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "none",
+      "comment": "Fix lint issues",
+      "packageName": "@lage-run/cli",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Fix lint issues",
+      "packageName": "@lage-run/scheduler",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    }
+  ]
+}

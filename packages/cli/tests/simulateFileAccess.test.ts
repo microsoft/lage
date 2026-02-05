@@ -1,20 +1,22 @@
-import { simulateFileAccess } from "../src/commands/exec/simulateFileAccess";
-import fs from "fs";
-import path from "path";
+import { Logger } from "@lage-run/logger";
+import fs, { type Stats } from "fs";
 import os from "os";
+import path from "path";
+import { simulateFileAccess } from "../src/commands/exec/simulateFileAccess.js";
 
 jest.mock("fs");
 
 // Mock the logger
 const mockSilly = jest.fn();
-const mockLogger = {
-  silly: mockSilly,
-  info: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn(),
-  verbose: jest.fn(),
-  debug: jest.fn(),
-};
+class MockLogger extends Logger {
+  override silly = mockSilly;
+  // do nothing
+  override log() {}
+  override stream() {
+    return () => {};
+  }
+}
+const mockLogger = new MockLogger();
 
 describe("simulateFileAccess", () => {
   let mockRoot: string;
@@ -23,7 +25,6 @@ describe("simulateFileAccess", () => {
   let mockCloseSync: jest.SpyInstance;
   let mockReaddirSync: jest.SpyInstance;
   let mockUtimesSync: jest.SpyInstance;
-  let mockLstatSync: jest.SpyInstance;
 
   beforeEach(() => {
     mockRoot = path.join(os.tmpdir(), "lage-test-root");
@@ -33,11 +34,11 @@ describe("simulateFileAccess", () => {
     mockCloseSync = jest.spyOn(fs, "closeSync").mockImplementation(() => {});
     mockReaddirSync = jest.spyOn(fs, "readdirSync").mockImplementation(() => []);
     mockUtimesSync = jest.spyOn(fs, "utimesSync").mockImplementation(() => {});
-    mockLstatSync = jest.spyOn(fs, "lstatSync").mockImplementation((inputPath: any) => {
+    jest.spyOn(fs, "lstatSync").mockImplementation((inputPath: any) => {
       const strPath = Buffer.isBuffer(inputPath) ? inputPath.toString() : String(inputPath);
       return {
         isDirectory: () => strPath.endsWith(path.sep),
-      };
+      } as Stats;
     });
   });
 
@@ -134,7 +135,7 @@ describe("simulateFileAccess", () => {
 
     // Set up a mock that fails for a specific file path
     const failingPath = path.join(mockRoot, "src/components/Missing.tsx");
-    jest.spyOn(fs, "openSync").mockImplementation((filePath, mode) => {
+    jest.spyOn(fs, "openSync").mockImplementation((filePath) => {
       if (filePath === failingPath) {
         throw new Error("ENOENT: File not found");
       }

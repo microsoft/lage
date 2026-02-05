@@ -5,11 +5,11 @@ import {
   _addToQueue,
   type DependencySpec,
   type DependencyQueue,
-} from "../resolveExternalDependencies";
+} from "../resolveExternalDependencies.js";
 import path from "path";
 import { Monorepo } from "@lage-run/monorepo-fixture";
 
-const fixturesPath = path.join(__dirname, "..", "__fixtures__");
+const fixturesPath = path.join(__dirname, "../__fixtures__");
 
 describe("_filterExternalDependencies", () => {
   let monorepo: Monorepo | undefined;

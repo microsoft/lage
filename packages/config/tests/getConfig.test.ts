@@ -1,5 +1,5 @@
-import { getConfig } from "../src/getConfig";
 import path from "path";
+import { getConfig } from "../src/getConfig.js";
 
 describe("getConfig", () => {
   it("should read from an asynchronous config file", async () => {

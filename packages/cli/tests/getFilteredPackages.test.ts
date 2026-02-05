@@ -1,7 +1,7 @@
 import createLogger from "@lage-run/logger";
 import { Monorepo } from "@lage-run/monorepo-fixture";
 import { getPackageInfosAsync } from "workspace-tools";
-import { getFilteredPackages } from "../src/filter/getFilteredPackages";
+import { getFilteredPackages } from "../src/filter/getFilteredPackages.js";
 
 describe("getFilteredPackages", () => {
   it("should respect the ignore flag when since flag is used", async () => {

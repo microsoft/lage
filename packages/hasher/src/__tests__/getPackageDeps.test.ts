@@ -1,8 +1,7 @@
-import * as path from "path";
-import * as fs from "fs";
-
-import { getPackageDeps, parseGitLsTree, parseGitFilename } from "../getPackageDeps";
 import { Monorepo } from "@lage-run/monorepo-fixture";
+import fs from "fs";
+import path from "path";
+import { getPackageDeps, parseGitFilename, parseGitLsTree } from "../getPackageDeps.js";
 
 const SOURCE_PATH: string = path.join(__dirname, "..", "__fixtures__");
 
@@ -29,10 +28,10 @@ describe(parseGitFilename.name, () => {
 
 describe(parseGitLsTree.name, () => {
   it("can handle a blob", () => {
-    const filename: string = "src/typings/tsd.d.ts";
-    const hash: string = "3451bccdc831cb43d7a70ed8e628dcf9c7f888c8";
+    const filename = "src/typings/tsd.d.ts";
+    const hash = "3451bccdc831cb43d7a70ed8e628dcf9c7f888c8";
 
-    const output: string = `100644 blob ${hash}\t${filename}`;
+    const output = `100644 blob ${hash}\t${filename}`;
     const changes: Map<string, string> = parseGitLsTree(output);
 
     expect(changes.size).toEqual(1); // Expect there to be exactly 1 change
@@ -40,10 +39,10 @@ describe(parseGitLsTree.name, () => {
   });
 
   it("can handle a submodule", () => {
-    const filename: string = "rushstack";
-    const hash: string = "c5880bf5b0c6c1f2e2c43c95beeb8f0a808e8bac";
+    const filename = "rushstack";
+    const hash = "c5880bf5b0c6c1f2e2c43c95beeb8f0a808e8bac";
 
-    const output: string = `160000 commit ${hash}\t${filename}`;
+    const output = `160000 commit ${hash}\t${filename}`;
     const changes: Map<string, string> = parseGitLsTree(output);
 
     expect(changes.size).toEqual(1); // Expect there to be exactly 1 change
@@ -51,13 +50,13 @@ describe(parseGitLsTree.name, () => {
   });
 
   it("can handle multiple lines", () => {
-    const filename1: string = "src/typings/tsd.d.ts";
-    const hash1: string = "3451bccdc831cb43d7a70ed8e628dcf9c7f888c8";
+    const filename1 = "src/typings/tsd.d.ts";
+    const hash1 = "3451bccdc831cb43d7a70ed8e628dcf9c7f888c8";
 
-    const filename2: string = "src/foo bar/tsd.d.ts";
-    const hash2: string = "0123456789abcdef1234567890abcdef01234567";
+    const filename2 = "src/foo bar/tsd.d.ts";
+    const hash2 = "0123456789abcdef1234567890abcdef01234567";
 
-    const output: string = `100644 blob ${hash1}\t${filename1}\n100666 blob ${hash2}\t${filename2}`;
+    const output = `100644 blob ${hash1}\t${filename1}\n100666 blob ${hash2}\t${filename2}`;
     const changes: Map<string, string> = parseGitLsTree(output);
 
     expect(changes.size).toEqual(2); // Expect there to be exactly 2 changes

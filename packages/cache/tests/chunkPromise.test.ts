@@ -1,4 +1,4 @@
-import { chunkPromise } from "../src/chunkPromise";
+import { chunkPromise } from "../src/chunkPromise.js";
 
 describe("chunking promises", () => {
   it("should chunk promises", async () => {

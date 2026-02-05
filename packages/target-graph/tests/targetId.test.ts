@@ -1,4 +1,4 @@
-import { getPackageAndTask, getTargetId } from "../src/targetId";
+import { getPackageAndTask, getTargetId } from "../src/targetId.js";
 
 describe("getTargetId", () => {
   it("should return a string representing an id of a target given task and package", () => {

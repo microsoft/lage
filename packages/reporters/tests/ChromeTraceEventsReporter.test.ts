@@ -1,8 +1,9 @@
 import fs from "fs";
+import streams from "memory-streams";
 import os from "os";
 import path from "path";
-import { ChromeTraceEventsReporter } from "../src/ChromeTraceEventsReporter";
-import streams from "memory-streams";
+import { ChromeTraceEventsReporter } from "../src/ChromeTraceEventsReporter.js";
+import { writerToString } from "./writerToString.js";
 
 function createTarget(packageName: string, task: string) {
   return {
@@ -102,7 +103,7 @@ describe("ChromeTraceEventsReporter", () => {
         "displayTimeUnit": "ms"
       }"
     `);
-    expect(consoleWriter.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(consoleWriter)).toMatchInlineSnapshot(`
       "
       Profiler output written to ${outputFile}, open it with chrome://tracing or edge://tracing
       "

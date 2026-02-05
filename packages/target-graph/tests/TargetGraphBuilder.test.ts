@@ -1,5 +1,5 @@
-import { TargetGraphBuilder } from "../src/TargetGraphBuilder";
-import { Target } from "../src/types/Target";
+import { TargetGraphBuilder } from "../src/TargetGraphBuilder.js";
+import type { Target } from "../src/types/Target.js";
 
 describe("Target Graph Builder", () => {
   it("should build a full graph", () => {

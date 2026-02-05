@@ -1,6 +1,6 @@
-import { WorkerPool } from "../src/WorkerPool";
 import path from "path";
 import { Readable } from "stream";
+import { WorkerPool } from "../src/WorkerPool.js";
 
 describe("WorkerPool", () => {
   it("should be able to process multiple tasks in parallel", async () => {
@@ -13,7 +13,7 @@ describe("WorkerPool", () => {
 
     const numTasks = 100;
 
-    const setup = (data) => {
+    const setup = (data: any) => {
       running.push(data);
     };
 
@@ -40,7 +40,7 @@ describe("WorkerPool", () => {
 
     const numTasks = 100;
 
-    const setup = (data) => {
+    const setup = (data: any) => {
       running.push(data);
     };
 
@@ -53,7 +53,7 @@ describe("WorkerPool", () => {
     try {
       results = await Promise.all(range.map((i) => pool.exec({ id: i }, 1, setup).catch(() => {})));
     } finally {
-      pool.close();
+      await pool.close();
     }
     expect(pool.workers.length).toBe(5);
 

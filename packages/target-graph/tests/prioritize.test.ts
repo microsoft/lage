@@ -1,6 +1,6 @@
-import { getPackageAndTask } from "../src/targetId";
-import { Target } from "../src/types/Target";
-import { prioritize } from "../src/prioritize";
+import { prioritize } from "../src/prioritize.js";
+import { getPackageAndTask } from "../src/targetId.js";
+import type { Target } from "../src/types/Target.js";
 
 function createTarget({
   packageName,

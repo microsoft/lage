@@ -1,5 +1,5 @@
 import path from "path";
-import { TargetFactory } from "../src/TargetFactory";
+import { TargetFactory } from "../src/TargetFactory.js";
 
 describe("TargetFactory", () => {
   it("should give a type of 'npmScript' if one of the packages contain that script", () => {

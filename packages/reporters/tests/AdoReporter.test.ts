@@ -1,7 +1,9 @@
 import { LogLevel } from "@lage-run/logger";
-import { AdoReporter } from "../src/AdoReporter";
+import type { TargetRun } from "@lage-run/scheduler-types";
 import streams from "memory-streams";
-import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry";
+import { AdoReporter } from "../src/AdoReporter.js";
+import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry.js";
+import { writerToString } from "./writerToString.js";
 
 function createTarget(packageName: string, task: string) {
   return {
@@ -37,8 +39,8 @@ describe("AdoReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
-      "VERB: a task ➔ start 
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
+      "VERB: a task ➔ start
       "
     `);
   });
@@ -61,7 +63,7 @@ describe("AdoReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "VERB: a task |  test message
       "
     `);
@@ -103,7 +105,7 @@ describe("AdoReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "##[group] a test success, took 10.00s
       VERB:  ➔ start a test
       VERB:  |  test message for a#test
@@ -162,10 +164,10 @@ describe("AdoReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
-      "VERB: a build ➔ start 
-      VERB: a test ➔ start 
-      VERB: b build ➔ start 
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
+      "VERB: a build ➔ start
+      VERB: a test ➔ start
+      VERB: b build ➔ start
       VERB: a build |  test message for a#build
       VERB: a test |  test message for a#test
       VERB: a build |  test message for a#build again
@@ -174,7 +176,7 @@ describe("AdoReporter", () => {
       VERB: b build |  test message for b#build again
       VERB: a test ✓ done  - 10.00s
       VERB: b build ✓ done  - 30.00s
-      VERB: a build ✖ fail 
+      VERB: a build ✖ fail
       "
     `);
   });
@@ -215,13 +217,13 @@ describe("AdoReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
-      "INFO: a build ➔ start 
-      INFO: a test ➔ start 
-      INFO: b build ➔ start 
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
+      "INFO: a build ➔ start
+      INFO: a test ➔ start
+      INFO: b build ➔ start
       INFO: a test ✓ done  - 10.00s
       INFO: b build ✓ done  - 30.00s
-      INFO: a build ✖ fail 
+      INFO: a build ✖ fail
       "
     `);
   });
@@ -273,10 +275,13 @@ describe("AdoReporter", () => {
         skipped: [],
         queued: [],
       },
-      targetRuns: new Map([
-        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
-        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
-        [bBuildTarget.id, { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
+      targetRuns: new Map<string, TargetRun<unknown>>([
+        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 0 }],
+        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 0 }],
+        [
+          bBuildTarget.id,
+          { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 0 },
+        ],
       ]),
       maxWorkerMemoryUsage: 0,
       workerRestarts: 0,
@@ -284,7 +289,7 @@ describe("AdoReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "##[group] a test success, took 10.00s
       INFO:  ➔ start a test
       VERB:  |  test message for a#test
@@ -309,10 +314,10 @@ describe("AdoReporter", () => {
       INFO: b build success, took 60.00s
       [Tasks Count] success: 2, skipped: 0, pending: 0, aborted: 0
       ##[error] [a build] ERROR DETECTED
-      ##[error] 
+      ##[error]
       ##[error] test message for a#build
       ##[error] test message for a#build again, but look there is an error!
-      ##[error] 
+      ##[error]
       ##vso[task.logissue type=error]Your build failed on the following packages => [a build], find the error logs above with the prefix '##[error]!'
       INFO:  Took a total of 1m 40.00s to complete
       "
