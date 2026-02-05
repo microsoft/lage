@@ -5,6 +5,7 @@
   "bin": "bin/monorepo-scripts.js",
   "scripts": {
     "build": "yarn types",
+    "lint": "monorepo-scripts lint",
     "types": "tsc"
   },
   "dependencies": {

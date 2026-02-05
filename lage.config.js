@@ -1,9 +1,13 @@
 // @ts-check
+/** @import { ConfigOptions, CacheOptions } from 'lage' */
 const path = require("path");
 const fastGlob = require("fast-glob");
 
-/** @type {import("lage").ConfigOptions} */
-module.exports = {
+/**
+ * Lage config (the types are slightly incorrect about what's required/optional)
+ * @type {Partial<Omit<ConfigOptions, 'cacheOptions'>> & { cacheOptions?: Partial<CacheOptions> }}
+ */
+const config = {
   pipeline: {
     "lage#bundle": ["^^transpile", "types"],
     types: {
@@ -12,7 +16,7 @@ module.exports = {
         worker: path.join(__dirname, "scripts/worker/types.js"),
       },
       dependsOn: ["^types"],
-      outputs: ["lib/**/*.d.ts"],
+      outputs: ["lib/**/*.d.{ts,mts}"],
     },
     isolatedTypes: {
       type: "worker",
@@ -20,14 +24,14 @@ module.exports = {
         worker: path.join(__dirname, "scripts/worker/types.js"),
       },
       dependsOn: [],
-      outputs: ["lib/**/*.d.ts"],
+      outputs: ["lib/**/*.d.{ts,mts}"],
     },
     transpile: {
       type: "worker",
       options: {
         worker: path.join(__dirname, "scripts/worker/transpile.js"),
       },
-      outputs: ["lib/**/*.js"],
+      outputs: ["lib/**/*.{js,map}"],
     },
     test: {
       type: "worker",
@@ -84,7 +88,6 @@ module.exports = {
       "beachball.config.js",
       "lage.config.js",
       "package.json",
-      "packages/tsconfig.lage2.json",
       "scripts/**/*",
       "yarn.lock",
     ],
@@ -92,3 +95,5 @@ module.exports = {
     outputGlob: ["lib/**/*", "dist/**/*", ".docusaurus/**/*", "build/**/*"],
   },
 };
+
+module.exports = config;

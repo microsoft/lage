@@ -12,4 +12,7 @@ const { getPackageInfo } = require("workspace-tools");
   await transpileWorker({
     target: { packageName: packageJson.name, cwd: packageRoot },
   });
-})();
+})().catch((error) => {
+  process.exitCode = 1;
+  console.error(error);
+});

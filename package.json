@@ -61,8 +61,7 @@
     }
   },
   "lint-staged": {
-    "!(*test).{ts,js}": "eslint --fix",
-    "*.{ts,json,md}": "prettier --write"
+    "*": "prettier --write"
   },
   "packageManager": "yarn@4.12.0"
 }
