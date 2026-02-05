@@ -1,7 +1,6 @@
-import { TargetRunner } from "@lage-run/runners";
-import { Target } from "@lage-run/target-graph";
-import { Pool } from "@lage-run/worker-threads-pool";
-import { PoolStats } from "@lage-run/worker-threads-pool";
+import type { TargetRunner } from "@lage-run/runners";
+import type { Target } from "@lage-run/target-graph";
+import type { Pool, PoolStats } from "@lage-run/worker-threads-pool";
 
 export class InProcPool implements Pool {
   constructor(private runner: TargetRunner) {}

@@ -1,4 +1,4 @@
-import { hrtimeDiff, hrToSeconds } from "../src/formatDuration";
+import { hrtimeDiff, hrToSeconds } from "../src/formatDuration.js";
 
 describe("hrtimeDiff", () => {
   it("should calulate diffs between two hrtime", () => {

@@ -1,8 +1,8 @@
-import { CacheProvider } from "../src/types/CacheProvider";
 import { Logger } from "@lage-run/logger";
-import { RemoteFallbackCacheProvider, RemoteFallbackCacheProviderOptions } from "../src/providers/RemoteFallbackCacheProvider";
-import path from "path";
 import type { Target } from "@lage-run/target-graph";
+import path from "path";
+import { RemoteFallbackCacheProvider, type RemoteFallbackCacheProviderOptions } from "../src/providers/RemoteFallbackCacheProvider.js";
+import type { CacheProvider } from "../src/types/CacheProvider.js";
 
 describe("RemoteFallbackCacheProvider", () => {
   it("should fetch from local cache first", async () => {

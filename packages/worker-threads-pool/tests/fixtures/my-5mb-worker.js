@@ -1,6 +1,7 @@
 const { registerWorker } = require("./registerWorker.fixture.js");
 
 const fiveMb = (5 * 1024 * 1024) /* bytes */ / 8; /* bytes per item in empty array */
+/** @type {any[]} */
 let buffer = [];
 
 function fn() {

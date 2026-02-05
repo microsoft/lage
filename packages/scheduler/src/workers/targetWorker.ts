@@ -49,7 +49,6 @@ async function setup(options: TargetWorkerDataOptions) {
 void (async () => {
   const { cacheProvider, runnerPicker, options } = await setup(workerData);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let hashPromiseResolve = (_hash: string) => {};
 
   // main thread sends hash to worker because it keeps a global memory cache of the hashes

@@ -1,7 +1,7 @@
-export function waitFor(condition: () => boolean, maxWait: number = 5000): Promise<void> {
+export function waitFor(condition: () => boolean, maxWait = 5000): Promise<void> {
   let retries = 0;
-  let timeout = 100;
-  let maxRetries = maxWait / timeout;
+  const timeout = 100;
+  const maxRetries = maxWait / timeout;
 
   return new Promise<void>((resolve, reject) => {
     const loop = (timer: NodeJS.Timeout) => {
@@ -18,6 +18,6 @@ export function waitFor(condition: () => boolean, maxWait: number = 5000): Promi
       }
     };
 
-    const timer: NodeJS.Timeout = setTimeout(() => loop(timer), timeout);
+    const initialTimer: NodeJS.Timeout = setTimeout(() => loop(initialTimer), timeout);
   });
 }

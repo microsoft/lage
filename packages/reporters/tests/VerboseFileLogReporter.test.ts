@@ -1,7 +1,8 @@
-import { LogEntry, LogLevel } from "@lage-run/logger";
-import { VerboseFileLogReporter } from "../src/VerboseFileLogReporter";
+import { LogLevel, type LogEntry } from "@lage-run/logger";
 import streams from "memory-streams";
-import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry";
+import { VerboseFileLogReporter } from "../src/VerboseFileLogReporter.js";
+import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry.js";
+import { writerToString } from "./writerToString.js";
 
 function createTarget(packageName: string, task: string) {
   return {
@@ -36,7 +37,7 @@ describe("VerboseFileLogReporter", () => {
     reporter.log(entry);
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "[:${entry.data.target.id}:] @madeUp/avettLyrics generateLyrics ➔ start
       "
     `);
@@ -59,7 +60,7 @@ describe("VerboseFileLogReporter", () => {
     reporter.log(entry);
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "[:${entry.data.target.id}:] @madeUp/avettLyrics generateLyrics : Be loud. Let your colors show!
       "
     `);
@@ -83,7 +84,7 @@ describe("VerboseFileLogReporter", () => {
     reporter.log(entry);
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "[:I love the Avett Brothers!:] @madeUp/avettLyrics generateLyrics : I've got something to say, but it's all vanity.
       "
     `);
@@ -102,7 +103,7 @@ describe("VerboseFileLogReporter", () => {
     reporter.log(entry);
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "For every year of knowledge gained, there's a negative year I've earned.
       "
     `);
@@ -143,7 +144,7 @@ describe("VerboseFileLogReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "[:${aBuildTarget.id}:] a build ➔ start
       [:${aTestTarget.id}:] a test ➔ start
       [:${bBuildTarget.id}:] b build ➔ start
@@ -191,7 +192,7 @@ describe("VerboseFileLogReporter", () => {
     reporter.log(entry4);
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "Well my speed meter don't work, so I'm gonna guess 95.
       Well maybe I'll fix it, and maybe I won't; it depend on my being alive.
       Well my '63 Ford is a bull, she's 4000 lbs at least.

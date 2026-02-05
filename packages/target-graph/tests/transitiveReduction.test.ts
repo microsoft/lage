@@ -1,6 +1,6 @@
-import { TargetGraphBuilder } from "../src/TargetGraphBuilder";
-import { Target } from "../src/types/Target";
-import { transitiveReduction } from "../src/transitiveReduction";
+import { TargetGraphBuilder } from "../src/TargetGraphBuilder.js";
+import type { Target } from "../src/types/Target.js";
+import { transitiveReduction } from "../src/transitiveReduction.js";
 import { diff } from "jest-diff";
 
 describe("transitiveReduction", () => {

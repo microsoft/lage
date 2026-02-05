@@ -1,6 +1,7 @@
 import { LogLevel } from "@lage-run/logger";
-import { JsonReporter } from "../src/JsonReporter";
-import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry";
+import type { TargetRun } from "@lage-run/scheduler-types";
+import { JsonReporter } from "../src/JsonReporter.js";
+import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry.js";
 
 function createTarget(packageName: string, task: string) {
   return {
@@ -17,7 +18,7 @@ function createTarget(packageName: string, task: string) {
 
 describe("JsonReporter", () => {
   it("logs both status and message entries", () => {
-    let rawLogs: string[] = [];
+    const rawLogs: string[] = [];
     jest.spyOn(console, "log").mockImplementation((message: string) => {
       rawLogs.push(JSON.parse(message));
     });
@@ -347,7 +348,7 @@ describe("JsonReporter", () => {
   });
 
   it("creates a summary entry", () => {
-    let rawLogs: string[] = [];
+    const rawLogs: string[] = [];
     jest.spyOn(console, "log").mockImplementation((message: string) => {
       rawLogs.push(JSON.parse(message));
     });
@@ -398,10 +399,13 @@ describe("JsonReporter", () => {
         skipped: [],
         queued: [],
       },
-      targetRuns: new Map([
-        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
-        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
-        [bBuildTarget.id, { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
+      targetRuns: new Map<string, TargetRun<unknown>>([
+        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 0 }],
+        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 0 }],
+        [
+          bBuildTarget.id,
+          { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 0 },
+        ],
       ]),
       maxWorkerMemoryUsage: 0,
       workerRestarts: 0,

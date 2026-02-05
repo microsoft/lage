@@ -1,15 +1,25 @@
-import path from "path";
-
-import { TargetHasher } from "../index";
-import fs from "fs";
 import { Monorepo } from "@lage-run/monorepo-fixture";
-import { Target } from "@lage-run/target-graph";
-const fixturesPath = path.join(__dirname, "..", "__fixtures__");
+import type { Target } from "@lage-run/target-graph";
+import fs from "fs";
+import path from "path";
+import { TargetHasher } from "../index.js";
+
+const fixturesPath = path.resolve(__dirname, "../__fixtures__");
 
 describe("The main Hasher class", () => {
+  let monorepos: Monorepo[] = [];
+
+  afterEach(async () => {
+    for (const monorepo of monorepos) {
+      await monorepo.cleanup();
+    }
+    monorepos = [];
+  });
+
   async function setupFixture(fixture = "monorepo") {
     const monorepo = new Monorepo("fixture");
     await monorepo.init(path.join(fixturesPath, fixture));
+    monorepos.push(monorepo);
     return monorepo;
   }
 
@@ -46,8 +56,6 @@ describe("The main Hasher class", () => {
     const hash2 = await getHash(hasher2, target2);
 
     expect(hash).not.toEqual(hash2);
-
-    monorepo1.cleanup();
   });
 
   it("creates different hashes given different fixtures", async () => {
@@ -61,9 +69,6 @@ describe("The main Hasher class", () => {
     const hasher2 = new TargetHasher({ root: monorepo2.root, environmentGlob: [] });
     const hash2 = await getHash(hasher2, target2);
     expect(hash).not.toEqual(hash2);
-
-    monorepo1.cleanup();
-    monorepo2.cleanup();
   });
 
   it("creates the same hash given the same fixture, with different target hasher instances", async () => {
@@ -78,9 +83,6 @@ describe("The main Hasher class", () => {
     const hash2 = await getHash(hasher2, target2);
 
     expect(hash).toEqual(hash2);
-
-    monorepo1.cleanup();
-    monorepo2.cleanup();
   });
 
   it("creates different hashes when a src file has changed", async () => {
@@ -98,9 +100,6 @@ describe("The main Hasher class", () => {
     const hash2 = await getHash(hasher2, target2);
 
     expect(hash).not.toEqual(hash2);
-
-    monorepo1.cleanup();
-    monorepo2.cleanup();
   });
 
   it("creates different hashes when a src file has changed for a dependency", async () => {
@@ -121,9 +120,6 @@ describe("The main Hasher class", () => {
     const hash2 = await getHash(hasher2, target2);
 
     expect(hash).not.toEqual(hash2);
-
-    monorepo1.cleanup();
-    monorepo2.cleanup();
   });
 
   it("creates different hashes when the target has a different env glob", async () => {
@@ -142,8 +138,6 @@ describe("The main Hasher class", () => {
     const hash2 = await getHash(hasher, target2);
 
     expect(hash).not.toEqual(hash2);
-
-    monorepo1.cleanup();
   });
 
   it("creates different hashes when the target has a different env glob for different task types", async () => {
@@ -169,7 +163,5 @@ describe("The main Hasher class", () => {
 
     expect(hash).not.toEqual(hash2);
     expect(hash2).not.toEqual(hash3);
-
-    monorepo1.cleanup();
   });
 });

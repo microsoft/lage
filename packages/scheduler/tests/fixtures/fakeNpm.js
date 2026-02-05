@@ -1,10 +1,10 @@
-let sleep = parseInt(
+const sleep = parseInt(
   process.argv
     .find((arg) => arg.includes("--sleep="))
-    .trim()
+    ?.trim()
     .replace("--sleep=", "") ?? "100"
 );
-let fail = !!process.argv.find((arg) => arg.includes("--fail"));
+const fail = process.argv.some((arg) => arg.includes("--fail"));
 
 if (fail) {
   throw new Error("Fake npm failed");
@@ -13,3 +13,5 @@ if (fail) {
 setTimeout(() => {
   /* do NOTHING */
 }, sleep);
+
+module.exports = {}; // remove from global scope

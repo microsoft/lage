@@ -1,12 +1,11 @@
-import "child_process";
-import { ChildProcess } from "child_process";
-import { getTargetId, Target } from "@lage-run/target-graph";
 import { NpmScriptRunner } from "@lage-run/runners";
-import { waitFor } from "./waitFor";
+import { getTargetId, type Target } from "@lage-run/target-graph";
+import type { ChildProcess } from "child_process";
 import os from "os";
 import path from "path";
+import { waitFor } from "./waitFor.js";
 
-let childProcesses: Map<string, ChildProcess> = new Map();
+const childProcesses: Map<string, ChildProcess> = new Map();
 
 function getChildProcessKey(packageName: string, task: string) {
   const testName = expect.getState().currentTestName!.replace(/ /g, "_");
@@ -151,7 +150,7 @@ describe("NpmScriptRunner", () => {
       fakeExceptionSpies[packageName] = jest.fn();
     }
 
-    let runPromises = fakePackages.map((packageName) =>
+    const runPromises = fakePackages.map((packageName) =>
       runner
         .run({
           target: createTarget(packageName),

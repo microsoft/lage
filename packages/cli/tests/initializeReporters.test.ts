@@ -1,10 +1,10 @@
-import fs from "fs";
-import path from "path";
-import os from "os";
-import { Logger, Reporter } from "@lage-run/logger";
+import { Logger, type Reporter } from "@lage-run/logger";
 import { AdoReporter, BasicReporter, ChromeTraceEventsReporter, LogReporter } from "@lage-run/reporters";
-import { initializeReporters } from "../src/commands/initializeReporters.js";
+import fs from "fs";
 import isInteractive from "is-interactive";
+import os from "os";
+import path from "path";
+import { initializeReporters } from "../src/commands/initializeReporters.js";
 
 jest.mock("is-interactive", () => jest.fn(() => true));
 

@@ -1,6 +1,6 @@
-import type { Target } from "../src/types/Target";
-import { detectCycles } from "../src/detectCycles";
-import { getPackageAndTask } from "../src/targetId";
+import { detectCycles } from "../src/detectCycles.js";
+import { getPackageAndTask } from "../src/targetId.js";
+import type { Target } from "../src/types/Target.js";
 
 function createTarget({
   packageName,

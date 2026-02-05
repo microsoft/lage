@@ -36,7 +36,7 @@ export interface InfoActionOptions extends ReporterInitOptions {
   optimizeGraph: boolean;
 }
 
-interface PackageTask {
+export interface PackageTask {
   id: string;
   command: string[];
   dependencies: string[];

@@ -1,8 +1,9 @@
 import { LogLevel } from "@lage-run/logger";
-import { LogReporter } from "../src/LogReporter";
+import type { TargetRun } from "@lage-run/scheduler-types";
 import streams from "memory-streams";
-import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry";
-import { TargetRun } from "@lage-run/scheduler-types";
+import { LogReporter } from "../src/LogReporter.js";
+import type { TargetMessageEntry, TargetStatusEntry } from "../src/types/TargetLogEntry.js";
+import { writerToString } from "./writerToString.js";
 
 function createTarget(packageName: string, task: string) {
   return {
@@ -38,7 +39,7 @@ describe("LogReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "a task ➔ start
       "
     `);
@@ -62,7 +63,7 @@ describe("LogReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "a task :  test message
       "
     `);
@@ -104,7 +105,7 @@ describe("LogReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "a test ➔ start
       a test :  test message for a#test
       a test :  test message for a#test again
@@ -160,7 +161,7 @@ describe("LogReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "a build ➔ start
       a test ➔ start
       b build ➔ start
@@ -213,7 +214,7 @@ describe("LogReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "a build ➔ start
       a test ➔ start
       b build ➔ start
@@ -300,7 +301,7 @@ describe("LogReporter", () => {
 
     writer.end();
 
-    expect(writer.toString()).toMatchInlineSnapshot(`
+    expect(writerToString(writer)).toMatchInlineSnapshot(`
       "a test ➔ start
       a test :  test message for a#test
       a test :  test message for a#test again
@@ -331,7 +332,7 @@ describe("LogReporter", () => {
       test message for a#build again, but look there is an error!
 
       ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-      Took a total of 1m 40.00s to complete. 
+      Took a total of 1m 40.00s to complete.
       "
     `);
   });

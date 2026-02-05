@@ -3,8 +3,9 @@ const { parentPort } = require("worker_threads");
 const START_WORKER_STREAM_MARKER = "## WORKER:START:";
 const END_WORKER_STREAM_MARKER = "## WORKER:END:";
 
-module.exports.registerWorker = function (fn) {
+module.exports.registerWorker = function (/** @type {Function} */ fn) {
   parentPort?.on("message", async (message) => {
+    /** @type {AbortController | undefined} */
     let abortController;
 
     switch (message.type) {
@@ -21,7 +22,8 @@ module.exports.registerWorker = function (fn) {
     }
   });
 
-  async function start(task, abortSignal, id) {
+  // TODO: this should use proper lage worker types once available
+  async function start(/** @type {*} */ task, /** @type {AbortSignal} */ abortSignal, /** @type {string} */ id) {
     try {
       process.stdout.write(`${START_WORKER_STREAM_MARKER}${id}\n`);
       process.stderr.write(`${START_WORKER_STREAM_MARKER}${id}\n`);

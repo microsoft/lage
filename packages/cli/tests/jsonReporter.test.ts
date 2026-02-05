@@ -35,7 +35,12 @@ describe("json reporter", () => {
     logger.info("test Json", testObject);
 
     expect(logSpy).toHaveBeenCalledWith(
-      '{"timestamp":0,"level":30,"msg":"test Json","data":{"x":"field x","number":1,"array":[1,2,3],"object":{"a":1,"b":2}}}'
+      JSON.stringify({
+        timestamp: 0,
+        level: 30,
+        msg: "test Json",
+        data: testObject,
+      })
     );
     jest.clearAllMocks();
   });
@@ -57,24 +62,16 @@ describe("json reporter", () => {
     logger.info("test Json", testObject);
 
     expect(logSpy).toHaveBeenCalledWith(
-      `{
-  \"timestamp\": 0,
-  \"level\": 30,
-  \"msg\": \"test Json\",
-  \"data\": {
-    \"x\": \"field x\",
-    \"number\": 1,
-    \"array\": [
-      1,
-      2,
-      3
-    ],
-    \"object\": {
-      \"a\": 1,
-      \"b\": 2
-    }
-  }
-}`
+      JSON.stringify(
+        {
+          timestamp: 0,
+          level: 30,
+          msg: "test Json",
+          data: testObject,
+        },
+        null,
+        2
+      )
     );
     jest.clearAllMocks();
   });

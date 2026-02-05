@@ -1,11 +1,12 @@
-import { Target } from "@lage-run/target-graph";
-import { WrappedTarget } from "../src/WrappedTarget";
-
-import path from "path";
-import { CacheProvider, TargetHasher } from "@lage-run/cache";
+import { TargetHasher } from "@lage-run/hasher";
 import { Logger } from "@lage-run/logger";
-import { TargetRunner } from "@lage-run/scheduler-types";
-import { Pool } from "@lage-run/worker-threads-pool";
+import type { TargetRunner } from "@lage-run/runners";
+import type { Target } from "@lage-run/target-graph";
+import type { Pool } from "@lage-run/worker-threads-pool";
+import fs from "fs";
+import os from "os";
+import path from "path";
+import { WrappedTarget } from "../src/WrappedTarget.js";
 
 function createTarget(packageName: string): Target {
   return {
@@ -22,8 +23,8 @@ function createTarget(packageName: string): Target {
 
 class InProcPool implements Pool {
   constructor(private runner: TargetRunner) {}
-  exec({ target }: { target: Target; weight: number }, weight, _setup, _teardown, abortSignal?: AbortSignal) {
-    return this.runner.run({ target, weight, abortSignal });
+  exec(data: { target: Target; weight: number }, _weight: number, _setup: any, _teardown: any, abortSignal?: AbortSignal) {
+    return this.runner.run({ target: data.target, weight: data.weight, abortSignal });
   }
   stats() {
     return {
@@ -38,8 +39,14 @@ class InProcPool implements Pool {
 
 class SkippyInProcPool implements Pool {
   constructor(private runner: TargetRunner) {}
-  exec({ target }: { target: Target; weight: number }, weight, _setup, _teardown, abortSignal?: AbortSignal): Promise<any> {
-    this.runner.run({ target, weight, abortSignal });
+  async exec(
+    data: { target: Target; weight: number },
+    _weight: number,
+    _setup: any,
+    _teardown: any,
+    abortSignal?: AbortSignal
+  ): Promise<any> {
+    await this.runner.run({ target: data.target, weight: data.weight, abortSignal });
     return Promise.resolve({
       skipped: true,
       hash: "1234",
@@ -57,6 +64,12 @@ class SkippyInProcPool implements Pool {
 }
 
 describe("WrappedTarget", () => {
+  let root = "";
+
+  beforeEach(() => {
+    root = fs.mkdtempSync(path.join(os.tmpdir(), "lage-wrapped-target-"));
+  });
+
   it("should be able to run a target to completion", async () => {
     const logger = new Logger();
 
@@ -73,10 +86,11 @@ describe("WrappedTarget", () => {
       abortController: new AbortController(),
       continueOnError: false,
       logger,
-      root: process.cwd(),
+      root,
       shouldCache: true,
       target: createTarget("a"),
       pool: new InProcPool(runner),
+      hasher: new TargetHasher({ root, environmentGlob: [] }),
     });
 
     expect(wrappedTarget.status).toBe("pending");
@@ -106,10 +120,11 @@ describe("WrappedTarget", () => {
         abortController: new AbortController(),
         continueOnError: false,
         logger,
-        root: process.cwd(),
+        root,
         shouldCache: true,
         target: createTarget(packageName),
         pool: new InProcPool(runner),
+        hasher: new TargetHasher({ root, environmentGlob: [] }),
       });
 
       wrappedTargets.push(wrappedTarget);
@@ -146,10 +161,11 @@ describe("WrappedTarget", () => {
         abortController: new AbortController(),
         continueOnError,
         logger,
-        root: process.cwd(),
+        root,
         shouldCache: true,
         target: createTarget(packageName),
         pool: new InProcPool(runner),
+        hasher: new TargetHasher({ root, environmentGlob: [] }),
       });
 
       wrappedTargets.push(wrappedTarget);
@@ -200,10 +216,11 @@ describe("WrappedTarget", () => {
         abortController,
         continueOnError,
         logger,
-        root: process.cwd(),
+        root,
         shouldCache: true,
         target: createTarget(packageName),
         pool: new InProcPool(runner),
+        hasher: new TargetHasher({ root, environmentGlob: [] }),
       });
 
       wrappedTargets.push(wrappedTarget);
@@ -232,10 +249,11 @@ describe("WrappedTarget", () => {
       abortController: new AbortController(),
       continueOnError: false,
       logger,
-      root: process.cwd(),
+      root,
       shouldCache: true,
       target: { ...createTarget("a"), cache: true },
       pool: new SkippyInProcPool(runner),
+      hasher: new TargetHasher({ root, environmentGlob: [] }),
     });
 
     expect(wrappedTarget.status).toBe("pending");

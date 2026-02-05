@@ -1,6 +1,6 @@
-import { AzureBlobCacheStorageConfig } from "backfill-config";
+import type { AzureBlobCacheStorageConfig, AzureBlobCacheStorageConnectionStringOptions } from "backfill-config";
 import path from "path";
-import { createBackfillLogger, createBackfillCacheConfig } from "../src/backfillWrapper";
+import { createBackfillLogger, createBackfillCacheConfig } from "../src/backfillWrapper.js";
 
 describe("backfill-config", () => {
   it("should read values from environment variables", () => {
@@ -14,8 +14,9 @@ describe("backfill-config", () => {
     expect(config.cacheStorageConfig.provider).toBe("azure-blob");
 
     const cacheStorageConfig = config.cacheStorageConfig as AzureBlobCacheStorageConfig;
-    expect(cacheStorageConfig.options.connectionString).toBe("somestring");
-    expect(cacheStorageConfig.options.container).toBe("somecontainer");
+    const cacheOptions = cacheStorageConfig.options as AzureBlobCacheStorageConnectionStringOptions;
+    expect(cacheOptions.connectionString).toBe("somestring");
+    expect(cacheOptions.container).toBe("somecontainer");
 
     delete process.env.BACKFILL_CACHE_PROVIDER;
     delete process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;

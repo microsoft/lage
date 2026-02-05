@@ -1,12 +1,13 @@
-import { Logger } from "@lage-run/logger";
 import { TargetHasher } from "@lage-run/hasher";
-import { SimpleScheduler } from "../src/SimpleScheduler";
-import { getStartTargetId, Target, TargetGraph } from "@lage-run/target-graph";
-import { InProcPool, SingleSchedulePool } from "./fixtures/pools";
-
+import { Logger } from "@lage-run/logger";
+import { NoOpRunner } from "@lage-run/runners";
+import { getStartTargetId, type Target, type TargetGraph } from "@lage-run/target-graph";
 import fs from "fs";
-import path from "path";
 import os from "os";
+import path from "path";
+import { SimpleScheduler } from "../src/SimpleScheduler.js";
+import { FailOnPackageRunner } from "./fixtures/FailOnPackageRunner.js";
+import { InProcPool, SingleSchedulePool } from "./fixtures/pools.js";
 
 /**
  * Purely manually managed target graph.
@@ -21,8 +22,8 @@ class TestTargetGraph implements TargetGraph {
         id: getStartTargetId(),
         cwd: "",
         label: "Start",
-      },
-    ] as [string, Target],
+      } as Target,
+    ],
   ]);
 
   dependencies: [string, string][] = [];
@@ -67,7 +68,7 @@ describe("SimpleScheduler", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "no-target-deps"));
     const logger = new Logger();
 
-    const runner = new (require("./fixtures/NoOpRunner").NoOpRunner)();
+    const runner = new NoOpRunner();
 
     const scheduler = new SimpleScheduler({
       logger,
@@ -117,7 +118,7 @@ describe("SimpleScheduler", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "early-throw"));
     const logger = new Logger();
 
-    const runner = new (require("./fixtures/FailOnPackageRunner").FailOnPackageRunner)("d");
+    const runner = new FailOnPackageRunner("d");
 
     const scheduler = new SimpleScheduler({
       logger,
@@ -163,7 +164,7 @@ describe("SimpleScheduler", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "continue-on-error"));
     const logger = new Logger();
 
-    const runner = new (require("./fixtures/FailOnPackageRunner").FailOnPackageRunner)("d");
+    const runner = new FailOnPackageRunner("d");
 
     const scheduler = new SimpleScheduler({
       logger,
@@ -210,7 +211,7 @@ describe("SimpleScheduler", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "abort"));
     const logger = new Logger();
 
-    const runner = new (require("./fixtures/FailOnPackageRunner").FailOnPackageRunner)("d");
+    const runner = new FailOnPackageRunner("d");
 
     const scheduler = new SimpleScheduler({
       logger,
