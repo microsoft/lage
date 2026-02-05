@@ -1,17 +1,19 @@
-// @ts-check
+/** @import { Target } from "@/TargetGraph" */
 const ts = require("typescript");
 const path = require("path");
 const { existsSync } = require("fs");
 
+/** @type {ts.Program | undefined} */
 let oldProgram;
 
-const log = (msg) => {
-  process.stdout.write(msg + "\n");
+const log = (/** @type {*} */ msg) => {
+  process.stdout.write(String(msg) + "\n");
 };
 
 /**
- * Worker Run() function
- * @param {*} data Lage Context
+ * The type here should be `WorkerRunnerOptions & TargetRunnerOptions`, but we only specify the
+ * needed properties so the runner function can be reused by commands/types.js.
+ * @param {{ target: Pick<Target, 'packageName' | 'cwd'> }} data
  */
 async function run(data) {
   const { target } = data; // Lage target data
@@ -27,9 +29,23 @@ async function run(data) {
   }
 
   // Parse tsconfig
-  log(`Parsing Config...`);
-  const configParserHost = parseConfigHostFromCompilerHostLike(ts.sys);
-  const parsedCommandLine = ts.getParsedCommandLineOfConfigFile(tsconfigJsonFile, {}, configParserHost);
+  log(`Parsing config...`);
+  const parsedCommandLine = ts.getParsedCommandLineOfConfigFile(
+    tsconfigJsonFile,
+    {},
+    {
+      fileExists: (f) => ts.sys.fileExists(f),
+      readDirectory(root, extensions, excludes, includes, depth) {
+        return ts.sys.readDirectory(root, extensions, excludes, includes, depth);
+      },
+      readFile: (f) => ts.sys.readFile(f),
+      useCaseSensitiveFileNames: ts.sys.useCaseSensitiveFileNames,
+      getCurrentDirectory: ts.sys.getCurrentDirectory,
+      onUnRecoverableConfigFileDiagnostic: (d) => {
+        throw new Error(ts.flattenDiagnosticMessageText(d.messageText, ""));
+      },
+    }
+  );
   if (!parsedCommandLine) {
     throw new Error("Could not parse tsconfig.json");
   }
@@ -40,7 +56,7 @@ async function run(data) {
   const compilerOptions = parsedCommandLine.options;
 
   // Creating compilation host program
-  log(`Creating Host Compiler...`);
+  log(`Creating host compiler...`);
   const compilerHost = ts.createCompilerHost(compilerOptions);
 
   const program = ts.createProgram(parsedCommandLine.fileNames, compilerOptions, compilerHost, oldProgram);
@@ -59,12 +75,12 @@ async function run(data) {
   try {
     program.emit();
   } catch (e) {
-    log(`Encountered Error while transpiling: ${e.messageText}`);
-    throw new Error("Encountered Error while transpiling");
+    log(`Encountered error while transpiling: ${/** @type {ts.Diagnostic} */ (e).messageText}`);
+    throw new Error("Encountered error while transpiling");
   }
   let hasErrors = false;
 
-  for (const kind of Object.keys(errors)) {
+  for (const kind of /** @type {(keyof typeof errors)[]} */ (Object.keys(errors))) {
     for (const diagnostics of errors[kind]) {
       hasErrors = true;
       allErrors.push(diagnostics);
@@ -81,22 +97,6 @@ async function run(data) {
 
     return;
   }
-}
-
-function parseConfigHostFromCompilerHostLike(host) {
-  return {
-    fileExists: (f) => host.fileExists(f),
-    readDirectory(root, extensions, excludes, includes, depth) {
-      return host.readDirectory(root, extensions, excludes, includes, depth);
-    },
-    readFile: (f) => host.readFile(f),
-    useCaseSensitiveFileNames: host.useCaseSensitiveFileNames,
-    getCurrentDirectory: host.getCurrentDirectory,
-    onUnRecoverableConfigFileDiagnostic: (d) => {
-      throw new Error(ts.flattenDiagnosticMessageText(d.messageText, ""));
-    },
-    trace: host.trace,
-  };
 }
 
 module.exports = run;

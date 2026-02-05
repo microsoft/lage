@@ -1,22 +1,26 @@
-// @ts-check
+/** @import { Target } from "@/TargetGraph" */
+/** @import { WorkerRunnerOptions } from "@/WorkerRunner" */
 const { ESLint } = require("eslint");
-const PROJECT_ROOT = require("path").resolve(__dirname, "..", "..");
-const { readFile } = require("fs/promises");
-
 const path = require("path");
+const { getPackageInfo } = require("workspace-tools");
 
-module.exports = async function run(data) {
+/**
+ * The type here should be `WorkerRunnerOptions & TargetRunnerOptions`, but we only specify the
+ * needed properties so the runner function can be reused by commands/lint.js.
+ * @param {WorkerRunnerOptions & { target: Pick<Target, 'packageName' | 'cwd' | 'task'> }} data
+ */
+async function lint(data) {
   const { target, taskArgs } = data;
-  const packageJson = JSON.parse(await readFile(path.join(target.cwd, "package.json"), "utf8"));
+  const packageJson = getPackageInfo(target.cwd);
 
-  if (!packageJson.scripts?.[target.task]) {
+  if (!packageJson?.scripts?.[target.task]) {
     process.stdout.write(`No script found for ${target.task} in ${target.cwd}... skipped`);
     // pass
     return;
   }
 
-  const baseConfig = require(path.join(PROJECT_ROOT, "scripts/config/eslintrc.js"));
-  baseConfig.parserOptions.project = path.join(target.cwd, "tsconfig.json");
+  const baseConfig = require("../config/eslintrc.js");
+  (baseConfig.parserOptions ??= {}).project = path.join(target.cwd, "tsconfig.json");
 
   const shouldFix = taskArgs?.includes("--fix");
 
@@ -41,7 +45,11 @@ module.exports = async function run(data) {
     process.stdout.write(resultText + "\n");
   }
 
-  if (results.some((r) => r.errorCount > 0)) {
-    throw new Error(`Linting failed with errors`);
+  const hasErrors = results.some((r) => r.errorCount > 0);
+  const hasWarnings = results.some((r) => r.warningCount > 0);
+  if (hasErrors || hasWarnings) {
+    throw new Error(`Linting failed with ${hasErrors ? "errors" : "warnings"}`);
   }
-};
+}
+
+module.exports = lint;

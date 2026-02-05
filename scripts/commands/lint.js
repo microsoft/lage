@@ -1,26 +1,17 @@
-const { ESLint } = require("eslint");
-const packagePath = process.cwd();
+const path = require("path");
+const { getPackageInfo } = require("workspace-tools");
+const lintWorker = require("../worker/lint");
 
 (async function main() {
-  // 1. Create an instance.
-  const eslint = new ESLint({
-    cwd: packagePath,
-    baseConfig: require("../config/eslintrc.js"),
-  });
-
-  // 2. Lint files.
-  const results = await eslint.lintFiles(["src/**/*.ts"]);
-
-  // 3. Format the results.
-  const formatter = await eslint.loadFormatter("stylish");
-  const resultText = formatter.format(results);
-
-  // 4. Output it.
-  console.log(resultText);
-
-  if (results.some((r) => r.errorCount > 0)) {
-    throw new Error(`Linting failed with ${results[0].errorCount} errors`);
+  const packageInfo = getPackageInfo(process.cwd());
+  if (!packageInfo) {
+    throw new Error(`Could not find package root from ${process.cwd()}`);
   }
+
+  return lintWorker({
+    target: { packageName: packageInfo.name, cwd: path.dirname(packageInfo.packageJsonPath), task: "lint" },
+    taskArgs: process.argv.slice(2),
+  });
 })().catch((error) => {
   process.exitCode = 1;
   console.error(error);

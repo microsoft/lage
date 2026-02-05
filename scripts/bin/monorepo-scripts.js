@@ -2,7 +2,9 @@
 const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs");
-const os = require("os");
+const { findPackageRoot, findProjectRoot } = require("workspace-tools");
+
+const projectRoot = findProjectRoot(process.cwd());
 
 const [command, ...spawnArgs] = process.argv.slice(2);
 const spawnCommand = findCommand(command);
@@ -22,57 +24,36 @@ if (spawnCommand.endsWith(".js")) {
 }
 
 cp.on("exit", (code) => {
-  process.exitCode = code;
+  process.exitCode = code || 0;
 });
 
-function findCommand(command) {
+function findCommand(/** @type {string} */ command) {
   // Try to find a command under monorepo-scripts/commands
-  const commandPath = path.join(__dirname, "../commands", `${command}.js`);
+  const commandPath = path.resolve(__dirname, "../commands", `${command}.js`);
   if (fs.existsSync(commandPath)) {
     return commandPath;
   }
 
-  // Try to find command in package's own node_modules
-  const packagePath = getPackagePath(process.cwd());
-  const binPath = getBinPath(packagePath, command);
-  if (binPath) {
-    return binPath;
-  }
-
-  // Try to find command in scripts/ directory
-  let scriptsPath = path.join(__dirname, "..");
-  const root = path.parse(scriptsPath).root;
-  while (scriptsPath !== root) {
-    const binPath = getBinPath(scriptsPath, command);
-    if (binPath) {
-      return binPath;
+  // Try to find command in package's own node_modules, then scripts/node_modules, then root node_modules
+  for (const basePath of [findPackageRoot(process.cwd()), findPackageRoot(__dirname), projectRoot]) {
+    if (basePath) {
+      const binPath = getBinPath(basePath, command);
+      if (binPath) {
+        return binPath;
+      }
     }
-    scriptsPath = path.dirname(scriptsPath);
   }
 
-  return undefined;
+  console.error("Could not find command: " + command);
+  process.exit(1);
 }
 
-function getPackagePath(cwd) {
-  const root = path.parse(cwd).root;
-  while (cwd !== root) {
-    const packagePath = path.join(cwd, "package.json");
-    if (fs.existsSync(packagePath)) {
-      return packagePath;
-    }
-    cwd = path.dirname(cwd);
-  }
-
-  return null;
-}
-
-function getBinPath(packagePath, command) {
+function getBinPath(/** @type {string | undefined} */ packagePath, /** @type {string | undefined} */ command) {
   if (!packagePath || !command) {
     return undefined;
   }
 
-  const binPath =
-    os.platform() === "win32" ? `${packagePath}/node_modules/.bin/${command}.cmd` : `${packagePath}/node_modules/.bin/${command}`;
+  const binPath = path.join(packagePath, "node_modules/.bin", process.platform === "win32" ? `${command}.cmd` : command);
 
   if (fs.existsSync(binPath)) {
     return binPath;

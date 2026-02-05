@@ -1,4 +1,3 @@
-// @ts-check
 const { run: runJest } = require("jest");
 const path = require("path");
 const { findPackageRoot } = require("workspace-tools");

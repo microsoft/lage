@@ -1,4 +1,3 @@
-// @ts-check
 const { findProjectRoot, getPackageInfos } = require("workspace-tools");
 const fs = require("fs");
 const path = require("path");
@@ -6,22 +5,22 @@ const path = require("path");
 const root = findProjectRoot(process.cwd()) ?? process.cwd();
 const swcOptions = JSON.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8"));
 const packages = getPackageInfos(root);
-const moduleNameMapper = Object.values(packages).reduce((acc, { packageJsonPath, name }) => {
+
+const moduleNameMapper = /** @type {Record<string, string>} */ ({});
+for (const { packageJsonPath, name } of Object.values(packages)) {
   if (name === "@lage-run/globby") {
-    return acc;
+    continue;
   }
 
   const packagePath = path.dirname(packageJsonPath);
-  acc[`^${name}/(.*)$`] = `${packagePath}/src/$1`;
+  moduleNameMapper[`^${name}/(.*)$`] = `${packagePath}/src/$1`;
 
   if (fs.existsSync(path.join(packagePath, "src/index.ts"))) {
-    acc[`^${name}$`] = `${packagePath}/src/index.ts`;
+    moduleNameMapper[`^${name}$`] = `${packagePath}/src/index.ts`;
   } else if (fs.existsSync(path.join(packagePath, "src/index.mts"))) {
-    acc[`^${name}$`] = `${packagePath}/src/index.mts`;
+    moduleNameMapper[`^${name}$`] = `${packagePath}/src/index.mts`;
   }
-
-  return acc;
-}, {});
+}
 
 moduleNameMapper["^(\\.{1,2}/.*)\\.js$"] = "$1";
 

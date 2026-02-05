@@ -11,9 +11,11 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "build": "yarn types && yarn transpile",
+    "transpile": "monorepo-scripts transpile",
+    "types": "monorepo-scripts tsc",
     "lint": "buf lint",
-    "generate": "buf generate",
-    "build": "monorepo-scripts tsc"
+    "generate": "buf generate"
   },
   "dependencies": {
     "@bufbuild/protobuf": "1.10.1",
