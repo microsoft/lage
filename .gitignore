@@ -13,3 +13,4 @@ profile*.json
 !.yarn/patches/
 !.yarn/releases/
 temp
+*.tgz

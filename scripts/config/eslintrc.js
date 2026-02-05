@@ -1,4 +1,5 @@
-module.exports = {
+/** @type {import('eslint').Linter.Config} */
+const config = {
   extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint", "file-extension-in-import-ts"],
@@ -21,3 +22,4 @@ module.exports = {
   },
   root: true,
 };
+module.exports = config;

@@ -1723,6 +1723,7 @@ __metadata:
   dependencies:
     "@swc/core": "npm:^1.9.1"
     "@swc/jest": "npm:^0.2.39"
+    "@types/eslint": "npm:^8.0.0"
     "@types/jest": "npm:^30.0.0"
     "@types/node": "npm:^16.18.3"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.7"
@@ -2185,6 +2186,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/eslint@npm:^8.0.0":
+  version: 8.56.12
+  resolution: "@types/eslint@npm:8.56.12"
+  dependencies:
+    "@types/estree": "npm:*"
+    "@types/json-schema": "npm:*"
+  checksum: 10c0/e4ca426abe9d55f82b69a3250bec78b6d340ad1e567f91c97ecc59d3b2d6a1d8494955ac62ad0ea14b97519db580611c02be8277cbea370bdfb0f96aa2910504
+  languageName: node
+  linkType: hard
+
+"@types/estree@npm:*":
+  version: 1.0.8
+  resolution: "@types/estree@npm:1.0.8"
+  checksum: 10c0/39d34d1afaa338ab9763f37ad6066e3f349444f9052b9676a7cc0252ef9485a41c6d81c9c4e0d26e9077993354edf25efc853f3224dd4b447175ef62bdcc86a5
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.6":
   version: 4.1.9
   resolution: "@types/graceful-fs@npm:4.1.9"
@@ -2229,7 +2247,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:^7.0.9":
+"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.9":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
   checksum: 10c0/a996a745e6c5d60292f36731dd41341339d4eeed8180bb09226e5c8d23759067692b1d88e5d91d72ee83dfc00d3aca8e7bd43ea120516c17922cbcb7c3e252db

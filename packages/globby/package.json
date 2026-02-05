@@ -3,6 +3,7 @@
   "version": "14.2.2",
   "main": "lib/index.js",
   "scripts": {
+    "build": "yarn types && yarn transpile",
     "transpile": "esbuild src/index.mts --bundle --platform=node --target=node14 --format=cjs --outfile=lib/index.js",
     "types": "yarn tsc && node scripts/rename.js && yarn dts-bundle-generator --config ./dts-bundle.config.js"
   },

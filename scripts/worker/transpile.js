@@ -1,24 +1,25 @@
-// @ts-check
+/** @import { Target } from "@/TargetGraph" */
 const path = require("path");
-const fs = require("fs");
 const fsPromises = require("fs/promises");
 const swc = require("@swc/core");
 const { findProjectRoot } = require("workspace-tools");
 
-const root = findProjectRoot(process.cwd()) ?? process.cwd();
-const swcOptions = JSON.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8"));
+const root = findProjectRoot(process.cwd());
 
-module.exports = async function transpile(data) {
-  const { target } = data;
-
-  if (target.packageName.includes("docs")) {
+/**
+ * The type here should be `WorkerRunnerOptions & TargetRunnerOptions`, but we only specify the
+ * needed properties so the runner function can be reused by commands/transpile.js.
+ * @param {{ target: Pick<Target, 'packageName' | 'cwd'> }} data
+ */
+async function transpile({ target }) {
+  if (target.packageName?.includes("docs")) {
     return;
   }
 
   const queue = [target.cwd];
 
   while (queue.length > 0) {
-    const dir = queue.shift();
+    const dir = /** @type {string} */ (queue.shift());
 
     let entries = await fsPromises.readdir(dir, { withFileTypes: true });
 
@@ -37,7 +38,7 @@ module.exports = async function transpile(data) {
           .replace(".ts", ".js");
         const dest = path.join(target.cwd, targetRelativePath);
         const swcOutput = await swc.transformFile(fullPath, {
-          ...swcOptions,
+          configFile: path.join(root, ".swcrc"),
           sourceFileName: path.relative(path.dirname(dest), fullPath).replace(/\\/g, "/"),
         });
 
@@ -51,4 +52,6 @@ module.exports = async function transpile(data) {
       }
     }
   }
-};
+}
+
+module.exports = transpile;

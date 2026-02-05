@@ -1,21 +1,26 @@
+/** @import { TargetRunnerOptions } from "@/TargetRunner" */
+const depcheck = require("depcheck");
+const path = require("path");
 const { findProjectRoot } = require("workspace-tools");
 
 const root = findProjectRoot(process.cwd());
-const path = require("path");
-
-const depcheck = require("depcheck");
 
 /**
  * Add deps here that aren't detected correctly
  * @type {Record<string, string[]>}
  */
 const extraIgnoreMatches = {
-  "@lage-run/monorepo-scripts": ["@typescript-eslint/*", "eslint-plugin-file-extension-in-import-ts", "@types/node", "@types/jest"],
+  "@lage-run/monorepo-scripts": ["@typescript-eslint/*", "eslint-plugin-file-extension-in-import-ts", "@types/*"],
   "@lage-run/rpc": ["@bufbuild/protoc-gen-es", "@connectrpc/protoc-gen-connect-es"],
   "@lage-run/e2e-tests": ["@lage-run/cli"],
 };
 
-module.exports = async function depcheckWorker({ target }) {
+/**
+ * @param {TargetRunnerOptions} data
+ */
+async function depcheckWorker({ target }) {
+  if (!target.packageName) return;
+
   const results = await depcheck(target.cwd, {
     ignoreBinPackage: false,
     ignorePatterns: ["node_modules", "dist", "lib", "build"],
@@ -52,4 +57,6 @@ module.exports = async function depcheckWorker({ target }) {
   if (hasErrors) {
     throw new Error(`${formattedError}\n\n(If this is incorrect, update the exceptions in ${__filename})`);
   }
-};
+}
+
+module.exports = depcheckWorker;

@@ -10,8 +10,9 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "start": "tsc -w --preserveWatchOutput",
+    "build": "yarn types && yarn transpile",
+    "transpile": "monorepo-scripts transpile",
+    "types": "monorepo-scripts tsc",
     "test": "monorepo-scripts jest",
     "lint": "monorepo-scripts lint"
   },
