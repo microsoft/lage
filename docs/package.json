@@ -20,6 +20,7 @@
     "@mdx-js/react": "^3.1.0",
     "@tailwindcss/postcss": "^4.0.17",
     "@tsconfig/docusaurus": "^2.0.3",
+    "@types/node": "^18.0.0",
     "@types/react": "^18.0.0",
     "prism-react-renderer": "^2.4.1",
     "react": "^18.0.1",
@@ -29,7 +30,10 @@
   },
   "resolutions": {
     "@algolia/autocomplete-js@npm:^1.8.2": "1.17.9",
-    "@cmfcmf/docusaurus-search-local@npm:1.2.0/cheerio": "1.0.0-rc.12"
+    "@cmfcmf/docusaurus-search-local@npm:1.2.0/cheerio": "1.0.0-rc.12",
+    "lodash-es@npm:4.17.21": "^4.17.23",
+    "@types/node@npm:*": "^18.0.0",
+    "@types/react@npm:*": "^18.0.0"
   },
   "rationale": {
     "dependencies": {
@@ -38,7 +42,8 @@
     },
     "resolutions": {
       "@algolia/autocomplete-js@npm:^1.8.2": "prevent pulling in tree that introduces versions inconsistent with @docsearch/react's old pinned deps",
-      "@cmfcmf/docusaurus-search-local@npm:1.2.0/cheerio": "docusaurus depends on a specific file path that was removed after this version"
+      "@cmfcmf/docusaurus-search-local@npm:1.2.0/cheerio": "docusaurus depends on a specific file path that was removed after this version",
+      "lodash-es@npm:4.17.21": "unpin to fix security issue"
     }
   },
   "browserslist": {
