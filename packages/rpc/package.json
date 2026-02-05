@@ -30,7 +30,8 @@
     "@connectrpc/protoc-gen-connect-es": "1.7.0",
     "@lage-run/monorepo-scripts": "workspace:^"
   },
-  "publishConfig": {
-    "access": "public"
-  }
+  "files": [
+    "lib/!(__*)",
+    "lib/!(__*)/**"
+  ]
 }

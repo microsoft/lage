@@ -50,7 +50,8 @@
     "@types/proper-lockfile": "^4.1.4",
     "@types/shell-quote": "^1.7.5"
   },
-  "publishConfig": {
-    "access": "public"
-  }
+  "files": [
+    "lib/!(__*)",
+    "lib/!(__*)/**"
+  ]
 }
