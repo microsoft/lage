@@ -1,4 +1,0 @@
-// References to this old config path will be removed in a later PR
-{
-  "extends": "../scripts/config/tsconfig.base.json"
-}

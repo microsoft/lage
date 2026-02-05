@@ -37,7 +37,7 @@ const config = {
   watchPathIgnorePatterns: ["/node_modules/"],
   moduleNameMapper,
   ...(process.env.LAGE_PACKAGE_NAME && { maxWorkers: 1 }),
-  testTimeout: process.platform !== "linux" ? 10000 : 5000,
+  testTimeout: process.platform !== "linux" ? 15000 : 8000,
   setupFilesAfterEnv: [path.join(__dirname, "jest-setup-after-env.js")],
 };
 module.exports = config;

@@ -1,8 +1,7 @@
 {
-  "extends": "../tsconfig.lage2.json",
+  "extends": "@lage-run/monorepo-scripts/config/tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "./lib",
-    "jsx": "react"
+    "outDir": "./lib"
   },
   "include": ["src"]
 }

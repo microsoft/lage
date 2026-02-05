@@ -32,7 +32,7 @@ async function lint(data) {
     cwd: target.cwd,
   });
 
-  const files = ["src/**/*.ts", "src/*.ts"];
+  const files = target.packageName === "@lage-run/monorepo-scripts" ? ["."] : ["src"];
   const results = await eslint.lintFiles(files);
   const formatter = await eslint.loadFormatter("stylish");
   const resultText = await formatter.format(results);
