@@ -23,7 +23,7 @@ const config = {
     "docs",
     "packages/*/scripts",
     "packages/*/src/gen",
-    "packages/*.js",
+    "packages/*/*.js",
     "**/lib",
     "**/dist",
     "**/gen",
