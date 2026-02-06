@@ -22,5 +22,9 @@
       "require": "./lib/index.js",
       "source": "./src/index.mts"
     }
-  }
+  },
+  "files": [
+    "lib/!(__*)",
+    "lib/!(__*)/**"
+  ]
 }

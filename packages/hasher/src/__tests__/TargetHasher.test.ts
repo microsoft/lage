@@ -2,7 +2,7 @@ import { Monorepo } from "@lage-run/monorepo-fixture";
 import type { Target } from "@lage-run/target-graph";
 import fs from "fs";
 import path from "path";
-import { TargetHasher } from "../index.js";
+import { TargetHasher } from "../TargetHasher.js";
 
 const fixturesPath = path.resolve(__dirname, "../__fixtures__");
 

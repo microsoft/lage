@@ -1,9 +1,9 @@
 import { Monorepo } from "@lage-run/monorepo-fixture";
 import path from "path";
 import { getPackageInfos } from "workspace-tools";
-import { PackageTree } from "../index.js";
+import { PackageTree } from "../PackageTree.js";
 
-const fixturesPath = path.join(__dirname, "..", "__fixtures__");
+const fixturesPath = path.join(__dirname, "../__fixtures__");
 
 describe("PackageTree", () => {
   test("can find all files of a monorepo", async () => {

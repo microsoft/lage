@@ -19,6 +19,7 @@ const config = {
     "**/__fixtures__",
     "**/fixtures",
     "/*.js",
+    "**/yarn.js",
     "docs",
     "packages/*/scripts",
     "packages/*/src/gen",

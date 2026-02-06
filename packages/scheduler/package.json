@@ -30,7 +30,8 @@
     "@lage-run/monorepo-scripts": "workspace:^",
     "@lage-run/scheduler-types": "workspace:^"
   },
-  "publishConfig": {
-    "access": "public"
-  }
+  "files": [
+    "lib/!(__*)",
+    "lib/!(__*)/**"
+  ]
 }

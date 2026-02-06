@@ -3,6 +3,7 @@
 # Not formatted
 .*ignore
 *.proto
+*.cmd
 
 # Generated or imported files
 change/*.json

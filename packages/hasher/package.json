@@ -31,7 +31,8 @@
     "@types/graceful-fs": "^4.1.6",
     "@types/micromatch": "^4.0.0"
   },
-  "publishConfig": {
-    "access": "public"
-  }
+  "files": [
+    "lib/!(__*)",
+    "lib/!(__*)/**"
+  ]
 }

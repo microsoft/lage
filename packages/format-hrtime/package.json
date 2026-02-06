@@ -18,10 +18,8 @@
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "files": [
-    "lib/**/*"
+    "lib/!(__*)",
+    "lib/!(__*)/**"
   ]
 }
