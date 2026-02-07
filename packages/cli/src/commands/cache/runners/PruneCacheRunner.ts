@@ -6,10 +6,10 @@ import { rm, stat, unlink } from "fs/promises";
 const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
 export class PruneCacheRunner implements TargetRunner {
-  async shouldRun(): Promise<boolean> {
+  public async shouldRun(): Promise<boolean> {
     return true;
   }
-  async run(runOptions: TargetRunnerOptions): Promise<void> {
+  public async run(runOptions: TargetRunnerOptions): Promise<void> {
     const { target } = runOptions;
     const { clearPaths, prunePeriod, now } = target.options!;
 

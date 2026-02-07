@@ -16,24 +16,29 @@ function stripAnsi(message: string) {
 }
 
 export class VerboseFileLogReporter implements Reporter {
-  fileStream: Writable;
-  constructor(logFile?: string) {
+  private fileStream: Writable;
+
+  /**
+   * @param logFile Log file path from CLI args
+   * @param fileStream Stream for testing
+   */
+  constructor(logFile?: string, fileStream?: Writable) {
     // if logFile is falsy (not specified on cli args), this.fileStream just become a "nowhere" stream and this reporter effectively does nothing
     if (logFile) {
-      const logFilePath = path.dirname(path.resolve(logFile));
-      if (!fs.existsSync(logFilePath)) {
-        fs.mkdirSync(logFilePath, { recursive: true });
+      const logFileDir = path.dirname(path.resolve(logFile));
+      if (!fs.existsSync(logFileDir)) {
+        fs.mkdirSync(logFileDir, { recursive: true });
       }
     }
 
-    this.fileStream = logFile ? fs.createWriteStream(logFile) : new Writable({ write() {} });
+    this.fileStream = fileStream ?? (logFile ? fs.createWriteStream(logFile) : new Writable({ write() {} }));
   }
 
-  cleanup(): void {
-    this.fileStream?.end();
+  public cleanup(): void {
+    this.fileStream.end();
   }
 
-  log(entry: LogEntry<any>): void {
+  public log(entry: LogEntry<any>): void {
     // if "hidden", do not even attempt to record or report the entry
     if (entry?.data?.target?.hidden) {
       return;
@@ -77,7 +82,7 @@ export class VerboseFileLogReporter implements Reporter {
   }
 
   private print(message: string) {
-    this.fileStream?.write(message + "\n");
+    this.fileStream.write(message + "\n");
   }
 
   private logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
@@ -102,7 +107,7 @@ export class VerboseFileLogReporter implements Reporter {
     }
   }
 
-  summarize(): void {
+  public summarize(): void {
     // No summary needed for VerboseFileLogReporter
   }
 }

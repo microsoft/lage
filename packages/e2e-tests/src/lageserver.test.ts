@@ -16,20 +16,20 @@ describe("lageserver", () => {
   it("connects to a running server", async () => {
     repo = new Monorepo("basics");
 
-    repo.init();
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b");
+    await repo.init();
+    await repo.addPackage("a", ["b"]);
+    await repo.addPackage("b");
 
-    repo.install();
+    await repo.install();
 
     const serverProcess = repo.runServer(["build"]);
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const results = repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "b", "build"]);
+    const results = await repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "b", "build"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
 
-    repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "a", "build"]);
+    await repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "a", "build"]);
 
     serverProcess.kill();
 
@@ -40,13 +40,13 @@ describe("lageserver", () => {
   it("launches a background server", async () => {
     repo = new Monorepo("basics");
 
-    repo.init();
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b");
+    await repo.init();
+    await repo.addPackage("a", ["b"]);
+    await repo.addPackage("b");
 
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("lage", ["exec", "--server", "localhost:5112", "--tasks", "build", "--", "b", "build"]);
+    const results = await repo.run("lage", ["exec", "--server", "localhost:5112", "--tasks", "build", "--", "b", "build"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
     const started = jsonOutput.find((entry) => entry.data?.pid && entry.msg === "Server started");
@@ -59,15 +59,15 @@ describe("lageserver", () => {
   it("reports inputs for targets and their transitive dependencies' files", async () => {
     repo = new Monorepo("basics");
 
-    repo.init();
+    await repo.init();
 
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b", ["c"]);
-    repo.addPackage("c");
+    await repo.addPackage("a", ["b"]);
+    await repo.addPackage("b", ["c"]);
+    await repo.addPackage("c");
 
-    repo.install();
+    await repo.install();
 
-    repo.commitFiles({
+    await repo.commitFiles({
       "packages/a/src/index.ts": "console.log('a');",
       "packages/a/alt/extra.ts": "console.log('a');",
       "packages/b/alt/index.ts": "console.log('b');",
@@ -76,7 +76,7 @@ describe("lageserver", () => {
       "packages/c/alt/extra.ts": "console.log('c');",
     });
 
-    repo.setLageConfig(
+    await repo.setLageConfig(
       `module.exports = {
           pipeline: {
             "a#build": {
@@ -95,7 +95,7 @@ describe("lageserver", () => {
         };`
     );
 
-    const results = repo.run("lage", [
+    const results = await repo.run("lage", [
       "exec",
       "c",
       "build",
@@ -115,8 +115,32 @@ describe("lageserver", () => {
     const started = jsonOutput.find((entry) => entry.data?.pid && entry.msg === "Server started");
     expect(started?.data.pid).not.toBeUndefined();
 
-    repo.run("lage", ["exec", "b", "build", "--tasks", "build", "--server", "localhost:5111", "--timeout", "60", "--reporter", "json"]);
-    repo.run("lage", ["exec", "a", "build", "--tasks", "build", "--server", "localhost:5111", "--timeout", "60", "--reporter", "json"]);
+    await repo.run("lage", [
+      "exec",
+      "b",
+      "build",
+      "--tasks",
+      "build",
+      "--server",
+      "localhost:5111",
+      "--timeout",
+      "60",
+      "--reporter",
+      "json",
+    ]);
+    await repo.run("lage", [
+      "exec",
+      "a",
+      "build",
+      "--tasks",
+      "build",
+      "--server",
+      "localhost:5111",
+      "--timeout",
+      "60",
+      "--reporter",
+      "json",
+    ]);
 
     killDetachedProcess(parseInt(started?.data.pid));
 

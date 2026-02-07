@@ -40,11 +40,9 @@ export interface WorkerRunnerOptions {
  * ```
  */
 export class WorkerRunner implements TargetRunner {
-  static gracefulKillTimeout = 2500;
-
   constructor(private options: WorkerRunnerOptions) {}
 
-  async shouldRun(target: Target): Promise<boolean> {
+  public async shouldRun(target: Target): Promise<boolean> {
     const scriptModule = await this.getScriptModule(target);
 
     if (typeof scriptModule.shouldRun === "function") {
@@ -54,7 +52,7 @@ export class WorkerRunner implements TargetRunner {
     return target.shouldRun ?? true;
   }
 
-  async run(runOptions: TargetRunnerOptions): Promise<RunnerResult> {
+  public async run(runOptions: TargetRunnerOptions): Promise<RunnerResult> {
     const { target, weight, abortSignal } = runOptions;
     const { taskArgs } = this.options;
 
@@ -73,7 +71,7 @@ export class WorkerRunner implements TargetRunner {
     return await runFn({ target, weight, taskArgs, abortSignal });
   }
 
-  async getScriptModule(target: Target): Promise<any> {
+  private async getScriptModule(target: Target): Promise<any> {
     const scriptFile = target.options?.worker ?? target.options?.script;
 
     if (!scriptFile) {

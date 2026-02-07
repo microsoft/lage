@@ -1,4 +1,3 @@
-import EventEmitter from "events";
 import { type LogEntry, LogLevel, type Reporter, type LogStructuredData } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 
@@ -29,14 +28,12 @@ function fancy(str: string) {
 }
 
 export class ProgressReporter implements Reporter {
-  logStream: Writable = process.stdout;
-  startTime: [number, number] = [0, 0];
+  public logStream: Writable = process.stdout;
 
-  logEvent: EventEmitter = new EventEmitter();
-  logEntries: Map<string, LogEntry<LogStructuredData>[]> = new Map<string, LogEntry[]>();
+  private logEntries: Map<string, LogEntry<LogStructuredData>[]> = new Map<string, LogEntry[]>();
 
-  taskReporter: TaskReporter;
-  tasks: Map<string, TaskReporterTask> = new Map();
+  private taskReporter: TaskReporter;
+  private tasks: Map<string, TaskReporterTask> = new Map();
 
   constructor(private options: { concurrency: number; version: string } = { concurrency: 0, version: "0.0.0" }) {
     this.taskReporter = this.createTaskReporter();
@@ -44,7 +41,7 @@ export class ProgressReporter implements Reporter {
     this.print(`${fancy("lage")} - Version ${options.version} - ${options.concurrency} Workers`);
   }
 
-  createTaskReporter(): TaskReporter {
+  private createTaskReporter(): TaskReporter {
     return new TaskReporter({
       productName: "lage",
       version: this.options.version,
@@ -64,7 +61,7 @@ export class ProgressReporter implements Reporter {
     });
   }
 
-  log(entry: LogEntry<any>): void {
+  public log(entry: LogEntry<any>): void {
     // save the logs for errors
     if (entry.data?.target?.id) {
       if (!this.logEntries.has(entry.data.target.id)) {
@@ -76,10 +73,6 @@ export class ProgressReporter implements Reporter {
     // if "hidden", do not even attempt to record or report the entry
     if (entry?.data?.target?.hidden) {
       return;
-    }
-
-    if (entry.data && entry.data.schedulerRun) {
-      this.startTime = entry.data.schedulerRun.startTime;
     }
 
     if (entry.data && entry.data.status && entry.data.target) {
@@ -119,11 +112,11 @@ export class ProgressReporter implements Reporter {
     this.logStream.write(message + "\n");
   }
 
-  hr(): void {
+  private hr(): void {
     this.print("┈".repeat(80));
   }
 
-  summarize(schedulerRunSummary: SchedulerRunSummary): void {
+  public summarize(schedulerRunSummary: SchedulerRunSummary): void {
     const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
     const { failed, aborted, skipped, success, pending, running, queued } = targetRunByStatus;
 

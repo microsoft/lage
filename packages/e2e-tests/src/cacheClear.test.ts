@@ -9,8 +9,8 @@ describe("Cache clear", () => {
   it("should clear cache with the default cache location", async () => {
     const repo = new Monorepo("cache-default");
 
-    repo.init();
-    repo.setLageConfig(
+    await repo.init();
+    await repo.setLageConfig(
       `const fs = require('fs');
       const path = require('path');
       module.exports = {
@@ -21,17 +21,17 @@ describe("Cache clear", () => {
       };`
     );
 
-    repo.addPackage("a", [], {
+    await repo.addPackage("a", [], {
       build: "echo a:build",
       test: "echo a:test",
     });
-    repo.addPackage("b", [], {
+    await repo.addPackage("b", [], {
       build: "echo b:build",
     });
-    repo.install();
+    await repo.install();
 
     // Run build so we get a cache folder
-    repo.run("build");
+    await repo.run("build");
 
     const cacheFolder = path.join(repo.root, defaultCacheLocation);
 
@@ -43,7 +43,7 @@ describe("Cache clear", () => {
 
     // Clear the cache
 
-    repo.run("clear");
+    await repo.run("clear");
 
     // Cache folders should be empty
     expect(fs.readdirSync(cacheFolder)).toHaveLength(0);

@@ -18,11 +18,14 @@ export const WorkerPoolEvents = {
 } as const;
 
 export class WorkerPool extends EventEmitter implements Pool {
-  workers: IWorker[] = [];
-  queue: QueueItem[] = [];
-  minWorkers = 0;
-  maxWorkers = 0;
-  availability = 0;
+  /** @internal visible for testing */
+  public workers: IWorker[] = [];
+  private queue: QueueItem[] = [];
+  private minWorkers = 0;
+  /** @internal visible for testing */
+  public maxWorkers = 0;
+  /** @internal visible for testing */
+  public availability = 0;
 
   constructor(private options: WorkerPoolOptions) {
     super();
@@ -48,29 +51,21 @@ export class WorkerPool extends EventEmitter implements Pool {
     });
   }
 
-  isIdle(): boolean {
+  public isIdle(): boolean {
     return this.workers.every((w) => w.status === "free");
   }
 
-  get workerRestarts(): number {
-    return this.workers.reduce((acc, worker) => acc + worker.restarts, 0);
-  }
-
-  get maxWorkerMemoryUsage(): number {
-    return this.workers.reduce((acc, worker) => Math.max(acc, worker.maxWorkerMemoryUsage), 0);
-  }
-
-  stats(): {
+  public stats(): {
     maxWorkerMemoryUsage: number;
     workerRestarts: number;
   } {
     return {
-      maxWorkerMemoryUsage: this.maxWorkerMemoryUsage,
-      workerRestarts: this.workerRestarts,
+      maxWorkerMemoryUsage: this.workers.reduce((acc, worker) => Math.max(acc, worker.maxWorkerMemoryUsage), 0),
+      workerRestarts: this.workers.reduce((acc, worker) => acc + worker.restarts, 0),
     };
   }
 
-  createInitialWorkers(): void {
+  private createInitialWorkers(): void {
     if (this.workers.length === 0) {
       for (let i = 0; i < this.minWorkers; i++) {
         this.addNewWorker();
@@ -78,7 +73,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     }
   }
 
-  addNewWorker(): ThreadWorker | undefined {
+  private addNewWorker(): ThreadWorker | undefined {
     if (this.workers.length < this.maxWorkers) {
       const { script, workerOptions } = this.options;
       const worker = new ThreadWorker(script, { workerOptions, workerIdleMemoryLimit: this.options.workerIdleMemoryLimit });
@@ -92,7 +87,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     }
   }
 
-  exec<T>(
+  public exec<T>(
     task: Record<string, unknown>,
     weight: number,
     setup?: (worker: IWorker, stdout: Readable, stderr: Readable) => void,
@@ -113,7 +108,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     });
   }
 
-  _exec(abortSignal?: AbortSignal): void {
+  private _exec(abortSignal?: AbortSignal): void {
     // find work that will fit the availability of workers
     const workIndex = pickTaskFromQueue(this.queue, this.availability);
 
@@ -138,7 +133,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     }
   }
 
-  async close(): Promise<void> {
+  public async close(): Promise<void> {
     await Promise.all(this.workers.map((worker) => worker.terminate()));
   }
 }

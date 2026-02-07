@@ -11,6 +11,8 @@ export interface NpmScriptRunnerOptions {
   npmCmd: string;
 }
 
+const gracefulKillTimeout = 2500;
+
 /**
  * Runs a npm script on a target.
  *
@@ -30,8 +32,6 @@ export interface NpmScriptRunnerOptions {
  *    - FORCE_COLOR - set to "1" detect that this is a TTY
  */
 export class NpmScriptRunner implements TargetRunner {
-  static gracefulKillTimeout = 2500;
-
   constructor(private options: NpmScriptRunnerOptions) {}
 
   private getNpmArgs(task: string, taskArgs: string[]) {
@@ -46,14 +46,14 @@ export class NpmScriptRunner implements TargetRunner {
     return !!packageJson.scripts?.[task];
   }
 
-  async shouldRun(target: Target): Promise<boolean> {
+  public async shouldRun(target: Target): Promise<boolean> {
     // By convention, do not run anything if there is no script for this task defined in package.json (counts as "success")
     const hasNpmScript = await this.hasNpmScript(target);
 
     return hasNpmScript && (target.shouldRun ?? true);
   }
 
-  async run(runOptions: TargetRunnerOptions): Promise<RunnerResult> {
+  public async run(runOptions: TargetRunnerOptions): Promise<RunnerResult> {
     const { target, weight, abortSignal } = runOptions;
     const { nodeOptions, npmCmd, taskArgs } = this.options;
     const task = target.options?.script ?? target.task;
@@ -83,7 +83,7 @@ export class NpmScriptRunner implements TargetRunner {
             if (childProcess && !childProcess.killed) {
               childProcess.kill("SIGKILL");
             }
-          }, NpmScriptRunner.gracefulKillTimeout);
+          }, gracefulKillTimeout);
 
           // Remember that even this timeout needs to be unref'ed, otherwise the process will hang due to this timeout
           if (t.unref) {

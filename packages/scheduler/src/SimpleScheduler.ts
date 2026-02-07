@@ -1,19 +1,18 @@
-import { AggregatedPool } from "@lage-run/worker-threads-pool";
-import { formatBytes } from "./formatBytes.js";
-import { categorizeTargetRuns } from "./categorizeTargetRuns.js";
-import { type Target, getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
-import { WrappedTarget } from "./WrappedTarget.js";
-import { TargetRunnerPicker } from "@lage-run/runners";
-
-import type { WorkerResult } from "./WrappedTarget.js";
-import type { Logger } from "@lage-run/logger";
-import type { TargetGraph } from "@lage-run/target-graph";
-import type { TargetScheduler, SchedulerRunResults, SchedulerRunSummary, TargetRunSummary } from "@lage-run/scheduler-types";
-import type { Pool } from "@lage-run/worker-threads-pool";
-import type { TargetRunnerPickerOptions } from "@lage-run/runners";
-import type { TargetHasher } from "@lage-run/hasher";
 import type { CacheOptions } from "@lage-run/cache";
+import type { TargetHasher } from "@lage-run/hasher";
+import type { Logger } from "@lage-run/logger";
+import type { TargetRunnerPickerOptions } from "@lage-run/runners";
+import { TargetRunnerPicker } from "@lage-run/runners";
+import type { SchedulerRunResults, SchedulerRunSummary, TargetRunSummary, TargetScheduler } from "@lage-run/scheduler-types";
+import type { TargetGraph } from "@lage-run/target-graph";
+import { type Target, getStartTargetId, sortTargetsByPriority } from "@lage-run/target-graph";
+import type { Pool } from "@lage-run/worker-threads-pool";
+import { AggregatedPool } from "@lage-run/worker-threads-pool";
 import type { MessagePort } from "worker_threads";
+import { categorizeTargetRuns } from "./categorizeTargetRuns.js";
+import { formatBytes } from "./formatBytes.js";
+import type { WorkerResult } from "./WrappedTarget.js";
+import { WrappedTarget } from "./WrappedTarget.js";
 
 export interface SimpleSchedulerOptions {
   logger: Logger;
@@ -48,14 +47,12 @@ export interface SimpleSchedulerOptions {
  *
  */
 export class SimpleScheduler implements TargetScheduler<WorkerResult> {
-  targetRuns: Map<string, WrappedTarget> = new Map();
-  rerunTargets: Set<string> = new Set();
-  abortController: AbortController = new AbortController();
-  abortSignal: AbortSignal = this.abortController.signal;
-  pool: Pool;
-  runnerPicker: TargetRunnerPicker;
-
-  runPromise = Promise.resolve() as Promise<any>;
+  public readonly targetRuns: Map<string, WrappedTarget> = new Map();
+  private rerunTargets: Set<string> = new Set();
+  private abortController: AbortController = new AbortController();
+  private abortSignal: AbortSignal = this.abortController.signal;
+  private pool: Pool;
+  public readonly runnerPicker: TargetRunnerPicker;
 
   constructor(private options: SimpleSchedulerOptions) {
     this.pool =
@@ -77,7 +74,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     this.runnerPicker = new TargetRunnerPicker(options.workerData.runners);
   }
 
-  getTargetsByPriority(): Target[] {
+  private getTargetsByPriority(): Target[] {
     return sortTargetsByPriority([...this.targetRuns.values()].map((run) => run.target));
   }
 
@@ -86,12 +83,8 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
    * 1. Convert the target graph into a promise graph.
    * 2. Create a promise graph of all targets
    * 3. Pass the continueOnError option to the promise graph runner.
-   *
-   * @param root
-   * @param targetGraph
-   * @returns
    */
-  async run(root: string, targetGraph: TargetGraph, shouldRerun = false): Promise<SchedulerRunSummary<WorkerResult>> {
+  public async run(root: string, targetGraph: TargetGraph, shouldRerun = false): Promise<SchedulerRunSummary<WorkerResult>> {
     const startTime: [number, number] = process.hrtime();
 
     const { continueOnError, logger, shouldCache } = this.options;
@@ -181,9 +174,8 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
 
   /**
    * Used by consumers of the scheduler to notify that the inputs to the target has changed
-   * @param targetId
    */
-  markTargetAndDependentsPending(targetId: string): void {
+  private markTargetAndDependentsPending(targetId: string): void {
     const queue = [targetId];
     while (queue.length > 0) {
       const current = queue.shift()!;
@@ -203,7 +195,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     }
   }
 
-  getReadyTargets(): WrappedTarget[] {
+  private getReadyTargets(): WrappedTarget[] {
     const readyTargets: Set<WrappedTarget> = new Set();
 
     for (const target of this.getTargetsByPriority()) {
@@ -233,7 +225,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     return [...readyTargets];
   }
 
-  isAllDone(): boolean {
+  private isAllDone(): boolean {
     for (const t of this.targetRuns.values()) {
       if (t.status !== "skipped" && t.status !== "success" && t.target.id !== getStartTargetId()) {
         return false;
@@ -243,7 +235,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     return true;
   }
 
-  async scheduleReadyTargets(): Promise<void> {
+  private async scheduleReadyTargets(): Promise<void> {
     if (this.isAllDone() || this.abortSignal.aborted) {
       return Promise.resolve();
     }
@@ -260,7 +252,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     await Promise.all(promises);
   }
 
-  logProgress(): void {
+  private logProgress(): void {
     const targetRunByStatus = categorizeTargetRuns(this.targetRuns.values());
     const total = [...this.targetRuns.values()].filter((t) => !t.target.hidden).length;
 
@@ -323,7 +315,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     await this.scheduleReadyTargets();
   }
 
-  async cleanup(): Promise<void> {
+  public async cleanup(): Promise<void> {
     this.options.logger.silly(`Max Worker Memory Usage: ${formatBytes(this.pool.stats().maxWorkerMemoryUsage)}`);
     await this.pool.close();
   }
@@ -331,7 +323,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
   /**
    * Abort the scheduler using the abort controller.
    */
-  abort(): void {
+  public abort(): void {
     this.abortController.abort();
   }
 }

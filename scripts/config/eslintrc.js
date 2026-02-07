@@ -52,6 +52,15 @@ const config = {
         destructuredArrayIgnorePattern: "^_",
       },
     ],
+    "@typescript-eslint/explicit-member-accessibility": [
+      "error",
+      {
+        accessibility: "explicit",
+        overrides: {
+          constructors: "off",
+        },
+      },
+    ],
   },
   overrides: [
     {
@@ -59,6 +68,7 @@ const config = {
       rules: {
         "@typescript-eslint/no-var-requires": "off",
         "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/explicit-member-accessibility": "off",
         "no-console": "off",
       },
     },

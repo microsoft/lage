@@ -10,7 +10,7 @@ import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEnt
 export class JsonReporter implements Reporter {
   constructor(private options: { logLevel: LogLevel; indented: boolean }) {}
 
-  log(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>): void {
+  public log(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>): void {
     if (entry.data && entry.data.target && entry.data.target.hidden) {
       return;
     }
@@ -20,7 +20,7 @@ export class JsonReporter implements Reporter {
     }
   }
 
-  summarize(schedulerRunSummary: SchedulerRunSummary): void {
+  public summarize(schedulerRunSummary: SchedulerRunSummary): void {
     const { duration, targetRuns, targetRunByStatus } = schedulerRunSummary;
 
     const summary: Record<string, unknown> = {

@@ -22,8 +22,7 @@ describe("AdoReporter", () => {
   it("records a target status entry", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.logStream = writer;
+    const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
     reporter.log({
       data: {
@@ -48,8 +47,7 @@ describe("AdoReporter", () => {
   it("records a target message entry", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.logStream = writer;
+    const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
     reporter.log({
       data: {
@@ -72,8 +70,7 @@ describe("AdoReporter", () => {
   it("groups messages together", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new AdoReporter({ grouped: true, logLevel: LogLevel.verbose });
-    reporter.logStream = writer;
+    const reporter = new AdoReporter({ grouped: true, logLevel: LogLevel.verbose, logStream: writer });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -131,8 +128,7 @@ describe("AdoReporter", () => {
   it("interweave messages when ungrouped", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.logStream = writer;
+    const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -184,8 +180,7 @@ describe("AdoReporter", () => {
   it("can filter out verbose messages", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.info });
-    reporter.logStream = writer;
+    const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.info, logStream: writer });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -231,8 +226,7 @@ describe("AdoReporter", () => {
   it("can group verbose messages, displaying summary", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new AdoReporter({ grouped: true, logLevel: LogLevel.verbose });
-    reporter.logStream = writer;
+    const reporter = new AdoReporter({ grouped: true, logLevel: LogLevel.verbose, logStream: writer });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");

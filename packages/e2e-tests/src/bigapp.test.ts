@@ -8,18 +8,18 @@ describe("bigapp test", () => {
   it("with apps and libs and all, y'all", async () => {
     const repo = new Monorepo("bigapp");
 
-    repo.init();
+    await repo.init();
 
-    repo.addPackage("FooApp1", ["FooCore"]);
-    repo.addPackage("FooApp2", ["FooCore"]);
-    repo.addPackage("FooCore", ["BuildTool"]);
-    repo.addPackage("BarPage", ["BarCore"]);
-    repo.addPackage("BarCore", ["BuildTool"]);
-    repo.addPackage("BuildTool");
+    await repo.addPackage("FooApp1", ["FooCore"]);
+    await repo.addPackage("FooApp2", ["FooCore"]);
+    await repo.addPackage("FooCore", ["BuildTool"]);
+    await repo.addPackage("BarPage", ["BarCore"]);
+    await repo.addPackage("BarCore", ["BuildTool"]);
+    await repo.addPackage("BuildTool");
 
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("test");
+    const results = await repo.run("test");
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
 

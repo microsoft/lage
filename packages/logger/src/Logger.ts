@@ -4,9 +4,9 @@ import { LogLevel } from "./interfaces/LogLevel.js";
 import { createInterface } from "readline";
 
 export class Logger<TLogStructuredData extends LogStructuredData = LogStructuredData> {
-  reporters: Reporter[] = [];
+  public readonly reporters: Reporter[] = [];
 
-  log(level: LogLevel, msg: string, data?: TLogStructuredData): void {
+  public log(level: LogLevel, msg: string, data?: TLogStructuredData): void {
     const entry = {
       timestamp: Date.now(),
       level,
@@ -19,27 +19,27 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
     }
   }
 
-  info(msg: string, data?: TLogStructuredData): void {
+  public info(msg: string, data?: TLogStructuredData): void {
     this.log(LogLevel.info, msg, data);
   }
 
-  warn(msg: string, data?: TLogStructuredData): void {
+  public warn(msg: string, data?: TLogStructuredData): void {
     this.log(LogLevel.warn, msg, data);
   }
 
-  error(msg: string, data?: TLogStructuredData): void {
+  public error(msg: string, data?: TLogStructuredData): void {
     this.log(LogLevel.error, msg, data);
   }
 
-  verbose(msg: string, data?: TLogStructuredData): void {
+  public verbose(msg: string, data?: TLogStructuredData): void {
     this.log(LogLevel.verbose, msg, data);
   }
 
-  silly(msg: string, data?: TLogStructuredData): void {
+  public silly(msg: string, data?: TLogStructuredData): void {
     this.log(LogLevel.silly, msg, data);
   }
 
-  stream(level: LogLevel, input: NodeJS.ReadableStream, data?: TLogStructuredData): () => void {
+  public stream(level: LogLevel, input: NodeJS.ReadableStream, data?: TLogStructuredData): () => void {
     const readline = createInterface({
       input,
       crlfDelay: Infinity,
@@ -58,7 +58,7 @@ export class Logger<TLogStructuredData extends LogStructuredData = LogStructured
     };
   }
 
-  addReporter(reporter: Reporter): void {
+  public addReporter(reporter: Reporter): void {
     this.reporters.push(reporter);
   }
 }

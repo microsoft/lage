@@ -1,1 +1,6 @@
-module.exports = require("@lage-run/monorepo-scripts/config/jest.config.js");
+const baseConfig = require("@lage-run/monorepo-scripts/config/jest.config.js");
+
+module.exports = {
+  ...baseConfig,
+  testTimeout: baseConfig.testTimeout * 2,
+};

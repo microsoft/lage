@@ -1633,6 +1633,7 @@ __metadata:
   dependencies:
     "@lage-run/cli": "workspace:^"
     "@lage-run/globby": "workspace:^"
+    "@lage-run/monorepo-fixture": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/scheduler-types": "workspace:^"
     "@lage-run/target-graph": "workspace:^"

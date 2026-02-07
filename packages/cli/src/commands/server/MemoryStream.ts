@@ -8,15 +8,15 @@ export class MemoryStream extends Writable {
     this.chunks = [];
   }
 
-  _write(chunk: unknown, encoding: BufferEncoding): void {
+  public _write(chunk: unknown, encoding: BufferEncoding): void {
     this.chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk as any, encoding));
   }
 
-  getData(): Buffer {
+  public getData(): Buffer {
     return Buffer.concat(this.chunks);
   }
 
-  toString(): string {
+  public toString(): string {
     return this.getData().toString();
   }
 }

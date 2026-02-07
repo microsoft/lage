@@ -1,17 +1,15 @@
-import { bufferTransform } from "./bufferTransform.js";
-import { getLageOutputCacheLocation } from "./getLageOutputCacheLocation.js";
+import type { TargetHasher } from "@lage-run/hasher";
+import type { Logger } from "@lage-run/logger";
 import { type LogEntry, LogLevel } from "@lage-run/logger";
-
-import fs from "fs";
-import path from "path";
-import { mkdir, writeFile } from "fs/promises";
-
-import type { Pool } from "@lage-run/worker-threads-pool";
 import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
 import { getStartTargetId, type Target } from "@lage-run/target-graph";
-import type { Logger } from "@lage-run/logger";
-import type { TargetHasher } from "@lage-run/hasher";
+import type { Pool } from "@lage-run/worker-threads-pool";
+import fs from "fs";
+import { mkdir, writeFile } from "fs/promises";
+import path from "path";
 import type { MessagePort } from "worker_threads";
+import { bufferTransform } from "./bufferTransform.js";
+import { getLageOutputCacheLocation } from "./getLageOutputCacheLocation.js";
 
 export interface WrappedTargetOptions {
   root: string;
@@ -44,33 +42,25 @@ export interface WorkerResult {
 export class WrappedTarget implements TargetRun<WorkerResult> {
   #status: TargetStatus = "pending";
   #result: WorkerResult | undefined;
-  queueTime: [number, number] = [0, 0];
-  startTime: [number, number] = [0, 0];
-  duration: [number, number] = [0, 0];
-  target: Target;
-  threadId = 0;
+  public queueTime: [number, number] = [0, 0];
+  public startTime: [number, number] = [0, 0];
+  public duration: [number, number] = [0, 0];
+  public target: Target;
+  public threadId = 0;
 
-  get result(): WorkerResult | undefined {
+  public get result(): WorkerResult | undefined {
     return this.#result;
   }
 
-  get status(): TargetStatus {
+  public get status(): TargetStatus {
     return this.#status;
   }
 
-  get abortController(): AbortController {
-    return this.options.abortController;
-  }
-
-  set abortController(abortController: AbortController) {
-    this.options.abortController = abortController;
-  }
-
-  get successful(): boolean {
+  public get successful(): boolean {
     return this.#status === "skipped" || this.#status === "success";
   }
 
-  get waiting(): boolean {
+  public get waiting(): boolean {
     return this.#status === "pending" || this.#status === "queued";
   }
 
@@ -84,18 +74,18 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     this.options.logger.info("", { target: this.target, status: this.status });
   }
 
-  onQueued(): void {
+  public onQueued(): void {
     this.#status = "queued";
     this.queueTime = process.hrtime();
     this.options.logger.info("", { target: this.target, status: "queued" });
   }
 
-  onAbort(): void {
+  private onAbort(): void {
     this.#status = "aborted";
     this.options.logger.info("", { target: this.target, status: "aborted", threadId: this.threadId });
   }
 
-  onStart(threadId: number): void {
+  private onStart(threadId: number): void {
     if (this.status !== "running") {
       this.threadId = threadId;
       this.#status = "running";
@@ -104,7 +94,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     }
   }
 
-  onComplete(): void {
+  private onComplete(): void {
     this.#status = "success";
     this.options.logger.info("", {
       target: this.target,
@@ -114,7 +104,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     });
   }
 
-  onFail(): void {
+  private onFail(): void {
     this.#status = "failed";
     this.options.logger.info("", {
       target: this.target,
@@ -128,7 +118,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     }
   }
 
-  onSkipped(hash?: string | undefined): void {
+  public onSkipped(hash?: string | undefined): void {
     this.#status = "skipped";
 
     if (hash) {
@@ -142,7 +132,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     }
   }
 
-  async run(): Promise<WorkerResult | undefined> {
+  public async run(): Promise<WorkerResult | undefined> {
     const { target, logger, shouldCache, abortController, root } = this.options;
 
     const abortSignal = abortController.signal;
@@ -277,13 +267,11 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
   }
 
   /**
-   * A JSON representation of this wrapped target, suitable for serialization in tests.
+   * A JSON representation of this wrapped target, used in Jest snapshots.
    *
    * Skips the unpredictable properties of the wrapped target like the startTime and duration.
-   *
-   * @returns
    */
-  toJSON(): {
+  public toJSON(): {
     target: string;
     status: TargetStatus;
   } {
@@ -296,7 +284,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
   /**
    * Reset the state of this wrapped target.
    */
-  reset(): void {
+  public reset(): void {
     this.#result = undefined;
     this.#status = "pending";
   }

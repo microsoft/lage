@@ -15,7 +15,7 @@ import { InProcPool, SingleSchedulePool } from "./fixtures/pools.js";
  * 2. It will auto create a startTargetId -> each target's id.
  */
 class TestTargetGraph implements TargetGraph {
-  targets: Map<string, Target> = new Map([
+  public targets: Map<string, Target> = new Map([
     [
       getStartTargetId(),
       {
@@ -26,9 +26,9 @@ class TestTargetGraph implements TargetGraph {
     ],
   ]);
 
-  dependencies: [string, string][] = [];
+  private dependencies: [string, string][] = [];
 
-  addTarget(packageName: string, task: string) {
+  public addTarget(packageName: string, task: string) {
     const id = `${packageName}#${task}`;
 
     this.targets.set(id, {
@@ -50,7 +50,7 @@ class TestTargetGraph implements TargetGraph {
     return this as TestTargetGraph;
   }
 
-  addDependency(from: string, to: string) {
+  public addDependency(from: string, to: string) {
     this.dependencies.push([from, to]);
     this.targets.get(from)!.dependencies.push(to);
     this.targets.get(to)!.dependencies.push(from);

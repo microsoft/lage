@@ -42,7 +42,7 @@ import type { TargetGraph } from "./types/TargetGraph.js";
  */
 export class TargetGraphBuilder {
   /** A map of targets - used internally for looking up generated targets from the target configurations */
-  targets: Map<string, Target> = new Map();
+  public readonly targets: Map<string, Target> = new Map();
 
   /**
    * Initializes the builder with package infos
@@ -63,13 +63,13 @@ export class TargetGraphBuilder {
     } as Target);
   }
 
-  addTarget(target: Target): Target {
+  public addTarget(target: Target): Target {
     this.targets.set(target.id, target);
     this.addDependency(getStartTargetId(), target.id);
     return target;
   }
 
-  addDependency(dependency: string, dependent: string): void {
+  public addDependency(dependency: string, dependent: string): void {
     if (this.targets.has(dependent)) {
       const target = this.targets.get(dependent)!;
 
@@ -90,7 +90,7 @@ export class TargetGraphBuilder {
   /**
    * Builds a target graph for given tasks and packages
    */
-  build(): TargetGraph {
+  public build(): TargetGraph {
     // Ensure we do not have cycles in the subgraph
     const cycleInfo = detectCycles(this.targets);
     if (cycleInfo.hasCycle) {
@@ -105,7 +105,7 @@ export class TargetGraphBuilder {
     };
   }
 
-  subgraph(entriesTargetIds: string[]): TargetGraph {
+  public subgraph(entriesTargetIds: string[]): TargetGraph {
     const subgraphBuilder = new TargetGraphBuilder();
     const visited: Set<string> = new Set();
     const queue: string[] = [];
