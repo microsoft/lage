@@ -9,15 +9,15 @@ describe("custom reporters", () => {
     repo = undefined;
   });
 
-  it("should use custom reporter defined in lage config", () => {
+  it("should use custom reporter defined in lage config", async () => {
     repo = new Monorepo("custom-reporter");
 
-    repo.init();
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b");
+    await repo.init();
+    await repo.addPackage("a", ["b"]);
+    await repo.addPackage("b");
 
     // Create a custom reporter file
-    repo.commitFiles({
+    await repo.commitFiles({
       "custom-reporter.mjs": `
 export class CustomTestReporter {
   constructor(options) {
@@ -44,7 +44,7 @@ export default CustomTestReporter;
     });
 
     // Update lage config to include custom reporter
-    repo.setLageConfig(`module.exports = {
+    await repo.setLageConfig(`module.exports = {
   pipeline: {
     build: ['^build'],
     test: ['build'],
@@ -56,9 +56,9 @@ export default CustomTestReporter;
   }
 };`);
 
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("build", ["--reporter", "customTest"]);
+    const results = await repo.run("build", ["--reporter", "customTest"]);
     const output = results.stdout + results.stderr;
 
     // Check that custom reporter was used
@@ -66,14 +66,14 @@ export default CustomTestReporter;
     expect(output).toContain('"type":"summary"');
   });
 
-  it("should use multiple reporters including custom ones", () => {
+  it("should use multiple reporters including custom ones", async () => {
     repo = new Monorepo("multiple-reporters");
 
-    repo.init();
-    repo.addPackage("a");
+    await repo.init();
+    await repo.addPackage("a");
 
     // Create a custom reporter file
-    repo.commitFiles({
+    await repo.commitFiles({
       "custom-reporter.mjs": `
 export class CustomTestReporter {
   constructor(options) {
@@ -97,7 +97,7 @@ export default CustomTestReporter;
     });
 
     // Update lage config to include custom reporter
-    repo.setLageConfig(`module.exports = {
+    await repo.setLageConfig(`module.exports = {
   pipeline: {
     build: ['^build'],
     test: ['build'],
@@ -108,10 +108,10 @@ export default CustomTestReporter;
   }
 };`);
 
-    repo.install();
+    await repo.install();
 
     // Use both json and custom reporter
-    const results = repo.run("build", ["--reporter", "json", "--reporter", "customTest", "--log-level", "silly"]);
+    const results = await repo.run("build", ["--reporter", "json", "--reporter", "customTest", "--log-level", "silly"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
 
@@ -121,14 +121,14 @@ export default CustomTestReporter;
     expect(output).toContain('"message":"Custom reporter summary"');
   });
 
-  it("should handle custom reporter with different export patterns", () => {
+  it("should handle custom reporter with different export patterns", async () => {
     repo = new Monorepo("export-patterns");
 
-    repo.init();
-    repo.addPackage("a");
+    await repo.init();
+    await repo.addPackage("a");
 
     // Create a custom reporter with named export that is also the default
-    repo.commitFiles({
+    await repo.commitFiles({
       "named-export-reporter.mjs": `
 export class NamedReporter {
   constructor(options) {
@@ -152,7 +152,7 @@ export default NamedReporter;
     });
 
     // Update lage config
-    repo.setLageConfig(`module.exports = {
+    await repo.setLageConfig(`module.exports = {
   pipeline: {
     build: ['^build'],
   },
@@ -162,9 +162,9 @@ export default NamedReporter;
   }
 };`);
 
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("build", ["--reporter", "namedReporter"]);
+    const results = await repo.run("build", ["--reporter", "namedReporter"]);
     const output = results.stdout + results.stderr;
 
     expect(output).toContain('"namedExport":true');
@@ -173,23 +173,25 @@ export default NamedReporter;
   it("should error when custom reporter file is invalid", async () => {
     repo = new Monorepo("reporter-not-found");
 
-    repo.init();
-    repo.addPackage("a");
+    await repo.init();
+    await repo.addPackage("a");
 
-    repo.install();
+    await repo.install();
 
     // Request a reporter that doesn't exist in config
-    expect(() => repo!.run("build", ["--reporter", "nonExistentReporter"])).toThrow('Invalid --reporter option: "nonExistentReporter"');
+    await expect(repo!.run("build", ["--reporter", "nonExistentReporter"])).rejects.toThrow(
+      'Invalid --reporter option: "nonExistentReporter"'
+    );
   });
 
-  it("should handle custom reporter with relative path", () => {
+  it("should handle custom reporter with relative path", async () => {
     repo = new Monorepo("relative-path");
 
-    repo.init();
-    repo.addPackage("a");
+    await repo.init();
+    await repo.addPackage("a");
 
     // Create a custom reporter in a subdirectory
-    repo.commitFiles({
+    await repo.commitFiles({
       "reporters/my-custom-reporter.mjs": `
 export default class MyCustomReporter {
   constructor(options) {
@@ -211,7 +213,7 @@ export default class MyCustomReporter {
     });
 
     // Update lage config with relative path
-    repo.setLageConfig(`module.exports = {
+    await repo.setLageConfig(`module.exports = {
   pipeline: {
     build: ['^build'],
   },
@@ -221,23 +223,23 @@ export default class MyCustomReporter {
   }
 };`);
 
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("build", ["--reporter", "myReporter"]);
+    const results = await repo.run("build", ["--reporter", "myReporter"]);
     const output = results.stdout + results.stderr;
 
     expect(output).toContain('"customPath":true');
     expect(output).toContain('"reporter":"my-custom-reporter"');
   });
 
-  it("should pass options to custom reporter", () => {
+  it("should pass options to custom reporter", async () => {
     repo = new Monorepo("reporter-options");
 
-    repo.init();
-    repo.addPackage("a");
+    await repo.init();
+    await repo.addPackage("a");
 
     // Create a custom reporter that logs its options
-    repo.commitFiles({
+    await repo.commitFiles({
       "options-reporter.mjs": `
 export default class OptionsReporter {
   constructor(options) {
@@ -260,7 +262,7 @@ export default class OptionsReporter {
       `,
     });
 
-    repo.setLageConfig(`module.exports = {
+    await repo.setLageConfig(`module.exports = {
   pipeline: {
     build: ['^build'],
   },
@@ -270,9 +272,9 @@ export default class OptionsReporter {
   }
 };`);
 
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("build", ["--reporter", "optionsTest", "--concurrency", "2", "--grouped"]);
+    const results = await repo.run("build", ["--reporter", "optionsTest", "--concurrency", "2", "--grouped"]);
     const output = results.stdout + results.stderr;
 
     expect(output).toContain('"receivedOptions":true');
@@ -280,20 +282,20 @@ export default class OptionsReporter {
     expect(output).toContain('"grouped":true');
   });
 
-  it("should handle errors from custom reporter gracefully", () => {
+  it("should handle errors from custom reporter gracefully", async () => {
     repo = new Monorepo("reporter-error");
 
-    repo.init();
-    repo.addPackage("a");
+    await repo.init();
+    await repo.addPackage("a");
 
     // Create a reporter with invalid JavaScript
-    repo.commitFiles({
+    await repo.commitFiles({
       "broken-reporter.mjs": `
 This is not valid JavaScript {{{ ]]] ;;;
       `,
     });
 
-    repo.setLageConfig(`module.exports = {
+    await repo.setLageConfig(`module.exports = {
   pipeline: {
     build: ['^build'],
   },
@@ -303,28 +305,26 @@ This is not valid JavaScript {{{ ]]] ;;;
   }
 };`);
 
-    repo.install();
+    await repo.install();
 
     // Should throw an error when trying to use the broken reporter
-    expect(() => {
-      repo!.run("build", ["--reporter", "brokenReporter"]);
-    }).toThrow();
+    await expect(repo!.run("build", ["--reporter", "brokenReporter"])).rejects.toThrow();
   });
 
-  it("should error when custom reporter exports a non-function/non-class value", () => {
+  it("should error when custom reporter exports a non-function/non-class value", async () => {
     repo = new Monorepo("invalid-export");
 
-    repo.init();
-    repo.addPackage("a");
+    await repo.init();
+    await repo.addPackage("a");
 
     // Create a reporter that exports a number
-    repo.commitFiles({
+    await repo.commitFiles({
       "number-reporter.mjs": `
 export default 42;
       `,
     });
 
-    repo.setLageConfig(`module.exports = {
+    await repo.setLageConfig(`module.exports = {
   pipeline: {
     build: ['^build'],
   },
@@ -334,28 +334,28 @@ export default 42;
   }
 };`);
 
-    repo.install();
+    await repo.install();
 
     // Should throw an error when trying to use a reporter that exports a primitive value
-    expect(() => {
-      repo!.run("build", ["--reporter", "numberReporter"]);
-    }).toThrow(/does not export a valid reporter class or instance/);
+    await expect(repo!.run("build", ["--reporter", "numberReporter"])).rejects.toThrow(
+      /does not export a valid reporter class or instance/
+    );
   });
 
-  it("should error when custom reporter exports a string", () => {
+  it("should error when custom reporter exports a string", async () => {
     repo = new Monorepo("string-export");
 
-    repo.init();
-    repo.addPackage("a");
+    await repo.init();
+    await repo.addPackage("a");
 
     // Create a reporter that exports a string
-    repo.commitFiles({
+    await repo.commitFiles({
       "string-reporter.mjs": `
 export default "not a reporter";
       `,
     });
 
-    repo.setLageConfig(`module.exports = {
+    await repo.setLageConfig(`module.exports = {
   pipeline: {
     build: ['^build'],
   },
@@ -365,22 +365,22 @@ export default "not a reporter";
   }
 };`);
 
-    repo.install();
+    await repo.install();
 
     // Should throw an error when trying to use a reporter that exports a string
-    expect(() => {
-      repo!.run("build", ["--reporter", "stringReporter"]);
-    }).toThrow(/does not export a valid reporter class or instance/);
+    await expect(repo!.run("build", ["--reporter", "stringReporter"])).rejects.toThrow(
+      /does not export a valid reporter class or instance/
+    );
   });
 
-  it("should work with custom reporter that exports an object instance", () => {
+  it("should work with custom reporter that exports an object instance", async () => {
     repo = new Monorepo("object-instance");
 
-    repo.init();
-    repo.addPackage("a");
+    await repo.init();
+    await repo.addPackage("a");
 
     // Create a reporter that exports an object instance (not a class)
-    repo.commitFiles({
+    await repo.commitFiles({
       "object-reporter.mjs": `
 const objectReporter = {
   log(entry) {
@@ -399,7 +399,7 @@ export default objectReporter;
       `,
     });
 
-    repo.setLageConfig(`module.exports = {
+    await repo.setLageConfig(`module.exports = {
   pipeline: {
     build: ['^build'],
   },
@@ -409,22 +409,22 @@ export default objectReporter;
   }
 };`);
 
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("build", ["--reporter", "objectReporter"]);
+    const results = await repo.run("build", ["--reporter", "objectReporter"]);
     const output = results.stdout + results.stderr;
 
     expect(output).toContain('"objectInstance":true');
   });
 
-  it("should work with CommonJS custom reporter", () => {
+  it("should work with CommonJS custom reporter", async () => {
     repo = new Monorepo("commonjs-reporter");
 
-    repo.init();
-    repo.addPackage("a");
+    await repo.init();
+    await repo.addPackage("a");
 
     // Create a CommonJS reporter
-    repo.commitFiles({
+    await repo.commitFiles({
       "cjs-reporter.cjs": `
 class CommonJSReporter {
   constructor(options) {
@@ -447,7 +447,7 @@ module.exports = CommonJSReporter;
       `,
     });
 
-    repo.setLageConfig(`module.exports = {
+    await repo.setLageConfig(`module.exports = {
   pipeline: {
     build: ['^build'],
   },
@@ -457,23 +457,23 @@ module.exports = CommonJSReporter;
   }
 };`);
 
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("build", ["--reporter", "cjsReporter"]);
+    const results = await repo.run("build", ["--reporter", "cjsReporter"]);
     const output = results.stdout + results.stderr;
 
     expect(output).toContain('"commonJS":true');
   });
 
-  it("should allow custom reporter to track all build events", () => {
+  it("should allow custom reporter to track all build events", async () => {
     repo = new Monorepo("event-tracking");
 
-    repo.init();
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b");
+    await repo.init();
+    await repo.addPackage("a", ["b"]);
+    await repo.addPackage("b");
 
     // Create a reporter that tracks events
-    repo.commitFiles({
+    await repo.commitFiles({
       "tracking-reporter.mjs": `
 export default class TrackingReporter {
   constructor(options) {
@@ -501,7 +501,7 @@ export default class TrackingReporter {
       `,
     });
 
-    repo.setLageConfig(`module.exports = {
+    await repo.setLageConfig(`module.exports = {
   pipeline: {
     build: ['^build'],
     test: ['build'],
@@ -512,9 +512,9 @@ export default class TrackingReporter {
   }
 };`);
 
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("test", ["--reporter", "tracker"]);
+    const results = await repo.run("test", ["--reporter", "tracker"]);
     const output = results.stdout + results.stderr;
 
     expect(output).toContain('"trackingReporter":true');

@@ -1,41 +1,27 @@
-import * as os from "os";
 import * as fs from "fs";
 import * as path from "path";
 import * as execa from "execa";
 
 import { glob } from "@lage-run/globby";
+import { Monorepo as BaseMonorepo } from "@lage-run/monorepo-fixture";
 
-export class Monorepo {
-  static tmpdir: string = os.tmpdir();
+const externalPackageJsonGlobs = ["node_modules/glob-hasher/package.json", "node_modules/glob-hasher-*/package.json"];
+const externalPackageJsons = glob(externalPackageJsonGlobs, {
+  cwd: path.join(__dirname, "..", "..", "..", ".."),
+  gitignore: false,
+})!.map((f) => path.resolve(path.join(__dirname, "..", "..", "..", ".."), f));
 
-  root: string;
-  nodeModulesPath: string;
-  yarnPath: string;
+export class Monorepo extends BaseMonorepo {
+  private readonly yarnPath: string;
 
-  static externalPackageJsonGlobs: string[] = ["node_modules/glob-hasher/package.json", "node_modules/glob-hasher-*/package.json"];
-
-  static externalPackageJsons: string[] = glob(Monorepo.externalPackageJsonGlobs, {
-    cwd: path.join(__dirname, "..", "..", "..", ".."),
-    gitignore: false,
-  })!.map((f) => path.resolve(path.join(__dirname, "..", "..", "..", ".."), f));
-
-  constructor(private name: string) {
-    this.root = fs.mkdtempSync(path.join(Monorepo.tmpdir, `lage-monorepo-${name}-`));
-    this.nodeModulesPath = path.join(this.root, "node_modules");
+  constructor(name: string) {
+    super(name, "lage-monorepo");
     this.yarnPath = path.join(this.root, ".yarn", "yarn.js");
   }
 
-  init(): void {
-    const options = { cwd: this.root };
-    execa.sync("git", ["init"], options);
-    execa.sync("git", ["config", "user.email", "you@example.com"], options);
-    execa.sync("git", ["config", "user.name", "test user"], options);
-    execa.sync("git", ["config", "commit.gpgsign", "false"], options);
-    this.generateRepoFiles();
-  }
-
-  install(): void {
-    for (const packagePath of Monorepo.externalPackageJsons.map((p) => path.dirname(p))) {
+  public override async install(): Promise<void> {
+    for (const externalPackageJson of externalPackageJsons) {
+      const packagePath = path.dirname(externalPackageJson);
       const name = JSON.parse(fs.readFileSync(path.join(packagePath, "package.json"), "utf-8")).name;
       fs.cpSync(packagePath, path.join(this.root, "node_modules", name), { recursive: true });
     }
@@ -44,8 +30,8 @@ export class Monorepo {
     execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
   }
 
-  generateRepoFiles(): void {
-    this.commitFiles({
+  protected override async generateRepoFiles(): Promise<void> {
+    await this.commitFiles({
       ".yarnrc.yml": `yarnPath: "${this.yarnPath.replace(/\\/g, "/")}"\ncacheFolder: "${this.root.replace(
         /\\/g,
         "/"
@@ -84,81 +70,13 @@ export class Monorepo {
     });
   }
 
-  setLageConfig(contents: string): void {
-    this.commitFiles({
-      "lage.config.js": contents,
-    });
-  }
-
-  addPackage(name: string, internalDeps: string[] = [], scripts?: { [script: string]: string }): void {
-    return this.commitFiles({
-      [`packages/${name}/build.js`]: `console.log('building ${name}');`,
-      [`packages/${name}/test.js`]: `console.log('testing ${name}');`,
-      [`packages/${name}/lint.js`]: `console.log('linting ${name}');`,
+  public override async addPackage(name: string, internalDeps: string[] = [], scripts?: { [script: string]: string }): Promise<void> {
+    return super.addPackage(name, internalDeps, scripts, {
       [`packages/${name}/extra.js`]: `console.log('extra ${name}');`,
-      [`packages/${name}/package.json`]: {
-        name,
-        version: "0.1.0",
-        scripts: scripts || {
-          build: "node ./build.js",
-          test: "node ./test.js",
-          lint: "node ./lint.js",
-        },
-        dependencies: {
-          ...(internalDeps &&
-            internalDeps.reduce((deps, dep) => {
-              return { ...deps, [dep]: "*" };
-            }, {})),
-        },
-      },
     });
   }
 
-  clone(origin: string): execa.ExecaSyncReturnValue {
-    return execa.sync("git", ["clone", origin], { cwd: this.root });
-  }
-
-  push(origin: string, branch: string): execa.ExecaSyncReturnValue {
-    return execa.sync("git", ["push", origin, branch], { cwd: this.root });
-  }
-
-  commitFiles(files: { [name: string]: string | Record<string, unknown> }, options: { executable?: boolean } = {}): void {
-    for (const [file, contents] of Object.entries(files)) {
-      let out = "";
-      if (typeof contents !== "string") {
-        out = JSON.stringify(contents, null, 2);
-      } else {
-        out = contents;
-      }
-
-      const fullPath = path.join(this.root, file);
-
-      if (!fs.existsSync(path.dirname(fullPath))) {
-        fs.mkdirSync(path.dirname(fullPath), { recursive: true });
-      }
-
-      fs.writeFileSync(fullPath, out);
-
-      if (options.executable) {
-        fs.chmodSync(path.join(this.root, file), fs.constants.S_IXUSR | fs.constants.S_IRUSR | fs.constants.S_IROTH);
-      }
-    }
-
-    execa.sync("git", ["add", ...Object.keys(files)], {
-      cwd: this.root,
-    });
-
-    execa.sync("git", ["commit", "-m", "commit files"], { cwd: this.root });
-  }
-
-  run(command: string, args?: string[], silent?: boolean, options?: Partial<execa.SyncOptions>): execa.ExecaSyncReturnValue {
-    return execa.sync(process.execPath, [this.yarnPath, ...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
-      cwd: this.root,
-      ...options,
-    });
-  }
-
-  runServer(tasks: string[]): execa.ExecaChildProcess<string> {
+  public runServer(tasks: string[]): execa.ExecaChildProcess<string> {
     const cp = execa.default(process.execPath, [path.join(this.root, "node_modules/lage/dist/lage-server.js"), "--tasks", ...tasks], {
       cwd: this.root,
       detached: true,
@@ -170,23 +88,5 @@ export class Monorepo {
     }
 
     return cp;
-  }
-
-  async cleanup(): Promise<void> {
-    const maxRetries = 5;
-    let attempts = 0;
-
-    while (attempts < maxRetries) {
-      try {
-        fs.rmSync(this.root, { recursive: true });
-        break;
-      } catch (error) {
-        attempts++;
-        if (attempts >= maxRetries) {
-          throw error;
-        }
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-      }
-    }
   }
 }

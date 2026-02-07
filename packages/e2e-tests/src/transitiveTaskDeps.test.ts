@@ -8,8 +8,8 @@ describe("transitive task deps test", () => {
   it("produces a build graph even when some scripts are missing in package.json", async () => {
     const repo = new Monorepo("transitiveDeps");
 
-    repo.init();
-    repo.setLageConfig(`module.exports = {
+    await repo.init();
+    await repo.setLageConfig(`module.exports = {
       "pipeline": {
         "build": [ ],
         "bundle":["build"],
@@ -17,16 +17,16 @@ describe("transitive task deps test", () => {
       }
     }`);
 
-    repo.addPackage("a", [], {
+    await repo.addPackage("a", [], {
       build: "echo a:build",
       test: "echo a:test",
     });
-    repo.addPackage("b", [], {
+    await repo.addPackage("b", [], {
       build: "echo b:build",
     });
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("test");
+    const results = await repo.run("test");
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
@@ -52,27 +52,27 @@ describe("transitive task deps test", () => {
   it("only runs package local dependencies for no-prefix dependencies", async () => {
     const repo = new Monorepo("transitiveDeps-no-prefix");
 
-    repo.init();
-    repo.setLageConfig(`module.exports = {
+    await repo.init();
+    await repo.setLageConfig(`module.exports = {
       pipeline: {
         bundle: ["transpile"],
         transpile: []
       },
     }`);
 
-    repo.addPackage("a", ["b"], {
+    await repo.addPackage("a", ["b"], {
       bundle: "echo a:bundle",
       transpile: "echo a:transpile",
     });
-    repo.addPackage("b", ["c"], {
+    await repo.addPackage("b", ["c"], {
       transpile: "echo b:transpile",
     });
-    repo.addPackage("c", [], {
+    await repo.addPackage("c", [], {
       transpile: "echo c:transpile",
     });
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("bundle", ["--scope", "a"]);
+    const results = await repo.run("bundle", ["--scope", "a"]);
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
@@ -100,27 +100,27 @@ describe("transitive task deps test", () => {
   it("only runs direct dependencies for ^ prefix dependencies -- ", async () => {
     const repo = new Monorepo("transitiveDeps-carat-prefix");
 
-    repo.init();
-    repo.setLageConfig(`module.exports = {
+    await repo.init();
+    await repo.setLageConfig(`module.exports = {
       pipeline: {
         bundle: ["^transpile"],
         transpile: []
       },
     }`);
 
-    repo.addPackage("a", ["b"], {
+    await repo.addPackage("a", ["b"], {
       bundle: "echo a:bundle",
       transpile: "echo a:transpile",
     });
-    repo.addPackage("b", ["c"], {
+    await repo.addPackage("b", ["c"], {
       transpile: "echo b:transpile",
     });
-    repo.addPackage("c", [], {
+    await repo.addPackage("c", [], {
       transpile: "echo c:transpile",
     });
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("bundle", ["--scope", "a"]);
+    const results = await repo.run("bundle", ["--scope", "a"]);
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
@@ -150,8 +150,8 @@ describe("transitive task deps test", () => {
   it("Runs transitive dependencies for ^^ prefix dependencies", async () => {
     const repo = new Monorepo("transitiveDeps-indirect");
 
-    repo.init();
-    repo.setLageConfig(`module.exports = {
+    await repo.init();
+    await repo.setLageConfig(`module.exports = {
       pipeline: {
         bundle: ["^^transpile"],
         transpile: []
@@ -170,19 +170,19 @@ describe("transitive task deps test", () => {
       ],
     }`);
 
-    repo.addPackage("a", ["b"], {
+    await repo.addPackage("a", ["b"], {
       bundle: "echo a:bundle",
       transpile: "echo a:transpile",
     });
-    repo.addPackage("b", ["c"], {
+    await repo.addPackage("b", ["c"], {
       transpile: "echo b:transpile",
     });
-    repo.addPackage("c", [], {
+    await repo.addPackage("c", [], {
       transpile: "echo c:transpile",
     });
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("bundle", ["--scope", "a"]);
+    const results = await repo.run("bundle", ["--scope", "a"]);
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);

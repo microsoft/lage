@@ -22,8 +22,7 @@ describe("LogReporter", () => {
   it("records a target status entry", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.logStream = writer;
+    const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
     reporter.log({
       data: {
@@ -48,8 +47,7 @@ describe("LogReporter", () => {
   it("records a target message entry", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.logStream = writer;
+    const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
     reporter.log({
       data: {
@@ -72,8 +70,7 @@ describe("LogReporter", () => {
   it("groups messages together", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new LogReporter({ grouped: true, logLevel: LogLevel.verbose });
-    reporter.logStream = writer;
+    const reporter = new LogReporter({ grouped: true, logLevel: LogLevel.verbose, logStream: writer });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -128,8 +125,7 @@ describe("LogReporter", () => {
   it("interweave messages when ungrouped", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.verbose });
-    reporter.logStream = writer;
+    const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -181,8 +177,7 @@ describe("LogReporter", () => {
   it("can filter out verbose messages", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.info });
-    reporter.logStream = writer;
+    const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.info, logStream: writer });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -228,8 +223,7 @@ describe("LogReporter", () => {
   it("can display a summary of a failure", () => {
     const writer = new streams.WritableStream();
 
-    const reporter = new LogReporter({ grouped: true, logLevel: LogLevel.info });
-    reporter.logStream = writer;
+    const reporter = new LogReporter({ grouped: true, logLevel: LogLevel.info, logStream: writer });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");

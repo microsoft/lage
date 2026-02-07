@@ -20,8 +20,7 @@ function createTarget(packageName: string, task: string) {
 describe("VerboseFileLogReporter", () => {
   it("records a target status entry", () => {
     const writer = new streams.WritableStream();
-    const reporter = new VerboseFileLogReporter();
-    reporter.fileStream = writer;
+    const reporter = new VerboseFileLogReporter(undefined, writer);
 
     const entry: LogEntry<any> = {
       data: {
@@ -45,8 +44,7 @@ describe("VerboseFileLogReporter", () => {
 
   it("records a target message entry", () => {
     const writer = new streams.WritableStream();
-    const reporter = new VerboseFileLogReporter();
-    reporter.fileStream = writer;
+    const reporter = new VerboseFileLogReporter(undefined, writer);
 
     const entry: LogEntry<any> = {
       data: {
@@ -68,8 +66,7 @@ describe("VerboseFileLogReporter", () => {
 
   it("prefixes target entries with the target id", () => {
     const writer = new streams.WritableStream();
-    const reporter = new VerboseFileLogReporter();
-    reporter.fileStream = writer;
+    const reporter = new VerboseFileLogReporter(undefined, writer);
 
     const entry: LogEntry<any> = {
       data: {
@@ -92,8 +89,7 @@ describe("VerboseFileLogReporter", () => {
 
   it("does not prefix non-target entries with target id", () => {
     const writer = new streams.WritableStream();
-    const reporter = new VerboseFileLogReporter();
-    reporter.fileStream = writer;
+    const reporter = new VerboseFileLogReporter(undefined, writer);
 
     const entry: LogEntry<any> = {
       level: LogLevel.verbose,
@@ -111,8 +107,7 @@ describe("VerboseFileLogReporter", () => {
 
   it("never groups messages together", () => {
     const writer = new streams.WritableStream();
-    const reporter = new VerboseFileLogReporter();
-    reporter.fileStream = writer;
+    const reporter = new VerboseFileLogReporter(undefined, writer);
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -163,8 +158,7 @@ describe("VerboseFileLogReporter", () => {
 
   it("always records messages with logLevel verbose or lower", () => {
     const writer = new streams.WritableStream();
-    const reporter = new VerboseFileLogReporter();
-    reporter.fileStream = writer;
+    const reporter = new VerboseFileLogReporter(undefined, writer);
 
     const entry1: LogEntry<any> = {
       level: LogLevel.info,

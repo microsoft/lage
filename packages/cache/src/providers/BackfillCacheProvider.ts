@@ -42,7 +42,7 @@ export class BackfillCacheProvider implements CacheProvider {
     this.backfillLogger = createBackfillLogger();
   }
 
-  async fetch(hash: string, target: Target): Promise<boolean> {
+  public async fetch(hash: string, target: Target): Promise<boolean> {
     const { logger } = this.options;
 
     if (!hash) {
@@ -67,7 +67,7 @@ export class BackfillCacheProvider implements CacheProvider {
     }
   }
 
-  async put(hash: string, target: Target): Promise<void> {
+  public async put(hash: string, target: Target): Promise<void> {
     const { logger } = this.options;
 
     if (!hash) {
@@ -91,11 +91,11 @@ export class BackfillCacheProvider implements CacheProvider {
     }
   }
 
-  async clear(concurrency = 10): Promise<void> {
+  public async clear(concurrency = 10): Promise<void> {
     return this.purge(0, concurrency);
   }
 
-  async purge(prunePeriod = 30, concurrency = 10): Promise<void> {
+  public async purge(prunePeriod = 30, concurrency = 10): Promise<void> {
     const now = new Date();
 
     const cacheTypes = ["cache", "logs"];
@@ -127,7 +127,7 @@ export class BackfillCacheProvider implements CacheProvider {
     );
   }
 
-  getCachePath(packagePath: string, hash: string): string {
+  private getCachePath(packagePath: string, hash: string): string {
     return path.relative(packagePath, getCacheDirectory(this.options.root, hash));
   }
 }

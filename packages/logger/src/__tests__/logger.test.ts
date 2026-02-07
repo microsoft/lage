@@ -3,14 +3,14 @@ import createLogger, { type LogEntry, LogLevel, type LogStructuredData, type Rep
 
 describe("logger", () => {
   class TestReporter<T extends LogStructuredData = LogStructuredData> implements Reporter {
-    logLevel = LogLevel.warn;
-    entries: LogEntry<T>[] = [];
+    public logLevel = LogLevel.warn;
+    public entries: LogEntry<T>[] = [];
 
-    log(entry: LogEntry<T>) {
+    public log(entry: LogEntry<T>) {
       this.entries.push(entry);
     }
 
-    summarize(): void {}
+    public summarize(): void {}
   }
 
   it("should create a logger that reports to a single reporter", () => {

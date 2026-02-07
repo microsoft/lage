@@ -24,7 +24,7 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
 
   constructor(private options: RemoteFallbackCacheProviderOptions) {}
 
-  async fetch(hash: string, target: Target): Promise<boolean> {
+  public async fetch(hash: string, target: Target): Promise<boolean> {
     const { logger, remoteCacheProvider, localCacheProvider } = this.options;
 
     if (localCacheProvider) {
@@ -48,7 +48,7 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
     return RemoteFallbackCacheProvider.localHits[hash];
   }
 
-  async put(hash: string, target: Target): Promise<void> {
+  public async put(hash: string, target: Target): Promise<void> {
     const { logger, remoteCacheProvider, localCacheProvider, writeRemoteCache } = this.options;
     const putPromises: Promise<void>[] = [];
 
@@ -80,14 +80,14 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
     return hash in RemoteFallbackCacheProvider.localHits && RemoteFallbackCacheProvider.localHits[hash];
   }
 
-  async clear(): Promise<void> {
+  public async clear(): Promise<void> {
     const { localCacheProvider } = this.options;
     if (localCacheProvider) {
       return localCacheProvider.clear();
     }
   }
 
-  async purge(sinceDays: number): Promise<void> {
+  public async purge(sinceDays: number): Promise<void> {
     const { localCacheProvider } = this.options;
     if (localCacheProvider) {
       return localCacheProvider.purge(sinceDays);

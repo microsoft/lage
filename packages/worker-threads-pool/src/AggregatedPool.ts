@@ -18,8 +18,10 @@ interface AggregatedPoolOptions {
 }
 
 export class AggregatedPool extends EventEmitter implements Pool {
-  readonly groupedPools: Map<string, WorkerPool> = new Map();
-  readonly defaultPool: WorkerPool | undefined;
+  /** @internal visible for testing */
+  public readonly groupedPools: Map<string, WorkerPool> = new Map();
+  /** @internal visible for testing */
+  public readonly defaultPool: WorkerPool | undefined;
 
   constructor(private options: AggregatedPoolOptions) {
     super();
@@ -72,7 +74,7 @@ export class AggregatedPool extends EventEmitter implements Pool {
     });
   }
 
-  stats(): {
+  public stats(): {
     maxWorkerMemoryUsage: number;
     workerRestarts: number;
   } {
@@ -91,7 +93,7 @@ export class AggregatedPool extends EventEmitter implements Pool {
     return stats;
   }
 
-  async exec<T>(
+  public async exec<T>(
     data: Record<string, unknown>,
     weight: number,
     setup?: (worker: IWorker, stdout: Readable, stderr: Readable) => void,
@@ -109,7 +111,7 @@ export class AggregatedPool extends EventEmitter implements Pool {
     return pool.exec(data, weight, setup, cleanup, abortSignal, priority);
   }
 
-  async close(): Promise<unknown> {
+  public async close(): Promise<unknown> {
     const promises = [...this.groupedPools.values(), this.defaultPool].map((pool) => pool?.close());
     return Promise.all(promises);
   }

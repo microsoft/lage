@@ -9,10 +9,10 @@ jest.mock("fs");
 // Mock the logger
 const mockSilly = jest.fn();
 class MockLogger extends Logger {
-  override silly = mockSilly;
+  public override silly = mockSilly;
   // do nothing
-  override log() {}
-  override stream() {
+  public override log() {}
+  public override stream() {
     return () => {};
   }
 }

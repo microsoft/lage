@@ -3,23 +3,26 @@ import * as fs from "fs";
 import * as path from "path";
 import execa from "execa";
 
+const tmpdir = os.tmpdir();
+
 export class Monorepo {
-  static tmpdir: string = os.tmpdir();
+  public readonly root: string;
 
-  root: string;
+  private readonly lagePath: string;
 
-  lagePath: string;
-
-  get nodeModulesPath(): string {
+  private get nodeModulesPath(): string {
     return path.join(this.root, "node_modules");
   }
 
-  constructor(private name: string) {
-    this.root = fs.mkdtempSync(path.join(Monorepo.tmpdir, `monorepo-fixture-${name}-`));
+  constructor(
+    protected name: string,
+    prefix = "monorepo-fixture"
+  ) {
+    this.root = fs.mkdtempSync(path.join(tmpdir, `${prefix}-${name}-`));
     this.lagePath = path.join(this.nodeModulesPath, "@lage-run");
   }
 
-  async init(fixturePath?: string): Promise<void> {
+  public async init(fixturePath?: string): Promise<void> {
     const options = { cwd: this.root };
     const cwd = this.root;
     await execa("git", ["init"], options);
@@ -38,7 +41,7 @@ export class Monorepo {
     }
   }
 
-  async install(): Promise<void> {
+  public async install(): Promise<void> {
     if (!fs.existsSync(this.nodeModulesPath)) {
       fs.mkdirSync(this.nodeModulesPath, { recursive: true });
     }
@@ -66,7 +69,7 @@ export class Monorepo {
   /**
    * Simulates a "yarn" call by linking internal packages and generates a yarn.lock file
    */
-  async linkPackages(): Promise<void> {
+  public async linkPackages(): Promise<void> {
     const pkgs = fs.readdirSync(path.join(this.root, "packages"));
 
     if (!fs.existsSync(this.nodeModulesPath)) {
@@ -94,7 +97,7 @@ export class Monorepo {
     await this.commitFiles({ "yarn.lock": yarnYaml });
   }
 
-  async generateRepoFiles(): Promise<void> {
+  protected async generateRepoFiles(): Promise<void> {
     const lagePath = path.join(this.nodeModulesPath, "lage/lib/cli");
 
     await this.commitFiles({
@@ -127,13 +130,18 @@ export class Monorepo {
     });
   }
 
-  async setLageConfig(contents: string): Promise<void> {
+  public async setLageConfig(contents: string): Promise<void> {
     await this.commitFiles({
       "lage.config.js": contents,
     });
   }
 
-  async addPackage(name: string, internalDeps: string[] = [], scripts?: { [script: string]: string }): Promise<void> {
+  public async addPackage(
+    name: string,
+    internalDeps: string[] = [],
+    scripts?: { [script: string]: string },
+    extraFiles?: Record<string, string>
+  ): Promise<void> {
     return await this.commitFiles({
       [`packages/${name}/build.js`]: `console.log('building ${name}');`,
       [`packages/${name}/test.js`]: `console.log('building ${name}');`,
@@ -146,25 +154,21 @@ export class Monorepo {
           test: "node ./test.js",
           lint: "node ./lint.js",
         },
-        dependencies: {
-          ...(internalDeps &&
-            internalDeps.reduce((deps, dep) => {
-              return { ...deps, [dep]: "*" };
-            }, {})),
-        },
+        dependencies: internalDeps ? Object.fromEntries(internalDeps.map((dep) => [dep, "*"])) : {},
       },
+      ...extraFiles,
     });
   }
 
-  clone(origin: string): execa.ExecaChildProcess<string> {
+  public clone(origin: string): execa.ExecaChildProcess<string> {
     return execa("git", ["clone", origin], { cwd: this.root });
   }
 
-  push(origin: string, branch: string): execa.ExecaChildProcess<string> {
+  public push(origin: string, branch: string): execa.ExecaChildProcess<string> {
     return execa("git", ["push", origin, branch], { cwd: this.root });
   }
 
-  writeFiles(files: { [file: string]: string | object }, options: { executable?: boolean } = {}): void {
+  public writeFiles(files: { [file: string]: string | object }, options: { executable?: boolean } = {}): void {
     for (const [file, contents] of Object.entries(files)) {
       let out = "";
       if (typeof contents !== "string") {
@@ -187,7 +191,7 @@ export class Monorepo {
     }
   }
 
-  async readFiles(files: string[]): Promise<Record<string, string>> {
+  public async readFiles(files: string[]): Promise<Record<string, string>> {
     const contents: Record<string, string> = {};
     for (const file of files) {
       const fullPath = path.isAbsolute(file) ? file : path.join(this.root, file);
@@ -200,22 +204,23 @@ export class Monorepo {
     return contents;
   }
 
-  async commitFiles(files: { [name: string]: string | object }, options: { executable?: boolean } = {}): Promise<void> {
-    await this.writeFiles(files, options);
+  public async commitFiles(files: { [name: string]: string | object }, options: { executable?: boolean } = {}): Promise<void> {
+    this.writeFiles(files, options);
     await execa("git", ["add", "--", ...Object.keys(files)], {
       cwd: this.root,
     });
     await execa("git", ["commit", "-m", "commit files"], { cwd: this.root });
   }
 
-  run(command: string, args?: string[], silent?: boolean): execa.ExecaChildProcess<string> {
+  public run(command: string, args?: string[], silent?: boolean, options?: Partial<execa.Options>): execa.ExecaChildProcess<string> {
     return execa("yarn", [...(silent === true ? ["--silent"] : []), command, ...(args || [])], {
       cwd: this.root,
       shell: true,
+      ...options,
     });
   }
 
-  async cleanup(): Promise<void> {
+  public async cleanup(): Promise<void> {
     const maxRetries = 5;
     let attempts = 0;
 

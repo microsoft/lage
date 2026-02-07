@@ -5,20 +5,21 @@ describe("basic failure case where a dependent target has failed", () => {
   it("when a failure happens, halts all other targets", async () => {
     const repo = new Monorepo("basics-failure-halt-all");
 
-    repo.init();
+    await repo.init();
 
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b", [], {
+    await repo.addPackage("a", ["b"]);
+    await repo.addPackage("b", [], {
       build: 'node -e "process.exit(1);"',
     });
-    repo.addPackage("c");
-    repo.install();
+    await repo.addPackage("c");
+    await repo.install();
 
     let jsonOutput: any[] = [];
     let results: any;
 
     try {
-      repo.run("test");
+      await repo.run("test");
+      expect(true).toBe(false); // should not get here
     } catch (e) {
       results = e;
     }
@@ -39,20 +40,21 @@ describe("basic failure case where a dependent target has failed", () => {
   it("when a failure happens in `--continue` mode, halts all other dependent targets but continue to build as much as possible", async () => {
     const repo = new Monorepo("basics-failure-continue");
 
-    repo.init();
+    await repo.init();
 
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b", [], {
+    await repo.addPackage("a", ["b"]);
+    await repo.addPackage("b", [], {
       build: 'node -e "process.exit(1);"',
     });
-    repo.addPackage("c");
-    repo.install();
+    await repo.addPackage("c");
+    await repo.install();
 
     let jsonOutput: any[] = [];
     let results: any;
 
     try {
-      repo.run("test", ["--continue"]);
+      await repo.run("test", ["--continue"]);
+      expect(true).toBe(false); // should not get here
     } catch (e) {
       results = e;
     }
@@ -74,19 +76,20 @@ describe("basic failure case where a dependent target has failed", () => {
     expect.hasAssertions();
     const repo = new Monorepo("basics-failure-exit-code");
 
-    repo.init();
+    await repo.init();
 
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b", [], {
+    await repo.addPackage("a", ["b"]);
+    await repo.addPackage("b", [], {
       build: 'node -e "process.exit(1);"',
     });
-    repo.addPackage("c");
-    repo.addPackage("d");
-    repo.addPackage("e");
-    repo.install();
+    await repo.addPackage("c");
+    await repo.addPackage("d");
+    await repo.addPackage("e");
+    await repo.install();
 
     try {
-      repo.run("test");
+      await repo.run("test");
+      expect(true).toBe(false); // should not get here
     } catch (e) {
       const results = e as any;
       expect(results.exitCode).not.toBe(0);

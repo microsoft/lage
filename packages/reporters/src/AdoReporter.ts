@@ -49,16 +49,24 @@ function format(level: LogLevel, prefix: string, message: string) {
 }
 
 export class AdoReporter implements Reporter {
-  logStream: Writable = process.stdout;
+  private logStream: Writable;
 
   private logEntries = new Map<string, LogEntry[]>();
-  readonly groupedEntries: Map<string, LogEntry<LogStructuredData>[]> = new Map<string, LogEntry[]>();
+  private readonly groupedEntries: Map<string, LogEntry<LogStructuredData>[]> = new Map<string, LogEntry[]>();
 
-  constructor(private options: { logLevel?: LogLevel; grouped?: boolean }) {
+  constructor(
+    private options: {
+      logLevel?: LogLevel;
+      grouped?: boolean;
+      /** stream for testing */
+      logStream?: Writable;
+    }
+  ) {
     options.logLevel = options.logLevel || LogLevel.info;
+    this.logStream = options.logStream || process.stdout;
   }
 
-  log(entry: LogEntry<any>): boolean | void {
+  public log(entry: LogEntry<any>): boolean | void {
     if (entry.data && entry.data.target && entry.data.target.hidden) {
       return;
     }
@@ -159,7 +167,7 @@ export class AdoReporter implements Reporter {
     }
   }
 
-  summarize(schedulerRunSummary: SchedulerRunSummary): void {
+  public summarize(schedulerRunSummary: SchedulerRunSummary): void {
     const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
     const { failed, aborted, skipped, success, pending } = targetRunByStatus;
 

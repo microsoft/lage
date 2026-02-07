@@ -12,7 +12,7 @@ export interface TargetFactoryOptions {
 }
 
 export class TargetFactory {
-  packageScripts: Set<string> = new Set<string>();
+  private packageScripts: Set<string> = new Set<string>();
 
   constructor(private options: TargetFactoryOptions) {
     const { packageInfos } = options;
@@ -23,7 +23,7 @@ export class TargetFactory {
     }
   }
 
-  getTargetType(task: string, config: TargetConfig): string {
+  private getTargetType(task: string, config: TargetConfig): string {
     if (!config.type) {
       if (this.packageScripts.has(task)) {
         return "npmScript";
@@ -37,12 +37,8 @@ export class TargetFactory {
 
   /**
    * Creates a package task `Target`
-   * @param packageName
-   * @param task
-   * @param config
-   * @returns a package task `Target`
    */
-  createPackageTarget(packageName: string, task: string, config: TargetConfig): Target {
+  public createPackageTarget(packageName: string, task: string, config: TargetConfig): Target {
     const { resolve } = this.options;
     const { options, deps, dependsOn, cache, inputs, priority, maxWorkers, environmentGlob, weight } = config;
     const cwd = resolve(packageName);
@@ -75,7 +71,7 @@ export class TargetFactory {
     return target;
   }
 
-  createGlobalTarget(id: string, config: TargetConfig): Target {
+  public createGlobalTarget(id: string, config: TargetConfig): Target {
     const { root } = this.options;
     const { options, deps, dependsOn, cache, inputs, outputs, priority, maxWorkers, environmentGlob, weight } = config;
     const { task } = getPackageAndTask(id);
@@ -107,7 +103,7 @@ export class TargetFactory {
   /**
    * Creates a target that operates on files that are "staged" (git index)
    */
-  createStagedTarget(task: string, config: StagedTargetConfig, changedFiles: string[]): Target {
+  public createStagedTarget(task: string, config: StagedTargetConfig, changedFiles: string[]): Target {
     const { root } = this.options;
     const { dependsOn, priority } = config;
 

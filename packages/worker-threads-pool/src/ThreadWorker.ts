@@ -47,10 +47,10 @@ export class ThreadWorker extends EventEmitter implements IWorker {
   // @ts-ignore TS2564
   #worker: Worker;
 
-  status: "free" | "busy" = "busy";
-  restarts = 0;
+  public status: "free" | "busy" = "busy";
+  public restarts = 0;
 
-  maxWorkerMemoryUsage = 0;
+  public maxWorkerMemoryUsage = 0;
 
   constructor(
     private script: string,
@@ -225,7 +225,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
     }
   }
 
-  start(work: QueueItem, abortSignal?: AbortSignal): void {
+  public start(work: QueueItem, abortSignal?: AbortSignal): void {
     this.status = "busy";
 
     const { task, resolve, reject, cleanup, setup } = work;
@@ -249,44 +249,44 @@ export class ThreadWorker extends EventEmitter implements IWorker {
     this.#worker.postMessage({ type: "start", task: { ...task, weight: work.weight }, id });
   }
 
-  get weight(): number {
+  public get weight(): number {
     return this.#taskInfo?.weight ?? 1;
   }
 
-  get stdout(): Readable {
+  public get stdout(): Readable {
     return this.#stdoutInfo.stream;
   }
 
-  get stderr(): Readable {
+  public get stderr(): Readable {
     return this.#stderrInfo.stream;
   }
 
-  get resourceLimits(): ResourceLimits | undefined {
+  public get resourceLimits(): ResourceLimits | undefined {
     return this.#worker.resourceLimits;
   }
 
-  get threadId(): number {
+  public get threadId(): number {
     return this.#worker.threadId;
   }
 
-  terminate(): void {
+  public terminate(): void {
     this.#worker.removeAllListeners();
     void this.#worker.terminate();
     this.#worker.unref();
   }
 
-  restart(): void {
+  public restart(): void {
     this.restarts++;
     this.status = "busy";
     void this.#worker.terminate();
     this.#createNewWorker();
   }
 
-  checkMemoryUsage(): void {
+  private checkMemoryUsage(): void {
     this.#worker.postMessage({ type: "check-memory-usage" });
   }
 
-  postMessage(value: unknown, transferList?: readonly TransferListItem[] | undefined): void {
+  public postMessage(value: unknown, transferList?: readonly TransferListItem[] | undefined): void {
     this.#worker.postMessage(value, transferList);
   }
 }

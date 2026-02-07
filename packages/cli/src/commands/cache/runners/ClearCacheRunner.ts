@@ -4,10 +4,10 @@ import path from "path";
 import { rm, stat, unlink } from "fs/promises";
 
 export class ClearCacheRunner implements TargetRunner {
-  async shouldRun(): Promise<boolean> {
+  public async shouldRun(): Promise<boolean> {
     return true;
   }
-  async run(runOptions: TargetRunnerOptions): Promise<void> {
+  public async run(runOptions: TargetRunnerOptions): Promise<void> {
     const { target } = runOptions;
     const { clearPaths } = target.options!;
 

@@ -23,19 +23,19 @@ export class TaskInfo extends AsyncResource {
     }
   }
 
-  get id(): string {
+  public get id(): string {
     return this.options.id;
   }
 
-  get weight(): number {
+  public get weight(): number {
     return this.options.weight;
   }
 
-  get abortSignal(): AbortSignal | undefined {
+  public get abortSignal(): AbortSignal | undefined {
     return this.options.abortSignal;
   }
 
-  done(err: Error, results: unknown): void {
+  public done(err: Error, results: unknown): void {
     const { cleanup, worker, resolve, reject } = this.options;
 
     if (cleanup) {

@@ -71,7 +71,7 @@ export class BasicReporter implements Reporter {
     process.on("exit", () => process.stdout.write(terminal.showCursor));
   }
 
-  log(entry: LogEntry): void {
+  public log(entry: LogEntry): void {
     const data = entry.data;
     if (!data?.target || data.target.hidden) return;
 
@@ -92,7 +92,7 @@ export class BasicReporter implements Reporter {
     }
   }
 
-  summarize(schedulerRunSummary: SchedulerRunSummary): void {
+  public summarize(schedulerRunSummary: SchedulerRunSummary): void {
     clearInterval(this.updateTimer);
     process.stdout.write(terminal.clearLine);
 

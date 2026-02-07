@@ -6,13 +6,13 @@ describe("info command", () => {
   it("basic info test case", async () => {
     const repo = new Monorepo("basics-info");
 
-    repo.init();
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b");
+    await repo.init();
+    await repo.addPackage("a", ["b"]);
+    await repo.addPackage("b");
 
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("writeInfo", ["test"]);
+    const results = await repo.run("writeInfo", ["test"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
 
@@ -24,13 +24,13 @@ describe("info command", () => {
   it("scoped info test case", async () => {
     const repo = new Monorepo("scoped-info");
 
-    repo.init();
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b");
+    await repo.init();
+    await repo.addPackage("a", ["b"]);
+    await repo.addPackage("b");
 
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("writeInfo", ["test", "--to", "b"]);
+    const results = await repo.run("writeInfo", ["test", "--to", "b"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
     expect(jsonOutput).toMatchSnapshot();
@@ -40,14 +40,14 @@ describe("info command", () => {
 
   it("dependencies are resolved via noop tasks", async () => {
     const repo = new Monorepo("noop-task-info");
-    repo.init();
-    repo.addPackage("a", ["b"], { build: "echo 'building a'" });
+    await repo.init();
+    await repo.addPackage("a", ["b"], { build: "echo 'building a'" });
     // This task does not have a `build` script.
-    repo.addPackage("b", ["c"], {});
-    repo.addPackage("c", [], { build: "echo 'building c'" });
-    repo.install();
+    await repo.addPackage("b", ["c"], {});
+    await repo.addPackage("c", [], { build: "echo 'building c'" });
+    await repo.install();
 
-    const results = repo.run("writeInfo", ["build", "prepare"]);
+    const results = await repo.run("writeInfo", ["build", "prepare"]);
 
     const output = results.stdout + results.stderr;
     const infoJsonOutput: any = parseNdJson(output)[0];
@@ -70,14 +70,14 @@ describe("info command", () => {
 
   it("lage info drops direct dependencies when transtive and keeps __start", async () => {
     const repo = new Monorepo("transitive-info-dropped");
-    repo.init();
-    repo.addPackage("a", ["b", "c"]);
-    repo.addPackage("b", ["c", "d"]);
-    repo.addPackage("c", []);
-    repo.addPackage("d", [], { nobuild: "echo 'no build'" });
-    repo.install();
+    await repo.init();
+    await repo.addPackage("a", ["b", "c"]);
+    await repo.addPackage("b", ["c", "d"]);
+    await repo.addPackage("c", []);
+    await repo.addPackage("d", [], { nobuild: "echo 'no build'" });
+    await repo.install();
 
-    const results = repo.run("writeInfo", ["build"]);
+    const results = await repo.run("writeInfo", ["build"]);
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
@@ -96,15 +96,15 @@ describe("info command", () => {
 
   it("lage info in back compat mode keeps direct dependencies and drops __start", async () => {
     const repo = new Monorepo("transitive-info-dropped");
-    repo.init();
-    repo.addPackage("a", ["b", "c"]);
-    repo.addPackage("b", ["c", "d"]);
-    repo.addPackage("c", []);
-    repo.addPackage("d", [], { nobuild: "echo 'no build'" });
-    repo.install();
+    await repo.init();
+    await repo.addPackage("a", ["b", "c"]);
+    await repo.addPackage("b", ["c", "d"]);
+    await repo.addPackage("c", []);
+    await repo.addPackage("d", [], { nobuild: "echo 'no build'" });
+    await repo.install();
 
     const backCompatEnvVars = { DOMINO: "1" };
-    const results = repo.run("writeInfo", ["build"], false, { env: backCompatEnvVars });
+    const results = await repo.run("writeInfo", ["build"], false, { env: backCompatEnvVars });
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
@@ -124,8 +124,8 @@ describe("info command", () => {
   it("custom inputs, outputs and weight value", async () => {
     const repo = new Monorepo("scoped-info");
 
-    repo.init();
-    repo.setLageConfig(
+    await repo.init();
+    await repo.setLageConfig(
       `module.exports = {
         pipeline: {
           build: {
@@ -144,10 +144,10 @@ describe("info command", () => {
       };`
     );
 
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b");
-    repo.install();
-    const results = repo.run("writeInfo", ["test", "build"]);
+    await repo.addPackage("a", ["b"]);
+    await repo.addPackage("b");
+    await repo.install();
+    const results = await repo.run("writeInfo", ["test", "build"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
     expect(jsonOutput).toMatchSnapshot();
@@ -158,8 +158,8 @@ describe("info command", () => {
   it("custom options", async () => {
     const repo = new Monorepo("scoped-info");
 
-    repo.init();
-    repo.setLageConfig(
+    await repo.init();
+    await repo.setLageConfig(
       `module.exports = {
         pipeline: {
           build: ["^build"],
@@ -179,12 +179,12 @@ describe("info command", () => {
       };`
     );
 
-    repo.addPackage("a", ["b"]);
-    repo.addPackage("b");
+    await repo.addPackage("a", ["b"]);
+    await repo.addPackage("b");
 
-    repo.install();
+    await repo.install();
 
-    const results = repo.run("writeInfo", ["test", "build"]);
+    const results = await repo.run("writeInfo", ["test", "build"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
     expect(jsonOutput).toMatchSnapshot();

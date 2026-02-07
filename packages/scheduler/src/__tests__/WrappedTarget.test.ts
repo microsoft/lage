@@ -23,23 +23,23 @@ function createTarget(packageName: string): Target {
 
 class InProcPool implements Pool {
   constructor(private runner: TargetRunner) {}
-  exec(data: { target: Target; weight: number }, _weight: number, _setup: any, _teardown: any, abortSignal?: AbortSignal) {
+  public exec(data: { target: Target; weight: number }, _weight: number, _setup: any, _teardown: any, abortSignal?: AbortSignal) {
     return this.runner.run({ target: data.target, weight: data.weight, abortSignal });
   }
-  stats() {
+  public stats() {
     return {
       workerRestarts: 0,
       maxWorkerMemoryUsage: 0,
     };
   }
-  close() {
+  public close() {
     return Promise.resolve();
   }
 }
 
 class SkippyInProcPool implements Pool {
   constructor(private runner: TargetRunner) {}
-  async exec(
+  public async exec(
     data: { target: Target; weight: number },
     _weight: number,
     _setup: any,
@@ -52,13 +52,13 @@ class SkippyInProcPool implements Pool {
       hash: "1234",
     });
   }
-  stats() {
+  public stats() {
     return {
       workerRestarts: 0,
       maxWorkerMemoryUsage: 0,
     };
   }
-  close() {
+  public close() {
     return Promise.resolve();
   }
 }

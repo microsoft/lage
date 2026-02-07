@@ -8,7 +8,7 @@ import { pathToFileURL } from "url";
 export class TargetRunnerPicker {
   constructor(private options: TargetRunnerPickerOptions) {}
 
-  async pick(target: Target): Promise<TargetRunner> {
+  public async pick(target: Target): Promise<TargetRunner> {
     if (target.id === getStartTargetId()) {
       return new (await import("./NoOpRunner.js")).NoOpRunner();
     }
