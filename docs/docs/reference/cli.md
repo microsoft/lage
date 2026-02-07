@@ -189,7 +189,7 @@ Valid values are `silly`, `verbose`, `info`, `warn`, `error`. If `error` is pass
 
 By default, `lage` will interweave all the `stdout` and `stderr` from all active targets as they are running.
 
-Use the `--grouped` This may become a mess, so `lage` can group output messages together. These messages will only be displayed when the target is completed:
+The `--grouped` option can be used to group messages by target (package). The messages will only be displayed when the target is completed.
 
 ```
 lage build --verbose --grouped
@@ -199,24 +199,37 @@ lage build --verbose --grouped
 
 `lage` comes with various reporters which take the logged messages of the target runs, format them, and display them.
 
-You can pick the reporter by passing the `--reporter` flag:
+You can pick the reporter by passing the `--reporter` flag. This can be specified more than once, though it only makes sense to have a single reporter for console logging (others could log to a file).
 
 ```
 lage build --reporter json
 ```
 
-Available built-in reporters are: `default`, `azureDevops`, `fancy`, `json`, `npmLog`, `verboseFileLog` (or `vfl`), and `profile`. By default the log messages are formatted with the `default` reporter. The `profile` reporter is typically activated with the `--profile` option.
+Available reporters:
+
+<!-- prettier-ignore -->
+| Name | Internal class | Description |
+| ---- | ----- | ----------- |
+| `default`/not specified | `BasicReporter` or `LogReporter` | Usually if running in an interactive terminal, shows progress but not the names of currently running targets (unless progress is disabled or verbose or grouped are enabled). Otherwise, uses `npmLog`. |
+| `fancy` | `ProgressReporter` | Shows progress including the names of currently running targets, but is slower. This was the default in v2 prior to 2.14.16. |
+| `npmLog` (`old`) | `LogReporter` | This is the reporter from lage v1. It logs tasks without progress info. |
+| `azureDevops` (`adoLog`) | `AdoReporter` | Logs tasks  |
+| `json` | `JsonReporter` | Write logs to the console in JSON format |
+| `verboseFileLog` (`vfl`) | `VerboseFileLogReporter` | Writes to a file specified with `--log-file` |
+| `profile` | `ChromeTraceEventsReporter` | Writes a Chrome dev tools profile file. Typically enabled with `--profile` (use `--profile=filename` to customize the name). |
 
 #### Custom reporters
 
 You can also create and use your own custom reporters. Define them in your `lage.config.js`:
 
 ```javascript
-module.exports = {
+/** @type {import("lage").ConfigFileOptions} */
+const config = {
   reporters: {
     myReporter: "./reporters/my-custom-reporter.js"
   }
 };
+module.exports = config;
 ```
 
 The passed-in javascript file must be from a proper ESM module or `.mjs` file.

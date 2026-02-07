@@ -9,11 +9,21 @@ Create a `lage.config.js` file at the workspace root and place all your configur
 A short example:
 
 ```js title="/lage.config.js"
-/** @type {import("lage").ConfigOptions} */
+/** @type {import("lage").ConfigFileOptions} */
 const config = {
   pipeline: {
     build: ["^build"],
     test: ["build"]
+  },
+  // Update these according to your repo's build setup
+  cacheOptions: {
+    // Generated files in each package that will be saved into the cache
+    // (relative to package root; folders must end with **/*)
+    outputGlob: ["lib/**/*"],
+    // Changes to any of these files/globs will invalidate the cache (relative to repo root;
+    // folders must end with **/*). This should include your lock file and any other repo-wide
+    // configs or scripts that are outside a package but could invalidate previous output.
+    environmentGlob: ["package.json", "yarn.lock", "lage.config.js"]
   }
 };
 module.exports = config;
@@ -32,7 +42,7 @@ This example demonstrates many of the available options, including some advanced
 ```js twoslash title="/lage.config.js"
 /// <reference types="node" />
 // ---cut---
-/** @type {import("lage").ConfigOptions} */
+/** @type {import("lage").ConfigFileOptions} */
 const config = {
   pipeline: {
     build: ["^build"],

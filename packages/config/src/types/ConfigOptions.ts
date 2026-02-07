@@ -6,6 +6,10 @@ import type { TargetRunnerPickerOptions } from "@lage-run/runners";
 
 export type NpmClient = "npm" | "yarn" | "pnpm";
 
+/**
+ * lage options including defaults (after the config file is read).
+ * For the object in a config file, use `ConfigFileOptions` instead.
+ */
 export interface ConfigOptions {
   /**
    * Defines the task pipeline (task names, dependencies, and optional custom target configuration).
@@ -92,3 +96,9 @@ export interface ConfigOptions {
    */
   reporters: Record<string, string>;
 }
+
+/** Options for a lage configuration file */
+export type ConfigFileOptions = Partial<Omit<ConfigOptions, "cacheOptions">> & {
+  /** Backfill cache options */
+  cacheOptions?: Partial<CacheOptions>;
+};
