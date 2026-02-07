@@ -1,30 +1,28 @@
 {
   "name": "@lage-run/globby",
-  "version": "14.2.2",
-  "main": "lib/index.js",
-  "scripts": {
-    "build": "yarn types && yarn transpile",
-    "transpile": "esbuild src/index.mts --bundle --platform=node --target=node14 --format=cjs --outfile=lib/index.js",
-    "types": "yarn tsc && node scripts/rename.js && yarn dts-bundle-generator --config ./dts-bundle.config.js"
-  },
+  "version": "13.0.0",
   "license": "MIT",
-  "devDependencies": {
-    "@lage-run/monorepo-scripts": "workspace:^",
-    "dts-bundle-generator": "^9.5.1",
-    "esbuild": "^0.25.0",
-    "globby": "^14.0.2",
-    "typescript": "~5.9.3"
-  },
+  "description": "Bundled CJS wrapper of globby with caching support",
+  "main": "dist/index.js",
   "exports": {
     ".": {
+      "source": "./src/index.mts",
       "types": "./dist/index.d.ts",
-      "import": "./lib/index.js",
-      "require": "./lib/index.js",
-      "source": "./src/index.mts"
+      "default": "./dist/index.js"
     }
   },
+  "scripts": {
+    "build": "yarn types && yarn transpile",
+    "transpile": "esbuild src/index.mts --bundle --platform=node --target=node14 --format=cjs --outfile=dist/index.js --tree-shaking",
+    "types": "yarn run -T tsc && yarn bundle:dts",
+    "bundle:dts": "yarn run -T dts-bundle-generator --config ./dts-bundle.config.js"
+  },
+  "devDependencies": {
+    "@lage-run/monorepo-scripts": "workspace:^",
+    "esbuild": "^0.25.0",
+    "globby": "^13.0.0"
+  },
   "files": [
-    "lib/!(__*)",
-    "lib/!(__*)/**"
+    "dist"
   ]
 }

@@ -22,4 +22,4 @@ export function glob(patterns: string[], options?: Options): string[] {
   return cache.get(key) || [];
 }
 
-export { type Options };
+export type { Options };
