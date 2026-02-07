@@ -47,15 +47,27 @@ Next, add scripts inside the workspace root `package.json` to run `lage`. For ex
 }
 ```
 
-To specify that `test` depends on `build`, create a file `lage.config.js` at the repo root and add the following:
+To specify that `test` depends on `build`, create a file `lage.config.js` at the repo root and add the following. Also fill in the required `cacheOptions`.
 
 ```js
-module.exports = {
+/** @type {import("lage").ConfigFileOptions} */
+const config = {
   pipeline: {
     build: ["^build"],
     test: ["build"],
   },
+  // Update these according to your repo's build setup
+  cacheOptions: {
+    // Generated files in each package that will be saved into the cache
+    // (relative to package root; folders must end with **/*)
+    outputGlob: ["lib/**/*"],
+    // Changes to any of these files/globs will invalidate the cache (relative to repo root;
+    // folders must end with **/*). This should include your lock file and any other repo-wide
+    // configs or scripts that are outside a package but could invalidate previous output.
+    environmentGlob: ["package.json", "yarn.lock", "lage.config.js"],
+  },
 };
+module.exports = config;
 ```
 
 (You can find more details about this syntax in the [pipelines tutorial](https://microsoft.github.io/lage/docs/Tutorial/pipeline).)

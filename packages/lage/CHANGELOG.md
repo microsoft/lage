@@ -67,6 +67,7 @@ Thu, 15 Jan 2026 23:24:00 GMT
 - `@lage-run/cli`
   - Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)
   - Replace ProgressReporter as the default with a less fancy implementation (crhaglun@microsoft.com)
+    - This [improves performance](https://github.com/microsoft/lage/pull/967), but could be considered a **BREAKING CHANGE** if you'd like to see the package name which is currently being bundled. To restore the old behavior, use `--reporter=fancy`.
   - Add lint rule for no-floating-promises and fix several places (nemanjatesic@microsoft.com)
 - `@lage-run/config`
   - Update dependency workspace-tools to v0.40.0 (renovate@whitesourcesoftware.com)

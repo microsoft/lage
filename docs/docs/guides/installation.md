@@ -60,13 +60,25 @@ Next, add scripts inside the workspace root `package.json` to run `lage`. For ex
 Create a file `lage.config.js` at the workspace root, and configure task dependencies using the `pipeline`. For example:
 
 ```js title="/lage.config.js"
-module.exports = {
+/** @type {import("lage").ConfigFileOptions} */
+const config = {
   pipeline: {
     build: ["^build"],
     test: ["build"],
     lint: []
+  },
+  // Update these according to your repo's build setup
+  cacheOptions: {
+    // Generated files in each package that will be saved into the cache
+    // (relative to package root; folders must end with **/*)
+    outputGlob: ["lib/**/*"],
+    // Changes to any of these files/globs will invalidate the cache (relative to repo root;
+    // folders must end with **/*). This should include your lock file and any other repo-wide
+    // configs or scripts that are outside a package but could invalidate previous output.
+    environmentGlob: ["package.json", "yarn.lock", "lage.config.js"]
   }
 };
+module.exports = config;
 ```
 
 See the [Pipelines page](./pipeline.md) for more info about this syntax.

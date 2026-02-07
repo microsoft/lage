@@ -22,13 +22,15 @@ Futhermore, the developer is expected to keep track of an **implicit** graph of 
 To define the task dependency graph, use the `pipeline` key in `lage.config.js`. For example, this is the default generated configuration when you run `npx lage init`:
 
 ```js title="/lage.config.js"
-module.exports = {
+/** @type {import("lage").ConfigFileOptions} */
+const config = {
   pipeline: {
     build: ["^build"],
     test: ["build"],
     lint: []
   }
 };
+module.exports = config;
 ```
 
 Each key is a **task name**, and each value is an array of **task dependencies** (or an [advanced configuration](#advanced-pipeline-configuration) object).
@@ -130,7 +132,7 @@ Optionally, you can use an object for advanced pipeline task target configuratio
 See the [`TargetConfig` source](https://github.com/microsoft/lage/blob/master/packages/target-graph/src/types/TargetConfig.ts) for full details. There are also some examples in [lage's own config](https://github.com/microsoft/lage/blob/master/lage.config.js).
 
 ```js
-/** @type {import("lage").ConfigOptions} */
+/** @type {import("lage").ConfigFileOptions} */
 const config = {
   pipeline: {
     build: {
@@ -157,7 +159,7 @@ By default, tasks have `type: "npmScript"`, meaning they correspond to a script 
 Usually, the only reason you'd need to explicitly specify this type is
 
 ```js
-/** @type {import("lage").ConfigOptions} */
+/** @type {import("lage").ConfigFileOptions} */
 const config = {
   pipeline: {
     // "transpile" is a worker task for most packages
@@ -188,7 +190,7 @@ A task can be configured with `type: "noop"` to indicate that it does not corres
 This example (modified from lage's own configuration) defines a `build` "meta-task" that depends the `transpile` and `types` tasks which correspond , but does not correspond to any actual script in the packages.
 
 ```js
-/** @type {import("lage").ConfigOptions} */
+/** @type {import("lage").ConfigFileOptions} */
 const config = {
   pipeline: {
     transpile: [],

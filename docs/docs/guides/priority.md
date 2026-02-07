@@ -13,7 +13,8 @@ Lage provides the following options to customize the task priority. The higher t
 As of `lage` v2, you can now configure the priority inside the target pipeline configuration:
 
 ```js
-module.exports = {
+/** @type {import("lage").ConfigFileOptions} */
+const config = {
   pipeline: {
     build: ["^build"],
     test: ["build"],
@@ -23,6 +24,7 @@ module.exports = {
     }
   }
 };
+module.exports = config;
 ```
 
 ## Legacy (v1 + v2) configuration
@@ -30,7 +32,8 @@ module.exports = {
 To manually pick a package task to be higher priority, simply add a [`priorities` configuration](../reference/config.md) in `lage.config.js`:
 
 ```js
-module.exports = {
+/** @type {import("lage").ConfigFileOptions} */
+const config = {
   priorities: [
     {
       package: "foo",
@@ -39,4 +42,5 @@ module.exports = {
     }
   ]
 };
+module.exports = config;
 ```
