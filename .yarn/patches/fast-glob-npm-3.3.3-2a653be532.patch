@@ -1,0 +1,104 @@
+diff --git a/out/index.d.ts b/out/index.d.ts
+index 46823bb5ffe389587d33ad937c80240d025c8033..602f4b3f66598d4cc771f5660de72a9d6ced2098 100644
+--- a/out/index.d.ts
++++ b/out/index.d.ts
+@@ -1,40 +1,13 @@
+-/// <reference types="node" />
+-import * as taskManager from './managers/tasks';
+-import { Options as OptionsInternal } from './settings';
+-import { Entry as EntryInternal, FileSystemAdapter as FileSystemAdapterInternal, Pattern as PatternInternal } from './types';
+-type EntryObjectModePredicate = {
+-    [TKey in keyof Pick<OptionsInternal, 'objectMode'>]-?: true;
+-};
+-type EntryStatsPredicate = {
+-    [TKey in keyof Pick<OptionsInternal, 'stats'>]-?: true;
+-};
+-type EntryObjectPredicate = EntryObjectModePredicate | EntryStatsPredicate;
+-declare function FastGlob(source: PatternInternal | PatternInternal[], options: OptionsInternal & EntryObjectPredicate): Promise<EntryInternal[]>;
+-declare function FastGlob(source: PatternInternal | PatternInternal[], options?: OptionsInternal): Promise<string[]>;
++//
++// This patch works around issues with dts-bundle-generator incorrectly handling renamed types
++// in certain cases, especially with namespace exports.
++//
++import { OptionsInternal } from './settings';
++import { EntryInternal } from './types';
+ declare namespace FastGlob {
+     type Options = OptionsInternal;
++    // workaround for dts-bundle-generator bug with namespace exports
++    type FastGlobOptions = OptionsInternal;
+     type Entry = EntryInternal;
+-    type Task = taskManager.Task;
+-    type Pattern = PatternInternal;
+-    type FileSystemAdapter = FileSystemAdapterInternal;
+-    const glob: typeof FastGlob;
+-    const globSync: typeof sync;
+-    const globStream: typeof stream;
+-    const async: typeof FastGlob;
+-    function sync(source: PatternInternal | PatternInternal[], options: OptionsInternal & EntryObjectPredicate): EntryInternal[];
+-    function sync(source: PatternInternal | PatternInternal[], options?: OptionsInternal): string[];
+-    function stream(source: PatternInternal | PatternInternal[], options?: OptionsInternal): NodeJS.ReadableStream;
+-    function generateTasks(source: PatternInternal | PatternInternal[], options?: OptionsInternal): Task[];
+-    function isDynamicPattern(source: PatternInternal, options?: OptionsInternal): boolean;
+-    function escapePath(source: string): PatternInternal;
+-    function convertPathToPattern(source: string): PatternInternal;
+-    namespace posix {
+-        function escapePath(source: string): PatternInternal;
+-        function convertPathToPattern(source: string): PatternInternal;
+-    }
+-    namespace win32 {
+-        function escapePath(source: string): PatternInternal;
+-        function convertPathToPattern(source: string): PatternInternal;
+-    }
+ }
+ export = FastGlob;
+diff --git a/out/settings.d.ts b/out/settings.d.ts
+index 76a74f8a7b45fc79a00db925fd9cfdbbe1be1324..09dc7576987d059d835e7b500e4935e110d0e7a1 100644
+--- a/out/settings.d.ts
++++ b/out/settings.d.ts
+@@ -1,6 +1,6 @@
+ import { FileSystemAdapter, Pattern } from './types';
+ export declare const DEFAULT_FILE_SYSTEM_ADAPTER: FileSystemAdapter;
+-export type Options = {
++export type OptionsInternal = {
+     /**
+      * Return the absolute path for entries.
+      *
+@@ -158,7 +158,7 @@ export default class Settings {
+     readonly suppressErrors: boolean;
+     readonly throwErrorOnBrokenSymbolicLink: boolean;
+     readonly unique: boolean;
+-    constructor(_options?: Options);
++    constructor(_options?: OptionsInternal);
+     private _getValue;
+     private _getFileSystemMethods;
+ }
+diff --git a/out/types/index.d.ts b/out/types/index.d.ts
+index 6506cafd19c16068aae470e5ae4bf4813d7ede97..8f5f90640ecba0ebed09922e685edb0b43cf5877 100644
+--- a/out/types/index.d.ts
++++ b/out/types/index.d.ts
+@@ -1,13 +1,13 @@
+ /// <reference types="node" />
+ import * as fsWalk from '@nodelib/fs.walk';
+ export type ErrnoException = NodeJS.ErrnoException;
+-export type Entry = fsWalk.Entry;
+-export type EntryItem = string | Entry;
++export type EntryInternal = fsWalk.Entry;
++export type EntryItem = string | EntryInternal;
+ export type Pattern = string;
+ export type PatternRe = RegExp;
+ export type PatternsGroup = Record<string, Pattern[]>;
+ export type ReaderOptions = fsWalk.Options & {
+-    transform(entry: Entry): EntryItem;
++    transform(entry: EntryInternal): EntryItem;
+     deepFilter: DeepFilterFunction;
+     entryFilter: EntryFilterFunction;
+     errorFilter: ErrorFilterFunction;
+@@ -17,7 +17,7 @@ export type ReaderOptions = fsWalk.Options & {
+ export type ErrorFilterFunction = fsWalk.ErrorFilterFunction;
+ export type EntryFilterFunction = fsWalk.EntryFilterFunction;
+ export type DeepFilterFunction = fsWalk.DeepFilterFunction;
+-export type EntryTransformerFunction = (entry: Entry) => EntryItem;
++export type EntryTransformerFunction = (entry: EntryInternal) => EntryItem;
+ export type MicromatchOptions = {
+     dot?: boolean;
+     matchBase?: boolean;

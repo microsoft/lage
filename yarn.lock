@@ -1655,10 +1655,8 @@ __metadata:
   resolution: "@lage-run/globby@workspace:packages/globby"
   dependencies:
     "@lage-run/monorepo-scripts": "workspace:^"
-    dts-bundle-generator: "npm:^9.5.1"
     esbuild: "npm:^0.25.0"
-    globby: "npm:^14.0.2"
-    typescript: "npm:~5.9.3"
+    globby: "npm:^13.0.0"
   languageName: unknown
   linkType: soft
 
@@ -1688,6 +1686,7 @@ __metadata:
     "@types/jest": "npm:^30.0.0"
     "@types/node": "npm:^16.18.3"
     beachball: "npm:^2.63.0"
+    dts-bundle-generator: "patch:dts-bundle-generator@npm%3A9.5.1#~/.yarn/patches/dts-bundle-generator-npm-9.5.1-0927b6826f.patch"
     fast-glob: "npm:3.3.3"
     husky: "npm:^9.1.5"
     jest: "npm:^30.0.0"
@@ -1729,12 +1728,14 @@ __metadata:
     "@types/node": "npm:^16.18.3"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.7"
     "@typescript-eslint/parser": "npm:^5.30.7"
+    "@typescript-eslint/types": "npm:^5.30.7"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.20.0"
     eslint-plugin-file-extension-in-import-ts: "npm:^1.0.1"
     jest: "npm:^30.0.0"
     typescript: "npm:~5.9.3"
     workspace-tools: "npm:0.41.0"
+    zimmerframe: "npm:^1.1.4"
   bin:
     monorepo-scripts: bin/monorepo-scripts.js
   languageName: unknown
@@ -2420,7 +2421,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/types@npm:5.62.0":
+"@typescript-eslint/types@npm:5.62.0, @typescript-eslint/types@npm:^5.30.7":
   version: 5.62.0
   resolution: "@typescript-eslint/types@npm:5.62.0"
   checksum: 10c0/7febd3a7f0701c0b927e094f02e82d8ee2cada2b186fcb938bc2b94ff6fbad88237afc304cbaf33e82797078bbbb1baf91475f6400912f8b64c89be79bfa4ddf
@@ -3748,7 +3749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dts-bundle-generator@npm:^9.5.1":
+"dts-bundle-generator@npm:9.5.1":
   version: 9.5.1
   resolution: "dts-bundle-generator@npm:9.5.1"
   dependencies:
@@ -3757,6 +3758,18 @@ __metadata:
   bin:
     dts-bundle-generator: dist/bin/dts-bundle-generator.js
   checksum: 10c0/3685d3797b6cd252c5a27174a504193469e2a8d82188224767e522e2e8eb03de431107836232a0ac89bcfbc38caa0dcf2ec7fb81716e781185f8ea840b956bc2
+  languageName: node
+  linkType: hard
+
+"dts-bundle-generator@patch:dts-bundle-generator@npm%3A9.5.1#~/.yarn/patches/dts-bundle-generator-npm-9.5.1-0927b6826f.patch":
+  version: 9.5.1
+  resolution: "dts-bundle-generator@patch:dts-bundle-generator@npm%3A9.5.1#~/.yarn/patches/dts-bundle-generator-npm-9.5.1-0927b6826f.patch::version=9.5.1&hash=187e0e"
+  dependencies:
+    typescript: "npm:>=5.0.2"
+    yargs: "npm:^17.6.0"
+  bin:
+    dts-bundle-generator: dist/bin/dts-bundle-generator.js
+  checksum: 10c0/860489167c6370cdd9d4fb895fbb887ddc11a2bf8be98dbcbc45fb7bf79138935a84194f3dc3ba2ee5f797b58cd6965c600a5ab9c8fd6763ff6c0a85e1f1680b
   languageName: node
   linkType: hard
 
@@ -3929,13 +3942,6 @@ __metadata:
     has-tostringtag: "npm:^1.0.2"
     hasown: "npm:^2.0.2"
   checksum: 10c0/ef2ca9ce49afe3931cb32e35da4dcb6d86ab02592cfc2ce3e49ced199d9d0bb5085fc7e73e06312213765f5efa47cc1df553a6a5154584b21448e9fb8355b1af
-  languageName: node
-  linkType: hard
-
-"esbuild-plugin-alias@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "esbuild-plugin-alias@npm:0.2.1"
-  checksum: 10c0/a67bc6bc2744fc8637f7321f00c1f00e4fae86c182662421738ebfabf3ad344967b9c667185c6c34d9edd5b289807d34bfdceef94620e94e0a45683534af69e0
   languageName: node
   linkType: hard
 
@@ -4313,7 +4319,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:3.3.3, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.1, fast-glob@npm:^3.3.3":
+"fast-glob@npm:3.3.3, fast-glob@npm:^3.3.1":
   version: 3.3.3
   resolution: "fast-glob@npm:3.3.3"
   dependencies:
@@ -4323,6 +4329,19 @@ __metadata:
     merge2: "npm:^1.3.0"
     micromatch: "npm:^4.0.8"
   checksum: 10c0/f6aaa141d0d3384cf73cbcdfc52f475ed293f6d5b65bfc5def368b09163a9f7e5ec2b3014d80f733c405f58e470ee0cc451c2937685045cddcdeaa24199c43fe
+  languageName: node
+  linkType: hard
+
+"fast-glob@patch:fast-glob@npm%3A3.3.3#~/.yarn/patches/fast-glob-npm-3.3.3-2a653be532.patch":
+  version: 3.3.3
+  resolution: "fast-glob@patch:fast-glob@npm%3A3.3.3#~/.yarn/patches/fast-glob-npm-3.3.3-2a653be532.patch::version=3.3.3&hash=fce876"
+  dependencies:
+    "@nodelib/fs.stat": "npm:^2.0.2"
+    "@nodelib/fs.walk": "npm:^1.2.3"
+    glob-parent: "npm:^5.1.2"
+    merge2: "npm:^1.3.0"
+    micromatch: "npm:^4.0.8"
+  checksum: 10c0/4c4cfa214a613e794b8e62e4d139321d9bb5b10e13418a2450257c178adacff4d859b77ed3c367d273fb116fa2e5d6d2e9def0ae194555c4bc95b790de7feebf
   languageName: node
   linkType: hard
 
@@ -4897,7 +4916,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^14.0.2, globby@npm:^14.1.0":
+"globby@npm:^13.0.0":
+  version: 13.2.2
+  resolution: "globby@npm:13.2.2"
+  dependencies:
+    dir-glob: "npm:^3.0.1"
+    fast-glob: "npm:^3.3.0"
+    ignore: "npm:^5.2.4"
+    merge2: "npm:^1.4.1"
+    slash: "npm:^4.0.0"
+  checksum: 10c0/a8d7cc7cbe5e1b2d0f81d467bbc5bc2eac35f74eaded3a6c85fc26d7acc8e6de22d396159db8a2fc340b8a342e74cac58de8f4aee74146d3d146921a76062664
+  languageName: node
+  linkType: hard
+
+"globby@npm:^14.1.0":
   version: 14.1.0
   resolution: "globby@npm:14.1.0"
   dependencies:
@@ -6100,13 +6132,9 @@ __metadata:
     "@lage-run/cli": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/runners": "workspace:^"
-    backfill-config: "npm:6.7.1"
-    dts-bundle-generator: "npm:^9.5.1"
     esbuild: "npm:^0.25.0"
-    esbuild-plugin-alias: "npm:^0.2.1"
     fsevents: "npm:~2.3.2"
     glob-hasher: "npm:^1.4.2"
-    workspace-tools: "npm:0.41.0"
   dependenciesMeta:
     fsevents:
       optional: true
@@ -7576,6 +7604,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"slash@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "slash@npm:4.0.0"
+  checksum: 10c0/b522ca75d80d107fd30d29df0549a7b2537c83c4c4ecd12cd7d4ea6c8aaca2ab17ada002e7a1d78a9d736a0261509f26ea5b489082ee443a3a810586ef8eff18
+  languageName: node
+  linkType: hard
+
 "slash@npm:^5.1.0":
   version: 5.1.0
   resolution: "slash@npm:5.1.0"
@@ -8643,5 +8678,12 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: 10c0/dceb44c28578b31641e13695d200d34ec4ab3966a5729814d5445b194933c096b7ced71494ce53a0e8820685d1d010df8b2422e5bf2cdea7e469d97ffbea306f
+  languageName: node
+  linkType: hard
+
+"zimmerframe@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "zimmerframe@npm:1.1.4"
+  checksum: 10c0/9470cbf22cefae975ab413c7158a119d082b354ddcf0da48a842f2f42246fa15943cd9b92c047de39db38015e3b866e32f383bc217e8e4f4192945c7d425536b
   languageName: node
   linkType: hard

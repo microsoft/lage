@@ -16,11 +16,13 @@
     "@types/node": "^16.18.3",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
+    "@typescript-eslint/types": "^5.30.7",
     "depcheck": "^1.4.7",
     "eslint": "^8.20.0",
     "eslint-plugin-file-extension-in-import-ts": "^1.0.1",
     "jest": "^30.0.0",
     "typescript": "~5.9.3",
-    "workspace-tools": "0.41.0"
+    "workspace-tools": "0.41.0",
+    "zimmerframe": "^1.1.4"
   }
 }
