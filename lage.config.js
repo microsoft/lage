@@ -10,6 +10,7 @@ const fastGlob = require("fast-glob");
 const config = {
   pipeline: {
     "lage#bundle": ["^^transpile", "types"],
+    // Note that transpile/types/bundle are overridden later for the @lage-run/globby package
     types: {
       type: "worker",
       options: {

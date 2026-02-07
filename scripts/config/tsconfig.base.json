@@ -4,6 +4,7 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "declaration": true,
+    "emitDeclarationOnly": true,
     "isolatedModules": true,
     "lib": ["ES2020"],
     "allowJs": true,

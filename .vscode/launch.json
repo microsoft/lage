@@ -22,8 +22,7 @@
       },
       "runtimeArgs": [],
       "sourceMaps": true,
-      "cwd": "${workspaceRoot}",
-      "protocol": "inspector"
+      "cwd": "${workspaceRoot}"
     },
     {
       "name": "Debug current open test",
@@ -35,6 +34,17 @@
       "sourceMaps": true,
       "outputCapture": "std",
       "console": "integratedTerminal"
+    },
+    {
+      "name": "Debug dts-bundle-generator (lage)",
+      "request": "launch",
+      "type": "node",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["run", "bundle:dts"],
+      "cwd": "${workspaceFolder}/packages/lage",
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "sourceMaps": true
     }
   ]
 }
