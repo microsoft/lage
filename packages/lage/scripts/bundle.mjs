@@ -6,20 +6,20 @@ import { fileURLToPath } from "url";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(dirname, "..");
-const runnerDirs = [path.resolve(packageRoot, "../runners/lib"), path.resolve(packageRoot, "../cli/lib/commands/cache/runners")];
+const runnerDir = path.resolve(packageRoot, "../runners/lib");
+const outdir = "dist";
+const runnerOutDir = path.join(packageRoot, outdir, "runners");
 
 console.log("Bundling with esbuild...");
 
 // Due to the fact that workers require the runner to be in the same directory, we need to copy the runners to the dist folder
-for (const runnerDir of runnerDirs) {
-  for (const runner of fs.readdirSync(runnerDir)) {
-    // By convention, only copy things that end with "Runner.js"
-    if (runner.endsWith("Runner.js")) {
-      const src = path.join(runnerDir, runner);
-      const dest = path.join(packageRoot, "dist/runners", runner);
-      fs.mkdirSync(path.dirname(dest), { recursive: true });
-      fs.copyFileSync(src, dest);
-    }
+fs.mkdirSync(runnerOutDir, { recursive: true });
+for (const runner of fs.readdirSync(runnerDir)) {
+  // By convention, only copy things that end with "Runner.js"
+  if (runner.endsWith("Runner.js")) {
+    const src = path.join(runnerDir, runner);
+    const dest = path.join(runnerOutDir, runner);
+    fs.copyFileSync(src, dest);
   }
 }
 
@@ -31,7 +31,7 @@ await esbuild.build({
     "workers/targetWorker": "@lage-run/scheduler/lib/workers/targetWorker.js",
     singleTargetWorker: "@lage-run/cli/lib/commands/server/singleTargetWorker.js",
   },
-  outdir: "dist",
+  outdir,
   bundle: true,
   platform: "node",
   target: ["node14"],
@@ -49,8 +49,8 @@ await esbuild.build({
 });
 
 // Add a shebang to the executable files
-for (const file of ["lage", "lage-server"]) {
-  const filePath = path.join(packageRoot, "dist", file + ".js");
+for (const bin of ["lage", "lage-server"]) {
+  const filePath = path.join(packageRoot, outdir, bin + ".js");
   const content = fs.readFileSync(filePath, "utf8");
   fs.writeFileSync(filePath, "#!/usr/bin/env node\n" + content);
 }

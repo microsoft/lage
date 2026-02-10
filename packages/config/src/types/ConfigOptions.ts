@@ -13,6 +13,7 @@ export type NpmClient = "npm" | "yarn" | "pnpm";
 export interface ConfigOptions {
   /**
    * Defines the task pipeline (task names, dependencies, and optional custom target configuration).
+   * See [full pipeline docs](https://microsoft.github.io/lage/docs/guides/pipeline) for more details.
    *
    * Dependency syntax:
    * - No prefix for dependencies on tasks for the same package.

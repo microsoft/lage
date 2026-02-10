@@ -5,7 +5,7 @@ import lockfile from "proper-lockfile";
 import execa from "execa";
 import { getBinScripts } from "../getBinPaths.js";
 
-export interface launchServerInBackgroundOptions {
+export interface LaunchServerInBackgroundOptions {
   logger: Logger;
   root: string;
   host: string;
@@ -25,7 +25,7 @@ export async function launchServerInBackground({
   timeout,
   args,
   nodeArg,
-}: launchServerInBackgroundOptions): Promise<void> {
+}: LaunchServerInBackgroundOptions): Promise<void> {
   const lockfilePath = path.join(root, `node_modules/.cache/lage/.lage-server-${host}-${port}.pid`);
 
   logger.info(`Starting server on http://${host}:${port}`);
