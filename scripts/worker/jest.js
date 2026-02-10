@@ -1,17 +1,30 @@
-/** @import { TargetRunnerOptions } from "@/TargetRunner" */
+/** @import { WorkerRunnerOptions } from "../types.js" */
+const fs = require("fs");
 const { runCLI } = require("jest");
+const path = require("path");
 
 /**
- * @param {TargetRunnerOptions} data
+ * This worker is used for `lage run test`, in place of the per-package `test` script.
+ *
+ * Note that if running `test` for an individual package, it will use that package's `test` script instead
+ * (typically `yarn run -T jest`).
+ *
+ * @param {WorkerRunnerOptions} data
  */
 async function jest({ target, weight }) {
+  if (!fs.existsSync(path.join(target.cwd, "jest.config.js"))) {
+    console.log("No jest.config.js found - skipping");
+    return;
+  }
+
   console.log(`Running ${target.id}, maxWorkers: ${weight}`);
 
   const { results } = await runCLI(
     {
+      // Instead of adding more options here, prefer adding them to jest.config.js unless they're truly
+      // specific to running in this lage worker context.
       maxWorkers: weight,
       rootDir: target.cwd,
-      passWithNoTests: true,
       verbose: true,
       _: [],
       $0: "",

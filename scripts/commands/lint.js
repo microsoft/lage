@@ -9,7 +9,7 @@ const lintWorker = require("../worker/lint");
   }
 
   return lintWorker({
-    target: { packageName: packageInfo.name, cwd: path.dirname(packageInfo.packageJsonPath), task: "lint" },
+    target: { packageName: packageInfo.name, cwd: path.dirname(packageInfo.packageJsonPath) },
     taskArgs: process.argv.slice(2),
   });
 })().catch((error) => {

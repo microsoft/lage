@@ -1,4 +1,4 @@
-/** @import { Target } from "@/TargetGraph" */
+/** @import { WorkerRunnerOptions } from "../types" */
 const ts = require("typescript");
 const path = require("path");
 const { existsSync } = require("fs");
@@ -6,30 +6,32 @@ const { existsSync } = require("fs");
 /** @type {ts.Program | undefined} */
 let oldProgram;
 
-const log = (/** @type {*} */ msg) => {
-  process.stdout.write(String(msg) + "\n");
-};
-
 /**
- * The type here should be `WorkerRunnerOptions & TargetRunnerOptions`, but we only specify the
- * needed properties so the runner function can be reused by commands/types.js.
- * @param {{ target: Pick<Target, 'packageName' | 'cwd'> }} data
+ * This worker is used for `lage run types`, in place of the per-package `types` script
+ * (except for `@lage-run/globby`, which per lage.config.js uses its custom `types` script).
+ *
+ * Note that if running `types` for an individual package, it will use that package's `types` script instead
+ * (typically `yarn run -T tsc`).
+ *
+ * @param {WorkerRunnerOptions} data
  */
 async function run(data) {
-  const { target } = data;
+  const { target, taskArgs } = data;
+
+  const verbose = taskArgs.includes("--verbose");
 
   const tsconfigFile = "tsconfig.json";
   const tsconfigJsonFile = path.join(target.cwd, tsconfigFile);
 
   // Find tsconfig.json
   if (!existsSync(tsconfigJsonFile)) {
-    log("no tsconfig.json found - skipping this package");
+    console.log("no tsconfig.json found - skipping");
     // pass
     return;
   }
 
   // Parse tsconfig
-  log(`Parsing config...`);
+  verbose && console.log(`Parsing config...`);
   const parsedCommandLine = ts.getParsedCommandLineOfConfigFile(
     tsconfigJsonFile,
     {},
@@ -50,10 +52,12 @@ async function run(data) {
     throw new Error("Could not parse tsconfig.json");
   }
 
+  // This should NOT be modified here! Instead, any options updates should be made to tsconfig.base.json
+  // so that they're also reflected if used by the per-package `types` script (`yarn run -T tsc`).
   const compilerOptions = parsedCommandLine.options;
 
   // Creating compilation host program
-  log(`Creating host compiler...`);
+  verbose && console.log(`Creating host compiler...`);
   const compilerHost = ts.createCompilerHost(compilerOptions);
 
   const program = ts.createProgram(parsedCommandLine.fileNames, compilerOptions, compilerHost, oldProgram);
@@ -68,11 +72,11 @@ async function run(data) {
 
   const allErrors = [];
 
-  log(`Compiling...`);
+  console.log(`Compiling...`);
   try {
     program.emit();
   } catch (e) {
-    log(`Encountered error while transpiling: ${/** @type {ts.Diagnostic} */ (e).messageText}`);
+    console.error(`Encountered error while transpiling: ${/** @type {ts.Diagnostic} */ (e).messageText}`);
     throw new Error("Encountered error while transpiling");
   }
   let hasErrors = false;
@@ -85,12 +89,12 @@ async function run(data) {
   }
 
   if (hasErrors) {
-    log(`Type errors found in ${target.packageName}`);
-    log(ts.formatDiagnosticsWithColorAndContext(allErrors, compilerHost));
+    console.error(`Type errors found in ${target.packageName}`);
+    console.error(ts.formatDiagnosticsWithColorAndContext(allErrors, compilerHost));
 
     throw new Error("Failed to compile");
   } else {
-    log("Compiled successfully");
+    console.log("Compiled successfully");
 
     return;
   }

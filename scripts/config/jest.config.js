@@ -27,6 +27,7 @@ moduleNameMapper["^(\\.{1,2}/.*)\\.js$"] = "$1";
 /** @type {import("jest").Config} */
 const config = {
   clearMocks: true,
+  passWithNoTests: true,
   extensionsToTreatAsEsm: [".ts"],
   testMatch: ["**/?(*.)+(spec|test).ts?(x)"],
   testPathIgnorePatterns: ["/node_modules/"],

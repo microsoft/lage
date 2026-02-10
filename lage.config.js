@@ -10,7 +10,7 @@ const fastGlob = require("fast-glob");
 const config = {
   pipeline: {
     "lage#bundle": ["^^transpile", "types"],
-    // Note that transpile/types/bundle are overridden later for the @lage-run/globby package
+    // Note that transpile/types are overridden later for the @lage-run/globby package
     types: {
       type: "worker",
       options: {
@@ -37,7 +37,7 @@ const config = {
     test: {
       type: "worker",
       weight: (target) => {
-        return fastGlob.sync("tests/**/*.test.ts", { cwd: target.cwd }).length;
+        return fastGlob.sync("src/__tests__/**/*.test.ts", { cwd: target.cwd }).length;
       },
       options: {
         worker: path.join(__dirname, "scripts/worker/jest.js"),

@@ -17,8 +17,8 @@
   "scripts": {
     "build": "yarn types && yarn transpile",
     "transpile": "monorepo-scripts transpile",
-    "types": "monorepo-scripts tsc",
-    "test": "monorepo-scripts jest",
+    "types": "yarn run -T tsc",
+    "test": "yarn run -T jest",
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {

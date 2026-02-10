@@ -11,6 +11,8 @@ const { getPackageInfo } = require("workspace-tools");
 
   await transpileWorker({
     target: { packageName: packageJson.name, cwd: packageRoot },
+    // no CLI args are respected for the swc wrapper
+    taskArgs: [],
   });
 })().catch((error) => {
   process.exitCode = 1;

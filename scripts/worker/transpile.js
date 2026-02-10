@@ -1,4 +1,4 @@
-/** @import { Target } from "@/TargetGraph" */
+/** @import { BasicWorkerRunnerOptions } from "../types.js" */
 const fs = require("fs");
 const path = require("path");
 const fsPromises = require("fs/promises");
@@ -8,9 +8,13 @@ const { findProjectRoot } = require("workspace-tools");
 const root = findProjectRoot(process.cwd());
 
 /**
- * The type here should be `WorkerRunnerOptions & TargetRunnerOptions`, but we only specify the
- * needed properties so the runner function can be reused by commands/transpile.js.
- * @param {{ target: Pick<Target, 'packageName' | 'cwd'> }} data
+ * This worker is used for `lage run transpile`, in place of the per-package `transpile` script
+ * (except for `@lage-run/globby`, which per lage.config.js uses its custom `transpile` script).
+ *
+ * Since this worker function has some extra logic to use swc, it's reused by the per-package `transpile` script
+ * (`monorepo-scripts transpile` which runs commands/transpile.js) to avoid duplication.
+ *
+ * @param {BasicWorkerRunnerOptions} data
  */
 async function transpile({ target }) {
   if (target.packageName?.includes("docs")) {
@@ -20,6 +24,7 @@ async function transpile({ target }) {
   // Start from the src directory to avoid unnecessary transpilation of scripts etc
   const srcDir = path.join(target.cwd, "src");
   if (!fs.existsSync(srcDir)) {
+    console.log("No src directory found - skipping");
     return;
   }
 
