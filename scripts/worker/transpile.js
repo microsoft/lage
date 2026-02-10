@@ -1,4 +1,5 @@
 /** @import { Target } from "@/TargetGraph" */
+const fs = require("fs");
 const path = require("path");
 const fsPromises = require("fs/promises");
 const swc = require("@swc/core");
@@ -16,7 +17,13 @@ async function transpile({ target }) {
     return;
   }
 
-  const queue = [target.cwd];
+  // Start from the src directory to avoid unnecessary transpilation of scripts etc
+  const srcDir = path.join(target.cwd, "src");
+  if (!fs.existsSync(srcDir)) {
+    return;
+  }
+
+  const queue = [srcDir];
 
   while (queue.length > 0) {
     const dir = /** @type {string} */ (queue.shift());
@@ -26,15 +33,15 @@ async function transpile({ target }) {
     for (let entry of entries) {
       const fullPath = path.join(dir, entry.name);
 
-      if (entry.isDirectory() && entry.name !== "node_modules" && entry.name !== "lib" && entry.name !== "tests" && entry.name !== "dist") {
+      if (entry.isDirectory() && !entry.name.startsWith("__")) {
         queue.push(fullPath);
-      } else if (entry.isFile() && (entry.name.endsWith(".ts") || entry.name.endsWith(".tsx"))) {
+      } else if (entry.isFile() && entry.name.endsWith(".ts")) {
+        // ^ TOOD: this will be broken if there are .js files that need to go to lib, or .mts files (fix if needed in future)
         // Only replace src to 'lib' in the project tree.
         // The repo could be cloned in a folder with 'src' and we don't want to replace that with 'lib'
         const targetRelativePath = path
           .relative(target.cwd, fullPath)
           .replace("src" + path.sep, "lib" + path.sep)
-          .replace(".tsx", ".js")
           .replace(".ts", ".js");
         const dest = path.join(target.cwd, targetRelativePath);
         const swcOutput = await swc.transformFile(fullPath, {

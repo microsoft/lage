@@ -13,6 +13,7 @@ const extraIgnoreMatches = {
   "@lage-run/monorepo-scripts": ["@typescript-eslint/*", "eslint-plugin-file-extension-in-import-ts", "@types/*"],
   "@lage-run/rpc": ["@bufbuild/protoc-gen-es", "@connectrpc/protoc-gen-connect-es"],
   "@lage-run/e2e-tests": ["@lage-run/cli"],
+  lage: ["@lage-run/cli", "@lage-run/runners"],
 };
 
 /**

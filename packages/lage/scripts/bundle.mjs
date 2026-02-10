@@ -1,32 +1,58 @@
+// @ts-check
 import * as esbuild from "esbuild";
-import alias from "esbuild-plugin-alias";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-async function bundle(entry, outfile, addBanner = false) {
-  await esbuild.build({
-    entryPoints: [entry],
-    bundle: true,
-    platform: "node",
-    target: ["node16"],
-    outfile,
-    sourcemap: true,
-    external: [
-      "fsevents",
-      "glob-hasher",
-      "./runners/NpmScriptsRunner.js",
-      "./runners/NoOpRunner.js",
-      "./runners/WorkerRunner.js",
-      "./workers/targetWorker",
-      "./singleTargetWorker.js",
-    ],
-    ...(addBanner && { banner: { js: "#!/usr/bin/env node" } }),
-    minify: true,
-  });
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+const packageRoot = path.resolve(dirname, "..");
+const runnerDirs = [path.resolve(packageRoot, "../runners/lib"), path.resolve(packageRoot, "../cli/lib/commands/cache/runners")];
+
+console.log("Bundling with esbuild...");
+
+// Due to the fact that workers require the runner to be in the same directory, we need to copy the runners to the dist folder
+for (const runnerDir of runnerDirs) {
+  for (const runner of fs.readdirSync(runnerDir)) {
+    // By convention, only copy things that end with "Runner.js"
+    if (runner.endsWith("Runner.js")) {
+      const src = path.join(runnerDir, runner);
+      const dest = path.join(packageRoot, "dist/runners", runner);
+      fs.mkdirSync(path.dirname(dest), { recursive: true });
+      fs.copyFileSync(src, dest);
+    }
+  }
 }
 
-await Promise.all([
-  bundle("@lage-run/cli/lib/cli.js", "dist/lage.js", true),
-  bundle("@lage-run/cli/lib/server.js", "dist/lage-server.js", true),
-  bundle("./index.js", "dist/main.js"),
-  bundle("@lage-run/scheduler/lib/workers/targetWorker.js", "dist/workers/targetWorker.js"),
-  bundle("@lage-run/cli/lib/commands/server/singleTargetWorker.js", "dist/singleTargetWorker.js"),
-]);
+await esbuild.build({
+  entryPoints: {
+    lage: "@lage-run/cli/lib/cli.js",
+    "lage-server": "@lage-run/cli/lib/server.js",
+    main: "./index.js",
+    "workers/targetWorker": "@lage-run/scheduler/lib/workers/targetWorker.js",
+    singleTargetWorker: "@lage-run/cli/lib/commands/server/singleTargetWorker.js",
+  },
+  outdir: "dist",
+  bundle: true,
+  platform: "node",
+  target: ["node14"],
+  sourcemap: true,
+  external: [
+    "fsevents",
+    "glob-hasher",
+    "./runners/NpmScriptRunner.js",
+    "./runners/NoOpRunner.js",
+    "./runners/WorkerRunner.js",
+    "./workers/targetWorker",
+    "./singleTargetWorker.js",
+  ],
+  minify: true,
+});
+
+// Add a shebang to the executable files
+for (const file of ["lage", "lage-server"]) {
+  const filePath = path.join(packageRoot, "dist", file + ".js");
+  const content = fs.readFileSync(filePath, "utf8");
+  fs.writeFileSync(filePath, "#!/usr/bin/env node\n" + content);
+}
+
+console.log("Bundling succeeded\n");

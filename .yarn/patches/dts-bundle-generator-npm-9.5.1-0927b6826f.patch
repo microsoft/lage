@@ -1,0 +1,232 @@
+diff --git a/config-schema.d.ts b/config-schema.d.ts
+index 38cb141223fe79fcc00c60c0cdc5e19490f9421a..3111af423e59f186a726200fad2302d615783a51 100644
+--- a/config-schema.d.ts
++++ b/config-schema.d.ts
+@@ -48,23 +48,30 @@ export interface OutputOptions {
+ 	 */
+ 	exportReferencedTypes?: boolean;
+ }
++
++//
++// This patch adds regexp support to certain options.
++// Once https://github.com/timocov/dts-bundle-generator/pull/355 is merged and published,
++// update to that version and remove this patch.
++//
++
+ export interface LibrariesOptions {
+ 	/**
+ 	 * Array of package names from node_modules to inline typings from.
+ 	 * Used types will be inlined into the output file.
+ 	 */
+-	inlinedLibraries?: string[];
++	inlinedLibraries?: (string | RegExp)[];
+ 	/**
+ 	 * Array of package names from node_modules to import typings from.
+ 	 * Used types will be imported using `import { First, Second } from 'library-name';`.
+ 	 * By default all libraries will be imported (except inlined libraries and libraries from @types).
+ 	 */
+-	importedLibraries?: string[];
++	importedLibraries?: (string | RegExp)[];
+ 	/**
+ 	 * Array of package names from @types to import typings from via the triple-slash reference directive.
+ 	 * By default all packages are allowed and will be used according to their usages.
+ 	 */
+-	allowedTypesLibraries?: string[];
++	allowedTypesLibraries?: (string | RegExp)[];
+ }
+ export interface EntryPointConfig {
+ 	/**
+diff --git a/dist/bundle-generator.d.ts b/dist/bundle-generator.d.ts
+index 3575bc66b7a0739e944d2bfa136867f76010c7df..d9d8c56f0fecfebb24ee35c1773adc1447e29bd2 100644
+--- a/dist/bundle-generator.d.ts
++++ b/dist/bundle-generator.d.ts
+@@ -53,18 +53,18 @@ export interface LibrariesOptions {
+ 	 * Array of package names from node_modules to inline typings from.
+ 	 * Used types will be inlined into the output file.
+ 	 */
+-	inlinedLibraries?: string[];
++	inlinedLibraries?: (string | RegExp)[];
+ 	/**
+ 	 * Array of package names from node_modules to import typings from.
+ 	 * Used types will be imported using `import { First, Second } from 'library-name';`.
+ 	 * By default all libraries will be imported (except inlined libraries and libraries from @types).
+ 	 */
+-	importedLibraries?: string[];
++	importedLibraries?: (string | RegExp)[];
+ 	/**
+ 	 * Array of package names from @types to import typings from via the triple-slash reference directive.
+ 	 * By default all packages are allowed and will be used according to their usages.
+ 	 */
+-	allowedTypesLibraries?: string[];
++	allowedTypesLibraries?: (string | RegExp)[];
+ }
+ export interface EntryPointConfig {
+ 	/**
+diff --git a/dist/compile-dts.js b/dist/compile-dts.js
+index 0585517f56446c9c51990dec6bf451f92458dea9..c171c8bb83a8b86ada4f3d6768d5911329f7b698 100644
+--- a/dist/compile-dts.js
++++ b/dist/compile-dts.js
+@@ -100,7 +100,8 @@ function createCachingCompilerHost(compilerOptions) {
+ function changeExtensionToDts(fileName) {
+     let ext;
+     // `path.extname` doesn't handle `.d.ts` cases (it returns `.ts` instead of `.d.ts`)
+-    if (fileName.endsWith(ts.Extension.Dts)) {
++    // FIX: .d.mts cases
++    if (fileName.endsWith(ts.Extension.Dts) || fileName.endsWith(ts.Extension.Dmts) || fileName.endsWith(ts.Extension.Dcts)) {
+         return fileName;
+     }
+     if (fileName.endsWith(ts.Extension.Cts)) {
+diff --git a/dist/config-file/check-schema-match.js b/dist/config-file/check-schema-match.js
+index b2c8b2a2ec12360476853e7b48e8ae70e8106a8f..046ae58d0c63e4cb82ea86adeb591fba55720bf7 100644
+--- a/dist/config-file/check-schema-match.js
++++ b/dist/config-file/check-schema-match.js
+@@ -6,6 +6,7 @@ exports.schemaPrimitiveValues = {
+     requiredBoolean: true,
+     string: '',
+     requiredString: 'REQUIRED',
++    stringOrRegExp: 'StringOrRegExp',
+ };
+ const schemaRequiredValues = new Set([
+     exports.schemaPrimitiveValues.requiredBoolean,
+@@ -21,43 +22,62 @@ function checkSchemaMatch(value, schema, errors) {
+ exports.checkSchemaMatch = checkSchemaMatch;
+ // eslint-disable-next-line complexity
+ function checkSchemaMatchRecursively(value, schema, prefix, errors) {
+-    if (typeof schema === 'boolean' || typeof schema === 'string') {
+-        const schemeType = typeof schema;
+-        if (value === undefined && schemaRequiredValues.has(schema)) {
+-            errors.push(`Value for "${prefix}" is required and must have type "${schemeType}"`);
++    if (value === undefined && schemaRequiredValues.has(schema)) {
++        errors.push(`Value for "${prefix}" is required and must have type "${typeof schema}"`);
++        return false;
++    }
++    if (value === undefined || value === null) {
++        return true;
++    }
++    if (schema === exports.schemaPrimitiveValues.stringOrRegExp) {
++        if (!(value instanceof RegExp) && typeof value !== 'string') {
++            errors.push(`Value for "${prefix}" must be a string or RegExp`);
+             return false;
+         }
++        return true;
++    }
++    if (typeof schema === 'boolean' || typeof schema === 'string') {
++        const schemeType = typeof schema;
+         const valueType = typeof value;
+-        if (value !== undefined && typeof schema !== valueType) {
+-            errors.push(`Type of values for "${prefix}" is not the same, expected=${schemeType}, actual=${valueType}`);
++        if (schemeType !== valueType) {
++            errors.push(`Incorrect value type for "${prefix}": expected=${schemeType}, actual=${valueType}`);
+             return false;
+         }
+         return true;
+     }
+-    if (value === undefined) {
+-        return true;
+-    }
+     if (Array.isArray(schema)) {
+         if (!Array.isArray(value)) {
++            errors.push(`Value for "${prefix}" must be an array`);
+             return false;
+         }
+         let result = true;
+         for (let i = 0; i < value.length; ++i) {
+-            if (!checkSchemaMatchRecursively(value[i], schema[0], `${prefix}[${i}]`, errors)) {
++            if (value[i] === undefined || value[i] === null) {
++                // undefined is not valid within arrays
++                errors.push(`Value for "${prefix}[${i}]" is ${value[i]}`);
++                result = false;
++            }
++            else if (!checkSchemaMatchRecursively(value[i], schema[0], `${prefix}[${i}]`, errors)) {
+                 result = false;
+             }
+         }
+         return result;
+     }
++    if (typeof value !== 'object') {
++        errors.push(`Value for "${prefix}" must be an object`);
++        return false;
++    }
++    // At this point the schema and T are objects, but the compiler can't infer it
++    const schemaObject = schema;
+     let result = true;
+     for (const valueKey of Object.keys(value)) {
+-        if (schema[valueKey] === undefined) {
+-            errors.push(`Exceeded property "${valueKey}" found in ${prefix.length === 0 ? 'the root' : prefix}`);
++        if (schemaObject[valueKey] === undefined) {
++            errors.push(`Excess property "${valueKey}" found in ${prefix.length === 0 ? 'the root' : prefix}`);
+             result = false;
+         }
+     }
+-    for (const schemaKey of Object.keys(schema)) {
+-        const isSubValueSchemeMatched = checkSchemaMatchRecursively(value[schemaKey], schema[schemaKey], prefix.length === 0 ? schemaKey : `${prefix}.${schemaKey}`, errors);
++    for (const schemaKey of Object.keys(schemaObject)) {
++        const isSubValueSchemeMatched = checkSchemaMatchRecursively(value[schemaKey], schemaObject[schemaKey], prefix.length === 0 ? schemaKey : `${prefix}.${schemaKey}`, errors);
+         result = result && isSubValueSchemeMatched;
+     }
+     return result;
+diff --git a/dist/config-file/load-config-file.js b/dist/config-file/load-config-file.js
+index 44a30ef61469c85d6bcc87067240f8de3126d9cf..f53acf45f4e81bb08b1442c88e5eb2009f913645 100644
+--- a/dist/config-file/load-config-file.js
++++ b/dist/config-file/load-config-file.js
+@@ -44,9 +44,9 @@ const configScheme = {
+             failOnClass: check_schema_match_1.schemaPrimitiveValues.boolean,
+             noCheck: check_schema_match_1.schemaPrimitiveValues.boolean,
+             libraries: {
+-                allowedTypesLibraries: [check_schema_match_1.schemaPrimitiveValues.string],
+-                importedLibraries: [check_schema_match_1.schemaPrimitiveValues.string],
+-                inlinedLibraries: [check_schema_match_1.schemaPrimitiveValues.string],
++                allowedTypesLibraries: [check_schema_match_1.schemaPrimitiveValues.stringOrRegExp],
++                importedLibraries: [check_schema_match_1.schemaPrimitiveValues.stringOrRegExp],
++                inlinedLibraries: [check_schema_match_1.schemaPrimitiveValues.stringOrRegExp],
+             },
+             output: {
+                 inlineDeclareGlobals: check_schema_match_1.schemaPrimitiveValues.boolean,
+diff --git a/dist/helpers/typescript.js b/dist/helpers/typescript.js
+index b61f02fb2545238718631ce4791ac71910f4d0eb..efb8d1a33493032c79b589c35226353a8a9e58a9 100644
+--- a/dist/helpers/typescript.js
++++ b/dist/helpers/typescript.js
+@@ -254,7 +254,7 @@ function modifiersToMap(modifiers) {
+     return modifiers.reduce((result, modifier) => {
+         result[modifier.kind] = true;
+         return result;
+-    }, 
++    },
+     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+     {});
+ }
+@@ -302,7 +302,7 @@ function recreateRootLevelNodeWithModifiersImpl(node, modifiersMap, newName) {
+         return ts.factory.createExportAssignment(modifiers, node.isExportEquals, node.expression);
+     }
+     if (ts.isExportDeclaration(node)) {
+-        return ts.factory.createExportDeclaration(modifiers, node.isTypeOnly, node.exportClause, node.moduleSpecifier, 
++        return ts.factory.createExportDeclaration(modifiers, node.isTypeOnly, node.exportClause, node.moduleSpecifier,
+         // eslint-disable-next-line deprecation/deprecation
+         node.attributes || node.assertClause);
+     }
+@@ -313,7 +313,7 @@ function recreateRootLevelNodeWithModifiersImpl(node, modifiersMap, newName) {
+         return ts.factory.createFunctionExpression(modifiers, node.asteriskToken, newName || node.name, node.typeParameters, node.parameters, node.type, node.body);
+     }
+     if (ts.isImportDeclaration(node)) {
+-        return ts.factory.createImportDeclaration(modifiers, node.importClause, node.moduleSpecifier, 
++        return ts.factory.createImportDeclaration(modifiers, node.importClause, node.moduleSpecifier,
+         // eslint-disable-next-line deprecation/deprecation
+         node.attributes || node.assertClause);
+     }
+diff --git a/dist/module-info.js b/dist/module-info.js
+index acbd74b2e71563ebe324a538156a9a18122f4314..3f4d96999187d2c8e84960f43d739591e1343fc8 100644
+--- a/dist/module-info.js
++++ b/dist/module-info.js
+@@ -79,8 +79,10 @@ function shouldLibraryBeImported(npmLibraryName, typesLibraryName, importedLibra
+     }
+     return false;
+ }
+-function isLibraryAllowed(libraryName, allowedArray) {
+-    return allowedArray === undefined || allowedArray.indexOf(libraryName) !== -1;
++function isLibraryAllowed(libraryName, allowed) {
++    return Array.isArray(allowed)
++        ? allowed.some(item => typeof item === 'string' ? item === libraryName : item.test(libraryName))
++        : true;
+ }
+ function remapToTypesFromNodeModules(pathRelativeToTypesRoot) {
+     return `node_modules/@types/${pathRelativeToTypesRoot}`;

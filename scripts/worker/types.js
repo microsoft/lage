@@ -16,7 +16,7 @@ const log = (/** @type {*} */ msg) => {
  * @param {{ target: Pick<Target, 'packageName' | 'cwd'> }} data
  */
 async function run(data) {
-  const { target } = data; // Lage target data
+  const { target } = data;
 
   const tsconfigFile = "tsconfig.json";
   const tsconfigJsonFile = path.join(target.cwd, tsconfigFile);
@@ -49,9 +49,6 @@ async function run(data) {
   if (!parsedCommandLine) {
     throw new Error("Could not parse tsconfig.json");
   }
-
-  // for "types," we only generate declaration files
-  parsedCommandLine.options.emitDeclarationOnly = true;
 
   const compilerOptions = parsedCommandLine.options;
 

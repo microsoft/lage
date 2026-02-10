@@ -1,0 +1,12 @@
+{
+  "extends": "@lage-run/monorepo-scripts/config/tsconfig.base.json",
+  // Type check the scripts (the options are suitable for that).
+  // There's no meaningful source code since this is a bundle of a CLI tool.
+  "compilerOptions": {
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    "module": "Node16",
+    "moduleResolution": "Node16"
+  },
+  "include": ["scripts", "dts-bundle.config.js"]
+}

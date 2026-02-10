@@ -13,8 +13,11 @@
     "lage-server": "dist/lage-server.js"
   },
   "scripts": {
-    "bundle": "node scripts/prebuild.js && yarn dts-bundle && node scripts/bundle.mjs",
-    "dts-bundle": "dts-bundle-generator --config ./dts-bundle.config.js && node ./scripts/update-dts-bundle.js"
+    "build": "yarn types",
+    "types": "yarn run -T tsc",
+    "bundle": "yarn bundle:js && yarn bundle:dts",
+    "bundle:js": "node scripts/bundle.mjs",
+    "bundle:dts": "yarn run -T dts-bundle-generator --config ./dts-bundle.config.js"
   },
   "dependencies": {
     "glob-hasher": "^1.4.2"
@@ -26,19 +29,9 @@
     "@lage-run/cli": "workspace:^",
     "@lage-run/monorepo-scripts": "workspace:^",
     "@lage-run/runners": "workspace:^",
-    "backfill-config": "6.7.1",
-    "dts-bundle-generator": "^9.5.1",
-    "esbuild": "^0.25.0",
-    "esbuild-plugin-alias": "^0.2.1",
-    "workspace-tools": "0.41.0"
+    "esbuild": "^0.25.0"
   },
   "files": [
-    "dist/*.d.ts",
-    "dist/lage.js",
-    "dist/lage.js.map",
-    "dist/runners/*",
-    "dist/workers/*",
-    "dist/singleTargetWorker.js",
-    "dist/singleTargetWorker.js.map"
+    "dist"
   ]
 }
