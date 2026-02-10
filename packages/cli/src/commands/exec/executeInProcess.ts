@@ -6,8 +6,8 @@ import { getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { expandTargetDefinition } from "./expandTargetDefinition.js";
 import { TargetRunnerPicker } from "@lage-run/runners";
-import { type Logger } from "@lage-run/logger";
-import { runnerPickerOptions } from "../../runnerPickerOptions.js";
+import type { Logger } from "@lage-run/logger";
+import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 
 interface ExecuteInProcessOptions {
   cwd?: string;
@@ -22,10 +22,6 @@ interface ExecuteInProcessOptions {
  * 1. if cwd overridden in args, use it to read the package.json directly
  * 2. if cwd not overridden and root is not cwd, use the cwd to read the package.json directly
  * 3. if root is cwd, assume the task is global
- *
- * @param options
- * @param command
- * @returns
  */
 function parsePackageInfoFromArgs(root: string, cwd: string | undefined, packageName: string | undefined, task: string) {
   if (packageName && task) {
@@ -107,7 +103,7 @@ export async function executeInProcess({ cwd, args, nodeArg, logger }: ExecuteIn
   const definition = expandTargetDefinition(isGlobal ? undefined : info.name, task, pipeline, config.cacheOptions.outputGlob ?? []);
 
   const target = isGlobal ? factory.createGlobalTarget(task, definition) : factory.createPackageTarget(info.name, task, definition);
-  const pickerOptions = runnerPickerOptions(nodeArg, config.npmClient, taskArgs);
+  const pickerOptions = getBuiltInRunners({ nodeArg, npmCmd: config.npmClient, taskArgs });
 
   const runnerPicker = new TargetRunnerPicker(pickerOptions);
   const runner = await runnerPicker.pick(target);

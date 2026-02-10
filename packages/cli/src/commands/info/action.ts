@@ -15,7 +15,7 @@ import { type Target, getStartTargetId } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
 import { TargetRunnerPicker } from "@lage-run/runners";
 import { getBinPaths } from "../../getBinPaths.js";
-import { runnerPickerOptions } from "../../runnerPickerOptions.js";
+import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 import { parseServerOption } from "../parseServerOption.js";
 import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
 import { glob } from "@lage-run/globby";
@@ -137,7 +137,7 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
     sinceIgnoreGlobs: options.ignore.concat(config.ignore),
   });
 
-  const pickerOptions = runnerPickerOptions(options.nodeArg, config.npmClient, taskArgs);
+  const pickerOptions = getBuiltInRunners({ nodeArg: options.nodeArg, npmCmd: config.npmClient, taskArgs });
 
   const runnerPicker = new TargetRunnerPicker(pickerOptions);
 

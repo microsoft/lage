@@ -1,4 +1,4 @@
-/** @import { WorkerRunnerOptions } from "../types" */
+/** @import { WorkerRunnerFunction } from "../types" */
 const ts = require("typescript");
 const path = require("path");
 const { existsSync } = require("fs");
@@ -13,7 +13,7 @@ let oldProgram;
  * Note that if running `types` for an individual package, it will use that package's `types` script instead
  * (typically `yarn run -T tsc`).
  *
- * @param {WorkerRunnerOptions} data
+ * @type {WorkerRunnerFunction}
  */
 async function run(data) {
   const { target, taskArgs } = data;
