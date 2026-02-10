@@ -12,7 +12,7 @@
   "scripts": {
     "build": "yarn types && yarn transpile",
     "transpile": "monorepo-scripts transpile",
-    "types": "monorepo-scripts tsc",
+    "types": "yarn run -T tsc",
     "lint": "monorepo-scripts lint"
   },
   "devDependencies": {

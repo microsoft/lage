@@ -4,11 +4,7 @@
     "emitDeclarationOnly": false,
     "noEmit": true,
     "paths": {
-      // Special path mappings to avoid relative references in individual files
-      "@/TargetGraph": ["../packages/target-graph/src/index.ts"],
-      "@/TargetRunner": ["../packages/runners/src/types/TargetRunner.ts"],
-      "@/WorkerRunner": ["../packages/runners/src/WorkerRunner.ts"],
-      // Required for above types to resolve @lage-run/target-graph if not built yet
+      // Required for resolution of @lage-run/target-graph by references in types.ts if not built yet
       "@lage-run/target-graph": ["../packages/target-graph/src/index.ts"]
     }
   },

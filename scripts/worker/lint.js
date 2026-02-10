@@ -1,20 +1,22 @@
-/** @import { Target } from "@/TargetGraph" */
-/** @import { WorkerRunnerOptions } from "@/WorkerRunner" */
+/** @import { BasicWorkerRunnerOptions } from "../types.js" */
 const { ESLint } = require("eslint");
 const path = require("path");
 const { getPackageInfo } = require("workspace-tools");
 
 /**
- * The type here should be `WorkerRunnerOptions & TargetRunnerOptions`, but we only specify the
- * needed properties so the runner function can be reused by commands/lint.js.
- * @param {WorkerRunnerOptions & { target: Pick<Target, 'packageName' | 'cwd' | 'task'> }} data
+ * This worker is used for `lage run lint`, in place of the per-package `lint` script.
+ *
+ * Since this worker function has some extra logic/config, it's reused by the per-package `lint` script
+ * (`monorepo-scripts lint` which runs commands/lint.js) to avoid duplication.
+ *
+ * @param {BasicWorkerRunnerOptions} data
  */
 async function lint(data) {
   const { target, taskArgs } = data;
   const packageJson = getPackageInfo(target.cwd);
 
-  if (!packageJson?.scripts?.[target.task]) {
-    process.stdout.write(`No script found for ${target.task} in ${target.cwd}... skipped`);
+  if (!packageJson?.scripts?.lint) {
+    process.stdout.write('No "lint" script found - skipping');
     // pass
     return;
   }
@@ -37,10 +39,8 @@ async function lint(data) {
   const formatter = await eslint.loadFormatter("stylish");
   const resultText = await formatter.format(results);
 
-  // 3. Modify the files with the fixed code.
   await ESLint.outputFixes(results);
 
-  // 4. Output it.
   if (resultText) {
     process.stdout.write(resultText + "\n");
   }
