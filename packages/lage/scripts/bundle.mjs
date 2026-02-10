@@ -8,20 +8,10 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(dirname, "..");
 const runnerDir = path.resolve(packageRoot, "../runners/lib");
 const outdir = "dist";
-const runnerOutDir = path.join(packageRoot, outdir, "runners");
+
+fs.rmSync(path.join(packageRoot, outdir), { recursive: true, force: true });
 
 console.log("Bundling with esbuild...");
-
-// Due to the fact that workers require the runner to be in the same directory, we need to copy the runners to the dist folder
-fs.mkdirSync(runnerOutDir, { recursive: true });
-for (const runner of fs.readdirSync(runnerDir)) {
-  // By convention, only copy things that end with "Runner.js"
-  if (runner.endsWith("Runner.js")) {
-    const src = path.join(runnerDir, runner);
-    const dest = path.join(runnerOutDir, runner);
-    fs.copyFileSync(src, dest);
-  }
-}
 
 await esbuild.build({
   entryPoints: {
@@ -30,6 +20,16 @@ await esbuild.build({
     main: "./index.js",
     "workers/targetWorker": "@lage-run/scheduler/lib/workers/targetWorker.js",
     singleTargetWorker: "@lage-run/cli/lib/commands/server/singleTargetWorker.js",
+    // Bundle the runners instead of simply copying, in case they reference other files
+    ...Object.fromEntries(
+      fs
+        .readdirSync(runnerDir)
+        .filter((file) => file.endsWith("Runner.js"))
+        .map((runner) => {
+          const name = path.basename(runner, ".js");
+          return [`runners/${name}`, `@lage-run/runners/lib/${runner}`];
+        })
+    ),
   },
   outdir,
   bundle: true,
@@ -46,6 +46,7 @@ await esbuild.build({
     "./singleTargetWorker.js",
   ],
   minify: true,
+  logLevel: "info",
 });
 
 // Add a shebang to the executable files
