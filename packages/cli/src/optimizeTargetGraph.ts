@@ -12,7 +12,7 @@ export async function optimizeTargetGraph(
     }
 
     if (target.id === getStartTargetId()) {
-      return createBackCompatGraph ? true : false;
+      return createBackCompatGraph;
     }
 
     const runner = await runnerPicker.pick(target);

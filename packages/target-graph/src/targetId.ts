@@ -9,13 +9,8 @@ export function getTargetId(pkgName: string | undefined, task: string): string {
  * turns a target id into a package name and task name in this format: "packageName#taskName" where packageName is optional.
  *
  * If the packageName is //, that means that the task is meant to be run at the repo root level.
- *
- * @internal
  */
-export function getPackageAndTask(targetId: string): {
-  packageName?: string;
-  task: string;
-} {
+export function getPackageAndTask(targetId: string): { packageName: string | undefined; task: string } {
   if (targetId.startsWith("Δ")) {
     return { packageName: undefined, task: targetId.slice(1) };
   } else if (targetId.includes("#")) {

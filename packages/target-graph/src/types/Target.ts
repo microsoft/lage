@@ -20,7 +20,7 @@ export interface Target {
   task: string;
 
   /**
-   * Type of the target. Determines the runner for the target.
+   * Which runner to use for the target: e.g. `'npmScript'`, `'worker', `'noop'`
    * @default "npmScript"
    */
   type?: string;
@@ -67,7 +67,7 @@ export interface Target {
   cache?: boolean;
 
   /**
-   * An optional override of environmentGlob for cases when targets that need different patterns
+   * Override the top-level `environmentGlob` config for this target if it needs different patterns.
    */
   environmentGlob?: string[];
 
@@ -86,7 +86,7 @@ export interface Target {
   weight?: number;
 
   /**
-   * Run options for the Target Runner. (e.g. `{ env: ...process.env, colors: true, ... }`)
+   * Options for the target runner. (e.g. `{ env: ...process.env, colors: true, ... }`)
    */
   options?: Record<string, any>;
 
