@@ -2,6 +2,65 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Tue, 10 Feb 2026 22:12:02 GMT",
+      "version": "0.12.3",
+      "tag": "@lage-run/target-graph_v0.12.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Add/enforce explicit visibility modifiers"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update TargetConfig to reuse relevant properties from Target"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update docs"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update dependency workspace-tools to v0.41.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 24 Jan 2026 09:01:35 GMT",
       "version": "0.12.2",
       "tag": "@lage-run/target-graph_v0.12.2",

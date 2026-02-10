@@ -2,6 +2,41 @@
   "name": "@lage-run/rpc",
   "entries": [
     {
+      "date": "Tue, 10 Feb 2026 22:12:02 GMT",
+      "version": "1.4.3",
+      "tag": "@lage-run/rpc_v1.4.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 24 Jan 2026 09:01:35 GMT",
       "version": "1.4.2",
       "tag": "@lage-run/rpc_v1.4.2",

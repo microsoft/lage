@@ -2,6 +2,47 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Tue, 10 Feb 2026 22:12:02 GMT",
+      "version": "0.1.29",
+      "tag": "@lage-run/cache-github-actions_v0.1.29",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          }
+        ],
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update dependency workspace-tools to v0.41.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 24 Jan 2026 09:01:35 GMT",
       "version": "0.1.28",
       "tag": "@lage-run/cache-github-actions_v0.1.28",

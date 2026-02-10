@@ -2,6 +2,47 @@
   "name": "@lage-run/globby",
   "entries": [
     {
+      "date": "Tue, 10 Feb 2026 22:12:02 GMT",
+      "version": "13.0.1",
+      "tag": "@lage-run/globby_v13.0.1",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update docs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Switch to version 13 to match Node 14. Fix the bundled types and add a readme."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 24 Jan 2026 09:01:35 GMT",
       "version": "14.2.2",
       "tag": "@lage-run/globby_v14.2.2",

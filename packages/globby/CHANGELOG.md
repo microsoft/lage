@@ -1,8 +1,18 @@
 # Change Log - @lage-run/globby
 
-<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 13.0.1
+
+Tue, 10 Feb 2026 22:12:02 GMT
+
+### Patches
+
+- Update docs (elcraig@microsoft.com)
+- Switch to version 13 to match Node 14. Fix the bundled types and add a readme. (elcraig@microsoft.com)
+- Ensure only the needed files are published (elcraig@microsoft.com)
 
 ## 14.2.2
 

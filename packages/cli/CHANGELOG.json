@@ -2,6 +2,77 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Tue, 10 Feb 2026 22:12:02 GMT",
+      "version": "0.33.3",
+      "tag": "@lage-run/cli_v0.33.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Fix lint issues"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Add/enforce explicit visibility modifiers"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Delete unused ClearCacheRunner and PruneCacheRunner (now handled with backfill)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update docs"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update dependency workspace-tools to v0.41.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Export ConfigFileOptions type, and improve init command's generated config"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 24 Jan 2026 09:01:35 GMT",
       "version": "0.33.2",
       "tag": "@lage-run/cli_v0.33.2",

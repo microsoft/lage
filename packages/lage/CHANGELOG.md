@@ -1,8 +1,77 @@
 # Change Log - lage
 
-<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.18
+
+Tue, 10 Feb 2026 22:12:02 GMT
+
+### Patches
+
+- `@lage-run/cache-github-actions`
+  - Update dependency workspace-tools to v0.41.0 (renovate@whitesourcesoftware.com)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+- `@lage-run/cache`
+  - Add/enforce explicit visibility modifiers (elcraig@microsoft.com)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+  - Update docs (elcraig@microsoft.com)
+- `@lage-run/cli`
+  - Add/enforce explicit visibility modifiers (elcraig@microsoft.com)
+  - Delete unused ClearCacheRunner and PruneCacheRunner (now handled with backfill) (elcraig@microsoft.com)
+  - Update docs (elcraig@microsoft.com)
+  - Update dependency workspace-tools to v0.41.0 (renovate@whitesourcesoftware.com)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+  - Export ConfigFileOptions type, and improve init command's generated config (elcraig@microsoft.com)
+- `@lage-run/config`
+  - Update docs (elcraig@microsoft.com)
+  - Update dependency workspace-tools to v0.41.0 (renovate@whitesourcesoftware.com)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+  - Add ConfigFileOptions type (elcraig@microsoft.com)
+- `@lage-run/format-hrtime`
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+- `@lage-run/globby`
+  - Update docs (elcraig@microsoft.com)
+  - Switch to version 13 to match Node 14. Fix the bundled types and add a readme. (elcraig@microsoft.com)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+- `@lage-run/hasher`
+  - Update dependency workspace-tools to v0.41.0 (renovate@whitesourcesoftware.com)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+  - Clean up TargetHasher internals (elcraig@microsoft.com)
+- `@lage-run/logger`
+  - Add/enforce explicit visibility modifiers (elcraig@microsoft.com)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+- `@lage-run/reporters`
+  - Add/enforce explicit visibility modifiers (elcraig@microsoft.com)
+  - Update dependency @ms-cloudpack/task-reporter to v0.19.0 (email not defined)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+- `@lage-run/rpc`
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+- `@lage-run/runners`
+  - Add/enforce explicit visibility modifiers (elcraig@microsoft.com)
+  - Update docs (elcraig@microsoft.com)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+- `@lage-run/scheduler-types`
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+- `@lage-run/scheduler`
+  - Add/enforce explicit visibility modifiers (elcraig@microsoft.com)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+- `@lage-run/target-graph`
+  - Add/enforce explicit visibility modifiers (elcraig@microsoft.com)
+  - Update TargetConfig to reuse relevant properties from Target (elcraig@microsoft.com)
+  - Update docs (elcraig@microsoft.com)
+  - Update dependency workspace-tools to v0.41.0 (renovate@whitesourcesoftware.com)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+- `@lage-run/worker-threads-pool`
+  - Add/enforce explicit visibility modifiers (elcraig@microsoft.com)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
+- `lage`
+  - Bundle the runner files (elcraig@microsoft.com)
+  - Simplify the types bundle setup (elcraig@microsoft.com)
+  - Update dependency workspace-tools to v0.41.0 (renovate@whitesourcesoftware.com)
+  - Remove unused PruneCacheRunner and ClearCacheRunner (elcraig@microsoft.com)
+  - Ensure only the needed files are published (elcraig@microsoft.com)
 
 ## 2.14.17
 

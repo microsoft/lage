@@ -2,6 +2,580 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 10 Feb 2026 22:12:02 GMT",
+      "version": "2.14.18",
+      "tag": "lage_v2.14.18",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Fix lint issues"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Doc updates"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/format-hrtime",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/format-hrtime",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/format-hrtime",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Fix lint issues"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update tsconfig extends path (same settings)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update build scripts"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update scripts"
+          },
+          {
+            "package": "lage",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update readme"
+          }
+        ],
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update dependency workspace-tools to v0.41.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Add/enforce explicit visibility modifiers"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update docs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Add/enforce explicit visibility modifiers"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Delete unused ClearCacheRunner and PruneCacheRunner (now handled with backfill)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update docs"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update dependency workspace-tools to v0.41.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Export ConfigFileOptions type, and improve init command's generated config"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update docs"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/config",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update dependency workspace-tools to v0.41.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Add ConfigFileOptions type"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/format-hrtime",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update docs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Switch to version 13 to match Node 14. Fix the bundled types and add a readme."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/globby",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/hasher",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update dependency workspace-tools to v0.41.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Clean up TargetHasher internals"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Add/enforce explicit visibility modifiers"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Add/enforce explicit visibility modifiers"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/reporters",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update dependency @ms-cloudpack/task-reporter to v0.19.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Add/enforce explicit visibility modifiers"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update docs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Add/enforce explicit visibility modifiers"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Add/enforce explicit visibility modifiers"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update TargetConfig to reuse relevant properties from Target"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update docs"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update dependency workspace-tools to v0.41.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Add/enforce explicit visibility modifiers"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Bundle the runner files"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Simplify the types bundle setup"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "lage",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Update dependency workspace-tools to v0.41.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Remove unused PruneCacheRunner and ClearCacheRunner"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "dfe795fc789b356457124e761f4ab3c9e1e1087c",
+            "comment": "Ensure only the needed files are published"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 24 Jan 2026 09:01:35 GMT",
       "version": "2.14.17",
       "tag": "lage_v2.14.17",

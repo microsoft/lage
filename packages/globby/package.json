@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/globby",
-  "version": "13.0.0",
+  "version": "13.0.1",
   "license": "MIT",
   "description": "Bundled CJS wrapper of globby with caching support",
   "main": "dist/index.js",

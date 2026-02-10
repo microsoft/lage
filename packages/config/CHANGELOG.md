@@ -1,8 +1,19 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.7.3
+
+Tue, 10 Feb 2026 22:12:02 GMT
+
+### Patches
+
+- Update docs (elcraig@microsoft.com)
+- Update dependency workspace-tools to v0.41.0 (renovate@whitesourcesoftware.com)
+- Ensure only the needed files are published (elcraig@microsoft.com)
+- Add ConfigFileOptions type (elcraig@microsoft.com)
 
 ## 0.7.2
 

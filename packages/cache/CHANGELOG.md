@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cache
 
-<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.5
+
+Tue, 10 Feb 2026 22:12:02 GMT
+
+### Patches
+
+- Add/enforce explicit visibility modifiers (elcraig@microsoft.com)
+- Ensure only the needed files are published (elcraig@microsoft.com)
+- Update docs (elcraig@microsoft.com)
 
 ## 1.4.4
 

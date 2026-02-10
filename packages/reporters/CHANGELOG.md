@@ -1,8 +1,18 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Sat, 24 Jan 2026 09:01:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.3.8
+
+Tue, 10 Feb 2026 22:12:02 GMT
+
+### Patches
+
+- Add/enforce explicit visibility modifiers (elcraig@microsoft.com)
+- Update dependency @ms-cloudpack/task-reporter to v0.19.0 (email not defined)
+- Ensure only the needed files are published (elcraig@microsoft.com)
 
 ## 1.3.7
 
