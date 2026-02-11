@@ -48,7 +48,8 @@ The `jest-worker.js` implementation will use the calculated `weight` in its call
 ```js title="/scripts/workers/jest-worker.js"
 const { runCLI } = require("jest");
 
-module.exports = async function jest(data) {
+/** @type {import('lage').WorkerRunnerFunction} */
+async function jest(data) {
   const { target, weight } = data;
   console.log(`Running ${target.id} with a maxWorker setting of ${weight}`);
 
@@ -67,7 +68,9 @@ module.exports = async function jest(data) {
   } else {
     throw new Error("FAILED");
   }
-};
+}
+
+module.exports = jest;
 ```
 
 And just like that, `lage` and `jest` work in harmony to provide the best developer experience via remote cache, scoped test skipping by package dependencies, and cooperating worker pool via weighted targets.
