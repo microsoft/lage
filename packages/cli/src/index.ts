@@ -1,3 +1,13 @@
-export type { CacheOptions, ConfigOptions, ConfigFileOptions, Priority, PipelineDefinition, LoggerOptions } from "@lage-run/config";
-export type { TargetRunnerPickerOptions } from "@lage-run/runners";
+export type { CacheOptions, ConfigFileOptions, ConfigOptions, LoggerOptions, PipelineDefinition, Priority } from "@lage-run/config";
+export type {
+  NpmScriptRunnerOptions,
+  NpmScriptTargetOptions,
+  TargetRunnerPickerOptions,
+  TargetRunOptions,
+  TargetRunResult,
+  WorkerRunnerFunction,
+  WorkerRunnerFunctionOptions,
+  WorkerRunnerOptions,
+  WorkerTargetOptions,
+} from "@lage-run/runners";
 export type { Target, TargetConfig } from "@lage-run/target-graph";

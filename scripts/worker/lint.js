@@ -1,4 +1,4 @@
-/** @import { BasicWorkerRunnerOptions } from "../types.js" */
+/** @import { BasicWorkerRunnerFunction } from "../types.js" */
 const { ESLint } = require("eslint");
 const path = require("path");
 const { getPackageInfo } = require("workspace-tools");
@@ -9,7 +9,7 @@ const { getPackageInfo } = require("workspace-tools");
  * Since this worker function has some extra logic/config, it's reused by the per-package `lint` script
  * (`monorepo-scripts lint` which runs commands/lint.js) to avoid duplication.
  *
- * @param {BasicWorkerRunnerOptions} data
+ * @type {BasicWorkerRunnerFunction}
  */
 async function lint(data) {
   const { target, taskArgs } = data;

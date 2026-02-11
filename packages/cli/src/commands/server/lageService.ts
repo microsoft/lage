@@ -9,7 +9,7 @@ import { type Pool, AggregatedPool } from "@lage-run/worker-threads-pool";
 import { getInputFiles, type PackageTree, TargetHasher } from "@lage-run/hasher";
 import { getOutputFiles } from "./getOutputFiles.js";
 import { MemoryStream } from "./MemoryStream.js";
-import { runnerPickerOptions } from "../../runnerPickerOptions.js";
+import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
 import type { TargetRun } from "@lage-run/scheduler-types";
 import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
@@ -110,7 +110,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
       stderr: true,
       workerData: {
         runners: {
-          ...runnerPickerOptions(nodeArg, config.npmClient, taskArgs),
+          ...getBuiltInRunners({ nodeArg, npmCmd: config.npmClient, taskArgs }),
           ...config.runners,
           shouldCache: false,
           shouldResetCache: false,
@@ -188,7 +188,7 @@ export async function createLageService({
         tasks,
       });
 
-      const runners = runnerPickerOptions(request.nodeOptions, config.npmClient, request.taskArgs);
+      const runners = getBuiltInRunners({ nodeArg: request.nodeOptions, npmCmd: config.npmClient, taskArgs: request.taskArgs });
 
       const id = getTargetId(request.packageName, request.task);
 

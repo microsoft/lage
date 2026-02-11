@@ -1,5 +1,5 @@
 // @ts-check
-/** @import { ConfigOptions, CacheOptions } from 'lage' */
+/** @import { ConfigOptions, CacheOptions, NpmScriptTargetOptions, WorkerTargetOptions } from 'lage' */
 const path = require("path");
 const fastGlob = require("fast-glob");
 
@@ -13,25 +13,25 @@ const config = {
     // Note that transpile/types are overridden later for the @lage-run/globby package
     types: {
       type: "worker",
-      options: {
+      options: /** @satisfies {WorkerTargetOptions} */ ({
         worker: path.join(__dirname, "scripts/worker/types.js"),
-      },
+      }),
       dependsOn: ["^types"],
       outputs: ["lib/**/*.d.{ts,mts}"],
     },
     isolatedTypes: {
       type: "worker",
-      options: {
+      options: /** @satisfies {WorkerTargetOptions} */ ({
         worker: path.join(__dirname, "scripts/worker/types.js"),
-      },
+      }),
       dependsOn: [],
       outputs: ["lib/**/*.d.{ts,mts}"],
     },
     transpile: {
       type: "worker",
-      options: {
+      options: /** @satisfies {WorkerTargetOptions} */ ({
         worker: path.join(__dirname, "scripts/worker/transpile.js"),
-      },
+      }),
       outputs: ["lib/**/*.{js,map}"],
     },
     test: {
@@ -39,9 +39,9 @@ const config = {
       weight: (target) => {
         return fastGlob.sync("src/__tests__/**/*.test.ts", { cwd: target.cwd }).length;
       },
-      options: {
+      options: /** @satisfies {WorkerTargetOptions} */ ({
         worker: path.join(__dirname, "scripts/worker/jest.js"),
-      },
+      }),
       dependsOn: ["build"],
     },
     build: {
@@ -56,21 +56,21 @@ const config = {
     },
     "@lage-run/globby#isolatedTypes": {
       type: "npmScript",
-      options: {
+      options: /** @satisfies {NpmScriptTargetOptions} */ ({
         script: "types",
-      },
+      }),
     },
     lint: {
       type: "worker",
-      options: {
+      options: /** @satisfies {WorkerTargetOptions} */ ({
         worker: path.join(__dirname, "scripts/worker/lint.js"),
-      },
+      }),
     },
     depcheck: {
       type: "worker",
-      options: {
+      options: /** @satisfies {WorkerTargetOptions} */ ({
         worker: path.join(__dirname, "scripts/worker/depcheck.js"),
-      },
+      }),
     },
     "@lage-run/e2e-tests#test": {
       type: "npmScript",

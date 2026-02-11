@@ -16,7 +16,7 @@ import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 import type { FilterOptions } from "../../types/FilterOptions.js";
 import { createCache } from "../../cache/createCacheProvider.js";
-import { runnerPickerOptions } from "../../runnerPickerOptions.js";
+import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 
 interface RunOptions extends ReporterInitOptions, FilterOptions {
   concurrency: number;
@@ -90,7 +90,7 @@ export async function watchAction(options: RunOptions, command: Command): Promis
       skipLocalCache: options.skipLocalCache,
       cacheOptions: config.cacheOptions,
       runners: {
-        ...runnerPickerOptions(options.nodeArg, config.npmClient, taskArgs),
+        ...getBuiltInRunners({ nodeArg: options.nodeArg, npmCmd: config.npmClient, taskArgs }),
         ...config.runners,
       },
     },

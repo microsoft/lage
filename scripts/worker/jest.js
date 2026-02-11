@@ -1,4 +1,4 @@
-/** @import { WorkerRunnerOptions } from "../types.js" */
+/** @import { WorkerRunnerFunction } from "../types.js" */
 const fs = require("fs");
 const { runCLI } = require("jest");
 const path = require("path");
@@ -9,7 +9,7 @@ const path = require("path");
  * Note that if running `test` for an individual package, it will use that package's `test` script instead
  * (typically `yarn run -T jest`).
  *
- * @param {WorkerRunnerOptions} data
+ * @type {WorkerRunnerFunction}
  */
 async function jest({ target, weight }) {
   if (!fs.existsSync(path.join(target.cwd, "jest.config.js"))) {

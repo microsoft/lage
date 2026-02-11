@@ -52,8 +52,8 @@ const config = {
     },
     lint: {
       type: "worker",
+      maxWorkers: 4,
       options: {
-        maxWorkers: 4,
         worker: "path/to/scripts/worker/lint.js"
       }
     },
