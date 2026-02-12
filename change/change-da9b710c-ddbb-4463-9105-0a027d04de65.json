@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Update dependency fastify to v5 [SECURITY]",
+      "packageName": "@lage-run/rpc",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
