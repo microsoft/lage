@@ -122,6 +122,52 @@ describe("The main Hasher class", () => {
     expect(hash).not.toEqual(hash2);
   });
 
+  it("creates different hashes when a src file has changed for a specific package", async () => {
+    const monorepo1 = await setupFixture("monorepo");
+    const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
+    const target = createTarget(monorepo1.root, "package-a", "build");
+    target.inputs = ["**/*", "package-b#src/index.ts"];
+
+    const hash = await getHash(hasher, target);
+
+    const monorepo2 = await setupFixture("monorepo");
+    await monorepo2.commitFiles({ "packages/package-b/src/index.ts": "console.log('hello world');" });
+
+    const hasher2 = new TargetHasher({ root: monorepo2.root, environmentGlob: [] });
+    const target2 = createTarget(monorepo2.root, "package-a", "build");
+    target2.inputs = ["**/*", "package-b#src/index.ts"];
+
+    const hash2 = await getHash(hasher2, target2);
+
+    expect(hash).not.toEqual(hash2);
+
+    monorepo1.cleanup();
+    monorepo2.cleanup();
+  });
+
+  it("creates different hashes when a src file has changed in the root package", async () => {
+    const monorepo1 = await setupFixture("monorepo");
+    const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
+    const target = createTarget(monorepo1.root, "package-a", "build");
+    target.inputs = ["**/*", "#config.txt"];
+
+    const hash = await getHash(hasher, target);
+
+    const monorepo2 = await setupFixture("monorepo");
+    await monorepo2.commitFiles({ "config.txt": "hello" });
+
+    const hasher2 = new TargetHasher({ root: monorepo2.root, environmentGlob: [] });
+    const target2 = createTarget(monorepo2.root, "package-a", "build");
+    target2.inputs = ["**/*", "#config.txt"];
+
+    const hash2 = await getHash(hasher2, target2);
+
+    expect(hash).not.toEqual(hash2);
+
+    monorepo1.cleanup();
+    monorepo2.cleanup();
+  });
+
   it("creates different hashes when the target has a different env glob", async () => {
     const monorepo1 = await setupFixture("monorepo-with-global-files");
     const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
