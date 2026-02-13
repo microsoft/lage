@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Tweak error message for missing worker script",
+      "packageName": "@lage-run/runners",
+      "email": "dobes@formative.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
