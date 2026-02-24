@@ -43,6 +43,6 @@ export class TargetRunnerPicker {
       return new Runner(options);
     }
 
-    throw new Error(`Runner type "${target.type}" not found for target ${target.id}`);
+    throw new Error(`Target ${target.id} specified an invalid runner type "${target.type}"`);
   }
 }
