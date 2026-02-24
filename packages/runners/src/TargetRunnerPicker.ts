@@ -29,10 +29,9 @@ export class TargetRunnerPicker {
 
       const runnerModule = await import(importScript);
 
-      const base = path.basename(script);
-      const runnerName = base.replace(path.extname(base), "");
+      const runnerName = path.basename(script, path.extname(script));
 
-      const runner =
+      const Runner =
         typeof runnerModule[runnerName] === "function"
           ? runnerModule[runnerName]
           : typeof runnerModule.default === "function"
@@ -41,9 +40,9 @@ export class TargetRunnerPicker {
               ? runnerModule.default[runnerName]
               : runnerModule;
 
-      return new runner(options);
+      return new Runner(options);
     }
 
-    throw new Error(`No runner found for target ${target.id}`);
+    throw new Error(`Target ${target.id} specified an invalid runner type "${target.type}"`);
   }
 }

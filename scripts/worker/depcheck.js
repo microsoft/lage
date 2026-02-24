@@ -1,4 +1,4 @@
-/** @import { WorkerRunnerOptions } from "../types.js" */
+/** @import { WorkerRunnerFunction } from "../types.js" */
 const depcheck = require("depcheck");
 const path = require("path");
 const { findProjectRoot } = require("workspace-tools");
@@ -17,7 +17,7 @@ const extraIgnoreMatches = {
 };
 
 /**
- * @param {WorkerRunnerOptions} data
+ * @type {WorkerRunnerFunction}
  */
 async function depcheckWorker({ target }) {
   if (!target.packageName) return;

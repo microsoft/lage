@@ -1,7 +1,10 @@
 import type { Target } from "./Target.js";
 
 /**
- * Target configuration - to be used inside `lage.config.js` options.pipeline configurations
+ * Target configuration - to be used inside `lage.config.js` `pipeline` configurations.
+ * A "target" is essentially a task for a package.
+ *
+ * (`Target` is the processed type used by lage at runtime.)
  */
 export interface TargetConfig extends Pick<
   Target,

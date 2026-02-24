@@ -16,7 +16,7 @@ import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { TargetGraph } from "@lage-run/target-graph";
 import { NoTargetFoundError } from "../../types/errors.js";
 import { createCache } from "../../cache/createCacheProvider.js";
-import { runnerPickerOptions } from "../../runnerPickerOptions.js";
+import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
 
 interface RunOptions extends ReporterInitOptions, FilterOptions {
@@ -95,7 +95,7 @@ export async function runAction(options: RunOptions, command: Command): Promise<
       skipLocalCache: options.skipLocalCache,
       cacheOptions: config.cacheOptions,
       runners: {
-        ...runnerPickerOptions(options.nodeArg, config.npmClient, taskArgs),
+        ...getBuiltInRunners({ nodeArg: options.nodeArg, npmCmd: config.npmClient, taskArgs }),
         ...config.runners,
       },
     },
@@ -115,7 +115,7 @@ export async function runAction(options: RunOptions, command: Command): Promise<
   displaySummaryAndExit(summary, logger.reporters);
 
   for (const reporter of reporters) {
-    await reporter.cleanup?.();
+    reporter.cleanup?.();
   }
 }
 

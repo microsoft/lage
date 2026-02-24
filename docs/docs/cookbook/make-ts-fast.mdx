@@ -53,7 +53,8 @@ const path = require("path");
 const fs = require("fs/promises");
 const swc = require("@swc/core");
 
-module.exports = async function transpile(data) {
+/** @type {import('lage').WorkerRunnerFunction} */
+async function transpile(data) {
   const { target } = data;
 
   const queue = [target.cwd];
@@ -89,7 +90,9 @@ module.exports = async function transpile(data) {
       }
     }
   }
-};
+}
+
+module.exports = transpile;
 ```
 
 ## Fastest Type Checking

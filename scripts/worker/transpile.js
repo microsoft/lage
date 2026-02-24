@@ -1,4 +1,4 @@
-/** @import { BasicWorkerRunnerOptions } from "../types.js" */
+/** @import { BasicWorkerRunnerFunction } from "../types.js" */
 const fs = require("fs");
 const path = require("path");
 const fsPromises = require("fs/promises");
@@ -14,7 +14,7 @@ const root = findProjectRoot(process.cwd());
  * Since this worker function has some extra logic to use swc, it's reused by the per-package `transpile` script
  * (`monorepo-scripts transpile` which runs commands/transpile.js) to avoid duplication.
  *
- * @param {BasicWorkerRunnerOptions} data
+ * @type {BasicWorkerRunnerFunction}
  */
 async function transpile({ target }) {
   if (target.packageName?.includes("docs")) {

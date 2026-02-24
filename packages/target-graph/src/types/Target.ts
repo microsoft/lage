@@ -1,3 +1,9 @@
+/**
+ * Information about a target: i.e. a task run for a package.
+ *
+ * (`TargetConfig` is the type used in the lage.config.js `pipeline` options.
+ * `Target` is the processed type used by lage at runtime.)
+ */
 export interface Target {
   /**
    * Unique ID of the target (e.g. "pkg-a#build")
@@ -86,7 +92,12 @@ export interface Target {
   weight?: number;
 
   /**
-   * Options for the target runner. (e.g. `{ env: ...process.env, colors: true, ... }`)
+   * Options specific to this target.
+   *
+   * Option types for the default runners (`type` values):
+   * - `"npmScript"`: `NpmScriptTargetOptions`
+   * - `"worker"`: `WorkerTargetOptions`
+   * - `"noop"`: n/a
    */
   options?: Record<string, any>;
 

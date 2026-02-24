@@ -71,7 +71,10 @@ function getEslintInstance() {
   return eslintInstance;
 }
 
-/** Workers should have a run function that gets called per package task */
+/**
+ * Workers should have a run function that gets called per package task.
+ * @type {import('lage').WorkerRunnerFunction}
+ */
 async function run(data) {
   const { target } = data;
 
