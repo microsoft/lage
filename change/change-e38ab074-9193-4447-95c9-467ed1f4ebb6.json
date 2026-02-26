@@ -9,7 +9,7 @@
     },
     {
       "type": "minor",
-      "comment": "Auto detect CI environment and change reporter",
+      "comment": "chore: add Github Actions Reporter",
       "packageName": "@lage-run/reporters",
       "email": "sanajmi@microsoft.com",
       "dependentChangeType": "patch"
