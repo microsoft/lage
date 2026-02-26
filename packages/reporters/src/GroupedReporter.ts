@@ -29,7 +29,7 @@ export const logLevelLabel = {
   [LogLevel.verbose]: "VERB",
 };
 
-export function getTaskLogPrefix(pkg: string, task: string) {
+export function getTaskLogPrefix(pkg: string, task: string): string {
   return `${colors.pkg(pkg)} ${colors.task(task)}`;
 }
 
@@ -44,7 +44,7 @@ function normalize(prefixOrMessage: string, message?: string) {
   }
 }
 
-export function format(level: LogLevel, prefix: string, message: string) {
+export function format(level: LogLevel, prefix: string, message: string): string {
   return `${logLevelLabel[level]}: ${prefix} ${message}\n`;
 }
 
@@ -87,7 +87,7 @@ export abstract class GroupedReporter implements Reporter {
     }
   }
 
-  protected logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
+  protected logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>): boolean | void {
     const colorFn = colors[entry.level];
     const data = entry.data!;
 
