@@ -7,6 +7,8 @@ export type BuiltInReporterName =
   | "json"
   | "azureDevops"
   | "adoLog"
+  | "githubActions"
+  | "gha"
   | "npmLog"
   | "old"
   | "verboseFileLog"
@@ -23,6 +25,8 @@ const shouldListBuiltInReporters: Record<BuiltInReporterName, boolean> = {
   verboseFileLog: true,
   vfl: true,
   adoLog: true,
+  githubActions: true,
+  gha: true,
   fancy: true,
   default: true,
   // Not encouraged

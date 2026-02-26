@@ -1,4 +1,5 @@
 export { AdoReporter } from "./AdoReporter.js";
+export { GithubActionsReporter } from "./GithubActionsReporter.js";
 export { BasicReporter } from "./BasicReporter.js";
 export { JsonReporter } from "./JsonReporter.js";
 export { LogReporter } from "./LogReporter.js";

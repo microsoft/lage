@@ -2,6 +2,7 @@ import { LogLevel } from "@lage-run/logger";
 import {
   JsonReporter,
   AdoReporter,
+  GithubActionsReporter,
   LogReporter,
   ProgressReporter,
   BasicReporter,
@@ -39,6 +40,10 @@ export async function createReporter(
     case "azureDevops":
     case "adoLog":
       return new AdoReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+
+    case "githubActions":
+    case "gha":
+      return new GithubActionsReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
 
     case "npmLog":
     case "old":
