@@ -1,5 +1,5 @@
 import { Logger, type Reporter } from "@lage-run/logger";
-import { AdoReporter, BasicReporter, ChromeTraceEventsReporter, LogReporter } from "@lage-run/reporters";
+import { AdoReporter, BasicReporter, ChromeTraceEventsReporter, GithubActionsReporter, LogReporter } from "@lage-run/reporters";
 import fs from "fs";
 import isInteractive from "is-interactive";
 import os from "os";
@@ -11,9 +11,19 @@ jest.mock("is-interactive", () => jest.fn(() => true));
 describe("initializeReporters", () => {
   let tmpDir: string;
   let reporters: Reporter[] | undefined;
+  let savedGithubActions: string | undefined;
+  let savedTfBuild: string | undefined;
 
   beforeAll(() => {
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "lage-"));
+  });
+
+  beforeEach(() => {
+    // Save and clear CI env vars so default-reporter tests are environment-independent
+    savedGithubActions = process.env.GITHUB_ACTIONS;
+    savedTfBuild = process.env.TF_BUILD;
+    delete process.env.GITHUB_ACTIONS;
+    delete process.env.TF_BUILD;
   });
 
   afterEach(async () => {
@@ -21,6 +31,13 @@ describe("initializeReporters", () => {
       reporter.cleanup?.();
     }
     reporters = undefined;
+    // Restore CI env vars
+    if (savedGithubActions !== undefined) {
+      process.env.GITHUB_ACTIONS = savedGithubActions;
+    }
+    if (savedTfBuild !== undefined) {
+      process.env.TF_BUILD = savedTfBuild;
+    }
   });
 
   afterAll(() => {
@@ -110,6 +127,36 @@ describe("initializeReporters", () => {
       logLevel: "info",
       progress: false,
       reporter: ["adoLog"],
+      verbose: false,
+    });
+    expect(reporters.length).toBe(1);
+    expect(reporters).toContainEqual(expect.any(AdoReporter));
+  });
+
+  it("should auto-detect GitHub Actions and use GithubActionsReporter", async () => {
+    process.env.GITHUB_ACTIONS = "true";
+    const logger = new Logger();
+    reporters = await initializeReporters(logger, {
+      concurrency: 1,
+      grouped: false,
+      logLevel: "info",
+      progress: false,
+      reporter: [],
+      verbose: false,
+    });
+    expect(reporters.length).toBe(1);
+    expect(reporters).toContainEqual(expect.any(GithubActionsReporter));
+  });
+
+  it("should auto-detect Azure DevOps and use AdoReporter", async () => {
+    process.env.TF_BUILD = "True";
+    const logger = new Logger();
+    reporters = await initializeReporters(logger, {
+      concurrency: 1,
+      grouped: false,
+      logLevel: "info",
+      progress: false,
+      reporter: [],
       verbose: false,
     });
     expect(reporters.length).toBe(1);
