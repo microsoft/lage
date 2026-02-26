@@ -1623,7 +1623,7 @@ __metadata:
     "@lage-run/runners": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
     backfill-config: "npm:6.7.1"
-    cosmiconfig: "npm:7.1.0"
+    cosmiconfig: "npm:^9.0.0"
     workspace-tools: "npm:0.41.0"
   languageName: unknown
   linkType: soft
@@ -3559,7 +3559,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cosmiconfig@npm:7.1.0, cosmiconfig@npm:^7.1.0":
+"cosmiconfig@npm:^7.1.0":
   version: 7.1.0
   resolution: "cosmiconfig@npm:7.1.0"
   dependencies:
