@@ -83,7 +83,15 @@ export async function createReporter(
     }
   }
 
-  // Default reporter behavior
+  // Default reporter behavior - auto-detect CI environments
+  if (process.env.GITHUB_ACTIONS) {
+    return new GithubActionsReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel });
+  }
+
+  if (process.env.TF_BUILD) {
+    return new AdoReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel });
+  }
+
   if (progress && isInteractive() && !(logLevel >= LogLevel.verbose || verbose || grouped)) {
     return new BasicReporter({ concurrency, version });
   }
