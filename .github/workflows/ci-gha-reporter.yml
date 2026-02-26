@@ -1,0 +1,37 @@
+name: CI (GitHub Actions Reporter)
+
+# Demonstrates and validates the githubActions reporter by using it for CI output.
+# Collapsible log groups are visible in the GitHub Actions UI for each lage target.
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "packages/reporters/**"
+      - ".github/workflows/ci-gha-reporter.yml"
+  push:
+    branches: [master]
+    paths:
+      - "packages/reporters/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/master' && github.sha || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6
+        with:
+          node-version-file: .nvmrc
+
+      - run: yarn --immutable
+
+      - name: Build, Test, Lint
+        run: yarn ci --reporter githubActions --grouped --concurrency 2
