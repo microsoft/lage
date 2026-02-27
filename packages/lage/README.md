@@ -62,8 +62,10 @@ const config = {
     // (relative to package root; folders must end with **/*)
     outputGlob: ["lib/**/*"],
     // Changes to any of these files/globs will invalidate the cache (relative to repo root;
-    // folders must end with **/*). This should include your lock file and any other repo-wide
-    // configs or scripts that are outside a package but could invalidate previous output.
+    // folders must end with **/*). This should include any repo-wide configs or scripts that
+    // are outside a package but could invalidate previous output. Including the lock file is
+    // optional--lage attempts to more granularly check resolved dependency changes, but this
+    // isn't entirely reliable, especially for peerDependencies.
     environmentGlob: ["package.json", "yarn.lock", "lage.config.js"],
   },
 };

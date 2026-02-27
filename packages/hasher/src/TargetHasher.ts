@@ -1,25 +1,23 @@
-import type { Target } from "@lage-run/target-graph";
-import { hash } from "glob-hasher";
 import { globAsync } from "@lage-run/globby";
-
+import type { Logger } from "@lage-run/logger";
+import type { Target } from "@lage-run/target-graph";
+import { resolveExternalDependencies } from "backfill-hasher";
 import fs from "fs";
+import { hash } from "glob-hasher";
 import path from "path";
 import {
-  type DependencyMap,
-  type ParsedLock,
-  type PackageInfos,
-  parseLockFile,
   createDependencyMap,
+  type DependencyMap,
   getPackageInfo,
   getPackageInfosAsync,
+  type PackageInfos,
+  type ParsedLock,
+  parseLockFile,
 } from "workspace-tools";
-
-import { hashStrings } from "./hashStrings.js";
-import { resolveExternalDependencies } from "./resolveExternalDependencies.js";
 import { FileHasher } from "./FileHasher.js";
-import type { Logger } from "@lage-run/logger";
 import { PackageTree } from "./PackageTree.js";
 import { getInputFiles } from "./getInputFiles.js";
+import { hashStrings } from "./hashStrings.js";
 
 export interface TargetHasherOptions {
   root: string;
