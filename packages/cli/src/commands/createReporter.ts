@@ -2,6 +2,7 @@ import { LogLevel } from "@lage-run/logger";
 import {
   JsonReporter,
   AdoReporter,
+  GithubActionsReporter,
   LogReporter,
   ProgressReporter,
   BasicReporter,
@@ -39,6 +40,10 @@ export async function createReporter(
     case "azureDevops":
     case "adoLog":
       return new AdoReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+
+    case "githubActions":
+    case "gha":
+      return new GithubActionsReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
 
     case "npmLog":
     case "old":
@@ -78,7 +83,15 @@ export async function createReporter(
     }
   }
 
-  // Default reporter behavior
+  // Default reporter behavior - auto-detect CI environments
+  if (process.env.GITHUB_ACTIONS) {
+    return new GithubActionsReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel });
+  }
+
+  if (process.env.TF_BUILD) {
+    return new AdoReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel });
+  }
+
   if (progress && isInteractive() && !(logLevel >= LogLevel.verbose || verbose || grouped)) {
     return new BasicReporter({ concurrency, version });
   }
