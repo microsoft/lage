@@ -17,6 +17,8 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
     priorities: config?.priorities ?? [],
     repoWideChanges: config?.repoWideChanges ?? [
       "lage.config.js",
+      "lage.config.mjs",
+      "lage.config.cjs",
       "package-lock.json",
       "yarn.lock",
       "pnpm-lock.yaml",
