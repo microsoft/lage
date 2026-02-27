@@ -1,8 +1,16 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 27 Feb 2026 01:11:20 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.8.0
+
+Fri, 27 Feb 2026 01:11:20 GMT
+
+### Minor changes
+
+- chore: update cosmicconfig (sanajmi@microsoft.com)
 
 ## 0.7.3
 

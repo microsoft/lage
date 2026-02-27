@@ -2,6 +2,67 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 27 Feb 2026 01:11:20 GMT",
+      "version": "2.14.19",
+      "tag": "lage_v2.14.19",
+      "comments": {
+        "minor": [
+          {
+            "author": "sanajmi@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "76a5d60eec8a405b6a2644d855e60afc6baaceae",
+            "comment": "chore: update cosmicconfig"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "76a5d60eec8a405b6a2644d855e60afc6baaceae",
+            "comment": "Document and export all target runner options"
+          },
+          {
+            "author": "sanajmi@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "76a5d60eec8a405b6a2644d855e60afc6baaceae",
+            "comment": "chore: add Github Actions Reporter"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "76a5d60eec8a405b6a2644d855e60afc6baaceae",
+            "comment": "Update comment"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "76a5d60eec8a405b6a2644d855e60afc6baaceae",
+            "comment": "Doc updates"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "76a5d60eec8a405b6a2644d855e60afc6baaceae",
+            "comment": "Export target runner types. Fix passing --node-arg through to npm scripts."
+          },
+          {
+            "author": "sanajmi@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "76a5d60eec8a405b6a2644d855e60afc6baaceae",
+            "comment": "chore: add Github Actions Reporter"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "76a5d60eec8a405b6a2644d855e60afc6baaceae",
+            "comment": "Update minimatch to fix security issue"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 10 Feb 2026 22:12:02 GMT",
       "version": "2.14.18",
       "tag": "lage_v2.14.18",

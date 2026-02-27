@@ -1,8 +1,29 @@
 # Change Log - lage
 
-<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 27 Feb 2026 01:11:20 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.14.19
+
+Fri, 27 Feb 2026 01:11:20 GMT
+
+### Minor changes
+
+- `@lage-run/config`
+  - chore: update cosmicconfig (sanajmi@microsoft.com)
+- `@lage-run/runners`
+  - Document and export all target runner options (elcraig@microsoft.com)
+- `@lage-run/reporters`
+  - chore: add Github Actions Reporter (sanajmi@microsoft.com)
+
+### Patches
+
+- `@lage-run/cli`
+  - Export target runner types. Fix passing --node-arg through to npm scripts. (elcraig@microsoft.com)
+  - chore: add Github Actions Reporter (sanajmi@microsoft.com)
+- `lage`
+  - Update minimatch to fix security issue (elcraig@microsoft.com)
 
 ## 2.14.18
 

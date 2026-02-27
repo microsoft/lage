@@ -2,6 +2,27 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 27 Feb 2026 01:11:20 GMT",
+      "version": "0.33.4",
+      "tag": "@lage-run/cli_v0.33.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "76a5d60eec8a405b6a2644d855e60afc6baaceae",
+            "comment": "Export target runner types. Fix passing --node-arg through to npm scripts."
+          },
+          {
+            "author": "sanajmi@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "76a5d60eec8a405b6a2644d855e60afc6baaceae",
+            "comment": "chore: add Github Actions Reporter"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 10 Feb 2026 22:12:02 GMT",
       "version": "0.33.3",
       "tag": "@lage-run/cli_v0.33.3",

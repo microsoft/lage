@@ -2,6 +2,21 @@
   "name": "@lage-run/runners",
   "entries": [
     {
+      "date": "Fri, 27 Feb 2026 01:11:20 GMT",
+      "version": "1.3.0",
+      "tag": "@lage-run/runners_v1.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "76a5d60eec8a405b6a2644d855e60afc6baaceae",
+            "comment": "Document and export all target runner options"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 10 Feb 2026 22:12:02 GMT",
       "version": "1.2.7",
       "tag": "@lage-run/runners_v1.2.7",

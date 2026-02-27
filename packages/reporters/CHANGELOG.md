@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 27 Feb 2026 01:11:20 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.0
+
+Fri, 27 Feb 2026 01:11:20 GMT
+
+### Minor changes
+
+- chore: add Github Actions Reporter (sanajmi@microsoft.com)
 
 ## 1.3.8
 

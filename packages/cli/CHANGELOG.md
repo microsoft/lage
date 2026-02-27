@@ -1,8 +1,17 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 27 Feb 2026 01:11:20 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.33.4
+
+Fri, 27 Feb 2026 01:11:20 GMT
+
+### Patches
+
+- Export target runner types. Fix passing --node-arg through to npm scripts. (elcraig@microsoft.com)
+- chore: add Github Actions Reporter (sanajmi@microsoft.com)
 
 ## 0.33.3
 
