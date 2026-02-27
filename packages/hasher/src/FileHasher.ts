@@ -1,8 +1,8 @@
-import fs from "graceful-fs";
-import path from "path";
+import { getFileHashes } from "backfill-hasher";
 import { hash as fastHash, stat } from "glob-hasher";
+import fs from "graceful-fs";
 import { createInterface } from "node:readline";
-import { getPackageDeps } from "./getPackageDeps.js";
+import path from "path";
 
 interface FileHashStoreOptions {
   root: string;
@@ -29,12 +29,12 @@ export class FileHasher {
 
   private getHashesFromGit(): void {
     const { root } = this.options;
-    const fileHashes = getPackageDeps(root);
-    const files = [...fileHashes.keys()];
+    const fileHashes = getFileHashes(root);
+    const files = Object.keys(fileHashes);
     const fileStats = stat(files, { cwd: root }) ?? {};
 
     for (const [relativePath, fileStat] of Object.entries(fileStats)) {
-      const hash = fileHashes.get(relativePath);
+      const hash = fileHashes[relativePath];
       if (hash) {
         const { size, mtime } = fileStat;
 
