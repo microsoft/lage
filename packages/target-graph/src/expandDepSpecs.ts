@@ -30,7 +30,11 @@ function isPhantomTarget(targetId: string, task: string, targets: Map<string, Ta
 /**
  * Expands the dependency graph by adding all transitive dependencies of the given targets.
  */
-export function expandDepSpecs(targets: Map<string, Target>, dependencyMap: DependencyMap, packageInfos?: PackageInfos): [string, string][] {
+export function expandDepSpecs(
+  targets: Map<string, Target>,
+  dependencyMap: DependencyMap,
+  packageInfos?: PackageInfos
+): [string, string][] {
   const dependencies: [string, string][] = [];
 
   /**

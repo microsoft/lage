@@ -13,28 +13,23 @@ export interface TargetFactoryOptions {
 
 export class TargetFactory {
   private packageScripts: Set<string> = new Set<string>();
-  private packageScriptsByPackage: Map<string, Set<string>> = new Map<string, Set<string>>();
 
   constructor(private options: TargetFactoryOptions) {
     const { packageInfos } = options;
     for (const info of Object.values(packageInfos)) {
-      const scripts = new Set<string>();
       for (const scriptName of Object.keys(info.scripts ?? {})) {
         this.packageScripts.add(scriptName);
-        scripts.add(scriptName);
       }
-      this.packageScriptsByPackage.set(info.name, scripts);
     }
   }
 
-  private getTargetType(task: string, config: TargetConfig, packageName?: string): string {
+  private getTargetType(task: string, config: TargetConfig): string {
     if (!config.type) {
-      // Per-package check: if we know the package, check if THIS package has the script.
-      // Falls back to global check for non-package targets or when packageName is not provided.
-      if (packageName) {
-        return this.packageScriptsByPackage.get(packageName)?.has(task) ? "npmScript" : "noop";
+      if (this.packageScripts.has(task)) {
+        return "npmScript";
+      } else {
+        return "noop";
       }
-      return this.packageScripts.has(task) ? "npmScript" : "noop";
     }
 
     return config.type;
@@ -48,7 +43,7 @@ export class TargetFactory {
     const { options, deps, dependsOn, cache, inputs, priority, maxWorkers, environmentGlob, weight } = config;
     const cwd = resolve(packageName);
 
-    const targetType = this.getTargetType(task, config, packageName);
+    const targetType = this.getTargetType(task, config);
 
     const target = {
       id: getTargetId(packageName, task),
