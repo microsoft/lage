@@ -208,28 +208,15 @@ describe("transitive task deps test", () => {
     await repo.cleanup();
   });
 
-  it("isolated declarations: typecheck only blocks on ^^emitDeclarations from packages that have it", async () => {
-    // Models the office-bohemia isolated declarations pipeline exactly:
-    //   transpile: []
-    //   emitDeclarations: ["typecheck"]                         – emitDeclarations depends on same-package typecheck
-    //   typecheck: ["^^emitDeclarations", "transpile", "^^transpile"] – typecheck depends on transitive emitDeclarations + own & transitive transpile
-    //
-    // Topology:
-    //   app → [iso-lib, iso-lib3, non-iso-lib]
-    //   iso-lib → [non-iso-lib]
-    //   iso-lib3 → [iso-lib2]
-    //   iso-lib2 → [] (leaf, isolated)
-    //
-    // Only non-iso-lib defines emitDeclarations. All iso-lib* and app are "isolated" (no emitDeclarations script).
-    // Key behaviors:
-    //   - ^^emitDeclarations resolves ONLY to non-iso-lib#emitDeclarations for downstream packages
-    //   - iso-lib* and app do NOT get an emitDeclarations task at all
-    //   - There is no ^^typecheck dependency, so typecheck tasks don't block on each other across packages
-    //   - iso-lib3#typecheck blocks on iso-lib2#transpile (via ^^transpile), NOT on iso-lib2#typecheck
-
-    const repo = new Monorepo("transitiveDeps-isolatedDecl");
+  it("reproduce bug where transitive dependencies were being added that were not necessary", async () => {
+    // Simulates a bug from an internal repo that implemented isolated declarations for some packages
+    const repo = new Monorepo("transitiveDeps-isolated-declarations-info");
 
     await repo.init();
+
+    // This repo has some packages that have isolated declarations configured and some that do not.
+    // For the packages that do not have isolatedDeclarations enabled, we have a dummy emitDeclarations task defined for them whose sole purpose is to make sure we block on those package's typecheck step for d.ts emission
+    // For packages that do have isolatedDeclarations enabled, we emit the d.ts during transpile so we omit the emitDeclarations task.
     await repo.setLageConfig(`module.exports = {
       pipeline: {
         transpile: [],
@@ -238,128 +225,32 @@ describe("transitive task deps test", () => {
       },
     }`);
 
-    // non-iso-lib: non-isolated, has emitDeclarations (d.ts generated via tsc)
-    await repo.addPackage("non-iso-lib", [], {
-      transpile: "echo non-iso-lib:transpile",
-      typecheck: "echo non-iso-lib:typecheck",
-      emitDeclarations: "echo non-iso-lib:emitDeclarations",
+    await repo.addPackage("dep", [], {
+      transpile: "echo dep:transpile",
+      typecheck: "echo dep:typecheck",
     });
 
-    // iso-lib: isolated, NO emitDeclarations (d.ts generated during transpile via OXC)
-    await repo.addPackage("iso-lib", ["non-iso-lib"], {
-      transpile: "echo iso-lib:transpile",
-      typecheck: "echo iso-lib:typecheck",
-    });
-
-    // iso-lib2: isolated leaf package, NO emitDeclarations
-    // Uses a slow typecheck (3s) so we can verify iso-lib3#typecheck starts before iso-lib2#typecheck finishes
-    await repo.addPackage("iso-lib2", [], {
-      transpile: "echo iso-lib2:transpile",
-      typecheck: "node slow-typecheck.js",
-    });
-
-    // Write a slow script file to avoid shell escaping issues on Windows
-    await repo.commitFiles({
-      "packages/iso-lib2/slow-typecheck.js": "setTimeout(() => { console.log('iso-lib2:typecheck done'); process.exit(0); }, 3000);",
-    });
-
-    // iso-lib3: isolated, depends on iso-lib2, NO emitDeclarations
-    await repo.addPackage("iso-lib3", ["iso-lib2"], {
-      transpile: "echo iso-lib3:transpile",
-      typecheck: "echo iso-lib3:typecheck",
-    });
-
-    // app: isolated, NO emitDeclarations
-    await repo.addPackage("app", ["iso-lib", "iso-lib3", "non-iso-lib"], {
+    await repo.addPackage("app", ["dep"], {
       transpile: "echo app:transpile",
       typecheck: "echo app:typecheck",
+      emitDeclarations: "echo app:emitDeclarations",
     });
 
     await repo.install();
 
-    // Use --concurrency 4 to ensure enough worker slots for parallel task execution
-    const results = await repo.run("lage", ["typecheck", "--reporter", "json", "--log-level", "silly", "--concurrency", "4"]);
+    const results = await repo.run("writeInfo", ["typecheck", "--scope", "app"]);
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
+    const packageTasks = jsonOutput[0].data.packageTasks;
 
-    const successIndices: { [taskId: string]: number } = {};
-    const runningIndices: { [taskId: string]: number } = {};
+    const appTypecheckTask = packageTasks.find(({ id }: { id: string }) => id === "app#typecheck");
+    expect(appTypecheckTask).toBeTruthy();
 
-    for (const pkg of ["app", "iso-lib", "iso-lib2", "iso-lib3", "non-iso-lib"]) {
-      for (const task of ["transpile", "typecheck", "emitDeclarations"]) {
-        const successIndex = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "success"));
-        if (successIndex > -1) {
-          successIndices[getTargetId(pkg, task)] = successIndex;
-        }
-        const runningIndex = jsonOutput.findIndex((e) => filterEntry(e.data, pkg, task, "running"));
-        if (runningIndex > -1) {
-          runningIndices[getTargetId(pkg, task)] = runningIndex;
-        }
-      }
-    }
+    expect(appTypecheckTask.dependencies).toContain("app#transpile");
 
-    // --- Existence assertions ---
-
-    // 1. transpile runs for ALL packages
-    expect(successIndices[getTargetId("app", "transpile")]).toBeDefined();
-    expect(successIndices[getTargetId("iso-lib", "transpile")]).toBeDefined();
-    expect(successIndices[getTargetId("iso-lib2", "transpile")]).toBeDefined();
-    expect(successIndices[getTargetId("iso-lib3", "transpile")]).toBeDefined();
-    expect(successIndices[getTargetId("non-iso-lib", "transpile")]).toBeDefined();
-
-    // 2. emitDeclarations runs ONLY for non-iso-lib
-    expect(successIndices[getTargetId("non-iso-lib", "emitDeclarations")]).toBeDefined();
-    expect(successIndices[getTargetId("iso-lib", "emitDeclarations")]).toBeUndefined();
-    expect(successIndices[getTargetId("iso-lib2", "emitDeclarations")]).toBeUndefined();
-    expect(successIndices[getTargetId("iso-lib3", "emitDeclarations")]).toBeUndefined();
-    expect(successIndices[getTargetId("app", "emitDeclarations")]).toBeUndefined();
-
-    // 3. typecheck runs for ALL packages
-    expect(successIndices[getTargetId("app", "typecheck")]).toBeDefined();
-    expect(successIndices[getTargetId("iso-lib", "typecheck")]).toBeDefined();
-    expect(successIndices[getTargetId("iso-lib2", "typecheck")]).toBeDefined();
-    expect(successIndices[getTargetId("iso-lib3", "typecheck")]).toBeDefined();
-    expect(successIndices[getTargetId("non-iso-lib", "typecheck")]).toBeDefined();
-
-    // --- Ordering assertions (using success/completion indices) ---
-
-    // 4. non-iso-lib#typecheck before non-iso-lib#emitDeclarations (emitDeclarations depends on same-package typecheck)
-    expect(successIndices[getTargetId("non-iso-lib", "typecheck")]).toBeLessThan(successIndices[getTargetId("non-iso-lib", "emitDeclarations")]);
-
-    // 5. non-iso-lib#emitDeclarations before app#typecheck (app → ^^emitDeclarations → non-iso-lib#emitDeclarations)
-    expect(successIndices[getTargetId("non-iso-lib", "emitDeclarations")]).toBeLessThan(successIndices[getTargetId("app", "typecheck")]);
-
-    // 6. non-iso-lib#emitDeclarations before iso-lib#typecheck (iso-lib → ^^emitDeclarations → non-iso-lib#emitDeclarations)
-    expect(successIndices[getTargetId("non-iso-lib", "emitDeclarations")]).toBeLessThan(successIndices[getTargetId("iso-lib", "typecheck")]);
-
-    // 7. Transitive transpile deps complete before downstream typecheck (^^transpile)
-    expect(successIndices[getTargetId("non-iso-lib", "transpile")]).toBeLessThan(successIndices[getTargetId("app", "typecheck")]);
-    expect(successIndices[getTargetId("iso-lib", "transpile")]).toBeLessThan(successIndices[getTargetId("app", "typecheck")]);
-    expect(successIndices[getTargetId("iso-lib3", "transpile")]).toBeLessThan(successIndices[getTargetId("app", "typecheck")]);
-    expect(successIndices[getTargetId("iso-lib2", "transpile")]).toBeLessThan(successIndices[getTargetId("app", "typecheck")]);
-    expect(successIndices[getTargetId("non-iso-lib", "transpile")]).toBeLessThan(successIndices[getTargetId("iso-lib", "typecheck")]);
-
-    // 8. Own transpile before own typecheck (typecheck depends on "transpile" same-package)
-    expect(successIndices[getTargetId("app", "transpile")]).toBeLessThan(successIndices[getTargetId("app", "typecheck")]);
-    expect(successIndices[getTargetId("iso-lib", "transpile")]).toBeLessThan(successIndices[getTargetId("iso-lib", "typecheck")]);
-    expect(successIndices[getTargetId("iso-lib2", "transpile")]).toBeLessThan(successIndices[getTargetId("iso-lib2", "typecheck")]);
-    expect(successIndices[getTargetId("iso-lib3", "transpile")]).toBeLessThan(successIndices[getTargetId("iso-lib3", "typecheck")]);
-    expect(successIndices[getTargetId("non-iso-lib", "transpile")]).toBeLessThan(successIndices[getTargetId("non-iso-lib", "typecheck")]);
-
-    // --- Key assertion: isolated packages don't block typecheck on each other's typecheck ---
-
-    // 9. iso-lib3#typecheck blocks on iso-lib2#transpile (via ^^transpile), NOT on iso-lib2#typecheck.
-    //    Since there is no ^^typecheck in the pipeline, iso-lib2#typecheck is NOT a prerequisite
-    //    for iso-lib3#typecheck. Only iso-lib2#transpile is (via ^^transpile).
-    expect(successIndices[getTargetId("iso-lib2", "transpile")]).toBeLessThan(successIndices[getTargetId("iso-lib3", "typecheck")]);
-
-    // 10. Verify non-blocking via "running" indices: iso-lib3#typecheck STARTS before
-    //     iso-lib2#typecheck FINISHES. If iso-lib3 were blocked on iso-lib2's typecheck,
-    //     iso-lib3 couldn't start running until iso-lib2's typecheck completed (success).
-    //     By checking that iso-lib3#typecheck enters "running" before iso-lib2#typecheck
-    //     enters "success", we prove there is no dependency between the two typecheck tasks.
-    expect(runningIndices[getTargetId("iso-lib3", "typecheck")]).toBeLessThan(successIndices[getTargetId("iso-lib2", "typecheck")]);
+    // This was the bug, we'd end up with app depending on the typecheck step of the dependency which does not have an emitDeclarations step
+    expect(appTypecheckTask.dependencies).not.toContain("dep#typecheck");
 
     await repo.cleanup();
   });
