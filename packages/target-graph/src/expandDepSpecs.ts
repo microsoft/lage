@@ -10,7 +10,7 @@ import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId.js"
  *
  * When phantom targets are later removed by `removeNodes` (because `shouldRun` returns false),
  * their same-package dependencies get reconnected to their cross-package dependents, creating
- * e.g. typecheck→typecheck chains through ghost emitDeclarations nodes.
+ * unnecessary work.
  *
  * Returns true if the target should be EXCLUDED from dependency expansion.
  */
