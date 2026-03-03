@@ -1,11 +1,36 @@
 import type { Target } from "./types/Target.js";
 import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
+import type { PackageInfos } from "workspace-tools";
 import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId.js";
+
+/**
+ * Checks whether a target represents a "phantom" target — one created for a package that
+ * doesn't actually define the script. Phantom targets should be excluded from `^` and `^^`
+ * (topological/transitive) dependency expansion to avoid unwanted cross-package dependency chains.
+ *
+ * When phantom targets are later removed by `removeNodes` (because `shouldRun` returns false),
+ * their same-package dependencies get reconnected to their cross-package dependents, creating
+ * e.g. typecheck→typecheck chains through ghost emitDeclarations nodes.
+ *
+ * Returns true if the target should be EXCLUDED from dependency expansion.
+ */
+function isPhantomTarget(targetId: string, task: string, targets: Map<string, Target>, packageInfos?: PackageInfos): boolean {
+  if (!packageInfos) return false;
+
+  const target = targets.get(targetId);
+  if (!target?.packageName) return false;
+
+  const pkgScripts = packageInfos[target.packageName]?.scripts;
+  // If the package has a scripts section but doesn't include this task, it's a phantom target.
+  // If the package has no scripts section at all (e.g., in unit tests), we include the target
+  // for backward compatibility.
+  return !!pkgScripts && !pkgScripts[task];
+}
 
 /**
  * Expands the dependency graph by adding all transitive dependencies of the given targets.
  */
-export function expandDepSpecs(targets: Map<string, Target>, dependencyMap: DependencyMap): [string, string][] {
+export function expandDepSpecs(targets: Map<string, Target>, dependencyMap: DependencyMap, packageInfos?: PackageInfos): [string, string][] {
   const dependencies: [string, string][] = [];
 
   /**
@@ -77,6 +102,8 @@ export function expandDepSpecs(targets: Map<string, Target>, dependencyMap: Depe
         const targetDependencies = [...(getTransitiveGraphDependencies(packageName, dependencyMap) ?? [])];
         const dependencyTargetIds = findDependenciesByTask(depTask, targetDependencies);
         for (const from of dependencyTargetIds) {
+          // Skip phantom targets: packages that don't define this task as a real npm script.
+          if (isPhantomTarget(from, depTask, targets, packageInfos)) continue;
           addDependency(from, to);
         }
       } else if (dependencyTargetId.startsWith("^") && packageName) {
@@ -85,6 +112,8 @@ export function expandDepSpecs(targets: Map<string, Target>, dependencyMap: Depe
         const targetDependencies = [...(dependencyMap.dependencies.get(packageName) ?? [])];
         const dependencyTargetIds = findDependenciesByTask(depTask, targetDependencies);
         for (const from of dependencyTargetIds) {
+          // Skip phantom targets: packages that don't define this task as a real npm script.
+          if (isPhantomTarget(from, depTask, targets, packageInfos)) continue;
           addDependency(from, to);
         }
       } else if (packageName) {
