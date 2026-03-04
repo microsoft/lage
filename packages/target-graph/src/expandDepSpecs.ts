@@ -5,7 +5,7 @@ import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId.js"
 
 /**
  * Checks whether a target represents a "phantom" target — one created for a package that
- * doesn't actually define the script. Phantom targets should be excluded from `^` and `^^`
+ * doesn't actually define the script for an npmScript target. Phantom targets should be excluded from `^` and `^^`
  * (topological/transitive) dependency expansion to avoid unwanted cross-package dependency chains.
  *
  * When phantom targets are later removed by `removeNodes` (because `shouldRun` returns false),
@@ -19,6 +19,12 @@ function isPhantomTarget(targetId: string, task: string, targets: Map<string, Ta
 
   const target = targets.get(targetId);
   if (!target?.packageName) return false;
+
+  // Only npmScript targets can be phantom — other types (worker, noop, etc.)
+  // are real targets regardless of whether the package defines the script.
+  if (target.type !== "npmScript") {
+    return false;
+  }
 
   const pkgScripts = packageInfos[target.packageName]?.scripts;
   // If the package has a scripts section but doesn't include this task, it's a phantom target.
