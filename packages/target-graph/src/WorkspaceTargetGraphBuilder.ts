@@ -95,8 +95,10 @@ export class WorkspaceTargetGraphBuilder {
       this.processStagedConfig(target, config, changedFiles);
     } else {
       const packages = Object.keys(this.packageInfos);
+
       for (const packageName of packages) {
         const task = id;
+
         const targetConfig = this.determineFinalTargetConfig(getTargetId(packageName, task), config);
         const target = this.targetFactory.createPackageTarget(packageName!, task, targetConfig);
         this.graphBuilder.addTarget(target);
@@ -207,7 +209,7 @@ export class WorkspaceTargetGraphBuilder {
     priorities?: { package?: string; task: string; priority: number }[]
   ): Promise<TargetGraph> {
     // Expands the dependency specs from the target definitions
-    const fullDependencies = expandDepSpecs(this.graphBuilder.targets, this.dependencyMap);
+    const fullDependencies = expandDepSpecs(this.graphBuilder.targets, this.dependencyMap, this.packageInfos);
 
     for (const [from, to] of fullDependencies) {
       this.graphBuilder.addDependency(from, to);

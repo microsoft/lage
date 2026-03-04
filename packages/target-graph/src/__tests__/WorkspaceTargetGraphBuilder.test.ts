@@ -402,4 +402,77 @@ describe("workspace target graph builder", () => {
       ]
     `);
   });
+
+  it("should not create phantom transitive deps for packages missing a script", async () => {
+    const root = "/repos/a";
+
+    // "app" has emitDeclarations in scripts, "dep" does not
+    const packageInfos = createPackageInfoWithScripts({
+      app: { deps: ["dep"], scripts: ["transpile", "typecheck", "emitDeclarations"] },
+      dep: { deps: [], scripts: ["transpile", "typecheck"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    await builder.addTargetConfig("transpile");
+    await builder.addTargetConfig("emitDeclarations", {
+      dependsOn: ["typecheck"],
+    });
+    await builder.addTargetConfig("typecheck", {
+      dependsOn: ["^^emitDeclarations", "transpile", "^^transpile"],
+    });
+
+    const targetGraph = await builder.build(["typecheck"], ["app"]);
+    const graph = getGraphFromTargets(targetGraph);
+
+    // app#typecheck should depend on app#transpile (same-package dep)
+    expect(graph).toContainEqual(["app#transpile", "app#typecheck"]);
+
+    // app#typecheck should depend on dep#transpile (via ^^transpile, dep has the script)
+    expect(graph).toContainEqual(["dep#transpile", "app#typecheck"]);
+
+    // app#typecheck should NOT depend on dep#typecheck — dep doesn't have emitDeclarations,
+    // so the phantom dep#emitDeclarations should not create a transitive link
+    expect(graph).not.toContainEqual(["dep#typecheck", "app#typecheck"]);
+  });
+
+  it("should preserve ^^ deps for non-npmScript typed targets even without scripts entry", async () => {
+    const root = "/repos/a";
+
+    // "dep" doesn't have "customTask" in scripts, but it's configured as a worker type
+    const packageInfos = createPackageInfoWithScripts({
+      app: { deps: ["dep"], scripts: ["build"] },
+      dep: { deps: [], scripts: ["build"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    await builder.addTargetConfig("customTask", {
+      type: "worker",
+    });
+    await builder.addTargetConfig("build", {
+      dependsOn: ["^^customTask"],
+    });
+
+    const targetGraph = await builder.build(["build"], ["app"]);
+    const graph = getGraphFromTargets(targetGraph);
+
+    // app#build should depend on dep#customTask even though dep doesn't have it in scripts,
+    // because the target has an explicit non-npmScript type ("worker")
+    expect(graph).toContainEqual(["dep#customTask", "app#build"]);
+  });
 });
+
+function createPackageInfoWithScripts(packages: { [id: string]: { deps: string[]; scripts: string[] } }) {
+  const packageInfos: PackageInfos = {};
+  Object.keys(packages).forEach((id) => {
+    const { deps, scripts } = packages[id];
+    packageInfos[id] = {
+      packageJsonPath: `/path/to/${id}/package.json`,
+      name: id,
+      version: "1.0.0",
+      dependencies: deps.reduce((acc, dep) => ({ ...acc, [dep]: "*" }), {}),
+      devDependencies: {},
+      scripts: scripts.reduce((acc, script) => ({ ...acc, [script]: `echo ${script}` }), {}),
+    };
+  });
+  return packageInfos;
+}

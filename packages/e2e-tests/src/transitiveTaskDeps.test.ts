@@ -207,4 +207,51 @@ describe("transitive task deps test", () => {
 
     await repo.cleanup();
   });
+
+  it("reproduce bug where transitive dependencies were being added that were not necessary", async () => {
+    // Simulates a bug from an internal repo that implemented isolated declarations for some packages
+    const repo = new Monorepo("transitiveDeps-isolated-declarations-info");
+
+    await repo.init();
+
+    // This repo has some packages that have isolated declarations configured and some that do not.
+    // For the packages that do not have isolatedDeclarations enabled, we have a dummy emitDeclarations task defined for them whose sole purpose is to make sure we block on those package's typecheck step for d.ts emission
+    // For packages that do have isolatedDeclarations enabled, we emit the d.ts during transpile so we omit the emitDeclarations task.
+    await repo.setLageConfig(`module.exports = {
+      pipeline: {
+        transpile: [],
+        emitDeclarations: ["typecheck"],
+        typecheck: ["^^emitDeclarations", "transpile", "^^transpile"]
+      },
+    }`);
+
+    await repo.addPackage("dep", [], {
+      transpile: "echo dep:transpile",
+      typecheck: "echo dep:typecheck",
+    });
+
+    await repo.addPackage("app", ["dep"], {
+      transpile: "echo app:transpile",
+      typecheck: "echo app:typecheck",
+      emitDeclarations: "echo app:emitDeclarations",
+    });
+
+    await repo.install();
+
+    const results = await repo.run("writeInfo", ["typecheck", "--scope", "app"]);
+
+    const output = results.stdout + results.stderr;
+    const jsonOutput = parseNdJson(output);
+    const packageTasks = jsonOutput[0].data.packageTasks;
+
+    const appTypecheckTask = packageTasks.find(({ id }: { id: string }) => id === "app#typecheck");
+    expect(appTypecheckTask).toBeTruthy();
+
+    expect(appTypecheckTask.dependencies).toContain("app#transpile");
+
+    // This was the bug, we'd end up with app depending on the typecheck step of the dependency which does not have an emitDeclarations step
+    expect(appTypecheckTask.dependencies).not.toContain("dep#typecheck");
+
+    await repo.cleanup();
+  });
 });
