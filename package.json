@@ -13,10 +13,12 @@
   },
   "scripts": {
     "build": "lage transpile types build bundle",
+    "build:selfhost": "node packages/lage/dist/lage.js transpile types build bundle",
     "watch": "lage transpile isolatedTypes --no-cache --verbose --unstable-watch",
     "change": "beachball change",
     "checkchange": "beachball check",
     "ci": "lage transpile types build test lint bundle",
+    "ci:selfhost": "node packages/lage/dist/lage.js transpile types build test lint bundle",
     "release": "beachball publish -y --tag latest",
     "test": "lage test --verbose",
     "lage-local": "node packages/lage/dist/lage.js",
