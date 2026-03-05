@@ -34,6 +34,13 @@ export function expandInputPatterns(patterns: string[], target: Target, dependen
           }
         }
       }
+    } else if (pattern.includes("#")) {
+      // In this case they specified a specific package which an input file will be pulled from
+      // Note that if the path starts with '#' the pkg is caluclated as "" and the file is resolved
+      // relative to the root workspace
+      const [pkg, matchPattern] = pattern.split("#");
+      expandedPatterns[pkg] = expandedPatterns[pkg] ?? [];
+      expandedPatterns[pkg].push(matchPattern);
     } else {
       const pkg = target.packageName!;
       expandedPatterns[pkg] = expandedPatterns[pkg] ?? [];

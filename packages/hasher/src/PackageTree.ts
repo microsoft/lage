@@ -110,7 +110,11 @@ export class PackageTree {
 
   public getPackageFiles(packageName: string, patterns: string[]): string[] {
     const { root, packageInfos } = this.options;
-    const packagePath = path.relative(root, path.dirname(packageInfos[packageName].packageJsonPath)).replace(/\\/g, "/");
+    // Look up the directory of the specified package.  If packageName is "", that means they want to find a file
+    // relative to the root workspace.
+    const packagePath = packageName
+      ? path.relative(root, path.dirname(packageInfos[packageName].packageJsonPath)).replace(/\\/g, "/")
+      : "";
 
     const packageFiles = this.#packageFiles[packagePath];
 
