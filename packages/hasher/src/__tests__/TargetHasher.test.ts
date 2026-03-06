@@ -102,6 +102,29 @@ describe("The main Hasher class", () => {
     expect(hash).not.toEqual(hash2);
   });
 
+  it("creates different hashes when a src file identified without any wildcard is changed", async () => {
+    const monorepo1 = await setupFixture("monorepo");
+    const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
+    const target = createTarget(monorepo1.root, "package-a", "build");
+    target.inputs = ["package.json", "src/index.ts"];
+    const hash = await getHash(hasher, target);
+
+    const monorepo2 = await setupFixture("monorepo");
+    const hasher2 = new TargetHasher({ root: monorepo2.root, environmentGlob: [] });
+    const target2 = createTarget(monorepo2.root, "package-a", "build");
+    target2.inputs = ["package.json", "src/index.ts"];
+
+    await monorepo2.commitFiles({ "packages/package-a/src/index.ts": "console.log('hello world');" });
+
+    const hash2 = await getHash(hasher2, target2);
+
+    expect(hash).not.toEqual(hash2);
+
+    monorepo1.cleanup();
+    monorepo2.cleanup();
+  });
+
+
   it("creates different hashes when a src file has changed for a dependency", async () => {
     const monorepo1 = await setupFixture("monorepo-with-deps");
     const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
@@ -164,4 +187,40 @@ describe("The main Hasher class", () => {
     expect(hash).not.toEqual(hash2);
     expect(hash2).not.toEqual(hash3);
   });
+
+  it("creates different hashes when file path is different but files do not exist", async () => {
+    const monorepo1 = await setupFixture("monorepo-with-global-files");
+    const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
+    const target = createTarget(monorepo1.root, "package-a", "build");
+    target.inputs = ["file1.txt"];
+    const target2 = createTarget(monorepo1.root, "package-a", "build");
+    target2.inputs = ["file2.txt"];
+
+    const hash = await getHash(hasher, target);
+    const hash2 = await getHash(hasher, target2);
+
+    expect(hash).not.toEqual(hash2);
+
+    monorepo1.cleanup();
+  });
+
+  it("creates different hashes when file path is different but file content is the same", async () => {
+    const content = "THIS IS CONTENT";
+    const monorepo1 = await setupFixture("monorepo-with-global-files");
+    const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
+    const target = createTarget(monorepo1.root, "package-a", "build");
+    target.inputs = ["file1.txt"];
+    fs.writeFileSync(path.join(monorepo1.root, "packages", "package-a", "file1.txt"), content);
+    const target2 = createTarget(monorepo1.root, "package-a", "build");
+    target2.inputs = ["file2.txt"];
+    fs.writeFileSync(path.join(monorepo1.root, "packages", "package-a", "file2.txt"), content);
+
+    const hash = await getHash(hasher, target);
+    const hash2 = await getHash(hasher, target2);
+
+    expect(hash).not.toEqual(hash2);
+
+    monorepo1.cleanup();
+  });
+
 });
