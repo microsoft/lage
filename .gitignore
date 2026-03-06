@@ -11,6 +11,7 @@ coverage
 profile*.json
 .yarn/*
 !.yarn/patches/
+!.yarn/plugins/
 !.yarn/releases/
 temp
 *.tgz

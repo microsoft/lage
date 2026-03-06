@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Downgrade azure deps to Node 18-compatible versions",
+      "packageName": "@lage-run/cache",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "none",
+      "comment": "update readme",
+      "packageName": "@lage-run/globby",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "minor",
+      "comment": "Add an explicit `engines` requirement of Node 16, though 18 is required if using Azure blob storage caching. (This accidentally drifted over time due to Yarn 4 not enforcing `engines`. Azure deps have now been downgraded to versions compatible with 18.)",
+      "packageName": "lage",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
