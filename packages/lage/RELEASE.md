@@ -15,7 +15,8 @@ Lage version 2 is now available at dist-tag `@latest`, featuring significant upd
 
 ## Breaking changes
 
-- `lage` requires **Node 16**, or using the `--experimental-abortcontroller` flag in Node 14
+- `lage` requires **Node 16**
+  - Over time, this accidentally crept up to 18 due to Yarn 4 not enforcing that dependencies match the repo's `package.json` `engines`. This is most likely to be an issue if you're caching to Azure blob storage.
 - `lage` now will automatically write remote cache if the typical environment variable is set (e.g. `CI` or `TF_BUILD`)
 - `info` command is not implemented yet
 - `graph` command is not implemented yet
