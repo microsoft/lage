@@ -4,6 +4,7 @@
 .*ignore
 *.proto
 *.cmd
+.nvmrc
 
 # Generated or imported files
 change/*.json
