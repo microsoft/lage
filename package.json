@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "@types/node": "^16.18.3",
+    "@types/node": "^22.0.0",
     "beachball": "^2.63.0",
     "dts-bundle-generator": "patch:dts-bundle-generator@npm%3A9.5.1#~/.yarn/patches/dts-bundle-generator-npm-9.5.1-0927b6826f.patch",
     "fast-glob": "3.3.3",
@@ -60,7 +60,7 @@
     "@azure/core-xml": "1.4.5",
     "@azure/logger": "1.2.0",
     "@azure/storage-blob": "12.27.0",
-    "@types/node@npm:*": "^16.0.0",
+    "@types/node@npm:*": "^22.0.0",
     "typescript@npm:>=5.0.2": "~5.9.3",
     "node-gyp@npm:latest": "^9.0.0",
     "listr2@npm:^9.0.5": "9.0.3",
@@ -83,7 +83,7 @@
     "*": "prettier --write"
   },
   "engines": {
-    "node": ">=16.14.0"
+    "node": ">=22.18.0"
   },
   "packageManager": "yarn@4.12.0"
 }

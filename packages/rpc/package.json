@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@bufbuild/protobuf": "1.10.1",
-    "@connectrpc/connect": "1.7.0",
-    "@connectrpc/connect-fastify": "1.7.0",
-    "@connectrpc/connect-node": "1.7.0",
+    "@connectrpc/connect": "2.1.1",
+    "@connectrpc/connect-fastify": "2.1.1",
+    "@connectrpc/connect-node": "2.1.1",
     "fastify": "5.7.3"
   },
   "devDependencies": {
