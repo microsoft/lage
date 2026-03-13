@@ -12,6 +12,8 @@ import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId.js"
  * their same-package dependencies get reconnected to their cross-package dependents, creating
  * unnecessary work.
  *
+ * Only npmScript target types can be considered phantom targets
+ * 
  * Returns true if the target should be EXCLUDED from dependency expansion.
  */
 function isPhantomTarget(targetId: string, task: string, targets: Map<string, Target>, packageInfos?: PackageInfos): boolean {
