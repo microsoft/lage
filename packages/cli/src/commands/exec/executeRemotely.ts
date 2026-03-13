@@ -24,7 +24,6 @@ interface ExecRemotelyOptions extends ReporterInitOptions {
 async function tryCreateClient(host: string, port: number) {
   const client = createClient({
     baseUrl: `http://${host}:${port}`,
-    httpVersion: "2",
   });
 
   try {

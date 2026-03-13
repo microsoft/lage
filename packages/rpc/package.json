@@ -18,16 +18,15 @@
     "generate": "buf generate"
   },
   "dependencies": {
-    "@bufbuild/protobuf": "1.10.1",
+    "@bufbuild/protobuf": "2.11.0",
     "@connectrpc/connect": "2.1.1",
     "@connectrpc/connect-fastify": "2.1.1",
     "@connectrpc/connect-node": "2.1.1",
     "fastify": "5.7.3"
   },
   "devDependencies": {
-    "@bufbuild/buf": "^1.39.0",
-    "@bufbuild/protoc-gen-es": "^1.10.0",
-    "@connectrpc/protoc-gen-connect-es": "1.7.0",
+    "@bufbuild/buf": "^1.66.1",
+    "@bufbuild/protoc-gen-es": "^2.11.0",
     "@lage-run/monorepo-scripts": "workspace:^"
   },
   "files": [

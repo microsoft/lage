@@ -1,7 +1,7 @@
 {
   "changes": [
     {
-      "type": "patch",
+      "type": "minor",
       "comment": "Update dependency fastify to v5 [SECURITY]",
       "packageName": "@lage-run/rpc",
       "email": "renovate@whitesourcesoftware.com",
