@@ -123,6 +123,7 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
     packageInfos,
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
+    enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
   });
 
   const scope = getFilteredPackages({

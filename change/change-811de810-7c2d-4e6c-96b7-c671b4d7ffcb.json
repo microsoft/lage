@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Fix bug where we have unnecessary dependency edges added to the graph when a package does not have the relevant target in scripts",
+      "packageName": "@lage-run/cli",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Fix bug where we have unnecessary dependency edges added to the graph when a package does not have the relevant target in scripts",
+      "packageName": "@lage-run/config",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Fix bug where we have unnecessary dependency edges added to the graph when a package does not have the relevant target in scripts",
+      "packageName": "@lage-run/target-graph",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

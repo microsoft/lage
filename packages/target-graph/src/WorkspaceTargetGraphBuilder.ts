@@ -54,7 +54,8 @@ export class WorkspaceTargetGraphBuilder {
   constructor(
     root: string,
     private packageInfos: PackageInfos,
-    private enableTargetConfigMerging: boolean
+    private enableTargetConfigMerging: boolean,
+    private enablePhantomTargetOptimization: boolean
   ) {
     this.dependencyMap = createDependencyMap(packageInfos, { withDevDependencies: true, withPeerDependencies: false });
     this.graphBuilder = new TargetGraphBuilder();
@@ -95,8 +96,10 @@ export class WorkspaceTargetGraphBuilder {
       this.processStagedConfig(target, config, changedFiles);
     } else {
       const packages = Object.keys(this.packageInfos);
+
       for (const packageName of packages) {
         const task = id;
+
         const targetConfig = this.determineFinalTargetConfig(getTargetId(packageName, task), config);
         const target = this.targetFactory.createPackageTarget(packageName!, task, targetConfig);
         this.graphBuilder.addTarget(target);
@@ -207,7 +210,12 @@ export class WorkspaceTargetGraphBuilder {
     priorities?: { package?: string; task: string; priority: number }[]
   ): Promise<TargetGraph> {
     // Expands the dependency specs from the target definitions
-    const fullDependencies = expandDepSpecs(this.graphBuilder.targets, this.dependencyMap);
+    const fullDependencies = expandDepSpecs(
+      this.graphBuilder.targets,
+      this.dependencyMap,
+      this.packageInfos,
+      this.enablePhantomTargetOptimization
+    );
 
     for (const [from, to] of fullDependencies) {
       this.graphBuilder.addDependency(from, to);

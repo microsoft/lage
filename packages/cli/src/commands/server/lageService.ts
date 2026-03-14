@@ -78,6 +78,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     packageInfos,
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
+    enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
   });
 
   const targetHasher = new TargetHasher({

@@ -85,6 +85,13 @@ export interface ConfigOptions {
   enableTargetConfigMerging: boolean;
 
   /**
+   * Enables phantom target optimization. When enabled, targets created for packages that don't actually define
+   * the corresponding npm script are excluded from transitive (`^^`) dependency expansion.
+   * This prevents unwanted cross-package dependency chains when phantom targets are later removed.
+   */
+  enablePhantomTargetOptimization: boolean;
+
+  /**
    * Custom reporters that can be referenced by name in the --reporter CLI flag.
    * The key is the reporter name, and the value is the path to the reporter module.
    *
