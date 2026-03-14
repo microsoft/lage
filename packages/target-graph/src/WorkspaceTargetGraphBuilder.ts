@@ -210,7 +210,12 @@ export class WorkspaceTargetGraphBuilder {
     priorities?: { package?: string; task: string; priority: number }[]
   ): Promise<TargetGraph> {
     // Expands the dependency specs from the target definitions
-    const fullDependencies = expandDepSpecs(this.graphBuilder.targets, this.dependencyMap, this.packageInfos, this.enablePhantomTargetOptimization);
+    const fullDependencies = expandDepSpecs(
+      this.graphBuilder.targets,
+      this.dependencyMap,
+      this.packageInfos,
+      this.enablePhantomTargetOptimization
+    );
 
     for (const [from, to] of fullDependencies) {
       this.graphBuilder.addDependency(from, to);

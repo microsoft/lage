@@ -13,11 +13,10 @@ import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId.js"
  * unnecessary work.
  *
  * Only npmScript target types can be considered phantom targets
- * 
+ *
  * Returns true if the target should be EXCLUDED from dependency expansion.
  */
 function isPhantomTarget(targetId: string, task: string, targets: Map<string, Target>, packageInfos: PackageInfos): boolean {
-
   const target = targets.get(targetId);
   if (!target?.packageName) return false;
 
