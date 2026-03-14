@@ -21,31 +21,11 @@ Lage has many changes from 1.x to 2.x. This migration guide will go over major c
 
 ### Breaking Changes
 
-- `lage` requires **Node 16**, or using the `--experimental-abortcontroller` flag in Node 14
+- `lage` requires **Node 16** ~~or using the `--experimental-abortcontroller` flag in Node 14~~ (the intent was to continue Node 14 support, but this accidentally drifted over time due to Yarn 4 not enforcing that dependencies match the repo's `package.json` `engines`).
+  - As of writing, the practical minimum Node version is 18. This is most likely to be an issue if you're caching to Azure blob storage.
 - `lage` now will automatically write remote cache if the typical environment variable is set (e.g. `CI` or `TF_BUILD`)
 - `info` command is not implemented yet
 - `graph` command is not implemented yet
-
-#### Using `lage` v2 with Node 14
-
-If you're still on Node 14, you can use Lage v2 by wrapping it with a script which passes the `--experimental-abortcontroller` flag, and using that wrapper in your other scripts.
-
-Relevant parts of `package.json` (omit the comments):
-
-```jsonc title="package.json"
-{
-  "scripts": {
-    // cross-env sets environment variables on any platform
-    "lage": "cross-env NODE_OPTIONS=\"--experimental-abortcontroller\" lage",
-    // Be sure to use `yarn lage` rather than only `lage` in your other scripts!
-    "build": "yarn lage build"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.0",
-    "lage": "^2.0.0"
-  }
-}
-```
 
 ## v0.x -> v1.x
 

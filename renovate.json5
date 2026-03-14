@@ -6,7 +6,7 @@
     "github>microsoft/m365-renovate-config:disableEsmVersions",
     "github>microsoft/m365-renovate-config:groupMore",
     "github>microsoft/m365-renovate-config:keepFresh",
-    "github>microsoft/m365-renovate-config:restrictNode(14)"
+    "github>microsoft/m365-renovate-config:restrictNode(16)"
   ],
   "labels": ["renovate"],
   "prHourlyLimit": 5,
@@ -44,6 +44,11 @@
       // Disable updating this with Renovate because it will choose a range that includes the
       // latest version, which yarn will dedupe to the in-repo version.
       "matchPackageNames": ["lage", "lage-npm"],
+      "enabled": false
+    },
+    {
+      // Disable due to Node version compatibility
+      "matchPackageNames": ["@azure/*", "node-gyp"],
       "enabled": false
     }
   ]
