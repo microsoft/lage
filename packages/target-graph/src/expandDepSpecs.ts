@@ -16,8 +16,7 @@ import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId.js"
  * 
  * Returns true if the target should be EXCLUDED from dependency expansion.
  */
-function isPhantomTarget(targetId: string, task: string, targets: Map<string, Target>, packageInfos?: PackageInfos): boolean {
-  if (!packageInfos) return false;
+function isPhantomTarget(targetId: string, task: string, targets: Map<string, Target>, packageInfos: PackageInfos): boolean {
 
   const target = targets.get(targetId);
   if (!target?.packageName) return false;
@@ -41,7 +40,8 @@ function isPhantomTarget(targetId: string, task: string, targets: Map<string, Ta
 export function expandDepSpecs(
   targets: Map<string, Target>,
   dependencyMap: DependencyMap,
-  packageInfos?: PackageInfos
+  packageInfos: PackageInfos,
+  enablePhantomTargetOptimization: boolean
 ): [string, string][] {
   const dependencies: [string, string][] = [];
 
@@ -115,7 +115,7 @@ export function expandDepSpecs(
         const dependencyTargetIds = findDependenciesByTask(depTask, targetDependencies);
         for (const from of dependencyTargetIds) {
           // Skip phantom targets: packages that don't define this task as a real npm script.
-          if (isPhantomTarget(from, depTask, targets, packageInfos)) continue;
+          if (enablePhantomTargetOptimization && isPhantomTarget(from, depTask, targets, packageInfos)) continue;
           addDependency(from, to);
         }
       } else if (dependencyTargetId.startsWith("^") && packageName) {
@@ -125,7 +125,7 @@ export function expandDepSpecs(
         const dependencyTargetIds = findDependenciesByTask(depTask, targetDependencies);
         for (const from of dependencyTargetIds) {
           // Skip phantom targets: packages that don't define this task as a real npm script.
-          if (isPhantomTarget(from, depTask, targets, packageInfos)) continue;
+          if (enablePhantomTargetOptimization && isPhantomTarget(from, depTask, targets, packageInfos)) continue;
           addDependency(from, to);
         }
       } else if (packageName) {

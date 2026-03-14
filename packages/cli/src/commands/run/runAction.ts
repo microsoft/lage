@@ -65,6 +65,7 @@ export async function runAction(options: RunOptions, command: Command): Promise<
     packageInfos,
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
+    enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
   });
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);

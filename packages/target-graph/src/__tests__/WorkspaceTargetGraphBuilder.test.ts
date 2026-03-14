@@ -38,7 +38,7 @@ describe("workspace target graph builder", () => {
       b: [],
     });
 
-    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false, false);
     await builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
@@ -80,7 +80,7 @@ describe("workspace target graph builder", () => {
       b: [],
     });
 
-    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false, false);
     await builder.addTargetConfig("test");
     await builder.addTargetConfig("lint");
 
@@ -119,7 +119,7 @@ describe("workspace target graph builder", () => {
       c: ["b"],
     });
 
-    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false, false);
 
     await builder.addTargetConfig("build", {
       dependsOn: ["^build"],
@@ -161,7 +161,7 @@ describe("workspace target graph builder", () => {
       c: ["b"],
     });
 
-    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false, false);
 
     await builder.addTargetConfig("build", {
       dependsOn: ["^build"],
@@ -195,7 +195,7 @@ describe("workspace target graph builder", () => {
       c: [],
     });
 
-    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false, false);
 
     await builder.addTargetConfig("bundle", {
       dependsOn: ["^^transpile"],
@@ -240,7 +240,7 @@ describe("workspace target graph builder", () => {
       common: [],
     });
 
-    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false, false);
 
     await builder.addTargetConfig("build", {
       dependsOn: ["common#copy", "^build"],
@@ -296,7 +296,7 @@ describe("workspace target graph builder", () => {
       b: [],
     });
 
-    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false, false);
     await builder.addTargetConfig("build", {
       dependsOn: ["^build", "#global:task"],
     });
@@ -345,7 +345,7 @@ describe("workspace target graph builder", () => {
       b: [],
     });
 
-    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false, false);
     await builder.addTargetConfig("build", {
       dependsOn: ["^build", "#global:task"],
     });
@@ -374,7 +374,7 @@ describe("workspace target graph builder", () => {
       b: [],
     });
 
-    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false, false);
     await builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
@@ -412,7 +412,7 @@ describe("workspace target graph builder", () => {
       dep: { deps: [], scripts: ["transpile", "typecheck"] },
     });
 
-    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false, false);
     await builder.addTargetConfig("transpile");
     await builder.addTargetConfig("emitDeclarations", {
       dependsOn: ["typecheck"],
@@ -444,7 +444,7 @@ describe("workspace target graph builder", () => {
       dep: { deps: [], scripts: ["build"] },
     });
 
-    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false);
+    const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, false, false);
     await builder.addTargetConfig("customTask", {
       type: "worker",
     });

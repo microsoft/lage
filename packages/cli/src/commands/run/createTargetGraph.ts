@@ -21,6 +21,7 @@ interface CreateTargetGraphOptions {
   packageInfos: PackageInfos;
   priorities: Priority[];
   enableTargetConfigMerging: boolean;
+  enablePhantomTargetOptimization: boolean;
 }
 
 function getChangedFiles(since: string, cwd: string) {
@@ -45,6 +46,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
     dependencies,
     dependents,
     enableTargetConfigMerging,
+    enablePhantomTargetOptimization,
     since,
     scope,
     repoWideChanges,
@@ -56,7 +58,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
     priorities,
   } = options;
 
-  const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, enableTargetConfigMerging);
+  const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, enableTargetConfigMerging, enablePhantomTargetOptimization);
 
   const packages = getFilteredPackages({
     root,

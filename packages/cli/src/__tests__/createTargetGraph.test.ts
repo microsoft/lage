@@ -129,6 +129,7 @@ async function createPackageTasks(tasks: string[], packageInfos: PackageInfos, p
     dependencies: options.dependencies,
     dependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
     enableTargetConfigMerging: true,
+    enablePhantomTargetOptimization: false,
     ignore: options.ignore.concat(config.ignore),
     pipeline: config.pipeline,
     repoWideChanges: config.repoWideChanges,

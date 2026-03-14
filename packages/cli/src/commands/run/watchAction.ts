@@ -63,6 +63,7 @@ export async function watchAction(options: RunOptions, command: Command): Promis
     packageInfos,
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
+    enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
   });
 
   // Make sure we do not attempt writeRemoteCache in watch mode
