@@ -208,7 +208,7 @@ describe("transitive task deps test", () => {
     await repo.cleanup();
   });
 
-  it("reproduce bug where transitive dependencies were being added that were not necessary", async () => {
+  it("does not include phantom npm scripts when enablePhantomTargetOptimization is true", async () => {
     // Simulates a bug from an internal repo that implemented isolated declarations for some packages
     const repo = new Monorepo("transitiveDeps-isolated-declarations-info");
 
@@ -223,6 +223,7 @@ describe("transitive task deps test", () => {
         emitDeclarations: ["typecheck"],
         typecheck: ["^^emitDeclarations", "transpile", "^^transpile"]
       },
+      "enablePhantomTargetOptimization": "true"
     }`);
 
     await repo.addPackage("dep", [], {
