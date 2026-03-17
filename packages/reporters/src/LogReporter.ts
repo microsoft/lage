@@ -7,7 +7,7 @@ import type { Chalk } from "chalk";
 import { gradient } from "./gradient.js";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
-import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
+import type { TargetLogData, TargetStatusData } from "./types/TargetLogData.js";
 import type { Writable } from "stream";
 import crypto from "crypto";
 import { formatBytes } from "./formatBytes.js";
@@ -145,7 +145,7 @@ export class LogReporter implements Reporter {
     this.logStream.write(message + "\n");
   }
 
-  private logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
+  private logTargetEntry(entry: LogEntry<TargetLogData>) {
     const colorFn = colors[entry.level];
     const data = entry.data!;
 
@@ -175,7 +175,7 @@ export class LogReporter implements Reporter {
     }
   }
 
-  private logTargetEntryByGroup(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
+  private logTargetEntryByGroup(entry: LogEntry<TargetLogData>) {
     const data = entry.data!;
 
     const target = data.target;
@@ -185,7 +185,7 @@ export class LogReporter implements Reporter {
       isTargetStatusLogEntry(data) &&
       (data.status === "success" || data.status === "failed" || data.status === "skipped" || data.status === "aborted")
     ) {
-      const entries = this.logEntries.get(id)! as LogEntry<TargetStatusEntry>[];
+      const entries = this.logEntries.get(id)! as LogEntry<TargetStatusData>[];
 
       for (const targetEntry of entries) {
         this.logTargetEntry(targetEntry);

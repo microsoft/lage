@@ -3,7 +3,7 @@ import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
 import ansiRegex from "ansi-regex";
 import type { Reporter, LogEntry } from "@lage-run/logger";
-import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
+import type { TargetLogData } from "./types/TargetLogData.js";
 import { Writable } from "stream";
 import fs from "fs";
 import path from "path";
@@ -85,7 +85,7 @@ export class VerboseFileLogReporter implements Reporter {
     this.fileStream.write(message + "\n");
   }
 
-  private logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
+  private logTargetEntry(entry: LogEntry<TargetLogData>) {
     const data = entry.data!;
 
     if (isTargetStatusLogEntry(data)) {

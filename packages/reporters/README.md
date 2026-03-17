@@ -17,7 +17,7 @@ reporter.log({
     status: "running",
     duration: [0, 0],
     startTime: [0, 0],
-  } as TargetStatusEntry,
+  },
   level: LogLevel.verbose,
   msg: "test message",
   timestamp: 0,

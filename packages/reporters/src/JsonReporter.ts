@@ -1,16 +1,35 @@
 /* eslint-disable no-console */
 
 import { hrToSeconds } from "@lage-run/format-hrtime";
-import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
+import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 import type { LogLevel } from "@lage-run/logger";
 import { type LogEntry, type Reporter } from "@lage-run/logger";
+import type { TargetLogData } from "./types/TargetLogData.js";
 
-import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
+interface JsonReporterTaskStats {
+  package: string | undefined;
+  task: string;
+  duration: string;
+  status: string;
+}
+
+/** Final entry logged by `JsonReporter.summarize()` */
+export interface JsonReporterSummaryData {
+  summary: {
+    duration: string;
+    taskStats: JsonReporterTaskStats[];
+  } & {
+    [status in `${TargetStatus}Targets`]?: number;
+  };
+}
+
+/** `LogEntry.data` types for the `JsonReporter` */
+export type JsonReporterLogData = JsonReporterSummaryData | TargetLogData;
 
 export class JsonReporter implements Reporter {
   constructor(private options: { logLevel: LogLevel; indented: boolean }) {}
 
-  public log(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>): void {
+  public log(entry: LogEntry<TargetLogData>): void {
     if (entry.data && entry.data.target && entry.data.target.hidden) {
       return;
     }
@@ -23,7 +42,7 @@ export class JsonReporter implements Reporter {
   public summarize(schedulerRunSummary: SchedulerRunSummary): void {
     const { duration, targetRuns, targetRunByStatus } = schedulerRunSummary;
 
-    const summary: Record<string, unknown> = {
+    const summary: JsonReporterSummaryData["summary"] = {
       duration: hrToSeconds(duration),
       taskStats: [...targetRuns.values()].map((targetRun) => ({
         package: targetRun.target.packageName,
@@ -33,7 +52,7 @@ export class JsonReporter implements Reporter {
       })),
     };
 
-    for (const status of Object.keys(targetRunByStatus) as (keyof typeof targetRunByStatus)[]) {
+    for (const status of Object.keys(targetRunByStatus) as TargetStatus[]) {
       if (targetRunByStatus[status] && targetRunByStatus[status].length) {
         summary[`${status}Targets`] = targetRunByStatus[status].length;
       }

@@ -4,7 +4,7 @@ import { LogLevel, type LogStructuredData } from "@lage-run/logger";
 import chalk from "chalk";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetRun, TargetStatus } from "@lage-run/scheduler-types";
-import type { TargetMessageEntry, TargetStatusEntry } from "./types/TargetLogEntry.js";
+import type { TargetLogData, TargetStatusData } from "./types/TargetLogData.js";
 import type { Writable } from "stream";
 import { slowestTargetRuns } from "./slowestTargetRuns.js";
 
@@ -87,7 +87,7 @@ export abstract class GroupedReporter implements Reporter {
     }
   }
 
-  protected logTargetEntry(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>): boolean | void {
+  protected logTargetEntry(entry: LogEntry<TargetLogData>): boolean | void {
     const colorFn = colors[entry.level];
     const data = entry.data!;
 
@@ -138,7 +138,7 @@ export abstract class GroupedReporter implements Reporter {
     }
   }
 
-  private logTargetEntryByGroup(entry: LogEntry<TargetStatusEntry | TargetMessageEntry>) {
+  private logTargetEntryByGroup(entry: LogEntry<TargetLogData>) {
     const data = entry.data!;
 
     const target = data.target;
@@ -152,7 +152,7 @@ export abstract class GroupedReporter implements Reporter {
         const { status, duration } = data;
         this.logStream.write(this.formatGroupStart(data.target.packageName ?? "<root>", data.target.task, status, duration));
 
-        const entries = this.groupedEntries.get(id)! as LogEntry<TargetStatusEntry>[];
+        const entries = this.groupedEntries.get(id)! as LogEntry<TargetStatusData>[];
         for (const targetEntry of entries) {
           this.logTargetEntry(targetEntry);
         }
