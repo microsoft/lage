@@ -42,10 +42,10 @@ export async function runAction(options: RunOptions, command: Command): Promise<
   // Configure logger
   const logger = createLogger();
 
-  const reporters = await initializeReporters(logger, { ...options, concurrency }, config.reporters);
+  const root = getWorkspaceManagerRoot(cwd) ?? cwd;
+  const reporters = await initializeReporters(logger, { ...options, concurrency }, { customReporters: config.reporters, root });
 
   // Build Target Graph
-  const root = getWorkspaceManagerRoot(process.cwd())!;
   const packageInfos = getPackageInfos(root);
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);

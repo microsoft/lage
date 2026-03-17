@@ -49,6 +49,13 @@ export interface PackageTask {
   weight?: number;
 }
 
+/** Result logged and written to a file by the `info` command */
+export interface InfoResult {
+  packageTasks: PackageTask[];
+  scope: string[];
+  command: string[];
+}
+
 /**
  * The info command displays information about a target graph in a workspace.
  * The generated output can be read and used by other task runners, such as BuildXL.
@@ -101,8 +108,8 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
   options.logLevel = options.logLevel ?? "info";
   options.reporter = options.reporter ?? "json";
   options.server = typeof options.server === "boolean" && options.server ? "localhost:5332" : options.server;
-  await initializeReporters(logger, options, config.reporters);
-  const root = getWorkspaceManagerRoot(cwd)!;
+  const root = getWorkspaceManagerRoot(cwd) ?? cwd;
+  await initializeReporters(logger, options, { customReporters: config.reporters, root });
 
   const packageInfos = getPackageInfos(root);
 
@@ -207,7 +214,7 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
     }
   }
 
-  const infoResult = {
+  const infoResult: InfoResult = {
     command: command.args,
     scope,
     packageTasks,

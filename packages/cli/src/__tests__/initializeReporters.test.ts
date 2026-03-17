@@ -5,18 +5,25 @@ import isInteractive from "is-interactive";
 import os from "os";
 import path from "path";
 import { initializeReporters } from "../commands/initializeReporters.js";
+import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
 
 jest.mock("is-interactive", () => jest.fn(() => true));
 
+// The tests for custom reporters are in customReporter.test.ts
 describe("initializeReporters", () => {
-  let tmpDir: string;
+  let tmpDir: string | undefined;
   let reporters: Reporter[] | undefined;
   let savedGithubActions: string | undefined;
   let savedTfBuild: string | undefined;
 
-  beforeAll(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "lage-"));
-  });
+  const options: ReporterInitOptions = {
+    concurrency: 1,
+    grouped: false,
+    logLevel: "info",
+    progress: false,
+    reporter: [],
+    verbose: false,
+  };
 
   beforeEach(() => {
     // Save and clear CI env vars so default-reporter tests are environment-independent
@@ -38,82 +45,75 @@ describe("initializeReporters", () => {
     if (savedTfBuild !== undefined) {
       process.env.TF_BUILD = savedTfBuild;
     }
-  });
-
-  afterAll(() => {
-    fs.rmSync(tmpDir, { recursive: true, force: true });
+    try {
+      tmpDir && fs.rmSync(tmpDir, { recursive: true, force: true });
+    } catch {
+      // ignore
+    }
+    tmpDir = undefined;
+    jest.restoreAllMocks();
   });
 
   it("should initialize progress reporter when param is progress passed as true", async () => {
     const logger = new Logger();
-    reporters = await initializeReporters(logger, {
-      concurrency: 1,
-      grouped: false,
-      logLevel: "info",
-      progress: true,
-      reporter: [],
-      verbose: false,
-    });
+    reporters = await initializeReporters(
+      logger,
+      {
+        ...options,
+        progress: true,
+      },
+      undefined
+    );
 
-    expect(reporters.length).toBe(1);
-    expect(reporters).toContainEqual(expect.any(BasicReporter));
+    expect(reporters).toEqual([expect.any(BasicReporter)]);
   });
 
   it("should initialize old reporter when shell is not interactive", async () => {
     (isInteractive as jest.Mock).mockReturnValueOnce(false);
     const logger = new Logger();
-    const reporters = await initializeReporters(logger, {
-      concurrency: 1,
-      grouped: false,
-      logLevel: "info",
-      progress: true,
-      reporter: [],
-      verbose: false,
-    });
+    const reporters = await initializeReporters(logger, { ...options }, undefined);
 
-    expect(reporters.length).toBe(1);
-    expect(reporters).toContainEqual(expect.any(LogReporter));
+    expect(reporters).toEqual([expect.any(LogReporter)]);
   });
 
   it("should initialize old reporter when grouped", async () => {
     const logger = new Logger();
-    reporters = await initializeReporters(logger, {
-      concurrency: 1,
-      grouped: true,
-      logLevel: "info",
-      progress: false,
-      reporter: [],
-      verbose: false,
-    });
-    expect(reporters.length).toBe(1);
-    expect(reporters).toContainEqual(expect.any(LogReporter));
+    reporters = await initializeReporters(
+      logger,
+      {
+        ...options,
+        grouped: true,
+      },
+      undefined
+    );
+    expect(reporters).toEqual([expect.any(LogReporter)]);
   });
 
   it("should initialize old reporter when verbose", async () => {
     const logger = new Logger();
-    reporters = await initializeReporters(logger, {
-      concurrency: 1,
-      grouped: false,
-      logLevel: "info",
-      progress: false,
-      reporter: [],
-      verbose: true,
-    });
-    expect(reporters.length).toBe(1);
-    expect(reporters).toContainEqual(expect.any(LogReporter));
+    reporters = await initializeReporters(
+      logger,
+      {
+        ...options,
+        verbose: true,
+      },
+      undefined
+    );
+    expect(reporters).toEqual([expect.any(LogReporter)]);
   });
 
   it("should initialize profile reporter", async () => {
     const logger = new Logger();
-    reporters = await initializeReporters(logger, {
-      concurrency: 1,
-      grouped: false,
-      logLevel: "info",
-      progress: true,
-      reporter: [],
-      verbose: false,
-      profile: path.join(tmpDir, "profile.json"),
-    });
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "lage-profile-"));
+    reporters = await initializeReporters(
+      logger,
+      {
+        ...options,
+        progress: true,
+        profile: path.join(tmpDir, "profile.json"),
+      },
+      undefined
+    );
 
     expect(reporters.length).toBe(2);
     expect(reporters).toContainEqual(expect.any(ChromeTraceEventsReporter));
@@ -121,45 +121,28 @@ describe("initializeReporters", () => {
 
   it("should initialize ADO reporter when reporter arg is adoLog", async () => {
     const logger = new Logger();
-    reporters = await initializeReporters(logger, {
-      concurrency: 1,
-      grouped: false,
-      logLevel: "info",
-      progress: false,
-      reporter: ["adoLog"],
-      verbose: false,
-    });
-    expect(reporters.length).toBe(1);
-    expect(reporters).toContainEqual(expect.any(AdoReporter));
+    reporters = await initializeReporters(
+      logger,
+      {
+        ...options,
+        reporter: ["adoLog"],
+      },
+      undefined
+    );
+    expect(reporters).toEqual([expect.any(AdoReporter)]);
   });
 
   it("should auto-detect GitHub Actions and use GithubActionsReporter", async () => {
     process.env.GITHUB_ACTIONS = "true";
     const logger = new Logger();
-    reporters = await initializeReporters(logger, {
-      concurrency: 1,
-      grouped: false,
-      logLevel: "info",
-      progress: false,
-      reporter: [],
-      verbose: false,
-    });
-    expect(reporters.length).toBe(1);
-    expect(reporters).toContainEqual(expect.any(GithubActionsReporter));
+    reporters = await initializeReporters(logger, { ...options }, undefined);
+    expect(reporters).toEqual([expect.any(GithubActionsReporter)]);
   });
 
   it("should auto-detect Azure DevOps and use AdoReporter", async () => {
     process.env.TF_BUILD = "True";
     const logger = new Logger();
-    reporters = await initializeReporters(logger, {
-      concurrency: 1,
-      grouped: false,
-      logLevel: "info",
-      progress: false,
-      reporter: [],
-      verbose: false,
-    });
-    expect(reporters.length).toBe(1);
-    expect(reporters).toContainEqual(expect.any(AdoReporter));
+    reporters = await initializeReporters(logger, { ...options }, undefined);
+    expect(reporters).toEqual([expect.any(AdoReporter)]);
   });
 });

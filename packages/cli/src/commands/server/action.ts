@@ -5,6 +5,7 @@ import { createLageService } from "./lageService.js";
 import { createServer } from "@lage-run/rpc";
 import { parseServerOption } from "../parseServerOption.js";
 import { getConfig } from "@lage-run/config";
+import { getWorkspaceManagerRoot } from "workspace-tools";
 
 interface WorkerOptions extends ReporterInitOptions {
   nodeArg?: string[];
@@ -19,20 +20,21 @@ export async function serverAction(options: WorkerOptions): Promise<void> {
 
   const { host, port } = parseServerOption(server);
   const cwd = process.cwd();
+  const root = getWorkspaceManagerRoot(cwd) ?? cwd;
   const config = await getConfig(cwd);
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
   options.logFile = options.logFile ?? "node_modules/.cache/lage/server.log";
   options.reporter = options.reporter ?? "verboseFileLog";
-  await initializeReporters(logger, options, config.reporters);
+  await initializeReporters(logger, options, { customReporters: config.reporters, root });
 
   logger.info(`Starting server on http://${host}:${port}`);
 
   const abortController = new AbortController();
 
   const lageService = await createLageService({
-    cwd: process.cwd(),
+    cwd,
     serverControls: {
       abortController,
       countdownToShutdown: () => resetTimer(logger, timeout, abortController, lageServer),

@@ -121,7 +121,7 @@ async function createPackageTasks(tasks: string[], packageInfos: PackageInfos, p
     optimizeGraph: false,
   };
 
-  await initializeReporters(logger, options);
+  await initializeReporters(logger, options, undefined);
 
   const targetGraph = await createTargetGraph({
     logger,
