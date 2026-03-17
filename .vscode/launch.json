@@ -30,7 +30,11 @@
       "request": "launch",
       "program": "${workspaceRoot}/scripts/debugTests.js",
       "cwd": "${fileDirname}",
-      "args": ["--runInBand", "--watch", "${fileBasename}"],
+      "args": ["${fileBasename}"],
+      "env": {
+        // read by jest config
+        "VS_CODE_DEBUG": "1"
+      },
       "sourceMaps": true,
       "outputCapture": "std",
       "console": "integratedTerminal"

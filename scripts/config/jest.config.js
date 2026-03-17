@@ -2,8 +2,13 @@ const { findProjectRoot, getPackageInfos } = require("workspace-tools");
 const fs = require("fs");
 const path = require("path");
 
-const root = findProjectRoot(process.cwd()) ?? process.cwd();
-const swcOptions = JSON.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8"));
+const root = findProjectRoot(process.cwd());
+const swcOptions = {
+  ...JSON.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8")),
+  // inline sourcemaps are required when debugging in vs code
+  // (this env var is set in launch.json)
+  ...(process.env.VS_CODE_DEBUG && { sourceMaps: "inline" }),
+};
 const packages = getPackageInfos(root);
 
 const moduleNameMapper = /** @type {Record<string, string>} */ ({});
@@ -38,7 +43,7 @@ const config = {
   watchPathIgnorePatterns: ["/node_modules/"],
   moduleNameMapper,
   ...(process.env.LAGE_PACKAGE_NAME && { maxWorkers: 1 }),
-  testTimeout: process.platform !== "linux" ? 15000 : 8000,
+  testTimeout: process.platform === "win32" ? 15000 : 8000,
   setupFilesAfterEnv: [path.join(__dirname, "jest-setup-after-env.js")],
 };
 module.exports = config;
