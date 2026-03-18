@@ -15,6 +15,8 @@ export interface NpmScriptRunnerOptions {
 export interface NpmScriptTargetOptions {
   /** Script name to run, if different from the target task name */
   script?: string;
+  /** Extra node options for the worker */
+  nodeOptions?: string;
 }
 
 const gracefulKillTimeout = 2500;
@@ -101,7 +103,7 @@ export class NpmScriptRunner implements TargetRunner {
      */
     const args = [...taskArgs, ...(target.options?.taskArgs ?? [])];
     const npmRunArgs = ["run", task, ...(args.length > 0 ? ["--", ...args] : [])];
-    const npmRunNodeOptions = [nodeOptions, target.options?.nodeOptions].filter(Boolean).join(" ");
+    const npmRunNodeOptions = [nodeOptions, (target.options as NpmScriptTargetOptions)?.nodeOptions].filter(Boolean).join(" ");
 
     return await new Promise<void>((resolve, reject) => {
       childProcess = spawn(npmCmd, npmRunArgs, {

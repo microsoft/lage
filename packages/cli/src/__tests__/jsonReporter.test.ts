@@ -22,15 +22,19 @@ describe("json reporter", () => {
     const logSpy = jest.spyOn(console, "log");
 
     const logger = new Logger();
-    await initializeReporters(logger, {
-      concurrency: 1,
-      grouped: false,
-      logLevel: "info",
-      progress: true,
-      reporter: ["json"],
-      verbose: false,
-      indented: false,
-    });
+    await initializeReporters(
+      logger,
+      {
+        concurrency: 1,
+        grouped: false,
+        logLevel: "info",
+        progress: true,
+        reporter: ["json"],
+        verbose: false,
+        indented: false,
+      },
+      undefined
+    );
 
     logger.info("test Json", testObject);
 
@@ -49,15 +53,19 @@ describe("json reporter", () => {
     const logSpy = jest.spyOn(console, "log");
 
     const logger = new Logger();
-    await initializeReporters(logger, {
-      concurrency: 1,
-      grouped: false,
-      logLevel: "verbose",
-      progress: true,
-      reporter: ["json"],
-      verbose: false,
-      indented: true,
-    });
+    await initializeReporters(
+      logger,
+      {
+        concurrency: 1,
+        grouped: false,
+        logLevel: "verbose",
+        progress: true,
+        reporter: ["json"],
+        verbose: false,
+        indented: true,
+      },
+      undefined
+    );
 
     logger.info("test Json", testObject);
 

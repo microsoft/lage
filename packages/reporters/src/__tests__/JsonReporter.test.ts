@@ -1,9 +1,10 @@
 import { LogLevel } from "@lage-run/logger";
 import type { TargetRun } from "@lage-run/scheduler-types";
 import { JsonReporter } from "../JsonReporter.js";
-import type { TargetMessageEntry, TargetStatusEntry } from "../types/TargetLogEntry.js";
+import type { TargetLogData } from "../types/TargetLogData.js";
+import type { Target } from "@lage-run/target-graph";
 
-function createTarget(packageName: string, task: string) {
+function createTarget(packageName: string, task: string): Target {
   return {
     id: `${packageName}#${task}`,
     cwd: `/repo/root/packages/${packageName}`,
@@ -17,8 +18,12 @@ function createTarget(packageName: string, task: string) {
 }
 
 describe("JsonReporter", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("logs both status and message entries", () => {
-    const rawLogs: string[] = [];
+    const rawLogs: unknown[] = [];
     jest.spyOn(console, "log").mockImplementation((message: string) => {
       rawLogs.push(JSON.parse(message));
     });
@@ -29,20 +34,20 @@ describe("JsonReporter", () => {
     const aTestTarget = createTarget("a", "test");
     const bBuildTarget = createTarget("b", "build");
 
-    const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0], queueTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0], queueTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0], queueTime: [0, 0] }],
+    const logs: [TargetLogData, string?][] = [
+      [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
+      [{ target: aTestTarget, status: "running", duration: [0, 0] }],
+      [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0], queueTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0], queueTime: [0, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
-    ] as [TargetStatusEntry | TargetMessageEntry, string?][];
+      [{ target: aTestTarget, status: "success", duration: [10, 0] }],
+      [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
+      [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
+    ];
 
     for (const log of logs) {
       reporter.log({
@@ -53,302 +58,234 @@ describe("JsonReporter", () => {
       });
     }
 
-    expect(rawLogs).toMatchInlineSnapshot(`
-      [
-        {
-          "data": {
-            "duration": [
-              0,
-              0,
-            ],
-            "queueTime": [
-              0,
-              0,
-            ],
-            "startTime": [
-              0,
-              0,
-            ],
-            "status": "running",
-            "target": {
-              "cwd": "/repo/root/packages/a",
-              "depSpecs": [],
-              "dependencies": [],
-              "dependents": [],
-              "id": "a#build",
-              "label": "a - build",
-              "packageName": "a",
-              "task": "build",
-            },
+    expect(rawLogs).toEqual([
+      {
+        data: {
+          duration: [0, 0],
+          status: "running",
+          target: {
+            cwd: "/repo/root/packages/a",
+            depSpecs: [],
+            dependencies: [],
+            dependents: [],
+            id: "a#build",
+            label: "a - build",
+            packageName: "a",
+            task: "build",
           },
-          "level": 40,
-          "msg": "",
-          "timestamp": 0,
         },
-        {
-          "data": {
-            "duration": [
-              0,
-              0,
-            ],
-            "queueTime": [
-              0,
-              0,
-            ],
-            "startTime": [
-              1,
-              0,
-            ],
-            "status": "running",
-            "target": {
-              "cwd": "/repo/root/packages/a",
-              "depSpecs": [],
-              "dependencies": [],
-              "dependents": [],
-              "id": "a#test",
-              "label": "a - test",
-              "packageName": "a",
-              "task": "test",
-            },
+        level: 40,
+        msg: "",
+        timestamp: 0,
+      },
+      {
+        data: {
+          duration: [0, 0],
+          status: "running",
+          target: {
+            cwd: "/repo/root/packages/a",
+            depSpecs: [],
+            dependencies: [],
+            dependents: [],
+            id: "a#test",
+            label: "a - test",
+            packageName: "a",
+            task: "test",
           },
-          "level": 40,
-          "msg": "",
-          "timestamp": 0,
         },
-        {
-          "data": {
-            "duration": [
-              0,
-              0,
-            ],
-            "queueTime": [
-              0,
-              0,
-            ],
-            "startTime": [
-              2,
-              0,
-            ],
-            "status": "running",
-            "target": {
-              "cwd": "/repo/root/packages/b",
-              "depSpecs": [],
-              "dependencies": [],
-              "dependents": [],
-              "id": "b#build",
-              "label": "b - build",
-              "packageName": "b",
-              "task": "build",
-            },
+        level: 40,
+        msg: "",
+        timestamp: 0,
+      },
+      {
+        data: {
+          duration: [0, 0],
+          status: "running",
+          target: {
+            cwd: "/repo/root/packages/b",
+            depSpecs: [],
+            dependencies: [],
+            dependents: [],
+            id: "b#build",
+            label: "b - build",
+            packageName: "b",
+            task: "build",
           },
-          "level": 40,
-          "msg": "",
-          "timestamp": 0,
         },
-        {
-          "data": {
-            "pid": 1,
-            "target": {
-              "cwd": "/repo/root/packages/a",
-              "depSpecs": [],
-              "dependencies": [],
-              "dependents": [],
-              "id": "a#build",
-              "label": "a - build",
-              "packageName": "a",
-              "task": "build",
-            },
+        level: 40,
+        msg: "",
+        timestamp: 0,
+      },
+      {
+        data: {
+          pid: 1,
+          target: {
+            cwd: "/repo/root/packages/a",
+            depSpecs: [],
+            dependencies: [],
+            dependents: [],
+            id: "a#build",
+            label: "a - build",
+            packageName: "a",
+            task: "build",
           },
-          "level": 40,
-          "msg": "test message for a#build",
-          "timestamp": 0,
         },
-        {
-          "data": {
-            "pid": 1,
-            "target": {
-              "cwd": "/repo/root/packages/a",
-              "depSpecs": [],
-              "dependencies": [],
-              "dependents": [],
-              "id": "a#test",
-              "label": "a - test",
-              "packageName": "a",
-              "task": "test",
-            },
+        level: 40,
+        msg: "test message for a#build",
+        timestamp: 0,
+      },
+      {
+        data: {
+          pid: 1,
+          target: {
+            cwd: "/repo/root/packages/a",
+            depSpecs: [],
+            dependencies: [],
+            dependents: [],
+            id: "a#test",
+            label: "a - test",
+            packageName: "a",
+            task: "test",
           },
-          "level": 40,
-          "msg": "test message for a#test",
-          "timestamp": 0,
         },
-        {
-          "data": {
-            "pid": 1,
-            "target": {
-              "cwd": "/repo/root/packages/a",
-              "depSpecs": [],
-              "dependencies": [],
-              "dependents": [],
-              "id": "a#build",
-              "label": "a - build",
-              "packageName": "a",
-              "task": "build",
-            },
+        level: 40,
+        msg: "test message for a#test",
+        timestamp: 0,
+      },
+      {
+        data: {
+          pid: 1,
+          target: {
+            cwd: "/repo/root/packages/a",
+            depSpecs: [],
+            dependencies: [],
+            dependents: [],
+            id: "a#build",
+            label: "a - build",
+            packageName: "a",
+            task: "build",
           },
-          "level": 40,
-          "msg": "test message for a#build again",
-          "timestamp": 0,
         },
-        {
-          "data": {
-            "pid": 1,
-            "target": {
-              "cwd": "/repo/root/packages/b",
-              "depSpecs": [],
-              "dependencies": [],
-              "dependents": [],
-              "id": "b#build",
-              "label": "b - build",
-              "packageName": "b",
-              "task": "build",
-            },
+        level: 40,
+        msg: "test message for a#build again",
+        timestamp: 0,
+      },
+      {
+        data: {
+          pid: 1,
+          target: {
+            cwd: "/repo/root/packages/b",
+            depSpecs: [],
+            dependencies: [],
+            dependents: [],
+            id: "b#build",
+            label: "b - build",
+            packageName: "b",
+            task: "build",
           },
-          "level": 40,
-          "msg": "test message for b#build",
-          "timestamp": 0,
         },
-        {
-          "data": {
-            "pid": 1,
-            "target": {
-              "cwd": "/repo/root/packages/a",
-              "depSpecs": [],
-              "dependencies": [],
-              "dependents": [],
-              "id": "a#test",
-              "label": "a - test",
-              "packageName": "a",
-              "task": "test",
-            },
+        level: 40,
+        msg: "test message for b#build",
+        timestamp: 0,
+      },
+      {
+        data: {
+          pid: 1,
+          target: {
+            cwd: "/repo/root/packages/a",
+            depSpecs: [],
+            dependencies: [],
+            dependents: [],
+            id: "a#test",
+            label: "a - test",
+            packageName: "a",
+            task: "test",
           },
-          "level": 40,
-          "msg": "test message for a#test again",
-          "timestamp": 0,
         },
-        {
-          "data": {
-            "pid": 1,
-            "target": {
-              "cwd": "/repo/root/packages/b",
-              "depSpecs": [],
-              "dependencies": [],
-              "dependents": [],
-              "id": "b#build",
-              "label": "b - build",
-              "packageName": "b",
-              "task": "build",
-            },
+        level: 40,
+        msg: "test message for a#test again",
+        timestamp: 0,
+      },
+      {
+        data: {
+          pid: 1,
+          target: {
+            cwd: "/repo/root/packages/b",
+            depSpecs: [],
+            dependencies: [],
+            dependents: [],
+            id: "b#build",
+            label: "b - build",
+            packageName: "b",
+            task: "build",
           },
-          "level": 40,
-          "msg": "test message for b#build again",
-          "timestamp": 0,
         },
-        {
-          "data": {
-            "duration": [
-              10,
-              0,
-            ],
-            "queueTime": [
-              0,
-              0,
-            ],
-            "startTime": [
-              0,
-              0,
-            ],
-            "status": "success",
-            "target": {
-              "cwd": "/repo/root/packages/a",
-              "depSpecs": [],
-              "dependencies": [],
-              "dependents": [],
-              "id": "a#test",
-              "label": "a - test",
-              "packageName": "a",
-              "task": "test",
-            },
+        level: 40,
+        msg: "test message for b#build again",
+        timestamp: 0,
+      },
+      {
+        data: {
+          duration: [10, 0],
+          status: "success",
+          target: {
+            cwd: "/repo/root/packages/a",
+            depSpecs: [],
+            dependencies: [],
+            dependents: [],
+            id: "a#test",
+            label: "a - test",
+            packageName: "a",
+            task: "test",
           },
-          "level": 40,
-          "msg": "",
-          "timestamp": 0,
         },
-        {
-          "data": {
-            "duration": [
-              30,
-              0,
-            ],
-            "queueTime": [
-              0,
-              0,
-            ],
-            "startTime": [
-              2,
-              0,
-            ],
-            "status": "success",
-            "target": {
-              "cwd": "/repo/root/packages/b",
-              "depSpecs": [],
-              "dependencies": [],
-              "dependents": [],
-              "id": "b#build",
-              "label": "b - build",
-              "packageName": "b",
-              "task": "build",
-            },
+        level: 40,
+        msg: "",
+        timestamp: 0,
+      },
+      {
+        data: {
+          duration: [30, 0],
+          status: "success",
+          target: {
+            cwd: "/repo/root/packages/b",
+            depSpecs: [],
+            dependencies: [],
+            dependents: [],
+            id: "b#build",
+            label: "b - build",
+            packageName: "b",
+            task: "build",
           },
-          "level": 40,
-          "msg": "",
-          "timestamp": 0,
         },
-        {
-          "data": {
-            "duration": [
-              60,
-              0,
-            ],
-            "queueTime": [
-              0,
-              0,
-            ],
-            "startTime": [
-              1,
-              0,
-            ],
-            "status": "failed",
-            "target": {
-              "cwd": "/repo/root/packages/a",
-              "depSpecs": [],
-              "dependencies": [],
-              "dependents": [],
-              "id": "a#build",
-              "label": "a - build",
-              "packageName": "a",
-              "task": "build",
-            },
+        level: 40,
+        msg: "",
+        timestamp: 0,
+      },
+      {
+        data: {
+          duration: [60, 0],
+          status: "failed",
+          target: {
+            cwd: "/repo/root/packages/a",
+            depSpecs: [],
+            dependencies: [],
+            dependents: [],
+            id: "a#build",
+            label: "a - build",
+            packageName: "a",
+            task: "build",
           },
-          "level": 40,
-          "msg": "",
-          "timestamp": 0,
         },
-      ]
-    `);
+        level: 40,
+        msg: "",
+        timestamp: 0,
+      },
+    ]);
   });
 
   it("creates a summary entry", () => {
-    const rawLogs: string[] = [];
+    const rawLogs: unknown[] = [];
     jest.spyOn(console, "log").mockImplementation((message: string) => {
       rawLogs.push(JSON.parse(message));
     });
@@ -359,20 +296,20 @@ describe("JsonReporter", () => {
     const aTestTarget = createTarget("a", "test");
     const bBuildTarget = createTarget("b", "build");
 
-    const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0], queueTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0], queueTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0], queueTime: [0, 0] }],
+    const logs: [TargetLogData, string?][] = [
+      [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
+      [{ target: aTestTarget, status: "running", duration: [0, 0] }],
+      [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0], queueTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0], queueTime: [0, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0] }],
-    ] as [TargetStatusEntry | TargetMessageEntry, string?][];
+      [{ target: aTestTarget, status: "success", duration: [10, 0] }],
+      [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
+      [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
+    ];
 
     for (const log of logs) {
       reporter.log({
@@ -418,24 +355,9 @@ describe("JsonReporter", () => {
           failedTargets: 1,
           successTargets: 2,
           taskStats: [
-            {
-              duration: "60.00",
-              package: "a",
-              status: "failed",
-              task: "build",
-            },
-            {
-              duration: "60.00",
-              package: "a",
-              status: "success",
-              task: "test",
-            },
-            {
-              duration: "60.00",
-              package: "b",
-              status: "success",
-              task: "build",
-            },
+            { duration: "60.00", package: "a", status: "failed", task: "build" },
+            { duration: "60.00", package: "a", status: "success", task: "test" },
+            { duration: "60.00", package: "b", status: "success", task: "build" },
           ],
         },
       },

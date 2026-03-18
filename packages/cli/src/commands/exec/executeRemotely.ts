@@ -101,14 +101,13 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
 
   const { host, port } = parseServerOption(server);
   const cwd = options.cwd ?? process.cwd();
+  const root = getWorkspaceManagerRoot(cwd) ?? cwd;
   const config = await getConfig(cwd);
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
   options.reporter = options.reporter ?? "json";
-  await initializeReporters(logger, options, config.reporters);
-
-  const root = getWorkspaceManagerRoot(options.cwd ?? process.cwd())!;
+  await initializeReporters(logger, options, { customReporters: config.reporters, root });
 
   let client = await tryCreateClient(host, port);
   const args = command.args;

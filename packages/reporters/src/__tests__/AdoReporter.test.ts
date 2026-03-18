@@ -2,7 +2,7 @@ import { LogLevel } from "@lage-run/logger";
 import type { TargetRun } from "@lage-run/scheduler-types";
 import streams from "memory-streams";
 import { AdoReporter } from "../AdoReporter.js";
-import type { TargetMessageEntry, TargetStatusEntry } from "../types/TargetLogEntry.js";
+import type { TargetLogData, TargetMessageData, TargetStatusData } from "../types/TargetLogData.js";
 import { writerToString } from "./writerToString.js";
 
 function createTarget(packageName: string, task: string) {
@@ -30,7 +30,7 @@ describe("AdoReporter", () => {
         status: "running",
         duration: [0, 0],
         startTime: [0, 0],
-      } as TargetStatusEntry,
+      } as TargetStatusData,
       level: LogLevel.verbose,
       msg: "test message",
       timestamp: 0,
@@ -53,7 +53,7 @@ describe("AdoReporter", () => {
       data: {
         target: createTarget("a", "task"),
         pid: 1,
-      } as TargetMessageEntry,
+      } as TargetMessageData,
       level: LogLevel.verbose,
       msg: "test message",
       timestamp: 0,
@@ -76,20 +76,20 @@ describe("AdoReporter", () => {
     const aTestTarget = createTarget("a", "test");
     const bBuildTarget = createTarget("b", "build");
 
-    const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0] }],
+    const logs: [TargetLogData, string?][] = [
+      [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
+      [{ target: aTestTarget, status: "running", duration: [0, 0] }],
+      [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
-    ] as [TargetStatusEntry | TargetMessageEntry, string?][];
+      [{ target: aTestTarget, status: "success", duration: [10, 0] }],
+      [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
+      [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
+    ];
 
     for (const log of logs) {
       reporter.log({
@@ -134,20 +134,20 @@ describe("AdoReporter", () => {
     const aTestTarget = createTarget("a", "test");
     const bBuildTarget = createTarget("b", "build");
 
-    const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0] }],
+    const logs: [TargetLogData, string?][] = [
+      [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
+      [{ target: aTestTarget, status: "running", duration: [0, 0] }],
+      [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
-    ] as [TargetStatusEntry | TargetMessageEntry, string?][];
+      [{ target: aTestTarget, status: "success", duration: [10, 0] }],
+      [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
+      [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
+    ];
 
     for (const log of logs) {
       reporter.log({
@@ -186,20 +186,20 @@ describe("AdoReporter", () => {
     const aTestTarget = createTarget("a", "test");
     const bBuildTarget = createTarget("b", "build");
 
-    const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0] }],
+    const logs: [TargetLogData, string?][] = [
+      [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
+      [{ target: aTestTarget, status: "running", duration: [0, 0] }],
+      [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
-    ] as [TargetStatusEntry | TargetMessageEntry, string?][];
+      [{ target: aTestTarget, status: "success", duration: [10, 0] }],
+      [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
+      [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
+    ];
 
     for (const log of logs) {
       reporter.log({
@@ -232,20 +232,20 @@ describe("AdoReporter", () => {
     const aTestTarget = createTarget("a", "test");
     const bBuildTarget = createTarget("b", "build");
 
-    const logs = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0], startTime: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0], startTime: [1, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0], startTime: [2, 0] }],
+    const logs: [TargetLogData, string?][] = [
+      [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
+      [{ target: aTestTarget, status: "running", duration: [0, 0] }],
+      [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
       [{ target: aBuildTarget, pid: 1 }, "test message for a#build again, but look there is an error!"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
       [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
       [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0], startTime: [0, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0] }],
-    ] as [TargetStatusEntry | TargetMessageEntry, string?][];
+      [{ target: aTestTarget, status: "success", duration: [10, 0] }],
+      [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
+      [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
+    ];
 
     for (const log of logs) {
       reporter.log({

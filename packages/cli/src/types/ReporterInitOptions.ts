@@ -43,6 +43,10 @@ export const logBuiltInReporterNames: string[] = builtInReporterNames.filter(
   (name) => shouldListBuiltInReporters[name as BuiltInReporterName]
 );
 
+/**
+ * Options for initializing reporters.
+ * This is also passed to the constructor of a custom reporter class.
+ */
 export interface ReporterInitOptions {
   reporter: ReporterName[] | ReporterName | undefined;
   progress: boolean;

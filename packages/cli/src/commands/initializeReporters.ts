@@ -1,4 +1,4 @@
-import { createReporter } from "./createReporter.js";
+import { createReporter, type CustomReportersOptions } from "./createReporter.js";
 import type { LogStructuredData, Logger, Reporter } from "@lage-run/logger";
 import {
   type BuiltInReporterName,
@@ -11,9 +11,9 @@ import {
 export async function initializeReporters(
   logger: Logger,
   options: ReporterInitOptions,
-  customReporters: Record<string, string> = {}
+  customReportersOptions: CustomReportersOptions | undefined
 ): Promise<Reporter<LogStructuredData>[]> {
-  const customReporterNames = Object.keys(customReporters);
+  const customReporterNames = Object.keys(customReportersOptions?.customReporters || {});
 
   // Mapping from lowercase reporter name to original name
   const supportedReportersLower = Object.fromEntries(
@@ -41,7 +41,7 @@ export async function initializeReporters(
       throw new Error(`Invalid --reporter option: "${rawReporterName}". Supported reporters are: ${reportersList}`);
     }
 
-    const reporterInstance = await createReporter(reporterName, options, customReporters);
+    const reporterInstance = await createReporter(reporterName, options, customReportersOptions);
     logger.addReporter(reporterInstance);
   }
 
