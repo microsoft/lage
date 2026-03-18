@@ -6,27 +6,24 @@ import { Monorepo } from "./mock/monorepo.js";
 const defaultCacheLocation = "node_modules/.cache/lage/cache";
 
 describe("Cache clear", () => {
+  let repo: Monorepo | undefined;
+
+  afterEach(async () => {
+    await repo?.cleanup();
+    repo = undefined;
+  });
+
   it("should clear cache with the default cache location", async () => {
-    const repo = new Monorepo("cache-default");
+    repo = new Monorepo("cache-default");
 
-    await repo.init();
-    await repo.setLageConfig(
-      `const fs = require('fs');
-      const path = require('path');
-      module.exports = {
-        pipeline: {
-          build: [],
-        },
-        cache: true,
-      };`
-    );
-
-    await repo.addPackage("a", [], {
-      build: "echo a:build",
-      test: "echo a:test",
-    });
-    await repo.addPackage("b", [], {
-      build: "echo b:build",
+    await repo.init({
+      lageConfig: {
+        pipeline: { build: [] },
+      },
+      packages: {
+        a: { scripts: { build: "echo a:build", test: "echo a:test" } },
+        b: { scripts: { build: "echo b:build" } },
+      },
     });
     await repo.install();
 
@@ -42,12 +39,9 @@ describe("Cache clear", () => {
     expect(fs.readdirSync(cacheFolder)).toHaveLength(2);
 
     // Clear the cache
-
     await repo.run("clear");
 
     // Cache folders should be empty
     expect(fs.readdirSync(cacheFolder)).toHaveLength(0);
-
-    await repo.cleanup();
   });
 });

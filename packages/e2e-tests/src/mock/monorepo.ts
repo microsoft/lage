@@ -1,47 +1,82 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as execa from "execa";
+import { findGitRoot } from "workspace-tools";
 
 import { glob } from "@lage-run/globby";
-import { Monorepo as BaseMonorepo } from "@lage-run/monorepo-fixture";
+import { Monorepo as BaseMonorepo, type MonorepoInitParams as BaseMonorepoInitParams } from "@lage-run/monorepo-fixture";
+import type { ConfigFileOptions } from "@lage-run/cli";
 
-const externalPackageJsonGlobs = ["node_modules/glob-hasher/package.json", "node_modules/glob-hasher-*/package.json"];
-const externalPackageJsons = glob(externalPackageJsonGlobs, {
-  cwd: path.join(__dirname, "..", "..", "..", ".."),
-  gitignore: false,
-})!.map((f) => path.resolve(path.join(__dirname, "..", "..", "..", ".."), f));
+const lageRepoRoot = findGitRoot(__dirname);
+const lagePackageRoot = path.join(lageRepoRoot, "packages/lage");
+const externalPackageJsons = glob(["node_modules/glob-hasher/package.json", "node_modules/glob-hasher-*/package.json"], {
+  cwd: lageRepoRoot,
+  absolute: true,
+});
+
+const yarnGlob = ".yarn/releases/yarn-*.cjs";
+/** Path to the lage repo's current saved yarn release */
+const yarnPath = glob([yarnGlob], {
+  cwd: lageRepoRoot,
+  absolute: true,
+})[0];
+if (!yarnPath) {
+  throw new Error("Could not find yarn release under " + path.join(lageRepoRoot, yarnGlob));
+}
+
+/** E2E monorepo init params */
+export interface MonorepoInitParams extends BaseMonorepoInitParams {
+  lageConfig?: string | ConfigFileOptions;
+  /** Root package.json scripts override */
+  scripts?: Record<string, string>;
+}
 
 export class Monorepo extends BaseMonorepo {
+  /** Path to the fixture's copy of yarn */
   private readonly yarnPath: string;
 
   constructor(name: string) {
-    super(name, "lage-monorepo");
-    this.yarnPath = path.join(this.root, ".yarn", "yarn.js");
+    super(name);
+    this.yarnPath = path.join(this.root, ".yarn", "yarn.cjs");
   }
 
-  public override async install(): Promise<void> {
-    for (const externalPackageJson of externalPackageJsons) {
-      const packagePath = path.dirname(externalPackageJson);
-      const name = JSON.parse(fs.readFileSync(path.join(packagePath, "package.json"), "utf-8")).name;
-      fs.cpSync(packagePath, path.join(this.root, "node_modules", name), { recursive: true });
+  /**
+   * Init the repo and files. Note you must separately call `install()` before running lage.
+   *
+   * The default fixture for the e2e tests includes a bunch of scripts which mostly run
+   * `lage <script> --reporter json --log-level silly` so the output can be parsed with `parseNdJson`.
+   */
+  public async init(params: MonorepoInitParams = {}): Promise<void> {
+    if (params.fixturePath) {
+      throw new Error("Custom fixture paths are not currently supported in the e2e monorepo helper");
     }
 
-    fs.cpSync(path.resolve(__dirname, "..", "..", "yarn"), path.dirname(this.yarnPath), { recursive: true });
-    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
-  }
+    await super.gitInit();
 
-  protected override async generateRepoFiles(): Promise<void> {
-    await this.commitFiles({
-      ".yarnrc.yml": `yarnPath: "${this.yarnPath.replace(/\\/g, "/")}"\ncacheFolder: "${this.root.replace(
-        /\\/g,
-        "/"
-      )}/.yarn/cache"\nnodeLinker: node-modules`,
+    const {
+      lageConfig = {
+        pipeline: {
+          build: ["^build"],
+          test: ["build"],
+          lint: [],
+          extra: [],
+        },
+        npmClient: "yarn",
+      },
+      scripts,
+      packages = {},
+      extraFiles,
+    } = params;
+
+    const yarnCacheFolder = this.root.replace(/\\/g, "/") + "/.yarn/cache";
+    this.writeFiles({
+      ".yarnrc.yml": `yarnPath: "${this.yarnPath.replace(/\\/g, "/")}"\ncacheFolder: "${yarnCacheFolder}"\nnodeLinker: node-modules`,
       "package.json": {
         name: this.name.replace(/ /g, "-"),
         version: "0.1.0",
         private: true,
         workspaces: ["packages/*"],
-        scripts: {
+        scripts: scripts || {
           lage: `lage`,
           bundle: `lage bundle --reporter json --log-level silly`,
           transpile: `lage transpile --reporter json --log-level silly`,
@@ -53,27 +88,45 @@ export class Monorepo extends BaseMonorepo {
           extra: `lage extra --clear --reporter json --log-level silly`,
         },
         devDependencies: {
-          lage: path.resolve(__dirname, "..", "..", "..", "lage"),
+          lage: lagePackageRoot,
         },
         packageManager: "yarn@1.22.19",
       },
-      "lage.config.js": `module.exports = {
-        pipeline: {
-          build: ['^build'],
-          test: ['build'],
-          lint: [],
-          extra: []
-        },
-        npmClient: 'yarn'
-      };`,
+      "lage.config.js": typeof lageConfig === "string" ? lageConfig : `module.exports = ${JSON.stringify(lageConfig, null, 2)};`,
       ".gitignore": "node_modules",
+      ...extraFiles,
     });
+
+    const packagesExtra: typeof packages = {};
+    for (const [name, pkg] of Object.entries(packages)) {
+      packagesExtra[name] = {
+        ...pkg,
+        extraFiles: {
+          ...pkg.extraFiles,
+          "extra.js": `console.log('extra ${name}');`,
+        },
+      };
+    }
+    super.addPackages(packagesExtra);
+
+    // Commit all at the end for efficiency
+    execa.sync("git", ["add", "."], { cwd: this.root });
+    execa.sync("git", ["commit", "-m", "test"], { cwd: this.root });
   }
 
-  public override async addPackage(name: string, internalDeps: string[] = [], scripts?: { [script: string]: string }): Promise<void> {
-    return super.addPackage(name, internalDeps, scripts, {
-      [`packages/${name}/extra.js`]: `console.log('extra ${name}');`,
-    });
+  /**
+   * Link lage's external dependencies and run `yarn install` (SLOW)
+   */
+  public async install(): Promise<void> {
+    for (const externalPackageJson of externalPackageJsons) {
+      const packagePath = path.dirname(externalPackageJson);
+      const name = JSON.parse(fs.readFileSync(path.join(packagePath, "package.json"), "utf-8")).name;
+      fs.cpSync(packagePath, path.join(this.nodeModulesPath, name), { recursive: true });
+    }
+
+    fs.mkdirSync(path.dirname(this.yarnPath), { recursive: true });
+    fs.cpSync(yarnPath, this.yarnPath);
+    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
   }
 
   public runServer(tasks: string[]): execa.ExecaChildProcess<string> {

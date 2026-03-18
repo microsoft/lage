@@ -37,6 +37,7 @@
       },
       "sourceMaps": true,
       "outputCapture": "std",
+      // "runtimeVersion": "20",
       "console": "integratedTerminal"
     },
     {

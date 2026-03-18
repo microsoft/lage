@@ -1,4 +1,4 @@
-import { Monorepo } from "./mock/monorepo.js";
+import { Monorepo, type MonorepoInitParams } from "./mock/monorepo.js";
 import path from "path";
 import { getStatusEntriesData, parseNdJson } from "./parseNdJson.js";
 
@@ -34,7 +34,9 @@ describe("custom reporters", () => {
    * Init the repo with a lage config with the reporters, and simpler top-level
    * `build` and `test` scripts that don't add an extra reporter like the defaults.
    */
-  async function initRepoWithReporters(reporters: Record<string, string>) {
+  async function initRepoWithReporters(
+    params: Pick<MonorepoInitParams, "packages" | "extraFiles"> & { reporters: Record<string, string> }
+  ) {
     await repo!.init({
       lageConfig: {
         pipeline: {
@@ -42,12 +44,14 @@ describe("custom reporters", () => {
           test: ["build"],
         },
         npmClient: "yarn",
-        reporters,
+        reporters: params.reporters,
       },
       scripts: {
         build: "lage build",
         test: "lage test",
       },
+      packages: params.packages,
+      extraFiles: params.extraFiles,
     });
   }
 
@@ -60,19 +64,20 @@ describe("custom reporters", () => {
     repo = new Monorepo("custom-reporter");
 
     await initRepoWithReporters({
-      customTest: "./custom-reporter.mjs",
-      unused: "./unused-reporter.js",
-      cjs: "./extra/cjs-reporter.cjs",
-    });
-    await repo.addPackage("a");
-
-    await repo.commitFiles({
-      // ESM reporter is exported as default
-      "custom-reporter.mjs": `export default ${getCustomReporterClass("CustomTestReporter")}`,
-      // CJS reporter is assigned to module.exports
-      "extra/cjs-reporter.cjs": `module.exports = ${getCustomReporterClass("CommonJSReporter")}`,
-      // this one won't be referenced and shouldn't be initialized
-      "unused-reporter.js": `export default ${getCustomReporterClass("UnusedReporter")}`,
+      reporters: {
+        customTest: "./custom-reporter.mjs",
+        unused: "./unused-reporter.js",
+        cjs: "./extra/cjs-reporter.cjs",
+      },
+      packages: { a: {} },
+      extraFiles: {
+        // ESM reporter is exported as default
+        "custom-reporter.mjs": `export default ${getCustomReporterClass("CustomTestReporter")}`,
+        // CJS reporter is assigned to module.exports
+        "extra/cjs-reporter.cjs": `module.exports = ${getCustomReporterClass("CommonJSReporter")}`,
+        // this one won't be referenced and shouldn't be initialized
+        "unused-reporter.js": `export default ${getCustomReporterClass("UnusedReporter")}`,
+      },
     });
 
     await repo.install();
@@ -91,17 +96,18 @@ describe("custom reporters", () => {
     repo = new Monorepo("export-patterns");
 
     await initRepoWithReporters({
-      // absolute path to the ESM named reporter
-      NamedReporter: path.join(repo.root, "stuff/named-export-reporter.mjs"),
-      // this cjs file is just .js
-      cjsNamedReporter: "./cjs-named-reporter.js",
-    });
-    await repo.addPackage("a");
-
-    // Create a custom reporter with named export that is also the default
-    await repo.commitFiles({
-      "stuff/named-export-reporter.mjs": `export ${getCustomReporterClass("NamedReporter")}`,
-      "cjs-named-reporter.js": `exports.cjsNamedReporter = ${getCustomReporterClass("CjsNamedReporter")}`,
+      reporters: {
+        // absolute path to the ESM named reporter
+        NamedReporter: path.join(repo.root, "stuff/named-export-reporter.mjs"),
+        // this cjs file is just .js
+        cjsNamedReporter: "./cjs-named-reporter.js",
+      },
+      packages: { a: {} },
+      // Create a custom reporter with named export that is also the default
+      extraFiles: {
+        "stuff/named-export-reporter.mjs": `export ${getCustomReporterClass("NamedReporter")}`,
+        "cjs-named-reporter.js": `exports.cjsNamedReporter = ${getCustomReporterClass("CjsNamedReporter")}`,
+      },
     });
 
     await repo.install();
@@ -135,12 +141,13 @@ describe("custom reporters", () => {
     repo = new Monorepo("string-export");
 
     await initRepoWithReporters({
-      bad: "./bad.mjs",
-    });
-    await repo.addPackage("a");
-
-    await repo.commitFiles({
-      "bad.mjs": `export default 'hello'`,
+      reporters: {
+        bad: "./bad.mjs",
+      },
+      packages: { a: {} },
+      extraFiles: {
+        "bad.mjs": `export default 'hello'`,
+      },
     });
 
     await repo.install();
@@ -153,13 +160,13 @@ describe("custom reporters", () => {
     repo = new Monorepo("object-instance");
 
     await initRepoWithReporters({
-      objectReporter: "./object-reporter.mjs",
-    });
-    await repo.addPackage("a");
-
-    // Create a reporter that exports an object instance (not a class)
-    await repo.commitFiles({
-      "object-reporter.mjs": `
+      reporters: {
+        objectReporter: "./object-reporter.mjs",
+      },
+      packages: { a: {} },
+      // Create a reporter that exports an object instance (not a class)
+      extraFiles: {
+        "object-reporter.mjs": `
 const objectReporter = {
   events: [],
   log(entry) {
@@ -179,6 +186,7 @@ const objectReporter = {
 
 export default objectReporter;
       `,
+      },
     });
 
     await repo.install();

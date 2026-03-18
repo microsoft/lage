@@ -1,1 +1,1 @@
-export { Monorepo } from "./monorepo.js";
+export { Monorepo, type MonorepoInitParams } from "./monorepo.js";

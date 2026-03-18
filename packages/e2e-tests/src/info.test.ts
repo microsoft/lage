@@ -1,14 +1,21 @@
+import type { InfoResult } from "@lage-run/cli/lib/internal.js";
 import { Monorepo } from "./mock/monorepo.js";
 import { parseNdJson } from "./parseNdJson.js";
-import type { Target } from "@lage-run/target-graph";
 
 describe("info command", () => {
-  it("basic info test case", async () => {
-    const repo = new Monorepo("basics-info");
+  let repo: Monorepo | undefined;
 
-    await repo.init();
-    await repo.addPackage("a", ["b"]);
-    await repo.addPackage("b");
+  afterEach(async () => {
+    await repo?.cleanup();
+    repo = undefined;
+  });
+
+  it("basic info test case", async () => {
+    repo = new Monorepo("basics-info");
+
+    await repo.init({
+      packages: { a: { internalDeps: ["b"] }, b: {} },
+    });
 
     await repo.install();
 
@@ -17,16 +24,14 @@ describe("info command", () => {
     const jsonOutput = parseNdJson(output);
 
     expect(jsonOutput).toMatchSnapshot();
-
-    await repo.cleanup();
   });
 
   it("scoped info test case", async () => {
-    const repo = new Monorepo("scoped-info");
+    repo = new Monorepo("scoped-info");
 
-    await repo.init();
-    await repo.addPackage("a", ["b"]);
-    await repo.addPackage("b");
+    await repo.init({
+      packages: { a: { internalDeps: ["b"] }, b: {} },
+    });
 
     await repo.install();
 
@@ -34,24 +39,25 @@ describe("info command", () => {
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
     expect(jsonOutput).toMatchSnapshot();
-
-    await repo.cleanup();
   });
 
   it("dependencies are resolved via noop tasks", async () => {
-    const repo = new Monorepo("noop-task-info");
-    await repo.init();
-    await repo.addPackage("a", ["b"], { build: "echo 'building a'" });
-    // This task does not have a `build` script.
-    await repo.addPackage("b", ["c"], {});
-    await repo.addPackage("c", [], { build: "echo 'building c'" });
+    repo = new Monorepo("noop-task-info");
+    await repo.init({
+      packages: {
+        a: { internalDeps: ["b"], scripts: { build: "echo 'building a'" } },
+        // This package does not have a `build` script.
+        b: { internalDeps: ["c"], scripts: {} },
+        c: { scripts: { build: "echo 'building c'" } },
+      },
+    });
     await repo.install();
 
     const results = await repo.run("writeInfo", ["build", "prepare"]);
 
     const output = results.stdout + results.stderr;
-    const infoJsonOutput: any = parseNdJson(output)[0];
-    const { packageTasks } = infoJsonOutput.data as { packageTasks: Target[] };
+    const infoJsonOutput = parseNdJson(output)[0];
+    const { packageTasks } = infoJsonOutput.data as InfoResult;
 
     // Check if task `a#build` depends on `c#build`, because package `b` doesn't
     // have a `build` task so dependencies are hoisted up.
@@ -64,24 +70,25 @@ describe("info command", () => {
         expect(packageTasks.some(({ id }) => id === dependency)).toBeTruthy();
       }
     }
-
-    await repo.cleanup();
   });
 
   it("lage info drops direct dependencies when transtive and keeps __start", async () => {
-    const repo = new Monorepo("transitive-info-dropped");
-    await repo.init();
-    await repo.addPackage("a", ["b", "c"]);
-    await repo.addPackage("b", ["c", "d"]);
-    await repo.addPackage("c", []);
-    await repo.addPackage("d", [], { nobuild: "echo 'no build'" });
+    repo = new Monorepo("transitive-info-dropped");
+    await repo.init({
+      packages: {
+        a: { internalDeps: ["b", "c"] },
+        b: { internalDeps: ["c", "d"] },
+        c: {},
+        d: { scripts: { nobuild: "echo 'no build'" } },
+      },
+    });
     await repo.install();
 
     const results = await repo.run("writeInfo", ["build"]);
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
-    const packageTasks = jsonOutput[0].data.packageTasks as Target[];
+    const { packageTasks } = jsonOutput[0].data as InfoResult;
 
     const taskA = packageTasks.find(({ id }) => id === "a#build");
     expect(taskA!.dependencies).toEqual(["b#build"]);
@@ -90,17 +97,18 @@ describe("info command", () => {
     expect(taskC!.dependencies).toEqual(["__start"]);
 
     expect(jsonOutput).toMatchSnapshot();
-
-    await repo.cleanup();
   });
 
   it("lage info in back compat mode keeps direct dependencies and drops __start", async () => {
-    const repo = new Monorepo("transitive-info-dropped");
-    await repo.init();
-    await repo.addPackage("a", ["b", "c"]);
-    await repo.addPackage("b", ["c", "d"]);
-    await repo.addPackage("c", []);
-    await repo.addPackage("d", [], { nobuild: "echo 'no build'" });
+    repo = new Monorepo("transitive-info-dropped");
+    await repo.init({
+      packages: {
+        a: { internalDeps: ["b", "c"] },
+        b: { internalDeps: ["c", "d"] },
+        c: {},
+        d: { scripts: { nobuild: "echo 'no build'" } },
+      },
+    });
     await repo.install();
 
     const backCompatEnvVars = { DOMINO: "1" };
@@ -108,7 +116,7 @@ describe("info command", () => {
 
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
-    const packageTasks = jsonOutput[0].data.packageTasks as Target[];
+    const { packageTasks } = jsonOutput[0].data as InfoResult;
 
     const task = packageTasks.find(({ id }) => id === "a#build");
     expect(task!.dependencies).toEqual(["b#build", "c#build"]);
@@ -117,16 +125,13 @@ describe("info command", () => {
     expect(taskC!.dependencies).toEqual([]);
 
     expect(jsonOutput).toMatchSnapshot();
-
-    await repo.cleanup();
   });
 
   it("custom inputs, outputs and weight value", async () => {
-    const repo = new Monorepo("scoped-info");
+    repo = new Monorepo("scoped-info");
 
-    await repo.init();
-    await repo.setLageConfig(
-      `module.exports = {
+    await repo.init({
+      lageConfig: {
         pipeline: {
           build: {
             inputs: ["src/**", "*"],
@@ -135,60 +140,55 @@ describe("info command", () => {
           },
           outputs: ["log/**"],
           test: {
-           inputs: ["src/**/*.test.ts", "*", "^lib/**"],
-           dependsOn: ["build"],
-           weight: 5
-          }
+            inputs: ["src/**/*.test.ts", "*", "^lib/**"],
+            dependsOn: ["build"],
+            weight: 5,
+          },
         },
-        cache: true,
-      };`
-    );
-
-    await repo.addPackage("a", ["b"]);
-    await repo.addPackage("b");
+      },
+      packages: {
+        a: { internalDeps: ["b"] },
+        b: {},
+      },
+    });
     await repo.install();
+
     const results = await repo.run("writeInfo", ["test", "build"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
     expect(jsonOutput).toMatchSnapshot();
-
-    await repo.cleanup();
   });
 
   it("custom options", async () => {
-    const repo = new Monorepo("scoped-info");
+    repo = new Monorepo("scoped-info");
 
-    await repo.init();
-    await repo.setLageConfig(
-      `module.exports = {
+    await repo.init({
+      lageConfig: {
         pipeline: {
           build: ["^build"],
           test: {
-           dependsOn: ["build"],
-           options: {
+            dependsOn: ["build"],
+            options: {
               environment: {
                 custom_env_var_number: 1,
                 custom_env_var_string: "string",
                 custom_env_var_bool: true,
-                custom_env_var_array: [1, true, "string", {x:1}, []],
-              }
-           }
-          }
+                custom_env_var_array: [1, true, "string", { x: 1 }, []],
+              },
+            },
+          },
         },
-        cache: true,
-      };`
-    );
-
-    await repo.addPackage("a", ["b"]);
-    await repo.addPackage("b");
-
+      },
+      packages: {
+        a: { internalDeps: ["b"] },
+        b: {},
+      },
+    });
     await repo.install();
 
     const results = await repo.run("writeInfo", ["test", "build"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
     expect(jsonOutput).toMatchSnapshot();
-
-    await repo.cleanup();
   });
 });

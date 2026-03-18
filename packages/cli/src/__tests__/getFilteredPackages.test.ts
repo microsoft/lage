@@ -16,14 +16,9 @@ describe("getFilteredPackages", () => {
 
     monorepo = new Monorepo("getFilterPackages-ignore");
 
-    await monorepo.init();
+    await monorepo.init({ packages: { a: {}, b: {}, c: {} } });
 
-    await monorepo.addPackage("a");
-    await monorepo.addPackage("b");
-    await monorepo.addPackage("c");
-
-    await monorepo.linkPackages();
-
+    // The separate commit step is needed for these tests
     await monorepo.commitFiles({
       "packages/a/just-a-test.txt": "test content",
     });
@@ -48,13 +43,7 @@ describe("getFilteredPackages", () => {
 
     monorepo = new Monorepo("getFilterPackages-since");
 
-    await monorepo.init();
-
-    await monorepo.addPackage("a");
-    await monorepo.addPackage("b");
-    await monorepo.addPackage("c");
-
-    await monorepo.linkPackages();
+    await monorepo.init({ packages: { a: {}, b: {}, c: {} } });
 
     await monorepo.commitFiles({
       "packages/a/just-a-test.txt": "test content",
@@ -82,16 +71,10 @@ describe("getFilteredPackages", () => {
 
     monorepo = new Monorepo("getFilterPackages-repoWideChanges");
 
-    await monorepo.init();
-
-    await monorepo.addPackage("a");
-    await monorepo.addPackage("b");
-    await monorepo.addPackage("c");
-
-    await monorepo.linkPackages();
+    await monorepo.init({ packages: { a: {}, b: {}, c: {} } });
 
     await monorepo.commitFiles({
-      "packages/a/dummy.txt": "test content",
+      "packages/a/test.txt": "test content",
     });
 
     const filteredPackages = getFilteredPackages({
@@ -103,7 +86,7 @@ describe("getFilteredPackages", () => {
       sinceIgnoreGlobs: [],
       scope: [],
       logger,
-      repoWideChanges: ["packages/a/dummy.txt"],
+      repoWideChanges: ["packages/a/test.txt"],
     });
 
     expect(filteredPackages).toContain("a");
