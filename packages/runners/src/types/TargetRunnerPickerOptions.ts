@@ -16,6 +16,6 @@ export interface TargetRunnerPickerOptions {
      * - `"worker"`: `WorkerRunnerOptions`
      * - `"noop"`: n/a
      */
-    options: any;
+    options: unknown;
   };
 }

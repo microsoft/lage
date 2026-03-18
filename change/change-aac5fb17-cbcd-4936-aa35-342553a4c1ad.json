@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "type": "none",
+      "comment": "Update comments",
+      "packageName": "@lage-run/config",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "patch",
+      "comment": "Add proper taskArgs types, and respect target.options.taskArgs in worker runner",
+      "packageName": "@lage-run/runners",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Add SharedTargetOptions and improve docs and internals for staged targets",
+      "packageName": "@lage-run/target-graph",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

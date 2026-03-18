@@ -1,4 +1,4 @@
-export type { Target } from "./types/Target.js";
+export type { Target, SharedTargetOptions } from "./types/Target.js";
 export type { TargetGraph } from "./types/TargetGraph.js";
 export type { TargetConfig } from "./types/TargetConfig.js";
 

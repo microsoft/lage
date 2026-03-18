@@ -11,20 +11,20 @@ export function getTargetId(pkgName: string | undefined, task: string): string {
  * If the packageName is //, that means that the task is meant to be run at the repo root level.
  */
 export function getPackageAndTask(targetId: string): { packageName: string | undefined; task: string } {
-  if (targetId.startsWith("Δ")) {
+  if (targetId.startsWith(STAGED_PREFIX)) {
     return { packageName: undefined, task: targetId.slice(1) };
-  } else if (targetId.includes("#")) {
-    const parts = targetId.split("#");
-
-    // `//#<task-name>` or `#<task-name>` means root by convention
-    if (targetId.startsWith("#") || parts[0] === "//") {
-      return { packageName: undefined, task: parts[1] };
-    }
-
-    return { packageName: parts[0], task: parts[1] };
-  } else {
-    return { packageName: undefined, task: targetId };
   }
+
+  if (targetId.includes("#")) {
+    const parts = targetId.split("#");
+    return {
+      // `//#<task-name>` or `#<task-name>` means root by convention
+      packageName: parts[0] === "" || parts[0] === "//" ? undefined : parts[0],
+      task: parts[1],
+    };
+  }
+
+  return { packageName: undefined, task: targetId };
 }
 
 const START_TARGET_ID = "__start";
@@ -32,6 +32,7 @@ export function getStartTargetId(): string {
   return START_TARGET_ID;
 }
 
+const STAGED_PREFIX = "Δ";
 export function getStagedTargetId(task: string): string {
-  return `Δ${task}`;
+  return `${STAGED_PREFIX}${task}`;
 }

@@ -19,7 +19,8 @@ export interface ConfigOptions {
    * - No prefix for dependencies on tasks for the same package.
    * - Prefix with `^` to denote a direct package-topological dependency. (e.g. `^build` means run the `build` task
    *   in topological order by package.)
-   * - Prefix with `^^` to denote a transitive package-topological dependency. (e.g. `^^transpile` means run the `transpile` task for nested dependencies, but *not* for the current package.)
+   * - Prefix with `^^` to denote a transitive package-topological dependency. (e.g. `^^transpile` means run the
+   *   `transpile` task for nested dependencies, but *not* for the current package.)
    * - Use `packageName#taskName` to denote a dependency on a specific package's task: in the example below,
    *   package `foo`'s `build` task depends on package `bar`'s `bundle` task.
    *
@@ -59,8 +60,9 @@ export interface ConfigOptions {
   loggerOptions: LoggerOptions;
 
   /**
-   * Custom runners for tasks in the pipeline. The key is the task name, and the value is a configuration describing what would be
-   * passed to the runner constructor.
+   * Custom runners for tasks in the pipeline.
+   *
+   * Keys are runner names, to be used as `TargetConfig.type` in the lage config.
    */
   runners: TargetRunnerPickerOptions;
 

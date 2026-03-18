@@ -101,7 +101,7 @@ export class TargetFactory {
   }
 
   /**
-   * Creates a target that operates on files that are "staged" (git index)
+   * Creates a target that operates on files that are "staged" (changed in git vs `--since`)
    */
   public createStagedTarget(task: string, config: StagedTargetConfig, changedFiles: string[]): Target {
     const { root } = this.options;

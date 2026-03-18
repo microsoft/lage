@@ -42,22 +42,26 @@ export interface TargetConfig extends Pick<
   weight?: number | ((target: Target, maxWorkers?: number) => number);
 
   /**
-   * An optionally async function that determines whether a target should run or not.
+   * Function that determines whether a target should run or not.
    */
   shouldRun?: (target: Target) => boolean | Promise<boolean>;
 
   /**
-   * Whether this task is one that can be run as a task that runs over a list of git staged files,
-   * e.g. `lage run --since origin/master`.
-   * When encountering this task, it'll add this single task into the graph instead of package tasks.
+   * Optional config for a "staged" version of this target: with the `--since` flag, this version
+   * of the target will run instead of the original when the number of changed files is below
+   * `stagedTarget.threshold`.
+   *
+   * "Changed files" includes files that are staged, unstaged, untracked, and changed in the
+   * current commit compared to the target branch.
    */
   stagedTarget?: StagedTargetConfig;
 }
 
 export interface StagedTargetConfig extends Pick<TargetConfig, "type" | "dependsOn" | "priority" | "weight" | "options"> {
   /**
-   * A threshold of changed files that determines whether a target should run or not. Target will only run if number of changed files
-   * is below this threshold.
+   * Only use the staged version of the target if the number of changed files is below this threshold.
+   * @default 50
    */
+  // The default is defined in WorkspaceTargetGraphBuilder DEFAULT_STAGED_TARGET_THRESHOLD
   threshold?: number;
 }

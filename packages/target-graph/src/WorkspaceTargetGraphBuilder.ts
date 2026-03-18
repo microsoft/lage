@@ -18,7 +18,12 @@ import * as mergicianModule from "mergician";
 // Without type="module" on this packge.json typescript gets confused. See: https://github.com/microsoft/TypeScript/issues/50466
 const mergician = mergicianModule.mergician || (mergicianModule as unknown as { default: typeof mergicianModule }).default.mergician;
 
+/**
+ * Maximum number of changed files for a staged target to run.
+ * IF MODIFYING, UPDATE DOCS FOR `StagedTargetConfig.threshold`!
+ */
 const DEFAULT_STAGED_TARGET_THRESHOLD = 50;
+
 /**
  * TargetGraphBuilder class provides a builder API for registering target configs. It exposes a method called `generateTargetGraph` to
  * generate a topological graph of targets (package + task) and their dependencies.
@@ -40,16 +45,18 @@ export class WorkspaceTargetGraphBuilder {
 
   private targetFactory: TargetFactory;
 
+  /** Whether at least one global/root target has been added */
   private hasRootTarget = false;
 
-  private hasStagedTarget = false;
+  /** Whether at least one relevant staged target has been added */
+  private hasAnyStagedTarget = false;
 
   private targetConfigMap = new Map<string, TargetConfig>();
 
   /**
    * Initializes the builder with package infos
-   * @param root the root directory of the workspace
-   * @param packageInfos the package infos for the workspace
+   * @param root the root directory of the monorepo
+   * @param packageInfos the package infos for the monorepo
    */
   constructor(
     root: string,
@@ -74,9 +81,6 @@ export class WorkspaceTargetGraphBuilder {
 
   /**
    * Generates new `Target`, indexed by the id based on a new target configuration.
-   *
-   * @param id
-   * @param targetDefinition
    */
   public async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]): Promise<void> {
     // Generates a target definition from the target config
@@ -118,8 +122,8 @@ export class WorkspaceTargetGraphBuilder {
   });
 
   /**
-   * Merges
-   * @param id The Id of the target to merge
+   * If `enableTargetConfigMerging`, merges `config` with any existing config for target `targetId`.
+   * @param targetId The Id of the target to merge
    * @param config The TargetConfig settings that will be merged if this target has already been seen before
    * @returns The merged TargetConfig object.
    */
@@ -135,26 +139,24 @@ export class WorkspaceTargetGraphBuilder {
   }
 
   /**
-   * Side effects function on the passed in target
-   * @param parentTarget
-   * @param config
+   * If `parentTarget` has a `stagedTarget` field and the number of `changedFiles` is below the
+   * threshold, adds a staged version of this target with the same dependencies as `parentTarget`,
+   * and makes `parentTarget` a no-op that depends on the staged target. This allows us to have a s
+   * ingle task that runs over a list of changed files when running with `--since` flag, while still
+   * preserving the original target for cases when we want to run it over all files.
    */
-  private processStagedConfig(parentTarget: Target, config: TargetConfig, changedFiles?: string[]): void {
-    if (typeof config.stagedTarget === "undefined") {
-      return;
-    }
-
+  private processStagedConfig(parentTarget: Target, config: TargetConfig, changedFiles: string[] | undefined): void {
     if (
-      typeof changedFiles === "undefined" ||
-      changedFiles.length === 0 ||
+      !config.stagedTarget ||
+      !changedFiles?.length ||
       changedFiles.length > (config.stagedTarget.threshold ?? DEFAULT_STAGED_TARGET_THRESHOLD)
     ) {
       return;
     }
 
-    this.hasStagedTarget = true;
+    this.hasAnyStagedTarget = true;
 
-    // First convert the parent to be a NO-OP, not cached, and should run always
+    // First convert the parent to be a NO-OP, not cached, and should never run
     parentTarget.type = "noop";
     parentTarget.cache = false;
     parentTarget.shouldRun = false;
@@ -200,8 +202,8 @@ export class WorkspaceTargetGraphBuilder {
    * 3. filtering all targets to just only the ones listed in the sub-graph
    * 4. returns the sub-graph
    *
-   * @param tasks
-   * @param scope
+   * @param tasks Tasks for the graph
+   * @param scope If provided, scope to these packages. Otherwise includes all packages.
    * @param priorities the set of global priorities for the workspace.
    */
   public async build(
@@ -209,6 +211,8 @@ export class WorkspaceTargetGraphBuilder {
     scope?: string[],
     priorities?: { package?: string; task: string; priority: number }[]
   ): Promise<TargetGraph> {
+    scope ||= Object.keys(this.packageInfos);
+
     // Expands the dependency specs from the target definitions
     const fullDependencies = expandDepSpecs(
       this.graphBuilder.targets,
@@ -224,14 +228,8 @@ export class WorkspaceTargetGraphBuilder {
     const subGraphEntries: string[] = [];
 
     for (const task of tasks) {
-      if (scope) {
-        for (const packageName of scope) {
-          subGraphEntries.push(getTargetId(packageName, task));
-        }
-      } else {
-        for (const packageName of Object.keys(this.packageInfos)) {
-          subGraphEntries.push(getTargetId(packageName, task));
-        }
+      for (const packageName of scope) {
+        subGraphEntries.push(getTargetId(packageName, task));
       }
 
       if (this.hasRootTarget) {
@@ -241,7 +239,7 @@ export class WorkspaceTargetGraphBuilder {
         }
       }
 
-      if (this.hasStagedTarget) {
+      if (this.hasAnyStagedTarget) {
         const stagedTargetId = getStagedTargetId(task);
         if (this.graphBuilder.targets.has(stagedTargetId)) {
           subGraphEntries.push(stagedTargetId);

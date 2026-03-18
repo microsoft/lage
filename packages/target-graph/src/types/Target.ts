@@ -1,3 +1,13 @@
+/** Shared options passed when running a *specific* target */
+export interface SharedTargetOptions {
+  /**
+   * Arguments for the target script or worker. This is used by the built-in `npmScript` and
+   * `worker` runners but could also be read by custom runners.
+   * (In the case of a staged target, the list of changed files will be added here.)
+   */
+  taskArgs?: string[];
+}
+
 /**
  * Information about a target: i.e. a task run for a package.
  *
@@ -99,7 +109,7 @@ export interface Target {
    * - `"worker"`: `WorkerTargetOptions`
    * - `"noop"`: n/a
    */
-  options?: Record<string, any>;
+  options?: SharedTargetOptions & Record<string, any>;
 
   /**
    * Whether the target should be displayed by reporters

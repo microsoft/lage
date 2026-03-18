@@ -1,5 +1,5 @@
 import type { TargetRunner, TargetRunResult, TargetRunOptions } from "./types/TargetRunner.js";
-import type { Target } from "@lage-run/target-graph";
+import type { SharedTargetOptions, Target } from "@lage-run/target-graph";
 import { pathToFileURL } from "url";
 
 /** `WorkerRunner` constructor options */
@@ -12,14 +12,14 @@ export type WorkerTargetOptions =
   // TODO: pick either `worker` or `script` in a future version...
   // Old docs also included a `maxWorkers` option which is only read by getMaxWorkersPerTask (config package),
   // so it's better specified at the next level up as a TargetConfig prop.
-  | {
+  | (SharedTargetOptions & {
       /** Path to the worker script file. It must export a function of type `WorkerRunnerFunction`. */
       worker: string;
-    }
-  | {
+    })
+  | (SharedTargetOptions & {
       /** Path to the worker script file. It must export a function of type `WorkerRunnerFunction`. */
       script: string;
-    };
+    });
 
 /** Options for the function exported by a worker file */
 export type WorkerRunnerFunctionOptions = TargetRunOptions & WorkerRunnerOptions;
@@ -77,7 +77,8 @@ export class WorkerRunner implements TargetRunner {
 
   public async run(runOptions: TargetRunOptions): Promise<TargetRunResult | void> {
     const { target, weight, abortSignal } = runOptions;
-    const { taskArgs } = this.runnerOptions;
+
+    const taskArgs = [...this.runnerOptions.taskArgs, ...(target.options?.taskArgs ?? [])];
 
     const scriptModule = await this.getScriptModule(target);
     const runFn =

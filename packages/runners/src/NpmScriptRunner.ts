@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { spawn, type ChildProcess } from "child_process";
 import type { TargetRunner, TargetRunOptions, TargetRunResult } from "./types/TargetRunner.js";
-import type { Target } from "@lage-run/target-graph";
+import type { SharedTargetOptions, Target } from "@lage-run/target-graph";
 
 /** `NpmScriptRunner` constructor options */
 export interface NpmScriptRunnerOptions {
@@ -11,8 +11,8 @@ export interface NpmScriptRunnerOptions {
   npmCmd: string;
 }
 
-/** `Target/TargetConfig.options` for for targets of `type: "npmScript"` */
-export interface NpmScriptTargetOptions {
+/** `Target/TargetConfig.options` for targets of `type: "npmScript"` */
+export interface NpmScriptTargetOptions extends SharedTargetOptions {
   /** Script name to run, if different from the target task name */
   script?: string;
   /** Extra node options for the worker */
