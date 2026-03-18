@@ -33,8 +33,7 @@ describe("transitive task deps test", () => {
 
     const results = await repo.run("test");
 
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const indices = getStatusIndices({
       entries: jsonOutput,
       packages: ["a", "b"],
@@ -67,8 +66,7 @@ describe("transitive task deps test", () => {
 
     const results = await repo.run("bundle", ["--scope", "a"]);
 
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const indices = getStatusIndices({
       entries: jsonOutput,
       packages: ["a", "b", "c"],
@@ -103,8 +101,7 @@ describe("transitive task deps test", () => {
 
     const results = await repo.run("bundle", ["--scope", "a"]);
 
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const indices = getStatusIndices({
       entries: jsonOutput,
       packages: ["a", "b", "c"],
@@ -153,8 +150,7 @@ describe("transitive task deps test", () => {
 
     const results = await repo.run("bundle", ["--scope", "a"]);
 
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const indices = getStatusIndices({
       entries: jsonOutput,
       packages: ["a", "b", "c"],
@@ -203,7 +199,7 @@ describe("transitive task deps test", () => {
 
     const results = await repo.run("writeInfo", ["typecheck", "--scope", "app"]);
 
-    const output = results.stdout + results.stderr;
+    const output = results.stdout + "\n" + results.stderr;
     const infoJsonOutput = parseNdJson(output)[0];
     const { packageTasks } = infoJsonOutput.data as InfoResult;
 

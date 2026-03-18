@@ -1629,6 +1629,7 @@ __metadata:
     "@lage-run/scheduler-types": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
     execa: "npm:5.1.1"
+    find-process: "npm:2.1.1"
     glob-hasher: "npm:^1.4.2"
     workspace-tools: "npm:0.41.0"
   languageName: unknown
@@ -3396,7 +3397,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:4.1.2, chalk@npm:^4.0.0, chalk@npm:^4.1.1, chalk@npm:^4.1.2":
+"chalk@npm:4.1.2, chalk@npm:^4.0.0, chalk@npm:^4.1.1, chalk@npm:^4.1.2, chalk@npm:~4.1.2":
   version: 4.1.2
   resolution: "chalk@npm:4.1.2"
   dependencies:
@@ -3605,7 +3606,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^14.0.2":
+"commander@npm:^14.0.2, commander@npm:^14.0.3":
   version: 14.0.3
   resolution: "commander@npm:14.0.3"
   checksum: 10c0/755652564bbf56ff2ff083313912b326450d3f8d8c85f4b71416539c9a05c3c67dbd206821ca72635bf6b160e2afdefcb458e86b317827d5cb333b69ce7f1a24
@@ -4634,6 +4635,19 @@ __metadata:
     fast-querystring: "npm:^1.0.0"
     safe-regex2: "npm:^3.1.0"
   checksum: 10c0/ce462b2033e08a82fa79b837e4ef9e637d5f3e6763564631ad835b4e50b22e2123c0bf27c4fe6b02bc4006cd7949c0351d2b6b6f32248e839b10bdcbd3a3269f
+  languageName: node
+  linkType: hard
+
+"find-process@npm:2.1.1":
+  version: 2.1.1
+  resolution: "find-process@npm:2.1.1"
+  dependencies:
+    chalk: "npm:~4.1.2"
+    commander: "npm:^14.0.3"
+    loglevel: "npm:^1.9.2"
+  bin:
+    find-process: dist/cjs/bin/find-process.js
+  checksum: 10c0/9ae76be1140c6ad676a43e6bbdb7133a0c79a5844393dec2db8e0b55f65edf1ff689a8f59c3532a5810b7517510a41ed31e186ebd23776ad6a24f82737817a30
   languageName: node
   linkType: hard
 
@@ -6519,6 +6533,13 @@ __metadata:
     strip-ansi: "npm:^7.1.0"
     wrap-ansi: "npm:^9.0.0"
   checksum: 10c0/4b350c0a83d7753fea34dcac6cd797d1dc9603291565de009baa4aa91c0447eab0d3815a05c8ec9ac04fdfffb43c82adcdb03ec1fceafd8518e1a8c1cff4ff89
+  languageName: node
+  linkType: hard
+
+"loglevel@npm:^1.9.2":
+  version: 1.9.2
+  resolution: "loglevel@npm:1.9.2"
+  checksum: 10c0/1e317fa4648fe0b4a4cffef6de037340592cee8547b07d4ce97a487abe9153e704b98451100c799b032c72bb89c9366d71c9fb8192ada8703269263ae77acdc7
   languageName: node
   linkType: hard
 

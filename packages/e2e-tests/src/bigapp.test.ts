@@ -29,7 +29,7 @@ describe("bigapp test", () => {
     await repo.install();
 
     const results = await repo.run("test");
-    const jsonOutput = parseNdJson(results.stdout + results.stderr);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const indices = getStatusIndices({
       entries: jsonOutput,
       packages: ["FooApp1", "FooApp2", "FooCore", "BarCore", "BarPage", "BuildTool"],

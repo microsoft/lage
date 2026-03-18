@@ -7,8 +7,8 @@ describe("RemoteFallbackCacheProvider", () => {
   let repo: Monorepo | undefined;
 
   /** Format the entries' relevant properties for simple string matching and easier debugging */
-  function formatEntries(output: string) {
-    return parseNdJson(output)
+  function formatEntries(...output: string[]) {
+    return parseNdJson(...output)
       .filter((entry) => !!entry.msg)
       .map((entry) => {
         if (entry.data && "target" in entry.data) {
@@ -48,7 +48,7 @@ describe("RemoteFallbackCacheProvider", () => {
 
     const results = await repo.run("test", ["--skip-local-cache"]);
 
-    const formattedOutput = formatEntries(results.stdout + results.stderr);
+    const formattedOutput = formatEntries(results.stdout, results.stderr);
 
     expect(formattedOutput).not.toContain("local cache fetch");
     expect(formattedOutput).toContain("remote fallback fetch");
@@ -73,7 +73,7 @@ describe("RemoteFallbackCacheProvider", () => {
 
     const results = await repo.run("test");
 
-    const formattedOutput = formatEntries(results.stdout + results.stderr);
+    const formattedOutput = formatEntries(results.stdout, results.stderr);
 
     expect(formattedOutput).toContain("local cache fetch");
     expect(formattedOutput).not.toContain("remote fallback fetch");
@@ -103,7 +103,7 @@ describe("RemoteFallbackCacheProvider", () => {
 
     const results = await repo.run("test", ["--log-level", "silly"]);
 
-    const formattedOutput = formatEntries(results.stdout + results.stderr);
+    const formattedOutput = formatEntries(results.stdout, results.stderr);
 
     expect(formattedOutput).toContain("local cache fetch");
     expect(formattedOutput).toContain("remote fallback fetch");
@@ -134,7 +134,7 @@ describe("RemoteFallbackCacheProvider", () => {
 
     const results = await repo.run("test", ["--log-level", "silly"]);
 
-    const formattedOutput = formatEntries(results.stdout + results.stderr);
+    const formattedOutput = formatEntries(results.stdout, results.stderr);
 
     expect(formattedOutput).toContain("local cache fetch");
     expect(formattedOutput).toContain("remote fallback fetch");

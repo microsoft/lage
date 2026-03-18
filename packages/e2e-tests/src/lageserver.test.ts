@@ -2,7 +2,7 @@ import path from "path";
 import { Monorepo } from "./mock/monorepo.js";
 import { parseNdJson, type ParsedLogEntry } from "./parseNdJson.js";
 import fs from "fs";
-import { killDetachedProcess } from "./killDetachedProcess.js";
+import { killDetachedProcess, killProcessesOnPort } from "./killDetachedProcess.js";
 import type { Target } from "@lage-run/target-graph";
 import type { TargetMessageData } from "@lage-run/reporters";
 import type { LogEntry } from "@lage-run/logger";
@@ -12,25 +12,45 @@ describe("lageserver", () => {
   let repo: Monorepo | undefined;
   let serverProcess: execa.ExecaChildProcess | undefined;
   let serverPid: number | undefined;
+  /** Port to start the server on for this test */
+  let port = 5111;
+
+  /**
+   * Run `lage exec --server localhost:<port> <args...>` with the current test's port.
+   */
+  function execOnServer(...args: string[]) {
+    return repo!.run("lage", ["exec", "--server", `localhost:${port}`, ...args]);
+  }
 
   function findServerPid(jsonOutput: ParsedLogEntry[]) {
     const entry = jsonOutput.find((e) => (e.data as TargetMessageData)?.pid && e.msg === "Server started") as
       | LogEntry<TargetMessageData>
       | undefined;
-    expect(entry).toBeTruthy();
-    return entry!.data!.pid;
+    return entry?.data?.pid;
   }
+
+  beforeEach(async () => {
+    // Increment the port so every test gets a unique port.
+    // NOTE: If multiple test files start using servers, it will need to be coordinated.
+    port++;
+    // In case any processes were left over (shouldn't happen with current cleanup), kill them
+    if (await killProcessesOnPort(port)) {
+      // Wait a bit for the processes to release the ports
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+  });
 
   afterEach(async () => {
     await repo?.cleanup();
     repo = undefined;
     serverProcess?.kill();
     serverProcess = undefined;
+    serverPid && killDetachedProcess(serverPid);
+    serverPid = undefined;
 
-    if (serverPid) {
-      killDetachedProcess(serverPid);
-      serverPid = undefined;
-    }
+    // Backup kill the server in case the above didn't work (ignores if the process is already dead).
+    // Otherwise there can be weird results running tests locally.
+    await killProcessesOnPort(port);
   });
 
   it("connects to a running server", async () => {
@@ -41,14 +61,14 @@ describe("lageserver", () => {
     });
     await repo.install();
 
-    serverProcess = repo.runServer(["build"]);
+    serverProcess = repo.runServer(["build"], port);
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const results = await repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "b", "build"]);
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const results = await execOnServer("--tasks", "build", "--", "b", "build");
 
-    await repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "a", "build"]);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
+
+    await execOnServer("--tasks", "build", "--", "a", "build");
 
     serverProcess.kill();
     serverProcess = undefined;
@@ -64,11 +84,10 @@ describe("lageserver", () => {
     });
     await repo.install();
 
-    const results = await repo.run("lage", ["exec", "--server", "localhost:5112", "--tasks", "build", "--", "b", "build"]);
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const results = await execOnServer("--tasks", "build", "--", "b", "build");
+
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     serverPid = findServerPid(jsonOutput);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
   });
 
   it("reports inputs for targets and their transitive dependencies' files", async () => {
@@ -100,54 +119,19 @@ describe("lageserver", () => {
     });
     await repo.install();
 
-    const results = await repo.run("lage", [
-      "exec",
-      "c",
-      "build",
-      "--tasks",
-      "build",
-      "--server",
-      "localhost:5111",
-      "--timeout",
-      "60",
-      "--reporter",
-      "json",
-    ]);
+    const results = await execOnServer("c", "build", "--tasks", "build", "--timeout", "60", "--reporter", "json");
 
-    const output = results.stdout + results.stderr;
-
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     serverPid = findServerPid(jsonOutput);
 
-    await repo.run("lage", [
-      "exec",
-      "b",
-      "build",
-      "--tasks",
-      "build",
-      "--server",
-      "localhost:5111",
-      "--timeout",
-      "60",
-      "--reporter",
-      "json",
-    ]);
-    await repo.run("lage", [
-      "exec",
-      "a",
-      "build",
-      "--tasks",
-      "build",
-      "--server",
-      "localhost:5111",
-      "--timeout",
-      "60",
-      "--reporter",
-      "json",
-    ]);
+    await execOnServer("b", "build", "--tasks", "build", "--timeout", "60", "--reporter", "json");
+    await execOnServer("a", "build", "--tasks", "build", "--timeout", "60", "--reporter", "json");
 
-    killDetachedProcess(serverPid);
-    serverPid = undefined;
+    if (serverPid) {
+      killDetachedProcess(serverPid);
+    } else {
+      await killProcessesOnPort(port);
+    }
 
     const serverLogs = fs.readFileSync(path.join(repo.root, "node_modules/.cache/lage/server.log"), "utf-8");
 

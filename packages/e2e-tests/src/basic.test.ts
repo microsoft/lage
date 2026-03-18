@@ -19,8 +19,7 @@ describe("basics", () => {
     await repo.install();
 
     const results = await repo.run("test");
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const statusEntries = getStatusEntriesData(jsonOutput);
 
     expect(statusEntries).toContainEqual({ target: { packageName: "b", task: "build" }, status: "success" });
@@ -50,8 +49,7 @@ describe("basics", () => {
     await repo.install();
 
     const results = await repo.run("extra");
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const statusEntries = getStatusEntriesData(jsonOutput);
 
     expect(statusEntries).toContainEqual({ target: { packageName: "b", task: "extra" }, status: "success" });
@@ -75,8 +73,7 @@ describe("basics", () => {
 
     // run with some params, expected actual runs
     const results = await repo.run("test", ["--1", "--2"]);
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const statusEntries = getStatusEntriesData(jsonOutput);
 
     expect(statusEntries).toContainEqual({ target: { packageName: "b", task: "build" }, status: "success" });
@@ -87,8 +84,7 @@ describe("basics", () => {
 
     // run with some params, expected skips
     const results2 = await repo.run("test", ["--1", "--2"]);
-    const output2 = results2.stdout + results2.stderr;
-    const jsonOutput2 = parseNdJson(output2);
+    const jsonOutput2 = parseNdJson(results2.stdout, results2.stderr);
     const statusEntries2 = getStatusEntriesData(jsonOutput2);
 
     expect(statusEntries2).toContainEqual({ target: { packageName: "b", task: "build" }, status: "skipped" });
@@ -99,8 +95,7 @@ describe("basics", () => {
 
     // run with some lage specific params, expected skips
     const results3 = await repo.run("test", ["--concurrency", "1"]);
-    const output3 = results3.stdout + results3.stderr;
-    const jsonOutput3 = parseNdJson(output3);
+    const jsonOutput3 = parseNdJson(results3.stdout, results3.stderr);
     const statusEntries3 = getStatusEntriesData(jsonOutput3);
 
     expect(statusEntries3).toContainEqual({ target: { packageName: "b", task: "build" }, status: "skipped" });
@@ -111,8 +106,7 @@ describe("basics", () => {
 
     // run with some params AND lage specific params, expected skips
     const results4 = await repo.run("test", ["--1", "--2", "--concurrency", "1"]);
-    const output4 = results4.stdout + results4.stderr;
-    const jsonOutput4 = parseNdJson(output4);
+    const jsonOutput4 = parseNdJson(results4.stdout, results4.stderr);
     const statusEntries4 = getStatusEntriesData(jsonOutput4);
 
     expect(statusEntries4).toContainEqual({ target: { packageName: "b", task: "build" }, status: "skipped" });
@@ -132,8 +126,7 @@ describe("basics", () => {
     await repo.install();
 
     const results = await repo.run("test");
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const statusEntries = getStatusEntriesData(jsonOutput);
 
     expect(statusEntries).toContainEqual({ target: { packageName: "b", task: "build" }, status: "success" });

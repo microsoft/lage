@@ -1,0 +1,7 @@
+{
+  "name": "empty-package",
+  "version": "0.0.0",
+  "private": true,
+  "description": "empty package copied as a placeholder for unwanted dependencies",
+  "main": "index.js"
+}

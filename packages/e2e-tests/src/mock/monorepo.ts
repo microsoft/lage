@@ -1,28 +1,19 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as execa from "execa";
-import { findGitRoot } from "workspace-tools";
+import { findGitRoot, getPackageInfo } from "workspace-tools";
 
 import { glob } from "@lage-run/globby";
 import { Monorepo as BaseMonorepo, type MonorepoInitParams as BaseMonorepoInitParams } from "@lage-run/monorepo-fixture";
 import type { ConfigFileOptions } from "@lage-run/cli";
 
+/** Absolute root path of the lage repo */
 const lageRepoRoot = findGitRoot(__dirname);
+/** Absolute path to the lage package within the repo */
 const lagePackageRoot = path.join(lageRepoRoot, "packages/lage");
-const externalPackageJsons = glob(["node_modules/glob-hasher/package.json", "node_modules/glob-hasher-*/package.json"], {
-  cwd: lageRepoRoot,
-  absolute: true,
-});
 
-const yarnGlob = ".yarn/releases/yarn-*.cjs";
-/** Path to the lage repo's current saved yarn release */
-const yarnPath = glob([yarnGlob], {
-  cwd: lageRepoRoot,
-  absolute: true,
-})[0];
-if (!yarnPath) {
-  throw new Error("Could not find yarn release under " + path.join(lageRepoRoot, yarnGlob));
-}
+/** Relative path to yarn binary from within the fixture */
+const yarnRelPath = ".yarn/yarn.cjs";
 
 /** E2E monorepo init params */
 export interface MonorepoInitParams extends BaseMonorepoInitParams {
@@ -31,10 +22,10 @@ export interface MonorepoInitParams extends BaseMonorepoInitParams {
   scripts?: Record<string, string>;
 }
 
-/** Relative path to yarn binary from within the fixture */
-const yarnRelPath = ".yarn/yarn.cjs";
-
 export class Monorepo extends BaseMonorepo {
+  private static lageResolutions: Record<string, string> | undefined;
+  private static yarnBinaryContents: string | undefined;
+
   /** Path to the fixture's copy of yarn */
   private readonly yarnPath: string;
 
@@ -48,6 +39,10 @@ export class Monorepo extends BaseMonorepo {
    *
    * The default fixture for the e2e tests includes a bunch of scripts which mostly run
    * `lage <script> --reporter json --log-level silly` so the output can be parsed with `parseNdJson`.
+   *
+   * For lage's runtime dependencies, the fixture uses resolutions to reference either the
+   * real dep versions from the lage repo if relevant, or placeholder empty packages, instead of
+   * installing the whole dep tree from the registry.
    */
   public async init(params: MonorepoInitParams = {}): Promise<void> {
     if (params.fixturePath) {
@@ -82,7 +77,12 @@ export class Monorepo extends BaseMonorepo {
         "globalFolder: .yarn/global",
         "enableGlobalCache: false",
         "enableMirror: false",
+        // This will cause yarn to error if any new dependencies accidentally get past the resolutions
+        // and cause network requests. Could be reconsidered if we have a test in the future that really
+        // needs to install from the registry, but it should be avoided if possible.
+        "npmRegistryServer: http://should-not-hit-registry.local",
       ].join("\n"),
+      [yarnRelPath]: Monorepo.getYarnBinaryContents(),
       "package.json": {
         name: this.name.replace(/ /g, "-"),
         version: "0.1.0",
@@ -102,6 +102,8 @@ export class Monorepo extends BaseMonorepo {
         devDependencies: {
           lage: lagePackageRoot,
         },
+        // Use resolutions to fix lage's external deps to copy the ones from the repo
+        resolutions: { ...Monorepo.getLageResolutions() },
       },
       "lage.config.js": typeof lageConfig === "string" ? lageConfig : `module.exports = ${JSON.stringify(lageConfig, null, 2)};`,
       ".gitignore": ["node_modules", ".yarn"].join("\n"),
@@ -126,22 +128,15 @@ export class Monorepo extends BaseMonorepo {
   }
 
   /**
-   * Link lage's external dependencies and run `yarn install` (SLOW)
+   * Run `yarn install` for the fixture
    */
   public async install(): Promise<void> {
-    for (const externalPackageJson of externalPackageJsons) {
-      const packagePath = path.dirname(externalPackageJson);
-      const name = JSON.parse(fs.readFileSync(path.join(packagePath, "package.json"), "utf-8")).name;
-      fs.cpSync(packagePath, path.join(this.nodeModulesPath, name), { recursive: true });
-    }
-
-    fs.mkdirSync(path.dirname(this.yarnPath), { recursive: true });
-    fs.cpSync(yarnPath, this.yarnPath);
     execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
   }
 
-  public runServer(tasks: string[]): execa.ExecaChildProcess<string> {
-    const cp = execa.default(process.execPath, [path.join(this.root, "node_modules/lage/dist/lage-server.js"), "--tasks", ...tasks], {
+  public runServer(tasks: string[], port: number): execa.ExecaChildProcess<string> {
+    const lageServerPath = path.join(this.root, "node_modules/lage/dist/lage-server.js");
+    const cp = execa.default(process.execPath, [lageServerPath, "--server", `localhost:${port}`, "--tasks", ...tasks], {
       cwd: this.root,
       detached: true,
       stdio: "ignore",
@@ -152,5 +147,56 @@ export class Monorepo extends BaseMonorepo {
     }
 
     return cp;
+  }
+
+  /** Get package.json resolutions for lage's external dependencies */
+  private static getLageResolutions(): Record<string, string> {
+    if (Monorepo.lageResolutions) {
+      return Monorepo.lageResolutions;
+    }
+
+    const lagePackage = getPackageInfo(lagePackageRoot)!;
+    // If this changes, the fixture will need to be updated to account for additional deps
+    expect(lagePackage.dependencies).toEqual({ "glob-hasher": expect.any(String) });
+    expect(lagePackage.optionalDependencies).toEqual({ fsevents: expect.any(String) });
+
+    // Find glob-hasher's optional platform deps and figure out which is installed.
+    // ASSUMPTION: This only works with hoisted node_modules. If we use a different linker in the future,
+    // it will need to be updated to use proper resolution (createRequire from relevant package).
+    const globHasherPath = path.join(lageRepoRoot, "node_modules/glob-hasher");
+    const globHasherDepNames = Object.keys(getPackageInfo(globHasherPath)!.optionalDependencies!);
+
+    // There should be only this platform's glob-hasher-* implementation installed
+    const globHasherPlatforms = glob(["node_modules/glob-hasher-*/package.json"], { cwd: lageRepoRoot, absolute: true });
+    expect(globHasherPlatforms).toHaveLength(1);
+    const globHasherPlatformPath = path.dirname(globHasherPlatforms[0]);
+    const globHasherPlatformName = path.basename(globHasherPlatformPath);
+
+    // Link unwanted packages to the empty placeholder package
+    const emptyPath = path.join(__dirname, "empty");
+
+    Monorepo.lageResolutions = {
+      fsevents: emptyPath,
+      "glob-hasher": globHasherPath,
+      // Use empty deps for the other glob-hasher platforms
+      ...Object.fromEntries(globHasherDepNames.map((depName) => [depName, emptyPath])),
+      // and override the current one with the real implementation
+      [globHasherPlatformName]: globHasherPlatformPath,
+    };
+
+    return Monorepo.lageResolutions;
+  }
+
+  private static getYarnBinaryContents(): string {
+    if (!Monorepo.yarnBinaryContents) {
+      const yarnGlob = ".yarn/releases/yarn-*.cjs";
+      /** Path to the lage repo's current saved yarn release */
+      const yarnPath = glob([yarnGlob], { cwd: lageRepoRoot, absolute: true })[0];
+      if (!yarnPath) {
+        throw new Error("Could not find yarn release under " + path.join(lageRepoRoot, yarnGlob));
+      }
+      Monorepo.yarnBinaryContents = fs.readFileSync(yarnPath, "utf-8");
+    }
+    return Monorepo.yarnBinaryContents;
   }
 }

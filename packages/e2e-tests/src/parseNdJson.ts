@@ -10,14 +10,16 @@ export type ParsedLogEntry = Omit<LogEntry<JsonReporterLogData | LogStructuredDa
  *
  * Usually each entry's data is `JsonReporterLogData`, unless something (such as the `info` command)
  * logged some custom data.
+ *
+ * @param ndjson - One or more output strings. This way you can pass both stdout and stderr.
  */
-export function parseNdJson(ndjson: string): ParsedLogEntry[] {
-  const entries = ndjson.slice(ndjson.indexOf("{"));
-  return entries
+export function parseNdJson(...ndjson: string[]): ParsedLogEntry[] {
+  return ndjson
+    .join("\n")
     .split("\n")
     .map((line) => {
       try {
-        const parsed = JSON.parse(line.replace("Debugger attached.", ""));
+        const parsed = JSON.parse(line);
         if (!(parsed as LogEntry<LogStructuredData>).level) {
           return {};
         }

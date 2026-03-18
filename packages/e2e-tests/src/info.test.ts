@@ -20,8 +20,7 @@ describe("info command", () => {
     await repo.install();
 
     const results = await repo.run("writeInfo", ["test"]);
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
 
     expect(jsonOutput).toMatchSnapshot();
   });
@@ -36,8 +35,7 @@ describe("info command", () => {
     await repo.install();
 
     const results = await repo.run("writeInfo", ["test", "--to", "b"]);
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     expect(jsonOutput).toMatchSnapshot();
   });
 
@@ -55,8 +53,7 @@ describe("info command", () => {
 
     const results = await repo.run("writeInfo", ["build", "prepare"]);
 
-    const output = results.stdout + results.stderr;
-    const infoJsonOutput = parseNdJson(output)[0];
+    const infoJsonOutput = parseNdJson(results.stdout, results.stderr)[0];
     const { packageTasks } = infoJsonOutput.data as InfoResult;
 
     // Check if task `a#build` depends on `c#build`, because package `b` doesn't
@@ -86,8 +83,7 @@ describe("info command", () => {
 
     const results = await repo.run("writeInfo", ["build"]);
 
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const { packageTasks } = jsonOutput[0].data as InfoResult;
 
     const taskA = packageTasks.find(({ id }) => id === "a#build");
@@ -114,8 +110,7 @@ describe("info command", () => {
     const backCompatEnvVars = { DOMINO: "1" };
     const results = await repo.run("writeInfo", ["build"], false, { env: backCompatEnvVars });
 
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const { packageTasks } = jsonOutput[0].data as InfoResult;
 
     const task = packageTasks.find(({ id }) => id === "a#build");
@@ -154,8 +149,7 @@ describe("info command", () => {
     await repo.install();
 
     const results = await repo.run("writeInfo", ["test", "build"]);
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     expect(jsonOutput).toMatchSnapshot();
   });
 
@@ -187,8 +181,7 @@ describe("info command", () => {
     await repo.install();
 
     const results = await repo.run("writeInfo", ["test", "build"]);
-    const output = results.stdout + results.stderr;
-    const jsonOutput = parseNdJson(output);
+    const jsonOutput = parseNdJson(results.stdout, results.stderr);
     expect(jsonOutput).toMatchSnapshot();
   });
 });

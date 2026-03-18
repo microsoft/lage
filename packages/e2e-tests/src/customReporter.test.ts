@@ -83,7 +83,7 @@ describe("custom reporters", () => {
     await repo.install();
 
     const results = await repo.run("build", ["--reporter", "customTest", "--reporter", "cjs"]);
-    const output = results.stdout + results.stderr;
+    const output = results.stdout + "\n" + results.stderr;
 
     // Check that custom reporters were used
     expect(output).toContain("hello from CustomTestReporter");
@@ -123,7 +123,7 @@ describe("custom reporters", () => {
       "--log-level",
       "silly",
     ]);
-    const output = results.stdout + results.stderr;
+    const output = results.stdout + "\n" + results.stderr;
 
     // custom stuff is logged
     expect(output).toContain("hello from NamedReporter");
@@ -192,7 +192,7 @@ export default objectReporter;
     await repo.install();
 
     const results = await repo.run("build", ["--reporter", "objectReporter"]);
-    const output = results.stdout + results.stderr;
+    const output = results.stdout + "\n" + results.stderr;
 
     expect(output).toContain('"trackingReporter":true');
     expect(output).toMatch(/"eventCount":[1-9]/);

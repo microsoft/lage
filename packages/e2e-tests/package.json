@@ -26,6 +26,7 @@
     "@lage-run/scheduler-types": "workspace:^",
     "@lage-run/target-graph": "workspace:^",
     "execa": "5.1.1",
+    "find-process": "2.1.1",
     "glob-hasher": "^1.4.2",
     "workspace-tools": "0.41.0"
   }
