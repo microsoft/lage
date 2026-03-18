@@ -1,5 +1,5 @@
 import { getFileHashes } from "backfill-hasher";
-import { hash as fastHash, stat } from "glob-hasher";
+import { hash as fastHash, stat as globStat } from "glob-hasher";
 import fs from "graceful-fs";
 import { createInterface } from "node:readline";
 import path from "path";
@@ -31,7 +31,7 @@ export class FileHasher {
     const { root } = this.options;
     const fileHashes = getFileHashes(root);
     const files = Object.keys(fileHashes);
-    const fileStats = stat(files, { cwd: root }) ?? {};
+    const fileStats = globStat(files, { cwd: root }) ?? {};
 
     for (const [relativePath, fileStat] of Object.entries(fileStats)) {
       const hash = fileHashes[relativePath];
@@ -96,7 +96,7 @@ export class FileHasher {
 
     const updatedFiles: string[] = [];
 
-    const stats = stat(files, { cwd: this.options.root }) ?? {};
+    const stats = globStat(files, { cwd: this.options.root }) ?? {};
 
     for (const file of files) {
       const stat = stats[file];

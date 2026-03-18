@@ -71,7 +71,7 @@ describe("initializeReporters", () => {
   it("should initialize old reporter when shell is not interactive", async () => {
     (isInteractive as jest.Mock).mockReturnValueOnce(false);
     const logger = new Logger();
-    const reporters = await initializeReporters(logger, { ...options }, undefined);
+    reporters = await initializeReporters(logger, { ...options }, undefined);
 
     expect(reporters).toEqual([expect.any(LogReporter)]);
   });

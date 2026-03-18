@@ -36,6 +36,7 @@ describe("initializeReporters with custom reporters", () => {
 
   /** Reporter mock-imported by a few tests */
   class TestReporter implements Reporter {
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     constructor(public options: ReporterInitOptions) {}
     public log() {}
     public summarize() {}

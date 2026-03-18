@@ -153,12 +153,12 @@ describe("lageserver", () => {
     lines.forEach((line, index) => {
       if (line.includes("a#build results:")) {
         // scan the next few lines until we see a "}", and then parse the JSON
-        const endTokenLine = lines.findIndex((line, i) => i > index && line.startsWith("}"));
+        const endTokenLine = lines.findIndex((ln, i) => i > index && ln.startsWith("}"));
         aResults = JSON.parse(lines.slice(index + 1, endTokenLine + 1).join("\n"));
       }
 
       if (line.includes("b#build results:")) {
-        const endTokenLine = lines.findIndex((line, i) => i > index && line.startsWith("}"));
+        const endTokenLine = lines.findIndex((ln, i) => i > index && ln.startsWith("}"));
         bResults = JSON.parse(lines.slice(index + 1, endTokenLine + 1).join("\n"));
       }
     });

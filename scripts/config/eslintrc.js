@@ -62,6 +62,7 @@ const config = {
         },
       },
     ],
+    "@typescript-eslint/no-shadow": "error",
   },
   overrides: [
     {

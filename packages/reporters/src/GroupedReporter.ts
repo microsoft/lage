@@ -35,13 +35,9 @@ export function getTaskLogPrefix(pkg: string, task: string): string {
 
 function normalize(prefixOrMessage: string, message?: string) {
   if (typeof message === "string") {
-    const prefix = prefixOrMessage;
-    return { prefix, message };
-  } else {
-    const prefix = "";
-    const message = prefixOrMessage;
-    return { prefix, message };
+    return { prefix: prefixOrMessage, message };
   }
+  return { prefix: "", message: prefixOrMessage };
 }
 
 export function format(level: LogLevel, prefix: string, message: string): string {

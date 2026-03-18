@@ -2,12 +2,11 @@ export function formatDuration(seconds: string): string {
   const raw = parseFloat(seconds);
   if (raw > 60) {
     const minutes = Math.floor(raw / 60);
-    const seconds = (raw - minutes * 60).toFixed(2);
-    return `${minutes}m ${seconds}s`;
-  } else {
-    const seconds = raw.toFixed(2);
-    return `${seconds}s`;
+    const sec = (raw - minutes * 60).toFixed(2);
+    return `${minutes}m ${sec}s`;
   }
+  const sec = raw.toFixed(2);
+  return `${sec}s`;
 }
 
 export function hrToSeconds(hrtime: [number, number]): string {
@@ -17,9 +16,6 @@ export function hrToSeconds(hrtime: [number, number]): string {
 
 /**
  * calculates the difference of two hrtime values
- * @param start
- * @param end
- * @returns
  */
 export function hrtimeDiff(start: [number, number] = [0, 0], end: [number, number] = [0, 0]): [number, number] {
   const sec = end[0] - start[0];

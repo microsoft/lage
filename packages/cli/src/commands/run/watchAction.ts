@@ -127,8 +127,8 @@ export async function watchAction(options: RunOptions, command: Command): Promis
 
     const deltaGraph = { targets };
 
-    const summary = await scheduler.run(root, deltaGraph, true);
-    displaySummary(summary, logger.reporters);
+    const deltaSummary = await scheduler.run(root, deltaGraph, true);
+    displaySummary(deltaSummary, logger.reporters);
   });
 }
 

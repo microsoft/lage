@@ -55,19 +55,16 @@ export function expandDepSpecs(
 
   /**
    * Finds all transitive dependencies, given a task and optionally a dependency list.
-   * @param task
-   * @param dependencies
-   * @returns
    */
-  const findDependenciesByTask = (task: string, dependencies?: string[]) => {
-    if (!dependencies) {
+  const findDependenciesByTask = (task: string, deps?: string[]) => {
+    if (!deps) {
       return targetList.filter((needle) => needle.task === task).map((needle) => needle.id);
     }
 
     return targetList
       .filter((needle) => {
         const { task: needleTask, packageName: needlePackageName } = needle;
-        return needleTask === task && dependencies.some((depPkg) => depPkg === needlePackageName);
+        return needleTask === task && deps.some((depPkg) => depPkg === needlePackageName);
       })
       .map((needle) => needle.id);
   };
@@ -104,8 +101,8 @@ export function expandDepSpecs(
         // id's with a # are package-task dependencies, or global
         // therefore, we must use getPackageAndTask() & getTargetId() to normalize the target id
         // (e.g. "build": ["build-tool#build"])
-        const { packageName, task } = getPackageAndTask(dependencyTargetId);
-        const normalizedDependencyTargetId = getTargetId(packageName, task);
+        const pkgAndTask = getPackageAndTask(dependencyTargetId);
+        const normalizedDependencyTargetId = getTargetId(pkgAndTask.packageName, pkgAndTask.task);
         addDependency(normalizedDependencyTargetId, to);
       } else if (dependencyTargetId.startsWith("^^") && packageName) {
         // Transitive depdency (e.g. bundle: ['^^transpile'])
@@ -114,8 +111,9 @@ export function expandDepSpecs(
         const dependencyTargetIds = findDependenciesByTask(depTask, targetDependencies);
         for (const from of dependencyTargetIds) {
           // Skip phantom targets: packages that don't define this task as a real npm script.
-          if (enablePhantomTargetOptimization && isPhantomTarget(from, depTask, targets, packageInfos)) continue;
-          addDependency(from, to);
+          if (!enablePhantomTargetOptimization || !isPhantomTarget(from, depTask, targets, packageInfos)) {
+            addDependency(from, to);
+          }
         }
       } else if (dependencyTargetId.startsWith("^") && packageName) {
         // Topological dependency (e.g. build: ['^build'])
@@ -124,8 +122,9 @@ export function expandDepSpecs(
         const dependencyTargetIds = findDependenciesByTask(depTask, targetDependencies);
         for (const from of dependencyTargetIds) {
           // Skip phantom targets: packages that don't define this task as a real npm script.
-          if (enablePhantomTargetOptimization && isPhantomTarget(from, depTask, targets, packageInfos)) continue;
-          addDependency(from, to);
+          if (!enablePhantomTargetOptimization || !isPhantomTarget(from, depTask, targets, packageInfos)) {
+            addDependency(from, to);
+          }
         }
       } else if (packageName) {
         // Add dependency on a specific package and given task name as dependency

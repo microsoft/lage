@@ -167,13 +167,13 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
     });
 
     const globHashCache = new Map<string, string>();
-    const globHashWithCache = (patterns: string[], options: { cwd: string }) => {
+    const globHashWithCache = (patterns: string[], opts: { cwd: string }) => {
       const key = patterns.join("###");
       if (globHashCache.has(key)) {
         return globHashCache.get(key)!;
       }
 
-      const files = glob(patterns, options);
+      const files = glob(patterns, opts);
       const hash = hashStrings(Object.values(fileHasher.hash(files.map((file) => path.join(root, file)))));
 
       globHashCache.set(key, hash);

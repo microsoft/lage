@@ -101,7 +101,7 @@ export class TargetHasher {
         .readManifest()
         .then(() => globAsync(environmentGlob, { cwd: root }))
         .then((files) => this.fileHasher.hash(files))
-        .then((hash) => (this.globalInputsHash = hash)),
+        .then((h) => (this.globalInputsHash = h)),
 
       getPackageInfosAsync(root).then((packageInfos) => {
         if (Object.keys(packageInfos).length) {

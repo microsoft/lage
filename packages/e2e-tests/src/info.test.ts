@@ -55,8 +55,8 @@ describe("info command", () => {
 
     // Check if task `a#build` depends on `c#build`, because package `b` doesn't
     // have a `build` task so dependencies are hoisted up.
-    const task = packageTasks.find(({ id }) => id === "a#build");
-    expect(task!.dependencies).toEqual(["c#build"]);
+    const aBuildTask = packageTasks.find(({ id }) => id === "a#build");
+    expect(aBuildTask!.dependencies).toEqual(["c#build"]);
 
     // Make sure all dependencies points to an existing task.
     for (const task of packageTasks) {

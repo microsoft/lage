@@ -67,13 +67,9 @@ function stripAnsi(message: string) {
 
 function normalize(prefixOrMessage: string, message?: string) {
   if (typeof message === "string") {
-    const prefix = prefixOrMessage;
-    return { prefix, message };
-  } else {
-    const prefix = "";
-    const message = prefixOrMessage;
-    return { prefix, message };
+    return { prefix: prefixOrMessage, message };
   }
+  return { prefix: "", message: prefixOrMessage };
 }
 
 export class LogReporter implements Reporter {
