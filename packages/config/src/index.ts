@@ -8,3 +8,4 @@ export type { CacheOptions } from "./types/CacheOptions.js";
 export type { AzureCredentialName } from "./types/CacheOptions.js";
 export type { LoggerOptions } from "./types/LoggerOptions.js";
 export type { Priority } from "./types/Priority.js";
+export { isRunningFromCI } from "./isRunningFromCI.js";
