@@ -4,20 +4,21 @@ import { getPackageInfosAsync } from "workspace-tools";
 import { getFilteredPackages } from "../filter/getFilteredPackages.js";
 
 describe("getFilteredPackages", () => {
+  let monorepo: Monorepo | undefined;
+
+  afterEach(async () => {
+    await monorepo?.cleanup();
+    monorepo = undefined;
+  });
+
   it("should respect the ignore flag when since flag is used", async () => {
     const logger = createLogger();
 
-    const monorepo = new Monorepo("getFilterPackages-ignore");
+    monorepo = new Monorepo("getFilterPackages-ignore");
 
-    await monorepo.init();
-    await monorepo.install();
+    await monorepo.init({ packages: { a: {}, b: {}, c: {} } });
 
-    await monorepo.addPackage("a");
-    await monorepo.addPackage("b");
-    await monorepo.addPackage("c");
-
-    await monorepo.linkPackages();
-
+    // The separate commit step is needed for these tests
     await monorepo.commitFiles({
       "packages/a/just-a-test.txt": "test content",
     });
@@ -35,23 +36,14 @@ describe("getFilteredPackages", () => {
     });
 
     expect(filteredPackages.length).toEqual(0);
-
-    await monorepo.cleanup();
   });
 
   it("should respect the since flag", async () => {
     const logger = createLogger();
 
-    const monorepo = new Monorepo("getFilterPackages-since");
+    monorepo = new Monorepo("getFilterPackages-since");
 
-    await monorepo.init();
-    await monorepo.install();
-
-    await monorepo.addPackage("a");
-    await monorepo.addPackage("b");
-    await monorepo.addPackage("c");
-
-    await monorepo.linkPackages();
+    await monorepo.init({ packages: { a: {}, b: {}, c: {} } });
 
     await monorepo.commitFiles({
       "packages/a/just-a-test.txt": "test content",
@@ -72,26 +64,17 @@ describe("getFilteredPackages", () => {
     expect(filteredPackages).toContain("a");
     expect(filteredPackages).not.toContain("b");
     expect(filteredPackages).not.toContain("c");
-
-    await monorepo.cleanup();
   });
 
   it("should respect the repoWideChanges flag", async () => {
     const logger = createLogger();
 
-    const monorepo = new Monorepo("getFilterPackages-repoWideChanges");
+    monorepo = new Monorepo("getFilterPackages-repoWideChanges");
 
-    await monorepo.init();
-    await monorepo.install();
-
-    await monorepo.addPackage("a");
-    await monorepo.addPackage("b");
-    await monorepo.addPackage("c");
-
-    await monorepo.linkPackages();
+    await monorepo.init({ packages: { a: {}, b: {}, c: {} } });
 
     await monorepo.commitFiles({
-      "packages/a/dummy.txt": "test content",
+      "packages/a/test.txt": "test content",
     });
 
     const filteredPackages = getFilteredPackages({
@@ -103,13 +86,11 @@ describe("getFilteredPackages", () => {
       sinceIgnoreGlobs: [],
       scope: [],
       logger,
-      repoWideChanges: ["packages/a/dummy.txt"],
+      repoWideChanges: ["packages/a/test.txt"],
     });
 
     expect(filteredPackages).toContain("a");
     expect(filteredPackages).toContain("b");
     expect(filteredPackages).toContain("c");
-
-    await monorepo.cleanup();
   });
 });

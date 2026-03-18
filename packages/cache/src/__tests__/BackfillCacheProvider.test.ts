@@ -6,15 +6,18 @@ import { getCacheDirectory } from "../getCacheDirectory.js";
 import { BackfillCacheProvider, type BackfillCacheProviderOptions } from "../providers/BackfillCacheProvider.js";
 
 describe("BackfillCacheProvider", () => {
+  let monorepo: Monorepo | undefined;
+
+  afterEach(async () => {
+    await monorepo?.cleanup();
+    monorepo = undefined;
+  });
+
   it("should fetch a cache of the outputs as specified in the outputs folder in target", async () => {
     const logger = createLogger();
-    const monorepo = new Monorepo("fetch-cache");
+    monorepo = new Monorepo("fetch-cache");
 
-    await monorepo.init();
-    await monorepo.install();
-
-    await monorepo.addPackage("a");
-    await monorepo.linkPackages();
+    await monorepo.init({ packages: { a: {} } });
 
     const options: BackfillCacheProviderOptions = {
       logger,
@@ -40,29 +43,23 @@ describe("BackfillCacheProvider", () => {
 
     const cacheDir = getCacheDirectory(monorepo.root, hash);
 
-    await monorepo.writeFiles({
+    monorepo.writeFiles({
       [path.join(cacheDir, hash, "output.txt")]: "output",
     });
 
     const fetchResult = await provider.fetch(hash, target);
 
-    const contents = await monorepo.readFiles(["packages/a/output.txt"]);
+    const contents = monorepo.readFiles(["packages/a/output.txt"]);
 
     expect(contents["packages/a/output.txt"]).toBe("output");
     expect(fetchResult).toBeTruthy();
-
-    await monorepo.cleanup();
   });
 
   it("should put a cache of the outputs as specified in the outputs folder in target", async () => {
     const logger = createLogger();
-    const monorepo = new Monorepo("put-cache");
+    monorepo = new Monorepo("put-cache");
 
-    await monorepo.init();
-    await monorepo.install();
-
-    await monorepo.addPackage("a");
-    await monorepo.linkPackages();
+    await monorepo.init({ packages: { a: {} } });
 
     const options: BackfillCacheProviderOptions = {
       logger,
@@ -86,7 +83,7 @@ describe("BackfillCacheProvider", () => {
 
     const hash = "some-hash";
 
-    await monorepo.writeFiles({
+    monorepo.writeFiles({
       "packages/a/output.txt": "output",
     });
 
@@ -95,10 +92,8 @@ describe("BackfillCacheProvider", () => {
     const cacheDir = getCacheDirectory(monorepo.root, hash);
 
     const outputFilePath = path.join(cacheDir, hash, "output.txt");
-    const contents = await monorepo.readFiles([outputFilePath]);
+    const contents = monorepo.readFiles([outputFilePath]);
 
     expect(contents[outputFilePath]).toBe("output");
-
-    await monorepo.cleanup();
   });
 });

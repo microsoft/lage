@@ -1,28 +1,47 @@
 import path from "path";
 import { Monorepo } from "./mock/monorepo.js";
-import { parseNdJson } from "./parseNdJson.js";
+import { parseNdJson, type ParsedLogEntry } from "./parseNdJson.js";
 import fs from "fs";
 import { killDetachedProcess } from "./killDetachedProcess.js";
 import type { Target } from "@lage-run/target-graph";
+import type { TargetMessageData } from "@lage-run/reporters";
+import type { LogEntry } from "@lage-run/logger";
+import type execa from "execa";
 
 describe("lageserver", () => {
   let repo: Monorepo | undefined;
+  let serverProcess: execa.ExecaChildProcess | undefined;
+  let serverPid: number | undefined;
+
+  function findServerPid(jsonOutput: ParsedLogEntry[]) {
+    const entry = jsonOutput.find((e) => (e.data as TargetMessageData)?.pid && e.msg === "Server started") as
+      | LogEntry<TargetMessageData>
+      | undefined;
+    expect(entry).toBeTruthy();
+    return entry!.data!.pid;
+  }
 
   afterEach(async () => {
     await repo?.cleanup();
     repo = undefined;
+    serverProcess?.kill();
+    serverProcess = undefined;
+
+    if (serverPid) {
+      killDetachedProcess(serverPid);
+      serverPid = undefined;
+    }
   });
 
   it("connects to a running server", async () => {
     repo = new Monorepo("basics");
 
-    await repo.init();
-    await repo.addPackage("a", ["b"]);
-    await repo.addPackage("b");
-
+    await repo.init({
+      packages: { a: { internalDeps: ["b"] }, b: {} },
+    });
     await repo.install();
 
-    const serverProcess = repo.runServer(["build"]);
+    serverProcess = repo.runServer(["build"]);
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const results = await repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "b", "build"]);
@@ -32,68 +51,54 @@ describe("lageserver", () => {
     await repo.run("lage", ["exec", "--server", "--tasks", "build", "--", "a", "build"]);
 
     serverProcess.kill();
+    serverProcess = undefined;
 
     expect(jsonOutput.find((entry) => entry.msg === "Task b build exited with code 0")).toBeTruthy();
-  }, 15000);
+  });
 
-  // Windows cannot reliably kill the server process, since it's detached. These tests are skipped on Windows.
   it("launches a background server", async () => {
     repo = new Monorepo("basics");
 
-    await repo.init();
-    await repo.addPackage("a", ["b"]);
-    await repo.addPackage("b");
-
+    await repo.init({
+      packages: { a: { internalDeps: ["b"] }, b: {} },
+    });
     await repo.install();
 
     const results = await repo.run("lage", ["exec", "--server", "localhost:5112", "--tasks", "build", "--", "b", "build"]);
     const output = results.stdout + results.stderr;
     const jsonOutput = parseNdJson(output);
-    const started = jsonOutput.find((entry) => entry.data?.pid && entry.msg === "Server started");
-    expect(started?.data.pid).not.toBeUndefined();
-
+    serverPid = findServerPid(jsonOutput);
     await new Promise((resolve) => setTimeout(resolve, 2000));
-    killDetachedProcess(parseInt(started?.data.pid));
-  }, 15000);
+  });
 
   it("reports inputs for targets and their transitive dependencies' files", async () => {
     repo = new Monorepo("basics");
 
-    await repo.init();
-
-    await repo.addPackage("a", ["b"]);
-    await repo.addPackage("b", ["c"]);
-    await repo.addPackage("c");
-
-    await repo.install();
-
-    await repo.commitFiles({
-      "packages/a/src/index.ts": "console.log('a');",
-      "packages/a/alt/extra.ts": "console.log('a');",
-      "packages/b/alt/index.ts": "console.log('b');",
-      "packages/b/src/extra.ts": "console.log('b');",
-      "packages/c/src/index.ts": "console.log('c');",
-      "packages/c/alt/extra.ts": "console.log('c');",
-    });
-
-    await repo.setLageConfig(
-      `module.exports = {
-          pipeline: {
-            "a#build": {
-              inputs: ["src/**"],
-              dependsOn: ["^build"],
-            },
-            "b#build": {
-              inputs: ["alt/**"],
-              dependsOn: ["^build"],
-            },
-            "c#build": {
-              inputs: ["src/**"],
-              dependsOn: ["^build"],
-            },
+    await repo.init({
+      lageConfig: {
+        pipeline: {
+          "a#build": {
+            inputs: ["src/**"],
+            dependsOn: ["^build"],
           },
-        };`
-    );
+          "b#build": {
+            inputs: ["alt/**"],
+            dependsOn: ["^build"],
+          },
+          "c#build": {
+            inputs: ["src/**"],
+            dependsOn: ["^build"],
+          },
+        },
+      },
+      packages: {
+        a: { internalDeps: ["b"], extraFiles: { "src/index.ts": "console.log('a');", "alt/extra.ts": "console.log('a');" } },
+        b: { internalDeps: ["c"], extraFiles: { "alt/index.ts": "console.log('b');", "src/extra.ts": "console.log('b');" } },
+        c: { extraFiles: { "src/index.ts": "console.log('c');", "alt/extra.ts": "console.log('c');" } },
+      },
+      extraFiles: {},
+    });
+    await repo.install();
 
     const results = await repo.run("lage", [
       "exec",
@@ -112,8 +117,7 @@ describe("lageserver", () => {
     const output = results.stdout + results.stderr;
 
     const jsonOutput = parseNdJson(output);
-    const started = jsonOutput.find((entry) => entry.data?.pid && entry.msg === "Server started");
-    expect(started?.data.pid).not.toBeUndefined();
+    serverPid = findServerPid(jsonOutput);
 
     await repo.run("lage", [
       "exec",
@@ -142,7 +146,8 @@ describe("lageserver", () => {
       "json",
     ]);
 
-    killDetachedProcess(parseInt(started?.data.pid));
+    killDetachedProcess(serverPid);
+    serverPid = undefined;
 
     const serverLogs = fs.readFileSync(path.join(repo.root, "node_modules/.cache/lage/server.log"), "utf-8");
 

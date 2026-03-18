@@ -1622,12 +1622,15 @@ __metadata:
   dependencies:
     "@lage-run/cli": "workspace:^"
     "@lage-run/globby": "workspace:^"
+    "@lage-run/logger": "workspace:^"
     "@lage-run/monorepo-fixture": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/reporters": "workspace:^"
     "@lage-run/scheduler-types": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
     execa: "npm:5.1.1"
     glob-hasher: "npm:^1.4.2"
+    workspace-tools: "npm:0.41.0"
   languageName: unknown
   linkType: soft
 

@@ -6,16 +6,22 @@ import { PackageTree } from "../PackageTree.js";
 const fixturesPath = path.join(__dirname, "../__fixtures__");
 
 describe("PackageTree", () => {
-  test("can find all files of a monorepo", async () => {
-    const monorepo = new Monorepo("monorepo");
-    await monorepo.init(path.join(fixturesPath, "monorepo"));
-    const packageRoot = monorepo.root;
+  let monorepo: Monorepo | undefined;
 
-    const packageInfos = getPackageInfos(packageRoot);
+  afterEach(async () => {
+    await monorepo?.cleanup();
+    monorepo = undefined;
+  });
+
+  test("can find all files of a monorepo", async () => {
+    monorepo = new Monorepo("monorepo");
+    await monorepo.init({ fixturePath: path.join(fixturesPath, "monorepo") });
+
+    const packageInfos = getPackageInfos(monorepo.root);
 
     const packageTree = new PackageTree({
       includeUntracked: true,
-      root: packageRoot,
+      root: monorepo.root,
       packageInfos,
     });
 
@@ -27,15 +33,14 @@ describe("PackageTree", () => {
   });
 
   test("can find all files of a monorepo with a pattern", async () => {
-    const monorepo = new Monorepo("monorepo2");
-    await monorepo.init(path.join(fixturesPath, "monorepo"));
-    const packageRoot = monorepo.root;
+    monorepo = new Monorepo("monorepo2");
+    await monorepo.init({ fixturePath: path.join(fixturesPath, "monorepo") });
 
-    const packageInfos = getPackageInfos(packageRoot);
+    const packageInfos = getPackageInfos(monorepo.root);
 
     const packageTree = new PackageTree({
       includeUntracked: true,
-      root: packageRoot,
+      root: monorepo.root,
       packageInfos,
     });
 
@@ -47,15 +52,14 @@ describe("PackageTree", () => {
   });
 
   test("can find all files of a monorepo with nested files", async () => {
-    const monorepo = new Monorepo("monorepo-nested");
-    await monorepo.init(path.join(fixturesPath, "monorepo-nested"));
-    const packageRoot = monorepo.root;
+    monorepo = new Monorepo("monorepo-nested");
+    await monorepo.init({ fixturePath: path.join(fixturesPath, "monorepo-nested") });
 
-    const packageInfos = getPackageInfos(packageRoot);
+    const packageInfos = getPackageInfos(monorepo.root);
 
     const packageTree = new PackageTree({
       includeUntracked: true,
-      root: packageRoot,
+      root: monorepo.root,
       packageInfos,
     });
 

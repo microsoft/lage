@@ -18,7 +18,8 @@ describe("The main Hasher class", () => {
 
   async function setupFixture(fixture = "monorepo") {
     const monorepo = new Monorepo("fixture");
-    await monorepo.init(path.join(fixturesPath, fixture));
+    // These fixtures already have node_modules set up
+    await monorepo.init({ fixturePath: path.join(fixturesPath, fixture), skipLink: true });
     monorepos.push(monorepo);
     return monorepo;
   }
