@@ -1,7 +1,20 @@
 // @ts-check
-/** @import { ConfigOptions, CacheOptions, NpmScriptTargetOptions, WorkerTargetOptions } from 'lage' */
+/** @import { ConfigOptions, CacheOptions, NpmScriptTargetOptions, TargetConfig, WorkerTargetOptions } from 'lage' */
+const os = require("os");
 const path = require("path");
 const fastGlob = require("fast-glob");
+
+/** @type {TargetConfig} */
+const baseTestTarget = {
+  type: "worker",
+  weight: (target) => {
+    return fastGlob.sync("src/__tests__/**/*.test.ts", { cwd: target.cwd }).length;
+  },
+  options: /** @satisfies {WorkerTargetOptions} */ ({
+    worker: path.join(__dirname, "scripts/worker/jest.js"),
+  }),
+  dependsOn: ["build"],
+};
 
 /**
  * Lage config (the types are slightly incorrect about what's required/optional)
@@ -34,16 +47,7 @@ const config = {
       }),
       outputs: ["lib/**/*.{js,map}"],
     },
-    test: {
-      type: "worker",
-      weight: (target) => {
-        return fastGlob.sync("src/__tests__/**/*.test.ts", { cwd: target.cwd }).length;
-      },
-      options: /** @satisfies {WorkerTargetOptions} */ ({
-        worker: path.join(__dirname, "scripts/worker/jest.js"),
-      }),
-      dependsOn: ["build"],
-    },
+    test: { ...baseTestTarget },
     build: {
       type: "noop",
       dependsOn: ["transpile", "types"],
@@ -73,8 +77,11 @@ const config = {
       }),
     },
     "@lage-run/e2e-tests#test": {
-      type: "npmScript",
+      ...baseTestTarget,
       dependsOn: ["^^transpile", "lage#bundle"],
+      // This runs last, so give it all available resources
+      weight: os.availableParallelism(),
+      priority: -9999,
     },
   },
   npmClient: "yarn",
