@@ -18,6 +18,7 @@ function start() {
     "--rootDir",
     packagePath,
     "--runInBand",
+    "--watch",
     "--testTimeout=999999999",
     ...args,
   ]);

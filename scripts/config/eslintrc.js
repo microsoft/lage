@@ -74,6 +74,27 @@ const config = {
         "no-console": "off",
       },
     },
+    {
+      files: ["**/*.test.ts"],
+      rules: {
+        "no-restricted-properties": [
+          "error",
+          ...["describe", "it", "test"]
+            .map((func) => [
+              { object: func, property: "only", message: "Do not commit .only() tests" },
+              { object: func, property: "skip", message: "Do not commit .skip() tests (disable this rule if needed)" },
+            ])
+            .flat(),
+        ],
+        "no-restricted-syntax": [
+          "error",
+          {
+            message: "Do not commit disabled tests",
+            selector: "CallExpression[callee.name=/^(xdescribe|xit|xtest)$/]",
+          },
+        ],
+      },
+    },
   ],
 };
 
