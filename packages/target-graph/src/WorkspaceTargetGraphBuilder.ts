@@ -13,6 +13,8 @@ import { TargetGraphBuilder } from "./TargetGraphBuilder.js";
 import { TargetFactory } from "./TargetFactory.js";
 import pLimit from "p-limit";
 import * as mergicianModule from "mergician";
+import type { Priority } from "./types/Priority.js";
+import { builtInTargetTypes } from "./builtInTargetTypes.js";
 
 // mergician is a dual-mode library with CJS and ESM export but a single .d.ts file.
 // Without type="module" on this packge.json typescript gets confused. See: https://github.com/microsoft/TypeScript/issues/50466
@@ -157,7 +159,7 @@ export class WorkspaceTargetGraphBuilder {
     this.hasAnyStagedTarget = true;
 
     // First convert the parent to be a NO-OP, not cached, and should never run
-    parentTarget.type = "noop";
+    parentTarget.type = builtInTargetTypes.noop;
     parentTarget.cache = false;
     parentTarget.shouldRun = false;
 
@@ -206,11 +208,7 @@ export class WorkspaceTargetGraphBuilder {
    * @param scope If provided, scope to these packages. Otherwise includes all packages.
    * @param priorities the set of global priorities for the workspace.
    */
-  public async build(
-    tasks: string[],
-    scope?: string[],
-    priorities?: { package?: string; task: string; priority: number }[]
-  ): Promise<TargetGraph> {
+  public async build(tasks: string[], scope?: string[], priorities?: Priority[]): Promise<TargetGraph> {
     scope ||= Object.keys(this.packageInfos);
 
     // Expands the dependency specs from the target definitions

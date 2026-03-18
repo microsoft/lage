@@ -2,6 +2,7 @@ import type { Target } from "./types/Target.js";
 import type { DependencyMap } from "workspace-tools/lib/graph/createDependencyMap.js";
 import type { PackageInfos } from "workspace-tools";
 import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId.js";
+import { builtInTargetTypes } from "./builtInTargetTypes.js";
 
 /**
  * Checks whether a target represents a "phantom" target — one created for a package that
@@ -18,11 +19,10 @@ import { getPackageAndTask, getStartTargetId, getTargetId } from "./targetId.js"
  */
 function isPhantomTarget(targetId: string, task: string, targets: Map<string, Target>, packageInfos: PackageInfos): boolean {
   const target = targets.get(targetId);
-  if (!target?.packageName) return false;
 
   // Only npmScript targets can be phantom — other types (worker, noop, etc.)
   // are real targets regardless of whether the package defines the script.
-  if (target.type !== "npmScript") {
+  if (!target?.packageName || target.type !== builtInTargetTypes.npmScript) {
     return false;
   }
 

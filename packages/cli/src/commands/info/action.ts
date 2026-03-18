@@ -11,7 +11,7 @@ import fs from "fs";
 import { parse } from "shell-quote";
 
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import { type Target, getStartTargetId } from "@lage-run/target-graph";
+import { type Target, builtInTargetTypes, getStartTargetId } from "@lage-run/target-graph";
 import { initializeReporters } from "../initializeReporters.js";
 import { TargetRunnerPicker } from "@lage-run/runners";
 import { getBinPaths } from "../../getBinPaths.js";
@@ -236,8 +236,8 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
 export function generatePackageTask(
   target: Target,
   taskArgs: string[],
-  config: ConfigOptions,
-  options: InfoActionOptions,
+  config: Pick<ConfigOptions, "npmClient">,
+  options: Pick<InfoActionOptions, "concurrency" | "server">,
   binPaths: { lage: string; "lage-server": string },
   packageInfos: PackageInfos,
   tasks: string[]
@@ -267,20 +267,20 @@ export function generatePackageTask(
   return packageTask;
 }
 
-function shouldRunWorkersAsService(options: InfoActionOptions) {
+function shouldRunWorkersAsService(options: Pick<InfoActionOptions, "server">) {
   return (typeof process.env.LAGE_WORKER_SERVER === "string" && process.env.LAGE_WORKER_SERVER !== "false") || !!options.server;
 }
 
 function generateCommand(
   target: Target,
   taskArgs: string[],
-  config: ConfigOptions,
-  options: InfoActionOptions,
+  config: Pick<ConfigOptions, "npmClient">,
+  options: Pick<InfoActionOptions, "concurrency" | "server">,
   binPaths: { lage: string; "lage-server": string },
   packageInfos: PackageInfos,
   tasks: string[]
 ) {
-  if (target.type === "npmScript") {
+  if (target.type === builtInTargetTypes.npmScript) {
     const script = target.packageName !== undefined ? packageInfos[target.packageName]?.scripts?.[target.task] : undefined;
 
     // If the script is a node script, and that it does not have any shell operators (&&, ||, etc)
@@ -293,9 +293,10 @@ function generateCommand(
     }
 
     const npmClient = config.npmClient ?? "npm";
-    const command = [npmClient, ...getNpmArgs(target.task, taskArgs)];
-    return command;
-  } else if (target.type === "worker" && shouldRunWorkersAsService(options)) {
+    return [npmClient, ...getNpmArgs(target.task, taskArgs)];
+  }
+
+  if (target.type === builtInTargetTypes.worker && shouldRunWorkersAsService(options)) {
     const { host, port } = parseServerOption(options.server);
     const command = [binPaths["lage"], "exec", "--tasks", ...tasks, "--server", `${host}:${port}`];
     if (options.concurrency) {
@@ -312,7 +313,9 @@ function generateCommand(
 
     command.push(...taskArgs);
     return command;
-  } else if (target.type === "worker") {
+  }
+
+  if (target.type === builtInTargetTypes.worker) {
     const command = [binPaths.lage, "exec"];
     command.push(target.packageName ?? "");
     command.push(target.task);

@@ -1,5 +1,5 @@
 import path from "path";
-import { getStartTargetId } from "@lage-run/target-graph";
+import { builtInTargetTypes, getStartTargetId } from "@lage-run/target-graph";
 import type { Target } from "@lage-run/target-graph";
 import type { TargetRunner } from "./types/TargetRunner.js";
 import type { TargetRunnerPickerOptions } from "./types/TargetRunnerPickerOptions.js";
@@ -14,11 +14,11 @@ export class TargetRunnerPicker {
     }
 
     if (!target.type) {
-      target.type = "npmScript";
+      target.type = builtInTargetTypes.npmScript;
     }
 
-    if (this.options[target.type]) {
-      const config = this.options[target.type];
+    const config = this.options[target.type];
+    if (config) {
       const { script, options } = config;
 
       let importScript = script;

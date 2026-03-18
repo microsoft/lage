@@ -1,9 +1,9 @@
 import type { Logger } from "@lage-run/logger";
-import { type TargetGraph, WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
+import { type Priority, type TargetGraph, WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
 import type { PackageInfos } from "workspace-tools";
 import { getBranchChanges, getDefaultRemoteBranch, getStagedChanges, getUnstagedChanges, getUntrackedChanges } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
-import type { PipelineDefinition, Priority } from "@lage-run/config";
+import type { PipelineDefinition } from "@lage-run/config";
 import { hasRepoChanged } from "../../filter/hasRepoChanged.js";
 
 interface CreateTargetGraphOptions {

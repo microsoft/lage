@@ -1,5 +1,5 @@
 import type { CacheOptions } from "./CacheOptions.js";
-import type { Priority } from "./Priority.js";
+import type { Priority } from "@lage-run/target-graph";
 import type { PipelineDefinition } from "./PipelineDefinition.js";
 import type { LoggerOptions } from "./LoggerOptions.js";
 import type { TargetRunnerPickerOptions } from "@lage-run/runners";

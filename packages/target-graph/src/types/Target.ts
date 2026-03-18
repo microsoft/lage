@@ -109,7 +109,7 @@ export interface Target {
    * - `"worker"`: `WorkerTargetOptions`
    * - `"noop"`: n/a
    */
-  options?: SharedTargetOptions & Record<string, any>;
+  options?: SharedTargetOptions & Record<string, unknown>;
 
   /**
    * Whether the target should be displayed by reporters

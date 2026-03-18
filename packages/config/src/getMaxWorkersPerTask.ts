@@ -14,7 +14,7 @@ export function getMaxWorkersPerTask(pipelineConfig: ConfigOptions["pipeline"], 
       const maxWorkerOption: number | undefined =
         taskConfig.maxWorkers ??
         // deprecated usage--a "worker" target's options should only include WorkerTargetOptions props.
-        taskConfig.options?.maxWorkers;
+        (taskConfig.options?.maxWorkers as number | undefined);
 
       if (typeof maxWorkerOption === "undefined") {
         generalPoolCount++;
