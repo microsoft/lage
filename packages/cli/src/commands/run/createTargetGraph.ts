@@ -27,16 +27,14 @@ interface CreateTargetGraphOptions {
 function getChangedFiles(since: string, cwd: string) {
   const targetBranch = since || getDefaultRemoteBranch({ cwd });
 
-  const changes = [
+  return [
     ...new Set([
-      ...(getUntrackedChanges(cwd) || []),
-      ...(getUnstagedChanges(cwd) || []),
-      ...(getBranchChanges(targetBranch, cwd) || []),
-      ...(getStagedChanges(cwd) || []),
+      ...(getUntrackedChanges({ cwd }) || []),
+      ...(getUnstagedChanges({ cwd }) || []),
+      ...(getBranchChanges({ branch: targetBranch, cwd }) || []),
+      ...(getStagedChanges({ cwd }) || []),
     ]),
   ];
-
-  return changes;
 }
 
 export async function createTargetGraph(options: CreateTargetGraphOptions): Promise<TargetGraph> {
@@ -77,7 +75,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
   // TODO: enhancement would be for workspace-tools to implement a "getChangedPackageFromChangedFiles()" type function
   // TODO: optimize this so that we don't double up the work to determine if repo has changed
   if (since) {
-    if (!hasRepoChanged(since, root, repoWideChanges, logger)) {
+    if (!hasRepoChanged({ since, root, environmentGlob: repoWideChanges, logger })) {
       changedFiles = getChangedFiles(since, root);
     }
   }

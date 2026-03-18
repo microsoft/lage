@@ -40,7 +40,11 @@ export function getFilteredPackages(options: {
   // If since is defined, get changed packages.
   else if (hasSince) {
     try {
-      changedPackages = getChangedPackages(root, since, sinceIgnoreGlobs);
+      changedPackages = getChangedPackages({
+        cwd: root,
+        target: since,
+        ignoreGlobs: sinceIgnoreGlobs,
+      });
     } catch (e) {
       logger.warn(`An error in the git command has caused this scope run to include every package\n${e}`);
       // if getChangedPackages throws, we will assume all have changed (using changedPackage = undefined)
@@ -56,7 +60,7 @@ export function getFilteredPackages(options: {
 
     // If the defined repo-wide changes are detected the get all packages and append to the filtered packages.
     // This alo ensures that the modified packages are always run first.
-    if (hasRepoChanged(since, root, repoWideChanges, logger)) {
+    if (hasRepoChanged({ since, root, environmentGlob: repoWideChanges, logger })) {
       logger.verbose(
         `Repo-wide changes detected, running all packages. The following changed packages and their deps (if specified) will be run first: ${filteredPackages.join(
           ","
