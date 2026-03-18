@@ -216,8 +216,12 @@ export class Monorepo {
     });
   }
 
+  /**
+   * Clean up the monorepo. Will retry twice on failure, then warn and continue
+   * (since it's a temp directory that will be cleaned up eventually).
+   */
   public async cleanup(): Promise<void> {
-    const maxRetries = 5;
+    const maxRetries = 3;
     let attempts = 0;
 
     while (attempts < maxRetries) {
@@ -227,9 +231,11 @@ export class Monorepo {
       } catch (error) {
         attempts++;
         if (attempts >= maxRetries) {
-          throw error;
+          // eslint-disable-next-line no-console
+          console.warn(`Failed to clean up monorepo at ${this.root} after ${attempts} attempts:`, error);
+        } else {
+          await new Promise((resolve) => setTimeout(resolve, 500));
         }
-        await new Promise((resolve) => setTimeout(resolve, 100));
       }
     }
   }
