@@ -49,6 +49,8 @@ export class NpmScriptRunner implements TargetRunner {
 
   public async shouldRun(target: Target): Promise<boolean> {
     // By convention, do not run anything if there is no script for this task defined in package.json (counts as "success")
+    //
+    // TODO: In theory this could be entirely handled by TargetFactory (see comment on getTargetType there).
     const task = this.getTargetTask(target);
     const packageJsonPath = path.join(target.cwd, "package.json");
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
