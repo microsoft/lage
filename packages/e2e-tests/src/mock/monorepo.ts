@@ -31,13 +31,16 @@ export interface MonorepoInitParams extends BaseMonorepoInitParams {
   scripts?: Record<string, string>;
 }
 
+/** Relative path to yarn binary from within the fixture */
+const yarnRelPath = ".yarn/yarn.cjs";
+
 export class Monorepo extends BaseMonorepo {
   /** Path to the fixture's copy of yarn */
   private readonly yarnPath: string;
 
   constructor(name: string) {
     super(name);
-    this.yarnPath = path.join(this.root, ".yarn", "yarn.cjs");
+    this.yarnPath = path.join(this.root, yarnRelPath);
   }
 
   /**
@@ -68,9 +71,18 @@ export class Monorepo extends BaseMonorepo {
       extraFiles,
     } = params;
 
-    const yarnCacheFolder = this.root.replace(/\\/g, "/") + "/.yarn/cache";
     this.writeFiles({
-      ".yarnrc.yml": `yarnPath: "${this.yarnPath.replace(/\\/g, "/")}"\ncacheFolder: "${yarnCacheFolder}"\nnodeLinker: node-modules`,
+      ".yarnrc.yml": [
+        "nodeLinker: node-modules",
+        // Disable postinstall script execution
+        "enableScripts: false",
+        // Cache packages entirely within the fixture to reduce race conditions or other issues
+        `yarnPath: ${yarnRelPath}`,
+        "cacheFolder: .yarn/cache",
+        "globalFolder: .yarn/global",
+        "enableGlobalCache: false",
+        "enableMirror: false",
+      ].join("\n"),
       "package.json": {
         name: this.name.replace(/ /g, "-"),
         version: "0.1.0",
@@ -90,10 +102,9 @@ export class Monorepo extends BaseMonorepo {
         devDependencies: {
           lage: lagePackageRoot,
         },
-        packageManager: "yarn@1.22.19",
       },
       "lage.config.js": typeof lageConfig === "string" ? lageConfig : `module.exports = ${JSON.stringify(lageConfig, null, 2)};`,
-      ".gitignore": "node_modules",
+      ".gitignore": ["node_modules", ".yarn"].join("\n"),
       ...extraFiles,
     });
 
