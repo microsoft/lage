@@ -5,6 +5,5 @@ export { readConfigFile } from "./readConfigFile.js";
 export type { PipelineDefinition } from "./types/PipelineDefinition.js";
 export type { ConfigOptions, ConfigFileOptions } from "./types/ConfigOptions.js";
 export type { CacheOptions } from "./types/CacheOptions.js";
-export type { AzureCredentialName } from "./types/CacheOptions.js";
 export type { LoggerOptions } from "./types/LoggerOptions.js";
 export { isRunningFromCI } from "./isRunningFromCI.js";

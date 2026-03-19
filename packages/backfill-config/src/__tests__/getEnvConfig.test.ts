@@ -117,6 +117,24 @@ describe("getEnvConfig()", () => {
     `);
   });
 
+  it("maps azure-blob to custom plugin config", () => {
+    process.env["BACKFILL_CACHE_PROVIDER"] = "azure-blob";
+    process.env["BACKFILL_CACHE_PROVIDER_OPTIONS"] = JSON.stringify({
+      connectionString: "DefaultEndpointsProtocol=https;AccountName=test",
+      container: "my-container",
+    });
+
+    const config = getEnvConfig(logger);
+    expect(config.cacheStorageConfig).toStrictEqual({
+      provider: "custom",
+      plugin: "@lage-run/azure-blob-cache-storage",
+      options: {
+        connectionString: "DefaultEndpointsProtocol=https;AccountName=test",
+        container: "my-container",
+      },
+    });
+  });
+
   // This should be updated to check for a thrown error once more config
   // validation is added in a major version
   it("does not throw on invalid cache provider name", () => {
