@@ -104,7 +104,7 @@ Create a secret named "BACKFILL_CACHE_PROVIDER_OPTIONS":
 
 `process.env.BACKFILL_CACHE_PROVIDER_OPTIONS`is evaluated via backfill (see [`getEnvConfig()`](https://github.com/microsoft/lage/blob/master/packages/backfill-config/src/envConfig.ts#L82) in `backfill-config`).
 
-For the Azure Blob cache provider with a non-sas/key-based `connectionString` (storage account endpoint) requiring Azure Identity authentication, you can pass a `credentialName` option in the plugin config or via the `AZURE_IDENTITY_CREDENTIAL_NAME` environment variable. Supported options are:
+For the Azure Blob cache provider with a non-sas/key-based `connectionString` (storage account endpoint) requiring [Azure Identity](https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme) authentication, you can pass a `credentialName` option in the plugin config or via the `AZURE_IDENTITY_CREDENTIAL_NAME` environment variable. (Do not use `BACKFILL_CACHE_PROVIDER_OPTIONS` in this case.) Supported options are:
 
 - `"azure-cli"`
 - `"managed-identity"`
