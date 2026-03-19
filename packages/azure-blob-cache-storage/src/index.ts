@@ -29,15 +29,15 @@ const plugin: CustomCacheStoragePlugin<AzureBlobPluginOptions> = {
       const connStringOptions = options as AzureBlobCacheStorageConnectionStringOptions & { credentialName?: AzureCredentialName };
       if (!connStringOptions.credential) {
         const credName = connStringOptions.credentialName
-          ?? (process.env.AZURE_IDENTITY_CREDENTIAL_NAME as AzureCredentialName | undefined);
+          ?? (process.env.AZURE_IDENTITY_CREDENTIAL_NAME || undefined);
 
         if (credName != null) {
-          if (!CredentialCache.credentialNames.includes(credName)) {
+          if (!CredentialCache.credentialNames.includes(credName as AzureCredentialName)) {
             throw new Error(
               `Invalid credentialName: "${credName}". Allowed values: ${CredentialCache.credentialNames.join(", ")}`
             );
           }
-          connStringOptions.credential = CredentialCache.getInstance(credName);
+          connStringOptions.credential = CredentialCache.getInstance(credName as AzureCredentialName);
         } else {
           connStringOptions.credential = CredentialCache.getInstance();
         }
