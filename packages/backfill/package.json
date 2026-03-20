@@ -1,6 +1,6 @@
 {
   "name": "backfill",
-  "version": "6.4.3",
+  "version": "6.4.4",
   "description": "Backfill CLI",
   "license": "MIT",
   "author": "Benjamin Weggersen <bewegger@microsoft.com>",

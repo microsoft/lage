@@ -1,8 +1,21 @@
 # Change Log - @lage-run/runners
 
-<!-- This log was last generated on Fri, 27 Feb 2026 01:11:20 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.0
+
+Thu, 19 Mar 2026 23:52:35 GMT
+
+### Minor changes
+
+- Use constants for built-in target types (elcraig@microsoft.com)
+
+### Patches
+
+- Add types for NpmScriptTargetOptions.nodeOptions (elcraig@microsoft.com)
+- Add proper taskArgs types, and respect target.options.taskArgs in worker runner (elcraig@microsoft.com)
 
 ## 1.3.0
 

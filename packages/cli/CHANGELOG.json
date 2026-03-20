@@ -2,6 +2,51 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Thu, 19 Mar 2026 23:52:35 GMT",
+      "version": "0.34.1",
+      "tag": "@lage-run/cli_v0.34.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Export reporter types and improve custom reporter initialization"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Update WorkspaceTargetGraphBuilder usage"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Fix workspace-tools git helper usage"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Export internal InfoResult type for tests"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Use constants for built-in target types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Fix shadowed variable names"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Mar 2026 22:10:03 GMT",
       "version": "0.34.0",
       "tag": "@lage-run/cli_v0.34.0",

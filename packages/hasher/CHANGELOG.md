@@ -1,8 +1,17 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Tue, 17 Mar 2026 22:10:03 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.9.5
+
+Thu, 19 Mar 2026 23:52:35 GMT
+
+### Patches
+
+- Move backfill to lage repo (elcraig@microsoft.com)
+- Fix shadowed variable names (elcraig@microsoft.com)
 
 ## 1.9.4
 

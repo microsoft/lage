@@ -2,6 +2,41 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Thu, 19 Mar 2026 23:52:35 GMT",
+      "version": "0.9.1",
+      "tag": "@lage-run/config_v0.9.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Share isRunningFromCI logic"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Move backfill to lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Move Priority type to target-graph package"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Update comments"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Mar 2026 22:10:03 GMT",
       "version": "0.9.0",
       "tag": "@lage-run/config_v0.9.0",

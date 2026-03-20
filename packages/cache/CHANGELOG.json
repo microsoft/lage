@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Thu, 19 Mar 2026 23:52:35 GMT",
+      "version": "1.4.8",
+      "tag": "@lage-run/cache_v1.4.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Move backfill to lage repo"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Mar 2026 22:10:03 GMT",
       "version": "1.4.7",
       "tag": "@lage-run/cache_v1.4.7",

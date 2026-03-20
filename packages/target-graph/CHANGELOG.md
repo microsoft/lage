@@ -1,8 +1,22 @@
 # Change Log - @lage-run/target-graph
 
-<!-- This log was last generated on Tue, 17 Mar 2026 22:10:03 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.14.0
+
+Thu, 19 Mar 2026 23:52:35 GMT
+
+### Minor changes
+
+- Use object params for WorkspaceTargetGraphBuilder signature and update phantom targets check (elcraig@microsoft.com)
+
+### Patches
+
+- Add SharedTargetOptions and improve docs and internals for staged targets (elcraig@microsoft.com)
+- Add constants for built-in target types, and move Priority to this package (elcraig@microsoft.com)
+- Fix shadowed variable names (elcraig@microsoft.com)
 
 ## 0.13.0
 

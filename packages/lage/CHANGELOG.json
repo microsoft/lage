@@ -2,6 +2,175 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 19 Mar 2026 23:52:35 GMT",
+      "version": "2.15.1",
+      "tag": "lage_v2.15.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Export reporter types and improve custom reporter initialization"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Update WorkspaceTargetGraphBuilder usage"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Fix workspace-tools git helper usage"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Export internal InfoResult type for tests"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Use constants for built-in target types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Fix shadowed variable names"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Fix shadowed variable names"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Add types for NpmScriptTargetOptions.nodeOptions"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Add proper taskArgs types, and respect target.options.taskArgs in worker runner"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Share isRunningFromCI logic"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Move backfill to lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Move Priority type to target-graph package"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Share isRunningFromCI logic"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Add SharedTargetOptions and improve docs and internals for staged targets"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Add constants for built-in target types, and move Priority to this package"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Fix shadowed variable names"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Move backfill to lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Move backfill to lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Move backfill to lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Fix shadowed variable names"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/format-hrtime",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Fix shadowed variable names"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Improve reporter types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Use constants for built-in target types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Use object params for WorkspaceTargetGraphBuilder signature and update phantom targets check"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "comment"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Update comments"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Mar 2026 22:10:03 GMT",
       "version": "2.15.0",
       "tag": "lage_v2.15.0",

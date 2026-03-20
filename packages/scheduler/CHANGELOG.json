@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Thu, 19 Mar 2026 23:52:35 GMT",
+      "version": "1.5.20",
+      "tag": "@lage-run/scheduler_v1.5.20",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Share isRunningFromCI logic"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 10 Feb 2026 22:12:02 GMT",
       "version": "1.5.17",
       "tag": "@lage-run/scheduler_v1.5.17",

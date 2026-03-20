@@ -1,9 +1,9 @@
-import type { StagedTargetConfig, TargetConfig } from "./types/TargetConfig.js";
-import type { Target } from "./types/Target.js";
 import type { PackageInfos } from "workspace-tools";
-
-import { getPackageAndTask, getStagedTargetId, getTargetId } from "./targetId.js";
+import { builtInTargetTypes } from "./builtInTargetTypes.js";
 import { getWeight } from "./getWeight.js";
+import { getPackageAndTask, getStagedTargetId, getTargetId } from "./targetId.js";
+import type { Target } from "./types/Target.js";
+import type { StagedTargetConfig, TargetConfig } from "./types/TargetConfig.js";
 
 export interface TargetFactoryOptions {
   root: string;
@@ -12,6 +12,7 @@ export interface TargetFactoryOptions {
 }
 
 export class TargetFactory {
+  /** All scripts found in any package (not counting the root package) */
   private packageScripts: Set<string> = new Set<string>();
 
   constructor(private options: TargetFactoryOptions) {
@@ -24,78 +25,79 @@ export class TargetFactory {
   }
 
   private getTargetType(task: string, config: TargetConfig): string {
-    if (!config.type) {
-      if (this.packageScripts.has(task)) {
-        return "npmScript";
-      } else {
-        return "noop";
-      }
-    }
-
-    return config.type;
+    // If the target doesn't define a type, return npmScript if any package in the repo has that script.
+    //
+    // TODO: This is a bit silly that we check all the scripts in the repo rather than verifying
+    // the actual package, since we do have that info. Checking here would allow removing the
+    // extra file read for script existence check in NpmScriptRunner, and potentially allow
+    // the target graph optimization step to be moved into this package (maybe under a flag).
+    //
+    // Edge cases if this is tried in the future:
+    // - For global targets, we might need to look at the root package.json, which isn't included in
+    //   packageInfos and would have to be plumbed through or read separately.
+    // - In NpmScriptRunner (runners package) there's an alternate way of specifying the script via
+    //   NpmScriptRunnerOptions.script. The best approach to avoid losing type safety might be to
+    //   move the <Type>TargetOptions types for built-in runners to this package--the parts of this
+    //   package used by WorkspaceTargetGraphBuilder already have other built-in runner logic despite
+    //   the theoretical division.
+    return config.type || (this.packageScripts.has(task) ? builtInTargetTypes.npmScript : builtInTargetTypes.noop);
   }
 
   /**
    * Creates a package task `Target`
    */
   public createPackageTarget(packageName: string, task: string, config: TargetConfig): Target {
-    const { resolve } = this.options;
-    const { options, deps, dependsOn, cache, inputs, priority, maxWorkers, environmentGlob, weight } = config;
-    const cwd = resolve(packageName);
-
     const targetType = this.getTargetType(task, config);
 
-    const target = {
+    const target: Target = {
       id: getTargetId(packageName, task),
       label: `${packageName} - ${task}`,
       type: targetType,
       packageName,
       task,
-      cache: cache !== false,
-      cwd,
-      depSpecs: dependsOn ?? deps ?? [],
+      cache: config.cache !== false,
+      cwd: this.options.resolve(packageName),
+      depSpecs: config.dependsOn ?? config.deps ?? [],
       dependencies: [],
       dependents: [],
-      inputs,
-      outputs: targetType === "noop" ? [] : config.outputs,
-      priority,
-      maxWorkers,
-      environmentGlob,
+      inputs: config.inputs,
+      outputs: targetType === builtInTargetTypes.noop ? [] : config.outputs,
+      priority: config.priority,
+      maxWorkers: config.maxWorkers,
+      environmentGlob: config.environmentGlob,
       weight: 1,
-      options,
+      options: config.options,
       shouldRun: true,
     };
 
-    target.weight = getWeight(target, weight, maxWorkers);
+    target.weight = getWeight(target, config.weight, config.maxWorkers);
 
     return target;
   }
 
   public createGlobalTarget(id: string, config: TargetConfig): Target {
-    const { root } = this.options;
-    const { options, deps, dependsOn, cache, inputs, outputs, priority, maxWorkers, environmentGlob, weight } = config;
     const { task } = getPackageAndTask(id);
-    const target = {
+    const target: Target = {
       id,
       label: id,
       type: this.getTargetType(task, config),
       task,
-      cache: cache !== false,
-      cwd: root,
-      depSpecs: dependsOn ?? deps ?? [],
+      cache: config.cache !== false,
+      cwd: this.options.root,
+      depSpecs: config.dependsOn ?? config.deps ?? [],
       dependencies: [],
       dependents: [],
-      inputs,
-      outputs,
-      priority,
-      maxWorkers,
-      environmentGlob,
+      inputs: config.inputs,
+      outputs: config.outputs,
+      priority: config.priority,
+      maxWorkers: config.maxWorkers,
+      environmentGlob: config.environmentGlob,
       weight: 1,
-      options,
+      options: config.options,
       shouldRun: true,
     };
 
-    target.weight = getWeight(target, weight, maxWorkers);
+    target.weight = getWeight(target, config.weight, config.maxWorkers);
 
     return target;
   }
@@ -104,36 +106,28 @@ export class TargetFactory {
    * Creates a target that operates on files that are "staged" (changed in git vs `--since`)
    */
   public createStagedTarget(task: string, config: StagedTargetConfig, changedFiles: string[]): Target {
-    const { root } = this.options;
-    const { dependsOn, priority } = config;
-
     // Clone & modify the options to include the changed files as taskArgs
     const options = { ...config.options };
 
-    switch (config.type) {
-      case "noop":
-        break;
-
-      default:
-        options.taskArgs = options.taskArgs ?? [];
-        options.taskArgs.push(...changedFiles);
-        break;
+    if (config.type !== builtInTargetTypes.noop) {
+      // Clone any taskArgs and add the staged files
+      options.taskArgs = [...(options.taskArgs ?? []), ...changedFiles];
     }
 
     const id = getStagedTargetId(task);
-    const target = {
+    const target: Target = {
       id,
       label: id,
       type: config.type,
       task,
       cache: false,
-      cwd: root,
-      depSpecs: dependsOn ?? [],
+      cwd: this.options.root,
+      depSpecs: config.dependsOn ?? [],
       dependencies: [],
       dependents: [],
       inputs: [],
       outputs: [],
-      priority,
+      priority: config.priority,
       maxWorkers: 1,
       environmentGlob: [],
       weight: 1,

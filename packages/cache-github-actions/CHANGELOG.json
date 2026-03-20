@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Thu, 19 Mar 2026 23:52:35 GMT",
+      "version": "0.1.30",
+      "tag": "@lage-run/cache-github-actions_v0.1.30",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Move backfill to lage repo"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 10 Feb 2026 22:12:02 GMT",
       "version": "0.1.29",
       "tag": "@lage-run/cache-github-actions_v0.1.29",

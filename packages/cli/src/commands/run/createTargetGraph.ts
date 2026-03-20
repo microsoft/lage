@@ -56,7 +56,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
     priorities,
   } = options;
 
-  const builder = new WorkspaceTargetGraphBuilder(root, packageInfos, enableTargetConfigMerging, enablePhantomTargetOptimization);
+  const builder = new WorkspaceTargetGraphBuilder({ root, packageInfos, enableTargetConfigMerging, enablePhantomTargetOptimization });
 
   const packages = getFilteredPackages({
     root,

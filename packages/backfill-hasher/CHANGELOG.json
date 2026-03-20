@@ -2,6 +2,21 @@
   "name": "backfill-hasher",
   "entries": [
     {
+      "date": "Thu, 19 Mar 2026 23:52:35 GMT",
+      "version": "6.7.1",
+      "tag": "backfill-hasher_v6.7.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-hasher",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Move backfill to lage repo"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 27 Feb 2026 00:49:04 GMT",
       "version": "6.7.0",
       "tag": "backfill-hasher_v6.7.0",

@@ -1,8 +1,16 @@
 # Change Log - backfill-config
 
-<!-- This log was last generated on Wed, 06 Aug 2025 08:17:18 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 6.7.2
+
+Thu, 19 Mar 2026 23:52:35 GMT
+
+### Patches
+
+- Move backfill to lage repo (elcraig@microsoft.com)
 
 ## 6.7.1
 

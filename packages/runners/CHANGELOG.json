@@ -2,6 +2,43 @@
   "name": "@lage-run/runners",
   "entries": [
     {
+      "date": "Thu, 19 Mar 2026 23:52:35 GMT",
+      "version": "1.4.0",
+      "tag": "@lage-run/runners_v1.4.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Add types for NpmScriptTargetOptions.nodeOptions"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Add proper taskArgs types, and respect target.options.taskArgs in worker runner"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "comment"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Use constants for built-in target types"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 27 Feb 2026 01:11:20 GMT",
       "version": "1.3.0",
       "tag": "@lage-run/runners_v1.3.0",

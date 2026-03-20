@@ -2,6 +2,27 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Thu, 19 Mar 2026 23:52:35 GMT",
+      "version": "1.9.5",
+      "tag": "@lage-run/hasher_v1.9.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Move backfill to lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Fix shadowed variable names"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Mar 2026 22:10:03 GMT",
       "version": "1.9.4",
       "tag": "@lage-run/hasher_v1.9.4",

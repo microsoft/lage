@@ -1,6 +1,6 @@
 {
   "name": "backfill-logger",
-  "version": "5.4.0",
+  "version": "5.4.1",
   "description": "Handle backfill output",
   "license": "MIT",
   "author": "Vincent Bailly <vibailly@microsoft.com>",

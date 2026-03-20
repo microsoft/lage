@@ -1,8 +1,20 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Fri, 27 Feb 2026 01:11:20 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.5.0
+
+Thu, 19 Mar 2026 23:52:35 GMT
+
+### Minor changes
+
+- Improve reporter types (elcraig@microsoft.com)
+
+### Patches
+
+- Fix shadowed variable names (elcraig@microsoft.com)
 
 ## 1.4.0
 

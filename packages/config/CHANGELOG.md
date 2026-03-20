@@ -1,8 +1,18 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Tue, 17 Mar 2026 22:10:03 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.9.1
+
+Thu, 19 Mar 2026 23:52:35 GMT
+
+### Patches
+
+- Share isRunningFromCI logic (elcraig@microsoft.com)
+- Move backfill to lage repo (elcraig@microsoft.com)
+- Move Priority type to target-graph package (elcraig@microsoft.com)
 
 ## 0.9.0
 

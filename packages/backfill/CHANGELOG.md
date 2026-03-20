@@ -1,8 +1,27 @@
 # Change Log - backfill
 
-<!-- This log was last generated on Fri, 27 Feb 2026 00:49:04 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 6.4.4
+
+Thu, 19 Mar 2026 23:52:35 GMT
+
+### Patches
+
+- `backfill-cache`
+  - Move backfill to lage repo (elcraig@microsoft.com)
+- `backfill-config`
+  - Move backfill to lage repo (elcraig@microsoft.com)
+- `backfill-hasher`
+  - Move backfill to lage repo (elcraig@microsoft.com)
+- `backfill-logger`
+  - Move backfill to lage repo (elcraig@microsoft.com)
+- `backfill-utils-dotenv`
+  - Move backfill to lage repo (elcraig@microsoft.com)
+- `backfill`
+  - Move backfill to lage repo (elcraig@microsoft.com)
 
 ## 6.4.3
 

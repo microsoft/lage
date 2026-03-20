@@ -2,6 +2,29 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Thu, 19 Mar 2026 23:52:35 GMT",
+      "version": "1.5.0",
+      "tag": "@lage-run/reporters_v1.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Improve reporter types"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "927ae18d7d91e1bcffc3f81dc670ca7733585d73",
+            "comment": "Fix shadowed variable names"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 27 Feb 2026 01:11:20 GMT",
       "version": "1.4.0",
       "tag": "@lage-run/reporters_v1.4.0",

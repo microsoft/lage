@@ -1,8 +1,16 @@
 # Change Log - backfill-logger
 
-<!-- This log was last generated on Wed, 06 Aug 2025 06:52:42 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 5.4.1
+
+Thu, 19 Mar 2026 23:52:35 GMT
+
+### Patches
+
+- Move backfill to lage repo (elcraig@microsoft.com)
 
 ## 5.4.0
 

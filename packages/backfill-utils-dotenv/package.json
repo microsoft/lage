@@ -1,6 +1,6 @@
 {
   "name": "backfill-utils-dotenv",
-  "version": "5.3.1",
+  "version": "5.3.2",
   "description": "Loads .env-variables into process.env",
   "license": "MIT",
   "author": "Benjamin Weggersen <bewegger@microsoft.com>",

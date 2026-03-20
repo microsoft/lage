@@ -1,8 +1,55 @@
 # Change Log - lage
 
-<!-- This log was last generated on Tue, 17 Mar 2026 22:10:03 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.15.1
+
+Thu, 19 Mar 2026 23:52:35 GMT
+
+### Minor changes
+
+- `@lage-run/reporters`
+  - Improve reporter types (elcraig@microsoft.com)
+- `@lage-run/runners`
+  - Use constants for built-in target types (elcraig@microsoft.com)
+- `@lage-run/target-graph`
+  - Use object params for WorkspaceTargetGraphBuilder signature and update phantom targets check (elcraig@microsoft.com)
+
+### Patches
+
+- `@lage-run/cli`
+  - Export reporter types and improve custom reporter initialization (elcraig@microsoft.com)
+  - Update WorkspaceTargetGraphBuilder usage (elcraig@microsoft.com)
+  - Fix workspace-tools git helper usage (elcraig@microsoft.com)
+  - Export internal InfoResult type for tests (elcraig@microsoft.com)
+  - Use constants for built-in target types (elcraig@microsoft.com)
+  - Fix shadowed variable names (elcraig@microsoft.com)
+- `@lage-run/reporters`
+  - Fix shadowed variable names (elcraig@microsoft.com)
+- `@lage-run/runners`
+  - Add types for NpmScriptTargetOptions.nodeOptions (elcraig@microsoft.com)
+  - Add proper taskArgs types, and respect target.options.taskArgs in worker runner (elcraig@microsoft.com)
+- `@lage-run/config`
+  - Share isRunningFromCI logic (elcraig@microsoft.com)
+  - Move backfill to lage repo (elcraig@microsoft.com)
+  - Move Priority type to target-graph package (elcraig@microsoft.com)
+- `@lage-run/scheduler`
+  - Share isRunningFromCI logic (elcraig@microsoft.com)
+- `@lage-run/target-graph`
+  - Add SharedTargetOptions and improve docs and internals for staged targets (elcraig@microsoft.com)
+  - Add constants for built-in target types, and move Priority to this package (elcraig@microsoft.com)
+  - Fix shadowed variable names (elcraig@microsoft.com)
+- `@lage-run/cache-github-actions`
+  - Move backfill to lage repo (elcraig@microsoft.com)
+- `@lage-run/cache`
+  - Move backfill to lage repo (elcraig@microsoft.com)
+- `@lage-run/hasher`
+  - Move backfill to lage repo (elcraig@microsoft.com)
+  - Fix shadowed variable names (elcraig@microsoft.com)
+- `@lage-run/format-hrtime`
+  - Fix shadowed variable names (elcraig@microsoft.com)
 
 ## 2.15.0
 
