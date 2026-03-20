@@ -1,0 +1,42 @@
+name: Check change files, formatting, deps
+
+on:
+  pull_request:
+    branches: [master, v1]
+  push:
+    branches: [master, v1]
+
+concurrency:
+  # For PRs, use the ref (branch) in the concurrency group so that new pushes cancel any old runs.
+  # For pushes to master, ideally we wouldn't set a concurrency group, but github actions doesn't
+  # support conditional blocks of settings, so we use the SHA so the "group" is unique.
+  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/master' && github.sha || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  basic-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        with:
+          node-version-file: .nvmrc
+
+      - run: yarn --immutable
+
+      - name: Code Format Check
+        run: yarn format:check
+
+      - name: Check Change Files
+        run: yarn checkchange
+
+      # @see https://www.npmjs.com/package/syncpack
+      - name: Check consistent package.json dep versions
+        run: yarn syncpack:check
+
+      - name: Dependency checks
+        run: yarn deps:check
