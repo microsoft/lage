@@ -38,6 +38,5 @@ const config = {
     },
   },
   ignorePatterns: [".*ignore", "jest.config.js", "**/__*/**/*"],
-  disallowedChangeTypes: ["major"],
 };
 module.exports = config;
