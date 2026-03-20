@@ -135,10 +135,7 @@ describe("LocalTarCacheProvider", () => {
     const fetchResult = await provider.fetch(hash, target);
     expect(fetchResult).toBe(true);
 
-    const contents = monorepo.readFiles([
-      "packages/a/lib/index.js",
-      "packages/a/lib/utils/helper.js",
-    ]);
+    const contents = monorepo.readFiles(["packages/a/lib/index.js", "packages/a/lib/utils/helper.js"]);
     expect(contents["packages/a/lib/index.js"]).toBe("module.exports = {};");
     expect(contents["packages/a/lib/utils/helper.js"]).toBe("module.exports = { help: true };");
   });
