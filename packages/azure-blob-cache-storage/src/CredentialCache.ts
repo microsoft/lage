@@ -6,7 +6,13 @@ import {
   EnvironmentCredential,
   WorkloadIdentityCredential,
 } from "@azure/identity";
-import type { AzureCredentialName } from "@lage-run/config";
+
+/**
+ * Allowed credential names matching camelCase of @azure/identity credential class names
+ *  @see https://learn.microsoft.com/en-us/azure/developer/javascript/sdk/authentication/credential-chains
+ */
+export type AzureCredentialName = "environment" | "workload-identity" | "managed-identity" | "visual-studio-code" | "azure-cli";
+
 /**
  * Exhaustive credential factory map keyed by AzureCredentialName.
  * This enforces compile-time alignment with the AzureCredentialName union and provides a single source of truth.

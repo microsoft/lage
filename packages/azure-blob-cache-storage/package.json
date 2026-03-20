@@ -1,34 +1,38 @@
 {
-  "name": "@lage-run/cache",
-  "version": "1.4.8",
-  "description": "Cache for Lage",
+  "name": "@lage-run/azure-blob-cache-storage",
+  "version": "0.1.0",
+  "description": "Azure Blob Storage cache plugin for backfill/lage",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/microsoft/lage"
   },
   "homepage": "https://microsoft.github.io/lage/",
-  "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "yarn types && yarn transpile",
     "transpile": "monorepo-scripts transpile",
     "types": "yarn run -T tsc",
-    "test": "yarn run -T jest",
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/config": "workspace:^",
-    "@lage-run/logger": "workspace:^",
-    "@lage-run/target-graph": "workspace:^",
+    "@azure/core-auth": "1.9.0",
+    "@azure/identity": "4.9.1",
+    "@azure/storage-blob": "12.27.0",
     "backfill-cache": "workspace:^",
     "backfill-config": "workspace:^",
     "backfill-logger": "workspace:^",
-    "glob-hasher": "^1.4.2"
+    "fs-extra": "8.1.0",
+    "tar-fs": "2.1.4"
   },
   "devDependencies": {
-    "@lage-run/monorepo-fixture": "workspace:^",
-    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^",
+    "@types/fs-extra": "^8.0.0",
+    "@types/tar-fs": "^2.0.1"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "lib/!(__*)",

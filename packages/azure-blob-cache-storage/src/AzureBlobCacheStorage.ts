@@ -7,7 +7,7 @@ import type { AzureBlobCacheStorageOptions } from "backfill-config";
 
 import { stat } from "fs-extra";
 import type { ContainerClient } from "@azure/storage-blob";
-import { CacheStorage } from "./CacheStorage.js";
+import { CacheStorage } from "backfill-cache";
 
 const ONE_MEGABYTE = 1024 * 1024;
 const FOUR_MEGABYTES = 4 * ONE_MEGABYTE;
@@ -25,11 +25,7 @@ class TimeoutStream extends Transform {
       this.destroy(new Error(message));
     }, timeout);
   }
-  public _transform(
-    chunk: any,
-    _encoding: BufferEncoding,
-    callback: TransformCallback
-  ): void {
+  public _transform(chunk: any, _encoding: BufferEncoding, callback: TransformCallback): void {
     clearTimeout(this.timeout);
     this.push(chunk);
     callback();
@@ -49,11 +45,7 @@ class SpongeStream extends Transform {
       readableHighWaterMark: 1024 * 1024 * 1024 * 1024,
     });
   }
-  public _transform(
-    chunk: any,
-    _encoding: BufferEncoding,
-    callback: TransformCallback
-  ): void {
+  public _transform(chunk: any, _encoding: BufferEncoding, callback: TransformCallback): void {
     this.pause();
     this.push(chunk);
     callback();
@@ -81,8 +73,7 @@ export class AzureBlobCacheStorage extends CacheStorage {
     super(logger, cwd, incrementalCaching);
 
     if ("containerClient" in options) {
-      this.getContainerClient = () =>
-        Promise.resolve(options.containerClient as ContainerClient);
+      this.getContainerClient = () => Promise.resolve(options.containerClient as ContainerClient);
     } else {
       const { connectionString, container, credential } = options;
       // This is delay loaded because it's very slow to parse
@@ -92,8 +83,7 @@ export class AzureBlobCacheStorage extends CacheStorage {
             ? new BlobServiceClient(connectionString, credential)
             : BlobServiceClient.fromConnectionString(connectionString);
 
-          const containerClient =
-            blobServiceClient.getContainerClient(container);
+          const containerClient = blobServiceClient.getContainerClient(container);
           return containerClient;
         });
     }
@@ -107,13 +97,8 @@ export class AzureBlobCacheStorage extends CacheStorage {
       if (this.options.maxSize) {
         const sizeResponse = await blobClient.getProperties();
 
-        if (
-          sizeResponse.contentLength &&
-          sizeResponse.contentLength > this.options.maxSize
-        ) {
-          this.logger.verbose(
-            `A blob is too large to be downloaded: ${hash}, size: ${sizeResponse.contentLength} bytes`
-          );
+        if (sizeResponse.contentLength && sizeResponse.contentLength > this.options.maxSize) {
+          this.logger.verbose(`A blob is too large to be downloaded: ${hash}, size: ${sizeResponse.contentLength} bytes`);
           return false;
         }
       }
@@ -129,25 +114,16 @@ export class AzureBlobCacheStorage extends CacheStorage {
 
       const spongeStream = new SpongeStream();
 
-      const timeoutStream = new TimeoutStream(
-        10 * 60 * 1000,
-        `The fetch request to ${hash} seems to be hanging`
-      );
+      const timeoutStream = new TimeoutStream(10 * 60 * 1000, `The fetch request to ${hash} seems to be hanging`);
 
       const extractionPipeline = new Promise<void>((resolve, reject) =>
-        pipeline(
-          blobReadableStream,
-          spongeStream,
-          timeoutStream,
-          tarWritableStream,
-          (err) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve();
-            }
+        pipeline(blobReadableStream, spongeStream, timeoutStream, tarWritableStream, (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
           }
-        )
+        })
       );
 
       await extractionPipeline;
@@ -177,17 +153,11 @@ export class AzureBlobCacheStorage extends CacheStorage {
       }
 
       if (total > this.options.maxSize) {
-        this.logger.verbose(
-          `The output is too large to be uploaded: ${hash}, size: ${total} bytes`
-        );
+        this.logger.verbose(`The output is too large to be uploaded: ${hash}, size: ${total} bytes`);
         return;
       }
     }
 
-    await blockBlobClient.uploadStream(
-      tarStream,
-      uploadOptions.bufferSize,
-      uploadOptions.maxBuffers
-    );
+    await blockBlobClient.uploadStream(tarStream, uploadOptions.bufferSize, uploadOptions.maxBuffers);
   }
 }

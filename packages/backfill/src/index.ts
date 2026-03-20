@@ -1,7 +1,7 @@
 import { loadDotenv } from "backfill-utils-dotenv";
 import { type Logger, makeLogger } from "backfill-logger";
 import { createConfig, type Config } from "backfill-config";
-import { isCustomProvider } from "backfill-cache";
+import { isCustomPluginProvider } from "backfill-cache";
 import yargs from "yargs";
 import {
   getRawBuildCommand,
@@ -44,8 +44,8 @@ export async function backfill(
   logger.setName(name);
   logger.setMode(mode, mode === "READ_WRITE" ? "info" : "verbose");
   logger.setCacheProvider(
-    isCustomProvider(cacheStorageConfig)
-      ? cacheStorageConfig.name || "custom-storage-provider"
+    isCustomPluginProvider(cacheStorageConfig)
+      ? cacheStorageConfig.plugin
       : cacheStorageConfig.provider
   );
 

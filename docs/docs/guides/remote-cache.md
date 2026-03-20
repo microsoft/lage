@@ -12,9 +12,15 @@ The theory is that when the CI job runs, it'll produce a "last known good" cache
 
 ## Setting up remote cache - Azure Blob Storage
 
-Follow these steps to set up a remote cache.
+Azure Blob Storage cache is available as a plugin: `@lage-run/azure-blob-cache-storage`. This plugin must be installed separately.
 
-### 1. Upgrade to latest `lage`
+### 1. Install the plugin
+
+```
+yarn add @lage-run/azure-blob-cache-storage
+```
+
+### 2. Upgrade to latest `lage`
 
 See the [migration guide](../cookbook/migration.mdx) for more details.
 
@@ -22,7 +28,7 @@ See the [migration guide](../cookbook/migration.mdx) for more details.
 yarn upgrade lage
 ```
 
-### 2. Create `.env` and add to `.gitignore`
+### 3. Create `.env` and add to `.gitignore`
 
 Create the file:
 
@@ -39,7 +45,7 @@ lib
 dist
 ```
 
-### 3. Generate auth tokens from Azure storage account
+### 4. Generate auth tokens from Azure storage account
 
 Prerequisite is to have a working Storage Account with Blob Storage Container created. Note that container name, it'll be needed for Step 5.
 
@@ -51,7 +57,7 @@ Prerequisite is to have a working Storage Account with Blob Storage Container cr
 6. Click "show keys"
 7. Save the "connection string" - this is your **read-write** connection string (alternatively, you can create a read-write SAS connection string)
 
-### 4. Modify the `.env` file with the remote cache connection information
+### 5. Modify the `.env` file with the remote cache connection information
 
 ```txt title=".env"
 ## This is required as of right now
@@ -61,7 +67,24 @@ BACKFILL_CACHE_PROVIDER="azure-blob"
 BACKFILL_CACHE_PROVIDER_OPTIONS={"connectionString":"the **read-only** connection string","container":"CONTAINER NAME"}
 ```
 
-### 5. Create a "secret" in the CI system for a Read/Write token
+Alternatively, you can configure it directly in `lage.config.js`:
+
+```js title="lage.config.js"
+module.exports = {
+  cacheOptions: {
+    cacheStorageConfig: {
+      provider: "custom",
+      plugin: "@lage-run/azure-blob-cache-storage",
+      options: {
+        connectionString: "...",
+        container: "..."
+      }
+    }
+  }
+};
+```
+
+### 6. Create a "secret" in the CI system for a Read/Write token
 
 Here's an example snippet of Github Action with the correct environment variable set:
 
@@ -81,7 +104,7 @@ Create a secret named "BACKFILL_CACHE_PROVIDER_OPTIONS":
 
 `process.env.BACKFILL_CACHE_PROVIDER_OPTIONS`is evaluated via backfill (see [`getEnvConfig()`](https://github.com/microsoft/lage/blob/master/packages/backfill-config/src/envConfig.ts#L82) in `backfill-config`).
 
-For "azure-blob" cache provider with a non-sas/key-based `connectionString`(storage account endpoint) requiring azure identity authentication do not use `BACKFILL_CACHE_PROVIDER_OPTIONS`, instead populate the required env variables according to the desired identity/environment. (See [Azure Idenity SDK](https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme)) and set `credentialName` property in the `lage.config.js` under `cacheOptions.cacheStorageConfig.options.credentialName` or via env var `AZURE_IDENTITY_CREDENTIAL_NAME` Supported options are:
+For the Azure Blob cache provider with a non-sas/key-based `connectionString` (storage account endpoint) requiring [Azure Identity](https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme) authentication, you can pass a `credentialName` option in the plugin config or via the `AZURE_IDENTITY_CREDENTIAL_NAME` environment variable. (Do not use `BACKFILL_CACHE_PROVIDER_OPTIONS` in this case.) Supported options are:
 
 - `"azure-cli"`
 - `"managed-identity"`

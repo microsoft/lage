@@ -1,7 +1,8 @@
-import { type Logger, makeLogger } from "backfill-logger";
+import path from "path";
+import fs from "fs";
+import os from "os";
+import { makeLogger } from "backfill-logger";
 import { getCacheStorageProvider } from "../getCacheStorageProvider.js";
-import type { ICacheStorage } from "../CacheStorage.js";
-import { AzureBlobCacheStorage } from "../AzureBlobCacheStorage.js";
 import { LocalCacheStorage } from "../LocalCacheStorage.js";
 
 describe("getCacheStorageProvider", () => {
@@ -65,54 +66,48 @@ describe("getCacheStorageProvider", () => {
     expect(provider instanceof LocalCacheStorage).toBeTruthy();
   });
 
-  test("can get an azure-blob storage provider", () => {
-    const provider = getCacheStorageProvider(
-      {
-        provider: "azure-blob",
-        options: {
-          connectionString: "some connection string",
-          container: "some container",
+  test("throws when custom plugin cannot be loaded", () => {
+    expect(() =>
+      getCacheStorageProvider(
+        {
+          provider: "custom",
+          plugin: "nonexistent-plugin-package",
+          options: {},
         },
-      },
-      "test",
-      makeLogger("silly"),
-      "cwd"
+        "test",
+        makeLogger("silly"),
+        "cwd"
+      )
+    ).toThrow(
+      'Failed to load custom cache storage plugin "nonexistent-plugin-package"'
     );
-
-    expect(provider instanceof AzureBlobCacheStorage).toBeTruthy();
   });
 
-  test("can get a custom storage provider as a class", () => {
-    const TestProvider = class implements ICacheStorage {
-      constructor(
-        private logger: Logger,
-        private cwd: string
-      ) {}
+  test("can get a custom storage provider via plugin", () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "backfill-test-"));
+    const pluginPath = path.join(tmpDir, "mock-plugin.js");
 
-      public fetch(hash: string) {
-        this.logger.silly(`fetching ${this.cwd} ${hash}`);
-        return Promise.resolve(true);
-      }
-
-      public put(hash: string, filesToCache: string[]) {
-        this.logger.silly(
-          `putting ${this.cwd} ${hash} ${filesToCache.length} files`
-        );
-        return Promise.resolve();
-      }
-    };
-
-    const provider = getCacheStorageProvider(
-      {
-        provider: (logger, cwd) => new TestProvider(logger, cwd),
-        name: "test-provider",
-      },
-      "test",
-      makeLogger("silly"),
-      "cwd"
+    fs.writeFileSync(
+      pluginPath,
+      `module.exports = { default: { name: "mock", getProvider: () => ({ fetch: () => Promise.resolve(true), put: () => Promise.resolve() }) } };`
     );
 
-    expect(provider.fetch).toBeTruthy();
-    expect(provider.put).toBeTruthy();
+    try {
+      const provider = getCacheStorageProvider(
+        {
+          provider: "custom",
+          plugin: pluginPath,
+          options: {},
+        },
+        "test",
+        makeLogger("silly"),
+        "cwd"
+      );
+
+      expect(provider.fetch).toBeTruthy();
+      expect(provider.put).toBeTruthy();
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true });
+    }
   });
 });

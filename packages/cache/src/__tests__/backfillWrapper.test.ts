@@ -1,4 +1,4 @@
-import type { AzureBlobCacheStorageConfig, AzureBlobCacheStorageConnectionStringOptions } from "backfill-config";
+import type { CustomCacheStorageConfig } from "backfill-config";
 import path from "path";
 import { createBackfillLogger, createBackfillCacheConfig } from "../backfillWrapper.js";
 
@@ -11,10 +11,12 @@ describe("backfill-config", () => {
     const fixture = path.join(__dirname, "fixtures/backfill-config");
     const config = createBackfillCacheConfig(fixture, {}, dummyLogger);
 
-    expect(config.cacheStorageConfig.provider).toBe("azure-blob");
+    // azure-blob env var is now mapped to the custom plugin config
+    expect(config.cacheStorageConfig.provider).toBe("custom");
 
-    const cacheStorageConfig = config.cacheStorageConfig as AzureBlobCacheStorageConfig;
-    const cacheOptions = cacheStorageConfig.options as AzureBlobCacheStorageConnectionStringOptions;
+    const cacheStorageConfig = config.cacheStorageConfig as CustomCacheStorageConfig;
+    expect(cacheStorageConfig.plugin).toBe("@lage-run/azure-blob-cache-storage");
+    const cacheOptions = cacheStorageConfig.options as { connectionString: string; container: string };
     expect(cacheOptions.connectionString).toBe("somestring");
     expect(cacheOptions.container).toBe("somecontainer");
 
@@ -38,7 +40,8 @@ describe("backfill-config", () => {
       dummyLogger
     );
 
-    expect(config.cacheStorageConfig.provider).toBe("azure-blob");
+    // azure-blob env var is now mapped to the custom plugin config
+    expect(config.cacheStorageConfig.provider).toBe("custom");
 
     delete process.env.BACKFILL_CACHE_PROVIDER;
     delete process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;

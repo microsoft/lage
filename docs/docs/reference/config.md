@@ -69,9 +69,10 @@ const config = {
   cacheOptions: {
     /** @see https://www.npmjs.com/package/backfill#configuration */
     cacheStorageConfig: {
-      // use this to specify a remote cache provider such as "azure-blob",
-      provider: "azure-blob",
-      // there are specific options here for each cache provider
+      // use this to specify a remote cache plugin such as "@lage-run/azure-blob-cache-storage",
+      provider: "custom",
+      plugin: "@lage-run/azure-blob-cache-storage",
+      // there are specific options here for each cache plugin
       options: {}
     },
 

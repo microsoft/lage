@@ -1537,6 +1537,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lage-run/azure-blob-cache-storage@workspace:packages/azure-blob-cache-storage":
+  version: 0.0.0-use.local
+  resolution: "@lage-run/azure-blob-cache-storage@workspace:packages/azure-blob-cache-storage"
+  dependencies:
+    "@azure/core-auth": "npm:1.9.0"
+    "@azure/identity": "npm:4.9.1"
+    "@azure/storage-blob": "npm:12.27.0"
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@types/fs-extra": "npm:^8.0.0"
+    "@types/tar-fs": "npm:^2.0.1"
+    backfill-cache: "workspace:^"
+    backfill-config: "workspace:^"
+    backfill-logger: "workspace:^"
+    fs-extra: "npm:8.1.0"
+    tar-fs: "npm:2.1.4"
+  languageName: unknown
+  linkType: soft
+
 "@lage-run/cache-github-actions@workspace:packages/cache-github-actions":
   version: 0.0.0-use.local
   resolution: "@lage-run/cache-github-actions@workspace:packages/cache-github-actions"
@@ -1553,8 +1571,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lage-run/cache@workspace:packages/cache"
   dependencies:
-    "@azure/core-auth": "npm:1.9.0"
-    "@azure/identity": "npm:4.9.1"
     "@lage-run/config": "workspace:^"
     "@lage-run/logger": "workspace:^"
     "@lage-run/monorepo-fixture": "workspace:^"
@@ -3126,7 +3142,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "backfill-cache@workspace:packages/backfill-cache"
   dependencies:
-    "@azure/storage-blob": "npm:12.27.0"
     "@lage-run/globby": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@types/fs-extra": "npm:^8.0.0"

@@ -33,10 +33,10 @@ const remoteFallbackCacheProviderOptions = {
     root,
     {
       cacheStorageOptions: {
-        provider: "azure-blob",
+        provider: "custom",
+        plugin: "@lage-run/azure-blob-cache-storage",
         options: {
           // This connection string can optionally contain credentials.
-          // If no credentials are present, see credentialName below.
           connectionString: "asdfasdfasdfafds";
           container: "container";
           maxSize?: 150;
