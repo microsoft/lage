@@ -1,16 +1,12 @@
-import type { CacheStorageConfig, CustomStorageConfig, CustomCacheStorageConfig, CustomCacheStoragePlugin } from "backfill-config";
+import * as path from "path";
+import { createRequire } from "module";
+import type { CacheStorageConfig, CustomCacheStorageConfig, CustomCacheStoragePlugin } from "backfill-config";
 import type { Logger } from "backfill-logger";
 
 import type { ICacheStorage } from "./CacheStorage.js";
 import { LocalCacheStorage } from "./LocalCacheStorage.js";
 import { NpmCacheStorage } from "./NpmCacheStorage.js";
 import { LocalSkipCacheStorage } from "./LocalSkipCacheStorage.js";
-
-export function isCustomProvider(
-  config: CacheStorageConfig
-): config is CustomStorageConfig {
-  return typeof config.provider === "function";
-}
 
 export function isCustomPluginProvider(
   config: CacheStorageConfig
@@ -29,14 +25,6 @@ export function getCacheStorageProvider(
 ): ICacheStorage {
   let cacheStorage: ICacheStorage | undefined;
 
-  if (isCustomProvider(cacheStorageConfig)) {
-    try {
-      return cacheStorageConfig.provider(logger, cwd);
-    } catch {
-      throw new Error("cacheStorageConfig.provider cannot be creaated");
-    }
-  }
-
   if (isCustomPluginProvider(cacheStorageConfig)) {
     const key = `custom:${cacheStorageConfig.plugin}${internalCacheFolder}${cwd}`;
     cacheStorage = memo.get(key);
@@ -45,8 +33,19 @@ export function getCacheStorageProvider(
     }
 
     try {
+      const pluginName = cacheStorageConfig.plugin;
+      let resolvedPlugin: string;
+
+      if (path.isAbsolute(pluginName)) {
+        resolvedPlugin = pluginName;
+      } else {
+        // Resolve relative paths and package names from cwd
+        const cwdRequire = createRequire(path.resolve(cwd, "package.json"));
+        resolvedPlugin = cwdRequire.resolve(pluginName);
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-      const pluginModule = require(cacheStorageConfig.plugin);
+      const pluginModule = require(resolvedPlugin);
       const plugin: CustomCacheStoragePlugin = pluginModule.default || pluginModule;
       cacheStorage = plugin.getProvider(logger, cwd, cacheStorageConfig.options);
     } catch (err) {

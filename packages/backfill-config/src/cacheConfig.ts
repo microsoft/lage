@@ -6,11 +6,6 @@ export interface ICacheStorage {
   put: (hash: string, filesToCache: string[]) => Promise<void>;
 }
 
-export type CustomStorageConfig = {
-  provider: (logger: Logger, cwd: string) => ICacheStorage;
-  name?: string;
-};
-
 /**
  * A plugin that provides a custom cache storage implementation.
  * The plugin module should export this as its default export.
@@ -43,8 +38,7 @@ export type CacheStorageConfig =
       provider: "local-skip";
     }
   | NpmCacheStorageConfig
-  | CustomCacheStorageConfig
-  | CustomStorageConfig;
+  | CustomCacheStorageConfig;
 
 /**
  * Environment variable names for the cache storage config.

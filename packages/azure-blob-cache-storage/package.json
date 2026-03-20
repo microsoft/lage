@@ -20,7 +20,7 @@
     "@azure/core-auth": "1.9.0",
     "@azure/identity": "4.9.1",
     "@azure/storage-blob": "12.27.0",
-    "@lage-run/globby": "workspace:^",
+    "backfill-cache": "workspace:^",
     "backfill-config": "workspace:^",
     "backfill-logger": "workspace:^",
     "fs-extra": "8.1.0",

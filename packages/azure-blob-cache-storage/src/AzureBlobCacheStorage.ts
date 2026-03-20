@@ -7,7 +7,7 @@ import type { AzureBlobCacheStorageOptions } from "backfill-config";
 
 import { stat } from "fs-extra";
 import type { ContainerClient } from "@azure/storage-blob";
-import { CacheStorage } from "./CacheStorage.js";
+import { CacheStorage } from "backfill-cache";
 
 const ONE_MEGABYTE = 1024 * 1024;
 const FOUR_MEGABYTES = 4 * ONE_MEGABYTE;

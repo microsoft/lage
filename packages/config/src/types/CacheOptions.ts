@@ -1,4 +1,4 @@
-import type { Config as BackfillCacheOptions, CustomStorageConfig } from "backfill-config";
+import type { Config as BackfillCacheOptions } from "backfill-config";
 
 export type CacheOptions = Omit<BackfillCacheOptions, "cacheStorageConfig"> & {
   /**
@@ -6,7 +6,7 @@ export type CacheOptions = Omit<BackfillCacheOptions, "cacheStorageConfig"> & {
    * For Azure Blob Storage, use `provider: "custom"` with `plugin: "@lage-run/azure-blob-cache-storage"`.
    * @see https://www.npmjs.com/package/backfill#configuration
    */
-  cacheStorageConfig?: Exclude<BackfillCacheOptions["cacheStorageConfig"], CustomStorageConfig>;
+  cacheStorageConfig?: BackfillCacheOptions["cacheStorageConfig"];
 
   /**
    * Whether to write to the remote cache - useful for continuous integration systems to provide build-over-build cache.

@@ -1,7 +1,6 @@
 export * from "./azureBlobCacheConfig.js";
 export type {
   ICacheStorage,
-  CustomStorageConfig,
   CacheStorageConfig,
   CustomCacheStoragePlugin,
   CustomCacheStorageConfig,

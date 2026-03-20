@@ -1,6 +1,5 @@
-import { type Logger, makeLogger } from "backfill-logger";
+import { makeLogger } from "backfill-logger";
 import { getCacheStorageProvider } from "../getCacheStorageProvider.js";
-import type { ICacheStorage } from "../CacheStorage.js";
 import { LocalCacheStorage } from "../LocalCacheStorage.js";
 
 describe("getCacheStorageProvider", () => {
@@ -62,40 +61,6 @@ describe("getCacheStorageProvider", () => {
     );
 
     expect(provider instanceof LocalCacheStorage).toBeTruthy();
-  });
-
-  test("can get a custom storage provider as a class", () => {
-    const TestProvider = class implements ICacheStorage {
-      constructor(
-        private logger: Logger,
-        private cwd: string
-      ) {}
-
-      public fetch(hash: string) {
-        this.logger.silly(`fetching ${this.cwd} ${hash}`);
-        return Promise.resolve(true);
-      }
-
-      public put(hash: string, filesToCache: string[]) {
-        this.logger.silly(
-          `putting ${this.cwd} ${hash} ${filesToCache.length} files`
-        );
-        return Promise.resolve();
-      }
-    };
-
-    const provider = getCacheStorageProvider(
-      {
-        provider: (logger, cwd) => new TestProvider(logger, cwd),
-        name: "test-provider",
-      },
-      "test",
-      makeLogger("silly"),
-      "cwd"
-    );
-
-    expect(provider.fetch).toBeTruthy();
-    expect(provider.put).toBeTruthy();
   });
 
   test("throws when custom plugin cannot be loaded", () => {
