@@ -3,9 +3,8 @@ import { Logger } from "@lage-run/logger";
 import type { TargetRunner } from "@lage-run/runners";
 import type { Target } from "@lage-run/target-graph";
 import type { Pool } from "@lage-run/worker-threads-pool";
-import fs from "fs";
-import os from "os";
 import path from "path";
+import { createTempDir } from "@lage-run/test-utilities";
 import { WrappedTarget } from "../WrappedTarget.js";
 
 function createTarget(packageName: string): Target {
@@ -67,7 +66,7 @@ describe("WrappedTarget", () => {
   let root = "";
 
   beforeEach(() => {
-    root = fs.mkdtempSync(path.join(os.tmpdir(), "lage-wrapped-target-"));
+    root = createTempDir({ prefix: "lage-wrapped-target-" });
   });
 
   it("should be able to run a target to completion", async () => {

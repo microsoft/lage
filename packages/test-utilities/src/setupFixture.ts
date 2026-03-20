@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
-import tempy from "tempy";
 import execa from "execa";
+import { createTempDir } from "./createTempDir.js";
 
 /**
  * Directory containing test fixtures originally from the backfill project.
@@ -22,7 +22,7 @@ export function setupFixture(fixtureName: string): string {
     throw new Error(`Couldn't find fixture "${fixtureName}" in ${fixturesDir}`);
   }
 
-  const tempDir = tempy.directory();
+  const tempDir = createTempDir({ prefix: `backfill-${fixtureName}-` });
   const cwd = path.join(tempDir, `backfill-${fixtureName}`);
 
   fs.mkdirpSync(cwd);

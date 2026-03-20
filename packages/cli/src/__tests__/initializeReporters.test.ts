@@ -1,10 +1,8 @@
 import { Logger, type Reporter } from "@lage-run/logger";
 import { AdoReporter, BasicReporter, ChromeTraceEventsReporter, GithubActionsReporter, LogReporter } from "@lage-run/reporters";
-import fs from "fs";
 import isInteractive from "is-interactive";
-import os from "os";
 import path from "path";
-import { removeTempDir } from "@lage-run/test-utilities";
+import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
 import { initializeReporters } from "../commands/initializeReporters.js";
 import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
 
@@ -101,7 +99,7 @@ describe("initializeReporters", () => {
 
   it("should initialize profile reporter", async () => {
     const logger = new Logger();
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "lage-profile-"));
+    tmpDir = createTempDir({ prefix: "lage-profile-" });
     reporters = await initializeReporters(
       logger,
       {

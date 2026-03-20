@@ -28,7 +28,8 @@
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
-    "@lage-run/scheduler-types": "workspace:^"
+    "@lage-run/scheduler-types": "workspace:^",
+    "@lage-run/test-utilities": "workspace:^"
   },
   "files": [
     "lib/!(__*)",

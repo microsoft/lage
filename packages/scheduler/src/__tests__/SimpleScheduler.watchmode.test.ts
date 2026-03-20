@@ -2,9 +2,7 @@ import { TargetHasher } from "@lage-run/hasher";
 import { Logger } from "@lage-run/logger";
 import type { TargetRunner } from "@lage-run/runners";
 import { TargetGraphBuilder, getTargetId, type Target } from "@lage-run/target-graph";
-import fs from "fs";
-import os from "os";
-import path from "path";
+import { createTempDir } from "@lage-run/test-utilities";
 import { SimpleScheduler } from "../SimpleScheduler.js";
 import { InProcPool } from "./fixtures/pools.js";
 
@@ -24,7 +22,7 @@ function createTarget(packageName: string, task: string): Target {
 
 describe("SimpleScheduler watch mode", () => {
   it("should not execute the target runner twice by default", async () => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "watch-mode"));
+    const root = createTempDir({ prefix: "watch-mode-" });
     const logger = new Logger();
 
     const hasher = new TargetHasher({ root, environmentGlob: [] });
@@ -70,7 +68,7 @@ describe("SimpleScheduler watch mode", () => {
   });
 
   it("should re-run all the targets if a target said to re-run is a root node", async () => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "watch-mode-rerun"));
+    const root = createTempDir({ prefix: "watch-mode-rerun-" });
     const logger = new Logger();
 
     const hasher = new TargetHasher({ root, environmentGlob: [] });

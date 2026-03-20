@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
-import * as os from "os";
 import { type Logger, makeLogger } from "backfill-logger";
+import { createTempDir } from "@lage-run/test-utilities";
 import { CacheStorage } from "../CacheStorage.js";
 
 class MockLocalCacheStorage extends CacheStorage {
@@ -21,9 +21,7 @@ class MockLocalCacheStorage extends CacheStorage {
 let dirCount = 0;
 
 function getTempDir() {
-  return fs.mkdtempSync(
-    path.join(os.tmpdir(), `test-backfill-cache-${dirCount++}-`)
-  );
+  return createTempDir({ prefix: `test-backfill-cache-${dirCount++}-` });
 }
 
 describe("getCacheStorage", () => {
