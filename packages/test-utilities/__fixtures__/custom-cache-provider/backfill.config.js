@@ -9,10 +9,7 @@ module.exports = {
         return Promise.resolve(true);
       },
       put(hash, filesToCache) {
-        fs.writeFileSync(
-          path.join(cwd, "put.txt"),
-          `${hash},${filesToCache.length}`
-        );
+        fs.writeFileSync(path.join(cwd, "put.txt"), `${hash},${filesToCache.length}`);
         return Promise.resolve();
       },
     }),
