@@ -12,7 +12,11 @@ export interface ICacheStorage {
  */
 export interface CustomCacheStoragePlugin<TOptions = unknown> {
   name: string;
-  getProvider: (logger: Logger, cwd: string, options: TOptions) => ICacheStorage;
+  getProvider: (
+    logger: Logger,
+    cwd: string,
+    options: TOptions
+  ) => ICacheStorage;
 }
 
 /**

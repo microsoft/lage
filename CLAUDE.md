@@ -53,6 +53,8 @@ yarn test
 
 Before finalizing changes, run `yarn ci` from the root for complete build/test/lint verification.
 
+Also run `yarn format` to correct any formatting issues.
+
 ## Architecture
 
 ### Key packages

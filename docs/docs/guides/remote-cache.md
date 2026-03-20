@@ -77,10 +77,10 @@ module.exports = {
       plugin: "@lage-run/azure-blob-cache-storage",
       options: {
         connectionString: "...",
-        container: "...",
-      },
-    },
-  },
+        container: "..."
+      }
+    }
+  }
 };
 ```
 

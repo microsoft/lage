@@ -220,9 +220,9 @@ module.exports = {
     options: {
       connectionString: "...",
       container: "...",
-      maxSize: 12345
-    }
-  }
+      maxSize: 12345,
+    },
+  },
 };
 ```
 
@@ -231,21 +231,21 @@ does not have a SAS token. This is useful if you want to use a managed identity
 or interactive browser login. For example:
 
 ```js
-import { InteractiveBrowserCredential } from '@azure/identity'
+import { InteractiveBrowserCredential } from "@azure/identity";
 
 module.exports = {
   cacheStorageConfig: {
     provider: "custom",
     plugin: "@lage-run/azure-blob-cache-storage",
     options: {
-      connectionString: "https://<your-storage-account-name>.blob.core.windows.net",
+      connectionString:
+        "https://<your-storage-account-name>.blob.core.windows.net",
       credential: new InteractiveBrowserCredential(),
       container: "...",
-      maxSize: 12345
-    }
-  }
+      maxSize: 12345,
+    },
+  },
 };
-
 ```
 
 #### Azure Blob Storage options

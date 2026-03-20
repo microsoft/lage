@@ -8,7 +8,10 @@ import type { Config } from "./Config.js";
 import { getAzureBlobConfigFromSerializedOptions } from "./azureBlobCacheConfig.js";
 import { getNpmConfigFromSerializedOptions } from "./npmCacheConfig.js";
 import { isCorrectMode, modesObject, type BackfillModes } from "./modes.js";
-import type { CacheStorageConfig, CustomCacheStorageConfig } from "./cacheConfig.js";
+import type {
+  CacheStorageConfig,
+  CustomCacheStorageConfig,
+} from "./cacheConfig.js";
 
 class BackfillConfigError extends Error {
   constructor(value: string, envName: string, expected: string) {

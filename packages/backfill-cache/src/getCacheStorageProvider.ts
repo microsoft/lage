@@ -1,6 +1,10 @@
 import * as path from "path";
 import { createRequire } from "module";
-import type { CacheStorageConfig, CustomCacheStorageConfig, CustomCacheStoragePlugin } from "backfill-config";
+import type {
+  CacheStorageConfig,
+  CustomCacheStorageConfig,
+  CustomCacheStoragePlugin,
+} from "backfill-config";
 import type { Logger } from "backfill-logger";
 
 import type { ICacheStorage } from "./CacheStorage.js";
@@ -46,8 +50,13 @@ export function getCacheStorageProvider(
 
       // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
       const pluginModule = require(resolvedPlugin);
-      const plugin: CustomCacheStoragePlugin = pluginModule.default || pluginModule;
-      cacheStorage = plugin.getProvider(logger, cwd, cacheStorageConfig.options);
+      const plugin: CustomCacheStoragePlugin =
+        pluginModule.default || pluginModule;
+      cacheStorage = plugin.getProvider(
+        logger,
+        cwd,
+        cacheStorageConfig.options
+      );
     } catch (err) {
       throw new Error(
         `Failed to load custom cache storage plugin "${cacheStorageConfig.plugin}": ${err}`

@@ -78,7 +78,9 @@ describe("getCacheStorageProvider", () => {
         makeLogger("silly"),
         "cwd"
       )
-    ).toThrow('Failed to load custom cache storage plugin "nonexistent-plugin-package"');
+    ).toThrow(
+      'Failed to load custom cache storage plugin "nonexistent-plugin-package"'
+    );
   });
 
   test("can get a custom storage provider via plugin", () => {
