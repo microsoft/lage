@@ -14,6 +14,7 @@ function createMockPlugin(provider: { fetch: jest.Mock; put: jest.Mock }) {
     `module.exports = { default: { name: "mock", getProvider: () => ({}) } };`
   );
   // Override the getProvider at runtime by requiring and patching
+  // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
   const mod = require(pluginPath);
   mod.default.getProvider = () => provider;
   return { pluginPath, tmpDir };
