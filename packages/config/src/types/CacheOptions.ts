@@ -62,4 +62,11 @@ export type CacheOptions = Omit<BackfillCacheOptions, "cacheStorageConfig"> & {
    * to generate the cache key.
    */
   cacheKey?: string;
+
+  /**
+   * Use a tar-based local cache instead of copying files individually.
+   * Packs all outputs into a single `.tar` file per cache entry, reducing
+   * I/O overhead on file systems where per-file operations are expensive (e.g. NTFS).
+   */
+  useLocalTarCache?: boolean;
 };
