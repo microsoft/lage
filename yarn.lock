@@ -4030,12 +4030,12 @@ __metadata:
   linkType: hard
 
 "effect@npm:^3.13.7":
-  version: 3.19.18
-  resolution: "effect@npm:3.19.18"
+  version: 3.21.0
+  resolution: "effect@npm:3.21.0"
   dependencies:
     "@standard-schema/spec": "npm:^1.0.0"
     fast-check: "npm:^3.23.1"
-  checksum: 10c0/39312e64ba26ceaba315bc4eec0eb1bd5dc6a1b4f34846de7957fae05c34222d89624639efdd72b5d8a934dc940fec25696a117ca45c54d0d3b182ebd1907359
+  checksum: 10c0/665cb8fd0862f334eeb1d0fbadb14913de358948c08929bfd079fd38903132ba54daa99da4c453f738c318fa5ce0de862bf8db08974d97a05d868f6bc685eb50
   languageName: node
   linkType: hard
 
