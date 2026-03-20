@@ -2,13 +2,13 @@ import path from "path";
 import fs from "fs-extra";
 
 import { makeLogger } from "backfill-logger";
-import { setupFixture } from "@lage-run/test-utilities";
+import { setupFixture, type FixtureName } from "@lage-run/test-utilities";
 import type { CacheStorageConfig } from "backfill-config";
 
 import { getCacheStorageProvider } from "../getCacheStorageProvider.js";
 
-const setupCacheStorage = async (fixtureName: string) => {
-  const fixtureLocation = await setupFixture(fixtureName);
+const setupCacheStorage = async (fixtureName: FixtureName) => {
+  const fixtureLocation = setupFixture(fixtureName);
 
   const cacheStorageConfig: CacheStorageConfig = {
     provider: "local",
@@ -35,7 +35,7 @@ function expectPathExists(pathToCheck: string, expectSuccess: boolean) {
 }
 
 type CacheHelper = {
-  fixtureName: string;
+  fixtureName: FixtureName;
   hash: string;
   outputGlob?: string[];
   filesToCache?: string[];

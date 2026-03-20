@@ -1,6 +1,10 @@
 import path from "path";
 
-import { removeTempDir, setupFixture } from "@lage-run/test-utilities";
+import {
+  removeTempDir,
+  setupFixture,
+  type FixtureName,
+} from "@lage-run/test-utilities";
 import { makeLogger } from "backfill-logger";
 
 import { getPackageInfos } from "workspace-tools";
@@ -89,7 +93,9 @@ describe("Hasher", () => {
     roots = [];
   });
 
-  const setupFixtureAndReturnHash = async (fixture = "monorepo") => {
+  const setupFixtureAndReturnHash = async (
+    fixture: FixtureName = "monorepo"
+  ) => {
     const packageRoot = setupFixture(fixture);
     roots.push(packageRoot);
 

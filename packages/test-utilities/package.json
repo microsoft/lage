@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "Internal test utilities for lage",
   "private": true,
-  "repository": {
-    "url": "https://github.com/microsoft/lage"
-  },
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

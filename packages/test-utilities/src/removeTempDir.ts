@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import fs from "fs";
 
 /**
  * Recursively remove a temporary directory, ignoring any errors (which are usually not fatal

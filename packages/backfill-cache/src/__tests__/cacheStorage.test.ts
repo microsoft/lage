@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 import { type Logger, makeLogger } from "backfill-logger";
 import { createTempDir } from "@lage-run/test-utilities";
 import { CacheStorage } from "../CacheStorage.js";
