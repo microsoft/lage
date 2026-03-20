@@ -11,7 +11,7 @@ function createMockPlugin(provider: { fetch: jest.Mock; put: jest.Mock }) {
   // Write a plugin module that returns the provider
   fs.writeFileSync(
     pluginPath,
-    `module.exports = { default: { name: "mock", getProvider: () => (${JSON.stringify({})}) } };`
+    `module.exports = { default: { name: "mock", getProvider: () => ({}) } };`
   );
   // Override the getProvider at runtime by requiring and patching
   const mod = require(pluginPath);
