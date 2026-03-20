@@ -25,8 +25,8 @@ yarn lage-local         # run the locally-built lage CLI (node packages/lage/dis
 
 ```bash
 cd packages/<name>
-yarn run -T jest                              # all tests in that package
-yarn run -T jest --testNamePattern="pattern"  # specific test by name
+yarn test                              # all tests in that package
+yarn test --testNamePattern="pattern"  # specific test by name
 ```
 
 `yarn run -T` runs the command using the root-installed tool (jest, tsc, etc.).
@@ -37,6 +37,21 @@ yarn run -T jest --testNamePattern="pattern"  # specific test by name
 cd packages/<name>
 yarn build        # transpile and type check
 ```
+
+If changes span multiple packages, you should `yarn build` from the root. This is the best way to ensure all dependencies build in proper order.
+
+### Verifying changes
+
+To verify changes to a single package:
+
+```ts
+cd packages/<name>
+yarn build
+yarn lint
+yarn test
+```
+
+Before finalizing changes, run `yarn ci` from the root for complete build/test/lint verification.
 
 ## Architecture
 
@@ -87,8 +102,9 @@ The repo also contains the `backfill` family of packages. `backfill` is the unde
 
 Every PR must include a [`beachball`](https://github.com/microsoft/beachball) change file. `beachball` normally uses an interactive CLI prompt, but an alternative is as follows:
 
-1. Run `yarn checkchange` to get the list of changed packages detected by `beachball` (this excludes certain files such as tests)
-2. Create a file in the following format under `change/change-<random guid>.json`. There should be a `changes` entry for each package with `type` set to the appropriate semver change type.
+1. Stage or commit all changes
+2. Run `yarn checkchange` to get the list of changed packages detected by `beachball` (this excludes certain files such as tests)
+3. Create a file in the following format under `change/change-<random guid>.json`. There should be a `changes` entry for each package with `type` set to the appropriate semver change type.
 
 ```json
 {
