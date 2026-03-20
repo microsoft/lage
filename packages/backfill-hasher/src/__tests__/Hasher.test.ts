@@ -45,7 +45,7 @@ describe("_addToQueue", () => {
     };
   };
 
-  it("adds internal dependencies to the queue", async () => {
+  it("adds internal dependencies to the queue", () => {
     const { queueParams, packagePath } = initFixture();
 
     _addToQueue(queueParams);
@@ -53,7 +53,7 @@ describe("_addToQueue", () => {
     expect(queueParams.queue).toEqual([packagePath]);
   });
 
-  it("doesn't add to the queue if the package has been evaluated", async () => {
+  it("doesn't add to the queue if the package has been evaluated", () => {
     const { queueParams, packageToAdd } = initFixture();
 
     // Override
@@ -71,7 +71,7 @@ describe("_addToQueue", () => {
     expect(queueParams.queue).toEqual([]);
   });
 
-  it("doesn't add to the queue if the package is already in the queue", async () => {
+  it("doesn't add to the queue if the package is already in the queue", () => {
     const { queueParams, packagePath } = initFixture();
 
     // Override
@@ -93,20 +93,15 @@ describe("Hasher", () => {
     roots = [];
   });
 
-  const setupFixtureAndReturnHash = async (
-    fixture: FixtureName = "monorepo"
-  ) => {
-    const packageRoot = setupFixture(fixture);
-    roots.push(packageRoot);
+  async function setupFixtureAndReturnHash(fixture: FixtureName = "monorepo") {
+    const root = setupFixture(fixture);
+    roots.push(root);
 
-    const options = { packageRoot, outputGlob: ["lib/**"] };
-    const buildSignature = "yarn build";
-
-    const hasher = new Hasher(options, logger);
-    const hash = await hasher.createPackageHash(buildSignature);
+    const hasher = new Hasher({ packageRoot: root }, logger);
+    const hash = await hasher.createPackageHash("yarn build");
 
     return hash;
-  };
+  }
 
   it("creates different hashes given different fixtures", async () => {
     const hash = await setupFixtureAndReturnHash();

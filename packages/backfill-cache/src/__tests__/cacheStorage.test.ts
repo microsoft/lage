@@ -10,9 +10,11 @@ class MockLocalCacheStorage extends CacheStorage {
     super(logger, cwd, true);
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await -- match signature
   protected async _fetch(): Promise<boolean> {
     return false;
   }
+  // eslint-disable-next-line @typescript-eslint/require-await -- match signature
   protected async _put(_hash: string, filesToCache: string[]): Promise<void> {
     this.filesToCache = filesToCache;
   }

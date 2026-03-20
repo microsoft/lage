@@ -157,14 +157,9 @@ interface CreateLageServiceOptions {
   tasks: string[];
 }
 
-export async function createLageService({
-  cwd,
-  serverControls,
-  logger,
-  concurrency,
-  tasks,
-}: CreateLageServiceOptions): Promise<ILageService> {
+export function createLageService({ cwd, serverControls, logger, concurrency, tasks }: CreateLageServiceOptions): ILageService {
   return {
+    // eslint-disable-next-line @typescript-eslint/require-await
     async ping() {
       return { pong: true };
     },

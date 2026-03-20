@@ -17,7 +17,7 @@ describe("chunking promises", () => {
     }
   });
 
-  it("should throw, if one promise was rejected", async () => {
+  it("should throw, if one promise was rejected", () => {
     const mockedPromiseFns = [
       jest.fn().mockResolvedValue(1).mockName("1"),
       jest.fn().mockResolvedValue(2).mockName("2"),

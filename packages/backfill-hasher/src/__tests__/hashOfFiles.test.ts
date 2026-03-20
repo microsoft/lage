@@ -18,22 +18,22 @@ describe("generateHashOfFiles()", () => {
     root = setupFixture("monorepo");
     let repoInfo = await getRepoInfoNoCache(root);
 
-    const hashOfPackage = await generateHashOfFiles(root, repoInfo);
+    const hashOfPackage = generateHashOfFiles(root, repoInfo);
 
     fs.writeFileSync(path.join(root, "foo.txt"), "bar");
     repoInfo = await getRepoInfoNoCache(root);
 
-    const hashOfPackageWithFoo = await generateHashOfFiles(root, repoInfo);
+    const hashOfPackageWithFoo = generateHashOfFiles(root, repoInfo);
     expect(hashOfPackage).not.toEqual(hashOfPackageWithFoo);
 
     fs.writeFileSync(path.join(root, "foo.txt"), "foo");
     repoInfo = await getRepoInfoNoCache(root);
-    const hashOfPackageWithFoo2 = await generateHashOfFiles(root, repoInfo);
+    const hashOfPackageWithFoo2 = generateHashOfFiles(root, repoInfo);
     expect(hashOfPackageWithFoo).not.toEqual(hashOfPackageWithFoo2);
 
     fs.unlinkSync(path.join(root, "foo.txt"));
     repoInfo = await getRepoInfoNoCache(root);
-    const hashOfPackageWithoutFoo = await generateHashOfFiles(root, repoInfo);
+    const hashOfPackageWithoutFoo = generateHashOfFiles(root, repoInfo);
     expect(hashOfPackage).toEqual(hashOfPackageWithoutFoo);
   });
 
@@ -42,7 +42,7 @@ describe("generateHashOfFiles()", () => {
 
     let repoInfo = await getRepoInfoNoCache(root);
 
-    const hashOfPackageA = await generateHashOfFiles(
+    const hashOfPackageA = generateHashOfFiles(
       path.join(root, "packages", "package-a"),
       repoInfo
     );
@@ -51,7 +51,7 @@ describe("generateHashOfFiles()", () => {
     fs.writeFileSync(path.join(root, "packages", "package-abc", "foo"), "bar");
 
     repoInfo = await getRepoInfoNoCache(root);
-    const newHashOfPackageA = await generateHashOfFiles(
+    const newHashOfPackageA = generateHashOfFiles(
       path.join(root, "packages", "package-a"),
       repoInfo
     );
@@ -65,13 +65,13 @@ describe("generateHashOfFiles()", () => {
     fs.writeFileSync(path.join(root, "foo.txt"), "bar");
     let repoInfo = await getRepoInfoNoCache(root);
 
-    const hashOfPackageWithFoo = await generateHashOfFiles(root, repoInfo);
+    const hashOfPackageWithFoo = generateHashOfFiles(root, repoInfo);
 
     fs.unlinkSync(path.join(root, "foo.txt"));
     fs.writeFileSync(path.join(root, "bar.txt"), "bar");
     repoInfo = await getRepoInfoNoCache(root);
 
-    const hashOfPackageWithBar = await generateHashOfFiles(root, repoInfo);
+    const hashOfPackageWithBar = generateHashOfFiles(root, repoInfo);
 
     expect(hashOfPackageWithFoo).not.toEqual(hashOfPackageWithBar);
   });
@@ -88,7 +88,7 @@ describe("generateHashOfFiles()", () => {
     fs.writeFileSync(path.join(folder, "foo.txt"), "bar");
     const repoInfo = await getRepoInfoNoCache(root);
 
-    const hashOfPackage = await generateHashOfFiles(root, repoInfo);
+    const hashOfPackage = generateHashOfFiles(root, repoInfo);
 
     expect(hashOfPackage).toEqual("4d4ca2ecc436e1198554f5d03236ea8f956ac0c4");
   });
@@ -105,7 +105,7 @@ describe("generateHashOfFiles()", () => {
     fs.writeFileSync(path.join(folder, "foo.txt"), "bar");
     const repoInfo = await getRepoInfoNoCache(root);
 
-    const hashOfPackage = await generateHashOfFiles(folder, repoInfo);
+    const hashOfPackage = generateHashOfFiles(folder, repoInfo);
 
     expect(hashOfPackage).toEqual("438b5f734e6de1ef0eb9114a28ef230a9ff83f54");
   });
@@ -118,7 +118,7 @@ describe("generateHashOfFiles()", () => {
 
     const repoInfo = await getRepoInfoNoCache(root);
 
-    const hashOfPackage = await generateHashOfFiles(folder, repoInfo);
+    const hashOfPackage = generateHashOfFiles(folder, repoInfo);
 
     expect(hashOfPackage).toEqual("b91634233c6a3768136391c804967bf0e0a6578d");
   });

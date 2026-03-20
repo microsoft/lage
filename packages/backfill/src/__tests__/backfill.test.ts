@@ -12,7 +12,7 @@ const logger = makeLogger("mute");
 describe("backfill", () => {
   it("with modified source files", async () => {
     //  Set up
-    const fixtureLocation = await setupFixture("basic");
+    const fixtureLocation = setupFixture("basic");
 
     const config = createConfig(logger, fixtureLocation);
     config.outputGlob = ["src/*"];
@@ -60,7 +60,7 @@ describe("backfill", () => {
   });
   it("with cache miss and then cache hit", async () => {
     //  Set up
-    const fixtureLocation = await setupFixture("basic");
+    const fixtureLocation = setupFixture("basic");
 
     const config = createConfig(logger, fixtureLocation);
 
@@ -104,7 +104,7 @@ describe("backfill", () => {
 
   it("should set the proper custom cache provider name", async () => {
     //  Set up
-    const fixtureLocation = await setupFixture("custom-cache-provider");
+    const fixtureLocation = setupFixture("custom-cache-provider");
 
     const spyLogger = jest.spyOn(logger, "setCacheProvider");
 

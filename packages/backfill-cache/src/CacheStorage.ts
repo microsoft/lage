@@ -59,8 +59,7 @@ export abstract class CacheStorage implements ICacheStorage {
     if (this.incrementalCaching) {
       // Get the list of files that have not changed so we don't need to cache them.
       const hashesNow = await getHashesFor(this.cwd);
-      const hashesThen =
-        (await savedHashes.get(hash)) || new Map<string, string>();
+      const hashesThen = savedHashes.get(hash) || new Map<string, string>();
       const unchangedFiles = [...hashesThen.keys()].filter(
         (s) => hashesThen.get(s) === hashesNow.get(s)
       );

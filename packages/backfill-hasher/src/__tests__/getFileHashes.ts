@@ -89,7 +89,7 @@ describe(getFileHashes.name, () => {
     root = "";
   });
 
-  it("can parse committed file", async () => {
+  it("can parse committed file", () => {
     root = setupFixture("hasher-test-project");
 
     const results = getFileHashes(root);
@@ -101,7 +101,7 @@ describe(getFileHashes.name, () => {
     });
   });
 
-  it("can handle files in subfolders", async () => {
+  it("can handle files in subfolders", () => {
     root = setupFixture("hasher-nested-test-project");
 
     const results = getFileHashes(root);
@@ -112,7 +112,7 @@ describe(getFileHashes.name, () => {
     });
   });
 
-  it("can handle adding one file", async () => {
+  it("can handle adding one file", () => {
     root = setupFixture("hasher-test-project");
 
     const tempFilePath = path.join(root, "a.txt");
@@ -129,7 +129,7 @@ describe(getFileHashes.name, () => {
     });
   });
 
-  it("can handle adding two files", async () => {
+  it("can handle adding two files", () => {
     root = setupFixture("hasher-test-project");
 
     const tempFilePath1 = path.join(root, "a.txt");
@@ -149,7 +149,7 @@ describe(getFileHashes.name, () => {
     });
   });
 
-  it("can handle removing one file", async () => {
+  it("can handle removing one file", () => {
     root = setupFixture("hasher-test-project");
 
     const testFilePath = path.join(root, "file1.txt");
@@ -164,7 +164,7 @@ describe(getFileHashes.name, () => {
     });
   });
 
-  it("can handle changing one file", async () => {
+  it("can handle changing one file", () => {
     root = setupFixture("hasher-test-project");
 
     const testFilePath = path.join(root, "file1.txt");
@@ -180,7 +180,7 @@ describe(getFileHashes.name, () => {
     });
   });
 
-  it("can handle a filename with spaces", async () => {
+  it("can handle a filename with spaces", () => {
     root = setupFixture("hasher-test-project");
 
     const tempFilePath = path.join(root, "a file.txt");
@@ -197,7 +197,7 @@ describe(getFileHashes.name, () => {
     });
   });
 
-  it("can handle a filename with multiple spaces", async () => {
+  it("can handle a filename with multiple spaces", () => {
     root = setupFixture("hasher-test-project");
 
     const tempFilePath = path.join(root, "a  file name.txt");
@@ -214,7 +214,7 @@ describe(getFileHashes.name, () => {
     });
   });
 
-  it("can handle a filename with non-standard characters", async () => {
+  it("can handle a filename with non-standard characters", () => {
     root = setupFixture("hasher-test-project");
 
     const tempFilePath = path.join(root, "newFile批把.txt");

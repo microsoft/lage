@@ -32,7 +32,7 @@ describe("initializeReporters", () => {
     delete process.env.TF_BUILD;
   });
 
-  afterEach(async () => {
+  afterEach(() => {
     for (const reporter of reporters || []) {
       reporter.cleanup?.();
     }

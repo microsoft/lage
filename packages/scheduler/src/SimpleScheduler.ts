@@ -158,7 +158,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
 
     const poolStats = pool.stats();
 
-    await this.options.hasher.cleanup();
+    this.options.hasher.cleanup();
 
     return {
       targetRunByStatus,

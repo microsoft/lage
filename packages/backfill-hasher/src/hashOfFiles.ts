@@ -12,10 +12,10 @@ import type { RepoInfo } from "./types.js";
  * @param packageRoot The root of the package
  * @param repoInfo The repoInfo that carries information about repo-wide hashes
  */
-export async function generateHashOfFiles(
+export function generateHashOfFiles(
   packageRoot: string,
   repoInfo: RepoInfo
-): Promise<string> {
+): string {
   const { repoHashes, root, packageHashes } = repoInfo;
 
   const hashes: string[] = [];

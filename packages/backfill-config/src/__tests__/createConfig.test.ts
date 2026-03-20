@@ -17,7 +17,7 @@ describe("getName()", () => {
     packageRoot = "";
   });
 
-  it("get the name of the package", async () => {
+  it("get the name of the package", () => {
     packageRoot = setupFixture("basic");
     const packageName = getName(packageRoot);
 
@@ -33,7 +33,7 @@ describe("getSearchPaths()", () => {
     packageRoot = "";
   });
 
-  it("finds all instances of backfill.config.js", async () => {
+  it("finds all instances of backfill.config.js", () => {
     packageRoot = setupFixture("config");
 
     const pathPackage1 = path.join(packageRoot, "packages/package-1");
@@ -51,7 +51,7 @@ describe("getSearchPaths()", () => {
     ]);
   });
 
-  it("returns empty list when no backfill.config.js can be found", async () => {
+  it("returns empty list when no backfill.config.js can be found", () => {
     packageRoot = setupFixture("basic");
     const searchPaths = getSearchPaths(packageRoot);
 
@@ -77,7 +77,7 @@ describe("createConfig()", () => {
     process.env = originalEnv;
   });
 
-  it("returns default config values when no config file and no env override is provided", async () => {
+  it("returns default config values when no config file and no env override is provided", () => {
     packageRoot = setupFixture("basic");
     const config = createConfig(logger, packageRoot);
 
@@ -86,7 +86,7 @@ describe("createConfig()", () => {
     expect(config.internalCacheFolder).toStrictEqual(defaultLocalCacheFolder);
   });
 
-  it("returns config file value when config file is provided, and no env override", async () => {
+  it("returns config file value when config file is provided, and no env override", () => {
     packageRoot = setupFixture("config");
     const config = createConfig(logger, packageRoot);
 
@@ -95,7 +95,7 @@ describe("createConfig()", () => {
     expect(config.logLevel).toStrictEqual("info");
   });
 
-  it("returns env override value when env override is provided", async () => {
+  it("returns env override value when env override is provided", () => {
     process.env["BACKFILL_INTERNAL_CACHE_FOLDER"] = "bar";
 
     packageRoot = setupFixture("config");
@@ -107,7 +107,7 @@ describe("createConfig()", () => {
   });
 
   // For some reason, "mode" is the only option that throws if invalid as of writing
-  it("throws on an invalid mode", async () => {
+  it("throws on an invalid mode", () => {
     packageRoot = setupFixture("config");
     fs.writeFileSync(
       path.join(packageRoot, "backfill.config.js"),
@@ -118,7 +118,7 @@ describe("createConfig()", () => {
   });
 
   // This should be removed once more config validation is added in a major version
-  it("does not throw on other invalid options", async () => {
+  it("does not throw on other invalid options", () => {
     packageRoot = setupFixture("config");
     fs.writeFileSync(
       path.join(packageRoot, "backfill.config.js"),

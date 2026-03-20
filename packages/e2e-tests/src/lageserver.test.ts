@@ -59,7 +59,7 @@ describe("lageserver", () => {
     await repo.init({
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
-    await repo.install();
+    repo.install();
 
     serverProcess = repo.runServer(["build"], port);
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -82,7 +82,7 @@ describe("lageserver", () => {
     await repo.init({
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
-    await repo.install();
+    repo.install();
 
     const results = await execOnServer("--tasks", "build", "--", "b", "build");
 
@@ -117,7 +117,7 @@ describe("lageserver", () => {
       },
       extraFiles: {},
     });
-    await repo.install();
+    repo.install();
 
     const results = await execOnServer("c", "build", "--tasks", "build", "--timeout", "60", "--reporter", "json");
 

@@ -16,7 +16,7 @@ describe("End to end", () => {
   });
 
   it("works", async () => {
-    const packageRoot = await setupFixture("basic");
+    const packageRoot = setupFixture("basic");
 
     await execa("node", [pathToBackfill, "--", "npm run compile"], {
       cwd: packageRoot,
@@ -32,7 +32,7 @@ describe("End to end", () => {
   });
 
   it("fails on error with error code 1", async () => {
-    const packageRoot = await setupFixture("basic");
+    const packageRoot = setupFixture("basic");
 
     const execProcess = execa("node", [pathToBackfill, "--", "somecommand"], {
       cwd: packageRoot,

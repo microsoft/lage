@@ -22,8 +22,7 @@ export async function createServer(
   });
 
   server.get("/", (_, reply) => {
-    void reply.type("text/plain");
-    void reply.send("lage service");
+    void reply.type("text/plain").send("lage service");
   });
 
   return server;

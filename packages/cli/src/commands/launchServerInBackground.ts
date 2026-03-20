@@ -73,7 +73,7 @@ export async function launchServerInBackground({
       maxBuffer: 1024 * 1024 * 100,
     });
 
-    if (child && child.pid) {
+    if (child.pid) {
       fs.writeFileSync(lockfilePath, child.pid.toString());
     }
 

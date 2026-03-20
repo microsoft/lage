@@ -102,7 +102,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
 
   for (const [id, definition] of pipelineEntries) {
     if (Array.isArray(definition)) {
-      await builder.addTargetConfig(
+      builder.addTargetConfig(
         id,
         {
           cache: true,
@@ -113,7 +113,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
         changedFiles
       );
     } else {
-      await builder.addTargetConfig(id, definition, changedFiles);
+      builder.addTargetConfig(id, definition, changedFiles);
     }
   }
 

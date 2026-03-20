@@ -215,9 +215,14 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
           if (data.type === "log") {
             logger.log(data.level, data.msg, { target, threadId: worker.threadId });
           } else if (data.type === "hash") {
-            void this.options.hasher.hash(target).then((hash) => {
-              worker.postMessage({ type: "hash", hash });
-            });
+            void this.options.hasher
+              .hash(target)
+              .then((hash) => {
+                worker.postMessage({ type: "hash", hash });
+              })
+              .catch((e) => {
+                logger.warn(`Failed to hash target ${target.id}: ${e instanceof Error ? e.message : String(e)}`);
+              });
           } else if (this.options.onMessage) {
             this.options.onMessage(data, postMessage);
           }

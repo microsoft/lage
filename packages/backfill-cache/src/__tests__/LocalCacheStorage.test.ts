@@ -7,7 +7,7 @@ import type { CacheStorageConfig } from "backfill-config";
 
 import { getCacheStorageProvider } from "../getCacheStorageProvider.js";
 
-const setupCacheStorage = async (fixtureName: FixtureName) => {
+const setupCacheStorage = (fixtureName: FixtureName) => {
   const fixtureLocation = setupFixture(fixtureName);
 
   const cacheStorageConfig: CacheStorageConfig = {
@@ -49,7 +49,7 @@ async function fetchFromCache({
   expectSuccess = true,
 }: CacheHelper) {
   const { cacheStorage, internalCacheFolder, fixtureLocation } =
-    await setupCacheStorage(fixtureName);
+    setupCacheStorage(fixtureName);
 
   const secretFile = "qwerty";
 
@@ -75,7 +75,7 @@ async function putInCache({
   errorMessage,
 }: CacheHelper) {
   const { cacheStorage, internalCacheFolder, fixtureLocation } =
-    await setupCacheStorage(fixtureName);
+    setupCacheStorage(fixtureName);
 
   if (!outputGlob) {
     throw new Error("outputGlob should be provided to the putInCache function");

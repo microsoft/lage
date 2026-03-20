@@ -33,7 +33,7 @@ export async function serverAction(options: WorkerOptions): Promise<void> {
 
   const abortController = new AbortController();
 
-  const lageService = await createLageService({
+  const lageService = createLageService({
     cwd,
     serverControls: {
       abortController,

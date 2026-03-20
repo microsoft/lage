@@ -16,10 +16,10 @@ describe("Audit", () => {
     pathToBackfill = await findPathToBackfill();
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     backfillOutput = undefined;
 
-    const monorepoPath = await setupFixture("monorepo");
+    const monorepoPath = setupFixture("monorepo");
 
     // Create a .git folder to help `--audit` identify the boundaries of the repo
     fs.mkdirpSync(path.join(monorepoPath, ".git"));

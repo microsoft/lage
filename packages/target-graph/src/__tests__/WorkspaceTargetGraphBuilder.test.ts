@@ -60,7 +60,7 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
 
@@ -95,8 +95,8 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("test");
-    await builder.addTargetConfig("lint");
+    builder.addTargetConfig("test");
+    builder.addTargetConfig("lint");
 
     const targetGraph = await builder.build(["test", "lint"]);
 
@@ -124,11 +124,11 @@ describe("workspace target graph builder", () => {
       enablePhantomTargetOptimization: false,
     });
 
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
 
-    await builder.addTargetConfig("a#build", {
+    builder.addTargetConfig("a#build", {
       dependsOn: [],
     });
 
@@ -155,11 +155,11 @@ describe("workspace target graph builder", () => {
       enablePhantomTargetOptimization: false,
     });
 
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
 
-    await builder.addTargetConfig("a#build", {
+    builder.addTargetConfig("a#build", {
       dependsOn: [],
     });
 
@@ -184,11 +184,11 @@ describe("workspace target graph builder", () => {
       enablePhantomTargetOptimization: false,
     });
 
-    await builder.addTargetConfig("bundle", {
+    builder.addTargetConfig("bundle", {
       dependsOn: ["^^transpile"],
     });
 
-    await builder.addTargetConfig("transpile");
+    builder.addTargetConfig("transpile");
 
     const targetGraph = await builder.build(["bundle"], ["a"]);
     expect(getGraphFromTargets(targetGraph)).toEqual([
@@ -215,12 +215,12 @@ describe("workspace target graph builder", () => {
       enablePhantomTargetOptimization: false,
     });
 
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["common#copy", "^build"],
     });
 
-    await builder.addTargetConfig("common#copy");
-    await builder.addTargetConfig("common#build");
+    builder.addTargetConfig("common#copy");
+    builder.addTargetConfig("common#build");
 
     const targetGraph = await builder.build(["build"]);
     expect(getGraphFromTargets(targetGraph)).toEqual([
@@ -247,11 +247,11 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build", "#global:task"],
     });
 
-    await builder.addTargetConfig("#global:task", {
+    builder.addTargetConfig("#global:task", {
       dependsOn: [],
     });
 
@@ -279,11 +279,11 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build", "#global:task"],
     });
 
-    await builder.addTargetConfig("#global:task", {
+    builder.addTargetConfig("#global:task", {
       dependsOn: [],
     });
 
@@ -304,11 +304,11 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
 
-    await builder.addTargetConfig("#global:task", {
+    builder.addTargetConfig("#global:task", {
       dependsOn: [],
     });
 
@@ -334,11 +334,11 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("transpile");
-    await builder.addTargetConfig("emitDeclarations", {
+    builder.addTargetConfig("transpile");
+    builder.addTargetConfig("emitDeclarations", {
       dependsOn: ["typecheck"],
     });
-    await builder.addTargetConfig("typecheck", {
+    builder.addTargetConfig("typecheck", {
       dependsOn: ["^^emitDeclarations", "transpile", "^^transpile"],
     });
 
@@ -376,11 +376,11 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: true,
     });
-    await builder.addTargetConfig("transpile");
-    await builder.addTargetConfig("emitDeclarations", {
+    builder.addTargetConfig("transpile");
+    builder.addTargetConfig("emitDeclarations", {
       dependsOn: ["typecheck"],
     });
-    await builder.addTargetConfig("typecheck", {
+    builder.addTargetConfig("typecheck", {
       dependsOn: ["^^emitDeclarations", "transpile", "^^transpile"],
     });
 
@@ -414,7 +414,7 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
 
@@ -444,10 +444,10 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("customTask", {
+    builder.addTargetConfig("customTask", {
       type: "worker",
     });
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^^customTask"],
     });
 

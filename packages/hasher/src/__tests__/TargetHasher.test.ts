@@ -27,7 +27,7 @@ describe("The main Hasher class", () => {
   async function getHash(hasher: TargetHasher, target: Target) {
     await hasher.initialize();
     const hash = await hasher.hash(target);
-    await hasher.cleanup();
+    hasher.cleanup();
 
     return hash;
   }

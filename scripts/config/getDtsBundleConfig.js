@@ -34,6 +34,7 @@ function getDtsBundleConfig(params) {
   const outFile = path.resolve(packageRoot, params.outFile);
 
   // Use "once" because otherwise it will run again after the first run completes
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises -- appears to allow async despite types
   process.once("beforeExit", async (code) => {
     if (!code) {
       console.log("Verifying no unexpected imports in bundled types");

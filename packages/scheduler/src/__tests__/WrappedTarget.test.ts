@@ -72,14 +72,10 @@ describe("WrappedTarget", () => {
   it("should be able to run a target to completion", async () => {
     const logger = new Logger();
 
-    const runner = {
-      async shouldRun() {
-        return true;
-      },
-      async run() {
-        // nothing
-      },
-    } as TargetRunner;
+    const runner: TargetRunner = {
+      shouldRun: () => Promise.resolve(true),
+      async run() {},
+    };
 
     const wrappedTarget = new WrappedTarget({
       abortController: new AbortController(),
@@ -105,14 +101,10 @@ describe("WrappedTarget", () => {
     const fakePackages = ["a", "b", "c", "d", "e", "f", "g", "h"];
     const wrappedTargets: WrappedTarget[] = [];
 
-    const runner = {
-      async shouldRun() {
-        return true;
-      },
-      async run() {
-        // nothing
-      },
-    } as TargetRunner;
+    const runner: TargetRunner = {
+      shouldRun: () => Promise.resolve(true),
+      async run() {},
+    };
 
     for (const packageName of fakePackages) {
       const wrappedTarget = new WrappedTarget({
@@ -146,14 +138,15 @@ describe("WrappedTarget", () => {
     const fakePackages = ["a", "b", "c", "d", "e", "f", "g", "h"];
     const wrappedTargets: WrappedTarget[] = [];
 
-    const runner = {
+    const runner: TargetRunner = {
+      shouldRun: () => Promise.resolve(true),
+      // eslint-disable-next-line @typescript-eslint/require-await
       async run({ target }) {
-        // nothing
         if (target.packageName === "a") {
           throw oops;
         }
       },
-    } as TargetRunner;
+    };
 
     for (const packageName of fakePackages) {
       const wrappedTarget = new WrappedTarget({
@@ -235,14 +228,10 @@ describe("WrappedTarget", () => {
   it("should skip the work if cache is hit", async () => {
     const logger = new Logger();
 
-    const runner = {
-      async shouldRun() {
-        return true;
-      },
-      async run() {
-        // nothing
-      },
-    } as TargetRunner;
+    const runner: TargetRunner = {
+      shouldRun: () => Promise.resolve(true),
+      async run() {},
+    };
 
     const wrappedTarget = new WrappedTarget({
       abortController: new AbortController(),

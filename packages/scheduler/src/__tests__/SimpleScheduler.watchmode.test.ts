@@ -28,6 +28,7 @@ describe("SimpleScheduler watch mode", () => {
     const hasher = new TargetHasher({ root, environmentGlob: [] });
 
     const runner: TargetRunner = {
+      // eslint-disable-next-line @typescript-eslint/require-await
       async shouldRun() {
         return true;
       },
@@ -74,6 +75,7 @@ describe("SimpleScheduler watch mode", () => {
     const hasher = new TargetHasher({ root, environmentGlob: [] });
 
     const runner: TargetRunner = {
+      // eslint-disable-next-line @typescript-eslint/require-await
       async shouldRun() {
         return true;
       },

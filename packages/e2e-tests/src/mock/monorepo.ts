@@ -130,7 +130,7 @@ export class Monorepo extends BaseMonorepo {
   /**
    * Run `yarn install` for the fixture
    */
-  public async install(): Promise<void> {
+  public install(): void {
     execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
   }
 
@@ -142,7 +142,7 @@ export class Monorepo extends BaseMonorepo {
       stdio: "ignore",
     });
 
-    if (cp && !cp.pid) {
+    if (!cp.pid) {
       throw new Error("Failed to start server");
     }
 

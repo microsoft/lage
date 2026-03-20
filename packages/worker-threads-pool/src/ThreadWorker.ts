@@ -112,7 +112,7 @@ export class ThreadWorker extends EventEmitter implements IWorker {
             100;
 
         if (limit && data.memoryUsage > limit) {
-          void this.restart();
+          this.restart();
         } else {
           this.#ready();
         }

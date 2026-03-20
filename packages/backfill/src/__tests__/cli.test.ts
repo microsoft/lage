@@ -65,7 +65,7 @@ describe("createBuildCommand", () => {
   });
 
   it("clears the output folder", async () => {
-    const fixtureLocation = await setupFixture("pre-built");
+    const fixtureLocation = setupFixture("pre-built");
     const buildCommand = createBuildCommand(
       ["echo foo"],
       true,

@@ -5,7 +5,7 @@ import { fetch, put, makeLogger } from "../api.js";
 
 describe("api", () => {
   it("fetch works with custom providers", async () => {
-    const packageRoot = await setupFixture("basic");
+    const packageRoot = setupFixture("basic");
 
     const logger = makeLogger("silly", process.stdout, process.stderr);
     const config = createDefaultConfig(packageRoot);
@@ -31,7 +31,7 @@ describe("api", () => {
   });
 
   it("put works with custom providers", async () => {
-    const packageRoot = await setupFixture("basic");
+    const packageRoot = setupFixture("basic");
 
     const logger = makeLogger("silly", process.stdout, process.stderr);
     const config = createDefaultConfig(packageRoot);

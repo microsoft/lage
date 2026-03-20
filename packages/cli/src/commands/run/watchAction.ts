@@ -115,8 +115,8 @@ export async function watchAction(options: RunOptions, command: Command): Promis
   }
 
   // When initial run is done, disable fetching of caches on all targets, keep writing to the cache
-  const watcher = await watch(root, packageInfos);
-  watcher.on("change", async (packageName) => {
+  const watcher = watch(root, packageInfos);
+  watcher.on("change", (packageName) => {
     reporter.resetLogEntries();
     const targets = new Map<string, Target>();
     for (const target of targetGraph.targets.values()) {
@@ -127,8 +127,10 @@ export async function watchAction(options: RunOptions, command: Command): Promis
 
     const deltaGraph = { targets };
 
-    const deltaSummary = await scheduler.run(root, deltaGraph, true);
-    displaySummary(deltaSummary, logger.reporters);
+    void (async () => {
+      const deltaSummary = await scheduler.run(root, deltaGraph, true);
+      displaySummary(deltaSummary, logger.reporters);
+    })().catch(() => {});
   });
 }
 

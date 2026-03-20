@@ -2,7 +2,7 @@ import type { Logger } from "@lage-run/logger";
 import path from "path";
 import fs from "fs";
 
-export async function simulateFileAccess(logger: Logger, root: string, inputs: string[], outputs: string[]): Promise<void> {
+export function simulateFileAccess(logger: Logger, root: string, inputs: string[], outputs: string[]): void {
   logger.silly("Now probing and touching inputs and outputs");
 
   // Helper to get all directory parts up to root
