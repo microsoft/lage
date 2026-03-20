@@ -2,6 +2,7 @@ import fs from "fs";
 import streams from "memory-streams";
 import os from "os";
 import path from "path";
+import { removeTempDir } from "@lage-run/test-utilities";
 import { ChromeTraceEventsReporter } from "../ChromeTraceEventsReporter.js";
 import { writerToString } from "./writerToString.js";
 
@@ -28,7 +29,7 @@ describe("ChromeTraceEventsReporter", () => {
   });
 
   afterEach(() => {
-    fs.rmSync(tmpDir, { recursive: true, force: true });
+    removeTempDir(tmpDir);
   });
 
   it("can group verbose messages, displaying summary", () => {

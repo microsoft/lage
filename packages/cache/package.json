@@ -29,8 +29,8 @@
     "glob-hasher": "^1.4.2"
   },
   "devDependencies": {
-    "@lage-run/monorepo-fixture": "workspace:^",
-    "@lage-run/monorepo-scripts": "workspace:^"
+    "@lage-run/monorepo-scripts": "workspace:^",
+    "@lage-run/test-utilities": "workspace:^"
   },
   "files": [
     "lib/!(__*)",

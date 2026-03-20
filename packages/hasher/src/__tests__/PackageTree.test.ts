@@ -1,4 +1,4 @@
-import { Monorepo } from "@lage-run/monorepo-fixture";
+import { Monorepo } from "@lage-run/test-utilities";
 import path from "path";
 import { getPackageInfos } from "workspace-tools";
 import { PackageTree } from "../PackageTree.js";

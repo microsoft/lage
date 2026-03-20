@@ -1,7 +1,7 @@
 {
-  "name": "@lage-run/monorepo-fixture",
+  "name": "@lage-run/test-utilities",
   "version": "0.1.0",
-  "description": "Monorepo fixture",
+  "description": "Test utilities",
   "private": true,
   "repository": {
     "url": "https://github.com/microsoft/lage"

@@ -1557,9 +1557,9 @@ __metadata:
     "@azure/identity": "npm:4.9.1"
     "@lage-run/config": "workspace:^"
     "@lage-run/logger": "workspace:^"
-    "@lage-run/monorepo-fixture": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
+    "@lage-run/test-utilities": "workspace:^"
     backfill-cache: "workspace:^"
     backfill-config: "workspace:^"
     backfill-logger: "workspace:^"
@@ -1577,7 +1577,6 @@ __metadata:
     "@lage-run/globby": "workspace:^"
     "@lage-run/hasher": "workspace:^"
     "@lage-run/logger": "workspace:^"
-    "@lage-run/monorepo-fixture": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/reporters": "workspace:^"
     "@lage-run/rpc": "workspace:^"
@@ -1585,6 +1584,7 @@ __metadata:
     "@lage-run/scheduler": "workspace:^"
     "@lage-run/scheduler-types": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
+    "@lage-run/test-utilities": "workspace:^"
     "@lage-run/worker-threads-pool": "workspace:^"
     "@types/proper-lockfile": "npm:^4.1.4"
     "@types/shell-quote": "npm:^1.7.5"
@@ -1623,11 +1623,11 @@ __metadata:
     "@lage-run/cli": "workspace:^"
     "@lage-run/globby": "workspace:^"
     "@lage-run/logger": "workspace:^"
-    "@lage-run/monorepo-fixture": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/reporters": "workspace:^"
     "@lage-run/scheduler-types": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
+    "@lage-run/test-utilities": "workspace:^"
     execa: "npm:5.1.1"
     find-process: "npm:2.1.1"
     glob-hasher: "npm:^1.4.2"
@@ -1659,9 +1659,9 @@ __metadata:
   dependencies:
     "@lage-run/globby": "workspace:^"
     "@lage-run/logger": "workspace:^"
-    "@lage-run/monorepo-fixture": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
+    "@lage-run/test-utilities": "workspace:^"
     "@types/graceful-fs": "npm:^4.1.6"
     "@types/micromatch": "npm:^4.0.0"
     backfill-hasher: "workspace:^"
@@ -1702,15 +1702,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lage-run/monorepo-fixture@workspace:^, @lage-run/monorepo-fixture@workspace:packages/monorepo-fixture":
-  version: 0.0.0-use.local
-  resolution: "@lage-run/monorepo-fixture@workspace:packages/monorepo-fixture"
-  dependencies:
-    "@lage-run/monorepo-scripts": "workspace:^"
-    execa: "npm:5.1.1"
-  languageName: unknown
-  linkType: soft
-
 "@lage-run/monorepo-scripts@workspace:^, @lage-run/monorepo-scripts@workspace:scripts":
   version: 0.0.0-use.local
   resolution: "@lage-run/monorepo-scripts@workspace:scripts"
@@ -1744,6 +1735,7 @@ __metadata:
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/scheduler-types": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
+    "@lage-run/test-utilities": "workspace:^"
     "@ms-cloudpack/task-reporter": "npm:0.19.0"
     ansi-regex: "npm:5.0.1"
     chalk: "npm:4.1.2"
@@ -1811,6 +1803,15 @@ __metadata:
     mergician: "npm:2.0.2"
     p-limit: "npm:3.1.0"
     workspace-tools: "npm:0.41.0"
+  languageName: unknown
+  linkType: soft
+
+"@lage-run/test-utilities@workspace:^, @lage-run/test-utilities@workspace:packages/test-utilities":
+  version: 0.0.0-use.local
+  resolution: "@lage-run/test-utilities@workspace:packages/test-utilities"
+  dependencies:
+    "@lage-run/monorepo-scripts": "workspace:^"
+    execa: "npm:5.1.1"
   languageName: unknown
   linkType: soft
 

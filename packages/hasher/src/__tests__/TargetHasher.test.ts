@@ -1,4 +1,4 @@
-import { Monorepo } from "@lage-run/monorepo-fixture";
+import { Monorepo } from "@lage-run/test-utilities";
 import type { Target } from "@lage-run/target-graph";
 import fs from "fs";
 import path from "path";

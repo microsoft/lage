@@ -3,6 +3,7 @@ import type { Reporter } from "@lage-run/logger";
 import fs from "fs";
 import os from "os";
 import path from "path";
+import { removeTempDir } from "@lage-run/test-utilities";
 import { initializeReporters } from "../commands/initializeReporters.js";
 import { setMockImportReporter } from "../commands/createReporter.js";
 import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
@@ -26,11 +27,7 @@ describe("initializeReporters with custom reporters", () => {
 
   afterEach(() => {
     setMockImportReporter(undefined);
-    try {
-      tmpDir && fs.rmSync(tmpDir, { recursive: true, force: true });
-    } catch {
-      // ignore
-    }
+    tmpDir && removeTempDir(tmpDir);
     tmpDir = "";
   });
 

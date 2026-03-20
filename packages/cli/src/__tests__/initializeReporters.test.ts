@@ -4,6 +4,7 @@ import fs from "fs";
 import isInteractive from "is-interactive";
 import os from "os";
 import path from "path";
+import { removeTempDir } from "@lage-run/test-utilities";
 import { initializeReporters } from "../commands/initializeReporters.js";
 import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
 
@@ -45,11 +46,7 @@ describe("initializeReporters", () => {
     if (savedTfBuild !== undefined) {
       process.env.TF_BUILD = savedTfBuild;
     }
-    try {
-      tmpDir && fs.rmSync(tmpDir, { recursive: true, force: true });
-    } catch {
-      // ignore
-    }
+    tmpDir && removeTempDir(tmpDir);
     tmpDir = undefined;
     jest.restoreAllMocks();
   });
