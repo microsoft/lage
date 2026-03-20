@@ -1817,7 +1817,7 @@ __metadata:
     execa: "npm:5.1.1"
     fs-extra: "npm:8.1.0"
     normalized-tmpdir: "npm:1.0.1"
-    tmp: "npm:0.2.3"
+    tmp: "npm:0.2.5"
   languageName: unknown
   linkType: soft
 
@@ -8436,14 +8436,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tmp@npm:0.2.3":
-  version: 0.2.3
-  resolution: "tmp@npm:0.2.3"
-  checksum: 10c0/3e809d9c2f46817475b452725c2aaa5d11985cf18d32a7a970ff25b568438e2c076c2e8609224feef3b7923fa9749b74428e3e634f6b8e520c534eef2fd24125
-  languageName: node
-  linkType: hard
-
-"tmp@npm:^0.2.4":
+"tmp@npm:0.2.5, tmp@npm:^0.2.4":
   version: 0.2.5
   resolution: "tmp@npm:0.2.5"
   checksum: 10c0/cee5bb7d674bb4ba3ab3f3841c2ca7e46daeb2109eec395c1ec7329a91d52fcb21032b79ac25161a37b2565c4858fefab927af9735926a113ef7bac9091a6e0e
