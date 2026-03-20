@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 
-import { setupFixture } from "backfill-utils-test";
+import { setupFixture } from "@lage-run/test-utilities";
 import { makeLogger } from "backfill-logger";
 
 import { createBuildCommand } from "../commandRunner.js";

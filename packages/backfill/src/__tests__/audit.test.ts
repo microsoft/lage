@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs-extra";
 import execa from "execa";
 
-import { setupFixture } from "backfill-utils-test";
+import { setupFixture } from "@lage-run/test-utilities";
 
 import { sideEffectWarningString, noSideEffectString } from "../audit.js";
 import { findPathToBackfill } from "./helper.js";

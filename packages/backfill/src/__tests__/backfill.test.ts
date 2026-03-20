@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 
-import { setupFixture } from "backfill-utils-test";
+import { setupFixture } from "@lage-run/test-utilities";
 import { createConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
 

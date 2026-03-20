@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { removeTempDir, setupFixture } from "backfill-utils-test";
+import { removeTempDir, setupFixture } from "@lage-run/test-utilities";
 import {
   getFileHashes,
   _parseGitFilename,

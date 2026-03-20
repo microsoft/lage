@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 
-import { removeTempDir, setupFixture } from "backfill-utils-test";
+import { removeTempDir, setupFixture } from "@lage-run/test-utilities";
 
 import { generateHashOfFiles } from "../hashOfFiles.js";
 import { getRepoInfoNoCache } from "../repoInfo.js";

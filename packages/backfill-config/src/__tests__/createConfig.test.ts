@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { setupFixture, removeTempDir } from "backfill-utils-test";
+import { setupFixture, removeTempDir } from "@lage-run/test-utilities";
 import { makeLogger } from "backfill-logger";
 import {
   createConfig,

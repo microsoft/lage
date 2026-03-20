@@ -29,9 +29,9 @@
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
+    "@lage-run/test-utilities": "workspace:^",
     "@types/fs-extra": "^8.0.0",
-    "@types/tar-fs": "^2.0.1",
-    "backfill-utils-test": "workspace:^"
+    "@types/tar-fs": "^2.0.1"
   },
   "engines": {
     "node": ">=14"

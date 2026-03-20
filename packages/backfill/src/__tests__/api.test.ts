@@ -1,6 +1,6 @@
 import path from "path";
 import { createDefaultConfig } from "backfill-config";
-import { setupFixture } from "backfill-utils-test";
+import { setupFixture } from "@lage-run/test-utilities";
 import { fetch, put, makeLogger } from "../api.js";
 
 describe("api", () => {

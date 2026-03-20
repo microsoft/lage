@@ -3,8 +3,18 @@ import fs from "fs-extra";
 import tempy from "tempy";
 import execa from "execa";
 
+/**
+ * Directory containing test fixtures originally from the backfill project.
+ * Some of these fixtures may be specific to backfill scenarios.
+ */
 const fixturesDir = path.resolve(__dirname, "../__fixtures__");
 
+/**
+ * Set up a test fixture by copying it to a temporary directory and initializing a git repo.
+ *
+ * This helper was originally part of the `backfill-utils-test` package, and some of the
+ * fixtures it references may be specific to backfill scenarios.
+ */
 export function setupFixture(fixtureName: string): string {
   const fixturePath = path.join(fixturesDir, fixtureName);
 
@@ -25,16 +35,4 @@ export function setupFixture(fixtureName: string): string {
   execa.sync("git", ["commit", "-m", "test"], { cwd });
 
   return cwd;
-}
-
-/**
- * Remove a temp directory, ignoring any errors.
- */
-export function removeTempDir(tempDir: string): void {
-  try {
-    fs.rmSync(tempDir, { recursive: true, force: true });
-  } catch {
-    // ignore errors during cleanup--it's probably from a virus scanner lock
-    // or something, and the OS will clean it up eventually
-  }
 }

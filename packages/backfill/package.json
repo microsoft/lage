@@ -34,9 +34,9 @@
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
+    "@lage-run/test-utilities": "workspace:^",
     "@types/fs-extra": "^8.0.0",
-    "@types/yargs": "^15.0.15",
-    "backfill-utils-test": "workspace:^"
+    "@types/yargs": "^15.0.15"
   },
   "engines": {
     "node": ">=14"

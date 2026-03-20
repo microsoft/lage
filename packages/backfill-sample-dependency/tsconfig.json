@@ -1,7 +1,0 @@
-{
-  "extends": "@lage-run/monorepo-scripts/config/tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "lib"
-  },
-  "include": ["src"]
-}
