@@ -1,7 +1,7 @@
 {
   "name": "@lage-run/test-utilities",
   "version": "0.1.0",
-  "description": "Test utilities",
+  "description": "Internal test utilities for lage",
   "private": true,
   "repository": {
     "url": "https://github.com/microsoft/lage"

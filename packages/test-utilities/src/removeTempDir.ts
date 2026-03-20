@@ -9,10 +9,11 @@ import * as fs from "fs";
  * removal methods directly.
  *
  * @returns Whether deleting the directory succeeded.
+ * If `dir` was undefined or empty, it's a no-op and returns true.
  */
-export function removeTempDir(dir: string): boolean {
+export function removeTempDir(dir: string | undefined): boolean {
   try {
-    fs.rmSync(dir, { recursive: true, force: true });
+    dir && fs.rmSync(dir, { recursive: true, force: true });
     return true;
   } catch {
     return false;
