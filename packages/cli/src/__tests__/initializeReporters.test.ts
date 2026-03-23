@@ -1,9 +1,8 @@
 import { Logger, type Reporter } from "@lage-run/logger";
 import { AdoReporter, BasicReporter, ChromeTraceEventsReporter, GithubActionsReporter, LogReporter } from "@lage-run/reporters";
-import fs from "fs";
 import isInteractive from "is-interactive";
-import os from "os";
 import path from "path";
+import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
 import { initializeReporters } from "../commands/initializeReporters.js";
 import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
 
@@ -33,7 +32,7 @@ describe("initializeReporters", () => {
     delete process.env.TF_BUILD;
   });
 
-  afterEach(async () => {
+  afterEach(() => {
     for (const reporter of reporters || []) {
       reporter.cleanup?.();
     }
@@ -45,11 +44,7 @@ describe("initializeReporters", () => {
     if (savedTfBuild !== undefined) {
       process.env.TF_BUILD = savedTfBuild;
     }
-    try {
-      tmpDir && fs.rmSync(tmpDir, { recursive: true, force: true });
-    } catch {
-      // ignore
-    }
+    tmpDir && removeTempDir(tmpDir);
     tmpDir = undefined;
     jest.restoreAllMocks();
   });
@@ -104,7 +99,7 @@ describe("initializeReporters", () => {
 
   it("should initialize profile reporter", async () => {
     const logger = new Logger();
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "lage-profile-"));
+    tmpDir = createTempDir({ prefix: "lage-profile-" });
     reporters = await initializeReporters(
       logger,
       {

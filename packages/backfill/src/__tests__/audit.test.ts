@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs-extra";
 import execa from "execa";
 
-import { setupFixture } from "backfill-utils-test";
+import { setupFixture } from "@lage-run/test-utilities";
 
 import { sideEffectWarningString, noSideEffectString } from "../audit.js";
 import { findPathToBackfill } from "./helper.js";
@@ -16,10 +16,10 @@ describe("Audit", () => {
     pathToBackfill = await findPathToBackfill();
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     backfillOutput = undefined;
 
-    const monorepoPath = await setupFixture("monorepo");
+    const monorepoPath = setupFixture("monorepo");
 
     // Create a .git folder to help `--audit` identify the boundaries of the repo
     fs.mkdirpSync(path.join(monorepoPath, ".git"));

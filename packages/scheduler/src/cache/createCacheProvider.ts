@@ -11,9 +11,9 @@ interface CreateCacheOptions {
   cliArgs: string[];
 }
 
-export async function createCache(options: CreateCacheOptions): Promise<{
+export function createCache(options: CreateCacheOptions): {
   cacheProvider: RemoteFallbackCacheProvider;
-}> {
+} {
   const { cacheOptions, logger, root, skipLocalCache } = options;
 
   const hasRemoteCacheConfig =

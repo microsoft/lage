@@ -82,7 +82,7 @@ export class WorkspaceTargetGraphBuilder {
   /**
    * Generates new `Target`, indexed by the id based on a new target configuration.
    */
-  public async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]): Promise<void> {
+  public addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]): void {
     // Generates a target definition from the target config
     if (id.startsWith("//") || id.startsWith("#")) {
       const targetConfig = this.determineFinalTargetConfig(id, config);

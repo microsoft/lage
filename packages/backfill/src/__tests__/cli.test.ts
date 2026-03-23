@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 
-import { setupFixture } from "backfill-utils-test";
+import { setupFixture } from "@lage-run/test-utilities";
 import { makeLogger } from "backfill-logger";
 
 import { createBuildCommand } from "../commandRunner.js";
@@ -65,7 +65,7 @@ describe("createBuildCommand", () => {
   });
 
   it("clears the output folder", async () => {
-    const fixtureLocation = await setupFixture("pre-built");
+    const fixtureLocation = setupFixture("pre-built");
     const buildCommand = createBuildCommand(
       ["echo foo"],
       true,

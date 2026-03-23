@@ -25,7 +25,7 @@ describe("Cache clear", () => {
         b: { scripts: { build: "echo b:build" } },
       },
     });
-    await repo.install();
+    repo.install();
 
     // Run build so we get a cache folder
     await repo.run("build");

@@ -3,9 +3,8 @@ import { Logger } from "@lage-run/logger";
 import type { TargetRunner } from "@lage-run/runners";
 import type { Target } from "@lage-run/target-graph";
 import type { Pool } from "@lage-run/worker-threads-pool";
-import fs from "fs";
-import os from "os";
 import path from "path";
+import { createTempDir } from "@lage-run/test-utilities";
 import { WrappedTarget } from "../WrappedTarget.js";
 
 function createTarget(packageName: string): Target {
@@ -67,20 +66,16 @@ describe("WrappedTarget", () => {
   let root = "";
 
   beforeEach(() => {
-    root = fs.mkdtempSync(path.join(os.tmpdir(), "lage-wrapped-target-"));
+    root = createTempDir({ prefix: "lage-wrapped-target-" });
   });
 
   it("should be able to run a target to completion", async () => {
     const logger = new Logger();
 
-    const runner = {
-      async shouldRun() {
-        return true;
-      },
-      async run() {
-        // nothing
-      },
-    } as TargetRunner;
+    const runner: TargetRunner = {
+      shouldRun: () => Promise.resolve(true),
+      async run() {},
+    };
 
     const wrappedTarget = new WrappedTarget({
       abortController: new AbortController(),
@@ -106,14 +101,10 @@ describe("WrappedTarget", () => {
     const fakePackages = ["a", "b", "c", "d", "e", "f", "g", "h"];
     const wrappedTargets: WrappedTarget[] = [];
 
-    const runner = {
-      async shouldRun() {
-        return true;
-      },
-      async run() {
-        // nothing
-      },
-    } as TargetRunner;
+    const runner: TargetRunner = {
+      shouldRun: () => Promise.resolve(true),
+      async run() {},
+    };
 
     for (const packageName of fakePackages) {
       const wrappedTarget = new WrappedTarget({
@@ -147,14 +138,15 @@ describe("WrappedTarget", () => {
     const fakePackages = ["a", "b", "c", "d", "e", "f", "g", "h"];
     const wrappedTargets: WrappedTarget[] = [];
 
-    const runner = {
+    const runner: TargetRunner = {
+      shouldRun: () => Promise.resolve(true),
+      // eslint-disable-next-line @typescript-eslint/require-await
       async run({ target }) {
-        // nothing
         if (target.packageName === "a") {
           throw oops;
         }
       },
-    } as TargetRunner;
+    };
 
     for (const packageName of fakePackages) {
       const wrappedTarget = new WrappedTarget({
@@ -236,14 +228,10 @@ describe("WrappedTarget", () => {
   it("should skip the work if cache is hit", async () => {
     const logger = new Logger();
 
-    const runner = {
-      async shouldRun() {
-        return true;
-      },
-      async run() {
-        // nothing
-      },
-    } as TargetRunner;
+    const runner: TargetRunner = {
+      shouldRun: () => Promise.resolve(true),
+      async run() {},
+    };
 
     const wrappedTarget = new WrappedTarget({
       abortController: new AbortController(),

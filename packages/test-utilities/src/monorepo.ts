@@ -1,9 +1,7 @@
-import * as os from "os";
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 import execa from "execa";
-
-const tmpdir = os.tmpdir();
+import { createTempDir } from "./createTempDir.js";
 
 interface MonorepoPackages {
   [name: string]: {
@@ -31,7 +29,7 @@ export class Monorepo {
   protected readonly nodeModulesPath: string;
 
   constructor(protected name: string) {
-    this.root = fs.mkdtempSync(path.join(tmpdir, `lage-monorepo-${name}-`));
+    this.root = createTempDir({ prefix: `lage-monorepo-${name}-` });
     this.nodeModulesPath = path.join(this.root, "node_modules");
   }
 

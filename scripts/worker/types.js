@@ -15,6 +15,7 @@ let oldProgram;
  *
  * @type {WorkerRunnerFunction}
  */
+// eslint-disable-next-line @typescript-eslint/require-await -- match type
 async function run(data) {
   const { target, taskArgs } = data;
 

@@ -1,8 +1,8 @@
 import { Logger } from "@lage-run/logger";
 import type { Reporter } from "@lage-run/logger";
 import fs from "fs";
-import os from "os";
 import path from "path";
+import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
 import { initializeReporters } from "../commands/initializeReporters.js";
 import { setMockImportReporter } from "../commands/createReporter.js";
 import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
@@ -26,11 +26,7 @@ describe("initializeReporters with custom reporters", () => {
 
   afterEach(() => {
     setMockImportReporter(undefined);
-    try {
-      tmpDir && fs.rmSync(tmpDir, { recursive: true, force: true });
-    } catch {
-      // ignore
-    }
+    tmpDir && removeTempDir(tmpDir);
     tmpDir = "";
   });
 
@@ -43,7 +39,7 @@ describe("initializeReporters with custom reporters", () => {
   }
 
   function writeFixture(filename: string, content: string): string {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "lage-custom-reporter-test-"));
+    tmpDir = createTempDir({ prefix: "lage-custom-reporter-test-" });
     const filePath = path.join(tmpDir, filename);
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
     fs.writeFileSync(filePath, content);

@@ -218,7 +218,7 @@ export class TargetHasher {
     return globalFileHashes;
   }
 
-  public async cleanup(): Promise<void> {
+  public cleanup(): void {
     this.writeTargetHashesManifest();
     this.fileHasher.writeManifest();
   }

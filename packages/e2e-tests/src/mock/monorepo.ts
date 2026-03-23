@@ -1,10 +1,10 @@
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 import * as execa from "execa";
 import { findGitRoot, getPackageInfo } from "workspace-tools";
 
 import { glob } from "@lage-run/globby";
-import { Monorepo as BaseMonorepo, type MonorepoInitParams as BaseMonorepoInitParams } from "@lage-run/monorepo-fixture";
+import { Monorepo as BaseMonorepo, type MonorepoInitParams as BaseMonorepoInitParams } from "@lage-run/test-utilities";
 import type { ConfigFileOptions } from "@lage-run/cli";
 
 /** Absolute root path of the lage repo */
@@ -130,7 +130,7 @@ export class Monorepo extends BaseMonorepo {
   /**
    * Run `yarn install` for the fixture
    */
-  public async install(): Promise<void> {
+  public install(): void {
     execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
   }
 
@@ -142,7 +142,7 @@ export class Monorepo extends BaseMonorepo {
       stdio: "ignore",
     });
 
-    if (cp && !cp.pid) {
+    if (!cp.pid) {
       throw new Error("Failed to start server");
     }
 

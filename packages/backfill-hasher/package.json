@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
-    "backfill-utils-test": "workspace:^"
+    "@lage-run/test-utilities": "workspace:^"
   },
   "engines": {
     "node": ">=14"

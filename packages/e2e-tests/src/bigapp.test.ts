@@ -26,7 +26,7 @@ describe("bigapp test", () => {
       },
     });
 
-    await repo.install();
+    repo.install();
 
     const results = await repo.run("test");
     const jsonOutput = parseNdJson(results.stdout, results.stderr);

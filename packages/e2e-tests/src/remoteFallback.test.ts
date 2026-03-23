@@ -44,7 +44,7 @@ describe("RemoteFallbackCacheProvider", () => {
         b: { scripts: { build: "echo b:build" } },
       },
     });
-    await repo.install();
+    repo.install();
 
     const results = await repo.run("test", ["--skip-local-cache"]);
 
@@ -69,7 +69,7 @@ describe("RemoteFallbackCacheProvider", () => {
         b: { scripts: { build: "echo b:build" } },
       },
     });
-    await repo.install();
+    repo.install();
 
     const results = await repo.run("test");
 
@@ -99,7 +99,7 @@ describe("RemoteFallbackCacheProvider", () => {
         b: { scripts: { build: "echo b:build" } },
       },
     });
-    await repo.install();
+    repo.install();
 
     const results = await repo.run("test", ["--log-level", "silly"]);
 
@@ -130,7 +130,7 @@ describe("RemoteFallbackCacheProvider", () => {
         b: { scripts: { build: "echo b:build" } },
       },
     });
-    await repo.install();
+    repo.install();
 
     const results = await repo.run("test", ["--log-level", "silly"]);
 

@@ -46,12 +46,12 @@ describe("simulateFileAccess", () => {
     jest.resetAllMocks();
   });
 
-  test("should probe files and their parent directories for inputs", async () => {
+  it("should probe files and their parent directories for inputs", () => {
     // Nested directory structure with a file at the deepest level
     const inputs = ["packages/a/src/components/Button.tsx", "packages/b/dist/index.js"];
     const outputs: string[] = [];
 
-    await simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
+    simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
     // Verify the files were probed
     expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/a/src/components/Button.tsx"), "r");
@@ -68,12 +68,12 @@ describe("simulateFileAccess", () => {
     expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/b"));
   });
 
-  test("should handle deeply nested directories", async () => {
+  it("should handle deeply nested directories", () => {
     // Very deep nesting with a single file at the deepest level
     const inputs = ["level1/level2/level3/level4/level5/file.txt"];
     const outputs: string[] = [];
 
-    await simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
+    simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
     // Verify the file was probed
     expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "level1/level2/level3/level4/level5/file.txt"), "r");
@@ -86,11 +86,11 @@ describe("simulateFileAccess", () => {
     expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "level1"));
   });
 
-  test("should update timestamps for output files and their directories", async () => {
+  it("should update timestamps for output files and their directories", () => {
     const inputs: string[] = [];
     const outputs = ["dist/bundles/main.js", "dist/types/index.d.ts"];
 
-    await simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
+    simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
     // Verify timestamps were updated for output files
     expect(mockUtimesSync).toHaveBeenCalledWith(path.join(mockRoot, "dist/bundles/main.js"), expect.any(Date), expect.any(Date));
@@ -102,11 +102,11 @@ describe("simulateFileAccess", () => {
     expect(mockUtimesSync).toHaveBeenCalledWith(path.join(mockRoot, "dist"), expect.any(Date), expect.any(Date));
   });
 
-  test("should handle mixed inputs and outputs with overlapping directories", async () => {
+  it("should handle mixed inputs and outputs with overlapping directories", () => {
     const inputs = ["src/components/Button.tsx", "src/utils/helpers.ts"];
     const outputs = ["dist/components/Button.js", "dist/utils/helpers.js"];
 
-    await simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
+    simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
     // Verify both input and output files were handled correctly
     // Input files should be opened and closed
@@ -128,7 +128,7 @@ describe("simulateFileAccess", () => {
     expect(mockUtimesSync).toHaveBeenCalledWith(path.join(mockRoot, "dist"), expect.any(Date), expect.any(Date));
   });
 
-  test("should handle errors during file operations", async () => {
+  it("should handle errors during file operations", () => {
     // Restore original mocks to allow error simulation
     mockOpenSync.mockRestore();
     mockReadSync.mockRestore();
@@ -151,19 +151,19 @@ describe("simulateFileAccess", () => {
     const outputs: string[] = [];
 
     // Function should not throw even when file operations fail
-    await expect(simulateFileAccess(mockLogger, mockRoot, inputs, outputs)).resolves.not.toThrow();
+    simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
     // Verify that other operations still proceed despite errors
     expect(fs.openSync).toHaveBeenCalledWith(path.join(mockRoot, "src/components/Button.tsx"), "r");
     expect(fs.openSync).toHaveBeenCalledWith(failingPath, "r");
   });
 
-  test("should handle empty directories with only a single file", async () => {
+  it("should handle empty directories with only a single file", () => {
     // Create a test case where the input list contains only directories and a single file
     const inputs = ["empty-dir-1/", "empty-dir-2/", "empty-dir-3/single-file.txt"];
     const outputs: string[] = [];
 
-    await simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
+    simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
     // Verify all directories were enumerated using readdirSync
     expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "empty-dir-1/"));

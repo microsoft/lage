@@ -29,7 +29,7 @@ describe("transitive task deps test", () => {
         b: { scripts: { build: "echo b:build" } },
       },
     });
-    await repo.install();
+    repo.install();
 
     const results = await repo.run("test");
 
@@ -62,7 +62,7 @@ describe("transitive task deps test", () => {
         c: { scripts: { transpile: "echo c:transpile" } },
       },
     });
-    await repo.install();
+    repo.install();
 
     const results = await repo.run("bundle", ["--scope", "a"]);
 
@@ -97,7 +97,7 @@ describe("transitive task deps test", () => {
         c: { scripts: { transpile: "echo c:transpile" } },
       },
     });
-    await repo.install();
+    repo.install();
 
     const results = await repo.run("bundle", ["--scope", "a"]);
 
@@ -146,7 +146,7 @@ describe("transitive task deps test", () => {
         c: { scripts: { transpile: "echo c:transpile" } },
       },
     });
-    await repo.install();
+    repo.install();
 
     const results = await repo.run("bundle", ["--scope", "a"]);
 
@@ -195,7 +195,7 @@ describe("transitive task deps test", () => {
       },
     });
 
-    await repo.install();
+    repo.install();
 
     const results = await repo.run("writeInfo", ["typecheck", "--scope", "app"]);
 

@@ -1,5 +1,5 @@
 import createLogger from "@lage-run/logger";
-import { Monorepo } from "@lage-run/monorepo-fixture";
+import { Monorepo } from "@lage-run/test-utilities";
 import type { Target } from "@lage-run/target-graph";
 import path from "path";
 import { getCacheDirectory } from "../getCacheDirectory.js";

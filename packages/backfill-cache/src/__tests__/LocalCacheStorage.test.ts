@@ -2,13 +2,13 @@ import path from "path";
 import fs from "fs-extra";
 
 import { makeLogger } from "backfill-logger";
-import { setupFixture } from "backfill-utils-test";
+import { setupFixture, type FixtureName } from "@lage-run/test-utilities";
 import type { CacheStorageConfig } from "backfill-config";
 
 import { getCacheStorageProvider } from "../getCacheStorageProvider.js";
 
-const setupCacheStorage = async (fixtureName: string) => {
-  const fixtureLocation = await setupFixture(fixtureName);
+const setupCacheStorage = (fixtureName: FixtureName) => {
+  const fixtureLocation = setupFixture(fixtureName);
 
   const cacheStorageConfig: CacheStorageConfig = {
     provider: "local",
@@ -35,7 +35,7 @@ function expectPathExists(pathToCheck: string, expectSuccess: boolean) {
 }
 
 type CacheHelper = {
-  fixtureName: string;
+  fixtureName: FixtureName;
   hash: string;
   outputGlob?: string[];
   filesToCache?: string[];
@@ -49,7 +49,7 @@ async function fetchFromCache({
   expectSuccess = true,
 }: CacheHelper) {
   const { cacheStorage, internalCacheFolder, fixtureLocation } =
-    await setupCacheStorage(fixtureName);
+    setupCacheStorage(fixtureName);
 
   const secretFile = "qwerty";
 
@@ -75,7 +75,7 @@ async function putInCache({
   errorMessage,
 }: CacheHelper) {
   const { cacheStorage, internalCacheFolder, fixtureLocation } =
-    await setupCacheStorage(fixtureName);
+    setupCacheStorage(fixtureName);
 
   if (!outputGlob) {
     throw new Error("outputGlob should be provided to the putInCache function");

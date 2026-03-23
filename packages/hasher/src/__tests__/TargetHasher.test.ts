@@ -1,4 +1,4 @@
-import { Monorepo } from "@lage-run/monorepo-fixture";
+import { Monorepo } from "@lage-run/test-utilities";
 import type { Target } from "@lage-run/target-graph";
 import fs from "fs";
 import path from "path";
@@ -27,7 +27,7 @@ describe("The main Hasher class", () => {
   async function getHash(hasher: TargetHasher, target: Target) {
     await hasher.initialize();
     const hash = await hasher.hash(target);
-    await hasher.cleanup();
+    hasher.cleanup();
 
     return hash;
   }

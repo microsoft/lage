@@ -1,5 +1,5 @@
 import createLogger from "@lage-run/logger";
-import { Monorepo } from "@lage-run/monorepo-fixture";
+import { Monorepo } from "@lage-run/test-utilities";
 import { getPackageInfosAsync } from "workspace-tools";
 import { getFilteredPackages } from "../filter/getFilteredPackages.js";
 

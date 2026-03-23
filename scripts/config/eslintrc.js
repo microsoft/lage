@@ -41,7 +41,12 @@ const config = {
     "@typescript-eslint/no-require-imports": "error",
     "no-console": "error",
     "file-extension-in-import-ts/file-extension-in-import-ts": "error",
+    "@typescript-eslint/await-thenable": "error",
     "@typescript-eslint/no-floating-promises": "error",
+    "@typescript-eslint/no-misused-promises": "error",
+    "@typescript-eslint/require-await": "error",
+    // enable after eslint upgrade:
+    // "@typescript-eslint/return-await": ["error", "error-handling-correctness-only"],
     "@typescript-eslint/explicit-module-boundary-types": "error",
     "@typescript-eslint/no-unused-vars": [
       "error",

@@ -1,7 +1,7 @@
 import fs from "fs";
 import streams from "memory-streams";
-import os from "os";
 import path from "path";
+import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
 import { ChromeTraceEventsReporter } from "../ChromeTraceEventsReporter.js";
 import { writerToString } from "./writerToString.js";
 
@@ -23,12 +23,12 @@ describe("ChromeTraceEventsReporter", () => {
   let outputFile: string;
 
   beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "lage-reporter-test-"));
+    tmpDir = createTempDir({ prefix: "lage-reporter-test-" });
     outputFile = path.join(tmpDir, "profile.json");
   });
 
   afterEach(() => {
-    fs.rmSync(tmpDir, { recursive: true, force: true });
+    removeTempDir(tmpDir);
   });
 
   it("can group verbose messages, displaying summary", () => {

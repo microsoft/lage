@@ -1,4 +1,4 @@
-import { removeTempDir, setupFixture } from "backfill-utils-test";
+import { removeTempDir, setupFixture } from "@lage-run/test-utilities";
 import { getRepoInfo } from "../repoInfo.js";
 
 describe("getRepoInfo()", () => {

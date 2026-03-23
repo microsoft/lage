@@ -1,4 +1,8 @@
-import { setupFixture, removeTempDir } from "backfill-utils-test";
+import {
+  setupFixture,
+  removeTempDir,
+  type FixtureName,
+} from "@lage-run/test-utilities";
 import { parseLockFile, getPackageInfos } from "workspace-tools";
 import {
   resolveExternalDependencies,
@@ -50,7 +54,7 @@ describe("resolveExternalDependencies", () => {
   it.each<{
     manager: "yarn" | "pnpm" | "rush";
     name: string;
-    fixture: string;
+    fixture: FixtureName;
     // only specified if different than the most common case
     allDependencies?: Record<string, string>;
     expected?: DependencySpec[];
