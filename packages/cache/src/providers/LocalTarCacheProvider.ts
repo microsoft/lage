@@ -154,9 +154,7 @@ export class LocalTarCacheProvider implements CacheProvider {
       }
 
       // Write all files in parallel
-      await Promise.all(
-        entries.map((entry) => fs.promises.writeFile(path.join(target.cwd, entry.path), entry.data))
-      );
+      await Promise.all(entries.map((entry) => fs.promises.writeFile(path.join(target.cwd, entry.path), entry.data)));
 
       return true;
     } catch (error) {
