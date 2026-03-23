@@ -1,5 +1,5 @@
-import { promisify } from "util";
 import * as fs from "fs";
+import * as fsp from "fs/promises";
 import * as path from "path";
 import * as tar from "tar";
 import { globAsync } from "@lage-run/globby";
@@ -9,23 +9,54 @@ import type { Logger } from "@lage-run/logger";
 import { getCacheDirectoryRoot } from "../getCacheDirectory.js";
 import { chunkPromise } from "../chunkPromise.js";
 
-const rm = promisify(fs.rm);
-const readdir = promisify(fs.readdir);
-const stat = promisify(fs.stat);
-
 const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
 const TAR_BLOCK_SIZE = 512;
 
+/**
+ * Options for creating a {@link LocalTarCacheProvider}.
+ */
 export interface LocalTarCacheProviderOptions {
+  /**
+   * Absolute path to the monorepo root.
+   * Used to derive the cache directory (`<root>/node_modules/.cache/lage/cache/`).
+   */
   root: string;
+
+  /** Logger instance for diagnostic messages (e.g. cache miss/error details). */
   logger: Logger;
+
+  /**
+   * Default glob patterns (relative to each package's `cwd`) that identify
+   * output files to cache.  Overridden per-target by `target.outputs` when set.
+   *
+   * @example ["lib/**\/*", "dist/**\/*"]
+   * @default ["**\/*"]
+   */
   outputGlob?: string[];
 }
 
+/**
+ * In-memory representation of a single file entry within a tar archive.
+ * Used as an intermediate structure when building or parsing tar buffers.
+ */
 interface TarFileEntry {
+  /**
+   * File path relative to the package's `cwd` (posix separators, e.g. `"lib/index.js"`).
+   * This is the path stored inside the tar header and used to reconstruct
+   * the file on extraction.
+   */
   path: string;
+
+  /** Complete file contents as a raw buffer. */
   data: Buffer;
+
+  /**
+   * Unix file-mode bits (e.g. `0o644`).  Only the lower 12 bits
+   * (permission + sticky/setuid/setgid) are written to the tar header.
+   */
   mode: number;
+
+  /** Last-modified timestamp, preserved in the tar header. */
   mtime: Date;
 }
 
@@ -61,11 +92,32 @@ export class LocalTarCacheProvider implements CacheProvider {
   }
 
   /**
-   * Build a tar buffer from in-memory file entries.
+   * Build a POSIX.1-1988 (ustar) tar archive as a single buffer from in-memory
+   * file entries.
    *
-   * Uses `tar.Header` for spec-correct header encoding, then concatenates
-   * header + data + padding for every entry, finishing with the standard
-   * two-block end-of-archive marker.
+   * A tar archive is a sequence of 512-byte blocks with the following layout
+   * for each file entry:
+   *
+   *   ┌──────────────────────────────────────────────────┐
+   *   │  Header block (512 bytes)                        │
+   *   │  - file name, size, mode, mtime, checksum, etc.  │
+   *   ├──────────────────────────────────────────────────┤
+   *   │  Data blocks (⌈size / 512⌉ × 512 bytes)         │
+   *   │  - raw file contents, zero-padded to block       │
+   *   │    boundary                                      │
+   *   └──────────────────────────────────────────────────┘
+   *
+   * After all entries, two consecutive 512-byte zero blocks signal
+   * end-of-archive.
+   *
+   * Header encoding is delegated to `tar.Header` from the `node-tar` package
+   * which handles ustar field layout, octal encoding, and checksum
+   * calculation.
+   *
+   * @see https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_13_06
+   *      — POSIX pax/tar header specification
+   * @see https://www.gnu.org/software/tar/manual/html_node/Standard.html
+   *      — GNU tar documentation on the ustar header format
    */
   private buildTarBuffer(entries: TarFileEntry[]): Buffer {
     const parts: Buffer[] = [];
@@ -154,7 +206,7 @@ export class LocalTarCacheProvider implements CacheProvider {
       }
 
       // Write all files in parallel
-      await Promise.all(entries.map((entry) => fs.promises.writeFile(path.join(target.cwd, entry.path), entry.data)));
+      await Promise.all(entries.map((entry) => fsp.writeFile(path.join(target.cwd, entry.path), entry.data)));
 
       return true;
     } catch (error) {
@@ -183,7 +235,7 @@ export class LocalTarCacheProvider implements CacheProvider {
       const fileEntries: TarFileEntry[] = await Promise.all(
         files.map(async (filePath) => {
           const fullPath = path.join(target.cwd, filePath);
-          const [data, fileStat] = await Promise.all([fs.promises.readFile(fullPath), fs.promises.stat(fullPath)]);
+          const [data, fileStat] = await Promise.all([fsp.readFile(fullPath), fsp.stat(fullPath)]);
           return {
             path: filePath,
             data,
@@ -196,7 +248,7 @@ export class LocalTarCacheProvider implements CacheProvider {
       const tarBuffer = this.buildTarBuffer(fileEntries);
       const tarPath = this.getTarPath(hash);
       fs.mkdirSync(path.dirname(tarPath), { recursive: true });
-      await fs.promises.writeFile(tarPath, tarBuffer);
+      await fsp.writeFile(tarPath, tarBuffer);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       this.options.logger.silly(`Tar cache put failed: ${message}`, { target });
@@ -216,7 +268,7 @@ export class LocalTarCacheProvider implements CacheProvider {
     for (const cacheType of cacheTypes) {
       const cacheTypeDirectory = path.join(getCacheDirectoryRoot(this.options.root), cacheType);
       if (fs.existsSync(cacheTypeDirectory)) {
-        const prefixes = await readdir(cacheTypeDirectory);
+        const prefixes = await fsp.readdir(cacheTypeDirectory);
         for (const prefix of prefixes) {
           entries.push(path.join(cacheTypeDirectory, prefix));
         }
@@ -226,12 +278,12 @@ export class LocalTarCacheProvider implements CacheProvider {
     await chunkPromise(
       entries.map((entry) => {
         return async () => {
-          const entryStat = await stat(entry);
+          const entryStat = await fsp.stat(entry);
           if (now.getTime() - entryStat.mtime.getTime() > prunePeriod * MS_IN_A_DAY) {
             if (entryStat.isDirectory()) {
-              await rm(entry, { recursive: true });
+              await fsp.rm(entry, { recursive: true });
             } else {
-              await rm(entry);
+              await fsp.rm(entry);
             }
           }
         };
