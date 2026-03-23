@@ -1565,7 +1565,7 @@ __metadata:
     backfill-config: "workspace:^"
     backfill-logger: "workspace:^"
     glob-hasher: "npm:^1.4.2"
-    tar: "npm:^7.5.11"
+    tar: "npm:7.5.11"
   languageName: unknown
   linkType: soft
 
@@ -8374,7 +8374,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:^7.5.11":
+"tar@npm:7.5.11, tar@npm:^7.5.11":
   version: 7.5.11
   resolution: "tar@npm:7.5.11"
   dependencies:

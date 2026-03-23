@@ -28,7 +28,7 @@
     "backfill-config": "workspace:^",
     "backfill-logger": "workspace:^",
     "glob-hasher": "^1.4.2",
-    "tar": "^7.5.11"
+    "tar": "7.5.11"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
