@@ -36,7 +36,7 @@ export interface Target {
   task: string;
 
   /**
-   * Which runner to use for the target: e.g. `'npmScript'`, `'worker', `'noop'`
+   * Which runner to use for the target: e.g. `'npmScript'`, `'worker'`, `'noop'`
    * @default "npmScript"
    */
   type?: string;
@@ -62,7 +62,7 @@ export interface Target {
   dependents: string[];
 
   /**
-   * Priority of the target. A priority of >0 will always be prioritized over the default targets in queue.
+   * Priority of the target. A priority of \>0 will always be prioritized over the default targets in queue.
    */
   priority?: number;
 

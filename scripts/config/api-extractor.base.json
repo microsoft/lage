@@ -14,7 +14,7 @@
   "bundledPackages": [],
 
   // Choose LF or CRLF based on the OS (to match the typical git config)
-  "newlineKind": "os",
+  "newlineKind": "lf",
 
   // Configures how the API report file (*.api.md) will be generated.
   "apiReport": {
@@ -31,7 +31,7 @@
   "dtsRollup": { "enabled": false },
 
   // Disable the tsdoc-metadata.json file
-  "tsdocMetadata": { "enabled": true },
+  "tsdocMetadata": { "enabled": false },
 
   // Configures how API Extractor reports error and warning messages produced during analysis.
   "messages": {
@@ -44,6 +44,7 @@
       }
     },
     "tsdocMessageReporting": {
+      // don't require a hyphen after parameter names
       "tsdoc-param-tag-missing-hyphen": {
         "logLevel": "none"
       },

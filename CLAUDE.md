@@ -12,7 +12,8 @@ Lage ("make" in Norwegian) is a task runner for JavaScript/TypeScript monorepos.
 yarn build              # transpile + types + bundle
 yarn test               # run all tests via lage
 yarn lint               # lint all packages
-yarn ci                 # full CI: transpile, types, build, test, lint, bundle
+yarn api                # update API report files
+yarn ci                 # full CI: transpile, types, build, test, lint, bundle, api
 yarn format             # prettier --write
 yarn format:check       # prettier --check
 yarn change             # create beachball change files for versioning
@@ -49,6 +50,7 @@ cd packages/<name>
 yarn build
 yarn lint
 yarn test
+yarn api
 ```
 
 Before finalizing changes, run `yarn ci` from the root for complete build/test/lint verification.
@@ -77,9 +79,11 @@ The repo also contains the `backfill` family of packages. `backfill` is the unde
 - **`backfill-logger`** — Logging and output handling
 - **`backfill-utils-dotenv`** — Loads `.env` variables into `process.env`
 
+The **`workspace-tools`** helper library is also hosted in this repo.
+
 ### Shared tooling (`scripts/` package)
 
-`@lage-run/monorepo-scripts` (aliased as `monorepo-scripts` bin) provides shared build commands (`transpile`, `lint`, `types`, `depcheck`) used by all packages. Shared configs live in `scripts/config/` (jest, eslint, tsconfig base).
+`@lage-run/monorepo-scripts` (aliased as `monorepo-scripts` bin) provides shared build commands (`transpile`, `lint`, etc) used by all packages. Shared configs live in `scripts/config/` (jest, eslint, tsconfig base).
 
 ### Output convention
 

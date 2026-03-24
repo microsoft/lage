@@ -1,6 +1,6 @@
 import type { Config as BackfillCacheOptions, CustomStorageConfig } from "backfill-config";
 
-/** Allowed credential names matching camelCase of @azure/identity credential class names
+/** Allowed credential names matching camelCase of `@azure/identity` credential class names
  *  @see https://learn.microsoft.com/en-us/azure/developer/javascript/sdk/authentication/credential-chains
  */
 export type AzureCredentialName = "environment" | "workload-identity" | "managed-identity" | "visual-studio-code" | "azure-cli";

@@ -22,7 +22,7 @@ import type { TargetGraph } from "./types/TargetGraph.js";
  * 3. resolving package paths, etc.
  *
  * Example usage:
- *
+ * ```js
  * const targetFactory = new TargetFactor({...});
  *
  * const target1 = targetFactory.createPackageTarget("foo", "build", { ... });
@@ -38,7 +38,7 @@ import type { TargetGraph } from "./types/TargetGraph.js";
  *
  * // builds a sub-graph (partial graph starting with target1)
  * const subGraph = builder.subgraph([target1.id]);
- *
+ * ```
  */
 export class TargetGraphBuilder {
   /** A map of targets - used internally for looking up generated targets from the target configurations */

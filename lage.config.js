@@ -52,7 +52,10 @@ const config = {
       type: "noop",
       dependsOn: ["transpile", "types"],
     },
-    api: ["build"],
+    api: {
+      dependsOn: ["types"],
+      outputs: ["etc/*.api.md", "temp/*.api.md"],
+    },
     "@lage-run/globby#types": {
       type: "npmScript",
     },
@@ -103,7 +106,7 @@ const config = {
       "*.yml",
     ],
     // Subset of files in package directories that will be saved into the cache.
-    outputGlob: ["lib/**/*", "dist/**/*", ".docusaurus/**/*", "build/**/*"],
+    outputGlob: ["lib/**/*", "dist/**/*"],
   },
 };
 
