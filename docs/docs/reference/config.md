@@ -33,7 +33,7 @@ module.exports = config;
 
 ### Available properties
 
-See the source for [`ConfigOptions`](https://github.com/microsoft/lage/blob/master/packages/config/src/types/ConfigOptions.ts) and its sibling files for the complete list of available options.
+See the source for [`ConfigOptions`](https://github.com/microsoft/lage/blob/main/packages/config/src/types/ConfigOptions.ts) and its sibling files for the complete list of available options.
 
 Some options can also be set with [CLI options or environment variables](./cli).
 

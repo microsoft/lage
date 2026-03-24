@@ -5,7 +5,7 @@ name: Docs - PR
 on:
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - .github/workflows/docusaurus-pr.yml
       - "docs/**"

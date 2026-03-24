@@ -2,7 +2,7 @@
 
 Documentation: https://microsoft.github.io/lage/
 
-**Lage v2 is here!** See the [release notes](https://github.com/microsoft/lage/blob/master/packages/lage/RELEASE.md) for details about new features and breaking changes.
+**Lage v2 is here!** See the [release notes](https://github.com/microsoft/lage/blob/main/packages/lage/RELEASE.md) for details about new features and breaking changes.
 
 ## Overview
 

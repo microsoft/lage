@@ -5,6 +5,7 @@ const fs = require("fs");
 const config = {
   access: "public",
   groupChanges: true,
+  branch: "main",
   changelog: {
     groups: [
       {

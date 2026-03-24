@@ -79,7 +79,7 @@ Create a secret named "BACKFILL_CACHE_PROVIDER_OPTIONS":
 {"connectionString":"the **read-write** connection string","container":"CONTAINER NAME"}
 ```
 
-`process.env.BACKFILL_CACHE_PROVIDER_OPTIONS`is evaluated via backfill (see [`getEnvConfig()`](https://github.com/microsoft/lage/blob/master/packages/backfill-config/src/envConfig.ts#L82) in `backfill-config`).
+`process.env.BACKFILL_CACHE_PROVIDER_OPTIONS`is evaluated via backfill (see [`getEnvConfig()`](https://github.com/microsoft/lage/blob/main/packages/backfill-config/src/envConfig.ts#L82) in `backfill-config`).
 
 For "azure-blob" cache provider with a non-sas/key-based `connectionString`(storage account endpoint) requiring azure identity authentication do not use `BACKFILL_CACHE_PROVIDER_OPTIONS`, instead populate the required env variables according to the desired identity/environment. (See [Azure Idenity SDK](https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme)) and set `credentialName` property in the `lage.config.js` under `cacheOptions.cacheStorageConfig.options.credentialName` or via env var `AZURE_IDENTITY_CREDENTIAL_NAME` Supported options are:
 
@@ -99,7 +99,7 @@ Without the `LAGE_WRITE_REMOTE_CACHE` environment variable, `lage` no longer upl
 
 ### Accessing environment variables
 
-Lage picks up your `.env` file contents using [`dotenv`](https://www.npmjs.com/package/dotenv) utility under the hood (see [`backfill-utils-dotenv` implementation](https://github.com/microsoft/lage/blob/master/packages/backfill-utils-dotenv/README.md)).
+Lage picks up your `.env` file contents using [`dotenv`](https://www.npmjs.com/package/dotenv) utility under the hood (see [`backfill-utils-dotenv` implementation](https://github.com/microsoft/lage/blob/main/packages/backfill-utils-dotenv/README.md)).
 
 Need to access environment variables from the `.env` file in your application? You would need to setup a mechanism to inject them. Try using utilities like `dotenv` (for Node.js) or [`env-cmd`](https://www.npmjs.com/package/env-cmd) (for executing commands).
 

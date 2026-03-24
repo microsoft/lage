@@ -82,7 +82,7 @@ Scoped to "package-a" and "package-b" only:
 
 Scoped to packages that have changed in the current branch against a target merge branch:
 
-    lage build test lint --since origin/master
+    lage build test lint --since origin/main
 
 #### Providing node.js arguments for each command
 
@@ -116,7 +116,7 @@ Or combine multiple reporters (e.g. Azure DepOps with VerboseFileLog)
 
 Ignoring files when calculating the scope with --since in addition to files specified in lage.config:
 
-    lage build test lint --since origin/master --ignore "package.json" "yarn.lock" "**/.azure-pipelines/**"
+    lage build test lint --since origin/main --ignore "package.json" "yarn.lock" "**/.azure-pipelines/**"
 
 ---
 
