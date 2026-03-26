@@ -206,5 +206,23 @@ describe("LocalCacheStorage", () => {
         filesToCache: [".react-router/types/route.d.ts"],
       });
     });
+
+    it("will cache and restore dotfiles inside output directories", async () => {
+      await putInCache({
+        fixtureName: "basic",
+        hash: "dotfile-in-subdir-test-hash",
+        outputGlob: ["dist/**/*"],
+        filesToCache: ["dist/.vite/manifest.json"],
+      });
+    });
+
+    it("will cache and restore dotfiles when using releaseDeployment/**/*", async () => {
+      await putInCache({
+        fixtureName: "basic",
+        hash: "dotfile-releasedeployment-test-hash",
+        outputGlob: ["releaseDeployment/**/*"],
+        filesToCache: ["releaseDeployment/public/.vite/manifest.json"],
+      });
+    });
   });
 });
