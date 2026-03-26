@@ -90,6 +90,8 @@ export class ProgressReporter implements Reporter {
 
           case "success":
             reporterTask.complete({ status: "complete" });
+            // Free log entries — only needed for failure reporting at summary time
+            this.logEntries.delete(target.id);
             break;
 
           case "aborted":
@@ -98,6 +100,8 @@ export class ProgressReporter implements Reporter {
 
           case "skipped":
             reporterTask.complete({ status: "skip" });
+            // Free log entries — only needed for failure reporting at summary time
+            this.logEntries.delete(target.id);
             break;
 
           case "failed":

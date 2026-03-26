@@ -88,6 +88,11 @@ export class BasicReporter implements Reporter {
       taskData.status = data.status;
       if (isCompletionStatus(data.status)) {
         this.reportCompletion({ target: data.target, status: data.status, duration: data.duration });
+
+        // Free log entries for non-failed completed targets (only needed for failure reporting at summary time)
+        if (data.status === "success" || data.status === "skipped") {
+          taskData.logEntries = [];
+        }
       }
     }
   }

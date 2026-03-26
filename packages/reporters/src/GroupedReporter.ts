@@ -79,7 +79,14 @@ export abstract class GroupedReporter implements Reporter {
         return this.logTargetEntryByGroup(entry);
       }
 
-      return this.logTargetEntry(entry);
+      const result = this.logTargetEntry(entry);
+
+      // Free log entries for non-failed completed targets when not in grouped mode
+      if (entry.data?.target && isTargetStatusLogEntry(entry.data) && (entry.data.status === "success" || entry.data.status === "skipped")) {
+        this.logEntries.delete(entry.data.target.id);
+      }
+
+      return result;
     }
   }
 
@@ -154,6 +161,14 @@ export abstract class GroupedReporter implements Reporter {
         }
 
         this.logStream.write(this.formatGroupEnd());
+
+        // Free grouped entries now that they've been flushed
+        this.groupedEntries.delete(id);
+
+        // Free log entries for non-failed completed targets (only needed for failure reporting at summary time)
+        if (data.status === "success" || data.status === "skipped") {
+          this.logEntries.delete(id);
+        }
       }
     }
   }

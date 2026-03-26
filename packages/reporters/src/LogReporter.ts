@@ -114,7 +114,15 @@ export class LogReporter implements Reporter {
 
     // log normal target entries
     if (entry.data && entry.data.target) {
-      return this.logTargetEntry(entry);
+      this.logTargetEntry(entry);
+
+      // Free log entries for non-failed completed targets (they've already been written out
+      // and are only needed again for failure reporting at summary time)
+      if (isTargetStatusLogEntry(entry.data) && (entry.data.status === "success" || entry.data.status === "skipped")) {
+        this.logEntries.delete(entry.data.target.id);
+      }
+
+      return;
     }
 
     // log generic entries (not related to target)
@@ -189,6 +197,12 @@ export class LogReporter implements Reporter {
 
       if (entries.length > 2) {
         this.hr();
+      }
+
+      // Free log entries for non-failed completed targets (they've already been output
+      // and are only needed again for failure reporting at summary time)
+      if (data.status === "success" || data.status === "skipped") {
+        this.logEntries.delete(id);
       }
     }
   }

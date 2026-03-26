@@ -177,6 +177,9 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
         this.onComplete();
       }
 
+      // Release stdout/stderr buffer strings now that cache writing / replay is done
+      this.#result = { ...this.#result, stdoutBuffer: "", stderrBuffer: "" };
+
       return this.#result;
     } catch (e) {
       if (e instanceof Error) {
@@ -261,7 +264,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
       target.priority
     ) as Promise<{ value?: unknown; skipped: boolean; hash: string; id: string }>);
 
-    return {
+    const workerResult: WorkerResult = {
       stdoutBuffer: bufferStdout.buffer,
       stderrBuffer: bufferStderr.buffer,
       skipped: result?.skipped,
@@ -269,6 +272,12 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
       value: result?.value,
       id: result?.id,
     };
+
+    // Release the chunks arrays and destroy the transform streams now that we've extracted the buffer contents
+    bufferStdout.destroy();
+    bufferStderr.destroy();
+
+    return workerResult;
   }
 
   /**

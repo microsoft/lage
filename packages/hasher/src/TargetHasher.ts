@@ -48,7 +48,6 @@ export interface TargetManifest {
  * It uses `glob-hasher` internally.
  */
 export class TargetHasher {
-  private targetHashesLog: Record<string, { fileHashes: Record<string, string>; globalFileHashes: Record<string, string> }> = {};
   private targetHashesDirectory: string;
 
   private logger: Logger | undefined;
@@ -195,19 +194,18 @@ export class TargetHasher {
 
     this.targetHashes[target.id] = hashString;
 
-    this.targetHashesLog[target.id] = { fileHashes, globalFileHashes };
+    // Write hash log to disk immediately to avoid accumulating large objects in memory
+    this.writeTargetHashLog(target.id, fileHashes, globalFileHashes);
 
     return hashString;
   }
 
-  private writeTargetHashesManifest(): void {
-    for (const [id, { fileHashes, globalFileHashes }] of Object.entries(this.targetHashesLog)) {
-      const targetHashesManifestPath = path.join(this.targetHashesDirectory, `${id}.json`);
-      if (!fs.existsSync(path.dirname(targetHashesManifestPath))) {
-        fs.mkdirSync(path.dirname(targetHashesManifestPath), { recursive: true });
-      }
-      fs.writeFileSync(targetHashesManifestPath, JSON.stringify({ fileHashes, globalFileHashes }), "utf-8");
+  private writeTargetHashLog(id: string, fileHashes: Record<string, string>, globalFileHashes: Record<string, string>): void {
+    const targetHashesManifestPath = path.join(this.targetHashesDirectory, `${id}.json`);
+    if (!fs.existsSync(path.dirname(targetHashesManifestPath))) {
+      fs.mkdirSync(path.dirname(targetHashesManifestPath), { recursive: true });
     }
+    fs.writeFileSync(targetHashesManifestPath, JSON.stringify({ fileHashes, globalFileHashes }), "utf-8");
   }
 
   private async getEnvironmentGlobHashes(root: string, target: Target): Promise<Record<string, string>> {
@@ -219,7 +217,6 @@ export class TargetHasher {
   }
 
   public cleanup(): void {
-    this.writeTargetHashesManifest();
     this.fileHasher.writeManifest();
   }
 }
