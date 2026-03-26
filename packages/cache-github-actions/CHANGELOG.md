@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache-github-actions
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 26 Mar 2026 19:53:28 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.1.31
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Patches
+
+- Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
 
 ## 0.1.30
 

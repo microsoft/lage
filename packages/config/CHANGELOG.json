@@ -2,6 +2,27 @@
   "name": "@lage-run/config",
   "entries": [
     {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "0.9.2",
+      "tag": "@lage-run/config_v0.9.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Use version of workspace-tools published from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Mar 2026 23:52:35 GMT",
       "version": "0.9.1",
       "tag": "@lage-run/config_v0.9.1",

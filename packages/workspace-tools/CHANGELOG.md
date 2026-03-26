@@ -1,8 +1,17 @@
 # Change Log - workspace-tools
 
-<!-- This log was last generated on Tue, 03 Feb 2026 19:35:32 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 26 Mar 2026 19:53:28 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.41.1
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Patches
+
+- Publish workspace-tools from lage repo (elcraig@microsoft.com)
+- Clarify comments and deprecate findWorkspacePath (elcraig@microsoft.com)
 
 ## 0.41.0
 

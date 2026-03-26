@@ -1,8 +1,16 @@
 # Change Log - @lage-run/rpc
 
-<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 26 Mar 2026 19:53:28 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.4
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Patches
+
+- Address promise lint issues (elcraig@microsoft.com)
 
 ## 1.4.3
 

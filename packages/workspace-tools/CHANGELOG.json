@@ -2,6 +2,27 @@
   "name": "workspace-tools",
   "entries": [
     {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "0.41.1",
+      "tag": "workspace-tools_v0.41.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Publish workspace-tools from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Clarify comments and deprecate findWorkspacePath"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 03 Feb 2026 19:35:32 GMT",
       "version": "0.41.0",
       "tag": "workspace-tools_v0.41.0",

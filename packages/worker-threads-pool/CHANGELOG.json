@@ -2,6 +2,21 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "0.9.4",
+      "tag": "@lage-run/worker-threads-pool_v0.9.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 10 Feb 2026 22:12:02 GMT",
       "version": "0.9.3",
       "tag": "@lage-run/worker-threads-pool_v0.9.3",

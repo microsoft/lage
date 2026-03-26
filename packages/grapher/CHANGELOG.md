@@ -1,8 +1,16 @@
-# Change Log - @ws-tools/grapher
+# Change Log - @lage-run/grapher
 
-<!-- This log was last generated on Tue, 03 Feb 2026 19:35:32 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 26 Mar 2026 19:53:28 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.2.20
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Patches
+
+- Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
 
 ## 0.2.19
 

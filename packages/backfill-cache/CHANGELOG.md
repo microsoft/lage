@@ -1,8 +1,20 @@
 # Change Log - backfill-cache
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 26 Mar 2026 19:53:28 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 5.12.0
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Minor changes
+
+- Start caching more subfolders with dots in the name, fixing issues internal repos were having with .vite and the lage cache (1581488+christiango@users.noreply.github.com)
+
+### Patches
+
+- Address promise lint issues (elcraig@microsoft.com)
 
 ## 5.11.4
 

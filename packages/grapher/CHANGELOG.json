@@ -1,6 +1,21 @@
 {
-  "name": "@ws-tools/grapher",
+  "name": "@lage-run/grapher",
   "entries": [
+    {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "0.2.20",
+      "tag": "@lage-run/grapher_v0.2.20",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/grapher",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Use version of workspace-tools published from lage repo"
+          }
+        ]
+      }
+    },
     {
       "date": "Tue, 03 Feb 2026 19:35:32 GMT",
       "version": "0.2.19",

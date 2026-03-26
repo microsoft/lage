@@ -1,8 +1,50 @@
 # Change Log - lage
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 26 Mar 2026 19:53:28 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.15.2
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Minor changes
+
+- `@lage-run/cli`
+  - Start caching more subfolders with dots in the name, fixing issues internal repos were having with .vite and the lage cache (1581488+christiango@users.noreply.github.com)
+
+### Patches
+
+- `@lage-run/cache-github-actions`
+  - Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
+- `@lage-run/cli`
+  - Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
+  - Address promise lint issues (elcraig@microsoft.com)
+  - Update "master" references to "main" (elcraig@microsoft.com)
+- `@lage-run/config`
+  - Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
+  - Address promise lint issues (elcraig@microsoft.com)
+- `@lage-run/grapher`
+  - Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
+- `@lage-run/hasher`
+  - Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
+  - Address promise lint issues (elcraig@microsoft.com)
+- `@lage-run/target-graph`
+  - Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
+  - Address promise lint issues (elcraig@microsoft.com)
+- `workspace-tools`
+  - Publish workspace-tools from lage repo (elcraig@microsoft.com)
+  - Clarify comments and deprecate findWorkspacePath (elcraig@microsoft.com)
+- `@lage-run/scheduler`
+  - Address promise lint issues (elcraig@microsoft.com)
+- `@lage-run/rpc`
+  - Address promise lint issues (elcraig@microsoft.com)
+- `@lage-run/runners`
+  - Address promise lint issues (elcraig@microsoft.com)
+- `@lage-run/worker-threads-pool`
+  - Address promise lint issues (elcraig@microsoft.com)
+- `lage`
+  - Update "master" references to "main" (elcraig@microsoft.com)
 
 ## 2.15.1
 

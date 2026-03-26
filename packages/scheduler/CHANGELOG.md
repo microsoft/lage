@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 26 Mar 2026 19:53:28 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.5.21
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Patches
+
+- Address promise lint issues (elcraig@microsoft.com)
 
 ## 1.5.20
 
