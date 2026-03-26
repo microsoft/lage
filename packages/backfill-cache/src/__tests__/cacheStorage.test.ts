@@ -101,15 +101,23 @@ describe("getCacheStorage", () => {
     await storage.fetch(hash);
 
     // Create output with a dotfolder (like .vite/manifest.json)
-    fs.mkdirSync(path.join(dir, "dist", "public", ".vite"), { recursive: true });
-    fs.writeFileSync(path.join(dir, "dist", "public", ".vite", "manifest.json"), "{}");
+    fs.mkdirSync(path.join(dir, "dist", "public", ".vite"), {
+      recursive: true,
+    });
+    fs.writeFileSync(
+      path.join(dir, "dist", "public", ".vite", "manifest.json"),
+      "{}"
+    );
     fs.writeFileSync(path.join(dir, "dist", "public", "index.html"), "<html/>");
 
     await storage.put(hash, ["dist/**/*"]);
 
     // Both the regular file and the dotfile should be cached
     expect(storage.filesToCache).toEqual(
-      expect.arrayContaining(["dist/public/.vite/manifest.json", "dist/public/index.html"])
+      expect.arrayContaining([
+        "dist/public/.vite/manifest.json",
+        "dist/public/index.html",
+      ])
     );
   });
 

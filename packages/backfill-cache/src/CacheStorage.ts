@@ -12,7 +12,10 @@ const savedHashes: Map<string, Map<string, string>> = new Map();
 async function getHashesFor(cwd: string): Promise<Map<string, string>> {
   const result = new Map<string, string>();
 
-  const allFiles = await globAsync(["**/*", "!node_modules"], { cwd, dot: true });
+  const allFiles = await globAsync(["**/*", "!node_modules"], {
+    cwd,
+    dot: true,
+  });
   //globby returns relative path with posix file separator
   await Promise.all(
     allFiles.map(async (f) => {
