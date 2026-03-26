@@ -202,8 +202,9 @@ export class TargetHasher {
 
   private writeTargetHashLog(id: string, fileHashes: Record<string, string>, globalFileHashes: Record<string, string>): void {
     const targetHashesManifestPath = path.join(this.targetHashesDirectory, `${id}.json`);
-    if (!fs.existsSync(path.dirname(targetHashesManifestPath))) {
-      fs.mkdirSync(path.dirname(targetHashesManifestPath), { recursive: true });
+    const dir = path.dirname(targetHashesManifestPath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
     fs.writeFileSync(targetHashesManifestPath, JSON.stringify({ fileHashes, globalFileHashes }), "utf-8");
   }
