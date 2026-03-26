@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Start caching more subfolders with dots in the name, fixing issues internal repos were having with .vite and the lage cache",
+      "packageName": "backfill-cache",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Start caching more subfolders with dots in the name, fixing issues internal repos were having with .vite and the lage cache",
+      "packageName": "@lage-run/cli",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
