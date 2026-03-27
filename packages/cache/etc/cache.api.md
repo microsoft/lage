@@ -48,13 +48,13 @@ export interface CacheProvider {
     put(hash: string, target: Target): Promise<void>;
 }
 
-// @public (undocumented)
+// @public
 export function getCacheDirectory(root: string, hash: string): string;
 
-// @public (undocumented)
+// @public
 export function getCacheDirectoryRoot(root: string): string;
 
-// @public (undocumented)
+// @public
 export function getLogsCacheDirectory(root: string, hash: string): string;
 
 // @public

@@ -4,6 +4,7 @@ import path from "path";
 import lockfile from "proper-lockfile";
 import execa from "execa";
 import { getBinScripts } from "../getBinPaths.js";
+import { getCacheDirectoryRoot } from "@lage-run/cache";
 
 export interface LaunchServerInBackgroundOptions {
   logger: Logger;
@@ -26,7 +27,7 @@ export async function launchServerInBackground({
   args,
   nodeArg,
 }: LaunchServerInBackgroundOptions): Promise<void> {
-  const lockfilePath = path.join(root, `node_modules/.cache/lage/.lage-server-${host}-${port}.pid`);
+  const lockfilePath = path.join(getCacheDirectoryRoot(root), `.lage-server-${host}-${port}.pid`);
 
   logger.info(`Starting server on http://${host}:${port}`);
   logger.info(`acquiring lock: ${lockfilePath}`);

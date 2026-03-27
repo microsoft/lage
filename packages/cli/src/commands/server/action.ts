@@ -6,6 +6,8 @@ import { createServer } from "@lage-run/rpc";
 import { parseServerOption } from "../parseServerOption.js";
 import { getConfig } from "@lage-run/config";
 import { getWorkspaceManagerRoot } from "workspace-tools";
+import path from "path";
+import { getCacheDirectoryRoot } from "@lage-run/cache";
 
 interface WorkerOptions extends ReporterInitOptions {
   nodeArg?: string[];
@@ -25,7 +27,7 @@ export async function serverAction(options: WorkerOptions): Promise<void> {
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
-  options.logFile = options.logFile ?? "node_modules/.cache/lage/server.log";
+  options.logFile = options.logFile ?? path.join(getCacheDirectoryRoot(root), "server.log");
   options.reporter = options.reporter ?? "verboseFileLog";
   await initializeReporters(logger, options, { customReporters: config.reporters, root });
 

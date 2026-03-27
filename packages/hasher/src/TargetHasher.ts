@@ -1,9 +1,7 @@
 import type { Logger } from "@lage-run/logger";
 import type { Target } from "@lage-run/target-graph";
 import { resolveExternalDependencies } from "backfill-hasher";
-import fs from "fs";
 import { hash } from "glob-hasher";
-import path from "path";
 import {
   createDependencyMap,
   type DependencyMap,
@@ -48,9 +46,6 @@ export interface TargetManifest {
  * It uses `glob-hasher` internally.
  */
 export class TargetHasher {
-  private targetHashesLog: Record<string, { fileHashes: Record<string, string>; globalFileHashes: Record<string, string> }> = {};
-  private targetHashesDirectory: string;
-
   private logger: Logger | undefined;
   private fileHasher: FileHasher;
   public packageTree: PackageTree | undefined;
@@ -74,12 +69,6 @@ export class TargetHasher {
     this.fileHasher = new FileHasher({
       root,
     });
-
-    this.targetHashesDirectory = path.join(root, "node_modules", ".cache", "lage", "hashes");
-
-    if (!fs.existsSync(this.targetHashesDirectory)) {
-      fs.mkdirSync(this.targetHashesDirectory, { recursive: true });
-    }
   }
 
   private ensureInitialized(): void {
@@ -195,31 +184,18 @@ export class TargetHasher {
 
     this.targetHashes[target.id] = hashString;
 
-    this.targetHashesLog[target.id] = { fileHashes, globalFileHashes };
-
     return hashString;
-  }
-
-  private writeTargetHashesManifest(): void {
-    for (const [id, { fileHashes, globalFileHashes }] of Object.entries(this.targetHashesLog)) {
-      const targetHashesManifestPath = path.join(this.targetHashesDirectory, `${id}.json`);
-      if (!fs.existsSync(path.dirname(targetHashesManifestPath))) {
-        fs.mkdirSync(path.dirname(targetHashesManifestPath), { recursive: true });
-      }
-      fs.writeFileSync(targetHashesManifestPath, JSON.stringify({ fileHashes, globalFileHashes }), "utf-8");
-    }
   }
 
   private async getEnvironmentGlobHashes(root: string, target: Target): Promise<Record<string, string>> {
     const globalFileHashes = target.environmentGlob
-      ? this.fileHasher.hash(await globAsyncCached(target.environmentGlob ?? [], { cwd: root }))
+      ? this.fileHasher.hash(await globAsyncCached(target.environmentGlob, { cwd: root }))
       : (this.globalInputsHash ?? {});
 
     return globalFileHashes;
   }
 
   public cleanup(): void {
-    this.writeTargetHashesManifest();
     this.fileHasher.writeManifest();
   }
 }

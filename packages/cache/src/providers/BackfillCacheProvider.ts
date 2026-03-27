@@ -8,7 +8,7 @@ import type { CacheOptions } from "@lage-run/config";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { Target } from "@lage-run/target-graph";
 import type { Logger } from "@lage-run/logger";
-import { getCacheDirectory, getCacheDirectoryRoot } from "../getCacheDirectory.js";
+import { getCacheDirectory, getHashCacheDirectories } from "../getCacheDirectory.js";
 import { chunkPromise } from "../chunkPromise.js";
 
 const rm = promisify(fs.rm);
@@ -98,16 +98,14 @@ export class BackfillCacheProvider implements CacheProvider {
   public async purge(prunePeriod = 30, concurrency = 10): Promise<void> {
     const now = new Date();
 
-    const cacheTypes = ["cache", "logs"];
+    const directories = getHashCacheDirectories(this.options.root);
     const entries: string[] = [];
 
-    for (const cacheType of cacheTypes) {
-      const cacheTypeDirectory = path.join(getCacheDirectoryRoot(this.options.root), cacheType);
+    for (const cacheTypeDirectory of [directories.cache, directories.logs]) {
       if (fs.existsSync(cacheTypeDirectory)) {
         const hashPrefixes = await readdir(cacheTypeDirectory);
         for (const prefix of hashPrefixes) {
-          const cachePath = path.join(cacheTypeDirectory, prefix);
-          entries.push(cachePath);
+          entries.push(path.join(cacheTypeDirectory, prefix));
         }
       }
     }
