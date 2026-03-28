@@ -13,6 +13,13 @@
       "packageName": "@lage-run/globby",
       "email": "1581488+christiango@users.noreply.github.com",
       "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Use uncached globby for clearing output files",
+      "packageName": "backfill",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
     }
   ]
 }
