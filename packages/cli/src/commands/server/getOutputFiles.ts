@@ -9,7 +9,7 @@ export function getOutputFiles(root: string, target: Target, outputGlob: CacheOp
   const patterns = target.outputs ?? outputGlob ?? ["**/*"];
 
   const sourceControlledFiles = new Set(packageTree.getPackageFiles(target.packageName ?? "", patterns));
-  const outputs = glob(patterns, { cwd: target.cwd, gitignore: false })
+  const outputs = glob(patterns, { cwd: target.cwd, gitignore: false, dot: true })
     .map((file) => path.relative(root, path.join(target.cwd, file)))
     .filter((file) => !sourceControlledFiles.has(file));
 
