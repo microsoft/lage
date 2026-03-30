@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Fix bug introduced where globby results were being cached",
+      "packageName": "backfill-cache",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Fix bug introduced where globby results were being cached",
+      "packageName": "@lage-run/globby",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Use uncached globby for clearing output files",
+      "packageName": "backfill",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

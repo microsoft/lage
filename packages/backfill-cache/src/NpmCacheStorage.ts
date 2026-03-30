@@ -1,7 +1,7 @@
 import path from "path";
 import execa from "execa";
 import fs from "fs-extra";
-import { globAsync } from "@lage-run/globby";
+import { globAsyncUncached } from "@lage-run/globby";
 
 import type { NpmCacheStorageOptions } from "backfill-config";
 import type { Logger } from "backfill-logger";
@@ -69,7 +69,7 @@ export class NpmCacheStorage extends CacheStorage {
       }
     }
 
-    const files = await globAsync([`**/*`], {
+    const files = await globAsyncUncached([`**/*`], {
       cwd: packageFolderInTemporaryFolder,
     });
 

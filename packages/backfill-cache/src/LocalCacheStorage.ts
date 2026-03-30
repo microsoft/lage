@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs-extra";
-import { globAsync } from "@lage-run/globby";
+import { globAsyncUncached } from "@lage-run/globby";
 
 import type { Logger } from "backfill-logger";
 import { CacheStorage } from "./CacheStorage.js";
@@ -26,7 +26,7 @@ export class LocalCacheStorage extends CacheStorage {
       return false;
     }
 
-    const files = await globAsync([`**/*`], {
+    const files = await globAsyncUncached([`**/*`], {
       cwd: localCacheFolder,
       dot: true,
     });

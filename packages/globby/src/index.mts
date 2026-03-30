@@ -22,4 +22,16 @@ export function glob(patterns: string[], options?: Options): string[] {
   return cache.get(key) || [];
 }
 
+/**
+ * Uncached variants — use these when the file system may change between calls
+ * (e.g. cache storage collecting build outputs after a task runs).
+ */
+export async function globAsyncUncached(patterns: string[], options?: Options): Promise<string[]> {
+  return globby(patterns, options);
+}
+
+export function globUncached(patterns: string[], options?: Options): string[] {
+  return globbySync(patterns, options);
+}
+
 export type { Options };
