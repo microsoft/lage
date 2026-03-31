@@ -25,7 +25,7 @@ async function depcheckWorker({ target }) {
   const results = await depcheck(target.cwd, {
     ignoreBinPackage: false,
     ignorePatterns: ["node_modules", "dist", "lib", "build"],
-    ignoreMatches: ["glob-hasher", ...(extraIgnoreMatches[target.packageName] || [])],
+    ignoreMatches: ["glob-hasher", "@jest/globals", ...(extraIgnoreMatches[target.packageName] || [])],
   });
 
   let hasErrors = false;
