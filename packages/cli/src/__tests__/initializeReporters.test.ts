@@ -7,6 +7,8 @@ import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
 
 jest.mock("is-interactive", () => jest.fn(() => true));
 
+// Use require() instead of import so that modules are loaded after jest.mock() registers the mock.
+// @swc/jest does not hoist jest.mock() above imports when jest is imported from @jest/globals.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const isInteractive = require("is-interactive") as jest.Mock;
 // eslint-disable-next-line @typescript-eslint/no-require-imports

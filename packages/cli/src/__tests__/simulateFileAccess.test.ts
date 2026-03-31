@@ -6,6 +6,8 @@ import path from "path";
 
 jest.mock("fs");
 
+// Use require() instead of import so that modules are loaded after jest.mock() registers the mock.
+// @swc/jest does not hoist jest.mock() above imports when jest is imported from @jest/globals.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const fs = require("fs") as typeof import("fs");
 // eslint-disable-next-line @typescript-eslint/no-require-imports
