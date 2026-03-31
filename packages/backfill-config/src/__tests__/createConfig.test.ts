@@ -69,7 +69,7 @@ describe("getSearchPaths()", () => {
 
 describe("createConfig()", () => {
   const originalEnv = process.env;
-  const logger = makeLogger("info");
+  const logger = makeLogger("mute");
   let packageRoot = "";
 
   beforeEach(() => {

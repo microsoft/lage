@@ -3,7 +3,7 @@ import createLogger from "@lage-run/logger";
 import { Monorepo } from "@lage-run/test-utilities";
 import type { Target } from "@lage-run/target-graph";
 import path from "path";
-import fs from "fs";
+import fs from "fs-extra";
 import { PassThrough } from "stream";
 import { buffer } from "stream/consumers";
 import { makeAzureStorageClientMocks } from "@lage-run/test-utilities";

@@ -12,7 +12,7 @@ describe("getCacheStorageProvider", () => {
         provider: "local-skip",
       },
       "test",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd"
     );
     const p2 = getCacheStorageProvider(
@@ -20,7 +20,7 @@ describe("getCacheStorageProvider", () => {
         provider: "local",
       },
       "test",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd"
     );
     const p3 = getCacheStorageProvider(
@@ -28,7 +28,7 @@ describe("getCacheStorageProvider", () => {
         provider: "local-skip",
       },
       "test",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd2"
     );
     const p4 = getCacheStorageProvider(
@@ -36,7 +36,7 @@ describe("getCacheStorageProvider", () => {
         provider: "local-skip",
       },
       "test",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd"
     );
     const p5 = getCacheStorageProvider(
@@ -44,7 +44,7 @@ describe("getCacheStorageProvider", () => {
         provider: "local-skip",
       },
       "test2",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd"
     );
 
@@ -59,7 +59,7 @@ describe("getCacheStorageProvider", () => {
         provider: "local",
       },
       "test",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd"
     );
 
@@ -76,7 +76,7 @@ describe("getCacheStorageProvider", () => {
         },
       },
       "test",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd"
     );
 
@@ -109,7 +109,7 @@ describe("getCacheStorageProvider", () => {
         name: "test-provider",
       },
       "test",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd"
     );
 

@@ -39,7 +39,7 @@ describe("CacheStorage glob staleness", () => {
     // outputGlob and cwd (e.g. a transpile and preTranspile step),
     // the second put() must see the new files — not a stale cached result
     // from the first put().
-    const logger = makeLogger("silly");
+    const logger = makeLogger("mute");
     const dir = getTempDir();
     const libDir = path.join(dir, "lib");
     fs.mkdirSync(libDir);
@@ -73,7 +73,7 @@ describe("CacheStorage glob staleness", () => {
     //   - outputGlob returns stale results (task 1's files)
     //   - getHashesFor returns stale snapshot (empty dir)
     //   → second put() caches task 1's file instead of task 2's new file
-    const logger = makeLogger("silly");
+    const logger = makeLogger("mute");
     const dir = getTempDir();
     const libDir = path.join(dir, "lib");
     fs.mkdirSync(libDir);

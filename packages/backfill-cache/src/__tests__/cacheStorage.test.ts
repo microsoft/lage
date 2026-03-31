@@ -29,7 +29,7 @@ function getTempDir() {
 
 describe("getCacheStorage", () => {
   test("only cache files that have changed", async () => {
-    const logger = makeLogger("silly");
+    const logger = makeLogger("mute");
     const dir = getTempDir();
     const storage = new MockLocalCacheStorage(logger, dir);
 
@@ -55,7 +55,7 @@ describe("getCacheStorage", () => {
   });
 
   test("caches new files", async () => {
-    const logger = makeLogger("silly");
+    const logger = makeLogger("mute");
     const dir = getTempDir();
     const storage = new MockLocalCacheStorage(logger, dir);
 
@@ -74,7 +74,7 @@ describe("getCacheStorage", () => {
   });
 
   test("does not cache file re-written", async () => {
-    const logger = makeLogger("silly");
+    const logger = makeLogger("mute");
     const dir = getTempDir();
     const storage = new MockLocalCacheStorage(logger, dir);
 
@@ -93,7 +93,7 @@ describe("getCacheStorage", () => {
   });
 
   test("caches dotfiles in subdirectories matched by outputGlob", async () => {
-    const logger = makeLogger("silly");
+    const logger = makeLogger("mute");
     const dir = getTempDir();
     const storage = new MockLocalCacheStorage(logger, dir);
 
@@ -123,7 +123,7 @@ describe("getCacheStorage", () => {
   });
 
   test("caches dotfiles when outputGlob uses **/*", async () => {
-    const logger = makeLogger("silly");
+    const logger = makeLogger("mute");
     const dir = getTempDir();
     const storage = new MockLocalCacheStorage(logger, dir);
 

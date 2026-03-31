@@ -310,7 +310,7 @@ describe("AzureBlobCacheStorage", () => {
       expect(capturedTar.length).toBeGreaterThan(0);
 
       // --- delete output (simulate clean checkout) ---
-      fs.rmSync(path.join(cwd, "lib"), { recursive: true });
+      fs.rmSync(path.join(cwd, "lib"), { recursive: true, force: true });
 
       // --- fetch (hit — replay the captured tar) ---
       blobClient.download.mockResolvedValueOnce({
