@@ -1,13 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { Logger, type Reporter } from "@lage-run/logger";
 import { AdoReporter, BasicReporter, ChromeTraceEventsReporter, GithubActionsReporter, LogReporter } from "@lage-run/reporters";
-import isInteractive from "is-interactive";
 import path from "path";
 import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
-import { initializeReporters } from "../commands/initializeReporters.js";
 import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
 
 jest.mock("is-interactive", () => jest.fn(() => true));
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const isInteractive = require("is-interactive") as jest.Mock;
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { initializeReporters } = require("../commands/initializeReporters.js") as typeof import("../commands/initializeReporters.js");
 
 // The tests for custom reporters are in customReporter.test.ts
 describe("initializeReporters", () => {
@@ -65,7 +68,7 @@ describe("initializeReporters", () => {
   });
 
   it("should initialize old reporter when shell is not interactive", async () => {
-    (isInteractive as jest.Mock).mockReturnValueOnce(false);
+    isInteractive.mockReturnValueOnce(false);
     const logger = new Logger();
     reporters = await initializeReporters(logger, { ...options }, undefined);
 

@@ -1,11 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { Logger } from "@lage-run/logger";
-import fs, { type Stats } from "fs";
+import type { Stats } from "fs";
 import os from "os";
 import path from "path";
-import { simulateFileAccess } from "../commands/exec/simulateFileAccess.js";
 
 jest.mock("fs");
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const fs = require("fs") as typeof import("fs");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { simulateFileAccess } = require("../commands/exec/simulateFileAccess.js") as typeof import("../commands/exec/simulateFileAccess.js");
 
 // Mock the logger
 const mockSilly = jest.fn();
