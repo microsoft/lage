@@ -13,7 +13,6 @@
     "@swc/core": "^1.9.1",
     "@swc/jest": "^0.2.39",
     "@types/eslint": "^8.0.0",
-    "@types/jest": "^30.0.0",
     "@types/node": "^16.18.3",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",

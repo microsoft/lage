@@ -6,8 +6,9 @@ import path from "path";
 
 jest.mock("fs");
 
-// Use require() instead of import so that modules are loaded after jest.mock() registers the mock.
 // @swc/jest does not hoist jest.mock() above imports when jest is imported from @jest/globals.
+// NOTE: Once lage uses ESM, this should be replaced with jest.unstable_mockModule()
+// and await import(...).
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const fs = require("fs") as typeof import("fs");
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -27,11 +28,11 @@ const mockLogger = new MockLogger();
 
 describe("simulateFileAccess", () => {
   let mockRoot: string;
-  let mockOpenSync: jest.SpiedFunction<(...args: any[]) => any>;
-  let mockReadSync: jest.SpiedFunction<(...args: any[]) => any>;
-  let mockCloseSync: jest.SpiedFunction<(...args: any[]) => any>;
-  let mockReaddirSync: jest.SpiedFunction<(...args: any[]) => any>;
-  let mockUtimesSync: jest.SpiedFunction<(...args: any[]) => any>;
+  let mockOpenSync: jest.SpiedFunction<typeof fs.openSync>;
+  let mockReadSync: jest.SpiedFunction<typeof fs.readSync>;
+  let mockCloseSync: jest.SpiedFunction<typeof fs.closeSync>;
+  let mockReaddirSync: jest.SpiedFunction<typeof fs.readdirSync>;
+  let mockUtimesSync: jest.SpiedFunction<typeof fs.utimesSync>;
 
   beforeEach(() => {
     mockRoot = path.join(os.tmpdir(), "lage-test-root");

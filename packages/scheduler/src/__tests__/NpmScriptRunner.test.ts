@@ -29,8 +29,9 @@ jest.mock("child_process", () => {
   };
 });
 
-// Use require() instead of import so that the module is loaded after jest.mock() registers the mock.
 // @swc/jest does not hoist jest.mock() above imports when jest is imported from @jest/globals.
+// NOTE: Once lage uses ESM, this should be replaced with jest.unstable_mockModule()
+// and await import(...).
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { NpmScriptRunner } = require("@lage-run/runners") as typeof import("@lage-run/runners");
 
