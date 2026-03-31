@@ -7,8 +7,7 @@ const { existsSync } = require("fs");
 let oldProgram;
 
 /**
- * This worker is used for `lage run types`, in place of the per-package `types` script
- * (except for `@lage-run/globby`, which per lage.config.js uses its custom `types` script).
+ * This worker is used for `lage run types`, in place of the per-package `types` script.
  *
  * Note that if running `types` for an individual package, it will use that package's `types` script instead
  * (typically `yarn run -T tsc`).

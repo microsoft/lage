@@ -17,12 +17,12 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/globby": "workspace:^",
     "@lage-run/logger": "workspace:^",
     "@lage-run/target-graph": "workspace:^",
     "backfill-hasher": "workspace:^",
     "execa": "5.1.1",
     "glob-hasher": "^1.4.2",
+    "globby": "11.1.0",
     "graceful-fs": "4.2.11",
     "micromatch": "4.0.8",
     "workspace-tools": "workspace:^"

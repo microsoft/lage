@@ -1,6 +1,6 @@
 import execa from "execa";
 import fs from "fs-extra";
-import { globUncached } from "@lage-run/globby";
+import { sync as globbySync } from "globby";
 
 import type { Logger } from "backfill-logger";
 
@@ -25,7 +25,7 @@ export function createBuildCommand(
     }
 
     if (clearOutput) {
-      const filesToClear = globUncached(outputGlob);
+      const filesToClear = globbySync(outputGlob);
       await Promise.all(
         filesToClear.map(async (file) => await fs.remove(file))
       );

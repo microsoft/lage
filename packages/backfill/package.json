@@ -20,7 +20,6 @@
     "test": "yarn run -T jest"
   },
   "dependencies": {
-    "@lage-run/globby": "workspace:^",
     "anymatch": "3.1.3",
     "backfill-cache": "workspace:^",
     "backfill-config": "workspace:^",
@@ -31,6 +30,7 @@
     "execa": "5.1.1",
     "find-up": "5.0.0",
     "fs-extra": "8.1.0",
+    "globby": "11.1.0",
     "yargs": "16.2.0"
   },
   "devDependencies": {

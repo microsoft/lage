@@ -18,7 +18,7 @@ import { getBinPaths } from "../../getBinPaths.js";
 import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 import { parseServerOption } from "../parseServerOption.js";
 import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
-import { glob } from "@lage-run/globby";
+import { sync as globbySync } from "globby";
 import { FileHasher, hashStrings } from "@lage-run/hasher";
 import { getGlobalInputHashFilePath } from "../targetHashFilePath.js";
 
@@ -180,7 +180,7 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
         return globHashCache.get(key)!;
       }
 
-      const files = glob(patterns, opts);
+      const files = globbySync(patterns, opts);
       const hash = hashStrings(Object.values(fileHasher.hash(files.map((file) => path.join(root, file)))));
 
       globHashCache.set(key, hash);
@@ -189,7 +189,7 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
     };
 
     const globalInputs = config.cacheOptions?.environmentGlob
-      ? glob(config.cacheOptions?.environmentGlob, { cwd: root })
+      ? globbySync(config.cacheOptions?.environmentGlob, { cwd: root })
       : ["lage.config.js"];
 
     for (const target of optimizedTargets) {

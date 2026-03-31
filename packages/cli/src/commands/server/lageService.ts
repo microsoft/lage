@@ -140,9 +140,6 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
 
 /**
  * Initializes the lageService: the extra "initializePromise" ensures only one initialization is done at a time across threads
- * @param cwd
- * @param logger
- * @returns
  */
 async function initialize(options: InitializeOptions): Promise<LageServiceContext> {
   initializedPromise = createInitializedPromise(options);
@@ -219,19 +216,6 @@ export function createLageService({ cwd, serverControls, logger, concurrency, ta
         threadId: 0,
       };
 
-      let results: {
-        packageName?: string;
-        task: string;
-        cwd: string;
-        exitCode: number;
-        inputs: string[];
-        outputs: string[];
-        stdout: string;
-        stderr: string;
-        id: string;
-        globalInputHashFile: string;
-      };
-
       const inputs = getInputFiles(target, dependencyMap, packageTree);
 
       for (const dep of target.dependencies) {
@@ -258,6 +242,8 @@ export function createLageService({ cwd, serverControls, logger, concurrency, ta
       }
 
       const targetGlobalInputHashRelativePath = getGlobalInputHashFilePath(target);
+      let execErrorText: string | undefined;
+      let hasError = false;
 
       try {
         await pool.exec(
@@ -297,44 +283,29 @@ export function createLageService({ cwd, serverControls, logger, concurrency, ta
             pipedStderr.unpipe(writableStderr);
           }
         );
-
-        const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
-        const targetHashFileRelativePath = path.relative(root, targetHashFullPath).replace(/\\/g, "/");
-        outputs.push(targetHashFileRelativePath);
-
-        results = {
-          packageName: request.packageName,
-          task: request.task,
-          cwd: target.cwd,
-          exitCode: 0,
-          inputs,
-          outputs,
-          stdout: writableStdout.toString(),
-          stderr: writableStderr.toString(),
-          id,
-          globalInputHashFile: targetGlobalInputHashRelativePath,
-        };
       } catch (e) {
-        const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
-        const targetHashFileRelativePath = path.relative(root, targetHashFullPath).replace(/\\/g, "/");
-        outputs.push(targetHashFileRelativePath);
-
+        execErrorText = e instanceof Error ? e.toString() : "";
+        hasError = true;
         targetRun.status = "failed";
         targetRun.duration = hrtimeDiff(targetRun.startTime, process.hrtime());
-
-        results = {
-          packageName: request.packageName,
-          task: request.task,
-          cwd: target.cwd,
-          exitCode: 1,
-          inputs,
-          outputs,
-          stdout: "",
-          stderr: e instanceof Error ? e.toString() : "",
-          id,
-          globalInputHashFile: targetGlobalInputHashRelativePath,
-        };
       }
+
+      const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
+      const targetHashFileRelativePath = path.relative(root, targetHashFullPath).replace(/\\/g, "/");
+      outputs.push(targetHashFileRelativePath);
+
+      const results: Awaited<ReturnType<NonNullable<ILageService["runTarget"]>>> = {
+        packageName: request.packageName,
+        task: request.task,
+        cwd: target.cwd,
+        exitCode: hasError ? 1 : 0,
+        inputs,
+        outputs,
+        stdout: hasError ? "" : writableStdout.toString(),
+        stderr: hasError ? execErrorText : writableStderr.toString(),
+        id,
+        globalInputHashFile: targetGlobalInputHashRelativePath,
+      };
 
       logger.info(
         `${request.packageName}#${request.task} results: \n${JSON.stringify(

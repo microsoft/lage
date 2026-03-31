@@ -1,4 +1,4 @@
-import { globAsyncUncached } from "@lage-run/globby";
+import globby from "globby";
 
 import type { Logger } from "backfill-logger";
 import type { ICacheStorage } from "backfill-config";
@@ -12,7 +12,7 @@ const savedHashes: Map<string, Map<string, string>> = new Map();
 async function getHashesFor(cwd: string): Promise<Map<string, string>> {
   const result = new Map<string, string>();
 
-  const allFiles = await globAsyncUncached(["**/*", "!node_modules"], {
+  const allFiles = await globby(["**/*", "!node_modules"], {
     cwd,
     dot: true,
   });
@@ -55,7 +55,7 @@ export abstract class CacheStorage implements ICacheStorage {
   public async put(hash: string, outputGlob: string[]): Promise<void> {
     const tracer = this.logger.setTime("putTime");
 
-    const filesMatchingOutputGlob = await globAsyncUncached(outputGlob, {
+    const filesMatchingOutputGlob = await globby(outputGlob, {
       cwd: this.cwd,
       dot: true,
     });

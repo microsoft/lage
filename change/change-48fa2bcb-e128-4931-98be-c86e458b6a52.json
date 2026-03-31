@@ -1,0 +1,32 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Directly use `globby` v11 instead of `@lage-run/globby`",
+      "packageName": "backfill-cache",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Directly use `globby` v11 instead of `@lage-run/globby`",
+      "packageName": "backfill",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Directly use `globby` v11 instead of `@lage-run/globby`",
+      "packageName": "@lage-run/cli",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Directly use `globby` v11 instead of `@lage-run/globby` (implement caching internally)",
+      "packageName": "@lage-run/hasher",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

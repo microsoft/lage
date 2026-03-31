@@ -85,9 +85,9 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
   // Add lage pipeline configuration in the package.json files.
   // They are configured in the lage field, but without the package id.
   // i.e. having this package.json
-  //    { "name": "@lage-run/globby", "lage": { "transpile": { type: "npmScript" } }}
+  //    { "name": "foo", "lage": { "transpile": { type: "npmScript" } }}
   // is equivalent to having the following in lage.config.js
-  // { pipeline: { "@lage-run/globby#transpile": { type: "npmScript" } }
+  // { pipeline: { "foo#transpile": { type: "npmScript" } }
   // We conciously add these 'after' the ones in lage.config.js
   // to indicate that the more specific package.json definition takes
   //  precedence over the global lage.config.js.

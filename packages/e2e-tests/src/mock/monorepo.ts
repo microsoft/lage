@@ -3,7 +3,7 @@ import path from "path";
 import * as execa from "execa";
 import { findGitRoot, getPackageInfo } from "workspace-tools";
 
-import { glob } from "@lage-run/globby";
+import { sync as globSync } from "globby";
 import { Monorepo as BaseMonorepo, type MonorepoInitParams as BaseMonorepoInitParams } from "@lage-run/test-utilities";
 import type { ConfigFileOptions } from "@lage-run/cli";
 
@@ -167,7 +167,7 @@ export class Monorepo extends BaseMonorepo {
     const globHasherDepNames = Object.keys(getPackageInfo(globHasherPath)!.optionalDependencies!);
 
     // There should be only this platform's glob-hasher-* implementation installed
-    const globHasherPlatforms = glob(["node_modules/glob-hasher-*/package.json"], { cwd: lageRepoRoot, absolute: true });
+    const globHasherPlatforms = globSync(["node_modules/glob-hasher-*/package.json"], { cwd: lageRepoRoot, absolute: true });
     expect(globHasherPlatforms).toHaveLength(1);
     const globHasherPlatformPath = path.dirname(globHasherPlatforms[0]);
     const globHasherPlatformName = path.basename(globHasherPlatformPath);
@@ -191,7 +191,7 @@ export class Monorepo extends BaseMonorepo {
     if (!Monorepo.yarnBinaryContents) {
       const yarnGlob = ".yarn/releases/yarn-*.cjs";
       /** Path to the lage repo's current saved yarn release */
-      const yarnPath = glob([yarnGlob], { cwd: lageRepoRoot, absolute: true })[0];
+      const yarnPath = globSync([yarnGlob], { cwd: lageRepoRoot, absolute: true })[0];
       if (!yarnPath) {
         throw new Error("Could not find yarn release under " + path.join(lageRepoRoot, yarnGlob));
       }

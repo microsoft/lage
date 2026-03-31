@@ -1,5 +1,5 @@
 import type { CacheOptions } from "@lage-run/config";
-import { glob } from "@lage-run/globby";
+import { sync as globbySync } from "globby";
 import type { PackageTree } from "@lage-run/hasher";
 import type { Target } from "@lage-run/target-graph";
 
@@ -9,7 +9,7 @@ export function getOutputFiles(root: string, target: Target, outputGlob: CacheOp
   const patterns = target.outputs ?? outputGlob ?? ["**/*"];
 
   const sourceControlledFiles = new Set(packageTree.getPackageFiles(target.packageName ?? "", patterns));
-  const outputs = glob(patterns, { cwd: target.cwd, gitignore: false, dot: true })
+  const outputs = globbySync(patterns, { cwd: target.cwd, gitignore: false, dot: true })
     .map((file) => path.relative(root, path.join(target.cwd, file)))
     .filter((file) => !sourceControlledFiles.has(file));
 

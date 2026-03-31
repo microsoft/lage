@@ -8,8 +8,7 @@ const { findProjectRoot } = require("workspace-tools-npm");
 const root = findProjectRoot(process.cwd());
 
 /**
- * This worker is used for `lage run transpile`, in place of the per-package `transpile` script
- * (except for `@lage-run/globby`, which per lage.config.js uses its custom `transpile` script).
+ * This worker is used for `lage run transpile`, in place of the per-package `transpile` script.
  *
  * Since this worker function has some extra logic to use swc, it's reused by the per-package `transpile` script
  * (`monorepo-scripts transpile` which runs commands/transpile.js) to avoid duplication.

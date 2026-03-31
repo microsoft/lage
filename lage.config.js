@@ -23,7 +23,6 @@ const baseTestTarget = {
 const config = {
   pipeline: {
     "lage#bundle": ["^^transpile", "types"],
-    // Note that transpile/types are overridden later for the @lage-run/globby package
     types: {
       type: "worker",
       options: /** @satisfies {WorkerTargetOptions} */ ({
@@ -55,18 +54,6 @@ const config = {
     api: {
       dependsOn: ["types"],
       outputs: ["etc/*.api.md", "temp/*.api.md"],
-    },
-    "@lage-run/globby#types": {
-      type: "npmScript",
-    },
-    "@lage-run/globby#transpile": {
-      type: "npmScript",
-    },
-    "@lage-run/globby#isolatedTypes": {
-      type: "npmScript",
-      options: /** @satisfies {NpmScriptTargetOptions} */ ({
-        script: "types",
-      }),
     },
     lint: {
       type: "worker",

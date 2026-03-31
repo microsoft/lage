@@ -1,4 +1,3 @@
-import { globAsync } from "@lage-run/globby";
 import type { Logger } from "@lage-run/logger";
 import type { Target } from "@lage-run/target-graph";
 import { resolveExternalDependencies } from "backfill-hasher";
@@ -18,6 +17,7 @@ import { FileHasher } from "./FileHasher.js";
 import { PackageTree } from "./PackageTree.js";
 import { getInputFiles } from "./getInputFiles.js";
 import { hashStrings } from "./hashStrings.js";
+import { globAsyncCached } from "./globAsyncCached.js";
 
 export interface TargetHasherOptions {
   root: string;
@@ -99,7 +99,7 @@ export class TargetHasher {
     this.initializedPromise = Promise.all([
       this.fileHasher
         .readManifest()
-        .then(() => globAsync(environmentGlob, { cwd: root }))
+        .then(() => globAsyncCached(environmentGlob, { cwd: root }))
         .then((files) => this.fileHasher.hash(files))
         .then((h) => (this.globalInputsHash = h)),
 
@@ -146,7 +146,7 @@ export class TargetHasher {
         throw new Error(`No "inputs" specified for target "${target.id}"; cannot cache.`);
       }
 
-      const files = await globAsync(target.inputs, { cwd: root });
+      const files = await globAsyncCached(target.inputs, { cwd: root });
       const fileFashes = hash(files, { cwd: root }) ?? {};
 
       const hashes = Object.values(fileFashes) as string[];
@@ -212,7 +212,7 @@ export class TargetHasher {
 
   private async getEnvironmentGlobHashes(root: string, target: Target): Promise<Record<string, string>> {
     const globalFileHashes = target.environmentGlob
-      ? this.fileHasher.hash(await globAsync(target.environmentGlob ?? [], { cwd: root }))
+      ? this.fileHasher.hash(await globAsyncCached(target.environmentGlob ?? [], { cwd: root }))
       : (this.globalInputsHash ?? {});
 
     return globalFileHashes;
