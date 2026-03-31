@@ -9,6 +9,7 @@
     "types": "tsc"
   },
   "dependencies": {
+    "@jest/globals": "^30.0.0",
     "@microsoft/api-extractor": "7.52.9",
     "@swc/core": "^1.9.1",
     "@swc/jest": "^0.2.39",

@@ -1821,6 +1821,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lage-run/monorepo-scripts@workspace:scripts"
   dependencies:
+    "@jest/globals": "npm:^30.0.0"
     "@microsoft/api-extractor": "npm:7.52.9"
     "@swc/core": "npm:^1.9.1"
     "@swc/jest": "npm:^0.2.39"
