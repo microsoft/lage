@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import type { Catalogs } from "../../types/Catalogs.js";
 import { getCatalogVersion } from "../../workspaces/getCatalogVersion.js";
 

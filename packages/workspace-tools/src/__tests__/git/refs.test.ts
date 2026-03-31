@@ -1,6 +1,7 @@
 //
 // These tests cover ref-related helpers.
 //
+import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
 import { cleanupFixtures, setupFixture, setupLocalRemote } from "../setupFixture.js";
 import fs from "fs";
 import path from "path";

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { LogLevel, type LogEntry } from "@lage-run/logger";
 import streams from "memory-streams";
 import { VerboseFileLogReporter } from "../VerboseFileLogReporter.js";

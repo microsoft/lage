@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { TargetGraphBuilder } from "../TargetGraphBuilder.js";
 import type { Target } from "../types/Target.js";
 

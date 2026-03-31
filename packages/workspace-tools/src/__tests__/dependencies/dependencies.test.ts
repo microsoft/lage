@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import type { PackageInfo } from "../../types/PackageInfo.js";
 import { getTransitiveConsumers, getTransitiveProviders } from "../../dependencies/index.js";
 

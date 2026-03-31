@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { PassThrough } from "stream";
 import createLogger, { type LogEntry, LogLevel, type LogStructuredData, type Reporter } from "../index.js";
 

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { hrtimeDiff, hrToSeconds } from "../formatDuration.js";
 
 describe("hrtimeDiff", () => {

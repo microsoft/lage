@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { prioritize } from "../prioritize.js";
 import { getPackageAndTask } from "../targetId.js";
 import type { Target } from "../types/Target.js";

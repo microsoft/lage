@@ -1,3 +1,4 @@
+import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { Logger } from "@lage-run/logger";
 import fs, { type Stats } from "fs";
 import os from "os";
@@ -20,11 +21,11 @@ const mockLogger = new MockLogger();
 
 describe("simulateFileAccess", () => {
   let mockRoot: string;
-  let mockOpenSync: jest.SpyInstance;
-  let mockReadSync: jest.SpyInstance;
-  let mockCloseSync: jest.SpyInstance;
-  let mockReaddirSync: jest.SpyInstance;
-  let mockUtimesSync: jest.SpyInstance;
+  let mockOpenSync: jest.SpiedFunction<typeof fs.openSync>;
+  let mockReadSync: jest.SpiedFunction<typeof fs.readSync>;
+  let mockCloseSync: jest.SpiedFunction<typeof fs.closeSync>;
+  let mockReaddirSync: jest.SpiedFunction<typeof fs.readdirSync>;
+  let mockUtimesSync: jest.SpiedFunction<typeof fs.utimesSync>;
 
   beforeEach(() => {
     mockRoot = path.join(os.tmpdir(), "lage-test-root");

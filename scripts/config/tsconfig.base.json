@@ -17,6 +17,6 @@
     "skipLibCheck": true,
     "noUnusedLocals": true,
     "sourceMap": true,
-    "types": ["node", "jest"]
+    "types": ["node"]
   }
 }

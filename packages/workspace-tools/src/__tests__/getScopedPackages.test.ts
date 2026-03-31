@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { getScopedPackages } from "../scope.js";
 import type { PackageInfos } from "../types/PackageInfo.js";
 

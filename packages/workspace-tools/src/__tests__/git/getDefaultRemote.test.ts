@@ -1,3 +1,4 @@
+import { afterAll, afterEach, beforeAll, describe, expect, it, jest } from "@jest/globals";
 import os from "os";
 import { cleanupFixtures, setupFixture, setupPackageJson } from "../setupFixture.js";
 import { gitFailFast } from "../../git/git.js";
@@ -5,7 +6,7 @@ import { getDefaultRemote } from "../../git/getDefaultRemote.js";
 
 describe("getDefaultRemote", () => {
   let cwd: string;
-  let consoleMock: jest.SpyInstance;
+  let consoleMock: jest.SpiedFunction<typeof console.log>;
 
   function gitRemote(...args: string[]) {
     gitFailFast(["remote", ...args], { cwd, noExitCode: true });

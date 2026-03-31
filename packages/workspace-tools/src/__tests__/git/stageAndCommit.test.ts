@@ -1,6 +1,7 @@
 //
 // This tests stage(), commit(), and stageAndCommit() together.
 //
+import { afterAll, describe, expect, it } from "@jest/globals";
 import { cleanupFixtures, setupFixture } from "../setupFixture.js";
 import fs from "fs";
 import path from "path";

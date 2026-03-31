@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { hashStrings } from "../hashStrings.js";
 
 describe("hashStrings()", () => {

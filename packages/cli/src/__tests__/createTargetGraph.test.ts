@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import type { PipelineDefinition } from "@lage-run/config";
 import createLogger from "@lage-run/logger";
 import path from "path";

@@ -1,3 +1,4 @@
+import { describe, expect, it, jest } from "@jest/globals";
 import { pickTaskFromQueue } from "../pickTaskFromQueue.js";
 import type { QueueItem } from "../types/WorkerQueue.js";
 

@@ -1,3 +1,5 @@
+const { beforeEach, afterEach, jest } = require("@jest/globals");
+
 process.env.FORCE_COLOR = "0";
 
 const originalEnv = process.env;

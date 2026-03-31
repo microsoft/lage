@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { catalogsToYaml } from "../../workspaces/catalogsToYaml.js";
 import type { Catalogs } from "../../types/Catalogs.js";
 import dedent from "ts-dedent";

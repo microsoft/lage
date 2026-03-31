@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import type { PackageInfo } from "../../types/PackageInfo.js";
 import { createPackageGraph } from "../../graph/index.js";
 import { getPackageDependencies } from "../../graph/getPackageDependencies.js";

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { TargetHasher } from "@lage-run/hasher";
 import { Logger } from "@lage-run/logger";
 import { NoOpRunner } from "@lage-run/runners";

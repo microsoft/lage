@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { Logger } from "@lage-run/logger";
 import path from "path";
 import { AggregatedPool } from "../AggregatedPool.js";

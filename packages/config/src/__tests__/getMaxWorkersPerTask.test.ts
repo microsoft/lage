@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { getMaxWorkersPerTask } from "../getMaxWorkersPerTask.js";
 
 describe("getMaxWorkersPerTask", () => {

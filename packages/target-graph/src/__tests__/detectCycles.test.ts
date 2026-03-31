@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { detectCycles } from "../detectCycles.js";
 import { getPackageAndTask } from "../targetId.js";
 import type { Target } from "../types/Target.js";

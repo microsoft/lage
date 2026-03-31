@@ -37,7 +37,7 @@
     "postinstall": "patch-package"
   },
   "devDependencies": {
-    "@types/jest": "^30.0.0",
+    "@jest/globals": "^30.0.0",
     "@types/node": "^16.18.3",
     "beachball": "2.63.1",
     "dts-bundle-generator": "patch:dts-bundle-generator@npm%3A9.5.1#~/.yarn/patches/dts-bundle-generator-npm-9.5.1-0927b6826f.patch",

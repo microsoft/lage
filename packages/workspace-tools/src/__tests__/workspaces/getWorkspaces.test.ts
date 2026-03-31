@@ -1,3 +1,4 @@
+import { afterAll, describe, expect, it } from "@jest/globals";
 import { cleanupFixtures, setupFixture, type TestFixtureName } from "../setupFixture.js";
 import path from "path";
 import type { WorkspaceManager } from "../../types/WorkspaceManager.js";

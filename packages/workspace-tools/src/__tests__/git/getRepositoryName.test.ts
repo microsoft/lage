@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { getRepositoryName } from "../../git/getRepositoryName.js";
 
 // This mostly uses gitUrlParse internally, so only test a couple basic github cases plus the

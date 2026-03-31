@@ -1,3 +1,4 @@
+import { describe, expect, it, jest } from "@jest/globals";
 import { NpmScriptRunner } from "@lage-run/runners";
 import { getTargetId, type Target } from "@lage-run/target-graph";
 import type { ChildProcess } from "child_process";
