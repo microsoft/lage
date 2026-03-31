@@ -1,4 +1,4 @@
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it, xdescribe } from "@jest/globals";
 import { setupFixture } from "../setupFixture.js";
 import type { ParsedLock } from "../../lockfile/types.js";
 import { parseLockFile } from "../../lockfile/parseLockFile.js";

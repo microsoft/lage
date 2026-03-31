@@ -21,11 +21,11 @@ const mockLogger = new MockLogger();
 
 describe("simulateFileAccess", () => {
   let mockRoot: string;
-  let mockOpenSync: jest.SpiedFunction<typeof fs.openSync>;
-  let mockReadSync: jest.SpiedFunction<typeof fs.readSync>;
-  let mockCloseSync: jest.SpiedFunction<typeof fs.closeSync>;
-  let mockReaddirSync: jest.SpiedFunction<typeof fs.readdirSync>;
-  let mockUtimesSync: jest.SpiedFunction<typeof fs.utimesSync>;
+  let mockOpenSync: jest.SpiedFunction<(...args: any[]) => any>;
+  let mockReadSync: jest.SpiedFunction<(...args: any[]) => any>;
+  let mockCloseSync: jest.SpiedFunction<(...args: any[]) => any>;
+  let mockReaddirSync: jest.SpiedFunction<(...args: any[]) => any>;
+  let mockUtimesSync: jest.SpiedFunction<(...args: any[]) => any>;
 
   beforeEach(() => {
     mockRoot = path.join(os.tmpdir(), "lage-test-root");

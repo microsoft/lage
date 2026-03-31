@@ -15,7 +15,7 @@ function getChildProcessKey(packageName: string, task: string) {
 }
 
 jest.mock("child_process", () => {
-  const originalModule = jest.requireActual("child_process");
+  const originalModule = jest.requireActual<typeof import("child_process")>("child_process");
 
   // Mock the default export and named export 'foo'
   return {

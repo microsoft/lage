@@ -10,17 +10,17 @@ describe("RemoteFallbackCacheProvider", () => {
     const root = "/test";
 
     const localCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(true)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
+      fetch: jest.fn<CacheProvider["fetch"]>().mockReturnValue(Promise.resolve(true)),
+      put: jest.fn<CacheProvider["put"]>(),
+      clear: jest.fn<CacheProvider["clear"]>(),
+      purge: jest.fn<CacheProvider["purge"]>(),
     };
 
     const remoteCacheProvider: CacheProvider = {
-      fetch: jest.fn(),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
+      fetch: jest.fn<CacheProvider["fetch"]>(),
+      put: jest.fn<CacheProvider["put"]>(),
+      clear: jest.fn<CacheProvider["clear"]>(),
+      purge: jest.fn<CacheProvider["purge"]>(),
     };
 
     const options: RemoteFallbackCacheProviderOptions = {
@@ -54,17 +54,17 @@ describe("RemoteFallbackCacheProvider", () => {
     const root = "/test";
 
     const localCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(false)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
+      fetch: jest.fn<CacheProvider["fetch"]>().mockReturnValue(Promise.resolve(false)),
+      put: jest.fn<CacheProvider["put"]>(),
+      clear: jest.fn<CacheProvider["clear"]>(),
+      purge: jest.fn<CacheProvider["purge"]>(),
     };
 
     const remoteCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(true)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
+      fetch: jest.fn<CacheProvider["fetch"]>().mockReturnValue(Promise.resolve(true)),
+      put: jest.fn<CacheProvider["put"]>(),
+      clear: jest.fn<CacheProvider["clear"]>(),
+      purge: jest.fn<CacheProvider["purge"]>(),
     };
 
     const options: RemoteFallbackCacheProviderOptions = {
@@ -98,10 +98,10 @@ describe("RemoteFallbackCacheProvider", () => {
     const root = "/test";
 
     const remoteCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(true)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
+      fetch: jest.fn<CacheProvider["fetch"]>().mockReturnValue(Promise.resolve(true)),
+      put: jest.fn<CacheProvider["put"]>(),
+      clear: jest.fn<CacheProvider["clear"]>(),
+      purge: jest.fn<CacheProvider["purge"]>(),
     };
 
     const options: RemoteFallbackCacheProviderOptions = {
@@ -134,17 +134,17 @@ describe("RemoteFallbackCacheProvider", () => {
     const root = "/test";
 
     const localCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(false)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
+      fetch: jest.fn<CacheProvider["fetch"]>().mockReturnValue(Promise.resolve(false)),
+      put: jest.fn<CacheProvider["put"]>(),
+      clear: jest.fn<CacheProvider["clear"]>(),
+      purge: jest.fn<CacheProvider["purge"]>(),
     };
 
     const remoteCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(true)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
+      fetch: jest.fn<CacheProvider["fetch"]>().mockReturnValue(Promise.resolve(true)),
+      put: jest.fn<CacheProvider["put"]>(),
+      clear: jest.fn<CacheProvider["clear"]>(),
+      purge: jest.fn<CacheProvider["purge"]>(),
       isReadOnly: true,
     };
 
@@ -180,18 +180,18 @@ describe("RemoteFallbackCacheProvider", () => {
     const root = "/test";
 
     const localCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(false)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
+      fetch: jest.fn<CacheProvider["fetch"]>().mockReturnValue(Promise.resolve(false)),
+      put: jest.fn<CacheProvider["put"]>(),
+      clear: jest.fn<CacheProvider["clear"]>(),
+      purge: jest.fn<CacheProvider["purge"]>(),
       isReadOnly: true,
     };
 
     const remoteCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(true)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
+      fetch: jest.fn<CacheProvider["fetch"]>().mockReturnValue(Promise.resolve(true)),
+      put: jest.fn<CacheProvider["put"]>(),
+      clear: jest.fn<CacheProvider["clear"]>(),
+      purge: jest.fn<CacheProvider["purge"]>(),
       isReadOnly: true,
     };
 
@@ -229,17 +229,17 @@ describe("RemoteFallbackCacheProvider", () => {
     const root = "/test";
 
     const localCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(false)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
+      fetch: jest.fn<CacheProvider["fetch"]>().mockReturnValue(Promise.resolve(false)),
+      put: jest.fn<CacheProvider["put"]>(),
+      clear: jest.fn<CacheProvider["clear"]>(),
+      purge: jest.fn<CacheProvider["purge"]>(),
     };
 
     const remoteCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(false)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
+      fetch: jest.fn<CacheProvider["fetch"]>().mockReturnValue(Promise.resolve(false)),
+      put: jest.fn<CacheProvider["put"]>(),
+      clear: jest.fn<CacheProvider["clear"]>(),
+      purge: jest.fn<CacheProvider["purge"]>(),
     };
 
     const options: RemoteFallbackCacheProviderOptions = {

@@ -11,12 +11,12 @@ describe("api", () => {
     const logger = makeLogger("silly", process.stdout, process.stderr);
     const config = createDefaultConfig(packageRoot);
     const provider = {
-      fetch: jest.fn().mockResolvedValue(true),
-      put: jest.fn().mockResolvedValue(true),
+      fetch: jest.fn<() => Promise<boolean>>().mockResolvedValue(true),
+      put: jest.fn<() => Promise<boolean>>().mockResolvedValue(true),
     };
 
     config.cacheStorageConfig = {
-      provider: () => provider,
+      provider: () => provider as any,
     };
 
     const fetched = await fetch(
@@ -37,12 +37,12 @@ describe("api", () => {
     const logger = makeLogger("silly", process.stdout, process.stderr);
     const config = createDefaultConfig(packageRoot);
     const provider = {
-      fetch: jest.fn().mockResolvedValue(true),
-      put: jest.fn().mockResolvedValue(true),
+      fetch: jest.fn<() => Promise<boolean>>().mockResolvedValue(true),
+      put: jest.fn<() => Promise<boolean>>().mockResolvedValue(true),
     };
 
     config.cacheStorageConfig = {
-      provider: () => provider,
+      provider: () => provider as any,
     };
 
     await put(
