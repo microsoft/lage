@@ -68,6 +68,17 @@ const config = {
       },
     ],
     "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/no-restricted-imports": [
+      "error",
+      {
+        paths: [
+          {
+            name: "node:test",
+            message: 'You probably meant to import from "@jest/globals"',
+          },
+        ],
+      },
+    ],
   },
   overrides: [
     {
