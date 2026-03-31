@@ -6,6 +6,9 @@ import type { Logger } from "backfill-logger";
 import { CacheStorage } from "./CacheStorage.js";
 
 export class LocalCacheStorage extends CacheStorage {
+  /**
+   * @param internalCacheFolder Relative path to the cache folder, such as `node_modules/.cache/backfill`
+   */
   constructor(
     private internalCacheFolder: string,
     logger: Logger,
@@ -15,6 +18,7 @@ export class LocalCacheStorage extends CacheStorage {
     super(logger, cwd, incrementalCaching);
   }
 
+  /** Get the local cache folder for a given hash */
   protected getLocalCacheFolder(hash: string): string {
     return path.resolve(this.cwd, this.internalCacheFolder, hash);
   }
@@ -22,7 +26,7 @@ export class LocalCacheStorage extends CacheStorage {
   protected async _fetch(hash: string): Promise<boolean> {
     const localCacheFolder = this.getLocalCacheFolder(hash);
 
-    if (!fs.pathExistsSync(localCacheFolder)) {
+    if (!fs.existsSync(localCacheFolder)) {
       return false;
     }
 
@@ -31,29 +35,32 @@ export class LocalCacheStorage extends CacheStorage {
       dot: true,
     });
 
+    const madeDirs: Record<string, string> = {};
+
     await Promise.all(
-      files
-        .filter(async (file) => {
-          const src = path.join(localCacheFolder, file);
-          const dest = path.join(this.cwd, file);
+      files.map(async (file) => {
+        const src = path.join(localCacheFolder, file);
+        const dest = path.join(this.cwd, file);
 
-          try {
-            const stats = await Promise.all([fs.stat(src), fs.stat(dest)]);
-            return stats[0].mtime.getTime() !== stats[1].mtime.getTime();
-          } catch {
-            // if an error is thrown, it means the stat was called on a non-existent file or directory
-            return false;
-          }
+        // Previously, some logic was added attempting to only copy files with a different mtime.
+        // However, this never worked because it was implemented with files.filter(async f => { ... }),
+        // which returns a promise, which is always truthy. It's also unclear whether this would
+        // have any benefit for a local cache specific to the current repo when combined with the
+        // hashing logic in other places (plus tools such as tsc will usually overwrite all files).
+        // If this was desired in the future, the proper logic would be as follows:
+        //   const [srcStat, destStat] = await Promise.all([
+        //     fsPromises.stat(src, { bigint: true }).catch(() => null),
+        //     fsPromises.stat(dest, { bigint: true }).catch(() => null),
+        //   ]);
+        //   if (srcStat && destStat && srcStat.mtimeNs === destStat.mtimeNs) return;
 
-          return true;
-        })
-        .map(async (file) => {
-          await fs.mkdirp(path.dirname(path.join(this.cwd, file)));
-          await fs.copyFile(
-            path.join(localCacheFolder, file),
-            path.join(this.cwd, file)
-          );
-        })
+        const destDir = path.dirname(dest);
+        if (!madeDirs[destDir]) {
+          await fs.mkdirp(destDir);
+          madeDirs[destDir] = destDir;
+        }
+        await fs.copyFile(src, dest);
+      })
     );
 
     return true;

@@ -15,6 +15,11 @@ export function isCustomProvider(
 
 const memo = new Map<string, ICacheStorage>();
 
+/**
+ * Get the cache storage provider with the given options.
+ * @param cacheStorageConfig Cache storage config (usually from backfill/lage config file + env)
+ * @param internalCacheFolder Relative path to the cache folder, such as `node_modules/.cache/backfill`
+ */
 export function getCacheStorageProvider(
   cacheStorageConfig: CacheStorageConfig,
   internalCacheFolder: string,
