@@ -47,7 +47,7 @@ export function getPackageHash(
     return memoization[memoizationKey];
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { name, dependencies, devDependencies } = require(
     path.join(packageRoot, "package.json")
   );

@@ -96,7 +96,7 @@ export function setupFixture(
     const lernaManagerMatch = fixtureName?.match(/^monorepo-basic-lerna-(\w+)/);
     if (lernaManagerMatch) {
       // Make a lerna.json with the appropriate npmClient
-      // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const lernaBase = require(path.join(fixturesRoot, "lerna.base.json"));
       fs.writeFileSync(path.join(cwd, "lerna.json"), JSON.stringify({ ...lernaBase, npmClient: lernaManagerMatch[1] }));
     }

@@ -57,13 +57,13 @@ function getActualManager(params: { root: string }): "yarn" | "pnpm" | "npm" | u
 function getManagerUtils(manager: "npm" | "yarn" | "pnpm"): WorkspaceUtilities {
   switch (manager) {
     case "npm":
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
       return (require("./npm") as typeof import("./npm")).npmUtilities;
     case "yarn":
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
       return (require("./yarn") as typeof import("./yarn")).yarnUtilities;
     case "pnpm":
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
       return (require("./pnpm") as typeof import("./pnpm")).pnpmUtilities;
   }
 }

@@ -15,7 +15,7 @@ export function createConfig(logger: Logger, fromPath: string): Config {
   const defaultConfig = createDefaultConfig(fromPath);
   const fileBasedConfig: Partial<Config> = getSearchPaths(fromPath).reduce(
     (acc, configPath) => {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const config: Partial<Config> = require(configPath);
 
       // TODO: In the next major version, the complete validation from
@@ -74,7 +74,7 @@ export function createDefaultConfig(fromPath: string): Config {
  */
 export function getName(packageRoot: string): string {
   return (
-    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require(path.join(packageRoot, "package.json")).name ||
     path.basename(path.dirname(packageRoot))
   );

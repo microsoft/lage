@@ -9,27 +9,27 @@ const utils: Partial<Record<WorkspaceManager, WorkspaceUtilities>> = {};
 export function getWorkspaceUtilities(manager: WorkspaceManager): WorkspaceUtilities {
   switch (manager) {
     case "npm":
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
       utils.npm ??= (require("./npm") as typeof import("./npm")).npmUtilities;
       break;
 
     case "pnpm":
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
       utils.pnpm ??= (require("./pnpm") as typeof import("./pnpm")).pnpmUtilities;
       break;
 
     case "yarn":
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
       utils.yarn ??= (require("./yarn") as typeof import("./yarn")).yarnUtilities;
       break;
 
     case "rush":
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
       utils.rush ??= (require("./rush") as typeof import("./rush")).rushUtilities;
       break;
 
     case "lerna":
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
       utils.lerna ??= (require("./lerna") as typeof import("./lerna")).lernaUtilities;
       break;
   }

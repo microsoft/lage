@@ -8,9 +8,9 @@ jest.mock("fs");
 
 // jest.mock() is not hoisted above imports when jest is imported from @jest/globals.
 // NOTE: Once lage uses ESM, this should be replaced with jest.unstable_mockModule() and await import(...).
-// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires, @typescript-eslint/consistent-type-imports
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/consistent-type-imports
 const fs = require("fs") as typeof import("fs");
-// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires, @typescript-eslint/consistent-type-imports
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/consistent-type-imports
 const { simulateFileAccess } = require("../commands/exec/simulateFileAccess.js") as typeof import("../commands/exec/simulateFileAccess.js");
 
 // Mock the logger

@@ -4,7 +4,7 @@ import { depsCommand } from "./commands/depsCommand.js";
 function main(): void {
   try {
     const program = new commander.Command();
-    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     program.version(require("../package.json").version);
     program
       .command("deps")

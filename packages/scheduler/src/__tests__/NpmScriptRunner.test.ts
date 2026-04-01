@@ -33,7 +33,7 @@ jest.mock("child_process", () => {
 // @swc/jest does not hoist jest.mock() above imports when jest is imported from @jest/globals.
 // jest.mock() is not hoisted above imports when jest is imported from @jest/globals.
 // NOTE: Once lage uses ESM, this should be replaced with jest.unstable_mockModule() and await import(...).
-// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires, @typescript-eslint/consistent-type-imports
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/consistent-type-imports
 const { NpmScriptRunner } = require("@lage-run/runners") as typeof import("@lage-run/runners");
 
 function createTarget(packageName: string): Target {

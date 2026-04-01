@@ -9,9 +9,9 @@ jest.mock("is-interactive", () => jest.fn(() => true));
 
 // jest.mock() is not hoisted above imports when jest is imported from @jest/globals.
 // NOTE: Once lage uses ESM, this should be replaced with jest.unstable_mockModule() and await import(...).
-// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires, @typescript-eslint/consistent-type-imports
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/consistent-type-imports
 const isInteractive = require("is-interactive") as jest.MockedFunction<typeof import("is-interactive")>;
-// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires, @typescript-eslint/consistent-type-imports
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/consistent-type-imports
 const { initializeReporters } = require("../commands/initializeReporters.js") as typeof import("../commands/initializeReporters.js");
 
 // The tests for custom reporters are in customReporter.test.ts

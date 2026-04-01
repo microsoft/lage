@@ -38,7 +38,7 @@ export async function parseLockFile(packageRoot: string): Promise<ParsedLock> {
       parsed = parseBerryLock(yaml);
     } else {
       // TODO: this should be an async import in the future (currently causes issues with jest setup)
-      // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const parseYarnLock = require("@yarnpkg/lockfile").parse;
       parsed = parseYarnLock(yarnLock);
     }
