@@ -27,7 +27,7 @@ export interface JsonReporterSummaryData {
 export type JsonReporterLogData = JsonReporterSummaryData | TargetLogData;
 
 export class JsonReporter implements Reporter {
-  constructor(private options: { logLevel: LogLevel; indented: boolean }) {}
+  constructor(private options: { logLevel: LogLevel; indented: boolean; logMemory?: boolean }) {}
 
   public log(entry: LogEntry<TargetLogData>): void {
     if (entry.data && entry.data.target && entry.data.target.hidden) {

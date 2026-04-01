@@ -36,6 +36,7 @@ export class BasicReporter implements Reporter {
         concurrency?: number;
         version?: string;
         frequency?: number;
+        logMemory?: boolean;
     });
     // (undocumented)
     log(entry: LogEntry): void;
@@ -84,6 +85,7 @@ abstract class GroupedReporter implements Reporter {
     constructor(options: {
         logLevel?: LogLevel;
         grouped?: boolean;
+        logMemory?: boolean;
         logStream?: Writable;
     });
     protected abstract formatGroupEnd(): string;
@@ -100,6 +102,7 @@ abstract class GroupedReporter implements Reporter {
     protected options: {
         logLevel?: LogLevel;
         grouped?: boolean;
+        logMemory?: boolean;
         logStream?: Writable;
     };
     // (undocumented)
@@ -114,6 +117,7 @@ export class JsonReporter implements Reporter {
     constructor(options: {
         logLevel: LogLevel;
         indented: boolean;
+        logMemory?: boolean;
     });
     // (undocumented)
     log(entry: LogEntry<TargetLogData>): void;
@@ -152,6 +156,7 @@ export class LogReporter implements Reporter {
     constructor(options: {
         logLevel?: LogLevel;
         grouped?: boolean;
+        logMemory?: boolean;
         logStream?: Writable;
     });
     // (undocumented)
@@ -167,6 +172,7 @@ export class ProgressReporter implements Reporter {
     constructor(options?: {
         concurrency: number;
         version: string;
+        logMemory?: boolean;
     });
     // (undocumented)
     log(entry: LogEntry<any>): void;
@@ -193,6 +199,7 @@ export interface TargetStatusData {
     duration?: [number, number];
     // (undocumented)
     hash?: string;
+    memoryUsage?: NodeJS.MemoryUsage;
     // (undocumented)
     status: TargetStatus;
     // (undocumented)
@@ -201,7 +208,7 @@ export interface TargetStatusData {
 
 // @public (undocumented)
 export class VerboseFileLogReporter implements Reporter {
-    constructor(logFile?: string, fileStream?: Writable);
+    constructor(logFile?: string, fileStream?: Writable, logMemory?: boolean);
     // (undocumented)
     cleanup(): void;
     // (undocumented)

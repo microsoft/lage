@@ -57,4 +57,6 @@ export interface ReporterInitOptions {
   profile?: boolean | string;
   logFile?: string;
   indented?: boolean;
+  /** Whether to capture and report main process memory usage on target completion */
+  logMemory?: boolean;
 }

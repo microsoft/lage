@@ -65,6 +65,7 @@ export interface ReporterInitOptions {
     logFile?: string;
     // (undocumented)
     logLevel: keyof typeof LogLevel;
+    logMemory?: boolean;
     // (undocumented)
     profile?: boolean | string;
     // (undocumented)

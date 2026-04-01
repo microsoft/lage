@@ -20,6 +20,7 @@ export interface WrappedTargetOptions {
   abortController: AbortController;
   pool: Pool;
   hasher: TargetHasher;
+  logMemory?: boolean;
   onMessage?: (message: any, postMessage: MessagePort["postMessage"]) => void;
 }
 
@@ -101,6 +102,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
       status: "success",
       duration: this.duration,
       threadId: this.threadId,
+      ...(this.options.logMemory && { memoryUsage: process.memoryUsage() }),
     });
   }
 
@@ -111,6 +113,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
       status: "failed",
       duration: this.duration,
       threadId: this.threadId,
+      ...(this.options.logMemory && { memoryUsage: process.memoryUsage() }),
     });
 
     if (!this.options.continueOnError && this.options.abortController) {
@@ -128,6 +131,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
         duration: this.duration,
         hash,
         threadId: this.threadId,
+        ...(this.options.logMemory && { memoryUsage: process.memoryUsage() }),
       });
     }
   }

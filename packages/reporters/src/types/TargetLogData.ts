@@ -7,6 +7,11 @@ export interface TargetStatusData {
   status: TargetStatus;
   duration?: [number, number];
   hash?: string;
+  /**
+   * Memory usage, only included for non-abort completion statuses and only if logging memory
+   * usage is enabled in the reporter options.
+   */
+  memoryUsage?: NodeJS.MemoryUsage;
 }
 
 /** `LogEntry.data` for a target message log */

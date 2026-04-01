@@ -7,6 +7,7 @@ import type { SchedulerRunSummary, TargetRun, TargetStatus } from "@lage-run/sch
 import type { TargetLogData, TargetStatusData } from "./types/TargetLogData.js";
 import type { Writable } from "stream";
 import { slowestTargetRuns } from "./slowestTargetRuns.js";
+import { formatBytes } from "./formatBytes.js";
 
 export const colors = {
   [LogLevel.info]: chalk.white,
@@ -53,6 +54,8 @@ export abstract class GroupedReporter implements Reporter {
     protected options: {
       logLevel?: LogLevel;
       grouped?: boolean;
+      /** Whether to capture and report main process memory usage on target completion */
+      logMemory?: boolean;
       /** stream for testing */
       logStream?: Writable;
     }
@@ -83,13 +86,21 @@ export abstract class GroupedReporter implements Reporter {
     }
   }
 
+  private formatMemory(memoryUsage?: NodeJS.MemoryUsage): string {
+    if (!this.options.logMemory || !memoryUsage) {
+      return "";
+    }
+    return ` [rss: ${formatBytes(memoryUsage.rss)}, heap: ${formatBytes(memoryUsage.heapUsed)}]`;
+  }
+
   protected logTargetEntry(entry: LogEntry<TargetLogData>): boolean | void {
     const colorFn = colors[entry.level];
     const data = entry.data!;
 
     if (isTargetStatusLogEntry(data)) {
-      const { target, hash, duration } = data;
+      const { target, hash, duration, memoryUsage } = data;
       const { packageName, task } = target;
+      const mem = this.formatMemory(memoryUsage);
 
       const normalizedArgs = this.options.grouped
         ? normalize(entry.msg)
@@ -106,15 +117,17 @@ export abstract class GroupedReporter implements Reporter {
             format(
               entry.level,
               normalizedArgs.prefix,
-              colorFn(`${colors.ok("✓")} done ${pkgTask} - ${formatDuration(hrToSeconds(duration!))}`)
+              colorFn(`${colors.ok("✓")} done ${pkgTask} - ${formatDuration(hrToSeconds(duration!))}${mem}`)
             )
           );
 
         case "failed":
-          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.error("✖")} fail ${pkgTask}`)));
+          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.error("✖")} fail ${pkgTask}${mem}`)));
 
         case "skipped":
-          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.ok("»")} skip ${pkgTask} - ${hash!}`)));
+          return this.logStream.write(
+            format(entry.level, normalizedArgs.prefix, colorFn(`${colors.ok("»")} skip ${pkgTask} - ${hash!}${mem}`))
+          );
 
         case "aborted":
           return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.warn("-")} aborted ${pkgTask}`)));

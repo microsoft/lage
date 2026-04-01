@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Add `--log-memory` option to the `run` command",
+      "packageName": "@lage-run/cli",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Add logMemory option to certain reporters",
+      "packageName": "@lage-run/reporters",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Add logMemory option for SimpleScheduler and WrappedTarget",
+      "packageName": "@lage-run/scheduler",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

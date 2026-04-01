@@ -48,6 +48,7 @@ const options: Options = {
     continue: new Option("--continue", "continues the run even on error"),
     allowNoTargetRuns: new Option("--allow-no-target-runs", "succeed even if no targets match the given name"),
     watch: new Option("--watch", "runs in watch mode"),
+    logMemory: new Option("--log-memory", "log main process memory usage at task completion").default(false),
   },
   server: {
     server: new Option("--server [host:port]", "Run targets of type 'worker' on a background service"),

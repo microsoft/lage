@@ -31,6 +31,7 @@ export interface SimpleSchedulerOptions {
   pool?: Pool; // for testing
   workerIdleMemoryLimit: number; // in bytes
   hasher: TargetHasher;
+  logMemory?: boolean;
   onMessage?: (message: any, postMessage: MessagePort["postMessage"]) => void;
 }
 
@@ -125,6 +126,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
           abortController,
           pool,
           hasher: this.options.hasher,
+          logMemory: this.options.logMemory,
           onMessage: this.options.onMessage,
         });
       }

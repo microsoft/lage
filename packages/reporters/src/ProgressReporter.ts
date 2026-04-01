@@ -34,8 +34,17 @@ export class ProgressReporter implements Reporter {
 
   private taskReporter: TaskReporter;
   private tasks: Map<string, TaskReporterTask> = new Map();
+  private logMemory: boolean;
 
-  constructor(private options: { concurrency: number; version: string } = { concurrency: 0, version: "0.0.0" }) {
+  constructor(
+    private options: {
+      concurrency: number;
+      version: string;
+      /** Whether to capture and report main process memory usage on target completion */
+      logMemory?: boolean;
+    } = { concurrency: 0, version: "0.0.0" }
+  ) {
+    this.logMemory = !!options.logMemory;
     this.taskReporter = this.createTaskReporter();
 
     this.print(`${fancy("lage")} - Version ${options.version} - ${options.concurrency} Workers`);
@@ -83,13 +92,17 @@ export class ProgressReporter implements Reporter {
 
       if (reporterTask) {
         this.tasks.set(target.id, reporterTask);
+
+        const mem = entry.data.memoryUsage;
+        const memoryMessage = this.logMemory && mem ? `[rss: ${formatBytes(mem.rss)}, heap: ${formatBytes(mem.heapUsed)}]` : "";
+
         switch (status) {
           case "running":
             reporterTask.start();
             break;
 
           case "success":
-            reporterTask.complete({ status: "complete" });
+            reporterTask.complete({ status: "complete", message: memoryMessage });
             break;
 
           case "aborted":
@@ -97,11 +110,11 @@ export class ProgressReporter implements Reporter {
             break;
 
           case "skipped":
-            reporterTask.complete({ status: "skip" });
+            reporterTask.complete({ status: "skip", message: memoryMessage });
             break;
 
           case "failed":
-            reporterTask.complete({ status: "fail" });
+            reporterTask.complete({ status: "fail", message: memoryMessage });
             break;
         }
       }

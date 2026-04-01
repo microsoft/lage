@@ -47,6 +47,8 @@ interface SimpleSchedulerOptions {
     // (undocumented)
     logger: Logger;
     // (undocumented)
+    logMemory?: boolean;
+    // (undocumented)
     maxWorkersPerTask: Map<string, number>;
     // (undocumented)
     onMessage?: (message: any, postMessage: MessagePort["postMessage"]) => void;
@@ -132,6 +134,8 @@ interface WrappedTargetOptions {
     hasher: TargetHasher;
     // (undocumented)
     logger: Logger;
+    // (undocumented)
+    logMemory?: boolean;
     // (undocumented)
     onMessage?: (message: any, postMessage: MessagePort["postMessage"]) => void;
     // (undocumented)

@@ -47,7 +47,7 @@ export async function createReporter(
   options: ReporterInitOptions,
   customReportersOptions: CustomReportersOptions | undefined
 ): Promise<Reporter> {
-  const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress, logFile, indented } = options;
+  const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress, logFile, indented, logMemory } = options;
   const logLevel = LogLevel[logLevelName];
 
   const lageRoot = findPackageRoot(__filename)!;
@@ -61,25 +61,25 @@ export async function createReporter(
         outputFile: typeof profile === "string" ? profile : undefined,
       });
     case "json":
-      return new JsonReporter({ logLevel, indented: indented ?? false });
+      return new JsonReporter({ logLevel, indented: indented ?? false, logMemory });
     case "azureDevops":
     case "adoLog":
-      return new AdoReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+      return new AdoReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
 
     case "githubActions":
     case "gha":
-      return new GithubActionsReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+      return new GithubActionsReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
 
     case "npmLog":
     case "old":
-      return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+      return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
 
     case "fancy":
-      return new ProgressReporter({ concurrency, version });
+      return new ProgressReporter({ concurrency, version, logMemory });
 
     case "verboseFileLog":
     case "vfl":
-      return new VerboseFileLogReporter(logFile);
+      return new VerboseFileLogReporter(logFile, undefined, logMemory);
   }
 
   // Check if it's a custom reporter defined in config
@@ -89,18 +89,18 @@ export async function createReporter(
 
   // Default reporter behavior - auto-detect CI environments
   if (process.env.GITHUB_ACTIONS) {
-    return new GithubActionsReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel });
+    return new GithubActionsReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
   }
 
   if (process.env.TF_BUILD) {
-    return new AdoReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel });
+    return new AdoReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
   }
 
   if (progress && isInteractive() && !(logLevel >= LogLevel.verbose || verbose || grouped)) {
-    return new BasicReporter({ concurrency, version });
+    return new BasicReporter({ concurrency, version, logMemory });
   }
 
-  return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+  return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
 }
 
 async function loadCustomReporterModule(

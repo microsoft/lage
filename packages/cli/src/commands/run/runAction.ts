@@ -103,6 +103,7 @@ export async function runAction(options: RunOptions, command: Command): Promise<
     maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, concurrency), ...maxWorkersPerTaskMap]),
     hasher,
     workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes
+    logMemory: options.logMemory,
   });
 
   const optimizedTargets = await optimizeTargetGraph(targetGraph, scheduler.runnerPicker, false);

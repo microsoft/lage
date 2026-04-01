@@ -80,6 +80,8 @@ export class LogReporter implements Reporter {
     private options: {
       logLevel?: LogLevel;
       grouped?: boolean;
+      /** Whether to capture and report main process memory usage on target completion */
+      logMemory?: boolean;
       /** stream for testing */
       logStream?: Writable;
     }
@@ -141,24 +143,33 @@ export class LogReporter implements Reporter {
     this.logStream.write(message + "\n");
   }
 
+  private formatMemory(memoryUsage?: NodeJS.MemoryUsage): string {
+    if (!this.options.logMemory || !memoryUsage) {
+      return "";
+    }
+    return ` [rss: ${formatBytes(memoryUsage.rss)}, heap: ${formatBytes(memoryUsage.heapUsed)}]`;
+  }
+
   private logTargetEntry(entry: LogEntry<TargetLogData>) {
     const colorFn = colors[entry.level];
     const data = entry.data!;
 
     if (isTargetStatusLogEntry(data)) {
-      const { hash, duration } = data;
+      const { hash, duration, memoryUsage } = data;
+      const mem = this.formatMemory(memoryUsage);
+
       switch (data.status) {
         case "running":
           return this.printEntry(entry, colorFn(`${colors.ok("➔")} start`));
 
         case "success":
-          return this.printEntry(entry, colorFn(`${colors.ok("✓")} done - ${formatDuration(hrToSeconds(duration!))}`));
+          return this.printEntry(entry, colorFn(`${colors.ok("✓")} done - ${formatDuration(hrToSeconds(duration!))}${mem}`));
 
         case "failed":
-          return this.printEntry(entry, colorFn(`${colors.error("✖")} fail`));
+          return this.printEntry(entry, colorFn(`${colors.error("✖")} fail${mem}`));
 
         case "skipped":
-          return this.printEntry(entry, colorFn(`${colors.ok("»")} skip - ${hash!}`));
+          return this.printEntry(entry, colorFn(`${colors.ok("»")} skip - ${hash!}${mem}`));
 
         case "aborted":
           return this.printEntry(entry, colorFn(`${colors.warn("-")} aborted`));

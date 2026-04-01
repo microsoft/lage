@@ -56,9 +56,19 @@ export class BasicReporter implements Reporter {
   private taskData = new Map<string, { target: Target; status: TargetStatus; logEntries: LogEntry[] }>();
   private updateTimer: NodeJS.Timeout | undefined;
   private startTimer: () => void;
+  private logMemory: boolean;
 
-  constructor(params: { concurrency?: number; version?: string; frequency?: number } = {}) {
+  constructor(
+    params: {
+      concurrency?: number;
+      version?: string;
+      frequency?: number;
+      /** Whether to capture and report main process memory usage on target completion */
+      logMemory?: boolean;
+    } = {}
+  ) {
     const { concurrency = 0, version = "0.0.0", frequency = 500 } = params;
+    this.logMemory = !!params.logMemory;
     print(`${fancy("lage")} - Version ${version} - ${concurrency} Workers`);
 
     this.startTimer = () => {
@@ -87,7 +97,7 @@ export class BasicReporter implements Reporter {
     if (data.status) {
       taskData.status = data.status;
       if (isCompletionStatus(data.status)) {
-        this.reportCompletion({ target: data.target, status: data.status, duration: data.duration });
+        this.reportCompletion({ target: data.target, status: data.status, duration: data.duration, memoryUsage: data.memoryUsage });
       }
     }
   }
@@ -136,12 +146,21 @@ export class BasicReporter implements Reporter {
     print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
   }
 
-  private reportCompletion(completion: { target: Target; status: CompletionStatus; duration?: [number, number] }) {
+  private reportCompletion(completion: {
+    target: Target;
+    status: CompletionStatus;
+    duration?: [number, number];
+    memoryUsage?: NodeJS.MemoryUsage;
+  }) {
     const icon = icons[completion.status];
     const statusColor = colors[completion.status];
     const durationText = completion.duration ? ` (${formatDuration(hrToSeconds(completion.duration))})` : "";
+    const memText =
+      this.logMemory && completion.memoryUsage
+        ? ` [rss: ${formatBytes(completion.memoryUsage.rss)}, heap: ${formatBytes(completion.memoryUsage.heapUsed)}]`
+        : "";
 
-    const message = `${statusColor(`${icon} ${completion.status.padEnd(8)}`)} ${colors.label(completion.target.label)}${colors.duration(durationText)}`;
+    const message = `${statusColor(`${icon} ${completion.status.padEnd(8)}`)} ${colors.label(completion.target.label)}${colors.duration(durationText)}${colors.duration(memText)}`;
     this.renderStatus(message);
   }
 
