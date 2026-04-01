@@ -1794,7 +1794,7 @@ __metadata:
   dependencies:
     "@jest/globals": "npm:^30.0.0"
     "@types/node": "npm:^16.18.3"
-    beachball: "npm:2.63.1"
+    beachball: "npm:2.64.0"
     dts-bundle-generator: "patch:dts-bundle-generator@npm%3A9.5.1#~/.yarn/patches/dts-bundle-generator-npm-9.5.1-0927b6826f.patch"
     fast-glob: "npm:3.3.3"
     husky: "npm:^9.1.5"
@@ -2959,6 +2959,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vercel/detect-agent@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@vercel/detect-agent@npm:1.2.1"
+  checksum: 10c0/a90551bd857a424d82f960faeb6ced00f5b83dc7d5c91b7560ce658c9c4c760a20519b94285652aed1e3d118e55015ffdb6ec170312797148feeeb951b1ab715
+  languageName: node
+  linkType: hard
+
 "@vue/compiler-core@npm:3.5.28":
   version: 3.5.28
   resolution: "@vue/compiler-core@npm:3.5.28"
@@ -3562,10 +3569,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"beachball@npm:2.63.1":
-  version: 2.63.1
-  resolution: "beachball@npm:2.63.1"
+"beachball@npm:2.64.0":
+  version: 2.64.0
+  resolution: "beachball@npm:2.64.0"
   dependencies:
+    "@vercel/detect-agent": "npm:^1.2.1"
     cosmiconfig: "npm:^9.0.0"
     execa: "npm:^5.0.0"
     minimatch: "npm:^3.0.4"
@@ -3573,12 +3581,11 @@ __metadata:
     p-limit: "npm:^3.0.2"
     prompts: "npm:^2.4.2"
     semver: "npm:^7.0.0"
-    toposort: "npm:^2.0.2"
     workspace-tools: "npm:^0.41.0"
     yargs-parser: "npm:^21.0.0"
   bin:
     beachball: bin/beachball.js
-  checksum: 10c0/6b745576cd871127cca5aede2095624b9e39ad2e69cb3317f640c03b0fdc571ff8ff99148043be3e3dd8ee1c1c973ec4f1bbf7c5ff5028eb8e3f5d13d06a1e15
+  checksum: 10c0/2678e23494803d24d7af72aaeb2b50133265fa26b80d2df8a675e759ed15897cdd9784af522534f55a2ed6eff6d03863d82cc3e78ffffa019897e5ace73efbfb
   languageName: node
   linkType: hard
 
@@ -8946,13 +8953,6 @@ __metadata:
   version: 3.7.0
   resolution: "toad-cache@npm:3.7.0"
   checksum: 10c0/7dae2782ee20b22c9798bb8b71dec7ec6a0091021d2ea9dd6e8afccab6b65b358fdba49a02209fac574499702e2c000660721516c87c2538d1b2c0ba03e8c0c3
-  languageName: node
-  linkType: hard
-
-"toposort@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "toposort@npm:2.0.2"
-  checksum: 10c0/ab9ca91fce4b972ccae9e2f539d755bf799a0c7eb60da07fd985fce0f14c159ed1e92305ff55697693b5bc13e300f5417db90e2593b127d421c9f6c440950222
   languageName: node
   linkType: hard
 
