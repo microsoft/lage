@@ -37,7 +37,7 @@ const config = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/ts-comment": "off",
     "@typescript-eslint/no-require-imports": "error",
     "no-console": "error",
     "file-extension-in-import-ts/file-extension-in-import-ts": "error",
@@ -45,8 +45,7 @@ const config = {
     "@typescript-eslint/no-floating-promises": "error",
     "@typescript-eslint/no-misused-promises": "error",
     "@typescript-eslint/require-await": "error",
-    // enable after eslint upgrade:
-    // "@typescript-eslint/return-await": ["error", "error-handling-correctness-only"],
+    "@typescript-eslint/return-await": ["error", "error-handling-correctness-only"],
     "@typescript-eslint/explicit-module-boundary-types": "error",
     "@typescript-eslint/no-unused-vars": [
       "error",
@@ -84,7 +83,6 @@ const config = {
     {
       files: ["**/*.{js,cjs,mjs}"],
       rules: {
-        "@typescript-eslint/no-var-requires": "off",
         "@typescript-eslint/no-require-imports": "off",
         "@typescript-eslint/explicit-member-accessibility": "off",
         "no-console": "off",
