@@ -91,24 +91,35 @@ async function onBeforeExit(params) {
     },
     // import('foo')
     ImportExpression(node) {
-      node.source.type === "Literal" && typeof node.source.value === "string" && imports.push(node.source.value);
+      if (node.source.type === "Literal" && typeof node.source.value === "string") {
+        imports.push(node.source.value);
+      }
     },
     // typeof import('foo')
     TSImportType(node) {
-      node.argument.type === "TSLiteralType" &&
+      if (
+        node.argument.type === "TSLiteralType" &&
         node.argument.literal.type === "Literal" &&
-        typeof node.argument.literal.value === "string" &&
+        typeof node.argument.literal.value === "string"
+      ) {
         imports.push(node.argument.literal.value);
+      }
     },
     ExportNamedDeclaration(node) {
-      node.source && imports.push(node.source.value);
+      if (node.source) {
+        imports.push(node.source.value);
+      }
     },
     ExportAllDeclaration(node) {
-      node.source && imports.push(node.source.value);
+      if (node.source) {
+        imports.push(node.source.value);
+      }
     },
     // import foo = require('foo')
     TSExternalModuleReference(node) {
-      node.expression.type === "Literal" && typeof node.expression.value === "string" && imports.push(node.expression.value);
+      if (node.expression.type === "Literal" && typeof node.expression.value === "string") {
+        imports.push(node.expression.value);
+      }
     },
   });
 
