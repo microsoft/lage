@@ -28,7 +28,7 @@ describe("End to end", () => {
     expect(ownHash).toContain("bd773dfb416fdbf46e6cb3defd061f514f3cbb45");
 
     // ... and that `npm run compile` was run successfully
-    const libFolderExist = await fs.pathExists(path.join(packageRoot, "lib"));
+    const libFolderExist = fs.existsSync(path.join(packageRoot, "lib"));
     expect(libFolderExist).toBe(true);
   });
 

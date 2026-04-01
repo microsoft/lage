@@ -163,13 +163,8 @@ export class AzureBlobCacheStorage extends CacheStorage {
   }
 
   protected async _put(hash: string, filesToCache: string[]): Promise<void> {
-    const blobClient = (await this.getContainerClient()).getBlobClient(hash);
-
-    const blockBlobClient = blobClient.getBlockBlobClient();
-
-    const tarStream = tarFs.pack(this.cwd, { entries: filesToCache });
-
     // If there's a maxSize limit, first sum up the total size of bytes of all the outputGlobbed files
+    // (do this before starting a tar stream)
     if (this.options.maxSize) {
       let total = 0;
       for (const file of filesToCache) {
@@ -183,6 +178,13 @@ export class AzureBlobCacheStorage extends CacheStorage {
         return;
       }
     }
+
+    const blobClient = (await this.getContainerClient()).getBlobClient(hash);
+
+    const blockBlobClient = blobClient.getBlockBlobClient();
+
+    // tar-fs mutates the provided entries...
+    const tarStream = tarFs.pack(this.cwd, { entries: [...filesToCache] });
 
     await blockBlobClient.uploadStream(
       tarStream,

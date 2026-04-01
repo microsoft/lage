@@ -26,7 +26,7 @@ export abstract class CacheStorage implements ICacheStorage {
     protected abstract _put(hash: string, filesToCache: string[]): Promise<void>;
 }
 
-// @public (undocumented)
+// @public
 export function getCacheStorageProvider(cacheStorageConfig: CacheStorageConfig, internalCacheFolder: string, logger: Logger, cwd: string, incrementalCaching?: boolean): ICacheStorage;
 
 export { ICacheStorage }

@@ -1673,9 +1673,11 @@ __metadata:
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
     "@lage-run/test-utilities": "workspace:^"
+    "@types/fs-extra": "npm:^8.0.0"
     backfill-cache: "workspace:^"
     backfill-config: "workspace:^"
     backfill-logger: "workspace:^"
+    fs-extra: "npm:8.1.0"
     glob-hasher: "npm:^1.4.2"
   languageName: unknown
   linkType: soft

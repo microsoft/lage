@@ -8,12 +8,16 @@ Lage ("make" in Norwegian) is a task runner for JavaScript/TypeScript monorepos.
 
 ## Common commands
 
+### Repo root commands
+
+These commands work from the repo root.
+
 ```bash
-yarn build              # transpile + types + bundle
-yarn test               # run all tests via lage
-yarn lint               # lint all packages
-yarn api                # update API report files
-yarn ci                 # full CI: transpile, types, build, test, lint, bundle, api
+yarn build              # transpile + types + bundle (via lage)
+yarn test               # run all packages' tests (via lage; does NOT accept jest options)
+yarn lint               # lint all packages (via lage)
+yarn api                # update API report files (via lage)
+yarn ci                 # full CI: transpile, types, build, test, lint, bundle, api (via lage)
 yarn format             # prettier --write
 yarn format:check       # prettier --check
 yarn change             # create beachball change files for versioning
@@ -22,38 +26,23 @@ yarn deps:check         # dependency audit (depcheck)
 yarn lage-local         # run the locally-built lage CLI (node packages/lage/dist/lage.js)
 ```
 
-### Running a single package's tests
-
-```bash
-cd packages/<name>
-yarn test                              # all tests in that package
-yarn test --testNamePattern="pattern"  # specific test by name
-```
-
-`yarn run -T` runs the command using the root-installed tool (jest, tsc, etc.).
-
-### Building a single package
-
-```bash
-cd packages/<name>
-yarn build        # transpile and type check
-```
-
-If changes span multiple packages, you should `yarn build` from the root. This is the best way to ensure all dependencies build in proper order.
-
-### Verifying changes
-
-To verify changes to a single package:
-
-```ts
-cd packages/<name>
-yarn build
-yarn lint
-yarn test
-yarn api
-```
-
 Before finalizing changes, run `yarn ci` from the root for complete build/test/lint verification.
+
+### Single-package commands
+
+These commands can be used to verify changes to a single package if you run `cd packages/<name>` before running the command.
+
+```bash
+cd packages/<name>
+# then run a command
+yarn build  # single-package transpile + types
+yarn test   # single-package run all packages' tests (accepts jest options)
+yarn test --testNamePattern="pattern"  # specific test by name
+yarn lint   # single-package lint all packages
+yarn api    # single-package update API report files
+```
+
+If changes span multiple packages, you should `yarn build` from the root instead of one package. This is the best way to ensure all dependencies build in proper order.
 
 ## Architecture
 

@@ -40,7 +40,7 @@ const config = {
   watchPathIgnorePatterns: ["/node_modules/"],
   moduleNameMapper,
   testTimeout: process.platform === "win32" ? 15000 : 8000,
-  setupFilesAfterEnv: [path.join(__dirname, "jest-setup-after-env.js")],
+  setupFiles: [path.join(__dirname, "jest-setup.js")],
   // Don't set maxWorkers based on LAGE_PACKAGE_NAME because that's handled by workers/jest.js
   // ...(process.env.LAGE_PACKAGE_NAME && { maxWorkers: 1 }),
 };

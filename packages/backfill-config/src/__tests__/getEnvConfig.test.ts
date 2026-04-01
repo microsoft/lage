@@ -15,6 +15,7 @@ describe("getEnvConfig()", () => {
   const logger = makeLogger("mute");
 
   beforeEach(() => {
+    // Note: jest-setup.js clears all BACKFILL_ vars that might have come from CI
     process.env = { ...originalEnv };
   });
 

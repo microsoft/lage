@@ -74,11 +74,11 @@ describe("createBuildCommand", () => {
       muteLogger
     );
 
-    const index_js_ExistsBeforeBuild = await fs.pathExists(
+    const index_js_ExistsBeforeBuild = fs.existsSync(
       path.join(fixtureLocation, "lib", "index.js")
     );
     await buildCommand();
-    const index_js_ExistsAfterBuild = await fs.pathExists(
+    const index_js_ExistsAfterBuild = fs.existsSync(
       path.join(fixtureLocation, "lib", "index.js")
     );
 

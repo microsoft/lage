@@ -1,82 +1,73 @@
 import { describe, expect, it } from "@jest/globals";
-import path from "path";
-import fs from "fs-extra";
-
-import { makeLogger } from "backfill-logger";
 import { setupFixture, type FixtureName } from "@lage-run/test-utilities";
-import type { CacheStorageConfig } from "backfill-config";
-
+import { makeLogger } from "backfill-logger";
+import fs from "fs-extra";
+import path from "path";
+import { LocalCacheStorage } from "../LocalCacheStorage.js";
 import { getCacheStorageProvider } from "../getCacheStorageProvider.js";
 
-const setupCacheStorage = (fixtureName: FixtureName) => {
-  const fixtureLocation = setupFixture(fixtureName);
+/**
+ * Create the fixture files and get the `LocalCacheStorage` instance.
+ * If `fixtureLocation` is provided, it will be reused instead of creating a new fixture directory.
+ */
+const setupCacheStorage = (
+  fixtureName: FixtureName,
+  fixtureLocation?: string
+) => {
+  fixtureLocation ??= setupFixture(fixtureName);
 
-  const cacheStorageConfig: CacheStorageConfig = {
-    provider: "local",
-  };
   const internalCacheFolder = path.join("node_modules", ".cache", "backfill");
   const logger = makeLogger("mute");
 
   const cacheStorage = getCacheStorageProvider(
-    cacheStorageConfig,
+    { provider: "local" },
     internalCacheFolder,
     logger,
     fixtureLocation
   );
+  expect(cacheStorage).toBeInstanceOf(LocalCacheStorage);
 
   return { cacheStorage, internalCacheFolder, fixtureLocation };
 };
 
-function createFileInFolder(folder: string, filename: string) {
-  fs.outputFileSync(path.join(folder, filename), "");
-}
-
-function expectPathExists(pathToCheck: string, expectSuccess: boolean) {
-  expect(fs.pathExistsSync(pathToCheck)).toBe(expectSuccess);
-}
-
-type CacheHelper = {
+type CacheTestCase = {
   fixtureName: FixtureName;
+  /** If provided, use this instead of creating a new fixture directory */
+  fixtureLocation?: string;
   hash: string;
-  outputGlob?: string[];
-  filesToCache?: string[];
-  expectSuccess?: boolean;
-  errorMessage?: string;
 };
 
-async function fetchFromCache({
-  fixtureName,
-  hash,
-  expectSuccess = true,
-}: CacheHelper) {
+async function fetchFromCache(
+  params: CacheTestCase & { expectFailure?: boolean }
+) {
+  const { fixtureName, hash, expectFailure } = params;
   const { cacheStorage, internalCacheFolder, fixtureLocation } =
-    setupCacheStorage(fixtureName);
+    setupCacheStorage(fixtureName, params.fixtureLocation);
+  const expectSuccess = !expectFailure;
 
   const secretFile = "qwerty";
 
   if (expectSuccess) {
-    createFileInFolder(
-      path.join(fixtureLocation, internalCacheFolder, hash),
-      secretFile
+    fs.outputFileSync(
+      path.join(fixtureLocation, internalCacheFolder, hash, secretFile),
+      ""
     );
   }
 
   const fetchResult = await cacheStorage.fetch(hash);
   expect(fetchResult).toBe(expectSuccess);
 
-  expectPathExists(path.join(fixtureLocation, secretFile), expectSuccess);
+  expect(fs.existsSync(path.join(fixtureLocation, secretFile))).toBe(
+    expectSuccess
+  );
 }
 
-async function putInCache({
-  fixtureName,
-  hash,
-  outputGlob,
-  filesToCache,
-  expectSuccess = true,
-  errorMessage,
-}: CacheHelper) {
+async function putInCache(
+  params: CacheTestCase & { outputGlob: string[]; filesToCache: string[] }
+) {
+  const { fixtureName, outputGlob, filesToCache, hash } = params;
   const { cacheStorage, internalCacheFolder, fixtureLocation } =
-    setupCacheStorage(fixtureName);
+    setupCacheStorage(fixtureName, params.fixtureLocation);
 
   if (!outputGlob) {
     throw new Error("outputGlob should be provided to the putInCache function");
@@ -91,33 +82,23 @@ async function putInCache({
   // This forces collection of the hashes before we change the files
   await cacheStorage.fetch(hash);
 
-  if (expectSuccess) {
-    filesToCache.forEach((f) => createFileInFolder(fixtureLocation, f));
+  for (const f of filesToCache) {
+    fs.outputFileSync(path.join(fixtureLocation, f), "");
   }
 
-  if (expectSuccess) {
-    await cacheStorage.put(hash, outputGlob);
-  } else {
-    await expect(cacheStorage.put(hash, outputGlob)).rejects.toThrow(
-      errorMessage
-    );
+  await cacheStorage.put(hash, outputGlob);
+
+  for (const f of filesToCache) {
+    const pathToCheck = path.join(internalCacheFolder, hash, f);
+
+    expect(fs.existsSync(path.join(fixtureLocation, pathToCheck))).toBe(true);
   }
 
-  filesToCache.forEach((f) => {
-    const pathToCheck = expectSuccess
-      ? path.join(internalCacheFolder, hash, f)
-      : internalCacheFolder;
-
-    expectPathExists(path.join(fixtureLocation, pathToCheck), expectSuccess);
-  });
-
-  if (expectSuccess) {
-    for (const f of filesToCache) {
-      fs.removeSync(path.join(fixtureLocation, f));
-      expectPathExists(path.join(fixtureLocation, f), false);
-      await cacheStorage.fetch(hash);
-      expectPathExists(path.join(fixtureLocation, f), true);
-    }
+  for (const f of filesToCache) {
+    fs.removeSync(path.join(fixtureLocation, f));
+    expect(fs.existsSync(path.join(fixtureLocation, f))).toBe(false);
+    await cacheStorage.fetch(hash);
+    expect(fs.existsSync(path.join(fixtureLocation, f))).toBe(true);
   }
 }
 
@@ -148,7 +129,7 @@ describe("LocalCacheStorage", () => {
       await fetchFromCache({
         fixtureName: "with-cache",
         hash: "incorrect_hash",
-        expectSuccess: false,
+        expectFailure: true,
       });
     });
   });
@@ -224,6 +205,50 @@ describe("LocalCacheStorage", () => {
         outputGlob: ["releaseDeployment/**/*"],
         filesToCache: ["releaseDeployment/public/.vite/manifest.json"],
       });
+    });
+
+    // Different glob libraries have different behavior for ** and **/*.
+    // The common expectation is that they'd behave the same, so verify it.
+    it("lib/**/* matches both top-level and nested files", async () => {
+      await putInCache({
+        fixtureName: "basic",
+        hash: "glob-nested-star-hash",
+        outputGlob: ["lib/**/*"],
+        filesToCache: ["lib/index.js", "lib/nested/file.js"],
+      });
+    });
+
+    it("lib/** matches both top-level and nested files", async () => {
+      await putInCache({
+        fixtureName: "basic",
+        hash: "glob-star-hash",
+        outputGlob: ["lib/**"],
+        filesToCache: ["lib/index.js", "lib/nested/file.js"],
+      });
+    });
+  });
+
+  describe("E2E (fetch + put + fetch)", () => {
+    // This would have caught the issue from https://github.com/microsoft/lage/pull/1082
+    it("works with cache check → build (put) → cache restore flow", async () => {
+      const fixtureName = "basic";
+      const fixtureLocation = setupFixture(fixtureName);
+      const hash = "e2e-test-hash";
+
+      await fetchFromCache({
+        fixtureName,
+        hash,
+        fixtureLocation,
+        expectFailure: true,
+      });
+      await putInCache({
+        fixtureName,
+        hash,
+        outputGlob: ["lib/**"],
+        filesToCache: ["lib/index.js"],
+        fixtureLocation,
+      });
+      await fetchFromCache({ fixtureName, hash, fixtureLocation });
     });
   });
 });

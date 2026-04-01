@@ -31,7 +31,9 @@
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
-    "@lage-run/test-utilities": "workspace:^"
+    "@lage-run/test-utilities": "workspace:^",
+    "@types/fs-extra": "^8.0.0",
+    "fs-extra": "8.1.0"
   },
   "files": [
     "lib/!(__*)",

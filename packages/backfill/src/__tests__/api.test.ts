@@ -3,12 +3,15 @@ import path from "path";
 import { createDefaultConfig } from "backfill-config";
 import { setupFixture } from "@lage-run/test-utilities";
 import { fetch, put, makeLogger } from "../api.js";
+import { Stream } from "stream";
 
 describe("api", () => {
+  const mockStream = new Stream.PassThrough();
+
   it("fetch works with custom providers", async () => {
     const packageRoot = setupFixture("basic");
 
-    const logger = makeLogger("silly", process.stdout, process.stderr);
+    const logger = makeLogger("silly", mockStream, mockStream);
     const config = createDefaultConfig(packageRoot);
     const provider = {
       fetch: jest.fn(() => Promise.resolve(true)),
@@ -34,7 +37,7 @@ describe("api", () => {
   it("put works with custom providers", async () => {
     const packageRoot = setupFixture("basic");
 
-    const logger = makeLogger("silly", process.stdout, process.stderr);
+    const logger = makeLogger("silly", mockStream, mockStream);
     const config = createDefaultConfig(packageRoot);
     const provider = {
       fetch: jest.fn(() => Promise.resolve(true)),
