@@ -22,25 +22,24 @@ async function lint(data) {
     return;
   }
 
-  const tsconfigPath = path.join(target.cwd, "tsconfig.json");
-  const baseConfig = createConfig({ tsconfigPath });
-
-  // Load per-package overrides if they exist (these intentionally only contain rule
-  // overrides so that the editor's root eslint.config.js can work independently)
-  const projectConfigPath = path.join(target.cwd, "eslint.config.js");
-  if (fs.existsSync(projectConfigPath)) {
-    const projectConfig = require(projectConfigPath);
-    baseConfig.push(...projectConfig);
-  }
-
   const shouldFix = taskArgs?.includes("--fix");
 
-  const eslint = new ESLint({
-    baseConfig: /** @type {any} */ (baseConfig),
-    fix: shouldFix,
-    cache: false,
-    cwd: target.cwd,
-  });
+  // Use the per-package eslint.config.js if it exists (these extend the shared config),
+  // otherwise create the default shared config for this package.
+  const projectConfigPath = path.join(target.cwd, "eslint.config.js");
+  /** @type {import("eslint").ESLint.Options} */
+  const eslintOptions = { fix: shouldFix, cache: false, cwd: target.cwd };
+
+  if (fs.existsSync(projectConfigPath)) {
+    eslintOptions.overrideConfigFile = projectConfigPath;
+  } else {
+    const tsconfigPath = path.join(target.cwd, "tsconfig.json");
+    // null disables config file lookup so only baseConfig is used
+    eslintOptions.overrideConfigFile = null;
+    eslintOptions.baseConfig = /** @type {any} */ (createConfig({ tsconfigPath }));
+  }
+
+  const eslint = new ESLint(eslintOptions);
 
   const files = target.packageName === "@lage-run/monorepo-scripts" ? ["."] : ["src"];
   const results = await eslint.lintFiles(files);

@@ -1,8 +1,8 @@
 // @ts-check
-// Per-package ESLint overrides (only rule overrides; the base config is applied by the lint worker).
-// For the editor, these overrides are duplicated in the root eslint.config.js using files patterns.
+const path = require("path");
+const { createConfig } = require("../../scripts/config/eslint.config.js");
 
-/** @type {import("eslint").Linter.Config[]} */
-const config = [{ rules: { "no-console": "off" } }];
-
-module.exports = config;
+module.exports = [
+  ...createConfig({ tsconfigPath: path.join(__dirname, "tsconfig.json") }),
+  { rules: { "no-console": "off" } },
+];
