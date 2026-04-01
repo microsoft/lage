@@ -3,6 +3,7 @@ const { ESLint } = require("eslint");
 const fs = require("fs");
 const path = require("path");
 const { getPackageInfo } = require("workspace-tools-npm");
+const { createConfig } = require("../config/eslint.config.js");
 
 /**
  * This worker is used for `lage run lint`, in place of the per-package `lint` script.
@@ -18,28 +19,24 @@ async function lint(data) {
 
   if (!packageJson?.scripts?.lint) {
     process.stdout.write('No "lint" script found - skipping');
-    // pass
     return;
   }
 
-  const projectConfigPath = path.join(target.cwd, ".eslintrc.js");
-  const baseConfigPath = path.resolve(__dirname, "../config/eslintrc.js");
-  const hasProjectConfig = fs.existsSync(projectConfigPath);
-  const config = hasProjectConfig ? require(projectConfigPath) : require(baseConfigPath);
+  const tsconfigPath = path.join(target.cwd, "tsconfig.json");
+  const baseConfig = createConfig({ tsconfigPath });
 
-  (config.parserOptions ??= {}).project = path.join(target.cwd, "tsconfig.json");
-  if (hasProjectConfig) {
-    // The project configs intentionally don't have "root" or "extends" to make the single
-    // config for the editor work (repo root .eslintrc.js)
-    config.root = true;
-    config.extends = baseConfigPath;
+  // Load per-package overrides if they exist (these intentionally only contain rule
+  // overrides so that the editor's root eslint.config.js can work independently)
+  const projectConfigPath = path.join(target.cwd, "eslint.config.js");
+  if (fs.existsSync(projectConfigPath)) {
+    const projectConfig = require(projectConfigPath);
+    baseConfig.push(...projectConfig);
   }
 
   const shouldFix = taskArgs?.includes("--fix");
 
   const eslint = new ESLint({
-    reportUnusedDisableDirectives: "error",
-    baseConfig: config,
+    baseConfig,
     fix: shouldFix,
     cache: false,
     cwd: target.cwd,

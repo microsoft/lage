@@ -9,19 +9,20 @@
     "types": "tsc"
   },
   "dependencies": {
+    "@eslint/js": "^9.0.0",
     "@microsoft/api-extractor": "7.52.9",
     "@swc/core": "^1.9.1",
     "@swc/jest": "^0.2.39",
-    "@types/eslint": "^8.0.0",
     "@types/node": "^16.18.3",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "@typescript-eslint/types": "^8.0.0",
     "depcheck": "^1.4.7",
-    "eslint": "^8.20.0",
+    "eslint": "^9.0.0",
     "eslint-plugin-file-extension-in-import-ts": "^2.1.1",
+    "globals": "^15.0.0",
     "jest": "^30.0.0",
     "typescript": "~5.9.3",
+    "typescript-eslint": "^8.0.0",
     "workspace-tools-npm": "npm:workspace-tools@latest",
     "zimmerframe": "^1.1.4"
   },
