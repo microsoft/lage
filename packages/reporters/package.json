@@ -19,7 +19,6 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/format-hrtime": "workspace:^",
     "@lage-run/logger": "workspace:^",
     "@lage-run/scheduler-types": "workspace:^",
     "@lage-run/target-graph": "workspace:^",

@@ -1,4 +1,4 @@
-import { formatDuration, hrToSeconds } from "@lage-run/format-hrtime";
+import { formatDuration, hrToSeconds } from "./formatDuration.js";
 import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import { LogLevel, type LogStructuredData } from "@lage-run/logger";
 import chalk from "chalk";

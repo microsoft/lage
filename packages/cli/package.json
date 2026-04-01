@@ -25,7 +25,6 @@
   "dependencies": {
     "@lage-run/cache": "workspace:^",
     "@lage-run/config": "workspace:^",
-    "@lage-run/format-hrtime": "workspace:^",
     "@lage-run/hasher": "workspace:^",
     "@lage-run/logger": "workspace:^",
     "@lage-run/reporters": "workspace:^",

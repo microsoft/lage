@@ -6,7 +6,7 @@ import type { Target } from "@lage-run/target-graph";
 import { gradient } from "./gradient.js";
 import chalk from "chalk";
 import type { Writable } from "stream";
-import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
+import { formatDuration, hrToSeconds, hrtimeDiff } from "./formatDuration.js";
 import { formatBytes } from "./formatBytes.js";
 import { slowestTargetRuns } from "./slowestTargetRuns.js";
 

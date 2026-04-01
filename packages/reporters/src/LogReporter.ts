@@ -1,4 +1,4 @@
-import { formatDuration, hrtimeDiff, hrToSeconds } from "@lage-run/format-hrtime";
+import { formatDuration, hrtimeDiff, hrToSeconds } from "./formatDuration.js";
 import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
 import ansiRegex from "ansi-regex";
