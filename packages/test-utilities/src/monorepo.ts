@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import execa from "execa";
+import { execSync } from "child_process";
 import { createTempDir } from "./createTempDir.js";
 
 interface MonorepoPackages {
@@ -229,12 +230,46 @@ export class Monorepo {
       } catch (error) {
         attempts++;
         if (attempts >= maxRetries) {
+          const message = error instanceof Error ? error.message : String(error);
           // eslint-disable-next-line no-console
-          console.warn(`Failed to clean up monorepo at ${this.root} after ${attempts} attempts:`, error);
+          console.warn(`Failed to clean up monorepo at ${this.root} after ${attempts} attempts: ${message}`);
         } else {
-          await new Promise((resolve) => setTimeout(resolve, 500));
+          // On Windows, try to kill any processes that may have a working directory
+          // inside this temp dir, which causes EBUSY/EPERM on rmdir.
+          if (process.platform === "win32") {
+            this.tryKillProcessesInDir();
+          }
+          await new Promise((resolve) => setTimeout(resolve, 1000 * attempts));
         }
       }
+    }
+  }
+
+  /**
+   * On Windows, attempt to kill processes whose working directory is inside
+   * this monorepo root. Uses `wmic` to find matching PIDs.
+   */
+  private tryKillProcessesInDir(): void {
+    try {
+      // Use handle.exe-free approach: query for node processes that might be children.
+      // We just try to kill any node.exe processes whose command line contains our temp dir.
+      const result = execSync(
+        `wmic process where "CommandLine like '%${this.root.replace(/\\/g, "\\\\")}%'" get ProcessId /format:list`,
+        { encoding: "utf-8", timeout: 5000 }
+      );
+      const pids = result.match(/ProcessId=(\d+)/g);
+      if (pids) {
+        for (const match of pids) {
+          const pid = match.replace("ProcessId=", "");
+          try {
+            execSync(`taskkill /f /PID ${pid} /T`, { encoding: "utf-8", timeout: 5000 });
+          } catch {
+            // Ignore errors from already-dead processes
+          }
+        }
+      }
+    } catch {
+      // wmic may not be available; silently continue and rely on retries
     }
   }
 }
