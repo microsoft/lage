@@ -2,10 +2,16 @@
 const tseslint = require("typescript-eslint");
 const eslintJs = require("@eslint/js");
 const globals = require("globals");
+// @ts-expect-error -- this plugin has no type declarations
 const fileExtensionPlugin = require("eslint-plugin-file-extension-in-import-ts");
 
 /**
  * Create the shared ESLint flat config for the lage monorepo.
+ *
+ * The old legacy config applied all rules (including @typescript-eslint rules) to both TS and
+ * JS files, because the JS files in this repo are also type-checked via JSDoc. To replicate this,
+ * we apply `tseslint.configs.recommended` to all files (not just TS) by stripping the `files`
+ * restriction from the preset entries.
  *
  * @param {object} [options]
  * @param {string} [options.tsconfigPath] Path to tsconfig.json (default: "./tsconfig.json")
@@ -35,12 +41,13 @@ function createConfig(options = {}) {
     // Base eslint recommended rules
     eslintJs.configs.recommended,
 
-    // TypeScript-eslint recommended rules (sets up parser and plugin for TS files)
+    // TypeScript-eslint recommended: sets up parser/plugin for all files, applies
+    // eslint-recommended TS overrides to TS files, and recommended TS rules to all files.
     ...tseslint.configs.recommended,
 
-    // Main config for all TS files
+    // Custom rules and parser options for all files (both TS and JS, since JS files in
+    // this repo are also type-checked via JSDoc and the TS parser).
     {
-      files: ["**/*.ts", "**/*.tsx"],
       languageOptions: {
         globals: {
           ...globals.node,
@@ -107,15 +114,6 @@ function createConfig(options = {}) {
     // Override for JS files
     {
       files: ["**/*.{js,cjs,mjs}"],
-      languageOptions: {
-        globals: {
-          ...globals.node,
-          ...globals.es2020,
-        },
-      },
-      linterOptions: {
-        reportUnusedDisableDirectives: "error",
-      },
       rules: {
         "@typescript-eslint/no-require-imports": "off",
         "@typescript-eslint/explicit-member-accessibility": "off",
@@ -144,7 +142,7 @@ function createConfig(options = {}) {
           },
         ],
       },
-    },
+    }
   );
 }
 

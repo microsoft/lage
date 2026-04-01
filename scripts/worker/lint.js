@@ -36,7 +36,7 @@ async function lint(data) {
   const shouldFix = taskArgs?.includes("--fix");
 
   const eslint = new ESLint({
-    baseConfig,
+    baseConfig: /** @type {any} */ (baseConfig),
     fix: shouldFix,
     cache: false,
     cwd: target.cwd,

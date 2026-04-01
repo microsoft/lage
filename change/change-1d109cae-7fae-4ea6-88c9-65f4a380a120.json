@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "none",
+      "comment": "Migrate ESLint config from legacy (.eslintrc.js) to flat config (eslint.config.js) using ESLint 9",
+      "packageName": "workspace-tools",
+      "email": "email not defined",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Migrate ESLint config from legacy (.eslintrc.js) to flat config (eslint.config.js) using ESLint 9",
+      "packageName": "@lage-run/grapher",
+      "email": "email not defined",
+      "dependentChangeType": "none"
+    }
+  ]
+}
