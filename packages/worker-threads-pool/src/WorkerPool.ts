@@ -133,7 +133,10 @@ export class WorkerPool extends EventEmitter implements Pool {
     }
   }
 
-  public async close(): Promise<void> {
-    await Promise.all(this.workers.map((worker) => worker.terminate()));
+  public close(): Promise<void> {
+    for (const worker of this.workers) {
+      worker.terminate();
+    }
+    return Promise.resolve();
   }
 }

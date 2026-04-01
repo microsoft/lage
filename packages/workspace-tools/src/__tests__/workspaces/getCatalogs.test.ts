@@ -7,7 +7,7 @@ import type { Catalogs } from "../../types/Catalogs.js";
 import type { WorkspaceManager } from "../../types/WorkspaceManager.js";
 import { catalogsToYaml } from "../../workspaces/catalogsToYaml.js";
 import { getCatalogs } from "../../workspaces/getCatalogs.js";
-import { getWorkspaceManagerAndRoot } from "../../workspaces/implementations";
+import { getWorkspaceManagerAndRoot } from "../../workspaces/implementations/index.js";
 import { managerFiles } from "../../workspaces/implementations/getWorkspaceManagerAndRoot.js";
 
 // Samples from https://yarnpkg.com/features/catalogs
@@ -96,8 +96,12 @@ describe("getCatalogs", () => {
           : packageJson.workspaces?.packages || [];
         packageJson.workspaces = { packages: workspacePackages };
         const { named, default: defaultCatalog } = catalogs;
-        defaultCatalog && (packageJson.workspaces.catalog = defaultCatalog);
-        named && (packageJson.workspaces.catalogs = named);
+        if (defaultCatalog) {
+          packageJson.workspaces.catalog = defaultCatalog;
+        }
+        if (named) {
+          packageJson.workspaces.catalogs = named;
+        }
         fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
       },
     },

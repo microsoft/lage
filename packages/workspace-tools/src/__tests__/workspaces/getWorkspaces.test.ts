@@ -3,7 +3,7 @@ import { cleanupFixtures, setupFixture, type TestFixtureName } from "../setupFix
 import path from "path";
 import type { WorkspaceManager } from "../../types/WorkspaceManager.js";
 import { getWorkspaceInfos, getWorkspaceInfosAsync } from "../../workspaces/getWorkspaceInfos.js";
-import { getWorkspaceManagerAndRoot } from "../../workspaces/implementations";
+import { getWorkspaceManagerAndRoot } from "../../workspaces/implementations/index.js";
 
 describe("getWorkspaceInfos", () => {
   afterAll(() => {

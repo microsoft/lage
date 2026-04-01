@@ -1,6 +1,6 @@
 import { logVerboseWarning } from "../logging.js";
 import type { WorkspaceManager } from "../types/WorkspaceManager.js";
-import { getWorkspaceManagerAndRoot, type WorkspaceManagerAndRoot } from "./implementations";
+import { getWorkspaceManagerAndRoot, type WorkspaceManagerAndRoot } from "./implementations/index.js";
 
 interface WrappedUtilityParams {
   /** Search for the root from here */

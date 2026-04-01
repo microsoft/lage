@@ -54,6 +54,7 @@ const config = {
         ignoreRestSiblings: true,
         // Follow the typescript pattern of ignoring things starting with _
         argsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
         destructuredArrayIgnorePattern: "^_",
       },
     ],

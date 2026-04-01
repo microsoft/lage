@@ -1,6 +1,6 @@
 import type { Catalogs } from "../types/Catalogs.js";
 import type { WorkspaceManager } from "../types/WorkspaceManager.js";
-import { getWorkspaceUtilities } from "./implementations";
+import { getWorkspaceUtilities } from "./implementations/index.js";
 import { wrapWorkspaceUtility } from "./wrapWorkspaceUtility.js";
 
 /**

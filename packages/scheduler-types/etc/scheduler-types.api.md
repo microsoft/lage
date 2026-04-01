@@ -56,7 +56,7 @@ export interface TargetScheduler<TTargetRunResult> {
     // (undocumented)
     abort(): void;
     // (undocumented)
-    cleanup(): void;
+    cleanup(): void | Promise<void>;
     // (undocumented)
     onTargetChange?(targetId: string): void;
     // (undocumented)

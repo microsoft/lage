@@ -46,7 +46,7 @@ export function getRepositoryName(url: string): string {
       organization = host.match(/([^.@]+)\.visualstudio\.com$/)?.[1];
     }
     return `${organization}/${parsedUrl.owner}/${parsedUrl.name}`;
-  } catch (err) {
+  } catch (_err) {
     return "";
   }
 }

@@ -112,7 +112,7 @@ export class AggregatedPool extends EventEmitter implements Pool {
   }
 
   public async close(): Promise<unknown> {
-    const promises = [...this.groupedPools.values(), this.defaultPool].map((pool) => pool?.close());
+    const promises = [...this.groupedPools.values(), this.defaultPool].map((pool) => pool?.close() ?? Promise.resolve());
     return Promise.all(promises);
   }
 }

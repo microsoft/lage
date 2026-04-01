@@ -10,7 +10,7 @@ try {
   if (maxFileOpEnv) {
     MAX_FILE_OPERATIONS = parseInt(maxFileOpEnv);
   }
-} catch (_) {
+} catch {
   /* The env variable is not an integer, this is fine.*/
 }
 

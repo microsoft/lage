@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 import { getWorkspaceManagerRoot } from "./workspaces/getWorkspaceManagerRoot.js";
-import { git } from "./git";
+import { git } from "./git/index.js";
 import { logVerboseWarning } from "./logging.js";
 import type { WorkspaceManager } from "./types/WorkspaceManager.js";
 

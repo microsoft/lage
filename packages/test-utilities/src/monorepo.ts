@@ -49,8 +49,12 @@ export class Monorepo {
       this.generateRepoFiles();
     }
 
-    packages && this.addPackages(packages);
-    extraFiles && this.writeFiles(extraFiles);
+    if (packages) {
+      this.addPackages(packages);
+    }
+    if (extraFiles) {
+      this.writeFiles(extraFiles);
+    }
 
     if (!params.skipLink) {
       this.linkPackages();

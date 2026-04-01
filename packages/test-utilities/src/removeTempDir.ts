@@ -13,7 +13,9 @@ import fs from "fs";
  */
 export function removeTempDir(dir: string | undefined): boolean {
   try {
-    dir && fs.rmSync(dir, { recursive: true, force: true });
+    if (dir) {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
     return true;
   } catch {
     return false;

@@ -1,7 +1,7 @@
 import glob, { type Options as GlobOptions } from "fast-glob";
 import path from "path";
 import type { WorkspaceManager } from "../types/WorkspaceManager.js";
-import { getWorkspaceUtilities, type WorkspaceManagerAndRoot } from "./implementations";
+import { getWorkspaceUtilities, type WorkspaceManagerAndRoot } from "./implementations/index.js";
 import { isCachingEnabled } from "../isCachingEnabled.js";
 import { wrapWorkspaceUtility, wrapAsyncWorkspaceUtility } from "./wrapWorkspaceUtility.js";
 

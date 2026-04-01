@@ -4,7 +4,7 @@ import {
   getStagedChanges,
   getUnstagedChanges,
   getUntrackedChanges,
-} from "../git";
+} from "../git/index.js";
 import { type GitCommonOptions, type GetChangesBetweenRefsOptions } from "../git/types.js";
 import { getPackagesByFiles } from "./getPackagesByFiles.js";
 

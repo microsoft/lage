@@ -57,7 +57,7 @@ describe("createBuildCommand", () => {
 
     try {
       await buildCommand;
-    } catch (e) {
+    } catch (_e) {
       /* comment to prevent eslint from complaining */
     }
 

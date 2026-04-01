@@ -113,7 +113,7 @@ export class WorkspaceTargetGraphBuilder {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   private deepCloneTargetConfig: Function = mergician({
     appendArrays: true,
     onCircular: () => {

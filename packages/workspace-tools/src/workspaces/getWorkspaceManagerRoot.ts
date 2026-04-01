@@ -1,5 +1,5 @@
 import { logVerboseWarning } from "../logging.js";
-import { getWorkspaceManagerAndRoot } from "./implementations";
+import { getWorkspaceManagerAndRoot } from "./implementations/index.js";
 import type { WorkspaceManager } from "../types/WorkspaceManager.js";
 
 /**

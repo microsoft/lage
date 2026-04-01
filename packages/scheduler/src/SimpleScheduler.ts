@@ -287,7 +287,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
           try {
             const runner = await this.runnerPicker.pick(target.target);
             shouldRun = await runner.shouldRun(target.target);
-          } catch (e) {
+          } catch (_e) {
             // pass - default to run anyway
           }
 

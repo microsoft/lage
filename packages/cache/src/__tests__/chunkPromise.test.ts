@@ -18,15 +18,15 @@ describe("chunking promises", () => {
     }
   });
 
-  it("should throw, if one promise was rejected", () => {
+  it("should throw, if one promise was rejected", async () => {
     const mockedPromiseFns = [
       jest.fn(() => Promise.resolve(1)).mockName("1"),
-      jest.fn(() => Promise.resolve(2)).mockName("2"),
+      jest.fn(() => Promise.reject(new Error("rejected"))).mockName("2"),
       jest.fn(() => Promise.resolve(3)).mockName("3"),
       jest.fn(() => Promise.resolve(4)).mockName("4"),
       jest.fn(() => Promise.resolve(5)).mockName("5"),
     ];
 
-    expect(async () => await chunkPromise(mockedPromiseFns, 2)).rejects;
+    await expect(async () => await chunkPromise(mockedPromiseFns, 2)).rejects.toBeDefined();
   });
 });

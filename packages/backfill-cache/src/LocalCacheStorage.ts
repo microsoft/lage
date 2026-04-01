@@ -31,23 +31,24 @@ export class LocalCacheStorage extends CacheStorage {
       dot: true,
     });
 
+    const filesToCopy: string[] = [];
+    for (const file of files) {
+      const src = path.join(localCacheFolder, file);
+      const dest = path.join(this.cwd, file);
+
+      try {
+        const stats = await Promise.all([fs.stat(src), fs.stat(dest)]);
+        if (stats[0].mtime.getTime() !== stats[1].mtime.getTime()) {
+          filesToCopy.push(file);
+        }
+      } catch {
+        // if an error is thrown, it means the stat was called on a non-existent file or directory
+        filesToCopy.push(file);
+      }
+    }
+
     await Promise.all(
-      files
-        .filter(async (file) => {
-          const src = path.join(localCacheFolder, file);
-          const dest = path.join(this.cwd, file);
-
-          try {
-            const stats = await Promise.all([fs.stat(src), fs.stat(dest)]);
-            return stats[0].mtime.getTime() !== stats[1].mtime.getTime();
-          } catch {
-            // if an error is thrown, it means the stat was called on a non-existent file or directory
-            return false;
-          }
-
-          return true;
-        })
-        .map(async (file) => {
+      filesToCopy.map(async (file) => {
           await fs.mkdirp(path.dirname(path.join(this.cwd, file)));
           await fs.copyFile(
             path.join(localCacheFolder, file),
