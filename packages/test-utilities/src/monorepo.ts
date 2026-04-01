@@ -231,14 +231,12 @@ export class Monorepo {
         attempts++;
         if (attempts >= maxRetries) {
           const message = error instanceof Error ? error.message : String(error);
+          const processInfo = process.platform === "win32" ? this.findProcessesInDir() : "";
           // eslint-disable-next-line no-console
-          console.warn(`Failed to clean up monorepo at ${this.root} after ${attempts} attempts: ${message}`);
+          console.warn(
+            `Failed to clean up monorepo at ${this.root} after ${attempts} attempts: ${message}${processInfo ? `\nProcesses referencing this directory:\n${processInfo}` : ""}`
+          );
         } else {
-          // On Windows, try to kill any processes that may have a working directory
-          // inside this temp dir, which causes EBUSY/EPERM on rmdir.
-          if (process.platform === "win32") {
-            this.tryKillProcessesInDir();
-          }
           await new Promise((resolve) => setTimeout(resolve, 1000 * attempts));
         }
       }
@@ -246,30 +244,29 @@ export class Monorepo {
   }
 
   /**
-   * On Windows, attempt to kill processes whose working directory is inside
-   * this monorepo root. Uses `wmic` to find matching PIDs.
+   * On Windows, find processes whose command line references this monorepo root.
+   * Returns a human-readable string listing PID and command line, or empty string.
    */
-  private tryKillProcessesInDir(): void {
+  private findProcessesInDir(): string {
     try {
-      // Use handle.exe-free approach: query for node processes that might be children.
-      // We just try to kill any node.exe processes whose command line contains our temp dir.
       const result = execSync(
-        `wmic process where "CommandLine like '%${this.root.replace(/\\/g, "\\\\")}%'" get ProcessId /format:list`,
+        `wmic process where "CommandLine like '%${this.root.replace(/\\/g, "\\\\")}%'" get ProcessId,CommandLine /format:list`,
         { encoding: "utf-8", timeout: 5000 }
       );
-      const pids = result.match(/ProcessId=(\d+)/g);
-      if (pids) {
-        for (const match of pids) {
-          const pid = match.replace("ProcessId=", "");
-          try {
-            execSync(`taskkill /f /PID ${pid} /T`, { encoding: "utf-8", timeout: 5000 });
-          } catch {
-            // Ignore errors from already-dead processes
-          }
-        }
-      }
+      const entries = result
+        .split(/\r?\n\r?\n/)
+        .filter((block) => block.includes("ProcessId="))
+        .map((block) => {
+          const cmdMatch = block.match(/CommandLine=(.*)/);
+          const pidMatch = block.match(/ProcessId=(\d+)/);
+          const cmd = cmdMatch ? cmdMatch[1].trim() : "<unknown>";
+          const pid = pidMatch ? pidMatch[1] : "<unknown>";
+          return `  PID ${pid}: ${cmd}`;
+        });
+      return entries.length ? entries.join("\n") : "";
     } catch {
-      // wmic may not be available; silently continue and rely on retries
+      // wmic may not be available; return empty
+      return "";
     }
   }
 }
