@@ -1,0 +1,81 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Upgrade typescript-eslint to v8 and fix lint issues",
+      "packageName": "@lage-run/cli",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Upgrade typescript-eslint to v8 and fix lint issues",
+      "packageName": "@lage-run/grapher",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Upgrade typescript-eslint to v8 and fix lint issues",
+      "packageName": "@lage-run/scheduler",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Update cleanup() return type to allow Promise<void>",
+      "packageName": "@lage-run/scheduler-types",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Upgrade typescript-eslint to v8 and fix lint issues",
+      "packageName": "@lage-run/target-graph",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Fix worker pool close() to not use await on void values",
+      "packageName": "@lage-run/worker-threads-pool",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Fix async filter in LocalCacheStorage and lint issues",
+      "packageName": "backfill-cache",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Upgrade typescript-eslint to v8 and fix lint issues",
+      "packageName": "backfill-config",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Upgrade typescript-eslint to v8 and fix lint issues",
+      "packageName": "backfill-hasher",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Upgrade typescript-eslint to v8 and fix lint issues",
+      "packageName": "backfill-logger",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Upgrade typescript-eslint to v8 and fix lint issues",
+      "packageName": "workspace-tools",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
