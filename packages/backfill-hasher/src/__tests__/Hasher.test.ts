@@ -19,7 +19,9 @@ describe("_addToQueue", () => {
   let root = "";
 
   afterEach(() => {
-    root && removeTempDir(root);
+    if (root) {
+      removeTempDir(root);
+    }
     root = "";
   });
 

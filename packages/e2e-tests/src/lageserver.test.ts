@@ -46,7 +46,9 @@ describe("lageserver", () => {
     repo = undefined;
     serverProcess?.kill();
     serverProcess = undefined;
-    serverPid && killDetachedProcess(serverPid);
+    if (serverPid) {
+      killDetachedProcess(serverPid);
+    }
     serverPid = undefined;
 
     // Backup kill the server in case the above didn't work (ignores if the process is already dead).

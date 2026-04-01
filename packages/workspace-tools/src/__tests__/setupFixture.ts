@@ -118,7 +118,9 @@ export function setupFixture(
  * call this function in `afterAll`.
  */
 export function cleanupFixtures(): void {
-  tempRoot && removeTempDir(tempRoot);
+  if (tempRoot) {
+    removeTempDir(tempRoot);
+  }
   tempRoot = undefined;
 }
 

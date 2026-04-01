@@ -27,7 +27,9 @@ describe("initializeReporters with custom reporters", () => {
 
   afterEach(() => {
     setMockImportReporter(undefined);
-    tmpDir && removeTempDir(tmpDir);
+    if (tmpDir) {
+      removeTempDir(tmpDir);
+    }
     tmpDir = "";
   });
 
