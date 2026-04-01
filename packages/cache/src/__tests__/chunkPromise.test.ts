@@ -27,6 +27,6 @@ describe("chunking promises", () => {
       jest.fn(() => Promise.resolve(5)).mockName("5"),
     ];
 
-    await expect(async () => await chunkPromise(mockedPromiseFns, 2)).rejects.toBeDefined();
+    await expect(async () => await chunkPromise(mockedPromiseFns, 2)).rejects.toThrow("rejected");
   });
 });
