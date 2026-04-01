@@ -21,9 +21,7 @@ describe("getName()", () => {
   let packageRoot = "";
 
   afterEach(() => {
-    if (packageRoot) {
-      removeTempDir(packageRoot);
-    }
+    packageRoot && removeTempDir(packageRoot);
     packageRoot = "";
   });
 
@@ -39,9 +37,7 @@ describe("getSearchPaths()", () => {
   let packageRoot = "";
 
   afterEach(() => {
-    if (packageRoot) {
-      removeTempDir(packageRoot);
-    }
+    packageRoot && removeTempDir(packageRoot);
     packageRoot = "";
   });
 
@@ -82,9 +78,7 @@ describe("createConfig()", () => {
   });
 
   afterEach(() => {
-    if (packageRoot) {
-      removeTempDir(packageRoot);
-    }
+    packageRoot && removeTempDir(packageRoot);
     packageRoot = "";
   });
 

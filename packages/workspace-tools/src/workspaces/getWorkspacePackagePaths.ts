@@ -40,9 +40,7 @@ export function getWorkspacePackagePaths(cwd: string, managerOverride?: Workspac
         const globResults = glob.sync(initialResult.globs, { cwd: root, ...globOptions });
         return resolveAndCacheGlobResults({ root, globResults });
       } catch (err) {
-        if (isCachingEnabled()) {
-          packagePathsCache.set(root, undefined);
-        }
+        isCachingEnabled() && packagePathsCache.set(root, undefined);
         throw err;
       }
     },
@@ -78,9 +76,7 @@ export async function getWorkspacePackagePathsAsync(
         const globResults = await glob(initialResult.globs, { cwd: root, ...globOptions });
         return resolveAndCacheGlobResults({ root, globResults });
       } catch (err) {
-        if (isCachingEnabled()) {
-          packagePathsCache.set(root, undefined);
-        }
+        isCachingEnabled() && packagePathsCache.set(root, undefined);
         throw err;
       }
     },

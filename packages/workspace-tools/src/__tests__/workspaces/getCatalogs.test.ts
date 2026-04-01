@@ -96,12 +96,8 @@ describe("getCatalogs", () => {
           : packageJson.workspaces?.packages || [];
         packageJson.workspaces = { packages: workspacePackages };
         const { named, default: defaultCatalog } = catalogs;
-        if (defaultCatalog) {
-          packageJson.workspaces.catalog = defaultCatalog;
-        }
-        if (named) {
-          packageJson.workspaces.catalogs = named;
-        }
+        defaultCatalog && (packageJson.workspaces.catalog = defaultCatalog);
+        named && (packageJson.workspaces.catalogs = named);
         fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
       },
     },

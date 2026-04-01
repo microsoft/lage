@@ -48,9 +48,7 @@ describe("resolveExternalDependencies", () => {
   let root = "";
 
   afterEach(() => {
-    if (root) {
-      removeTempDir(root);
-    }
+    root && removeTempDir(root);
     root = "";
   });
 

@@ -49,16 +49,10 @@ export class Monorepo {
       this.generateRepoFiles();
     }
 
-    if (packages) {
-      this.addPackages(packages);
-    }
-    if (extraFiles) {
-      this.writeFiles(extraFiles);
-    }
+    packages && this.addPackages(packages);
+    extraFiles && this.writeFiles(extraFiles);
 
-    if (!params.skipLink) {
-      this.linkPackages();
-    }
+    !params.skipLink && this.linkPackages();
 
     // Commit all at the end for efficiency
     execa.sync("git", ["add", "."], { cwd });

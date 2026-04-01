@@ -133,12 +133,7 @@ export class WorkerPool extends EventEmitter implements Pool {
     }
   }
 
-  public close(): Promise<void> {
-    // Note: ThreadWorker.terminate() is synchronous (fire-and-forget) — it voids the inner
-    // worker.terminate() promise. There's nothing to await here.
-    for (const worker of this.workers) {
-      worker.terminate();
-    }
-    return Promise.resolve();
+  public async close(): Promise<void> {
+    await Promise.all(this.workers.map((worker) => worker.terminate()));
   }
 }

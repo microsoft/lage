@@ -269,9 +269,9 @@ export class ThreadWorker extends EventEmitter implements IWorker {
     return this.#worker.threadId;
   }
 
-  public terminate(): void {
+  public async terminate(): Promise<void> {
     this.#worker.removeAllListeners();
-    void this.#worker.terminate();
+    await this.#worker.terminate();
     this.#worker.unref();
   }
 

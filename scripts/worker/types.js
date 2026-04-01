@@ -31,9 +31,7 @@ async function run(data) {
   }
 
   // Parse tsconfig
-  if (verbose) {
-    console.log(`Parsing config...`);
-  }
+  verbose && console.log(`Parsing config...`);
   const parsedCommandLine = ts.getParsedCommandLineOfConfigFile(
     tsconfigJsonFile,
     {},
@@ -59,9 +57,7 @@ async function run(data) {
   const compilerOptions = parsedCommandLine.options;
 
   // Creating compilation host program
-  if (verbose) {
-    console.log(`Creating host compiler...`);
-  }
+  verbose && console.log(`Creating host compiler...`);
   const compilerHost = ts.createCompilerHost(compilerOptions);
 
   const program = ts.createProgram(parsedCommandLine.fileNames, compilerOptions, compilerHost, oldProgram);

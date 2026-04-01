@@ -59,16 +59,14 @@ export function makeLogger(
 
   return {
     pipeProcessOutput(stdout: Readable | null, stderr: Readable | null): void {
-      if (stdout) {
+      stdout &&
         stdout.on("data", (chunk) =>
           consoleLogger.consoleOverride.info(chunk.toString())
         );
-      }
-      if (stderr) {
+      stderr &&
         stderr.on("data", (chunk) =>
           consoleLogger.consoleOverride.error(chunk.toString())
         );
-      }
     },
     silly: consoleLogger.silly,
     verbose: consoleLogger.verbose,

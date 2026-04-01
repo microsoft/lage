@@ -52,7 +52,7 @@ export function getDefaultRemote(cwdOrOptions: string | GetDefaultRemoteOptions)
   const packageJsonPath = path.join(gitRoot, "package.json");
   try {
     packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8").trim());
-  } catch (_e) {
+  } catch {
     logOrThrow(`Could not read "${packageJsonPath}"`);
   }
 

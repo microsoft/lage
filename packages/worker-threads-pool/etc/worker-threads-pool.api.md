@@ -73,7 +73,7 @@ interface IWorker extends EventEmitter {
     // (undocumented)
     stdout: Readable;
     // (undocumented)
-    terminate(): void;
+    terminate(): Promise<void>;
     // (undocumented)
     threadId: number;
     // (undocumented)

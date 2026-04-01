@@ -38,6 +38,7 @@ const config = {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-unused-expressions": ["error", { allowShortCircuit: true }],
     "@typescript-eslint/no-require-imports": "error",
     "no-console": "error",
     "file-extension-in-import-ts/file-extension-in-import-ts": "error",
@@ -54,7 +55,6 @@ const config = {
         ignoreRestSiblings: true,
         // Follow the typescript pattern of ignoring things starting with _
         argsIgnorePattern: "^_",
-        caughtErrorsIgnorePattern: "^_",
         destructuredArrayIgnorePattern: "^_",
       },
     ],

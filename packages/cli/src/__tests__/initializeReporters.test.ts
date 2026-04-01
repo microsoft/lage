@@ -50,9 +50,7 @@ describe("initializeReporters", () => {
     if (savedTfBuild !== undefined) {
       process.env.TF_BUILD = savedTfBuild;
     }
-    if (tmpDir) {
-      removeTempDir(tmpDir);
-    }
+    tmpDir && removeTempDir(tmpDir);
     tmpDir = undefined;
     jest.restoreAllMocks();
   });

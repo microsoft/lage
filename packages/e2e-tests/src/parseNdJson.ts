@@ -25,7 +25,7 @@ export function parseNdJson(...ndjson: string[]): ParsedLogEntry[] {
         }
         delete (parsed as Partial<LogEntry<LogStructuredData>>).timestamp;
         return parsed;
-      } catch (_e) {
+      } catch {
         return {};
       }
     })

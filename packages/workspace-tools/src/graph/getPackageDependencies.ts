@@ -23,15 +23,9 @@ export function getPackageDependencies(
   options: PackageDependenciesOptions = { withDevDependencies: true }
 ): string[] {
   const depTypes: DependencyType[] = ["dependencies"];
-  if (options.withDevDependencies) {
-    depTypes.push("devDependencies");
-  }
-  if (options.withPeerDependencies) {
-    depTypes.push("peerDependencies");
-  }
-  if (options.withOptionalDependencies) {
-    depTypes.push("optionalDependencies");
-  }
+  options.withDevDependencies && depTypes.push("devDependencies");
+  options.withPeerDependencies && depTypes.push("peerDependencies");
+  options.withOptionalDependencies && depTypes.push("optionalDependencies");
 
   const deps: string[] = [];
 

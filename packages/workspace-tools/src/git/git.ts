@@ -87,9 +87,7 @@ export function git(args: string[], options?: GitOptions): GitProcessOutput {
   const gitDescription = `git ${args.join(" ")}`;
   const { throwOnError, description = gitDescription, debug = isDebug, ...spawnOptions } = options || {};
 
-  if (debug) {
-    console.log(gitDescription);
-  }
+  debug && console.log(gitDescription);
 
   let results: SpawnSyncReturns<string | Buffer>;
   try {
@@ -109,12 +107,8 @@ export function git(args: string[], options?: GitOptions): GitProcessOutput {
 
   if (debug) {
     console.log("exited with code " + results.status);
-    if (output.stdout) {
-      console.log("git stdout:\n", output.stdout);
-    }
-    if (output.stderr) {
-      console.warn("git stderr:\n", output.stderr);
-    }
+    output.stdout && console.log("git stdout:\n", output.stdout);
+    output.stderr && console.warn("git stderr:\n", output.stderr);
   }
 
   // notify observers, flipping the observing bit to prevent infinite loops
