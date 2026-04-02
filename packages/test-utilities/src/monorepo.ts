@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import execa from "execa";
-import { execSync } from "child_process";
 import { createTempDir } from "./createTempDir.js";
 
 interface MonorepoPackages {
@@ -231,42 +230,12 @@ export class Monorepo {
         attempts++;
         if (attempts >= maxRetries) {
           const message = error instanceof Error ? error.message : String(error);
-          const processInfo = process.platform === "win32" ? this.findProcessesInDir() : "";
           // eslint-disable-next-line no-console
-          console.warn(
-            `Failed to clean up monorepo at ${this.root} after ${attempts} attempts: ${message}${processInfo ? `\nProcesses referencing this directory:\n${processInfo}` : ""}`
-          );
+          console.warn(`Failed to clean up monorepo at ${this.root} after ${attempts} attempts: ${message}`);
         } else {
           await new Promise((resolve) => setTimeout(resolve, 1000 * attempts));
         }
       }
-    }
-  }
-
-  /**
-   * On Windows, find processes whose command line references this monorepo root.
-   * Returns a human-readable string listing PID and command line, or empty string.
-   */
-  private findProcessesInDir(): string {
-    try {
-      const result = execSync(
-        `wmic process where "CommandLine like '%${this.root.replace(/\\/g, "\\\\")}%'" get ProcessId,CommandLine /format:list`,
-        { encoding: "utf-8", timeout: 5000 }
-      );
-      const entries = result
-        .split(/\r?\n\r?\n/)
-        .filter((block) => block.includes("ProcessId="))
-        .map((block) => {
-          const cmdMatch = block.match(/CommandLine=(.*)/);
-          const pidMatch = block.match(/ProcessId=(\d+)/);
-          const cmd = cmdMatch ? cmdMatch[1].trim() : "<unknown>";
-          const pid = pidMatch ? pidMatch[1] : "<unknown>";
-          return `  PID ${pid}: ${cmd}`;
-        });
-      return entries.length ? entries.join("\n") : "";
-    } catch {
-      // wmic may not be available; return empty
-      return "";
     }
   }
 }
