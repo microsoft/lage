@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
 import createLogger from "@lage-run/logger";
-import { Monorepo } from "@lage-run/test-utilities";
+import { Monorepo, removeTempDirAsync } from "@lage-run/test-utilities";
 import type { Target } from "@lage-run/target-graph";
 import path from "path";
 import fs from "fs-extra";
@@ -77,7 +77,10 @@ describe("BackfillCacheProvider with Azure Blob storage", () => {
     mockBlobClient.download.mockResolvedValue({ readableStreamBody: replayStream });
 
     // Remove output to simulate a fresh checkout
-    fs.rmSync(path.join(monorepo.root, "packages/a/lib"), { recursive: true, force: true });
+    await removeTempDirAsync(path.join(monorepo.root, "packages/a/lib"), {
+      throwOnError: true,
+      maxAttempts: 4,
+    });
 
     const fetchResult = await provider.fetch(hash, target);
 

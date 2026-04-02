@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import execa from "execa";
 import { createTempDir } from "./createTempDir.js";
+import { removeTempDirAsync } from "./removeTempDir.js";
 
 interface MonorepoPackages {
   [name: string]: {
@@ -215,27 +216,11 @@ export class Monorepo {
   }
 
   /**
-   * Clean up the monorepo. Will retry twice on failure, then warn and continue
-   * (since it's a temp directory that will be cleaned up eventually).
+   * Clean up the monorepo. Doesn't retry on failure, since it's a temp directory that will be
+   * cleaned up eventually. (If you need it reliably removed, use `removeTempDirAsync` directly.)
    */
   public async cleanup(): Promise<void> {
-    const maxRetries = 3;
-    let attempts = 0;
-
-    while (attempts < maxRetries) {
-      try {
-        fs.rmSync(this.root, { recursive: true, force: true });
-        break;
-      } catch (error) {
-        attempts++;
-        if (attempts >= maxRetries) {
-          const message = error instanceof Error ? error.message : String(error);
-          // eslint-disable-next-line no-console
-          console.warn(`Failed to clean up monorepo at ${this.root} after ${attempts} attempts: ${message}`);
-        } else {
-          await new Promise((resolve) => setTimeout(resolve, 1000 * attempts));
-        }
-      }
-    }
+    // Silently ignore errors to avoid noise in logs
+    await removeTempDirAsync(this.root);
   }
 }

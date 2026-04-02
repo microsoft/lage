@@ -3,6 +3,7 @@ import {
   createTempDir as _createTempDir,
   makeAzureStorageClientMocks,
   removeTempDir,
+  removeTempDirAsync,
   type AzureStorageClientMocks,
 } from "@lage-run/test-utilities";
 import { makeLogger } from "backfill-logger";
@@ -310,7 +311,10 @@ describe("AzureBlobCacheStorage", () => {
       expect(capturedTar.length).toBeGreaterThan(0);
 
       // --- delete output (simulate clean checkout) ---
-      fs.rmSync(path.join(cwd, "lib"), { recursive: true, force: true });
+      await removeTempDirAsync(path.join(cwd, "lib"), {
+        throwOnError: true,
+        maxAttempts: 4,
+      });
 
       // --- fetch (hit — replay the captured tar) ---
       blobClient.download.mockResolvedValueOnce({

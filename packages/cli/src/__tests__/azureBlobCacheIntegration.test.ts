@@ -9,8 +9,7 @@ import { afterEach, describe, expect, it } from "@jest/globals";
 import { BackfillCacheProvider, RemoteFallbackCacheProvider } from "@lage-run/cache";
 import createLogger from "@lage-run/logger";
 import type { Target } from "@lage-run/target-graph";
-import { makeAzureStorageClientMocks, Monorepo } from "@lage-run/test-utilities";
-import fs from "fs";
+import { makeAzureStorageClientMocks, Monorepo, removeTempDirAsync } from "@lage-run/test-utilities";
 import path from "path";
 import { PassThrough } from "stream";
 import { buffer } from "stream/consumers";
@@ -154,7 +153,10 @@ describe("Azure Blob cache integration via RemoteFallbackCacheProvider", () => {
     mockBlobClient.download.mockResolvedValue({ readableStreamBody: replayStream });
 
     // Remove the output files to simulate a fresh checkout
-    fs.rmSync(path.join(monorepo.root, "packages/a/lib"), { recursive: true, force: true });
+    await removeTempDirAsync(path.join(monorepo.root, "packages/a/lib"), {
+      throwOnError: true,
+      maxAttempts: 4,
+    });
 
     const fetchResult = await cacheProvider.fetch("cli-roundtrip-hash", target);
 
@@ -197,7 +199,10 @@ describe("Azure Blob cache integration via RemoteFallbackCacheProvider", () => {
     await putProvider.put("cli-fallback-hash", target);
 
     // Remove files to simulate fresh checkout
-    fs.rmSync(path.join(monorepo.root, "packages/a/lib"), { recursive: true, force: true });
+    await removeTempDirAsync(path.join(monorepo.root, "packages/a/lib"), {
+      throwOnError: true,
+      maxAttempts: 4,
+    });
 
     // Now create the real provider hierarchy with BOTH local and remote
     const replayStream = new PassThrough();

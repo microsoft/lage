@@ -12,7 +12,7 @@ export function killDetachedProcess(pid: number | string): void {
       process.kill(pidNumber, "SIGTERM");
     } else {
       // on Windows get the process tree and kill the parent
-      execSync(`taskkill /f /PID ${pidNumber} /T`);
+      execSync(`taskkill /f /PID ${pidNumber} /T`, { stdio: "pipe" });
     }
   } catch (e: unknown) {
     // ESRCH means the process is already killed (works cross-platform)
