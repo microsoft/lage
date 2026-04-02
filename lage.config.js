@@ -57,6 +57,8 @@ const config = {
     },
     lint: {
       type: "worker",
+      // currently, lint depends on types due to typed linting and not using a tsconfig which includes all packages
+      dependsOn: ["types"],
       options: /** @satisfies {WorkerTargetOptions} */ ({
         worker: path.join(__dirname, "scripts/worker/lint.js"),
       }),

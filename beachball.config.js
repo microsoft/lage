@@ -39,7 +39,7 @@ const config = {
       fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + "\n");
     },
   },
-  ignorePatterns: [".*ignore", "jest.config.js", "**/__*/**/*"],
+  ignorePatterns: [".*ignore", "eslint.config.js", "jest.config.js", "**/__*/**/*"],
   disallowedChangeTypes: ["major"],
 };
 module.exports = config;

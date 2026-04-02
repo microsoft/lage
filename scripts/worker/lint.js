@@ -1,9 +1,10 @@
+/** @import { Linter } from "eslint" */
 /** @import { BasicWorkerRunnerFunction } from "../types.js" */
 const { ESLint } = require("eslint");
 const fs = require("fs");
 const path = require("path");
 const { getPackageInfo } = require("workspace-tools-npm");
-const { createConfig } = require("../config/eslint.config.js");
+const { createConfig } = require("../config/eslintConfig.js");
 
 /**
  * This worker is used for `lage run lint`, in place of the per-package `lint` script.
@@ -27,16 +28,15 @@ async function lint(data) {
   // Use the per-package eslint.config.js if it exists (these extend the shared config),
   // otherwise create the default shared config for this package.
   const projectConfigPath = path.join(target.cwd, "eslint.config.js");
-  /** @type {import("eslint").ESLint.Options} */
+  /** @type {ESLint.Options} */
   const eslintOptions = { fix: shouldFix, cache: false, cwd: target.cwd };
 
   if (fs.existsSync(projectConfigPath)) {
     eslintOptions.overrideConfigFile = projectConfigPath;
   } else {
-    const tsconfigPath = path.join(target.cwd, "tsconfig.json");
-    // null disables config file lookup so only baseConfig is used
-    eslintOptions.overrideConfigFile = null;
-    eslintOptions.baseConfig = /** @type {any} */ (createConfig({ tsconfigPath }));
+    // disable config file lookup so only baseConfig is used
+    eslintOptions.overrideConfigFile = true;
+    eslintOptions.baseConfig = /** @type {Linter.Config} */ (createConfig({ dirname: target.cwd }));
   }
 
   const eslint = new ESLint(eslintOptions);

@@ -1,8 +1,13 @@
 // @ts-check
-const path = require("path");
-const { createConfig } = require("../../scripts/config/eslint.config.js");
+const { createConfig } = require("../../scripts/config/eslintConfig.js");
 
-module.exports = [
-  ...createConfig({ tsconfigPath: path.join(__dirname, "tsconfig.json") }),
-  { rules: { "no-console": "off" } },
-];
+module.exports = createConfig({
+  dirname: __dirname,
+  overrides: [
+    {
+      rules: {
+        "no-console": "off",
+      },
+    },
+  ],
+});

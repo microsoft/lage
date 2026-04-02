@@ -1,17 +1,20 @@
 // @ts-check
+const { glob } = require("fast-glob");
 const path = require("path");
-const { createConfig } = require("./scripts/config/eslint.config.js");
+const { createConfig, defaultSrcGlob } = require("./scripts/config/eslintConfig.js");
 
-module.exports = [
-  ...createConfig({
-    tsconfigPath: path.join(__dirname, "scripts/config/tsconfig.eslint.json"),
-  }),
+// This silly workaround could be avoided by adding an eslint.config.js for every package.
+// Then just delete the root eslint config and it shouldn't run on files outside a package.
+const packagesWithESLint = glob
+  .sync("packages/*/eslint.config.js", { cwd: __dirname, absolute: true })
+  .map((configPath) => path.basename(path.dirname(configPath)));
 
-  // Per-package overrides
-  {
-    files: ["packages/workspace-tools/**/*.ts", "packages/grapher/**/*.ts"],
-    rules: {
-      "no-console": "off",
+module.exports = createConfig({
+  dirname: __dirname,
+  files: [`packages/!(${packagesWithESLint.join("|")})/${defaultSrcGlob}`],
+  overrides: [
+    {
+      ignores: ["benchmark/**", "docs/**", "packages/*/*.js", "./*.js", "packages/*/scripts/**"],
     },
-  },
-];
+  ],
+});
