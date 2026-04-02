@@ -131,17 +131,11 @@ function createConfig(options) {
             ])
             .flat(),
         ],
-        // Use the ESLint version of the rule to avoid overriding the restricted imports from the base config
-        "no-restricted-imports": [
+        "no-restricted-syntax": [
           "error",
           {
-            paths: [
-              {
-                name: "@jest/globals",
-                importNames: ["xdescribe", "xit", "xtest"],
-                message: "Do not commit disabled tests (disable this rule if needed)",
-              },
-            ],
+            message: "Do not commit disabled tests",
+            selector: "CallExpression[callee.name=/^(xdescribe|xit|xtest)$/]",
           },
         ],
       },
