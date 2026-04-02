@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { hrToSeconds } from "@lage-run/format-hrtime";
+import { hrToSeconds } from "./formatDuration.js";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 import type { LogLevel } from "@lage-run/logger";
 import { type LogEntry, type Reporter } from "@lage-run/logger";

@@ -1,4 +1,4 @@
-import { hrtimeDiff, hrToSeconds } from "@lage-run/format-hrtime";
+import { hrtimeDiff, hrToSeconds } from "./formatDuration.js";
 import type { TargetRun } from "@lage-run/scheduler-types";
 
 export function slowestTargetRuns(targetRuns: TargetRun[]): TargetRun<unknown>[] {

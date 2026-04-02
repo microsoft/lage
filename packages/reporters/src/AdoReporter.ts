@@ -1,4 +1,4 @@
-import { formatDuration, hrToSeconds } from "@lage-run/format-hrtime";
+import { formatDuration, hrToSeconds } from "./formatDuration.js";
 import chalk from "chalk";
 import type { TargetRun } from "@lage-run/scheduler-types";
 import { colors, GroupedReporter } from "./GroupedReporter.js";

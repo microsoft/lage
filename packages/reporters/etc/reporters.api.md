@@ -67,6 +67,9 @@ interface ChromeTraceEventsReporterOptions {
 }
 
 // @public (undocumented)
+export function formatDuration(seconds: string): string;
+
+// @public (undocumented)
 export class GithubActionsReporter extends GroupedReporter {
     // (undocumented)
     protected formatGroupEnd(): string;
@@ -111,6 +114,12 @@ abstract class GroupedReporter implements Reporter {
     protected abstract writeSummaryFooter(): void;
     protected abstract writeSummaryHeader(): void;
 }
+
+// @public
+export function hrtimeDiff(start?: [number, number], end?: [number, number]): [number, number];
+
+// @public (undocumented)
+export function hrToSeconds(hrtime: [number, number]): string;
 
 // @public (undocumented)
 export class JsonReporter implements Reporter {
