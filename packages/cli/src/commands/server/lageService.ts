@@ -12,7 +12,7 @@ import { MemoryStream } from "./MemoryStream.js";
 import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
 import type { TargetRun } from "@lage-run/scheduler-types";
-import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
+import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/reporters";
 import path from "path";
 import fs from "fs";
 import { getGlobalInputHashFilePath, getHashFilePath } from "../targetHashFilePath.js";

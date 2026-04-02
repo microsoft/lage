@@ -229,10 +229,11 @@ export class Monorepo {
       } catch (error) {
         attempts++;
         if (attempts >= maxRetries) {
+          const message = error instanceof Error ? error.message : String(error);
           // eslint-disable-next-line no-console
-          console.warn(`Failed to clean up monorepo at ${this.root} after ${attempts} attempts:`, error);
+          console.warn(`Failed to clean up monorepo at ${this.root} after ${attempts} attempts: ${message}`);
         } else {
-          await new Promise((resolve) => setTimeout(resolve, 500));
+          await new Promise((resolve) => setTimeout(resolve, 1000 * attempts));
         }
       }
     }

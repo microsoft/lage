@@ -14,11 +14,14 @@ export function killDetachedProcess(pid: number | string): void {
       // on Windows get the process tree and kill the parent
       execSync(`taskkill /f /PID ${pidNumber} /T`);
     }
-  } catch (e) {
+  } catch (e: unknown) {
     // ESRCH means the process is already killed (works cross-platform)
-    if ((e as { code?: string }).code !== "ESRCH") {
+    // On Windows, taskkill exits with code 128 when the process is not found
+    const { code, status, stderr } = e as { code?: string | number; status?: number; stderr?: Buffer | string };
+    if (code !== "ESRCH" && status !== 128) {
+      const stderrStr = stderr instanceof Buffer ? stderr.toString("utf-8") : stderr;
       // eslint-disable-next-line no-console
-      console.warn(`Failed to kill process ${pidNumber}:`, e);
+      console.warn(`Failed to kill process ${pidNumber}: ${stderrStr || (e instanceof Error ? e.message : String(e))}`);
     }
   }
 }

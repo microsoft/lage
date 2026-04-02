@@ -1740,7 +1740,6 @@ __metadata:
   dependencies:
     "@lage-run/cache": "workspace:^"
     "@lage-run/config": "workspace:^"
-    "@lage-run/format-hrtime": "workspace:^"
     "@lage-run/hasher": "workspace:^"
     "@lage-run/logger": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
@@ -1799,14 +1798,6 @@ __metadata:
     glob-hasher: "npm:^1.4.2"
     globby: "npm:11.1.0"
     workspace-tools: "workspace:^"
-  languageName: unknown
-  linkType: soft
-
-"@lage-run/format-hrtime@workspace:^, @lage-run/format-hrtime@workspace:packages/format-hrtime":
-  version: 0.0.0-use.local
-  resolution: "@lage-run/format-hrtime@workspace:packages/format-hrtime"
-  dependencies:
-    "@lage-run/monorepo-scripts": "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -1900,7 +1891,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lage-run/reporters@workspace:packages/reporters"
   dependencies:
-    "@lage-run/format-hrtime": "workspace:^"
     "@lage-run/logger": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/scheduler-types": "workspace:^"

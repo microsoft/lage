@@ -3,7 +3,7 @@ import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-type
 import type { Target } from "@lage-run/target-graph";
 import chalk from "chalk";
 import { gradient } from "./gradient.js";
-import { formatDuration, hrToSeconds } from "@lage-run/format-hrtime";
+import { formatDuration, hrToSeconds } from "./formatDuration.js";
 import { formatBytes } from "./formatBytes.js";
 
 type CoarseStatus = "completed" | "running" | "pending";
