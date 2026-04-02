@@ -34,9 +34,9 @@ async function transpile({ target }) {
   while (queue.length > 0) {
     const dir = /** @type {string} */ (queue.shift());
 
-    let entries = await fsPromises.readdir(dir, { withFileTypes: true });
+    const entries = await fsPromises.readdir(dir, { withFileTypes: true });
 
-    for (let entry of entries) {
+    for (const entry of entries) {
       const fullPath = path.join(dir, entry.name);
 
       if (entry.isDirectory() && !entry.name.startsWith("__")) {
