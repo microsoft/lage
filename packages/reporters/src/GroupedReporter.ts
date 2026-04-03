@@ -100,7 +100,7 @@ export abstract class GroupedReporter implements Reporter {
     const { packageName, task } = target;
     const prefix = this.options.grouped ? "" : getTaskLogPrefix(packageName ?? "<root>", task);
 
-    if (!isTargetStatusLogEntry(entry)) {
+    if (!isTargetStatusLogEntry(data)) {
       return this.logStream.write(format(entry.level, prefix, colorFn("|  " + entry.msg)));
     }
 

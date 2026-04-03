@@ -96,7 +96,7 @@ export class VerboseFileLogReporter implements Reporter {
           return this.printEntry(entry, `➔ start`);
 
         case "success":
-          return this.printEntry(entry, `✔ done - ${formatHrtime(duration!)}${mem}`);
+          return this.printEntry(entry, `✓ done - ${formatHrtime(duration!)}${mem}`);
 
         case "failed":
           return this.printEntry(entry, `✖ fail${mem}`);
