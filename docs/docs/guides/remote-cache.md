@@ -104,3 +104,28 @@ Lage picks up your `.env` file contents using [`dotenv`](https://www.npmjs.com/p
 Need to access environment variables from the `.env` file in your application? You would need to setup a mechanism to inject them. Try using utilities like `dotenv` (for Node.js) or [`env-cmd`](https://www.npmjs.com/package/env-cmd) (for executing commands).
 
 :::
+
+## Disabling remote cache for specific targets
+
+You can disable remote cache for individual targets by setting `remoteCache: false` in the pipeline configuration. This is useful when:
+
+- The package output is large and storing it in remote cache is costly.
+- It is faster to rebuild the package locally than to download it from the remote cache.
+
+```js
+/** @type {import("lage").ConfigFileOptions} */
+const config = {
+  pipeline: {
+    build: {
+      dependsOn: ["^build"]
+    },
+    // Keep local cache but skip remote cache for this specific package
+    "my-package#build": {
+      dependsOn: ["^build"],
+      cache: true,
+      remoteCache: false
+    }
+  }
+};
+module.exports = config;
+```
