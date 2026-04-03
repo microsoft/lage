@@ -38,6 +38,9 @@ function getTimeBasedFilename(prefix: string) {
   return `${prefix ? prefix + "-" : ""}${datetimeNormalized}.json`;
 }
 
+/**
+ * Reporter that generates a Chrome dev tools profile file.
+ */
 export class ChromeTraceEventsReporter implements Reporter {
   private consoleLogStream: Writable;
 

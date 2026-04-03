@@ -23,9 +23,12 @@ export interface JsonReporterSummaryData {
   };
 }
 
-/** `LogEntry.data` types for the `JsonReporter` */
+/** `LogEntry.data` types expected by `JsonReporter` */
 export type JsonReporterLogData = JsonReporterSummaryData | TargetLogData;
 
+/**
+ * Reporter that outputs log entries as JSON, and a final summary (`JsonReporterSummaryData`) as JSON.
+ */
 export class JsonReporter implements Reporter {
   constructor(private options: { logLevel: LogLevel; indented: boolean; logMemory?: boolean }) {}
 

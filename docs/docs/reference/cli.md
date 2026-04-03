@@ -213,7 +213,8 @@ Available reporters:
 | `default`/not specified | `BasicReporter` or `LogReporter` | Usually if running in an interactive terminal, shows progress but not the names of currently running targets (unless progress is disabled or verbose or grouped are enabled). Otherwise, uses `npmLog`. |
 | `fancy` | `ProgressReporter` | Shows progress including the names of currently running targets, but is slower. This was the default in v2 prior to 2.14.16. |
 | `npmLog` (`old`) | `LogReporter` | This is the reporter from lage v1. It logs tasks without progress info. |
-| `azureDevops` (`adoLog`) | `AdoReporter` | Logs tasks  |
+| `azureDevops` (`adoLog`) | `AdoReporter` | Logs tasks with ADO-specific formatting prefixes |
+| `githubActions` (`gha`) | `GithubActionsReporter` | Logs tasks with GitHub Actions formatting prefixes |
 | `json` | `JsonReporter` | Write logs to the console in JSON format |
 | `verboseFileLog` (`vfl`) | `VerboseFileLogReporter` | Writes to a file specified with `--log-file` |
 | `profile` | `ChromeTraceEventsReporter` | Writes a Chrome dev tools profile file. Typically enabled with `--profile` (use `--profile=filename` to customize the name). |

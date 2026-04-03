@@ -3,6 +3,9 @@ import chalk from "chalk";
 import type { TargetRun } from "@lage-run/scheduler-types";
 import { colors, GroupedReporter } from "./GroupedReporter.js";
 
+/**
+ * Reporter that formats logs for Azure DevOps, optionally with grouping.
+ */
 export class AdoReporter extends GroupedReporter {
   protected formatGroupStart(packageName: string, task: string, status: string, duration?: [number, number]): string {
     return `##[group] ${colors.pkg(packageName)} ${colors.task(task)} ${status}${

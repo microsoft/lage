@@ -72,6 +72,10 @@ function normalize(prefixOrMessage: string, message?: string) {
   return { prefix: "", message: prefixOrMessage };
 }
 
+/**
+ * Lage v1 reporter that logs tasks without progress spinners.
+ * It can either log entries immediately, or grouped when a target completes.
+ */
 export class LogReporter implements Reporter {
   private logStream: Writable;
   private logEntries = new Map<string, LogEntry[]>();

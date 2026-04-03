@@ -16,6 +16,9 @@ function stripAnsi(message: string) {
   return message.replace(stripAnsiRegex, "");
 }
 
+/**
+ * Writes log entries to a file. It includes all log entries except "silly" level.
+ */
 export class VerboseFileLogReporter implements Reporter {
   private fileStream: Writable;
   private logMemory: boolean;

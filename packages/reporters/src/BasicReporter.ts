@@ -52,6 +52,10 @@ const terminal = {
 const fancy = (str: string) => gradient({ r: 237, g: 178, b: 77 }, "cyan")(str);
 const print = (message: string) => process.stdout.write(message + "\n");
 
+/**
+ * Shows running/remaining target counts and completed targets, but does not display
+ * the names of running targets for efficiency.
+ */
 export class BasicReporter implements Reporter {
   private taskData = new Map<string, { target: Target; status: TargetStatus; logEntries: LogEntry[] }>();
   private updateTimer: NodeJS.Timeout | undefined;

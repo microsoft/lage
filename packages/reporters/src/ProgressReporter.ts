@@ -27,6 +27,11 @@ function fancy(str: string) {
   return gradient({ r: 237, g: 178, b: 77 }, "cyan")(str);
 }
 
+/**
+ * Shows progress including the names of currently running targets using `@ms-cloudpack/task-reporter`.
+ * It may be slightly slower than `BasicReporter` (though its performance has been improved substantially
+ * with `task-reporter` updates) and was the default reporter in lage v2 prior to 2.14.16.
+ */
 export class ProgressReporter implements Reporter {
   public logStream: Writable = process.stdout;
 
