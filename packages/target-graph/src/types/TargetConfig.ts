@@ -8,7 +8,7 @@ import type { Target } from "./Target.js";
  */
 export interface TargetConfig extends Pick<
   Target,
-  "type" | "inputs" | "outputs" | "priority" | "cache" | "environmentGlob" | "maxWorkers" | "options"
+  "type" | "inputs" | "outputs" | "priority" | "cache" | "remoteCache" | "environmentGlob" | "maxWorkers" | "options"
 > {
   /**
    * The dependencies of the target. Dependencies are target specs in one of these forms:

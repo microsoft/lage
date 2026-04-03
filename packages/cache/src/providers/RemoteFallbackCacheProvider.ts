@@ -26,13 +26,14 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
 
   public async fetch(hash: string, target: Target): Promise<boolean> {
     const { logger, remoteCacheProvider, localCacheProvider } = this.options;
+    const shouldUseRemoteCacheForTarget = target.remoteCache !== false;
 
     if (localCacheProvider) {
       RemoteFallbackCacheProvider.localHits[hash] = await localCacheProvider.fetch(hash, target);
       logger.silly(`local cache fetch: ${hash} ${RemoteFallbackCacheProvider.localHits[hash]}`);
     }
 
-    if (!RemoteFallbackCacheProvider.localHits[hash] && remoteCacheProvider) {
+    if (shouldUseRemoteCacheForTarget && !RemoteFallbackCacheProvider.localHits[hash] && remoteCacheProvider) {
       RemoteFallbackCacheProvider.remoteHits[hash] = await remoteCacheProvider.fetch(hash, target);
       logger.silly(`remote fallback fetch: ${hash} ${RemoteFallbackCacheProvider.remoteHits[hash]}`);
 
@@ -60,8 +61,15 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
       putPromises.push(localCacheProvider.put(hash, target));
     }
 
-    // Write to remote if there is a no hit in the remote cache, and remote cache storage provider, and that the "writeRemoteCache" config flag is set to true
-    const shouldWriteRemoteCache = !this.isRemoteHit(hash) && !!remoteCacheProvider && writeRemoteCache;
+    /**
+     * Write to remote if:
+     * - the target has not disabled remote caching
+     * - there is no hit in the remote cache
+     * - a remote cache storage provider exists
+     * - the "writeRemoteCache" config flag is set to true
+     */
+    const shouldUseRemoteCacheForTarget = target.remoteCache !== false;
+    const shouldWriteRemoteCache = shouldUseRemoteCacheForTarget && !this.isRemoteHit(hash) && !!remoteCacheProvider && writeRemoteCache;
 
     if (shouldWriteRemoteCache) {
       logger.silly(`remote fallback put: ${hash}`);
