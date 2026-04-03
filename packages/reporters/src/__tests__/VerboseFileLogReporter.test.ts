@@ -1,95 +1,91 @@
 import { describe, expect, it } from "@jest/globals";
 import { LogLevel, type LogEntry } from "@lage-run/logger";
-import streams from "memory-streams";
-import { VerboseFileLogReporter } from "../VerboseFileLogReporter.js";
+import type { TargetStatus } from "@lage-run/scheduler-types";
+import { statusColorFn } from "../LogReporter.js";
 import type { TargetLogData, TargetMessageData, TargetStatusData } from "../types/TargetLogData.js";
-import { writerToString } from "./writerToString.js";
-
-function createTarget(packageName: string, task: string) {
-  return {
-    id: `${packageName}#${task}`,
-    cwd: `/repo/root/packages/${packageName}`,
-    dependencies: [],
-    dependents: [],
-    depSpecs: [],
-    packageName,
-    task,
-    label: `${packageName} - ${task}`,
-  };
-}
+import { VerboseFileLogReporter } from "../VerboseFileLogReporter.js";
+import { createTarget } from "./helpers.js";
+import { MemoryStream } from "./MemoryStream.js";
 
 describe("VerboseFileLogReporter", () => {
   it("records a target status entry", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
     const reporter = new VerboseFileLogReporter(undefined, writer);
+    const target = createTarget("@madeUp/avettLyrics", "generateLyrics");
+    const allStatuses = Object.keys(statusColorFn) as TargetStatus[];
 
-    const entry: LogEntry<any> = {
-      data: {
-        target: createTarget("@madeUp/avettLyrics", "generateLyrics"),
-        status: "running",
-        duration: [0, 0],
-        startTime: [0, 0],
-      } as TargetStatusData,
-      level: LogLevel.verbose,
-      msg: "Be loud. Let your colors show!",
-      timestamp: 0,
-    };
-    reporter.log(entry);
+    for (const status of allStatuses) {
+      reporter.log({
+        data: { target, status, duration: [0, 0] } satisfies TargetStatusData,
+        level: LogLevel.verbose,
+        msg: "Be loud. Let your colors show!",
+        timestamp: 0,
+      });
+    }
+
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
-      "[:${entry.data.target.id}:] @madeUp/avettLyrics generateLyrics ➔ start
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
+      "[:@madeUp/avettLyrics#generateLyrics:] @madeUp/avettLyrics generateLyrics ✓ done - 0.00s
+      [:@madeUp/avettLyrics#generateLyrics:] @madeUp/avettLyrics generateLyrics ✖ fail
+      [:@madeUp/avettLyrics#generateLyrics:] @madeUp/avettLyrics generateLyrics » skip - undefined
+      [:@madeUp/avettLyrics#generateLyrics:] @madeUp/avettLyrics generateLyrics ➔ start
+      [:@madeUp/avettLyrics#generateLyrics:] @madeUp/avettLyrics generateLyrics … pending
+      [:@madeUp/avettLyrics#generateLyrics:] @madeUp/avettLyrics generateLyrics - aborted
+      [:@madeUp/avettLyrics#generateLyrics:] @madeUp/avettLyrics generateLyrics … queued
       "
     `);
   });
 
   it("records a target message entry", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
     const reporter = new VerboseFileLogReporter(undefined, writer);
 
     const entry: LogEntry<any> = {
       data: {
         target: createTarget("@madeUp/avettLyrics", "generateLyrics"),
         pid: 1,
-      } as TargetMessageData,
+      } satisfies TargetMessageData,
       level: LogLevel.verbose,
       msg: "Be loud. Let your colors show!",
       timestamp: 0,
     };
     reporter.log(entry);
+
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "[:${entry.data.target.id}:] @madeUp/avettLyrics generateLyrics : Be loud. Let your colors show!
       "
     `);
   });
 
   it("prefixes target entries with the target id", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
     const reporter = new VerboseFileLogReporter(undefined, writer);
 
     const entry: LogEntry<any> = {
       data: {
         target: createTarget("@madeUp/avettLyrics", "generateLyrics"),
         pid: 1,
-      } as TargetMessageData,
+      } satisfies TargetMessageData,
       level: LogLevel.verbose,
       msg: "I've got something to say, but it's all vanity.",
       timestamp: 0,
     };
     entry.data.target.id = "I love the Avett Brothers!";
     reporter.log(entry);
+
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "[:I love the Avett Brothers!:] @madeUp/avettLyrics generateLyrics : I've got something to say, but it's all vanity.
       "
     `);
   });
 
   it("does not prefix non-target entries with target id", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
     const reporter = new VerboseFileLogReporter(undefined, writer);
 
     const entry: LogEntry<any> = {
@@ -98,16 +94,17 @@ describe("VerboseFileLogReporter", () => {
       timestamp: 0,
     };
     reporter.log(entry);
+
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "For every year of knowledge gained, there's a negative year I've earned.
       "
     `);
   });
 
   it("never groups messages together", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
     const reporter = new VerboseFileLogReporter(undefined, writer);
 
     const aBuildTarget = createTarget("a", "build");
@@ -140,7 +137,7 @@ describe("VerboseFileLogReporter", () => {
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "[:${aBuildTarget.id}:] a build ➔ start
       [:${aTestTarget.id}:] a test ➔ start
       [:${bBuildTarget.id}:] b build ➔ start
@@ -158,7 +155,7 @@ describe("VerboseFileLogReporter", () => {
   });
 
   it("always records messages with logLevel verbose or lower", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
     const reporter = new VerboseFileLogReporter(undefined, writer);
 
     const entry1: LogEntry<any> = {
@@ -185,9 +182,10 @@ describe("VerboseFileLogReporter", () => {
     reporter.log(entry2);
     reporter.log(entry3);
     reporter.log(entry4);
+
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "Well my speed meter don't work, so I'm gonna guess 95.
       Well maybe I'll fix it, and maybe I won't; it depend on my being alive.
       Well my '63 Ford is a bull, she's 4000 lbs at least.

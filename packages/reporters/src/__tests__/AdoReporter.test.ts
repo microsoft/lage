@@ -1,60 +1,49 @@
 import { describe, expect, it } from "@jest/globals";
 import { LogLevel } from "@lage-run/logger";
-import type { TargetRun } from "@lage-run/scheduler-types";
-import streams from "memory-streams";
+import type { TargetStatus } from "@lage-run/scheduler-types";
 import { AdoReporter } from "../AdoReporter.js";
+import { statusColorFn } from "../LogReporter.js";
 import type { TargetLogData, TargetMessageData, TargetStatusData } from "../types/TargetLogData.js";
-import { writerToString } from "./writerToString.js";
-
-function createTarget(packageName: string, task: string) {
-  return {
-    id: `${packageName}#${task}`,
-    cwd: `/repo/root/packages/${packageName}`,
-    dependencies: [],
-    dependents: [],
-    depSpecs: [],
-    packageName,
-    task,
-    label: `${packageName} - ${task}`,
-  };
-}
+import { createTarget, createTargetRun } from "./helpers.js";
+import { MemoryStream } from "./MemoryStream.js";
 
 describe("AdoReporter", () => {
   it("records a target status entry", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
+    const target = createTarget("a", "task");
+    const allStatuses = Object.keys(statusColorFn) as TargetStatus[];
 
-    reporter.log({
-      data: {
-        target: createTarget("a", "task"),
-        status: "running",
-        duration: [0, 0],
-        startTime: [0, 0],
-      } as TargetStatusData,
-      level: LogLevel.verbose,
-      msg: "test message",
-      timestamp: 0,
-    });
+    for (const status of allStatuses) {
+      reporter.log({
+        data: { target, status, duration: [10, 0], hash: "abc123" } satisfies TargetStatusData,
+        level: LogLevel.verbose,
+        msg: "test message",
+        timestamp: 0,
+      });
+    }
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
-      "VERB: a task ➔ start
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
+      "VERB: a task ✓ done  - 10.00s
+      VERB: a task ✖ fail
+      VERB: a task » skip  - abc123
+      VERB: a task ➔ start
+      VERB: a task - aborted
+      VERB: a task … queued
       "
     `);
   });
 
   it("records a target message entry", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
     reporter.log({
-      data: {
-        target: createTarget("a", "task"),
-        pid: 1,
-      } as TargetMessageData,
+      data: { target: createTarget("a", "task"), pid: 1 } satisfies TargetMessageData,
       level: LogLevel.verbose,
       msg: "test message",
       timestamp: 0,
@@ -62,14 +51,14 @@ describe("AdoReporter", () => {
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "VERB: a task |  test message
       "
     `);
   });
 
   it("groups messages together", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new AdoReporter({ grouped: true, logLevel: LogLevel.verbose, logStream: writer });
 
@@ -103,7 +92,7 @@ describe("AdoReporter", () => {
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "##[group] a test success, took 10.00s
       VERB:  ➔ start a test
       VERB:  |  test message for a#test
@@ -127,7 +116,7 @@ describe("AdoReporter", () => {
   });
 
   it("interweave messages when ungrouped", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
@@ -161,7 +150,7 @@ describe("AdoReporter", () => {
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "VERB: a build ➔ start
       VERB: a test ➔ start
       VERB: b build ➔ start
@@ -179,7 +168,7 @@ describe("AdoReporter", () => {
   });
 
   it("can filter out verbose messages", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new AdoReporter({ grouped: false, logLevel: LogLevel.info, logStream: writer });
 
@@ -213,7 +202,7 @@ describe("AdoReporter", () => {
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "INFO: a build ➔ start
       INFO: a test ➔ start
       INFO: b build ➔ start
@@ -225,7 +214,7 @@ describe("AdoReporter", () => {
   });
 
   it("can group verbose messages, displaying summary", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new AdoReporter({ grouped: true, logLevel: LogLevel.verbose, logStream: writer });
 
@@ -270,13 +259,10 @@ describe("AdoReporter", () => {
         skipped: [],
         queued: [],
       },
-      targetRuns: new Map<string, TargetRun<unknown>>([
-        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 0 }],
-        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 0 }],
-        [
-          bBuildTarget.id,
-          { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 0 },
-        ],
+      targetRuns: new Map([
+        [aBuildTarget.id, createTargetRun(aBuildTarget, "failed")],
+        [aTestTarget.id, createTargetRun(aTestTarget, "success")],
+        [bBuildTarget.id, createTargetRun(bBuildTarget, "success")],
       ]),
       maxWorkerMemoryUsage: 0,
       workerRestarts: 0,
@@ -284,7 +270,7 @@ describe("AdoReporter", () => {
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "##[group] a test success, took 10.00s
       INFO:  ➔ start a test
       VERB:  |  test message for a#test

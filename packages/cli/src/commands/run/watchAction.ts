@@ -7,10 +7,8 @@ import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
 import { LogReporter } from "@lage-run/reporters";
 import { SimpleScheduler } from "@lage-run/scheduler";
 import { watch } from "./watcher.js";
-
 import type { Reporter } from "@lage-run/logger";
 import createLogger, { LogLevel } from "@lage-run/logger";
-
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
@@ -104,7 +102,7 @@ export async function watchAction(options: RunOptions, command: Command): Promis
 
   // Initial run
   const summary = await scheduler.run(root, targetGraph);
-  displaySummary(summary, logger.reporters);
+  await displaySummary(summary, logger.reporters);
 
   logger.info("Running scheduler in watch mode");
 
@@ -129,14 +127,14 @@ export async function watchAction(options: RunOptions, command: Command): Promis
 
     void (async () => {
       const deltaSummary = await scheduler.run(root, deltaGraph, true);
-      displaySummary(deltaSummary, logger.reporters);
+      await displaySummary(deltaSummary, logger.reporters);
     })().catch(() => {});
   });
 }
 
-function displaySummary(summary: SchedulerRunSummary, reporters: Reporter[]) {
+async function displaySummary(summary: SchedulerRunSummary, reporters: Reporter[]) {
   for (const reporter of reporters) {
     reporter.summarize(summary);
-    reporter.cleanup?.();
+    await reporter.cleanup?.();
   }
 }

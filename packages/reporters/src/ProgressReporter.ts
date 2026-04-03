@@ -1,6 +1,12 @@
 import { type LogEntry, LogLevel, type Reporter, type LogStructuredData } from "@lage-run/logger";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
-import { TaskReporter, type TaskReporterTask } from "@ms-cloudpack/task-reporter";
+import {
+  noLoggingConfig,
+  setStdoutOverride,
+  TaskReporter,
+  type TaskReporterOptions,
+  type TaskReporterTask,
+} from "@ms-cloudpack/task-reporter";
 import type { Target } from "@lage-run/target-graph";
 import chalk from "chalk";
 import type { Writable } from "stream";
@@ -15,10 +21,9 @@ import { colors, statusColorFn } from "./LogReporter.js";
  * with `task-reporter` updates) and was the default reporter in lage v2 prior to 2.14.16.
  */
 export class ProgressReporter implements Reporter {
-  public logStream: Writable = process.stdout;
-
+  private logStream: Writable;
+  private hasLogStreamOverride: boolean;
   private logEntries: Map<string, LogEntry<LogStructuredData>[]> = new Map<string, LogEntry[]>();
-
   private taskReporter: TaskReporter;
   private tasks: Map<string, TaskReporterTask> = new Map();
   private logMemory: boolean;
@@ -29,16 +34,23 @@ export class ProgressReporter implements Reporter {
       version: string;
       /** Whether to capture and report main process memory usage on target completion */
       logMemory?: boolean;
-    } = { concurrency: 0, version: "0.0.0" }
+      /**
+       * Stream for output (defaults to process.stdout). If provided, the reporter will also call
+       * the **global** `setStdoutOverride` from `@ms-cloudpack/task-reporter` to use this writer.
+       */
+      logStream?: Writable;
+      /** Cloudpack TaskReporter option overrides for testing */
+      taskReporterOptions?: TaskReporterOptions;
+    }
   ) {
     this.logMemory = !!options.logMemory;
-    this.taskReporter = this.createTaskReporter();
+    this.logStream = options.logStream || process.stdout;
+    this.hasLogStreamOverride = !!options.logStream;
+    if (this.hasLogStreamOverride) {
+      setStdoutOverride({ write: (chunk) => options.logStream?.write(chunk), columns: 80 });
+    }
 
-    this.print(`${fancyGradient("lage")} - Version ${options.version} - ${options.concurrency} Workers`);
-  }
-
-  private createTaskReporter(): TaskReporter {
-    return new TaskReporter({
+    this.taskReporter = new TaskReporter({
       productName: "lage",
       version: this.options.version,
 
@@ -51,10 +63,13 @@ export class ProgressReporter implements Reporter {
       showErrors: true,
       showPending: true,
       showStarted: true,
-      showSummary: true,
       showTaskDetails: true,
       showTaskExtended: true,
+      ...options.taskReporterOptions,
+      showSummary: false, // lage handles its own summary
     });
+
+    this.print(`${fancyGradient("lage")} - Version ${options.version} - ${options.concurrency} Workers`);
   }
 
   public log(entry: LogEntry<any>): void {
@@ -112,8 +127,9 @@ export class ProgressReporter implements Reporter {
   }
 
   public summarize(schedulerRunSummary: SchedulerRunSummary): void {
-    const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
-    const { failed, aborted, skipped, success, pending, running, queued } = targetRunByStatus;
+    const { targetRuns, targetRunByStatus } = schedulerRunSummary;
+    const { failed, skipped, success, pending, running, queued } = targetRunByStatus;
+    const allAborted = [...targetRunByStatus.aborted];
 
     // If we are printing summary, and there are still some running / queued tasks - report them as aborted
     for (const wrappedTarget of running.concat(queued)) {
@@ -121,6 +137,7 @@ export class ProgressReporter implements Reporter {
       if (reporterTask) {
         reporterTask.complete({ status: "abort" });
       }
+      allAborted.push(wrappedTarget);
     }
 
     if (targetRuns.size > 0) {
@@ -131,33 +148,25 @@ export class ProgressReporter implements Reporter {
       const slowestTargets = slowestTargetRuns([...targetRuns.values()]);
 
       for (const wrappedTarget of slowestTargets) {
-        if (wrappedTarget.target.hidden) {
+        const { target, status, duration, queueTime, startTime } = wrappedTarget;
+        if (target.hidden) {
           continue;
         }
 
-        const colorFn = statusColorFn[wrappedTarget.status] ?? chalk.white;
-        const target = wrappedTarget.target;
-        const hasDurations = !!wrappedTarget.duration && !!wrappedTarget.queueTime;
-        const queueDuration: [number, number] = hasDurations ? hrtimeDiff(wrappedTarget.queueTime, wrappedTarget.startTime) : [0, 0];
-
-        if (wrappedTarget.status === "running") {
-          const reporterTask = this.tasks.get(wrappedTarget.target.id);
-          if (reporterTask) {
-            reporterTask.complete({ status: "fail" });
-          }
-        }
+        const colorFn = statusColorFn[status] ?? chalk.white;
+        const queueDuration = duration && queueTime ? hrtimeDiff(queueTime, startTime) : undefined;
 
         this.print(
           `${target.label} ${colorFn(
-            `${wrappedTarget.status === "running" ? "running - incomplete" : wrappedTarget.status}${
-              hasDurations ? `, took ${formatHrtime(wrappedTarget.duration)}, queued for ${formatHrtime(queueDuration)}` : ""
+            `${status === "running" ? "running - incomplete" : status}${
+              queueDuration ? `, took ${formatHrtime(duration)}, queued for ${formatHrtime(queueDuration)}` : ""
             }`
           )}`
         );
       }
 
       this.print(
-        `success: ${success.length}, skipped: ${skipped.length}, pending: ${pending.length}, aborted: ${aborted.length}, failed: ${failed.length}`
+        `success: ${success.length}, skipped: ${skipped.length}, pending: ${pending.length}, aborted: ${allAborted.length}, failed: ${failed.length}`
       );
 
       this.print(
@@ -196,6 +205,25 @@ export class ProgressReporter implements Reporter {
     const allCacheHits = [...targetRuns.values()].filter((run) => !run.target.hidden).length === skipped.length;
     const allCacheHitText = allCacheHits ? fancyGradient(`All targets skipped!`) : "";
 
-    this.print(`Took a total of ${formatHrtime(duration)} to complete. ${allCacheHitText}`);
+    this.print(`Took a total of ${formatHrtime(schedulerRunSummary.duration)} to complete. ${allCacheHitText}`);
+  }
+
+  /**
+   * Complete any remaining tasks (without logging), dispose the TaskReporter, and restore
+   * the default stdout from `@ms-cloudpack/task-reporter` if it was overridden.
+   */
+  public async cleanup(): Promise<void> {
+    try {
+      // Prevent any completion logs from being shown
+      this.taskReporter.setOptions(noLoggingConfig);
+      this.taskReporter.complete();
+    } catch {
+      // complete() will throw if cleanup() is called multiple times
+    }
+    await this.taskReporter.dispose();
+    if (this.hasLogStreamOverride) {
+      // Restore the default stdout if it was overridden
+      setStdoutOverride(undefined);
+    }
   }
 }

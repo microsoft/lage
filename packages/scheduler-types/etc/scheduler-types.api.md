@@ -63,7 +63,7 @@ export interface TargetScheduler<TTargetRunResult> {
     run(root: string, targetGraph: TargetGraph, shouldRerun: boolean): Promise<SchedulerRunSummary<TTargetRunResult>>;
 }
 
-// @public (undocumented)
+// @public
 export type TargetStatus = "pending" | "queued" | "running" | "success" | "failed" | "skipped" | "aborted";
 
 // (No @packageDocumentation comment for this package)

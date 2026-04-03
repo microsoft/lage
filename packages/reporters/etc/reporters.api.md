@@ -12,6 +12,7 @@ import type { SchedulerRunSummary } from '@lage-run/scheduler-types';
 import type { Target } from '@lage-run/target-graph';
 import type { TargetRun } from '@lage-run/scheduler-types';
 import type { TargetStatus } from '@lage-run/scheduler-types';
+import { TaskReporterOptions } from '@ms-cloudpack/task-reporter';
 import { Writable } from 'stream';
 
 // Warning: (ae-forgotten-export) The symbol "GroupedReporter" needs to be exported by the entry point index.d.ts
@@ -37,6 +38,7 @@ export class BasicReporter implements Reporter {
         version?: string;
         frequency?: number;
         logMemory?: boolean;
+        logStream?: Writable;
     });
     // (undocumented)
     log(entry: LogEntry): void;
@@ -180,15 +182,16 @@ export class LogReporter implements Reporter {
 
 // @public
 export class ProgressReporter implements Reporter {
-    constructor(options?: {
+    constructor(options: {
         concurrency: number;
         version: string;
         logMemory?: boolean;
+        logStream?: Writable;
+        taskReporterOptions?: TaskReporterOptions;
     });
+    cleanup(): Promise<void>;
     // (undocumented)
     log(entry: LogEntry<any>): void;
-    // (undocumented)
-    logStream: Writable;
     // (undocumented)
     summarize(schedulerRunSummary: SchedulerRunSummary): void;
 }

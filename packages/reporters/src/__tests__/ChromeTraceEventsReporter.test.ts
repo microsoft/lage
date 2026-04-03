@@ -1,23 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
-import fs from "fs";
-import streams from "memory-streams";
-import path from "path";
 import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
+import fs from "fs";
+import path from "path";
 import { ChromeTraceEventsReporter } from "../ChromeTraceEventsReporter.js";
-import { writerToString } from "./writerToString.js";
-
-function createTarget(packageName: string, task: string) {
-  return {
-    id: `${packageName}#${task}`,
-    cwd: `/repo/root/packages/${packageName}`,
-    dependencies: [],
-    dependents: [],
-    depSpecs: [],
-    packageName,
-    task,
-    label: `${packageName} - ${task}`,
-  };
-}
+import { createTarget, createTargetRun } from "./helpers.js";
+import { MemoryStream } from "./MemoryStream.js";
 
 describe("ChromeTraceEventsReporter", () => {
   let tmpDir: string;
@@ -33,9 +20,9 @@ describe("ChromeTraceEventsReporter", () => {
   });
 
   it("can group verbose messages, displaying summary", () => {
-    const consoleWriter = new streams.WritableStream();
+    const writer = new MemoryStream();
 
-    const reporter = new ChromeTraceEventsReporter({ concurrency: 4, outputFile, consoleLogStream: consoleWriter });
+    const reporter = new ChromeTraceEventsReporter({ concurrency: 4, outputFile, consoleLogStream: writer });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -55,18 +42,15 @@ describe("ChromeTraceEventsReporter", () => {
         queued: [],
       },
       targetRuns: new Map([
-        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [0, 0], queueTime: [0, 0], threadId: 1 }],
-        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [10, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 2 }],
-        [
-          bBuildTarget.id,
-          { target: bBuildTarget, status: "success", duration: [30, 0], startTime: [2, 0], queueTime: [0, 0], threadId: 3 },
-        ],
+        [aBuildTarget.id, createTargetRun(aBuildTarget, "failed")],
+        [aTestTarget.id, createTargetRun(aTestTarget, "success")],
+        [bBuildTarget.id, createTargetRun(bBuildTarget, "success")],
       ]),
       maxWorkerMemoryUsage: 0,
       workerRestarts: 0,
     });
 
-    consoleWriter.end();
+    writer.end();
 
     const fileContent = fs.readFileSync(outputFile, "utf-8");
     expect(fileContent).toMatchInlineSnapshot(`
@@ -76,7 +60,7 @@ describe("ChromeTraceEventsReporter", () => {
             "name": "a#build",
             "cat": "failed#build",
             "ph": "X",
-            "ts": 0,
+            "ts": 5000000,
             "dur": 60000000,
             "pid": 1,
             "tid": 1
@@ -85,25 +69,25 @@ describe("ChromeTraceEventsReporter", () => {
             "name": "a#test",
             "cat": "success#test",
             "ph": "X",
-            "ts": 1000000,
-            "dur": 10000000,
+            "ts": 5000000,
+            "dur": 60000000,
             "pid": 1,
-            "tid": 2
+            "tid": 1
           },
           {
             "name": "b#build",
             "cat": "success#build",
             "ph": "X",
-            "ts": 2000000,
-            "dur": 30000000,
+            "ts": 5000000,
+            "dur": 60000000,
             "pid": 1,
-            "tid": 3
+            "tid": 1
           }
         ],
         "displayTimeUnit": "ms"
       }"
     `);
-    expect(writerToString(consoleWriter)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "
       Profiler output written to ${outputFile}, open it with chrome://tracing or edge://tracing
       "

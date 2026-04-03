@@ -6,13 +6,9 @@ import { getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions, getCo
 import { getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
 import { initializeReporters } from "../initializeReporters.js";
 import { SimpleScheduler } from "@lage-run/scheduler";
-
-import type { Reporter } from "@lage-run/logger";
 import createLogger from "@lage-run/logger";
-
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { FilterOptions } from "../../types/FilterOptions.js";
-import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { TargetGraph } from "@lage-run/target-graph";
 import { NoTargetFoundError } from "../../types/errors.js";
 import { createCache } from "../../cache/createCacheProvider.js";
@@ -114,20 +110,16 @@ export async function runAction(options: RunOptions, command: Command): Promise<
   const summary = await scheduler.run(root, optimizedGraph);
   await scheduler.cleanup();
 
-  displaySummaryAndExit(summary, logger.reporters);
-
-  for (const reporter of reporters) {
-    reporter.cleanup?.();
-  }
-}
-
-function displaySummaryAndExit(summary: SchedulerRunSummary, reporters: Reporter[]) {
   if (summary.results !== "success") {
     process.exitCode = 1;
   }
 
   for (const reporter of reporters) {
     reporter.summarize(summary);
+  }
+
+  for (const reporter of reporters) {
+    await reporter.cleanup?.();
   }
 }
 

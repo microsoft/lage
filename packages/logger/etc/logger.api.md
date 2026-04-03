@@ -55,7 +55,7 @@ export type LogStructuredData = Record<string, any>;
 
 // @public (undocumented)
 export interface Reporter<TLogStructuredData extends LogStructuredData = LogStructuredData> {
-    cleanup?: () => void;
+    cleanup?: () => void | Promise<void>;
     log(entry: LogEntry<TLogStructuredData>): void;
     logLevel?: LogLevel;
     summarize(context: unknown): void;

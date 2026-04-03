@@ -1,52 +1,45 @@
 import { describe, expect, it } from "@jest/globals";
 import { LogLevel } from "@lage-run/logger";
-import type { TargetRun } from "@lage-run/scheduler-types";
-import streams from "memory-streams";
+import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
 import { GithubActionsReporter } from "../GithubActionsReporter.js";
-import type { TargetLogData } from "../types/TargetLogData.js";
-import { writerToString } from "./writerToString.js";
-
-function createTarget(packageName: string, task: string) {
-  return {
-    id: `${packageName}#${task}`,
-    cwd: `/repo/root/packages/${packageName}`,
-    dependencies: [],
-    dependents: [],
-    depSpecs: [],
-    packageName,
-    task,
-    label: `${packageName} - ${task}`,
-  };
-}
+import { statusColorFn } from "../LogReporter.js";
+import type { TargetLogData, TargetStatusData } from "../types/TargetLogData.js";
+import { createTarget, createTargetRun } from "./helpers.js";
+import { MemoryStream } from "./MemoryStream.js";
 
 describe("GithubActionsReporter", () => {
   it("records a target status entry", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new GithubActionsReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
-    reporter.log({
-      data: {
-        target: createTarget("a", "task"),
-        status: "running",
-        duration: [0, 0],
-        startTime: [0, 0],
-      },
-      level: LogLevel.verbose,
-      msg: "test message",
-      timestamp: 0,
-    });
+    const target = createTarget("a", "task");
+    const allStatuses = Object.keys(statusColorFn) as TargetStatus[];
+
+    for (const status of allStatuses) {
+      reporter.log({
+        data: { target, status, duration: [10, 0], hash: "abc123" } satisfies TargetStatusData,
+        level: LogLevel.verbose,
+        msg: "test message",
+        timestamp: 0,
+      });
+    }
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
-      "VERB: a task ➔ start
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
+      "VERB: a task ✓ done  - 10.00s
+      VERB: a task ✖ fail
+      VERB: a task » skip  - abc123
+      VERB: a task ➔ start
+      VERB: a task - aborted
+      VERB: a task … queued
       "
     `);
   });
 
   it("records a target message entry", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new GithubActionsReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
@@ -62,14 +55,14 @@ describe("GithubActionsReporter", () => {
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "VERB: a task |  test message
       "
     `);
   });
 
   it("groups messages together using GitHub Actions ::group:: syntax", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new GithubActionsReporter({ grouped: true, logLevel: LogLevel.verbose, logStream: writer });
 
@@ -103,7 +96,7 @@ describe("GithubActionsReporter", () => {
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "::group::a test success, took 10.00s
       VERB:  ➔ start a test
       VERB:  |  test message for a#test
@@ -127,7 +120,7 @@ describe("GithubActionsReporter", () => {
   });
 
   it("interweaves messages when ungrouped", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new GithubActionsReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
@@ -161,7 +154,7 @@ describe("GithubActionsReporter", () => {
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "VERB: a build ➔ start
       VERB: a test ➔ start
       VERB: b build ➔ start
@@ -179,7 +172,7 @@ describe("GithubActionsReporter", () => {
   });
 
   it("can filter out verbose messages", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new GithubActionsReporter({ grouped: false, logLevel: LogLevel.info, logStream: writer });
 
@@ -213,7 +206,7 @@ describe("GithubActionsReporter", () => {
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "INFO: a build ➔ start
       INFO: a test ➔ start
       INFO: b build ➔ start
@@ -225,7 +218,7 @@ describe("GithubActionsReporter", () => {
   });
 
   it("uses ::error:: and ::group::Summary in summarize", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new GithubActionsReporter({ grouped: true, logLevel: LogLevel.verbose, logStream: writer });
 
@@ -271,12 +264,9 @@ describe("GithubActionsReporter", () => {
         queued: [],
       },
       targetRuns: new Map<string, TargetRun<unknown>>([
-        [aBuildTarget.id, { target: aBuildTarget, status: "failed", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 0 }],
-        [aTestTarget.id, { target: aTestTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 0 }],
-        [
-          bBuildTarget.id,
-          { target: bBuildTarget, status: "success", duration: [60, 0], startTime: [1, 0], queueTime: [0, 0], threadId: 0 },
-        ],
+        [aBuildTarget.id, createTargetRun(aBuildTarget, "failed")],
+        [aTestTarget.id, createTargetRun(aTestTarget, "success")],
+        [bBuildTarget.id, createTargetRun(bBuildTarget, "success")],
       ]),
       maxWorkerMemoryUsage: 0,
       workerRestarts: 0,
@@ -284,7 +274,7 @@ describe("GithubActionsReporter", () => {
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "::group::a test success, took 10.00s
       INFO:  ➔ start a test
       VERB:  |  test message for a#test

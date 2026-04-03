@@ -1,6 +1,7 @@
 import type { LogEntry, Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
+import type { Writable } from "stream";
 import chalk from "chalk";
 import { formatHrtime } from "./formatDuration.js";
 import { fancyGradient, formatBytes, formatMemoryUsage, hrLine } from "./formatHelpers.js";
@@ -46,8 +47,6 @@ const terminal = {
   clearLine: "\x1b[2K\r",
 };
 
-const print = (message: string) => process.stdout.write(message + "\n");
-
 /**
  * Shows running/remaining target counts and completed targets, but does not display
  * the names of running targets for efficiency.
@@ -57,6 +56,7 @@ export class BasicReporter implements Reporter {
   private updateTimer: NodeJS.Timeout | undefined;
   private startTimer: () => void;
   private logMemory: boolean;
+  private logStream: Writable;
 
   constructor(
     params: {
@@ -65,11 +65,14 @@ export class BasicReporter implements Reporter {
       frequency?: number;
       /** Whether to capture and report main process memory usage on target completion */
       logMemory?: boolean;
+      /** Stream for output (defaults to process.stdout) */
+      logStream?: Writable;
     } = {}
   ) {
     const { concurrency = 0, version = "0.0.0", frequency = 500 } = params;
     this.logMemory = !!params.logMemory;
-    print(`${fancyGradient("lage")} - Version ${version} - ${concurrency} Workers`);
+    this.logStream = params.logStream || process.stdout;
+    this.print(`${fancyGradient("lage")} - Version ${version} - ${concurrency} Workers`);
 
     this.startTimer = () => {
       this.updateTimer = setInterval(() => this.renderStatus(), frequency);
@@ -77,8 +80,12 @@ export class BasicReporter implements Reporter {
       this.startTimer = () => {};
     };
 
-    process.stdout.write(terminal.hideCursor);
-    process.on("exit", () => process.stdout.write(terminal.showCursor));
+    if (!params.logStream) {
+      // Only hide and show the cursor if writing to the default stdout
+      // (definitely don't want the exit handler if writing to a custom stream)
+      process.stdout.write(terminal.hideCursor);
+      process.on("exit", () => process.stdout.write(terminal.showCursor));
+    }
   }
 
   public log(entry: LogEntry): void {
@@ -104,46 +111,46 @@ export class BasicReporter implements Reporter {
 
   public summarize(schedulerRunSummary: SchedulerRunSummary): void {
     clearInterval(this.updateTimer);
-    process.stdout.write(terminal.clearLine);
+    this.logStream.write(terminal.clearLine);
 
     const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
     const { failed, aborted, skipped, success, pending } = targetRunByStatus;
 
     if (targetRuns.size > 0) {
-      print(colors.summary(`\nSummary`));
-      print(hrLine);
-      print(
+      this.print(colors.summary(`\nSummary`));
+      this.print(hrLine);
+      this.print(
         `success: ${success.length}, skipped: ${skipped.length}, pending: ${pending.length}, aborted: ${aborted.length}, failed: ${failed.length}`
       );
-      print(
+      this.print(
         `worker restarts: ${schedulerRunSummary.workerRestarts}, max worker memory usage: ${formatBytes(schedulerRunSummary.maxWorkerMemoryUsage)}`
       );
     } else {
-      print("Nothing has been run.");
+      this.print("Nothing has been run.");
     }
 
-    print(hrLine);
+    this.print(hrLine);
 
     for (const targetId of failed) {
       const target = targetRuns.get(targetId)?.target;
       if (target) {
         const failureLogs = this.taskData.get(targetId)?.logEntries;
 
-        print(`[${colors.pkg(target.packageName ?? "<root>")} ${colors.task(target.task)}] ${colors.failed("ERROR DETECTED")}`);
+        this.print(`[${colors.pkg(target.packageName ?? "<root>")} ${colors.task(target.task)}] ${colors.failed("ERROR DETECTED")}`);
 
         if (failureLogs) {
           for (const entry of failureLogs) {
-            print(entry.msg);
+            this.print(entry.msg);
           }
         }
-        print(hrLine);
+        this.print(hrLine);
       }
     }
 
     const allCacheHits = [...targetRuns.values()].filter((run) => !run.target.hidden).length === skipped.length;
     const allCacheHitText = allCacheHits ? fancyGradient(`All targets skipped!`) : "";
 
-    print(`Took a total of ${formatHrtime(duration)} to complete. ${allCacheHitText}`);
+    this.print(`Took a total of ${formatHrtime(duration)} to complete. ${allCacheHitText}`);
   }
 
   private reportCompletion(completion: {
@@ -176,6 +183,10 @@ export class BasicReporter implements Reporter {
     }
     const percentage = Math.round((completed / total) * 100);
     output += `${timestamp} Completed: ${completed}/${total} (${percentage}%) [${running} running, ${pending} pending]`;
-    process.stdout.write(output);
+    this.logStream.write(output);
+  }
+
+  private print(message: string): void {
+    this.logStream.write(message + "\n");
   }
 }

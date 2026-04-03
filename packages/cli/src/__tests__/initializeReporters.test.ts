@@ -38,9 +38,9 @@ describe("initializeReporters", () => {
     delete process.env.TF_BUILD;
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     for (const reporter of reporters || []) {
-      reporter.cleanup?.();
+      await reporter.cleanup?.();
     }
     reporters = undefined;
     // Restore CI env vars
