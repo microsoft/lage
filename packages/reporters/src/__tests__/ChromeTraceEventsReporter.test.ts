@@ -3,7 +3,7 @@ import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
 import fs from "fs";
 import path from "path";
 import { ChromeTraceEventsReporter } from "../ChromeTraceEventsReporter.js";
-import { createTarget, createTargetRun } from "./helpers.js";
+import { createSummary, createTarget } from "./helpers.js";
 import { MemoryStream } from "./MemoryStream.js";
 
 describe("ChromeTraceEventsReporter", () => {
@@ -28,27 +28,11 @@ describe("ChromeTraceEventsReporter", () => {
     const aTestTarget = createTarget("a", "test");
     const bBuildTarget = createTarget("b", "build");
 
-    reporter.summarize({
-      duration: [100, 0],
-      startTime: [0, 0],
-      results: "failed",
-      targetRunByStatus: {
-        success: [aTestTarget.id, bBuildTarget.id],
-        failed: [aBuildTarget.id],
-        pending: [],
-        running: [],
-        aborted: [],
-        skipped: [],
-        queued: [],
-      },
-      targetRuns: new Map([
-        [aBuildTarget.id, createTargetRun(aBuildTarget, "failed")],
-        [aTestTarget.id, createTargetRun(aTestTarget, "success")],
-        [bBuildTarget.id, createTargetRun(bBuildTarget, "success")],
-      ]),
-      maxWorkerMemoryUsage: 0,
-      workerRestarts: 0,
+    const summary = createSummary({
+      failed: [aBuildTarget],
+      success: [aTestTarget, bBuildTarget],
     });
+    reporter.summarize(summary);
 
     writer.end();
 

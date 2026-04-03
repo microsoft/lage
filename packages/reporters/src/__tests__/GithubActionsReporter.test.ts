@@ -1,10 +1,10 @@
 import { describe, expect, it } from "@jest/globals";
 import { LogLevel } from "@lage-run/logger";
-import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
+import type { TargetStatus } from "@lage-run/scheduler-types";
 import { GithubActionsReporter } from "../GithubActionsReporter.js";
 import { statusColorFn } from "../LogReporter.js";
 import type { TargetLogData, TargetStatusData } from "../types/TargetLogData.js";
-import { createTarget, createTargetRun } from "./helpers.js";
+import { createTarget, createSummary } from "./helpers.js";
 import { MemoryStream } from "./MemoryStream.js";
 
 describe("GithubActionsReporter", () => {
@@ -85,13 +85,8 @@ describe("GithubActionsReporter", () => {
       [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
     ];
 
-    for (const log of logs) {
-      reporter.log({
-        data: log[0],
-        level: LogLevel.verbose,
-        msg: log[1] ?? "empty message",
-        timestamp: 0,
-      });
+    for (const [data, message] of logs) {
+      reporter.log({ data, level: LogLevel.verbose, msg: message ?? "empty message", timestamp: 0 });
     }
 
     writer.end();
@@ -143,13 +138,8 @@ describe("GithubActionsReporter", () => {
       [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
     ];
 
-    for (const log of logs) {
-      reporter.log({
-        data: log[0],
-        level: LogLevel.verbose,
-        msg: log[1] ?? "empty message",
-        timestamp: 0,
-      });
+    for (const [data, message] of logs) {
+      reporter.log({ data, level: LogLevel.verbose, msg: message ?? "empty message", timestamp: 0 });
     }
 
     writer.end();
@@ -176,30 +166,19 @@ describe("GithubActionsReporter", () => {
 
     const reporter = new GithubActionsReporter({ grouped: false, logLevel: LogLevel.info, logStream: writer });
 
-    const aBuildTarget = createTarget("a", "build");
-    const aTestTarget = createTarget("a", "test");
-    const bBuildTarget = createTarget("b", "build");
+    const target = createTarget("a", "build");
 
     const logs: [TargetLogData, string?][] = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
+      [{ target, status: "running", duration: [0, 0] }],
+      [{ target, pid: 1 }, "test message for a#build"],
+      [{ target, status: "failed", duration: [60, 0] }],
     ];
 
-    for (const log of logs) {
+    for (const [data, message] of logs) {
       reporter.log({
-        data: log[0],
-        level: "status" in log[0] ? LogLevel.info : LogLevel.verbose,
-        msg: log[1] ?? "empty message",
+        data,
+        level: "status" in data ? LogLevel.info : LogLevel.verbose,
+        msg: message ?? "empty message",
         timestamp: 0,
       });
     }
@@ -208,10 +187,6 @@ describe("GithubActionsReporter", () => {
 
     expect(writer.getOutput()).toMatchInlineSnapshot(`
       "INFO: a build ➔ start
-      INFO: a test ➔ start
-      INFO: b build ➔ start
-      INFO: a test ✓ done  - 10.00s
-      INFO: b build ✓ done  - 30.00s
       INFO: a build ✖ fail
       "
     `);
@@ -241,36 +216,20 @@ describe("GithubActionsReporter", () => {
       [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
     ];
 
-    for (const log of logs) {
+    for (const [data, message] of logs) {
       reporter.log({
-        data: log[0],
-        level: "status" in log[0] ? LogLevel.info : LogLevel.verbose,
-        msg: log[1] ?? "",
+        data,
+        level: "status" in data ? LogLevel.info : LogLevel.verbose,
+        msg: message ?? "",
         timestamp: 0,
       });
     }
 
-    reporter.summarize({
-      duration: [100, 0],
-      startTime: [0, 0],
-      results: "failed",
-      targetRunByStatus: {
-        success: [aTestTarget.id, bBuildTarget.id],
-        failed: [aBuildTarget.id],
-        pending: [],
-        running: [],
-        aborted: [],
-        skipped: [],
-        queued: [],
-      },
-      targetRuns: new Map<string, TargetRun<unknown>>([
-        [aBuildTarget.id, createTargetRun(aBuildTarget, "failed")],
-        [aTestTarget.id, createTargetRun(aTestTarget, "success")],
-        [bBuildTarget.id, createTargetRun(bBuildTarget, "success")],
-      ]),
-      maxWorkerMemoryUsage: 0,
-      workerRestarts: 0,
+    const summary = createSummary({
+      failed: [aBuildTarget],
+      success: [aTestTarget, bBuildTarget],
     });
+    reporter.summarize(summary);
 
     writer.end();
 

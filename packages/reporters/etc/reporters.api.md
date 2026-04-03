@@ -40,6 +40,7 @@ export class BasicReporter implements Reporter {
         logMemory?: boolean;
         logStream?: Writable;
     });
+    cleanup(): void;
     // (undocumented)
     log(entry: LogEntry): void;
     // (undocumented)

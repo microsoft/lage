@@ -140,6 +140,10 @@ export class ProgressReporter implements Reporter {
       allAborted.push(wrappedTarget);
     }
 
+    // Complete the task reporter to ensure all stickies and timers are cleared.
+    // (It would also end running or pending tasks, but we're handling that slightly differently above.)
+    this.taskReporter.complete();
+
     if (targetRuns.size > 0) {
       this.print(chalk.cyanBright(`\nSummary`));
 
@@ -214,7 +218,7 @@ export class ProgressReporter implements Reporter {
    */
   public async cleanup(): Promise<void> {
     try {
-      // Prevent any completion logs from being shown
+      // Ensure no completion logs are shown in this case
       this.taskReporter.setOptions(noLoggingConfig);
       this.taskReporter.complete();
     } catch {

@@ -28,4 +28,9 @@ export class MemoryStream extends Writable {
       .replace(/\[\d{2}:\d{2}:\d{2}\] /g, "[12:34:56] ")
       .replace(/\(\d+ms\)/g, "(1ms)");
   }
+
+  /** Clear the previously captured output */
+  public clearOutput(): void {
+    this.chunks = [];
+  }
 }

@@ -153,6 +153,12 @@ export class BasicReporter implements Reporter {
     this.print(`Took a total of ${formatHrtime(duration)} to complete. ${allCacheHitText}`);
   }
 
+  /** Clear the update timer */
+  public cleanup(): void {
+    clearInterval(this.updateTimer);
+    this.updateTimer = undefined;
+  }
+
   private reportCompletion(completion: {
     target: Target;
     status: CompletionStatus;

@@ -1,9 +1,8 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import { LogLevel } from "@lage-run/logger";
-import type { TargetRun } from "@lage-run/scheduler-types";
 import { JsonReporter } from "../JsonReporter.js";
 import type { TargetLogData } from "../types/TargetLogData.js";
-import { createTarget, createTargetRun } from "./helpers.js";
+import { createSummary, createTarget } from "./helpers.js";
 
 describe("JsonReporter", () => {
   afterEach(() => {
@@ -37,88 +36,25 @@ describe("JsonReporter", () => {
       [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
     ];
 
-    for (const log of logs) {
-      reporter.log({
-        data: log[0],
-        level: LogLevel.verbose,
-        msg: log[1] ?? "",
-        timestamp: 0,
-      });
+    for (const [data, message] of logs) {
+      reporter.log({ data, level: LogLevel.verbose, msg: message ?? "", timestamp: 0 });
     }
 
+    const common = { level: LogLevel.verbose, msg: "", timestamp: 0 };
+
     expect(rawLogs).toEqual([
-      {
-        data: { duration: [0, 0], status: "running", target: aBuildTarget },
-        level: 40,
-        msg: "",
-        timestamp: 0,
-      },
-      {
-        data: { duration: [0, 0], status: "running", target: aTestTarget },
-        level: 40,
-        msg: "",
-        timestamp: 0,
-      },
-      {
-        data: { duration: [0, 0], status: "running", target: bBuildTarget },
-        level: 40,
-        msg: "",
-        timestamp: 0,
-      },
-      {
-        data: { pid: 1, target: aBuildTarget },
-        level: 40,
-        msg: "test message for a#build",
-        timestamp: 0,
-      },
-      {
-        data: { pid: 1, target: aTestTarget },
-        level: 40,
-        msg: "test message for a#test",
-        timestamp: 0,
-      },
-      {
-        data: { pid: 1, target: aBuildTarget },
-        level: 40,
-        msg: "test message for a#build again",
-        timestamp: 0,
-      },
-      {
-        data: { pid: 1, target: bBuildTarget },
-        level: 40,
-        msg: "test message for b#build",
-        timestamp: 0,
-      },
-      {
-        data: { pid: 1, target: aTestTarget },
-        level: 40,
-        msg: "test message for a#test again",
-        timestamp: 0,
-      },
-      {
-        data: { pid: 1, target: bBuildTarget },
-        level: 40,
-        msg: "test message for b#build again",
-        timestamp: 0,
-      },
-      {
-        data: { duration: [10, 0], status: "success", target: aTestTarget },
-        level: 40,
-        msg: "",
-        timestamp: 0,
-      },
-      {
-        data: { duration: [30, 0], status: "success", target: bBuildTarget },
-        level: 40,
-        msg: "",
-        timestamp: 0,
-      },
-      {
-        data: { duration: [60, 0], status: "failed", target: aBuildTarget },
-        level: 40,
-        msg: "",
-        timestamp: 0,
-      },
+      { data: { duration: [0, 0], status: "running", target: aBuildTarget }, ...common },
+      { data: { duration: [0, 0], status: "running", target: aTestTarget }, ...common },
+      { data: { duration: [0, 0], status: "running", target: bBuildTarget }, ...common },
+      { data: { pid: 1, target: aBuildTarget }, ...common, msg: "test message for a#build" },
+      { data: { pid: 1, target: aTestTarget }, ...common, msg: "test message for a#test" },
+      { data: { pid: 1, target: aBuildTarget }, ...common, msg: "test message for a#build again" },
+      { data: { pid: 1, target: bBuildTarget }, ...common, msg: "test message for b#build" },
+      { data: { pid: 1, target: aTestTarget }, ...common, msg: "test message for a#test again" },
+      { data: { pid: 1, target: bBuildTarget }, ...common, msg: "test message for b#build again" },
+      { data: { duration: [10, 0], status: "success", target: aTestTarget }, ...common },
+      { data: { duration: [30, 0], status: "success", target: bBuildTarget }, ...common },
+      { data: { duration: [60, 0], status: "failed", target: aBuildTarget }, ...common },
     ]);
   });
 
@@ -149,39 +85,18 @@ describe("JsonReporter", () => {
       [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
     ];
 
-    for (const log of logs) {
-      reporter.log({
-        data: log[0],
-        level: LogLevel.verbose,
-        msg: log[1] ?? "",
-        timestamp: 0,
-      });
+    for (const [data, message] of logs) {
+      reporter.log({ data, level: LogLevel.verbose, msg: message ?? "", timestamp: 0 });
     }
 
     // reset! we only want to capture the output by `summarize()`
     rawLogs.splice(0);
 
-    reporter.summarize({
-      duration: [100, 0],
-      startTime: [0, 0],
-      results: "failed",
-      targetRunByStatus: {
-        success: [aTestTarget.id, bBuildTarget.id],
-        failed: [aBuildTarget.id],
-        pending: [],
-        running: [],
-        aborted: [],
-        skipped: [],
-        queued: [],
-      },
-      targetRuns: new Map<string, TargetRun<unknown>>([
-        [aBuildTarget.id, createTargetRun(aBuildTarget, "failed")],
-        [aTestTarget.id, createTargetRun(aTestTarget, "success")],
-        [bBuildTarget.id, createTargetRun(bBuildTarget, "success")],
-      ]),
-      maxWorkerMemoryUsage: 0,
-      workerRestarts: 0,
+    const summary = createSummary({
+      failed: [aBuildTarget],
+      success: [aTestTarget, bBuildTarget],
     });
+    reporter.summarize(summary);
 
     expect(rawLogs).toEqual([
       {
