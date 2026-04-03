@@ -7,4 +7,4 @@ export { ChromeTraceEventsReporter } from "./ChromeTraceEventsReporter.js";
 export { ProgressReporter } from "./ProgressReporter.js";
 export { VerboseFileLogReporter } from "./VerboseFileLogReporter.js";
 export type { TargetStatusData, TargetMessageData, TargetLogData } from "./types/TargetLogData.js";
-export { formatDuration, hrToSeconds, hrtimeDiff } from "./formatDuration.js";
+export { formatDuration, formatHrtime, hrToSeconds, hrtimeDiff } from "./formatDuration.js";

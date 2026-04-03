@@ -1,19 +1,18 @@
-import { formatDuration, hrtimeDiff, hrToSeconds } from "./formatDuration.js";
+import { formatHrtime, hrtimeDiff } from "./formatDuration.js";
 import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
-import ansiRegex from "ansi-regex";
 import chalk from "chalk";
 import type { Chalk } from "chalk";
-import { gradient } from "./gradient.js";
 import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 import type { TargetLogData, TargetStatusData } from "./types/TargetLogData.js";
 import type { Writable } from "stream";
 import crypto from "crypto";
-import { formatBytes } from "./formatBytes.js";
+import { fancyGradient, formatBytes, formatMemoryUsage, hrLine, stripAnsi } from "./formatHelpers.js";
 import { slowestTargetRuns } from "./slowestTargetRuns.js";
 
-const colors = {
+/** Color scheme from lage v1's reporter and others derived from it */
+export const colors = {
   [LogLevel.info]: chalk.white,
   [LogLevel.verbose]: chalk.gray,
   [LogLevel.warn]: chalk.white,
@@ -24,6 +23,17 @@ const colors = {
   ok: chalk.green,
   error: chalk.red,
   warn: chalk.yellow,
+};
+
+/** Status color scheme from lage v1's reporter and others derived from it */
+export const statusColorFn: Record<TargetStatus, Chalk> = {
+  success: chalk.greenBright,
+  failed: chalk.redBright,
+  skipped: chalk.gray,
+  running: chalk.yellow,
+  pending: chalk.gray,
+  aborted: chalk.red,
+  queued: chalk.magenta,
 };
 
 // Monokai color scheme
@@ -54,22 +64,9 @@ function getColorForPkg(pkg: string): Chalk {
   return pkgColors[pkgNameToIndexInPkgColorArray.get(pkg)!];
 }
 
-const stripAnsiRegex = ansiRegex();
-
 function getTaskLogPrefix(pkg: string, task: string) {
   const pkgColor = getColorForPkg(pkg);
   return `${pkgColor(pkg)} ${colors.task(task)}`;
-}
-
-function stripAnsi(message: string) {
-  return message.replace(stripAnsiRegex, "");
-}
-
-function normalize(prefixOrMessage: string, message?: string) {
-  if (typeof message === "string") {
-    return { prefix: prefixOrMessage, message };
-  }
-  return { prefix: "", message: prefixOrMessage };
 }
 
 /**
@@ -131,13 +128,11 @@ export class LogReporter implements Reporter {
 
   private printEntry(entry: LogEntry<any>, message: string) {
     let prefix = "";
-    let msg = message;
+    const msg = message;
 
     if (entry?.data?.target) {
       const { packageName, task } = entry.data.target;
-      const normalizedArgs = normalize(getTaskLogPrefix(packageName ?? "<root>", task), msg);
-      prefix = normalizedArgs.prefix;
-      msg = normalizedArgs.message;
+      prefix = getTaskLogPrefix(packageName ?? "<root>", task);
     }
 
     this.print(`${prefix ? prefix + " " : ""}${msg}`);
@@ -147,42 +142,41 @@ export class LogReporter implements Reporter {
     this.logStream.write(message + "\n");
   }
 
-  private formatMemory(memoryUsage?: NodeJS.MemoryUsage): string {
-    if (!this.options.logMemory || !memoryUsage) {
-      return "";
-    }
-    return ` [rss: ${formatBytes(memoryUsage.rss)}, heap: ${formatBytes(memoryUsage.heapUsed)}]`;
-  }
-
   private logTargetEntry(entry: LogEntry<TargetLogData>) {
     const colorFn = colors[entry.level];
     const data = entry.data!;
 
-    if (isTargetStatusLogEntry(data)) {
-      const { hash, duration, memoryUsage } = data;
-      const mem = this.formatMemory(memoryUsage);
-
-      switch (data.status) {
-        case "running":
-          return this.printEntry(entry, colorFn(`${colors.ok("➔")} start`));
-
-        case "success":
-          return this.printEntry(entry, colorFn(`${colors.ok("✓")} done - ${formatDuration(hrToSeconds(duration!))}${mem}`));
-
-        case "failed":
-          return this.printEntry(entry, colorFn(`${colors.error("✖")} fail${mem}`));
-
-        case "skipped":
-          return this.printEntry(entry, colorFn(`${colors.ok("»")} skip - ${hash!}${mem}`));
-
-        case "aborted":
-          return this.printEntry(entry, colorFn(`${colors.warn("-")} aborted`));
-
-        case "queued":
-          return this.printEntry(entry, colorFn(`${colors.warn("…")} queued`));
-      }
-    } else {
+    if (!isTargetStatusLogEntry(data)) {
       return this.printEntry(entry, colorFn(":  " + stripAnsi(entry.msg)));
+    }
+
+    const { hash, duration, memoryUsage, status } = data;
+    const mem = formatMemoryUsage(memoryUsage, this.options.logMemory);
+
+    switch (status) {
+      case "running":
+        return this.printEntry(entry, colorFn(`${colors.ok("➔")} start`));
+
+      case "success":
+        return this.printEntry(entry, colorFn(`${colors.ok("✓")} done - ${formatHrtime(duration!)}${mem}`));
+
+      case "failed":
+        return this.printEntry(entry, colorFn(`${colors.error("✖")} fail${mem}`));
+
+      case "skipped":
+        return this.printEntry(entry, colorFn(`${colors.ok("»")} skip - ${hash!}${mem}`));
+
+      case "aborted":
+        return this.printEntry(entry, colorFn(`${colors.warn("-")} aborted`));
+
+      case "queued":
+        return this.printEntry(entry, colorFn(`${colors.warn("…")} queued`));
+
+      case "pending":
+        return;
+
+      default:
+        throw new Error(`Internal error: unhandled target status "${status}"`);
     }
   }
 
@@ -203,54 +197,35 @@ export class LogReporter implements Reporter {
       }
 
       if (entries.length > 2) {
-        this.hr();
+        this.print(hrLine);
       }
     }
   }
 
-  private hr(): void {
-    this.print("┈".repeat(80));
-  }
-
   public summarize(schedulerRunSummary: SchedulerRunSummary): void {
-    const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
+    const { targetRuns, targetRunByStatus } = schedulerRunSummary;
     const { failed, aborted, skipped, success, pending } = targetRunByStatus;
-
-    const statusColorFn: {
-      [status in TargetStatus]: chalk.Chalk;
-    } = {
-      success: chalk.greenBright,
-      failed: chalk.redBright,
-      skipped: chalk.gray,
-      running: chalk.yellow,
-      pending: chalk.gray,
-      aborted: chalk.red,
-      queued: chalk.magenta,
-    };
 
     if (targetRuns.size > 0) {
       this.print(chalk.cyanBright(`\nSummary`));
 
-      this.hr();
+      this.print(hrLine);
 
       const slowestTargets = slowestTargetRuns([...targetRuns.values()]);
 
       for (const wrappedTarget of slowestTargets) {
-        if (wrappedTarget.target.hidden) {
+        const { target, status, duration } = wrappedTarget;
+        if (target.hidden) {
           continue;
         }
 
-        const colorFn = statusColorFn[wrappedTarget.status] ?? chalk.white;
-        const target = wrappedTarget.target;
-        const hasDurations = !!wrappedTarget.duration && !!wrappedTarget.queueTime;
-        const queueDuration: [number, number] = hasDurations ? hrtimeDiff(wrappedTarget.queueTime, wrappedTarget.startTime) : [0, 0];
+        const colorFn = statusColorFn[status] ?? chalk.white;
+        const queueDuration = hrtimeDiff(wrappedTarget.queueTime, wrappedTarget.startTime);
 
         this.print(
           `${getTaskLogPrefix(target.packageName || "<root>", target.task)} ${colorFn(
-            `${wrappedTarget.status === "running" ? "running - incomplete" : wrappedTarget.status}${
-              hasDurations
-                ? `, took ${formatDuration(hrToSeconds(wrappedTarget.duration))}, queued for ${formatDuration(hrToSeconds(queueDuration))}`
-                : ""
+            `${status === "running" ? "running - incomplete" : status}${
+              duration ? `, took ${formatHrtime(duration)}, queued for ${formatHrtime(queueDuration)}` : ""
             }`
           )}`
         );
@@ -269,9 +244,9 @@ export class LogReporter implements Reporter {
       this.print("Nothing has been run.");
     }
 
-    this.hr();
+    this.print(hrLine);
 
-    if (failed && failed.length > 0) {
+    if (failed.length > 0) {
       for (const targetId of failed) {
         const target = targetRuns.get(targetId)?.target;
 
@@ -288,15 +263,15 @@ export class LogReporter implements Reporter {
             }
           }
 
-          this.hr();
+          this.print(hrLine);
         }
       }
     }
 
     const allCacheHits = [...targetRuns.values()].filter((run) => !run.target.hidden).length === skipped.length;
-    const allCacheHitText = allCacheHits ? gradient({ r: 237, g: 178, b: 77 }, "cyan")(`All targets skipped!`) : "";
+    const allCacheHitText = allCacheHits ? fancyGradient(`All targets skipped!`) : "";
 
-    this.print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
+    this.print(`Took a total of ${formatHrtime(schedulerRunSummary.duration)} to complete. ${allCacheHitText}`);
   }
 
   public resetLogEntries(): void {

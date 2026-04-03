@@ -1,4 +1,4 @@
-import { formatDuration, hrToSeconds } from "./formatDuration.js";
+import { formatHrtime } from "./formatDuration.js";
 import chalk from "chalk";
 import type { TargetRun } from "@lage-run/scheduler-types";
 import { colors, GroupedReporter } from "./GroupedReporter.js";
@@ -8,9 +8,7 @@ import { colors, GroupedReporter } from "./GroupedReporter.js";
  */
 export class AdoReporter extends GroupedReporter {
   protected formatGroupStart(packageName: string, task: string, status: string, duration?: [number, number]): string {
-    return `##[group] ${colors.pkg(packageName)} ${colors.task(task)} ${status}${
-      duration ? `, took ${formatDuration(hrToSeconds(duration))}` : ""
-    }\n`;
+    return `##[group] ${colors.pkg(packageName)} ${colors.task(task)} ${status}${duration ? `, took ${formatHrtime(duration)}` : ""}\n`;
   }
 
   protected formatGroupEnd(): string {

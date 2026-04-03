@@ -1,3 +1,4 @@
+/** Format a duration given in seconds as minutes and seconds: e.g. "90" → "1m 30.00s" */
 export function formatDuration(seconds: string): string {
   const raw = parseFloat(seconds);
   if (raw > 60) {
@@ -9,6 +10,12 @@ export function formatDuration(seconds: string): string {
   return `${sec}s`;
 }
 
+/** Format an hrtime tuple as a human-readable duration */
+export function formatHrtime(hrtime: [number, number]): string {
+  return formatDuration(hrToSeconds(hrtime));
+}
+
+/** Convert an hrtime tuple to seconds */
 export function hrToSeconds(hrtime: [number, number]): string {
   const raw = hrtime[0] + hrtime[1] / 1e9;
   return raw.toFixed(2);

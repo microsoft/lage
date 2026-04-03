@@ -77,7 +77,7 @@ export class ChromeTraceEventsReporter implements Reporter {
         continue;
       }
 
-      const event = {
+      const event: CompleteEvent = {
         name: targetRun.target.id,
         cat: `${targetRun.status}#${targetRun.target.task}`,
         ph: "X",
@@ -85,7 +85,7 @@ export class ChromeTraceEventsReporter implements Reporter {
         dur: hrTimeToMicroseconds(targetRun.duration ?? [0, 1000]), // in microseconds
         pid: 1,
         tid: targetRun.threadId,
-      } as CompleteEvent;
+      };
 
       if (categorize) {
         event.cat += `,${categorize(targetRun)}`;
@@ -94,9 +94,8 @@ export class ChromeTraceEventsReporter implements Reporter {
       this.events.traceEvents.push(event);
     }
 
-    if (!fs.existsSync(path.dirname(this.outputFile))) {
-      fs.mkdirSync(path.dirname(this.outputFile), { recursive: true });
-    }
+    // make the directory if it doesn't exist (no-op if exists)
+    fs.mkdirSync(path.dirname(this.outputFile), { recursive: true });
 
     fs.writeFileSync(this.outputFile, JSON.stringify(this.events, null, 2));
 

@@ -12,7 +12,7 @@ import { MemoryStream } from "./MemoryStream.js";
 import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
 import type { TargetRun } from "@lage-run/scheduler-types";
-import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/reporters";
+import { formatHrtime, hrtimeDiff } from "@lage-run/reporters";
 import path from "path";
 import fs from "fs";
 import { getGlobalInputHashFilePath, getHashFilePath } from "../targetHashFilePath.js";
@@ -276,9 +276,7 @@ export function createLageService({ cwd, serverControls, logger, concurrency, ta
             targetRun.status = "success";
             targetRun.duration = hrtimeDiff(targetRun.startTime, process.hrtime());
 
-            logger.info(
-              `[${worker.threadId}] ${request.packageName}#${request.task} end: ${formatDuration(hrToSeconds(targetRun.duration))}`
-            );
+            logger.info(`[${worker.threadId}] ${request.packageName}#${request.task} end: ${formatHrtime(targetRun.duration)}`);
             pipedStdout.unpipe(writableStdout);
             pipedStderr.unpipe(writableStderr);
           }

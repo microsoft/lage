@@ -16,7 +16,7 @@ import { Writable } from 'stream';
 
 // Warning: (ae-forgotten-export) The symbol "GroupedReporter" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @public
 export class AdoReporter extends GroupedReporter {
     // (undocumented)
     protected formatGroupEnd(): string;
@@ -30,7 +30,7 @@ export class AdoReporter extends GroupedReporter {
     protected writeSummaryHeader(): void;
 }
 
-// @public (undocumented)
+// @public
 export class BasicReporter implements Reporter {
     constructor(params?: {
         concurrency?: number;
@@ -44,7 +44,7 @@ export class BasicReporter implements Reporter {
     summarize(schedulerRunSummary: SchedulerRunSummary): void;
 }
 
-// @public (undocumented)
+// @public
 export class ChromeTraceEventsReporter implements Reporter {
     // Warning: (ae-forgotten-export) The symbol "ChromeTraceEventsReporterOptions" needs to be exported by the entry point index.d.ts
     constructor(options: ChromeTraceEventsReporterOptions & {
@@ -66,10 +66,13 @@ interface ChromeTraceEventsReporterOptions {
     outputFile?: string;
 }
 
-// @public (undocumented)
+// @public
 export function formatDuration(seconds: string): string;
 
-// @public (undocumented)
+// @public
+export function formatHrtime(hrtime: [number, number]): string;
+
+// @public
 export class GithubActionsReporter extends GroupedReporter {
     // (undocumented)
     protected formatGroupEnd(): string;
@@ -83,7 +86,7 @@ export class GithubActionsReporter extends GroupedReporter {
     protected writeSummaryHeader(): void;
 }
 
-// @public (undocumented)
+// @public
 abstract class GroupedReporter implements Reporter {
     constructor(options: {
         logLevel?: LogLevel;
@@ -99,7 +102,6 @@ abstract class GroupedReporter implements Reporter {
     protected logEntries: Map<string, LogEntry<LogStructuredData>[]>;
     // (undocumented)
     protected logStream: Writable;
-    // (undocumented)
     protected logTargetEntry(entry: LogEntry<TargetLogData>): boolean | void;
     // (undocumented)
     protected options: {
@@ -118,10 +120,10 @@ abstract class GroupedReporter implements Reporter {
 // @public
 export function hrtimeDiff(start?: [number, number], end?: [number, number]): [number, number];
 
-// @public (undocumented)
+// @public
 export function hrToSeconds(hrtime: [number, number]): string;
 
-// @public (undocumented)
+// @public
 export class JsonReporter implements Reporter {
     constructor(options: {
         logLevel: LogLevel;
@@ -160,7 +162,7 @@ interface JsonReporterTaskStats {
     task: string;
 }
 
-// @public (undocumented)
+// @public
 export class LogReporter implements Reporter {
     constructor(options: {
         logLevel?: LogLevel;
@@ -176,7 +178,7 @@ export class LogReporter implements Reporter {
     summarize(schedulerRunSummary: SchedulerRunSummary): void;
 }
 
-// @public (undocumented)
+// @public
 export class ProgressReporter implements Reporter {
     constructor(options?: {
         concurrency: number;
@@ -215,7 +217,7 @@ export interface TargetStatusData {
     target: Target;
 }
 
-// @public (undocumented)
+// @public
 export class VerboseFileLogReporter implements Reporter {
     constructor(logFile?: string, fileStream?: Writable, logMemory?: boolean);
     // (undocumented)

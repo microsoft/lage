@@ -1896,10 +1896,9 @@ __metadata:
     "@lage-run/scheduler-types": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
     "@lage-run/test-utilities": "workspace:^"
-    "@ms-cloudpack/task-reporter": "npm:0.19.0"
+    "@ms-cloudpack/task-reporter": "npm:0.20.1"
     ansi-regex: "npm:5.0.1"
     chalk: "npm:4.1.2"
-    gradient-string: "npm:2.0.2"
     memory-streams: "npm:^0.1.3"
   languageName: unknown
   linkType: soft
@@ -2043,12 +2042,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ms-cloudpack/task-reporter@npm:0.19.0":
-  version: 0.19.0
-  resolution: "@ms-cloudpack/task-reporter@npm:0.19.0"
+"@ms-cloudpack/task-reporter@npm:0.20.1":
+  version: 0.20.1
+  resolution: "@ms-cloudpack/task-reporter@npm:0.20.1"
   dependencies:
     picocolors: "npm:^1.1.1"
-  checksum: 10c0/4dbf09068e7eb549b3392b1a67f0068fc1137fd268371f6fcd7679e4462ca823d80034304e4b26b8f8b8bcdbdf9d04e7a4ca4cbcf87320c96f56191de7e8f92e
+  checksum: 10c0/90fba715ebd4485f24dec3786177905f227420a946ac3b7767974d91541e26e92c17973f3f4969d263aaf5182dbf8df9a242364a0bdca6f19c5b41174fc7f782
   languageName: node
   linkType: hard
 
@@ -2653,13 +2652,6 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 10c0/1ee17888b0532f9907788e3e9d60ef25fd5e376c4a09b40aa6ece407fa67ad3d11d25780914ed6360e50451d3039a4e248696c780dcba410779c2d37842afd19
-  languageName: node
-  linkType: hard
-
-"@types/tinycolor2@npm:^1.4.0":
-  version: 1.4.6
-  resolution: "@types/tinycolor2@npm:1.4.6"
-  checksum: 10c0/922020c3326460e9d8502c8a98f80db69f06fd14e07fe5a48e8ffe66175762298a9bd51263f2a0c9a40632886a74975a3ff79396defcdbeac0dc176e3e5056e8
   languageName: node
   linkType: hard
 
@@ -5602,16 +5594,6 @@ __metadata:
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
   checksum: 10c0/386d011a553e02bc594ac2ca0bd6d9e4c22d7fa8cfbfc448a6d148c59ea881b092db9dbe3547ae4b88e55f1b01f7c4a2ecc53b310c042793e63aa44cf6c257f2
-  languageName: node
-  linkType: hard
-
-"gradient-string@npm:2.0.2":
-  version: 2.0.2
-  resolution: "gradient-string@npm:2.0.2"
-  dependencies:
-    chalk: "npm:^4.1.2"
-    tinygradient: "npm:^1.1.5"
-  checksum: 10c0/6cf4052d142b57a1d70082af67f1368f64d77f62231b389e7361a41cabf95945f4265c76c641f0d4db49741d358e205c8e602833b182ea781ef513c1ce207b83
   languageName: node
   linkType: hard
 
@@ -8955,13 +8937,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinycolor2@npm:^1.0.0":
-  version: 1.6.0
-  resolution: "tinycolor2@npm:1.6.0"
-  checksum: 10c0/9aa79a36ba2c2a87cb221453465cabacd04b9e35f9694373e846fdc78b1c768110f81e581ea41440106c0f24d9a023891d0887e8075885e790ac40eb0e74a5c1
-  languageName: node
-  linkType: hard
-
 "tinyglobby@npm:^0.2.15":
   version: 0.2.15
   resolution: "tinyglobby@npm:0.2.15"
@@ -8969,16 +8944,6 @@ __metadata:
     fdir: "npm:^6.5.0"
     picomatch: "npm:^4.0.3"
   checksum: 10c0/869c31490d0d88eedb8305d178d4c75e7463e820df5a9b9d388291daf93e8b1eb5de1dad1c1e139767e4269fe75f3b10d5009b2cc14db96ff98986920a186844
-  languageName: node
-  linkType: hard
-
-"tinygradient@npm:^1.1.5":
-  version: 1.1.5
-  resolution: "tinygradient@npm:1.1.5"
-  dependencies:
-    "@types/tinycolor2": "npm:^1.4.0"
-    tinycolor2: "npm:^1.0.0"
-  checksum: 10c0/00503406e1a49822e58e90ddbda7e9db332b6a237fab5f413be9644eb29ca14f6a30e7961fc61328407fa6159437908c11eeda4f1d56e62586f9a48267d1094d
   languageName: node
   linkType: hard
 

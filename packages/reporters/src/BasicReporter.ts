@@ -1,10 +1,9 @@
-import { type LogEntry, type Reporter } from "@lage-run/logger";
+import type { LogEntry, Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 import chalk from "chalk";
-import { gradient } from "./gradient.js";
-import { formatDuration, hrToSeconds } from "./formatDuration.js";
-import { formatBytes } from "./formatBytes.js";
+import { formatHrtime } from "./formatDuration.js";
+import { fancyGradient, formatBytes, formatMemoryUsage, hrLine } from "./formatHelpers.js";
 
 type CoarseStatus = "completed" | "running" | "pending";
 
@@ -34,8 +33,6 @@ const colors = {
   pkg: chalk.hex("#FFD66B"),
 };
 
-const hrLine = "┈".repeat(80);
-
 const icons: Record<CompletionStatus, string> = {
   success: "✓",
   failed: "✗",
@@ -49,7 +46,6 @@ const terminal = {
   clearLine: "\x1b[2K\r",
 };
 
-const fancy = (str: string) => gradient({ r: 237, g: 178, b: 77 }, "cyan")(str);
 const print = (message: string) => process.stdout.write(message + "\n");
 
 /**
@@ -73,7 +69,7 @@ export class BasicReporter implements Reporter {
   ) {
     const { concurrency = 0, version = "0.0.0", frequency = 500 } = params;
     this.logMemory = !!params.logMemory;
-    print(`${fancy("lage")} - Version ${version} - ${concurrency} Workers`);
+    print(`${fancyGradient("lage")} - Version ${version} - ${concurrency} Workers`);
 
     this.startTimer = () => {
       this.updateTimer = setInterval(() => this.renderStatus(), frequency);
@@ -145,9 +141,9 @@ export class BasicReporter implements Reporter {
     }
 
     const allCacheHits = [...targetRuns.values()].filter((run) => !run.target.hidden).length === skipped.length;
-    const allCacheHitText = allCacheHits ? fancy(`All targets skipped!`) : "";
+    const allCacheHitText = allCacheHits ? fancyGradient(`All targets skipped!`) : "";
 
-    print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
+    print(`Took a total of ${formatHrtime(duration)} to complete. ${allCacheHitText}`);
   }
 
   private reportCompletion(completion: {
@@ -158,13 +154,10 @@ export class BasicReporter implements Reporter {
   }) {
     const icon = icons[completion.status];
     const statusColor = colors[completion.status];
-    const durationText = completion.duration ? ` (${formatDuration(hrToSeconds(completion.duration))})` : "";
-    const memText =
-      this.logMemory && completion.memoryUsage
-        ? ` [rss: ${formatBytes(completion.memoryUsage.rss)}, heap: ${formatBytes(completion.memoryUsage.heapUsed)}]`
-        : "";
+    const durationText = completion.duration ? ` (${formatHrtime(completion.duration)})` : "";
+    const memText = formatMemoryUsage(completion.memoryUsage, this.logMemory);
 
-    const message = `${statusColor(`${icon} ${completion.status.padEnd(8)}`)} ${colors.label(completion.target.label)}${colors.duration(durationText)}${colors.duration(memText)}`;
+    const message = `${statusColor(`${icon} ${completion.status.padEnd(8)}`)} ${colors.label(completion.target.label)}${colors.duration(durationText + memText)}`;
     this.renderStatus(message);
   }
 

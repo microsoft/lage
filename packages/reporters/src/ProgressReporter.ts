@@ -1,31 +1,13 @@
 import { type LogEntry, LogLevel, type Reporter, type LogStructuredData } from "@lage-run/logger";
-import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
-
+import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import { TaskReporter, type TaskReporterTask } from "@ms-cloudpack/task-reporter";
 import type { Target } from "@lage-run/target-graph";
-import { gradient } from "./gradient.js";
 import chalk from "chalk";
 import type { Writable } from "stream";
-import { formatDuration, hrToSeconds, hrtimeDiff } from "./formatDuration.js";
-import { formatBytes } from "./formatBytes.js";
+import { formatHrtime, hrtimeDiff } from "./formatDuration.js";
+import { fancyGradient, formatBytes, formatMemoryUsage, hrLine } from "./formatHelpers.js";
 import { slowestTargetRuns } from "./slowestTargetRuns.js";
-
-const colors = {
-  [LogLevel.info]: chalk.white,
-  [LogLevel.verbose]: chalk.gray,
-  [LogLevel.warn]: chalk.white,
-  [LogLevel.error]: chalk.hex("#FF1010"),
-  [LogLevel.silly]: chalk.green,
-  task: chalk.hex("#00DDDD"),
-  pkg: chalk.hex("#FFD66B"),
-  ok: chalk.green,
-  error: chalk.red,
-  warn: chalk.yellow,
-};
-
-function fancy(str: string) {
-  return gradient({ r: 237, g: 178, b: 77 }, "cyan")(str);
-}
+import { colors, statusColorFn } from "./LogReporter.js";
 
 /**
  * Shows progress including the names of currently running targets using `@ms-cloudpack/task-reporter`.
@@ -52,7 +34,7 @@ export class ProgressReporter implements Reporter {
     this.logMemory = !!options.logMemory;
     this.taskReporter = this.createTaskReporter();
 
-    this.print(`${fancy("lage")} - Version ${options.version} - ${options.concurrency} Workers`);
+    this.print(`${fancyGradient("lage")} - Version ${options.version} - ${options.concurrency} Workers`);
   }
 
   private createTaskReporter(): TaskReporter {
@@ -89,49 +71,44 @@ export class ProgressReporter implements Reporter {
       return;
     }
 
-    if (entry.data && entry.data.status && entry.data.target) {
-      const target: Target = entry.data.target;
-      const status: TargetStatus = entry.data.status;
+    if (!entry.data?.status || !entry.data?.target) {
+      return;
+    }
 
-      const reporterTask = this.tasks.has(target.id) ? this.tasks.get(target.id) : this.taskReporter.addTask(target.label, true);
+    const target: Target = entry.data.target;
 
-      if (reporterTask) {
-        this.tasks.set(target.id, reporterTask);
+    const reporterTask = this.tasks.has(target.id) ? this.tasks.get(target.id)! : this.taskReporter.addTask(target.label, true);
 
-        const mem = entry.data.memoryUsage;
-        const memoryMessage = this.logMemory && mem ? `[rss: ${formatBytes(mem.rss)}, heap: ${formatBytes(mem.heapUsed)}]` : "";
+    this.tasks.set(target.id, reporterTask);
 
-        switch (status) {
-          case "running":
-            reporterTask.start();
-            break;
+    const { status, memoryUsage } = entry.data;
+    const memoryMessage = formatMemoryUsage(memoryUsage, this.logMemory);
 
-          case "success":
-            reporterTask.complete({ status: "complete", message: memoryMessage });
-            break;
+    switch (status) {
+      case "running":
+        reporterTask.start();
+        break;
 
-          case "aborted":
-            reporterTask.complete({ status: "abort" });
-            break;
+      case "success":
+        reporterTask.complete({ status: "complete", message: memoryMessage });
+        break;
 
-          case "skipped":
-            reporterTask.complete({ status: "skip", message: memoryMessage });
-            break;
+      case "aborted":
+        reporterTask.complete({ status: "abort" });
+        break;
 
-          case "failed":
-            reporterTask.complete({ status: "fail", message: memoryMessage });
-            break;
-        }
-      }
+      case "skipped":
+        reporterTask.complete({ status: "skip", message: memoryMessage });
+        break;
+
+      case "failed":
+        reporterTask.complete({ status: "fail", message: memoryMessage });
+        break;
     }
   }
 
   private print(message: string) {
     this.logStream.write(message + "\n");
-  }
-
-  private hr(): void {
-    this.print("┈".repeat(80));
   }
 
   public summarize(schedulerRunSummary: SchedulerRunSummary): void {
@@ -146,22 +123,10 @@ export class ProgressReporter implements Reporter {
       }
     }
 
-    const statusColorFn: {
-      [status in TargetStatus]: chalk.Chalk;
-    } = {
-      success: chalk.greenBright,
-      failed: chalk.redBright,
-      skipped: chalk.gray,
-      running: chalk.yellow,
-      pending: chalk.gray,
-      aborted: chalk.red,
-      queued: chalk.magenta,
-    };
-
     if (targetRuns.size > 0) {
       this.print(chalk.cyanBright(`\nSummary`));
 
-      this.hr();
+      this.print(hrLine);
 
       const slowestTargets = slowestTargetRuns([...targetRuns.values()]);
 
@@ -185,9 +150,7 @@ export class ProgressReporter implements Reporter {
         this.print(
           `${target.label} ${colorFn(
             `${wrappedTarget.status === "running" ? "running - incomplete" : wrappedTarget.status}${
-              hasDurations
-                ? `, took ${formatDuration(hrToSeconds(wrappedTarget.duration))}, queued for ${formatDuration(hrToSeconds(queueDuration))}`
-                : ""
+              hasDurations ? `, took ${formatHrtime(wrappedTarget.duration)}, queued for ${formatHrtime(queueDuration)}` : ""
             }`
           )}`
         );
@@ -206,9 +169,9 @@ export class ProgressReporter implements Reporter {
       this.print("Nothing has been run.");
     }
 
-    this.hr();
+    this.print(hrLine);
 
-    if (failed && failed.length > 0) {
+    if (failed.length > 0) {
       for (const targetId of failed) {
         const target = targetRuns.get(targetId)?.target;
 
@@ -225,14 +188,14 @@ export class ProgressReporter implements Reporter {
             }
           }
 
-          this.hr();
+          this.print(hrLine);
         }
       }
     }
 
     const allCacheHits = [...targetRuns.values()].filter((run) => !run.target.hidden).length === skipped.length;
-    const allCacheHitText = allCacheHits ? fancy(`All targets skipped!`) : "";
+    const allCacheHitText = allCacheHits ? fancyGradient(`All targets skipped!`) : "";
 
-    this.print(`Took a total of ${formatDuration(hrToSeconds(duration))} to complete. ${allCacheHitText}`);
+    this.print(`Took a total of ${formatHrtime(duration)} to complete. ${allCacheHitText}`);
   }
 }
