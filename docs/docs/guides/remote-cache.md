@@ -107,7 +107,7 @@ Need to access environment variables from the `.env` file in your application? Y
 
 ## Disabling remote cache for specific targets
 
-You can disable remote cache for individual targets by setting `remoteCache: false` in the pipeline configuration. This is useful when:
+You can disable remote cache for individual targets by setting `skipRemoteCache: true` in the pipeline configuration. This is useful when:
 
 - The package output is large and storing it in remote cache is costly.
 - It is faster to rebuild the package locally than to download it from the remote cache.
@@ -123,7 +123,7 @@ const config = {
     "my-package#build": {
       dependsOn: ["^build"],
       cache: true,
-      remoteCache: false
+      skipRemoteCache: true
     }
   }
 };

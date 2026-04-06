@@ -26,14 +26,14 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
 
   public async fetch(hash: string, target: Target): Promise<boolean> {
     const { logger, remoteCacheProvider, localCacheProvider } = this.options;
-    const shouldUseRemoteCacheForTarget = target.remoteCache !== false;
+    const skipRemoteCacheForTarget = target.skipRemoteCache === true;
 
     if (localCacheProvider) {
       RemoteFallbackCacheProvider.localHits[hash] = await localCacheProvider.fetch(hash, target);
       logger.silly(`local cache fetch: ${hash} ${RemoteFallbackCacheProvider.localHits[hash]}`);
     }
 
-    if (shouldUseRemoteCacheForTarget && !RemoteFallbackCacheProvider.localHits[hash] && remoteCacheProvider) {
+    if (!skipRemoteCacheForTarget && !RemoteFallbackCacheProvider.localHits[hash] && remoteCacheProvider) {
       RemoteFallbackCacheProvider.remoteHits[hash] = await remoteCacheProvider.fetch(hash, target);
       logger.silly(`remote fallback fetch: ${hash} ${RemoteFallbackCacheProvider.remoteHits[hash]}`);
 
@@ -68,8 +68,8 @@ export class RemoteFallbackCacheProvider implements CacheProvider {
      * - a remote cache storage provider exists
      * - the "writeRemoteCache" config flag is set to true
      */
-    const shouldUseRemoteCacheForTarget = target.remoteCache !== false;
-    const shouldWriteRemoteCache = shouldUseRemoteCacheForTarget && !this.isRemoteHit(hash) && !!remoteCacheProvider && writeRemoteCache;
+    const skipRemoteCacheForTarget = target.skipRemoteCache === true;
+    const shouldWriteRemoteCache = !skipRemoteCacheForTarget && !this.isRemoteHit(hash) && !!remoteCacheProvider && writeRemoteCache;
 
     if (shouldWriteRemoteCache) {
       logger.silly(`remote fallback put: ${hash}`);

@@ -83,9 +83,10 @@ export interface Target {
   cache?: boolean;
 
   /**
-   * Whether to use remote cache for this target. Has no effect when `cache` is `false`.
+   * Whether to skip remote cache for this target. Has no effect when `cache` is `false`.
+   * @default false
    */
-  remoteCache?: boolean;
+  skipRemoteCache?: boolean;
 
   /**
    * Override the top-level `environmentGlob` config for this target if it needs different patterns.

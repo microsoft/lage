@@ -4,14 +4,14 @@
       "type": "minor",
       "comment": "Add target property for controlling whether remote cache should be used for that target or not.",
       "packageName": "@lage-run/cache",
-      "email": "email not defined",
+      "email": "lutomanovic@microsoft.com",
       "dependentChangeType": "patch"
     },
     {
       "type": "minor",
       "comment": "Add target property for controlling whether remote cache should be used for that target or not.",
       "packageName": "@lage-run/target-graph",
-      "email": "email not defined",
+      "email": "lutomanovic@microsoft.com",
       "dependentChangeType": "patch"
     }
   ]
