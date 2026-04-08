@@ -2,7 +2,7 @@
   "changes": [
     {
       "type": "patch",
-      "comment": "Add another test case and fix for the optimizePhantomDeps feature",
+      "comment": "Add another test case and fix for the enablePhantomTargetOptimization feature",
       "packageName": "@lage-run/target-graph",
       "email": "1581488+christiango@users.noreply.github.com",
       "dependentChangeType": "patch"
