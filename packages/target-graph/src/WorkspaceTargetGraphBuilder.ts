@@ -209,31 +209,6 @@ export class WorkspaceTargetGraphBuilder {
   public async build(tasks: string[], scope?: string[], priorities?: Priority[]): Promise<TargetGraph> {
     scope ||= Object.keys(this.options.packageInfos);
 
-    // Resolve shouldRun only for entry-candidate targets (scope × tasks).
-    // Targets with no shouldRun callback get set synchronously; async callbacks
-    // are batched with pLimit to avoid overwhelming I/O.
-    const limit = pLimit(8);
-    const setShouldRunPromises: Promise<void>[] = [];
-    for (const task of tasks) {
-      for (const packageName of scope) {
-        const targetId = getTargetId(packageName, task);
-        const target = this.graphBuilder.targets.get(targetId);
-        const config = target && this.targetConfigMap.get(targetId);
-        if (config && target) {
-          if (typeof config.shouldRun !== "function") {
-            target.shouldRun = true;
-          } else {
-            setShouldRunPromises.push(
-              limit(async () => {
-                target.shouldRun = await this.shouldRun(config, target);
-              })
-            );
-          }
-        }
-      }
-    }
-    await Promise.all(setShouldRunPromises);
-
     // Expands the dependency specs from the target definitions
     const fullDependencies = expandDepSpecs(
       this.graphBuilder.targets,
@@ -250,25 +225,30 @@ export class WorkspaceTargetGraphBuilder {
 
     for (const task of tasks) {
       for (const packageName of scope) {
-        // When phantom target optimization is enabled, skip entry targets for packages that
-        // should not run or don't define the task script. Without this, phantom entry targets pull their
-        // same-package dependencies into the subgraph unnecessarily.
-        // Only npmScript targets can be phantom — other types (worker, noop, etc.)
-        // are skipped only when shouldRun is explicitly false.
         const targetId = getTargetId(packageName, task);
+
         if (this.options.enablePhantomTargetOptimization) {
           const target = this.graphBuilder.targets.get(targetId);
-          if (target?.shouldRun === false) {
-            continue;
-          }
-
-          if (target?.type === builtInTargetTypes.npmScript) {
-            const pkg = this.options.packageInfos[packageName];
-            if (!pkg?.scripts?.[task]) {
-              continue;
+          if (target) {
+            // Skip phantom npmScript targets: the package doesn't have this script
+            if (target.type === builtInTargetTypes.npmScript) {
+              const pkg = this.options.packageInfos[packageName];
+              if (!pkg?.scripts?.[task]) {
+                continue;
+              }
+            } else {
+              // For non-npmScript targets (e.g. worker), skip if shouldRun resolves to false
+              const config = this.targetConfigMap.get(targetId);
+              if (config && typeof config.shouldRun === "function") {
+                const result = await config.shouldRun(target);
+                if (!result) {
+                  continue;
+                }
+              }
             }
           }
         }
+
         subGraphEntries.push(targetId);
       }
 
@@ -302,6 +282,21 @@ export class WorkspaceTargetGraphBuilder {
     }
 
     const subGraph = this.graphBuilder.subgraph(subGraphEntries);
+
+    const limit = pLimit(8);
+    const setShouldRunPromises: Promise<void>[] = [];
+    for (const target of subGraph.targets.values()) {
+      const config = this.targetConfigMap.get(target.id);
+      if (config) {
+        setShouldRunPromises.push(
+          limit(async () => {
+            target.shouldRun = await this.shouldRun(config, target);
+          })
+        );
+      }
+    }
+
+    await Promise.all(setShouldRunPromises);
 
     return {
       targets: subGraph.targets,
