@@ -492,23 +492,15 @@ describe("workspace target graph builder", () => {
     const targetGraph = await builder.build(["test:special"]);
     const graph = getGraphFromTargets(targetGraph);
 
-    // Only tool-app should appear as an entry for test:special — big-app doesn't have the script
-    const targetIds = [...targetGraph.targets.keys()];
-    expect(targetIds).not.toContain("big-app#test:special");
-    expect(targetIds).not.toContain("big-app#bundle");
-    expect(targetIds).toContain("tool-app#test:special");
-    expect(targetIds).toContain("tool-app#bundle");
-
-    // The graph should include tool-app's chain but not big-app's
-    expect(graph).toEqual(
-      expect.arrayContaining([
-        ["__start", "tool-app#test:special"],
-        ["tool-app#bundle", "tool-app#test:special"],
-        ["tool-app#transpile", "tool-app#bundle"],
-        ["core-lib#transpile", "tool-app#bundle"],
-      ])
-    );
-    expect(graph).not.toContainEqual(["big-app#bundle", expect.anything()]);
+    expect(graph).toEqual([
+      ["__start", "tool-app#test:special"],
+      ["tool-app#bundle", "tool-app#test:special"],
+      ["__start", "tool-app#bundle"],
+      ["tool-app#transpile", "tool-app#bundle"],
+      ["core-lib#transpile", "tool-app#bundle"],
+      ["__start", "tool-app#transpile"],
+      ["__start", "core-lib#transpile"],
+    ]);
   });
 
   it("includes phantom entry targets when enablePhantomTargetOptimization is false (default)", async () => {
@@ -535,11 +527,27 @@ describe("workspace target graph builder", () => {
     });
 
     const targetGraph = await builder.build(["test:special"]);
-    const targetIds = [...targetGraph.targets.keys()];
+    const graph = getGraphFromTargets(targetGraph);
 
-    // With the flag off, phantom targets are still included as entries
-    expect(targetIds).toContain("big-app#test:special");
-    expect(targetIds).toContain("big-app#bundle");
+    expect(graph).toEqual([
+      ["__start", "big-app#test:special"],
+      ["big-app#bundle", "big-app#test:special"],
+      ["__start", "tool-app#test:special"],
+      ["tool-app#bundle", "tool-app#test:special"],
+      ["__start", "core-lib#test:special"],
+      ["core-lib#bundle", "core-lib#test:special"],
+      ["__start", "big-app#bundle"],
+      ["big-app#transpile", "big-app#bundle"],
+      ["core-lib#transpile", "big-app#bundle"],
+      ["__start", "tool-app#bundle"],
+      ["tool-app#transpile", "tool-app#bundle"],
+      ["core-lib#transpile", "tool-app#bundle"],
+      ["__start", "core-lib#bundle"],
+      ["core-lib#transpile", "core-lib#bundle"],
+      ["__start", "big-app#transpile"],
+      ["__start", "core-lib#transpile"],
+      ["__start", "tool-app#transpile"],
+    ]);
   });
 
   it("should not treat worker-typed targets as phantoms even when the package lacks the script", async () => {
@@ -565,15 +573,15 @@ describe("workspace target graph builder", () => {
     builder.addTargetConfig("build");
 
     const targetGraph = await builder.build(["generate"]);
-    const targetIds = [...targetGraph.targets.keys()];
-
-    // dep#generate should be included even though dep doesn't have "generate" in scripts,
-    // because the target is a worker, not an npmScript.
-    expect(targetIds).toContain("dep#generate");
-    expect(targetIds).toContain("app#generate");
-
     const graph = getGraphFromTargets(targetGraph);
-    expect(graph).toContainEqual(["dep#build", "dep#generate"]);
-    expect(graph).toContainEqual(["app#build", "app#generate"]);
+
+    expect(graph).toEqual([
+      ["__start", "app#generate"],
+      ["app#build", "app#generate"],
+      ["__start", "dep#generate"],
+      ["dep#build", "dep#generate"],
+      ["__start", "app#build"],
+      ["__start", "dep#build"],
+    ]);
   });
 });
