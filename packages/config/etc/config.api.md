@@ -62,6 +62,7 @@ export interface ConfigOptions {
     npmClient: NpmClient;
     pipeline: PipelineDefinition;
     priorities: Priority[];
+    reporter?: string | string[];
     reporters: Record<string, string>;
     repoWideChanges: string[];
     runners: TargetRunnerPickerOptions;

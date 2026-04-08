@@ -1,18 +1,24 @@
-import { afterAll, beforeAll, describe, expect, it, jest } from "@jest/globals";
+import { afterAll, afterEach, beforeAll, describe, expect, it, jest } from "@jest/globals";
 import { Logger } from "@lage-run/logger";
 import { initializeReporters } from "../commands/initializeReporters.js";
 
-const testObject = {
-  x: "field x",
-  number: 1,
-  array: [1, 2, 3],
-  object: { a: 1, b: 2 },
-};
-
 describe("json reporter", () => {
+  let logSpy: jest.SpiedFunction<typeof console.log>;
+
+  const testObject = {
+    x: "field x",
+    number: 1,
+    array: [1, 2, 3],
+    object: { a: 1, b: 2 },
+  };
+
   beforeAll(() => {
-    jest.spyOn(console, "log").mockImplementation(() => {});
+    logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
     jest.spyOn(Date, "now").mockImplementation(() => 0);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   afterAll(() => {
@@ -20,12 +26,10 @@ describe("json reporter", () => {
   });
 
   it("uses condensed output with indented: false", async () => {
-    const logSpy = jest.spyOn(console, "log");
-
     const logger = new Logger();
-    await initializeReporters(
+    await initializeReporters({
       logger,
-      {
+      options: {
         concurrency: 1,
         grouped: false,
         logLevel: "info",
@@ -34,29 +38,20 @@ describe("json reporter", () => {
         verbose: false,
         indented: false,
       },
-      undefined
-    );
+      config: { reporters: {} },
+      root: "",
+    });
 
     logger.info("test Json", testObject);
 
-    expect(logSpy).toHaveBeenCalledWith(
-      JSON.stringify({
-        timestamp: 0,
-        level: 30,
-        msg: "test Json",
-        data: testObject,
-      })
-    );
-    jest.clearAllMocks();
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ timestamp: 0, level: 30, msg: "test Json", data: testObject }));
   });
 
   it("formats output with indented: true", async () => {
-    const logSpy = jest.spyOn(console, "log");
-
     const logger = new Logger();
-    await initializeReporters(
+    await initializeReporters({
       logger,
-      {
+      options: {
         concurrency: 1,
         grouped: false,
         logLevel: "verbose",
@@ -65,23 +60,12 @@ describe("json reporter", () => {
         verbose: false,
         indented: true,
       },
-      undefined
-    );
+      config: { reporters: {} },
+      root: "",
+    });
 
     logger.info("test Json", testObject);
 
-    expect(logSpy).toHaveBeenCalledWith(
-      JSON.stringify(
-        {
-          timestamp: 0,
-          level: 30,
-          msg: "test Json",
-          data: testObject,
-        },
-        null,
-        2
-      )
-    );
-    jest.clearAllMocks();
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ timestamp: 0, level: 30, msg: "test Json", data: testObject }, null, 2));
   });
 });

@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Respect `reporter` option from config file",
+      "packageName": "@lage-run/cli",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Add `reporter` option to config file",
+      "packageName": "@lage-run/config",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

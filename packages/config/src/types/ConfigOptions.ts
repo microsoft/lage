@@ -94,6 +94,13 @@ export interface ConfigOptions {
   enablePhantomTargetOptimization: boolean;
 
   /**
+   * Built-in or custom reporter name(s) to use. This is **overridden** by the `--reporter` CLI flag.
+   *
+   * See https://microsoft.github.io/lage/docs/reference/cli#reporter for the list of built-in reporters.
+   */
+  reporter?: string | string[];
+
+  /**
    * Custom reporters that can be referenced by name in the --reporter CLI flag.
    * The key is the reporter name, and the value is the path to the reporter module.
    *

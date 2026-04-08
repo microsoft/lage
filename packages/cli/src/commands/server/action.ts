@@ -28,8 +28,7 @@ export async function serverAction(options: WorkerOptions): Promise<void> {
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
   options.logFile = options.logFile ?? path.join(getCacheDirectoryRoot(root), "server.log");
-  options.reporter = options.reporter ?? "verboseFileLog";
-  await initializeReporters(logger, options, { customReporters: config.reporters, root });
+  await initializeReporters({ logger, options, config, root, defaultReporter: "verboseFileLog" });
 
   logger.info(`Starting server on http://${host}:${port}`);
 

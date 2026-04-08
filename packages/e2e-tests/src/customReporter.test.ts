@@ -36,7 +36,7 @@ describe("custom reporters", () => {
    * `build` and `test` scripts that don't add an extra reporter like the defaults.
    */
   async function initRepoWithReporters(
-    params: Pick<MonorepoInitParams, "packages" | "extraFiles"> & { reporters: Record<string, string> }
+    params: Pick<MonorepoInitParams, "packages" | "extraFiles"> & { reporters: Record<string, string>; reporter?: string[] | string }
   ) {
     await repo!.init({
       lageConfig: {
@@ -46,6 +46,7 @@ describe("custom reporters", () => {
         },
         npmClient: "yarn",
         reporters: params.reporters,
+        ...(params.reporter && { reporter: params.reporter }),
       },
       scripts: {
         build: "lage build",
@@ -164,6 +165,8 @@ describe("custom reporters", () => {
       reporters: {
         objectReporter: "./object-reporter.mjs",
       },
+      // Also use this to E2E test the reporter config file option
+      reporter: "objectReporter",
       packages: { a: {} },
       // Create a reporter that exports an object instance (not a class)
       extraFiles: {
@@ -192,7 +195,8 @@ export default objectReporter;
 
     repo.install();
 
-    const results = await repo.run("build", ["--reporter", "objectReporter"]);
+    // reporter was specified in the config file
+    const results = await repo.run("build");
     const output = results.stdout + "\n" + results.stderr;
 
     expect(output).toContain('"trackingReporter":true');

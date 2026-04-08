@@ -17,12 +17,6 @@ import path from "path";
 import { pathToFileURL } from "url";
 import isInteractive from "is-interactive";
 
-export interface CustomReportersOptions {
-  customReporters: Record<string, string> | undefined;
-  /** Monorepo root for resolving custom reporters*/
-  root: string;
-}
-
 type MockImportReporter = (params: { reporterName: string; resolvedPath: string }) => unknown;
 
 let mockImportReporter: MockImportReporter | undefined;
@@ -41,14 +35,16 @@ export function setMockImportReporter(mock: MockImportReporter | undefined): voi
  *
  * NOTE: This is covered by tests in `initializeReporter.test.ts`, `customReporter.test.ts`, and
  * E2E `customReporter.test.ts`.
+ *
+ * @param customReporterPath For a custom reporter, this is its absolute path (not verified to exist yet)
  */
-export async function createReporter(
-  reporter: string,
-  options: ReporterInitOptions,
-  customReportersOptions: CustomReportersOptions | undefined
-): Promise<Reporter> {
+export async function createReporter(reporter: string, options: ReporterInitOptions, customReporterPath?: string): Promise<Reporter> {
   const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress, logFile, indented, logMemory } = options;
   const logLevel = LogLevel[logLevelName];
+
+  if (customReporterPath) {
+    return loadCustomReporterModule(reporter, options, customReporterPath);
+  }
 
   const lageRoot = findPackageRoot(__filename)!;
   const packageJson = JSON.parse(fs.readFileSync(path.join(lageRoot, "package.json"), "utf-8"));
@@ -82,11 +78,6 @@ export async function createReporter(
       return new VerboseFileLogReporter(logFile, undefined, logMemory);
   }
 
-  // Check if it's a custom reporter defined in config
-  if (customReportersOptions?.customReporters?.[reporter]) {
-    return loadCustomReporterModule(reporter, options, customReportersOptions);
-  }
-
   // Default reporter behavior - auto-detect CI environments
   if (process.env.GITHUB_ACTIONS) {
     return new GithubActionsReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
@@ -103,14 +94,7 @@ export async function createReporter(
   return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
 }
 
-async function loadCustomReporterModule(
-  reporter: string,
-  options: ReporterInitOptions,
-  customReportersOptions: Required<CustomReportersOptions>
-): Promise<Reporter> {
-  const { customReporters, root } = customReportersOptions;
-  const resolvedPath = path.resolve(root, customReporters![reporter]);
-
+async function loadCustomReporterModule(reporter: string, options: ReporterInitOptions, resolvedPath: string): Promise<Reporter> {
   if (!fs.existsSync(resolvedPath)) {
     throw new Error(`Custom reporter "${reporter}" file "${resolvedPath}" does not exist`);
   }

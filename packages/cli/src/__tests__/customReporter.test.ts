@@ -7,6 +7,7 @@ import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
 import { initializeReporters } from "../commands/initializeReporters.js";
 import { setMockImportReporter } from "../commands/createReporter.js";
 import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
+import type { ConfigOptions } from "@lage-run/config";
 
 /**
  * These tests cover some scenarios for custom reporters, but they can't cover actual importing
@@ -16,14 +17,29 @@ import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
 describe("initializeReporters with custom reporters", () => {
   let tmpDir = "";
 
-  const options: ReporterInitOptions = {
-    concurrency: 1,
-    grouped: false,
-    logLevel: "info",
-    progress: false,
-    verbose: false,
-    reporter: undefined,
-  };
+  function callInitializeReporters(params: {
+    options?: Partial<ReporterInitOptions>;
+    config: Pick<ConfigOptions, "reporter" | "reporters">;
+  }) {
+    return initializeReporters({
+      logger: new Logger(),
+      options: getOptions(params.options),
+      config: params.config,
+      root: tmpDir,
+    });
+  }
+
+  function getOptions(overrides?: Partial<ReporterInitOptions>): ReporterInitOptions {
+    return {
+      concurrency: 1,
+      grouped: false,
+      logLevel: "info",
+      progress: false,
+      reporter: undefined,
+      verbose: false,
+      ...overrides,
+    };
+  }
 
   afterEach(() => {
     setMockImportReporter(undefined);
@@ -33,7 +49,6 @@ describe("initializeReporters with custom reporters", () => {
 
   /** Reporter mock-imported by a few tests */
   class TestReporter implements Reporter {
-    // eslint-disable-next-line @typescript-eslint/no-shadow
     constructor(public options: ReporterInitOptions) {}
     public log() {}
     public summarize() {}
@@ -49,14 +64,10 @@ describe("initializeReporters with custom reporters", () => {
 
   it("should throw an error when custom reporter not found", async () => {
     await expect(() =>
-      initializeReporters(
-        new Logger(),
-        {
-          ...options,
-          reporter: ["nonExistentReporter123"],
-        },
-        { customReporters: {}, root: process.cwd() }
-      )
+      callInitializeReporters({
+        options: { reporter: ["nonExistentReporter123"] },
+        config: { reporters: {} },
+      })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `"Invalid --reporter option: "nonExistentReporter123". Supported reporters are: json, azureDevops, npmLog, verboseFileLog, vfl, adoLog, githubActions, gha, fancy, default"`
     );
@@ -66,14 +77,12 @@ describe("initializeReporters with custom reporters", () => {
     const invalidPath = path.resolve("invalid-reporter.mjs");
 
     await expect(() =>
-      initializeReporters(
-        new Logger(),
-        { ...options, reporter: ["myReporter"] },
-        {
-          customReporters: { myReporter: invalidPath },
-          root: process.cwd(),
-        }
-      )
+      callInitializeReporters({
+        options: { reporter: ["myReporter"] },
+        config: {
+          reporters: { myReporter: invalidPath },
+        },
+      })
     ).rejects.toThrow(`Custom reporter "myReporter" file "${invalidPath}" does not exist`);
   });
 
@@ -87,17 +96,35 @@ describe("initializeReporters with custom reporters", () => {
       return { default: TestReporter };
     });
 
-    const allOptions: ReporterInitOptions = { ...options, reporter: ["myReporter"] };
+    const allOptions: ReporterInitOptions = getOptions({ reporter: ["myReporter"] });
+    Object.freeze(allOptions);
 
-    const reporters = await initializeReporters(new Logger(), allOptions, {
-      customReporters: { myReporter: reporterPath },
-      root: tmpDir,
+    const reporters = await callInitializeReporters({
+      options: allOptions,
+      config: { reporters: { myReporter: reporterPath } },
     });
 
     expect(reporters).toHaveLength(1);
     expect(reporters[0]).toBeInstanceOf(TestReporter);
     // Options are passed through
-    expect((reporters[0] as TestReporter).options).toBe(allOptions);
+    expect((reporters[0] as TestReporter).options).toEqual(allOptions);
+  });
+
+  it("should load reporter name from config file (mocked)", async () => {
+    const reporterPath = writeFixture("config-reporter.mjs", "");
+    setMockImportReporter(({ reporterName, resolvedPath }) => {
+      expect(reporterName).toBe("configReporter");
+      expect(resolvedPath).toBe(reporterPath);
+      return { default: TestReporter };
+    });
+
+    const reporters = await callInitializeReporters({
+      options: { reporter: ["configReporter"] },
+      config: { reporter: "configReporter", reporters: { configReporter: reporterPath } },
+    });
+
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(TestReporter);
   });
 
   it("should load multiple reporters including custom ones (mocked)", async () => {
@@ -109,14 +136,10 @@ describe("initializeReporters with custom reporters", () => {
       return { default: TestReporter };
     });
 
-    const reporters = await initializeReporters(
-      new Logger(),
-      { ...options, reporter: ["json", "myReporter"] },
-      {
-        customReporters: { myReporter: reporterPath },
-        root: tmpDir,
-      }
-    );
+    const reporters = await callInitializeReporters({
+      options: { reporter: ["json", "myReporter"] },
+      config: { reporters: { myReporter: reporterPath } },
+    });
 
     expect(reporters).toHaveLength(2);
     expect(reporters[1]).toBeInstanceOf(TestReporter);
@@ -130,11 +153,10 @@ describe("initializeReporters with custom reporters", () => {
       return { myNamedReporter: TestReporter };
     });
 
-    const reporters = await initializeReporters(
-      new Logger(),
-      { ...options, reporter: ["myNamedReporter"] },
-      { customReporters: { myNamedReporter: reporterPath }, root: tmpDir }
-    );
+    const reporters = await callInitializeReporters({
+      options: { reporter: ["myNamedReporter"] },
+      config: { reporters: { myNamedReporter: reporterPath } },
+    });
 
     expect(reporters).toHaveLength(1);
     expect(reporters[0]).toHaveProperty("log");
@@ -149,11 +171,10 @@ describe("initializeReporters with custom reporters", () => {
       return { default: class DefaultReporter {}, myReporter: TestReporter };
     });
 
-    const reporters = await initializeReporters(
-      new Logger(),
-      { ...options, reporter: ["myReporter"] },
-      { customReporters: { myReporter: reporterPath }, root: tmpDir }
-    );
+    const reporters = await callInitializeReporters({
+      options: { reporter: ["myReporter"] },
+      config: { reporters: { myReporter: reporterPath } },
+    });
 
     expect(reporters).toHaveLength(1);
     expect(reporters[0]).toBeInstanceOf(TestReporter);
@@ -166,11 +187,10 @@ describe("initializeReporters with custom reporters", () => {
     });
 
     await expect(() =>
-      initializeReporters(
-        new Logger(),
-        { ...options, reporter: ["stringReporter"] },
-        { customReporters: { stringReporter: reporterPath }, root: tmpDir }
-      )
+      callInitializeReporters({
+        options: { reporter: ["stringReporter"] },
+        config: { reporters: { stringReporter: reporterPath } },
+      })
     ).rejects.toThrow(/does not export a valid reporter class or instance/);
   });
 
@@ -181,11 +201,10 @@ describe("initializeReporters with custom reporters", () => {
       return { default: mockReporter };
     });
 
-    const reporters = await initializeReporters(
-      new Logger(),
-      { ...options, reporter: ["objReporter"] },
-      { customReporters: { objReporter: reporterPath }, root: tmpDir }
-    );
+    const reporters = await callInitializeReporters({
+      options: { reporter: ["objReporter"] },
+      config: { reporters: { objReporter: reporterPath } },
+    });
 
     expect(reporters).toHaveLength(1);
     expect(reporters[0]).toBe(mockReporter);
@@ -198,11 +217,10 @@ describe("initializeReporters with custom reporters", () => {
     });
 
     await expect(() =>
-      initializeReporters(
-        new Logger(),
-        { ...options, reporter: ["brokenReporter"] },
-        { customReporters: { brokenReporter: reporterPath }, root: tmpDir }
-      )
+      callInitializeReporters({
+        options: { reporter: ["brokenReporter"] },
+        config: { reporters: { brokenReporter: reporterPath } },
+      })
     ).rejects.toThrow('Failed to load custom reporter "brokenReporter"');
   });
 
@@ -213,11 +231,10 @@ describe("initializeReporters with custom reporters", () => {
     });
 
     await expect(() =>
-      initializeReporters(
-        new Logger(),
-        { ...options, reporter: ["invalidReporter"] },
-        { customReporters: { invalidReporter: reporterPath }, root: tmpDir }
-      )
+      callInitializeReporters({
+        options: { reporter: ["invalidReporter"] },
+        config: { reporters: { invalidReporter: reporterPath } },
+      })
     ).rejects.toThrow(`Custom reporter "invalidReporter" at "${reporterPath}" does not implement the Reporter interface`);
   });
 
@@ -228,11 +245,10 @@ describe("initializeReporters with custom reporters", () => {
     });
 
     await expect(() =>
-      initializeReporters(
-        new Logger(),
-        { ...options, reporter: ["invalidReporterObject"] },
-        { customReporters: { invalidReporterObject: reporterPath }, root: tmpDir }
-      )
+      callInitializeReporters({
+        options: { reporter: ["invalidReporterObject"] },
+        config: { reporters: { invalidReporterObject: reporterPath } },
+      })
     ).rejects.toThrow(`Custom reporter "invalidReporterObject" at "${reporterPath}" does not implement the Reporter interface`);
   });
 
@@ -244,11 +260,10 @@ describe("initializeReporters with custom reporters", () => {
     });
 
     await expect(() =>
-      initializeReporters(
-        new Logger(),
-        { ...options, reporter: ["emptyObjectReporter"] },
-        { customReporters: { emptyObjectReporter: reporterPath }, root: tmpDir }
-      )
+      callInitializeReporters({
+        options: { reporter: ["emptyObjectReporter"] },
+        config: { reporters: { emptyObjectReporter: reporterPath } },
+      })
     ).rejects.toThrow(`Custom reporter "emptyObjectReporter" at "${reporterPath}" does not implement the Reporter interface`);
   });
 });

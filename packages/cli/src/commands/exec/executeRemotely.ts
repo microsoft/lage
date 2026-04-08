@@ -106,8 +106,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
 
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
-  options.reporter = options.reporter ?? "json";
-  await initializeReporters(logger, options, { customReporters: config.reporters, root });
+  await initializeReporters({ logger, options, config, root, defaultReporter: "json" });
 
   let client = await tryCreateClient(host, port);
   const args = command.args;

@@ -61,55 +61,56 @@ export interface InfoResult {
  * The generated output can be read and used by other task runners, such as BuildXL.
  *
  * Expected format:
+ * ```json
  * [
  *   {
- *       "id": "bar##build",
- *       "package": "bar",
- *       "task": "build",
- *       "command": "npm run build --blah",
- *       "workingDirectory": "packages/bar",
- *       "dependencies": []
+ *     "id": "bar##build",
+ *     "package": "bar",
+ *     "task": "build",
+ *     "command": "npm run build --blah",
+ *     "workingDirectory": "packages/bar",
+ *     "dependencies": []
  *   },
  *   {
- *       "id": "foo##build",
- *       "package": "foo",
- *       "task": "build",
- *       "command": "npm run build --blah",
- *       "workingDirectory": "packages/foo",
- *       "dependencies": [
- *           "bar##build"
- *       ],
- *       "weight": 3,
- *       "inputs": ["src//**/ /*.ts"],
- *       "inputs": ["lib//**/ /*.js", "lib//**/ /*.d.ts]"
- *       "options": {
- *         "environment": {
- *           "custom_env_var": "x",
- *          }
- *       }
+ *     "id": "foo##build",
+ *     "package": "foo",
+ *     "task": "build",
+ *     "command": "npm run build --blah",
+ *     "workingDirectory": "packages/foo",
+ *     "dependencies": [
+ *       "bar##build"
+ *     ],
+ *     "weight": 3,
+ *     "inputs": ["src/** /*.ts"],
+ *     "inputs": ["lib/** /*.js", "lib/** /*.d.ts"]
+ *     "options": {
+ *       "environment": {
+ *         "custom_env_var": "x",
+ *        }
+ *     }
  *   },
  *   {
- *       "id": "foo##test",
- *       "package": "foo",
- *       "task": "test",
- *       "command": "npm run test --blah",
- *       "workingDirectory": "packages/foo",
- *       "dependencies": [
- *           "foo##build"
- *       ]
+ *     "id": "foo##test",
+ *     "package": "foo",
+ *     "task": "test",
+ *     "command": "npm run test --blah",
+ *     "workingDirectory": "packages/foo",
+ *     "dependencies": [
+ *       "foo##build"
+ *     ]
  *   },
  *   ...
  * ]
+ * ```
  */
 export async function infoAction(options: InfoActionOptions, command: Command): Promise<void> {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
   const logger = createLogger();
   options.logLevel = options.logLevel ?? "info";
-  options.reporter = options.reporter ?? "json";
   options.server = typeof options.server === "boolean" && options.server ? "localhost:5332" : options.server;
   const root = getWorkspaceManagerRoot(cwd) ?? cwd;
-  await initializeReporters(logger, options, { customReporters: config.reporters, root });
+  await initializeReporters({ logger, options, config, root, defaultReporter: "json" });
 
   const packageInfos = getPackageInfos(root);
 

@@ -39,7 +39,7 @@ export async function runAction(options: RunOptions, command: Command): Promise<
   const logger = createLogger();
 
   const root = getWorkspaceManagerRoot(cwd) ?? cwd;
-  const reporters = await initializeReporters(logger, { ...options, concurrency }, { customReporters: config.reporters, root });
+  const reporters = await initializeReporters({ logger, options: { ...options, concurrency }, config, root });
 
   // Build Target Graph
   const packageInfos = getPackageInfos(root);

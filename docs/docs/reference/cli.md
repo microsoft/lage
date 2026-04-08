@@ -64,59 +64,85 @@ These can optionally be set with environment variables `LAGE_RUN_*` (e.g. `LAGE_
 
 #### Basic case, running "build", "test", and "lint" against all packages
 
-    lage build test lint
+```
+lage build test lint
+```
 
 #### Concurrency
 
-    lage build test lint --concurrency=4
+```
+lage build test lint --concurrency=4
+```
 
 #### Filtering by certain packages
 
 Scoped to "package-a" and "package-b" and their dependencies and dependents:
 
-    lage build test lint --scope package-a package-b
+```
+lage build test lint --scope package-a package-b
+```
 
 Scoped to "package-a" and "package-b" only:
 
-    lage build test lint --scope package-a package-b --no-deps
+```
+lage build test lint --scope package-a package-b --no-deps
+```
 
 Scoped to packages that have changed in the current branch against a target merge branch:
 
-    lage build test lint --since origin/main
+```
+lage build test lint --since origin/main
+```
 
 #### Providing node.js arguments for each command
 
-    lage build test lint --nodearg=--max_old_space_size=1234 --nodearg=--heap-prof
+```
+lage build test lint --nodearg=--max_old_space_size=1234 --nodearg=--heap-prof
+```
 
 #### Continue running even after encountering an error for one of the targets
 
-    lage build test lint --continue
+```
+lage build test lint --continue
+```
 
 #### Controlling logged outputs
 
 Show verbose output for each target:
 
-    lage build test lint --verbose
+```
+lage build test lint --verbose
+```
 
 Show only errors for each target:
 
-    lage build test lint --log-level=error
+```
+lage build test lint --log-level=error
+```
 
 Show logs as grouped by each target:
 
-    lage build test lint --grouped --verbose
+```
+lage build test lint --grouped --verbose
+```
 
 Choosing a different reporter while logging (e.g. nice outputs for Azure DevOps):
 
-    lage build test lint --reporter=azureDevops
+```
+lage build test lint --reporter=azureDevops
+```
 
 Or combine multiple reporters (e.g. Azure DepOps with VerboseFileLog)
 
-    lage build test lint --reporter azureDevops --reporter vfl --log-file /my/verbose/log.file
+```
+lage build test lint --reporter azureDevops --reporter vfl --log-file /my/verbose/log.file
+```
 
 Ignoring files when calculating the scope with --since in addition to files specified in lage.config:
 
-    lage build test lint --since origin/main --ignore "package.json" "yarn.lock" "**/.azure-pipelines/**"
+```
+lage build test lint --since origin/main --ignore "package.json" "yarn.lock" "**/.azure-pipelines/**"
+```
 
 ---
 

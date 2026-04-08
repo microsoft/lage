@@ -26,8 +26,7 @@ export async function execAction(options: ExecOptions, command: Command): Promis
   const logger = createLogger();
   options.cwd = cwd;
   options.logLevel = options.logLevel ?? "info";
-  options.reporter = options.reporter ?? "json";
-  await initializeReporters(logger, options, { customReporters: config.reporters, root });
+  await initializeReporters({ logger, options, config, root, defaultReporter: "json" });
 
   const { server } = options;
   if (server) {
