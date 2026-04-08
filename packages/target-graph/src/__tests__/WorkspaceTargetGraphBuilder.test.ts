@@ -463,4 +463,84 @@ describe("workspace target graph builder", () => {
       ["__start", "dep#customTask"],
     ]);
   });
+
+  it("should not include phantom entry targets and their deps when enablePhantomTargetOptimization is true", async () => {
+    // Scenario: a worker-typed task (e.g. a specialized e2e test) that only "tool-app" defines,
+    // with a same-package dependency on "bundle". Without the fix, "big-app#bundle" (an expensive
+    // task) gets pulled into the subgraph because "big-app#test:special" is added as an entry target
+    // even though big-app doesn't have the "test:special" script.
+    const packageInfos = createPackageInfoWithScripts({
+      "big-app": { deps: ["core-lib"], scripts: ["transpile", "bundle"] },
+      "tool-app": { deps: ["core-lib"], scripts: ["transpile", "bundle", "test:special"] },
+      "core-lib": { deps: [], scripts: ["transpile"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos,
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: true,
+    });
+    builder.addTargetConfig("transpile");
+    builder.addTargetConfig("bundle", {
+      dependsOn: ["transpile", "^^transpile"],
+    });
+    builder.addTargetConfig("test:special", {
+      type: "worker",
+      dependsOn: ["bundle"],
+    });
+
+    const targetGraph = await builder.build(["test:special"]);
+    const graph = getGraphFromTargets(targetGraph);
+
+    // Only tool-app should appear as an entry for test:special — big-app doesn't have the script
+    const targetIds = [...targetGraph.targets.keys()];
+    expect(targetIds).not.toContain("big-app#test:special");
+    expect(targetIds).not.toContain("big-app#bundle");
+    expect(targetIds).toContain("tool-app#test:special");
+    expect(targetIds).toContain("tool-app#bundle");
+
+    // The graph should include tool-app's chain but not big-app's
+    expect(graph).toEqual(
+      expect.arrayContaining([
+        ["__start", "tool-app#test:special"],
+        ["tool-app#bundle", "tool-app#test:special"],
+        ["tool-app#transpile", "tool-app#bundle"],
+        ["core-lib#transpile", "tool-app#bundle"],
+      ])
+    );
+    expect(graph).not.toContainEqual(["big-app#bundle", expect.anything()]);
+  });
+
+  it("includes phantom entry targets when enablePhantomTargetOptimization is false (default)", async () => {
+    // Same scenario as above, but with the flag off — big-app#test:special and big-app#bundle
+    // should be included in the subgraph (the current default behavior).
+    const packageInfos = createPackageInfoWithScripts({
+      "big-app": { deps: ["core-lib"], scripts: ["transpile", "bundle"] },
+      "tool-app": { deps: ["core-lib"], scripts: ["transpile", "bundle", "test:special"] },
+      "core-lib": { deps: [], scripts: ["transpile"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos,
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: false,
+    });
+    builder.addTargetConfig("transpile");
+    builder.addTargetConfig("bundle", {
+      dependsOn: ["transpile", "^^transpile"],
+    });
+    builder.addTargetConfig("test:special", {
+      type: "worker",
+      dependsOn: ["bundle"],
+    });
+
+    const targetGraph = await builder.build(["test:special"]);
+    const targetIds = [...targetGraph.targets.keys()];
+
+    // With the flag off, phantom targets are still included as entries
+    expect(targetIds).toContain("big-app#test:special");
+    expect(targetIds).toContain("big-app#bundle");
+  });
 });

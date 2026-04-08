@@ -225,6 +225,15 @@ export class WorkspaceTargetGraphBuilder {
 
     for (const task of tasks) {
       for (const packageName of scope) {
+        // When phantom target optimization is enabled, skip entry targets for packages that
+        // don't define the task script. Without this, phantom entry targets pull their
+        // same-package dependencies into the subgraph unnecessarily.
+        if (this.options.enablePhantomTargetOptimization) {
+          const pkg = this.options.packageInfos[packageName];
+          if (!pkg?.scripts?.[task]) {
+            continue;
+          }
+        }
         subGraphEntries.push(getTargetId(packageName, task));
       }
 
