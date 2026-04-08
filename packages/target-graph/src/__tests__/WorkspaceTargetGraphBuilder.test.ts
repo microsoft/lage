@@ -465,10 +465,10 @@ describe("workspace target graph builder", () => {
   });
 
   it("should not include phantom entry targets and their deps when enablePhantomTargetOptimization is true", async () => {
-    // Scenario: a worker-typed task (e.g. a specialized e2e test) that only "tool-app" defines,
-    // with a same-package dependency on "bundle". Without the fix, "big-app#bundle" (an expensive
-    // task) gets pulled into the subgraph because "big-app#test:special" is added as an entry target
-    // even though big-app doesn't have the "test:special" script.
+    // Scenario: an npmScript task (e.g. a specialized e2e test) that only "tool-app" defines,
+    // with a same-package dependency on "bundle". Without the optimization, "big-app#bundle" (an
+    // expensive task) gets pulled into the subgraph because "big-app#test:special" is added as an
+    // entry target even though big-app doesn't have the "test:special" script.
     const packageInfos = createPackageInfoWithScripts({
       "big-app": { deps: ["core-lib"], scripts: ["transpile", "bundle"] },
       "tool-app": { deps: ["core-lib"], scripts: ["transpile", "bundle", "test:special"] },
@@ -486,7 +486,6 @@ describe("workspace target graph builder", () => {
       dependsOn: ["transpile", "^^transpile"],
     });
     builder.addTargetConfig("test:special", {
-      type: "worker",
       dependsOn: ["bundle"],
     });
 
@@ -532,7 +531,6 @@ describe("workspace target graph builder", () => {
       dependsOn: ["transpile", "^^transpile"],
     });
     builder.addTargetConfig("test:special", {
-      type: "worker",
       dependsOn: ["bundle"],
     });
 
@@ -542,5 +540,40 @@ describe("workspace target graph builder", () => {
     // With the flag off, phantom targets are still included as entries
     expect(targetIds).toContain("big-app#test:special");
     expect(targetIds).toContain("big-app#bundle");
+  });
+
+  it("should not treat worker-typed targets as phantoms even when the package lacks the script", async () => {
+    // Scenario: "app" and "dep" both get a "generate" task configured as type: "worker".
+    // "dep" does NOT have "generate" in its package.json scripts. With the bug, the entry-target
+    // skip would treat dep#generate as a phantom (because the script is missing) and exclude it.
+    // The fix ensures only npmScript-typed targets are considered phantom.
+    const packageInfos = createPackageInfoWithScripts({
+      app: { deps: ["dep"], scripts: ["build", "generate"] },
+      dep: { deps: [], scripts: ["build"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos,
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: true,
+    });
+    builder.addTargetConfig("generate", {
+      type: "worker",
+      dependsOn: ["build"],
+    });
+    builder.addTargetConfig("build");
+
+    const targetGraph = await builder.build(["generate"]);
+    const targetIds = [...targetGraph.targets.keys()];
+
+    // dep#generate should be included even though dep doesn't have "generate" in scripts,
+    // because the target is a worker, not an npmScript.
+    expect(targetIds).toContain("dep#generate");
+    expect(targetIds).toContain("app#generate");
+
+    const graph = getGraphFromTargets(targetGraph);
+    expect(graph).toContainEqual(["dep#build", "dep#generate"]);
+    expect(graph).toContainEqual(["app#build", "app#generate"]);
   });
 });

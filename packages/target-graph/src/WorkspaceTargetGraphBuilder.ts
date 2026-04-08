@@ -228,13 +228,19 @@ export class WorkspaceTargetGraphBuilder {
         // When phantom target optimization is enabled, skip entry targets for packages that
         // don't define the task script. Without this, phantom entry targets pull their
         // same-package dependencies into the subgraph unnecessarily.
+        // Only npmScript targets can be phantom — other types (worker, noop, etc.)
+        // are real targets regardless of whether the package defines the script.
+        const targetId = getTargetId(packageName, task);
         if (this.options.enablePhantomTargetOptimization) {
-          const pkg = this.options.packageInfos[packageName];
-          if (!pkg?.scripts?.[task]) {
-            continue;
+          const target = this.graphBuilder.targets.get(targetId);
+          if (target?.type === builtInTargetTypes.npmScript) {
+            const pkg = this.options.packageInfos[packageName];
+            if (!pkg?.scripts?.[task]) {
+              continue;
+            }
           }
         }
-        subGraphEntries.push(getTargetId(packageName, task));
+        subGraphEntries.push(targetId);
       }
 
       if (this.hasRootTarget) {
