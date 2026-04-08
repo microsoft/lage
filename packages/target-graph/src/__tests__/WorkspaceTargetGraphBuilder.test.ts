@@ -584,4 +584,72 @@ describe("workspace target graph builder", () => {
       ["__start", "dep#build"],
     ]);
   });
+
+  it("skips worker entry targets when shouldRun resolves to false", async () => {
+    const packageInfos = createPackageInfoWithScripts({
+      "big-app": { deps: ["core-lib"], scripts: ["transpile", "bundle"] },
+      "tool-app": { deps: ["core-lib"], scripts: ["transpile", "bundle", "test:special"] },
+      "core-lib": { deps: [], scripts: ["transpile"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos,
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: true,
+    });
+    builder.addTargetConfig("transpile");
+    builder.addTargetConfig("bundle", {
+      dependsOn: ["transpile", "^^transpile"],
+    });
+    builder.addTargetConfig("test:special", {
+      type: "worker",
+      dependsOn: ["bundle"],
+      shouldRun: async (target) => Promise.resolve(target.packageName === "tool-app"),
+    });
+
+    const targetGraph = await builder.build(["test:special"]);
+    const graph = getGraphFromTargets(targetGraph);
+
+    expect(graph).toEqual([
+      ["__start", "tool-app#test:special"],
+      ["tool-app#bundle", "tool-app#test:special"],
+      ["__start", "tool-app#bundle"],
+      ["tool-app#transpile", "tool-app#bundle"],
+      ["core-lib#transpile", "tool-app#bundle"],
+      ["__start", "tool-app#transpile"],
+      ["__start", "core-lib#transpile"],
+    ]);
+  });
+
+  it("keeps worker entry targets when shouldRun is not set", async () => {
+    const packageInfos = createPackageInfoWithScripts({
+      app: { deps: ["dep"], scripts: ["build", "generate"] },
+      dep: { deps: [], scripts: ["build"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos,
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: true,
+    });
+    builder.addTargetConfig("generate", {
+      type: "worker",
+      dependsOn: ["build"],
+    });
+    builder.addTargetConfig("build");
+
+    const targetGraph = await builder.build(["generate"]);
+    const graph = getGraphFromTargets(targetGraph);
+
+    expect(graph).toEqual([
+      ["__start", "app#generate"],
+      ["app#build", "app#generate"],
+      ["__start", "dep#generate"],
+      ["dep#build", "dep#generate"],
+      ["__start", "app#build"],
+      ["__start", "dep#build"],
+    ]);
+  });
 });
