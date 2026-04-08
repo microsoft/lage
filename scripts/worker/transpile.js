@@ -2,6 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 const fsPromises = require("fs/promises");
+const jju = require("jju");
 const swc = require("@swc/core");
 const { findProjectRoot } = require("workspace-tools-npm");
 
@@ -27,7 +28,7 @@ async function transpile({ target }) {
     return;
   }
 
-  const swcOptions = JSON.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8"));
+  const swcOptions = jju.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8"));
 
   const queue = [srcDir];
 

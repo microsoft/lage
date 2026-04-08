@@ -1,10 +1,11 @@
 const { findProjectRoot, getPackageInfos } = require("workspace-tools-npm");
 const fs = require("fs");
+const jju = require("jju");
 const path = require("path");
 
 const root = findProjectRoot(process.cwd());
 const swcOptions = {
-  ...JSON.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8")),
+  ...jju.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8")),
   // inline sourcemaps are required when debugging in vs code
   // (this env var is set in launch.json)
   ...(process.env.VS_CODE_DEBUG && { sourceMaps: "inline" }),

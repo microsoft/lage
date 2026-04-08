@@ -33,7 +33,7 @@
     "@lage-run/monorepo-scripts": "workspace:^",
     "@lage-run/test-utilities": "workspace:^",
     "@types/git-url-parse": "^16.0.0",
-    "@types/jju": "^1.4.2",
+    "@types/jju": "^1.4.5",
     "@types/js-yaml": "^4.0.5",
     "@types/micromatch": "^4.0.0",
     "@types/yarnpkg__lockfile": "^1.1.5",

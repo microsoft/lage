@@ -1,5 +1,5 @@
 // @ts-check
-/** @import { ConfigOptions, CacheOptions, NpmScriptTargetOptions, TargetConfig, WorkerTargetOptions } from 'lage' */
+/** @import { ConfigOptions, CacheOptions, TargetConfig, WorkerTargetOptions } from 'lage' */
 const os = require("os");
 const path = require("path");
 const fastGlob = require("fast-glob");
@@ -22,7 +22,10 @@ const baseTestTarget = {
  */
 const config = {
   pipeline: {
-    "lage#bundle": ["^^transpile", "types"],
+    "lage#bundle": {
+      dependsOn: ["^^transpile", "types"],
+      outputs: ["dist/**/*"],
+    },
     types: {
       type: "worker",
       options: /** @satisfies {WorkerTargetOptions} */ ({
@@ -87,6 +90,7 @@ const config = {
       "!**/node_modules/**/*",
       "!**/__fixtures__/**",
       ".github/workflows/*",
+      ".swcrc",
       "beachball.config.js",
       "lage.config.js",
       "/package.json",
@@ -94,8 +98,8 @@ const config = {
       "yarn.lock",
       "*.yml",
     ],
-    // Subset of files in package directories that will be saved into the cache.
-    outputGlob: ["lib/**/*", "dist/**/*"],
+    // The only targets with output files explicitly declare them as `outputs` above
+    outputGlob: [],
   },
 };
 

@@ -1870,6 +1870,7 @@ __metadata:
     "@microsoft/api-extractor": "npm:7.52.9"
     "@swc/core": "npm:^1.9.1"
     "@swc/jest": "npm:^0.2.39"
+    "@types/jju": "npm:^1.4.5"
     "@types/node": "npm:^16.18.3"
     "@typescript-eslint/parser": "npm:^8.0.0"
     "@typescript-eslint/types": "npm:^8.0.0"
@@ -1878,6 +1879,7 @@ __metadata:
     eslint-plugin-file-extension-in-import-ts: "npm:^2.1.1"
     globals: "npm:^15.0.0"
     jest: "npm:^30.0.0"
+    jju: "npm:^1.4.0"
     typescript: "npm:~5.9.3"
     typescript-eslint: "npm:^8.0.0"
     workspace-tools-npm: "npm:workspace-tools@latest"
@@ -2547,7 +2549,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jju@npm:^1.4.2":
+"@types/jju@npm:^1.4.5":
   version: 1.4.5
   resolution: "@types/jju@npm:1.4.5"
   checksum: 10c0/17840460a2ec18550089a727ee466da5cc5e5a44e381b95bc4c8e47253472e8f545630c89207953bf4a3c52e22b0971e4d80a3c16264a802f5a0ec7de6ffb21d
@@ -9375,7 +9377,7 @@ __metadata:
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/test-utilities": "workspace:^"
     "@types/git-url-parse": "npm:^16.0.0"
-    "@types/jju": "npm:^1.4.2"
+    "@types/jju": "npm:^1.4.5"
     "@types/js-yaml": "npm:^4.0.5"
     "@types/micromatch": "npm:^4.0.0"
     "@types/yarnpkg__lockfile": "npm:^1.1.5"
