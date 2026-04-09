@@ -18,6 +18,9 @@ temp
 .claude/settings.local.json
 *.tsbuildinfo
 
+# ignored to prevent false positive security alerts on nested deps that are rarely/never installed
+benchmark/yarn.lock
+
 # workspace-tools
 .rush/
 **/common/scripts/

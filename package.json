@@ -62,25 +62,34 @@
     "@azure/core-xml": "1.4.5",
     "@azure/logger": "1.2.0",
     "@azure/storage-blob": "12.27.0",
+    "@microsoft/api-extractor/lodash@npm:~4.17.15": "^4.18.1",
+    "@microsoft/api-extractor/minimatch@npm:~3.0.3": "^3.1.5",
     "@microsoft/api-extractor/typescript": "~5.9.3",
+    "@microsoft/tsdoc-config/ajv@npm:~8.12.0": "^8.18.0",
+    "@rushstack/node-core-library/ajv@npm:~8.13.0": "^8.18.0",
     "@types/node@npm:*": "^16.0.0",
     "beachball/workspace-tools": "latest",
-    "typescript@npm:>=5.0.2": "~5.9.3",
     "node-gyp@npm:latest": "^9.0.0",
     "listr2@npm:^9.0.5": "9.0.3",
     "syncpack/minimatch@npm:9.0.5": "^9.0.6",
     "tar@npm:^6.1.11": "^7.5.11",
-    "tar@npm:^6.1.2": "^7.5.11"
+    "tar@npm:^6.1.2": "^7.5.11",
+    "dts-bundle-generator/typescript@npm:>=5.0.2": "~5.9.3"
   },
   "rationale": {
     "resolutions": {
       "@azure/*": "Pin to newest versions compatible with Node 18",
+      "@microsoft/api-extractor/lodash@npm:~4.17.15": "Unpin from api-extractor to fix security issue",
+      "@microsoft/api-extractor/minimatch@npm:~3.0.3": "Unpin from api-extractor to fix security issue",
       "@microsoft/api-extractor/typescript": "Prevent duplicate TS version",
+      "@microsoft/tsdoc-config/ajv@npm:~8.12.0": "Update to fix security issue",
+      "@rushstack/node-core-library/ajv@npm:~8.13.0": "Update to fix security issue",
       "beachball/workspace-tools": "Reference a different version to avoid issues with local breaking changes",
       "node-gyp@npm:latest": "Stop pulling in other newer deps",
       "listr2@npm:^9.0.5": "Prevent pulling in cli-truncate@5 => string-width@8 which requires Node 20",
       "syncpack/minimatch@npm:9.0.5": "Unpin to fix security issue",
-      "tar": "Fix security issue (compatible API)"
+      "tar": "Fix security issue (compatible API)",
+      "typescript@npm:>=5.0.2": "Restrict range from dts-bundle-generator to prevent duplicates"
     }
   },
   "lint-staged": {
