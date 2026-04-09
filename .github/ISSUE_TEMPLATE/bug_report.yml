@@ -1,0 +1,53 @@
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms
+name: Bug report
+description: Create a report to help us improve
+labels: []
+assignees: []
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      description: Which package family is affected?
+      options:
+        - lage
+        - backfill
+        - workspace-tools
+        - normalized-tmpdir
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: To Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Run '...'
+        2. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment/Troubleshooting
+      description: |
+        Please paste in the result of `npx envinfo` to help identify your run time environment.
+
+        If this is an issue with run order of tasks, please paste in the result of `lage info [your command(s)] [options]`.
+      render: shell
+    validations:
+      required: false

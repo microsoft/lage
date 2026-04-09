@@ -1,0 +1,38 @@
+{
+  "name": "normalized-tmpdir",
+  "version": "1.0.1",
+  "license": "MIT",
+  "description": "Normalize os.tmpdir() to eliminate OS-specific symlinks and naming variations",
+  "keywords": [
+    "tmp",
+    "tmpdir",
+    "temp"
+  ],
+  "author": "Elizabeth Craig <elcraig@microsoft.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/lage.git",
+    "directory": "packages/normalized-tmpdir"
+  },
+  "homepage": "https://github.com/microsoft/lage/tree/main/packages/normalized-tmpdir#readme",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "api": "monorepo-scripts api",
+    "build": "yarn types && yarn transpile",
+    "transpile": "monorepo-scripts transpile",
+    "types": "yarn run -T tsc",
+    "test": "yarn run -T jest",
+    "lint": "monorepo-scripts lint"
+  },
+  "devDependencies": {
+    "@lage-run/monorepo-scripts": "workspace:^"
+  },
+  "engines": {
+    "node": ">=16.13.0"
+  },
+  "files": [
+    "lib/!(__*)",
+    "lib/!(__*)/**"
+  ]
+}

@@ -8,7 +8,8 @@
     "github>microsoft/m365-renovate-config:disableEsmVersions",
     "github>microsoft/m365-renovate-config:groupMore",
     "github>microsoft/m365-renovate-config:keepFresh",
-    "github>microsoft/m365-renovate-config:restrictNode(16)"
+    "github>microsoft/m365-renovate-config:restrictNode(16)",
+    "github>microsoft/m365-renovate-config:scheduleNoisy"
   ],
   "labels": ["renovate"],
   "prHourlyLimit": 5,
