@@ -23,6 +23,10 @@ jobs:
     # This environment contains secrets needed for publishing
     environment: release
 
+    permissions:
+      # required for trusted publishing
+      id-token: write
+
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
@@ -31,7 +35,16 @@ jobs:
 
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version: 20
+          # Use newer Node for trusted publishing
+          node-version: 22
+
+      - name: Install npm@latest
+        shell: bash
+        # Temporary extra command to work around weird node issue (swich to just npm i -g npm once fixed)
+        # https://github.com/nodejs/node/issues/62425#issuecomment-4200715930
+        run: |
+          npm i -g npm@10.9.8
+          npm i -g npm
 
       - run: yarn --immutable
 
@@ -51,7 +64,6 @@ jobs:
           # Add a token to the remote URL for auth during release
           git remote set-url origin "https://$REPO_PAT@github.com/$GITHUB_REPOSITORY"
 
-          yarn release -y -n $NPM_AUTHTOKEN
+          yarn release
         env:
-          NPM_AUTHTOKEN: ${{ secrets.NPM_AUTHTOKEN }}
           REPO_PAT: ${{ secrets.REPO_PAT }}
