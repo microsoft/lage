@@ -1,4 +1,4 @@
-import { loadDotenv } from "backfill-utils-dotenv";
+import { loadDotenv } from "./loadDotenv.js";
 import { type Logger, makeLogger } from "backfill-logger";
 import { createConfig, type Config } from "backfill-config";
 import { isCustomProvider } from "backfill-cache";

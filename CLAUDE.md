@@ -66,7 +66,6 @@ The repo also contains the `backfill` family of packages. `backfill` is the unde
 - **`backfill-config`** — Configuration loading (find-up based)
 - **`backfill-hasher`** — Git-based content hashing (`lage` uses some of the utilities but not the main `Hasher` class)
 - **`backfill-logger`** — Logging and output handling
-- **`backfill-utils-dotenv`** — Loads `.env` variables into `process.env`
 
 The **`workspace-tools`** helper library is also hosted in this repo.
 

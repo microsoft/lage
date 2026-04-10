@@ -3524,16 +3524,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"backfill-utils-dotenv@workspace:^, backfill-utils-dotenv@workspace:packages/backfill-utils-dotenv":
-  version: 0.0.0-use.local
-  resolution: "backfill-utils-dotenv@workspace:packages/backfill-utils-dotenv"
-  dependencies:
-    "@lage-run/monorepo-scripts": "workspace:^"
-    dotenv: "npm:8.6.0"
-    find-up: "npm:5.0.0"
-  languageName: unknown
-  linkType: soft
-
 "backfill@workspace:packages/backfill":
   version: 0.0.0-use.local
   resolution: "backfill@workspace:packages/backfill"
@@ -3547,8 +3537,8 @@ __metadata:
     backfill-config: "workspace:^"
     backfill-hasher: "workspace:^"
     backfill-logger: "workspace:^"
-    backfill-utils-dotenv: "workspace:^"
     chokidar: "npm:3.6.0"
+    dotenv: "npm:8.6.0"
     execa: "npm:5.1.1"
     find-up: "npm:5.0.0"
     fs-extra: "npm:8.1.0"

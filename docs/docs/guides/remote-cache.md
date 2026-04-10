@@ -10,6 +10,11 @@ The theory is that when the CI job runs, it'll produce a "last known good" cache
 
 `lage` has a "fallback cache" mechanism. `lage` will look for cache in layers: first on disk, then on remote server. `lage` will fill the local cache with the remote one if there is a remote cache hit. Next, `lage` will save the locally built cache into the remote cache if the environment variable `LAGE_WRITE_REMOTE_CACHE` is set _and_ if the cache is not configured to use a local provider.
 
+:::warning Uploading the cache to a remote is _not_ the default!
+
+Without the `LAGE_WRITE_REMOTE_CACHE` environment variable, `lage` no longer uploads build caches to the remote server.
+:::
+
 ## Setting up remote cache - Azure Blob Storage
 
 Follow these steps to set up a remote cache.
@@ -91,19 +96,9 @@ For "azure-blob" cache provider with a non-sas/key-based `connectionString`(stor
 
 Note that all are part of the [DefaultAzureCredential](https://learn.microsoft.com/en-us/azure/developer/javascript/sdk/authentication/credential-chains#use-defaultazurecredential-for-flexibility) credential chain, but `DefaultAzureCredential` itself is not used.
 
-:::note
-
-### Uploading cache to a remote is _not_ the default
-
-Without the `LAGE_WRITE_REMOTE_CACHE` environment variable, `lage` no longer uploads build caches to the remote server.
-
-### Accessing environment variables
-
-Lage picks up your `.env` file contents using [`dotenv`](https://www.npmjs.com/package/dotenv) utility under the hood (see [`backfill-utils-dotenv` implementation](https://github.com/microsoft/lage/blob/main/packages/backfill-utils-dotenv/README.md)).
+## Accessing environment variables
 
 Need to access environment variables from the `.env` file in your application? You would need to setup a mechanism to inject them. Try using utilities like `dotenv` (for Node.js) or [`env-cmd`](https://www.npmjs.com/package/env-cmd) (for executing commands).
-
-:::
 
 ## Disabling remote cache for specific targets
 
