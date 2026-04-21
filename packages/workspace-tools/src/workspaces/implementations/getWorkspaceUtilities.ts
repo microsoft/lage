@@ -8,6 +8,11 @@ const utils: Partial<Record<WorkspaceManager, WorkspaceUtilities>> = {};
  */
 export function getWorkspaceUtilities(manager: WorkspaceManager): WorkspaceUtilities {
   switch (manager) {
+    case "bun":
+      // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
+      utils.bun ??= (require("./bun") as typeof import("./bun")).bunUtilities;
+      break;
+
     case "npm":
       // eslint-disable-next-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
       utils.npm ??= (require("./npm") as typeof import("./npm")).npmUtilities;
