@@ -45,6 +45,17 @@ describe("getWorkspaceManagerAndRoot", () => {
     });
   });
 
+  it("detects bun workspace root with bun.lockb", () => {
+    const repoRoot = setupFixture("monorepo-basic-bun");
+    fs.rmSync(path.join(repoRoot, "bun.lock"));
+    fs.writeFileSync(path.join(repoRoot, "bun.lockb"), "");
+
+    expect(getWorkspaceManagerAndRoot(repoRoot)).toEqual({
+      root: repoRoot,
+      manager: "bun",
+    });
+  });
+
   it("handles nested monorepo", () => {
     // This fixture has a monorepo under the "monorepo" folder, not at the git root.
     const repoRoot = setupFixture("monorepo-nested", { git: true });
