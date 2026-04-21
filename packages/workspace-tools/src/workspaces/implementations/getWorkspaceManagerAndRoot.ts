@@ -28,9 +28,9 @@ export const managerFiles = {
   npm: "package-lock.json",
 } as const;
 
-function getManagerFileNames(manager: WorkspaceManager): readonly string[] {
-  const file = managerFiles[manager];
-  return Array.isArray(file) ? file : [file];
+function getManagerFileNames(manager: WorkspaceManager): string[] {
+  const fileOrFiles = managerFiles[manager];
+  return typeof fileOrFiles === "string" ? [fileOrFiles] : [...fileOrFiles];
 }
 
 /**
