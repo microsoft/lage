@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Add bun as a supported workspace manager in workspace-tools, including manager detection and workspace fixture/test coverage.",
+      "packageName": "workspace-tools",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
