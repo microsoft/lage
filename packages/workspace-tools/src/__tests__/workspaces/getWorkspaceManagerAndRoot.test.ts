@@ -21,6 +21,7 @@ describe("getWorkspaceManagerAndRoot", () => {
     { desc: "yarn", manager: "yarn", fixtureName: "monorepo-basic-yarn-1" },
     { desc: "yarn berry", manager: "yarn", fixtureName: "monorepo-basic-yarn-berry" },
     { desc: "pnpm", manager: "pnpm", fixtureName: "monorepo-basic-pnpm" },
+    { desc: "bun", manager: "bun", fixtureName: "monorepo-basic-bun" },
     { desc: "rush", manager: "rush", fixtureName: "monorepo-rush-pnpm" },
     { desc: "npm", manager: "npm", fixtureName: "monorepo-basic-npm" },
     { desc: "lerna + npm", manager: "lerna", fixtureName: "monorepo-basic-lerna-npm" },
@@ -41,6 +42,17 @@ describe("getWorkspaceManagerAndRoot", () => {
     expect(getWorkspaceManagerAndRoot(startPath)).toEqual({
       root: repoRoot,
       manager: "yarn",
+    });
+  });
+
+  it("detects bun workspace root with bun.lockb", () => {
+    const repoRoot = setupFixture("monorepo-basic-bun");
+    fs.rmSync(path.join(repoRoot, "bun.lock"));
+    fs.writeFileSync(path.join(repoRoot, "bun.lockb"), "");
+
+    expect(getWorkspaceManagerAndRoot(repoRoot)).toEqual({
+      root: repoRoot,
+      manager: "bun",
     });
   });
 

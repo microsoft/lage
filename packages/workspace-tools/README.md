@@ -3,6 +3,7 @@
 A collection of utilities that are useful in a git-controlled monorepo managed by one of these tools:
 
 - lerna
+- bun workspaces
 - npm workspaces
 - pnpm workspaces
 - rush
@@ -20,7 +21,7 @@ Override the `maxBuffer` value for git processes, for example if the repo is ver
 
 ### PREFERRED_WORKSPACE_MANAGER
 
-Sometimes if multiple workspace/monorepo manager files are checked in, it's necessary to hint which manager is used: `npm`, `yarn`, `pnpm`, `rush`, or `lerna`. Some APIs also accept a `manager` parameter, which is now the preferred method when available.
+Sometimes if multiple workspace/monorepo manager files are checked in, it's necessary to hint which manager is used: `bun`, `npm`, `yarn`, `pnpm`, `rush`, or `lerna`. Some APIs also accept a `manager` parameter, which is now the preferred method when available.
 
 ### VERBOSE
 
