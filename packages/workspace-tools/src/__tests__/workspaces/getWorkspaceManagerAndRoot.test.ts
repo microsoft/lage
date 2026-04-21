@@ -21,6 +21,7 @@ describe("getWorkspaceManagerAndRoot", () => {
     { desc: "yarn", manager: "yarn", fixtureName: "monorepo-basic-yarn-1" },
     { desc: "yarn berry", manager: "yarn", fixtureName: "monorepo-basic-yarn-berry" },
     { desc: "pnpm", manager: "pnpm", fixtureName: "monorepo-basic-pnpm" },
+    { desc: "bun", manager: "bun", fixtureName: "monorepo-basic-bun" },
     { desc: "rush", manager: "rush", fixtureName: "monorepo-rush-pnpm" },
     { desc: "npm", manager: "npm", fixtureName: "monorepo-basic-npm" },
     { desc: "lerna + npm", manager: "lerna", fixtureName: "monorepo-basic-lerna-npm" },

@@ -18,6 +18,7 @@ type RealFixtureName =
   | "extra-yarn-1"
   | "extra-yarn-berry"
   | "monorepo-basic-npm"
+  | "monorepo-basic-bun"
   | "monorepo-basic-pnpm"
   | "monorepo-basic-yarn-1"
   | "monorepo-basic-yarn-berry"
