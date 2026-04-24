@@ -1,16 +1,10 @@
 import fs from "fs";
 import path from "path";
-import type jsYamlType from "js-yaml";
+import { parseYaml } from "../../lockfile/readYaml.js";
 import { getPackageInfo } from "../../getPackageInfo.js";
 import type { Catalog, NamedCatalogs } from "../../types/Catalogs.js";
 import type { WorkspaceUtilities } from "./WorkspaceUtilities.js";
 import { getPackageJsonWorkspacePatterns } from "./getPackageJsonWorkspacePatterns.js";
-
-function loadYaml<T>(content: string): T {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const jsYaml: typeof jsYamlType = require("js-yaml");
-  return jsYaml.load(content) as T;
-}
 
 type YarnrcYaml = {
   catalog?: Catalog;
@@ -24,7 +18,7 @@ export const yarnUtilities: WorkspaceUtilities = {
   getCatalogs: ({ root }) => {
     const yarnrcYmlPath = path.join(root, ".yarnrc.yml");
     if (fs.existsSync(yarnrcYmlPath)) {
-      const yarnrcYml = loadYaml<YarnrcYaml>(fs.readFileSync(yarnrcYmlPath, "utf8"));
+      const yarnrcYml = parseYaml<YarnrcYaml>(fs.readFileSync(yarnrcYmlPath, "utf8"));
       if (yarnrcYml?.catalog || yarnrcYml?.catalogs) {
         // Yarn v4+ format
         return { default: yarnrcYml.catalog, named: yarnrcYml.catalogs };
@@ -62,7 +56,7 @@ export const yarnUtilities: WorkspaceUtilities = {
   parseCatalogContent: ({ fileContent }) => {
     // Try YAML first (yarn v4 .yarnrc.yml format)
     try {
-      const yarnrcYml = loadYaml<YarnrcYaml>(fileContent);
+      const yarnrcYml = parseYaml<YarnrcYaml>(fileContent);
       if (yarnrcYml?.catalog || yarnrcYml?.catalogs) {
         return { default: yarnrcYml.catalog, named: yarnrcYml.catalogs };
       }

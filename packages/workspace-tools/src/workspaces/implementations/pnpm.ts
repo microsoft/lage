@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import type jsYamlType from "js-yaml";
+import { parseYaml } from "../../lockfile/readYaml.js";
 import type { Catalog, NamedCatalogs } from "../../types/Catalogs.js";
 import { managerFiles } from "./getWorkspaceManagerAndRoot.js";
 import type { WorkspaceUtilities } from "./WorkspaceUtilities.js";
@@ -12,16 +12,10 @@ type PnpmWorkspaceYaml = {
   catalogs?: NamedCatalogs;
 };
 
-function loadYaml<T>(content: string): T {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const jsYaml: typeof jsYamlType = require("js-yaml");
-  return jsYaml.load(content) as T;
-}
-
 function getPnpmWorkspaceYaml(params: { root: string }): PnpmWorkspaceYaml {
   const pnpmWorkspacesFile = path.join(params.root, managerFiles.pnpm);
   const content = fs.readFileSync(pnpmWorkspacesFile, "utf8");
-  return loadYaml<PnpmWorkspaceYaml>(content);
+  return parseYaml<PnpmWorkspaceYaml>(content);
 }
 
 export const pnpmUtilities: WorkspaceUtilities = {
@@ -51,7 +45,7 @@ export const pnpmUtilities: WorkspaceUtilities = {
   },
 
   parseCatalogContent: ({ fileContent }) => {
-    const workspaceYaml = loadYaml<PnpmWorkspaceYaml>(fileContent);
+    const workspaceYaml = parseYaml<PnpmWorkspaceYaml>(fileContent);
     if (!workspaceYaml?.catalog && !workspaceYaml?.catalogs) {
       return undefined;
     }
