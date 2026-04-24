@@ -27,14 +27,17 @@ export interface WorkspaceUtilities {
   getCatalogs?: (params: { root: string }) => Catalogs | undefined;
 
   /**
-   * Get the absolute path to the file that contains catalog definitions, if supported.
-   * Returns undefined if the manager doesn't support catalogs or the file doesn't exist.
+   * Get the absolute path to the file that may contain catalog definitions, if supported.
    */
-  getCatalogFilePath?: (params: { root: string }) => string | undefined;
+  getCatalogFilePath?: (params: { root: string }) => string;
 
   /**
    * Parse catalog definitions from raw file content (e.g. read from a different git ref).
    * Returns undefined if no catalogs are found in the content or catalogs aren't supported.
    */
-  parseCatalogContent?: (params: { fileContent: string }) => Catalogs | undefined;
+  parseCatalogContent?: (params: {
+    fileContent: string;
+    /** In this case, only needed by lerna to determine which actual manager's parsing logic to use */
+    root: string;
+  }) => Catalogs | undefined;
 }

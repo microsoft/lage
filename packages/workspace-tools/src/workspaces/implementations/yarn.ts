@@ -1,31 +1,51 @@
 import fs from "fs";
 import path from "path";
 import { parseYaml } from "../../lockfile/readYaml.js";
-import { getPackageInfo } from "../../getPackageInfo.js";
 import type { Catalog, NamedCatalogs } from "../../types/Catalogs.js";
 import type { WorkspaceUtilities } from "./WorkspaceUtilities.js";
 import { getPackageJsonWorkspacePatterns } from "./getPackageJsonWorkspacePatterns.js";
+import type { PackageInfo } from "../../types/PackageInfo.js";
 
 type YarnrcYaml = {
   catalog?: Catalog;
   catalogs?: NamedCatalogs;
 };
 
-export const yarnUtilities: WorkspaceUtilities = {
+function getYarnrcYmlPath(params: { root: string }): string {
+  return path.join(params.root, ".yarnrc.yml");
+}
+
+export const yarnUtilities: Required<WorkspaceUtilities> = {
   getWorkspacePatterns: getPackageJsonWorkspacePatterns,
 
   // See https://yarnpkg.com/features/catalogs
   getCatalogs: ({ root }) => {
-    const yarnrcYmlPath = path.join(root, ".yarnrc.yml");
-    if (fs.existsSync(yarnrcYmlPath)) {
-      const yarnrcYml = parseYaml<YarnrcYaml>(fs.readFileSync(yarnrcYmlPath, "utf8"));
-      if (yarnrcYml?.catalog || yarnrcYml?.catalogs) {
-        // Yarn v4+ format
-        return { default: yarnrcYml.catalog, named: yarnrcYml.catalogs };
-      }
-    } else {
+    const catalogFilePath = yarnUtilities.getCatalogFilePath({ root });
+    return yarnUtilities.parseCatalogContent({
+      fileContent: fs.readFileSync(catalogFilePath, "utf8"),
+      root,
+    });
+  },
+
+  getCatalogFilePath: ({ root }) => {
+    // Yarn v4+ uses .yarnrc.yml for catalogs
+    const yarnrcPath = getYarnrcYmlPath({ root });
+    if (fs.existsSync(yarnrcPath)) {
+      return yarnrcPath;
+    }
+    // midgard-yarn-strict uses package.json.
+    // It's okay to return package.json even if it might not have catalogs.
+    return path.join(root, "package.json");
+  },
+
+  parseCatalogContent: ({ fileContent }) => {
+    // fileContent might be either JSON (midgard-yarn-strict package.json) or YAML (.yarnrc.yml).
+    // Try JSON first.
+    try {
       // Check for midgard-yarn-strict definition of catalogs in package.json
-      const workspaceSettings = getPackageInfo(root)?.workspaces;
+      const packageJson = JSON.parse(fileContent) as PackageInfo;
+      const workspaceSettings = packageJson.workspaces;
+
       if (
         workspaceSettings &&
         !Array.isArray(workspaceSettings) &&
@@ -38,52 +58,18 @@ export const yarnUtilities: WorkspaceUtilities = {
           named: Object.keys(namedCatalogs).length ? namedCatalogs : undefined,
         };
       }
-    }
-    return undefined;
-  },
 
-  getCatalogFilePath: ({ root }) => {
-    // Yarn v4+ uses .yarnrc.yml for catalogs
-    const yarnrcPath = path.join(root, ".yarnrc.yml");
-    if (fs.existsSync(yarnrcPath)) {
-      return yarnrcPath;
-    }
-    // Midgard-yarn-strict uses package.json
-    const packageJsonPath = path.join(root, "package.json");
-    return fs.existsSync(packageJsonPath) ? packageJsonPath : undefined;
-  },
-
-  parseCatalogContent: ({ fileContent }) => {
-    // Try YAML first (yarn v4 .yarnrc.yml format)
-    try {
-      const yarnrcYml = parseYaml<YarnrcYaml>(fileContent);
-      if (yarnrcYml?.catalog || yarnrcYml?.catalogs) {
-        return { default: yarnrcYml.catalog, named: yarnrcYml.catalogs };
-      }
+      // Valid JSON but no catalogs found (don't try to parse as YAML)
+      return undefined;
     } catch {
-      // Not valid YAML, try JSON below
+      // ignore
     }
 
-    // Try JSON (midgard-yarn-strict package.json format)
-    try {
-      const packageJson = JSON.parse(fileContent) as {
-        workspaces?: {
-          catalog?: Catalog;
-          catalogs?: NamedCatalogs;
-        };
-      };
-      const workspaceSettings = packageJson?.workspaces;
-      if (workspaceSettings && (workspaceSettings.catalog || workspaceSettings.catalogs)) {
-        const { default: namedDefaultCatalog, ...namedCatalogs } = workspaceSettings.catalogs || {};
-        return {
-          default: workspaceSettings.catalog || namedDefaultCatalog,
-          named: Object.keys(namedCatalogs).length ? namedCatalogs : undefined,
-        };
-      }
-    } catch {
-      // Not valid JSON either
+    // Try Yarn v4+ format (allow this one to throw if not valid YAML)
+    const yarnrcYml = parseYaml<YarnrcYaml>(fileContent);
+    if (yarnrcYml?.catalog || yarnrcYml?.catalogs) {
+      return { default: yarnrcYml.catalog, named: yarnrcYml.catalogs };
     }
-
     return undefined;
   },
 };

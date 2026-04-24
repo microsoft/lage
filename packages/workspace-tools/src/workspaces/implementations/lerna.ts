@@ -24,27 +24,19 @@ export const lernaUtilities: WorkspaceUtilities = {
   },
 
   // lerna could theoretically use yarn or pnpm catalogs
-  getCatalogs: ({ root }) => {
-    const actualManager = getActualManager({ root });
-    return actualManager && getManagerUtils(actualManager).getCatalogs?.({ root });
+  getCatalogs: (params) => {
+    const actualManager = getActualManager(params);
+    return actualManager && getManagerUtils(actualManager).getCatalogs?.(params);
   },
 
-  getCatalogFilePath: ({ root }) => {
-    const actualManager = getActualManager({ root });
-    return actualManager && getManagerUtils(actualManager).getCatalogFilePath?.({ root });
+  getCatalogFilePath: (params) => {
+    const actualManager = getActualManager(params);
+    return actualManager && getManagerUtils(actualManager).getCatalogFilePath?.(params);
   },
 
-  parseCatalogContent: ({ fileContent }) => {
-    // Since we don't have a root to detect the actual manager, try each catalog-supporting
-    // manager's parser in order
-    const managerUtils = [getManagerUtils("yarn"), getManagerUtils("pnpm")];
-    for (const utils of managerUtils) {
-      const result = utils.parseCatalogContent?.({ fileContent });
-      if (result) {
-        return result;
-      }
-    }
-    return undefined;
+  parseCatalogContent: (params) => {
+    const actualManager = getActualManager(params);
+    return actualManager && getManagerUtils(actualManager).parseCatalogContent?.(params);
   },
 };
 
