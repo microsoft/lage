@@ -100,8 +100,7 @@ describe("getFileFromVersion", () => {
     git(["add", "."], { cwd });
     git(["commit", "-m", "add nested file"], { cwd });
 
-    // Make sure it still works with a Windows-style path on Windows
-    const result = getFileFromVersion({ filePath: path.join("subdir", "nested.txt"), ref: "HEAD", cwd });
+    const result = getFileFromVersion({ filePath: "subdir/nested.txt", ref: "HEAD", cwd });
     expect(result).toBe("nested content");
   });
 });

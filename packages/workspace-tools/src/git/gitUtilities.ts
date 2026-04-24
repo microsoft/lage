@@ -593,7 +593,7 @@ export function listAllTrackedFiles(
  */
 export function getFileFromVersion(
   params: {
-    /** Repo-relative path to the file */
+    /** Repo-relative path to the file with *forward* slashes */
     filePath: string;
     /** git ref (branch, tag, commit SHA, etc) to get the file content from */
     ref: string;
