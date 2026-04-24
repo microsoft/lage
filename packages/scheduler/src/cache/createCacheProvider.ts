@@ -1,5 +1,5 @@
 import type { CacheOptions } from "@lage-run/cache";
-import { BackfillCacheProvider, RemoteFallbackCacheProvider } from "@lage-run/cache";
+import { BackfillCacheProvider, LocalTarCacheProvider, RemoteFallbackCacheProvider } from "@lage-run/cache";
 import { isRunningFromCI } from "@lage-run/config";
 import type { Logger } from "@lage-run/logger";
 
@@ -20,12 +20,17 @@ export function createCache(options: CreateCacheOptions): {
     !!cacheOptions?.cacheStorageConfig || !!process.env.BACKFILL_CACHE_PROVIDER || !!process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
 
   // Create Cache Provider
-  const cacheProvider = new RemoteFallbackCacheProvider({
-    root,
-    logger,
-    localCacheProvider:
-      skipLocalCache === true
-        ? undefined
+  const useLocalTarCache = cacheOptions?.useLocalTarCache === true;
+
+  const localCacheProvider =
+    skipLocalCache === true
+      ? undefined
+      : useLocalTarCache
+        ? new LocalTarCacheProvider({
+            logger,
+            root,
+            outputGlob: cacheOptions?.outputGlob,
+          })
         : new BackfillCacheProvider({
             logger,
             root,
@@ -34,7 +39,12 @@ export function createCache(options: CreateCacheOptions): {
               ...(cacheOptions?.internalCacheFolder && { internalCacheFolder: cacheOptions.internalCacheFolder }),
               ...(cacheOptions?.incrementalCaching && { incrementalCaching: cacheOptions.incrementalCaching }),
             },
-          }),
+          });
+
+  const cacheProvider = new RemoteFallbackCacheProvider({
+    root,
+    logger,
+    localCacheProvider,
     remoteCacheProvider: hasRemoteCacheConfig ? new BackfillCacheProvider({ logger, root, cacheOptions: cacheOptions ?? {} }) : undefined,
     writeRemoteCache:
       (cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI) &&

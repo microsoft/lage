@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Add support for a local cache that uses tar",
+      "packageName": "@lage-run/cache",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Add support for a local cache that uses tar",
+      "packageName": "@lage-run/config",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Add support for a local cache that uses tar",
+      "packageName": "@lage-run/scheduler",
+      "email": "1581488+christiango@users.noreply.github.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
