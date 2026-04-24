@@ -114,6 +114,9 @@ export function getBranchName(options: GitCommonOptions): string | null;
 export function getBranchName(cwd: string): string | null;
 
 // @public
+export function getCatalogFilePath(cwd: string, managerOverride?: WorkspaceManager): string | undefined;
+
+// @public
 export function getCatalogs(cwd: string, managerOverride?: WorkspaceManager): Catalogs | undefined;
 
 // @public
@@ -219,6 +222,12 @@ export function getFileAddedHash(options: {
 
 // @public @deprecated (undocumented)
 export function getFileAddedHash(filename: string, cwd: string): string | undefined;
+
+// @public
+export function getFileFromVersion(params: {
+    filePath: string;
+    ref: string;
+} & GitCommonOptions): string | undefined;
 
 // @public
 export function getFullBranchRef(options: GitBranchOptions): string | null;
@@ -594,6 +603,9 @@ export interface PackageInfos {
     // (undocumented)
     [pkgName: string]: PackageInfo;
 }
+
+// @public
+export function parseCatalogContent(fileContent: string, manager: WorkspaceManager): Catalogs | undefined;
 
 // @public (undocumented)
 export type ParsedLock = {

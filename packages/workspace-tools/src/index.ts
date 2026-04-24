@@ -42,3 +42,5 @@ export { getAllPackageJsonFiles, getAllPackageJsonFilesAsync } from "./workspace
 export { catalogsToYaml } from "./workspaces/catalogsToYaml.js";
 export { getCatalogVersion, isCatalogVersion } from "./workspaces/getCatalogVersion.js";
 export { getCatalogs } from "./workspaces/getCatalogs.js";
+export { getCatalogFilePath } from "./workspaces/getCatalogFilePath.js";
+export { parseCatalogContent } from "./workspaces/parseCatalogContent.js";
