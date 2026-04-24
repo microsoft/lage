@@ -588,14 +588,17 @@ export function listAllTrackedFiles(
 }
 
 /**
- * Get the content of a file at a specific git ref (commit, branch, tag, etc.).
+ * Get the content of a file at a specific git ref (commit, branch, tag, etc).
  * Returns undefined if the file doesn't exist at that ref or the command fails.
- *
- * @param params - Object with `filePath` (relative to the repo root or cwd),
- *   `ref` (commit SHA, branch name, tag, etc.), and `cwd`.
- * @returns The file content as a string, or undefined if the file doesn't exist at that ref
  */
-export function getFileFromVersion(params: { filePath: string; ref: string } & GitCommonOptions): string | undefined {
+export function getFileFromVersion(
+  params: {
+    /** Repo-relative path to the file */
+    filePath: string;
+    /** git ref (branch, tag, commit SHA, etc) to get the file content from */
+    ref: string;
+  } & GitCommonOptions
+): string | undefined {
   const { filePath, ref, ...options } = params;
   const result = git(["show", `${ref}:${filePath}`], {
     description: `Getting file ${filePath} at ref ${ref}`,

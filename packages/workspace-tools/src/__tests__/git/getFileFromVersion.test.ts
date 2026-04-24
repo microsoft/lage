@@ -22,7 +22,7 @@ describe("getFileFromVersion", () => {
     git(["commit", "-m", "first commit"], { cwd });
 
     // Get the commit SHA
-    const firstCommit = _git(["rev-parse", "HEAD"], { cwd, throwOnError: true }).stdout.trim();
+    const firstCommit = git(["rev-parse", "HEAD"], { cwd }).stdout.trim();
 
     // Modify the file and commit again
     fs.writeFileSync(path.join(cwd, "test.txt"), "version 2");
@@ -100,7 +100,8 @@ describe("getFileFromVersion", () => {
     git(["add", "."], { cwd });
     git(["commit", "-m", "add nested file"], { cwd });
 
-    const result = getFileFromVersion({ filePath: "subdir/nested.txt", ref: "HEAD", cwd });
+    // Make sure it still works with a Windows-style path on Windows
+    const result = getFileFromVersion({ filePath: path.join("subdir", "nested.txt"), ref: "HEAD", cwd });
     expect(result).toBe("nested content");
   });
 });
