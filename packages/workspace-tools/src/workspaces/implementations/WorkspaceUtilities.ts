@@ -25,4 +25,16 @@ export interface WorkspaceUtilities {
    * Returns undefined if not defined or not supported, or can throw an error.
    */
   getCatalogs?: (params: { root: string }) => Catalogs | undefined;
+
+  /**
+   * Get the absolute path to the file that contains catalog definitions, if supported.
+   * Returns undefined if the manager doesn't support catalogs or the file doesn't exist.
+   */
+  getCatalogFilePath?: (params: { root: string }) => string | undefined;
+
+  /**
+   * Parse catalog definitions from raw file content (e.g. read from a different git ref).
+   * Returns undefined if no catalogs are found in the content or catalogs aren't supported.
+   */
+  parseCatalogContent?: (params: { fileContent: string }) => Catalogs | undefined;
 }
