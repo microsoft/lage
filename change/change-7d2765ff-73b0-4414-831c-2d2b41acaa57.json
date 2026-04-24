@@ -1,7 +1,7 @@
 {
   "changes": [
     {
-      "type": "minor",
+      "type": "patch",
       "comment": "Add getFileFromVersion, getCatalogFilePath, and parseCatalogContent utilities",
       "packageName": "workspace-tools",
       "email": "email not defined",
