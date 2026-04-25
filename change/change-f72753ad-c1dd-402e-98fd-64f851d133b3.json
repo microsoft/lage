@@ -2,7 +2,7 @@
   "changes": [
     {
       "type": "patch",
-      "comment": "Rename getFileFromVersion to getFileFromRef",
+      "comment": "Rename `getFileFromVersion` to `getFileFromRef`. Also add `getCatalogVersion` option `allowNotFound`.",
       "packageName": "workspace-tools",
       "email": "elcraig@microsoft.com",
       "dependentChangeType": "patch"

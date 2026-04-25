@@ -133,6 +133,7 @@ export function getCatalogVersion(params: {
     name: string;
     version: string;
     catalogs: Catalogs | undefined;
+    allowNotFound?: boolean;
 }): string | undefined;
 
 // Warning: (ae-forgotten-export) The symbol "GetChangedPackagesOptions" needs to be exported by the entry point index.d.ts
