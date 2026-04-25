@@ -57,6 +57,8 @@ describe("getCatalogs", () => {
     });
   });
 
+  // These tests focus on filesystem cases.
+  // Detailed parsing is covered by parseCatalogContent.test.ts.
   describe.each<{
     name: string;
     manager: WorkspaceManager;
@@ -101,7 +103,7 @@ describe("getCatalogs", () => {
         fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
       },
     },
-  ])("$name", ({ name, manager, baseFixture, writeCatalogs }) => {
+  ])("$name", ({ manager, baseFixture, writeCatalogs }) => {
     let fixturePath = "";
     let lernaFixturePath = "";
 
@@ -121,46 +123,12 @@ describe("getCatalogs", () => {
       expect(catalogs).toBeUndefined();
     });
 
-    it("returns default catalogs if defined alone", () => {
-      writeCatalogs(fixturePath, defaultCatalogs);
-
-      const catalogs = getCatalogs(fixturePath);
-      expect(catalogs).toEqual(defaultCatalogs);
-    });
-
-    it("returns named catalogs if defined alone", () => {
-      writeCatalogs(fixturePath, { named: namedCatalogs.named });
-
-      const catalogs = getCatalogs(fixturePath);
-      expect(catalogs).toEqual({ named: namedCatalogs.named });
-    });
-
+    // Other cases are covered by parseCatalogContent.test.ts
     it("returns both default and named catalogs if both defined", () => {
       writeCatalogs(fixturePath, namedCatalogs);
 
       const catalogs = getCatalogs(fixturePath);
       expect(catalogs).toEqual(namedCatalogs);
-    });
-
-    it('handles a catalog named "default"', () => {
-      // Different managers have different behavior here...
-      const catalogNamedDefault: Catalogs = {
-        named: {
-          default: { lodash: "^4.17.21" },
-        },
-      };
-      writeCatalogs(fixturePath, catalogNamedDefault);
-
-      const catalogs = getCatalogs(fixturePath);
-      if (name === "yarn v4") {
-        expect(catalogs).toEqual({
-          named: { default: { lodash: "^4.17.21" } },
-        });
-      } else {
-        expect(catalogs).toEqual({
-          default: { lodash: "^4.17.21" },
-        });
-      }
     });
 
     // The manager will be detected as lerna, so the lerna implementation must have logic to
