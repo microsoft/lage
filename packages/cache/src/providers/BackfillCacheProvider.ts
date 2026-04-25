@@ -7,7 +7,7 @@ import type { CacheProvider } from "../types/CacheProvider.js";
 import type { CacheOptions } from "@lage-run/config";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { Target } from "@lage-run/target-graph";
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 import { getCacheDirectory, getHashCacheDirectories } from "../getCacheDirectory.js";
 import { chunkPromise } from "../chunkPromise.js";
 
@@ -19,7 +19,7 @@ const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
 export interface BackfillCacheProviderOptions {
   root: string;
-  logger: Logger;
+  logger: TargetLogger;
   cacheOptions: Partial<CacheOptions>;
 }
 

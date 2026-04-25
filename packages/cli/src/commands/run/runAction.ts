@@ -39,7 +39,7 @@ export async function runAction(options: RunOptions, command: Command): Promise<
   const logger = createLogger();
 
   const root = getWorkspaceManagerRoot(cwd) ?? cwd;
-  const reporters = await initializeReporters({ logger, options: { ...options, concurrency }, config, root });
+  await initializeReporters({ logger, options: { ...options, concurrency }, config, root });
 
   // Build Target Graph
   const packageInfos = getPackageInfos(root);
@@ -114,13 +114,8 @@ export async function runAction(options: RunOptions, command: Command): Promise<
     process.exitCode = 1;
   }
 
-  for (const reporter of reporters) {
-    reporter.summarize(summary);
-  }
-
-  for (const reporter of reporters) {
-    await reporter.cleanup?.();
-  }
+  logger.summarize(summary);
+  await logger.cleanup();
 }
 
 function validateTargetGraph(targetGraph: TargetGraph, allowNoTargetRuns: boolean) {

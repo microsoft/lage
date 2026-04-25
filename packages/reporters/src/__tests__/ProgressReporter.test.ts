@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import { LogLevel } from "@lage-run/logger";
 import { ProgressReporter } from "../ProgressReporter.js";
-import type { TargetLogData, TargetMessageData } from "../types/TargetLogData.js";
+import type { TargetLogData } from "../types/TargetLogData.js";
 import { createTarget, createSummary } from "./helpers.js";
 import { MemoryStream } from "./MemoryStream.js";
 
@@ -82,7 +82,7 @@ describe("ProgressReporter", () => {
     ({ writer, reporter } = initReporter());
 
     reporter.log({
-      data: { target: createTarget("a", "task"), pid: 1 } satisfies TargetMessageData,
+      data: { target: createTarget("a", "task") },
       level: LogLevel.verbose,
       msg: "test message",
       timestamp: 0,
@@ -105,12 +105,12 @@ describe("ProgressReporter", () => {
       [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
       [{ target: aTestTarget, status: "running", duration: [0, 0] }],
       [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
+      [{ target: aBuildTarget }, "test message for a#build"],
+      [{ target: aTestTarget }, "test message for a#test"],
+      [{ target: aBuildTarget }, "test message for a#build again"],
+      [{ target: bBuildTarget }, "test message for b#build"],
+      [{ target: aTestTarget }, "test message for a#test again"],
+      [{ target: bBuildTarget }, "test message for b#build again"],
       [{ target: aTestTarget, status: "success", duration: [10, 0] }],
       [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
       [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
@@ -130,6 +130,23 @@ describe("ProgressReporter", () => {
       [12:34:56] ✓ completed a - test  (1ms)
       [12:34:56] ✓ completed b - build  (1ms)
       [12:34:56] ✗ failed    a - build  (1ms)
+      "
+    `);
+  });
+
+  it("displays summary when no targets were run", () => {
+    ({ writer, reporter } = initReporter());
+
+    const summary = createSummary({});
+    reporter.summarize(summary);
+
+    writer.end();
+
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
+      "lage - Version 0.0.0 - 0 Workers
+      Nothing has been run.
+      ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+      Took a total of 1m 40.00s to complete. All targets skipped!
       "
     `);
   });
@@ -189,12 +206,12 @@ describe("ProgressReporter", () => {
       [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
       [{ target: aTestTarget, status: "running", duration: [0, 0] }],
       [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build again, but look there is an error!"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
+      [{ target: aBuildTarget }, "test message for a#build"],
+      [{ target: aTestTarget }, "test message for a#test"],
+      [{ target: aBuildTarget }, "test message for a#build again, but look there is an error!"],
+      [{ target: bBuildTarget }, "test message for b#build"],
+      [{ target: aTestTarget }, "test message for a#test again"],
+      [{ target: bBuildTarget }, "test message for b#build again"],
       [{ target: aTestTarget, status: "success", duration: [10, 0] }],
       [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
       [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],

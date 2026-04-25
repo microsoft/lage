@@ -1,9 +1,9 @@
 import type { LogStructuredData, LogEntry } from "@lage-run/logger";
-import type { JsonReporterLogData, TargetStatusData } from "@lage-run/reporters";
+import type { TargetStatusData } from "@lage-run/reporters";
 import type { TargetStatus } from "@lage-run/scheduler-types";
 import { getTargetId } from "@lage-run/target-graph";
 
-export type ParsedLogEntry = Omit<LogEntry<JsonReporterLogData | LogStructuredData>, "timestamp">;
+export type ParsedLogEntry = Omit<LogEntry<LogStructuredData>, "timestamp">;
 
 /**
  * Parse `JsonReporter` output and remove timestamps and any lines that don't follow the expected format.

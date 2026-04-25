@@ -5,8 +5,8 @@
 ```ts
 
 import { CacheOptions } from '@lage-run/config';
-import type { Logger } from '@lage-run/logger';
 import type { Target } from '@lage-run/target-graph';
+import type { TargetLogger } from '@lage-run/reporters';
 
 // @public (undocumented)
 export class BackfillCacheProvider implements CacheProvider {
@@ -27,7 +27,7 @@ interface BackfillCacheProviderOptions {
     // (undocumented)
     cacheOptions: Partial<CacheOptions>;
     // (undocumented)
-    logger: Logger;
+    logger: TargetLogger;
     // (undocumented)
     root: string;
 }
@@ -76,7 +76,7 @@ interface RemoteFallbackCacheProviderOptions {
     // (undocumented)
     localCacheProvider?: CacheProvider;
     // (undocumented)
-    logger: Logger;
+    logger: TargetLogger;
     // (undocumented)
     remoteCacheProvider?: CacheProvider;
     // (undocumented)

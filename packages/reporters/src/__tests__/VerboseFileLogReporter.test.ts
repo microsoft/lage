@@ -2,7 +2,7 @@ import { describe, expect, it } from "@jest/globals";
 import { LogLevel, type LogEntry } from "@lage-run/logger";
 import type { TargetStatus } from "@lage-run/scheduler-types";
 import { statusColorFn } from "../LogReporter.js";
-import type { TargetLogData, TargetMessageData, TargetStatusData } from "../types/TargetLogData.js";
+import type { TargetData, TargetLogData, TargetStatusData } from "../types/TargetLogData.js";
 import { VerboseFileLogReporter } from "../VerboseFileLogReporter.js";
 import { createTarget } from "./helpers.js";
 import { MemoryStream } from "./MemoryStream.js";
@@ -10,7 +10,7 @@ import { MemoryStream } from "./MemoryStream.js";
 describe("VerboseFileLogReporter", () => {
   it("records a target status entry", () => {
     const writer = new MemoryStream();
-    const reporter = new VerboseFileLogReporter(undefined, writer);
+    const reporter = new VerboseFileLogReporter({ fileStream: writer });
     const target = createTarget("@madeUp/avettLyrics", "generateLyrics");
     const allStatuses = Object.keys(statusColorFn) as TargetStatus[];
 
@@ -39,13 +39,12 @@ describe("VerboseFileLogReporter", () => {
 
   it("records a target message entry", () => {
     const writer = new MemoryStream();
-    const reporter = new VerboseFileLogReporter(undefined, writer);
+    const reporter = new VerboseFileLogReporter({ fileStream: writer });
 
     const entry: LogEntry<any> = {
       data: {
         target: createTarget("@madeUp/avettLyrics", "generateLyrics"),
-        pid: 1,
-      } satisfies TargetMessageData,
+      } satisfies TargetData,
       level: LogLevel.verbose,
       msg: "Be loud. Let your colors show!",
       timestamp: 0,
@@ -62,13 +61,12 @@ describe("VerboseFileLogReporter", () => {
 
   it("prefixes target entries with the target id", () => {
     const writer = new MemoryStream();
-    const reporter = new VerboseFileLogReporter(undefined, writer);
+    const reporter = new VerboseFileLogReporter({ fileStream: writer });
 
     const entry: LogEntry<any> = {
       data: {
         target: createTarget("@madeUp/avettLyrics", "generateLyrics"),
-        pid: 1,
-      } satisfies TargetMessageData,
+      } satisfies TargetData,
       level: LogLevel.verbose,
       msg: "I've got something to say, but it's all vanity.",
       timestamp: 0,
@@ -86,7 +84,7 @@ describe("VerboseFileLogReporter", () => {
 
   it("does not prefix non-target entries with target id", () => {
     const writer = new MemoryStream();
-    const reporter = new VerboseFileLogReporter(undefined, writer);
+    const reporter = new VerboseFileLogReporter({ fileStream: writer });
 
     const entry: LogEntry<any> = {
       level: LogLevel.verbose,
@@ -105,7 +103,7 @@ describe("VerboseFileLogReporter", () => {
 
   it("never groups messages together", () => {
     const writer = new MemoryStream();
-    const reporter = new VerboseFileLogReporter(undefined, writer);
+    const reporter = new VerboseFileLogReporter({ fileStream: writer });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");
@@ -115,12 +113,12 @@ describe("VerboseFileLogReporter", () => {
       [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
       [{ target: aTestTarget, status: "running", duration: [0, 0] }],
       [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
+      [{ target: aBuildTarget }, "test message for a#build"],
+      [{ target: aTestTarget }, "test message for a#test"],
+      [{ target: aBuildTarget }, "test message for a#build again"],
+      [{ target: bBuildTarget }, "test message for b#build"],
+      [{ target: aTestTarget }, "test message for a#test again"],
+      [{ target: bBuildTarget }, "test message for b#build again"],
       [{ target: aTestTarget, status: "success", duration: [10, 0] }],
       [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
       [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
@@ -156,7 +154,7 @@ describe("VerboseFileLogReporter", () => {
 
   it("always records messages with logLevel verbose or lower", () => {
     const writer = new MemoryStream();
-    const reporter = new VerboseFileLogReporter(undefined, writer);
+    const reporter = new VerboseFileLogReporter({ fileStream: writer });
 
     const entry1: LogEntry<any> = {
       level: LogLevel.info,

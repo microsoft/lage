@@ -5,8 +5,8 @@ import { parseNdJson, type ParsedLogEntry } from "./parseNdJson.js";
 import fs from "fs";
 import { killDetachedProcess, killProcessesOnPort } from "./killDetachedProcess.js";
 import type { Target } from "@lage-run/target-graph";
-import type { TargetMessageData } from "@lage-run/reporters";
 import type { LogEntry } from "@lage-run/logger";
+import type { LageServiceStatusData } from "@lage-run/cli/lib/types/LageServiceLogData.js";
 import type execa from "execa";
 
 describe("lageserver", () => {
@@ -24,8 +24,8 @@ describe("lageserver", () => {
   }
 
   function findServerPid(jsonOutput: ParsedLogEntry[]) {
-    const entry = jsonOutput.find((e) => (e.data as TargetMessageData)?.pid && e.msg === "Server started") as
-      | LogEntry<TargetMessageData>
+    const entry = jsonOutput.find((e) => (e.data as LageServiceStatusData)?.pid && e.msg === "Server started") as
+      | LogEntry<LageServiceStatusData>
       | undefined;
     return entry?.data?.pid;
   }

@@ -6,14 +6,14 @@ import { getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { expandTargetDefinition } from "./expandTargetDefinition.js";
 import { TargetRunnerPicker } from "@lage-run/runners";
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 
 interface ExecuteInProcessOptions {
   cwd?: string;
   nodeArg?: string;
   args?: string[];
-  logger: Logger;
+  logger: TargetLogger;
 }
 
 /**

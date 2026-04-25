@@ -1,6 +1,6 @@
 import { getBranchChanges } from "workspace-tools";
 import * as fg from "fast-glob";
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 
 /**
  * Check whether any `environmentGlob` files have changed since the `--since` ref.
@@ -13,7 +13,7 @@ export function hasRepoChanged(params: {
   root: string;
   /** `environmentGlob` from cache config */
   environmentGlob: string[];
-  logger: Logger;
+  logger: TargetLogger;
 }): boolean {
   const { since, root, environmentGlob, logger } = params;
 

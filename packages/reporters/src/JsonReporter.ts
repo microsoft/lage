@@ -3,8 +3,8 @@
 import { hrToSeconds } from "./formatDuration.js";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 import type { LogLevel } from "@lage-run/logger";
-import { type LogEntry, type Reporter } from "@lage-run/logger";
-import type { TargetLogData } from "./types/TargetLogData.js";
+import type { MaybeTargetLogEntry, TargetReporter } from "./types/TargetReporter.js";
+import { isTargetLogEntry } from "./isTargetLogEntry.js";
 
 interface JsonReporterTaskStats {
   package: string | undefined;
@@ -13,7 +13,7 @@ interface JsonReporterTaskStats {
   status: string;
 }
 
-/** Final entry logged by `JsonReporter.summarize()` */
+/** JSON content logged by `JsonReporter.summarize()` */
 export interface JsonReporterSummaryData {
   summary: {
     duration: string;
@@ -23,17 +23,15 @@ export interface JsonReporterSummaryData {
   };
 }
 
-/** `LogEntry.data` types expected by `JsonReporter` */
-export type JsonReporterLogData = JsonReporterSummaryData | TargetLogData;
-
 /**
- * Reporter that outputs log entries as JSON, and a final summary (`JsonReporterSummaryData`) as JSON.
+ * Reporter that outputs log entries to the console as JSON, and a final summary
+ * (`JsonReporterSummaryData`) as JSON.
  */
-export class JsonReporter implements Reporter {
+export class JsonReporter implements TargetReporter {
   constructor(private options: { logLevel: LogLevel; indented: boolean; logMemory?: boolean }) {}
 
-  public log(entry: LogEntry<TargetLogData>): void {
-    if (entry.data && entry.data.target && entry.data.target.hidden) {
+  public log(entry: MaybeTargetLogEntry): void {
+    if (isTargetLogEntry(entry) && entry.data.target.hidden) {
       return;
     }
 

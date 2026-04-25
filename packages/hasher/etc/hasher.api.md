@@ -78,7 +78,7 @@ interface TargetHasherOptions {
     // (undocumented)
     environmentGlob: string[];
     // (undocumented)
-    logger?: Logger;
+    logger?: Logger<never, never>;
     // (undocumented)
     root: string;
 }

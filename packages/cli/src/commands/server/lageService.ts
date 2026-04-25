@@ -1,10 +1,9 @@
 import { type ConfigOptions, getConfig, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
-import type { Logger } from "@lage-run/logger";
-import { ConnectError, Code, type ILageService } from "@lage-run/rpc";
+import { ConnectError, Code, type ILageService, type LageServiceRunTargetResult } from "@lage-run/rpc";
 import { getStartTargetId, getTargetId, type TargetGraph } from "@lage-run/target-graph";
 import { type DependencyMap, getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
 import { createTargetGraph } from "../run/createTargetGraph.js";
-import { type Readable } from "stream";
+import type { Readable } from "stream";
 import { type Pool, AggregatedPool } from "@lage-run/worker-threads-pool";
 import { getInputFiles, type PackageTree, TargetHasher } from "@lage-run/hasher";
 import { getOutputFiles } from "./getOutputFiles.js";
@@ -12,10 +11,11 @@ import { MemoryStream } from "./MemoryStream.js";
 import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
 import type { TargetRun } from "@lage-run/scheduler-types";
-import { formatHrtime, hrtimeDiff } from "@lage-run/reporters";
+import { formatHrtime, hrtimeDiff, type TargetLogger } from "@lage-run/reporters";
 import path from "path";
 import fs from "fs";
 import { getGlobalInputHashFilePath, getHashFilePath } from "../targetHashFilePath.js";
+import type { LageServiceLogData } from "../../types/LageServiceLogData.js";
 
 interface LageServiceContext {
   config: ConfigOptions;
@@ -35,7 +35,7 @@ interface ServiceControls {
 }
 interface InitializeOptions {
   cwd: string;
-  logger: Logger;
+  logger: TargetLogger;
   serverControls: ServiceControls;
   concurrency?: number;
   nodeArg?: string;
@@ -149,7 +149,7 @@ async function initialize(options: InitializeOptions): Promise<LageServiceContex
 interface CreateLageServiceOptions {
   cwd: string;
   serverControls: ServiceControls;
-  logger: Logger;
+  logger: TargetLogger;
   concurrency?: number;
   tasks: string[];
 }
@@ -292,35 +292,26 @@ export function createLageService({ cwd, serverControls, logger, concurrency, ta
       const targetHashFileRelativePath = path.relative(root, targetHashFullPath).replace(/\\/g, "/");
       outputs.push(targetHashFileRelativePath);
 
-      const results: Awaited<ReturnType<NonNullable<ILageService["runTarget"]>>> = {
+      const partialResults: Omit<LageServiceRunTargetResult, "stdout" | "stderr"> = {
         packageName: request.packageName,
         task: request.task,
         cwd: target.cwd,
         exitCode: hasError ? 1 : 0,
         inputs,
         outputs,
-        stdout: hasError ? "" : writableStdout.toString(),
-        stderr: hasError ? execErrorText : writableStderr.toString(),
         id,
         globalInputHashFile: targetGlobalInputHashRelativePath,
       };
+      const results: LageServiceRunTargetResult = {
+        ...partialResults,
+        stdout: hasError ? "" : writableStdout.toString(),
+        stderr: hasError ? execErrorText : writableStderr.toString(),
+      };
 
       logger.info(
-        `${request.packageName}#${request.task} results: \n${JSON.stringify(
-          {
-            packageName: results.packageName,
-            task: results.task,
-            cwd: results.cwd,
-            exitCode: results.exitCode,
-            inputs: results.inputs,
-            outputs: results.outputs,
-            id: results.id,
-            globalInputHashFile: targetGlobalInputHashRelativePath,
-          },
-          null,
-          2
-        )}\n------`,
-        results
+        `${request.packageName}#${request.task} results: \n${JSON.stringify(partialResults, null, 2)}\n------`,
+        undefined,
+        results satisfies LageServiceLogData
       );
 
       return results;

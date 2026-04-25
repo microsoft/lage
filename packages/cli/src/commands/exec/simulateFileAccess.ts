@@ -1,8 +1,8 @@
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 import path from "path";
 import fs from "fs";
 
-export function simulateFileAccess(logger: Logger, root: string, inputs: string[], outputs: string[]): void {
+export function simulateFileAccess(logger: TargetLogger, root: string, inputs: string[], outputs: string[]): void {
   logger.silly("Now probing and touching inputs and outputs");
 
   // Helper to get all directory parts up to root

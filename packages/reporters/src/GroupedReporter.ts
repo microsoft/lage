@@ -1,14 +1,13 @@
 import { formatHrtime } from "./formatDuration.js";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
-import { LogLevel, type LogStructuredData } from "@lage-run/logger";
+import { isTargetLogEntry, isTargetStatusLogEntry } from "./isTargetLogEntry.js";
+import { LogLevel } from "@lage-run/logger";
 import chalk from "chalk";
-import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler-types";
-import type { TargetLogData, TargetStatusData } from "./types/TargetLogData.js";
 import type { Writable } from "stream";
 import { slowestTargetRuns } from "./slowestTargetRuns.js";
 import { formatMemoryUsage } from "./formatHelpers.js";
 import { statusColorFn } from "./LogReporter.js";
+import type { MaybeTargetLogEntry, TargetLogEntry, TargetReporter } from "./types/TargetReporter.js";
 
 export const colors = {
   [LogLevel.info]: chalk.white,
@@ -43,10 +42,10 @@ function format(level: LogLevel, prefix: string, message: string): string {
  * Abstract reporter which optionally groups log entries by target.
  * If grouping is enabled, it only flushes a target's log entries when it completes.
  */
-export abstract class GroupedReporter implements Reporter {
+export abstract class GroupedReporter implements TargetReporter {
   protected logStream: Writable;
-  protected logEntries = new Map<string, LogEntry[]>();
-  private readonly groupedEntries: Map<string, LogEntry<LogStructuredData>[]> = new Map<string, LogEntry[]>();
+  protected logEntries = new Map<string, TargetLogEntry[]>();
+  private readonly groupedEntries: Map<string, TargetLogEntry[]> = new Map<string, TargetLogEntry[]>();
 
   constructor(
     protected options: {
@@ -62,12 +61,13 @@ export abstract class GroupedReporter implements Reporter {
     this.logStream = options.logStream || process.stdout;
   }
 
-  public log(entry: LogEntry<any>): boolean | void {
-    if (entry.data && entry.data.target && entry.data.target.hidden) {
+  public log(entry: MaybeTargetLogEntry): boolean | void {
+    const isTargetLog = isTargetLogEntry(entry);
+    if (isTargetLog && entry.data.target.hidden) {
       return;
     }
 
-    if (entry.data && entry.data.target) {
+    if (isTargetLog) {
       if (!this.logEntries.has(entry.data.target.id)) {
         this.logEntries.set(entry.data.target.id, []);
       }
@@ -76,26 +76,26 @@ export abstract class GroupedReporter implements Reporter {
     }
 
     if (this.options.logLevel! >= entry.level) {
-      if (this.options.grouped && entry.data?.target) {
+      if (this.options.grouped && isTargetLog) {
         return this.logTargetEntryByGroup(entry);
       }
 
-      return this.logTargetEntry(entry);
+      return this.logEntry(entry);
     }
   }
 
   /** Print the entry for a target */
-  protected logTargetEntry(entry: LogEntry<TargetLogData>): boolean | void {
+  protected logEntry(entry: MaybeTargetLogEntry): boolean | void {
     const colorFn = colors[entry.level];
-    const data = entry.data!;
 
-    if (!data?.target) {
+    if (!isTargetLogEntry(entry)) {
       if (entry.msg.trim()) {
         this.logStream.write(format(entry.level, "", entry.msg));
       }
       return;
     }
 
+    const data = entry.data;
     const { target } = data;
     const { packageName, task } = target;
     const prefix = this.options.grouped ? "" : getTaskLogPrefix(packageName ?? "<root>", task);
@@ -104,7 +104,7 @@ export abstract class GroupedReporter implements Reporter {
       return this.logStream.write(format(entry.level, prefix, colorFn("|  " + entry.msg)));
     }
 
-    const { hash, duration, memoryUsage, status } = data as TargetStatusData;
+    const { hash, duration, memoryUsage, status } = data;
     const mem = formatMemoryUsage(memoryUsage, this.options.logMemory);
 
     const pkgTask = this.options.grouped ? `${chalk.magenta(packageName)} ${chalk.cyan(task)}` : "";
@@ -138,8 +138,8 @@ export abstract class GroupedReporter implements Reporter {
     }
   }
 
-  private logTargetEntryByGroup(entry: LogEntry<TargetLogData>) {
-    const data = entry.data!;
+  private logTargetEntryByGroup(entry: TargetLogEntry) {
+    const data = entry.data;
 
     const target = data.target;
     const { id } = target;
@@ -152,9 +152,9 @@ export abstract class GroupedReporter implements Reporter {
         const { status, duration } = data;
         this.logStream.write(this.formatGroupStart(data.target.packageName ?? "<root>", data.target.task, status, duration));
 
-        const entries = this.groupedEntries.get(id)! as LogEntry<TargetStatusData>[];
+        const entries = this.groupedEntries.get(id)!;
         for (const targetEntry of entries) {
-          this.logTargetEntry(targetEntry);
+          this.logEntry(targetEntry);
         }
 
         this.logStream.write(this.formatGroupEnd());

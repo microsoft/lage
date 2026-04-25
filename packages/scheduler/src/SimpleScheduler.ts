@@ -15,7 +15,7 @@ import type { WorkerResult } from "./WrappedTarget.js";
 import { WrappedTarget } from "./WrappedTarget.js";
 
 export interface SimpleSchedulerOptions {
-  logger: Logger;
+  logger: Logger<never, never>;
   concurrency: number;
   continueOnError: boolean;
   shouldCache: boolean;
@@ -89,12 +89,6 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     const startTime: [number, number] = process.hrtime();
 
     const { continueOnError, logger, shouldCache } = this.options;
-
-    logger.verbose("", {
-      schedulerRun: {
-        startTime,
-      },
-    });
 
     const { pool, abortController } = this;
 
@@ -254,24 +248,6 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     await Promise.all(promises);
   }
 
-  private logProgress(): void {
-    const targetRunByStatus = categorizeTargetRuns(this.targetRuns.values());
-    const total = [...this.targetRuns.values()].filter((t) => !t.target.hidden).length;
-
-    this.options.logger.verbose("", {
-      poolStats: this.pool.stats(),
-      progress: {
-        waiting: targetRunByStatus.pending.length + targetRunByStatus.queued.length,
-        completed:
-          targetRunByStatus.aborted.length +
-          targetRunByStatus.failed.length +
-          targetRunByStatus.skipped.length +
-          targetRunByStatus.success.length,
-        total,
-      },
-    });
-  }
-
   async #generateTargetRunPromise(target: WrappedTarget) {
     let runError: unknown | undefined;
 
@@ -310,8 +286,6 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
         }
       }
     }
-
-    this.logProgress();
 
     // finally do another round of scheduling to run next round of targets
     await this.scheduleReadyTargets();

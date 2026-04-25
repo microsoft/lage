@@ -37,7 +37,7 @@ interface AggregatedPoolOptions {
     // (undocumented)
     groupBy: (data: any) => string;
     // (undocumented)
-    logger: Logger;
+    logger: Logger<never, never>;
     // (undocumented)
     maxWorkers: number;
     // (undocumented)

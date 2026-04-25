@@ -17,16 +17,18 @@ import type { ConfigOptions } from "@lage-run/config";
 describe("initializeReporters with custom reporters", () => {
   let tmpDir = "";
 
-  function callInitializeReporters(params: {
+  async function callInitializeReporters(params: {
     options?: Partial<ReporterInitOptions>;
     config: Pick<ConfigOptions, "reporter" | "reporters">;
   }) {
-    return initializeReporters({
-      logger: new Logger(),
+    const logger = new Logger();
+    await initializeReporters({
+      logger,
       options: getOptions(params.options),
       config: params.config,
       root: tmpDir,
     });
+    return logger.reporters;
   }
 
   function getOptions(overrides?: Partial<ReporterInitOptions>): ReporterInitOptions {
@@ -48,7 +50,7 @@ describe("initializeReporters with custom reporters", () => {
   });
 
   /** Reporter mock-imported by a few tests */
-  class TestReporter implements Reporter {
+  class TestReporter implements Reporter<never, never> {
     constructor(public options: ReporterInitOptions) {}
     public log() {}
     public summarize() {}
@@ -196,7 +198,7 @@ describe("initializeReporters with custom reporters", () => {
 
   it("should work with custom reporter that exports an object instance (mocked)", async () => {
     const reporterPath = writeFixture("object-instance.mjs", "");
-    const mockReporter: Reporter = { log() {}, summarize() {} };
+    const mockReporter: Reporter<never, never> = { log() {}, summarize() {} };
     setMockImportReporter(() => {
       return { default: mockReporter };
     });

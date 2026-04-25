@@ -22,7 +22,7 @@
     "@azure/core-auth": "1.9.0",
     "@azure/identity": "4.9.1",
     "@lage-run/config": "workspace:^",
-    "@lage-run/logger": "workspace:^",
+    "@lage-run/reporters": "workspace:^",
     "@lage-run/target-graph": "workspace:^",
     "backfill-cache": "workspace:^",
     "backfill-config": "workspace:^",
@@ -30,6 +30,7 @@
     "glob-hasher": "^1.4.2"
   },
   "devDependencies": {
+    "@lage-run/logger": "workspace:^",
     "@lage-run/monorepo-scripts": "workspace:^",
     "@lage-run/test-utilities": "workspace:^",
     "@types/fs-extra": "^8.0.0",

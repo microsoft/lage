@@ -1,13 +1,13 @@
 import type { PackageInfos } from "workspace-tools";
 import { getScopedPackages, getChangedPackages, getTransitiveDependents, getTransitiveDependencies } from "workspace-tools";
 
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 import { hasRepoChanged } from "./hasRepoChanged.js";
 
 export function getFilteredPackages(options: {
   root: string;
   packageInfos: PackageInfos;
-  logger: Logger;
+  logger: TargetLogger;
   scope: string[] | undefined;
   since: string | undefined;
   sinceIgnoreGlobs: string[] | undefined;
@@ -76,7 +76,7 @@ export function getFilteredPackages(options: {
 }
 
 export function filterPackages(options: {
-  logger: Logger;
+  logger: TargetLogger;
   packageInfos: PackageInfos;
   includeDependents: boolean;
   includeDependencies: boolean;

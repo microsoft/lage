@@ -1,4 +1,4 @@
-import { type LogEntry, LogLevel, type Reporter, type LogStructuredData } from "@lage-run/logger";
+import { LogLevel } from "@lage-run/logger";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import {
   noLoggingConfig,
@@ -14,16 +14,18 @@ import { formatHrtime, hrtimeDiff } from "./formatDuration.js";
 import { fancyGradient, formatBytes, formatMemoryUsage, hrLine } from "./formatHelpers.js";
 import { slowestTargetRuns } from "./slowestTargetRuns.js";
 import { colors, statusColorFn } from "./LogReporter.js";
+import type { TargetLogEntry, MaybeTargetLogEntry, TargetReporter } from "./types/TargetReporter.js";
+import { isTargetLogEntry, isTargetStatusLogEntry } from "./isTargetLogEntry.js";
 
 /**
  * Shows progress including the names of currently running targets using `@ms-cloudpack/task-reporter`.
  * It may be slightly slower than `BasicReporter` (though its performance has been improved substantially
  * with `task-reporter` updates) and was the default reporter in lage v2 prior to 2.14.16.
  */
-export class ProgressReporter implements Reporter {
+export class ProgressReporter implements TargetReporter {
   private logStream: Writable;
   private hasLogStreamOverride: boolean;
-  private logEntries: Map<string, LogEntry<LogStructuredData>[]> = new Map<string, LogEntry[]>();
+  private logEntries: Map<string, TargetLogEntry[]> = new Map<string, TargetLogEntry[]>();
   private taskReporter: TaskReporter;
   private tasks: Map<string, TaskReporterTask> = new Map();
   private logMemory: boolean;
@@ -72,9 +74,11 @@ export class ProgressReporter implements Reporter {
     this.print(`${fancyGradient("lage")} - Version ${options.version} - ${options.concurrency} Workers`);
   }
 
-  public log(entry: LogEntry<any>): void {
+  public log(entry: MaybeTargetLogEntry): void {
+    const isTargetLog = isTargetLogEntry(entry);
+
     // save the logs for errors
-    if (entry.data?.target?.id) {
+    if (isTargetLog && entry.data.target.id) {
       if (!this.logEntries.has(entry.data.target.id)) {
         this.logEntries.set(entry.data.target.id, []);
       }
@@ -82,11 +86,11 @@ export class ProgressReporter implements Reporter {
     }
 
     // if "hidden", do not even attempt to record or report the entry
-    if (entry?.data?.target?.hidden) {
+    if (isTargetLog && entry.data.target.hidden) {
       return;
     }
 
-    if (!entry.data?.status || !entry.data?.target) {
+    if (!isTargetLog || !isTargetStatusLogEntry(entry.data)) {
       return;
     }
 

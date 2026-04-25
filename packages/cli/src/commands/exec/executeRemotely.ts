@@ -1,5 +1,5 @@
 import path from "path";
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 import createLogger from "@lage-run/logger";
 import { initializeReporters } from "../initializeReporters.js";
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
@@ -43,7 +43,7 @@ async function tryCreateClient(host: string, port: number) {
   return undefined;
 }
 
-async function tryCreateClientWithRetries(host: string, port: number, logger: Logger) {
+async function tryCreateClientWithRetries(host: string, port: number, logger: TargetLogger) {
   let client: ReturnType<typeof createClient> | undefined;
 
   const start = Date.now();
@@ -54,9 +54,9 @@ async function tryCreateClientWithRetries(host: string, port: number, logger: Lo
       if (client) {
         return client;
       }
-    } catch (e) {
-      if (e instanceof ConnectError) {
-        logger.error("Error connecting to server", e);
+    } catch (error) {
+      if (error instanceof ConnectError) {
+        logger.error("Error connecting to server", undefined, { error });
       }
     }
 
@@ -66,7 +66,7 @@ async function tryCreateClientWithRetries(host: string, port: number, logger: Lo
   return undefined;
 }
 
-async function executeOnServer(args: string[], client: LageClient, logger: Logger) {
+async function executeOnServer(args: string[], client: LageClient, logger: TargetLogger) {
   const task = args.length === 1 ? args[0] : args[1];
   const packageName = args.length > 1 ? args[0] : undefined;
 
@@ -86,9 +86,9 @@ async function executeOnServer(args: string[], client: LageClient, logger: Logge
     return response;
   } catch (error) {
     if (error instanceof ConnectError) {
-      logger.error("Error connecting to server", { error });
+      logger.error("Error connecting to server", undefined, { error });
     } else {
-      logger.error("Error running task", { error });
+      logger.error("Error running task", undefined, { error });
     }
   }
 }

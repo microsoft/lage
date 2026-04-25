@@ -1,11 +1,11 @@
 import type { CacheOptions } from "@lage-run/cache";
 import { BackfillCacheProvider, RemoteFallbackCacheProvider } from "@lage-run/cache";
 import { isRunningFromCI } from "@lage-run/config";
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 
 interface CreateCacheOptions {
   cacheOptions?: CacheOptions;
-  logger: Logger;
+  logger: TargetLogger;
   root: string;
   skipLocalCache: boolean;
   cliArgs: string[];

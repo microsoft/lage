@@ -1,15 +1,14 @@
 import { formatHrtime, hrtimeDiff } from "./formatDuration.js";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
+import { isTargetLogEntry, isTargetStatusLogEntry } from "./isTargetLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
 import chalk from "chalk";
 import type { Chalk } from "chalk";
-import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
-import type { TargetLogData, TargetStatusData } from "./types/TargetLogData.js";
 import type { Writable } from "stream";
 import crypto from "crypto";
 import { fancyGradient, formatBytes, formatMemoryUsage, hrLine, stripAnsi } from "./formatHelpers.js";
 import { slowestTargetRuns } from "./slowestTargetRuns.js";
+import type { TargetLogEntry, MaybeTargetLogEntry, TargetReporter } from "./types/TargetReporter.js";
 
 /** Color scheme from lage v1's reporter and others derived from it */
 export const colors = {
@@ -73,9 +72,9 @@ function getTaskLogPrefix(pkg: string, task: string) {
  * Lage v1 reporter that logs tasks without progress spinners.
  * It can either log entries immediately, or grouped when a target completes.
  */
-export class LogReporter implements Reporter {
+export class LogReporter implements TargetReporter {
   private logStream: Writable;
-  private logEntries = new Map<string, LogEntry[]>();
+  private logEntries = new Map<string, TargetLogEntry[]>();
 
   constructor(
     private options: {
@@ -91,14 +90,15 @@ export class LogReporter implements Reporter {
     this.logStream = options.logStream || process.stdout;
   }
 
-  public log(entry: LogEntry<any>): void {
+  public log(entry: MaybeTargetLogEntry): void {
     // if "hidden", do not even attempt to record or report the entry
-    if (entry?.data?.target?.hidden) {
+    const isTargetLog = isTargetLogEntry(entry);
+    if (isTargetLog && entry.data.target.hidden) {
       return;
     }
 
     // save the logs for errors
-    if (entry.data?.target?.id) {
+    if (isTargetLog && entry.data.target.id) {
       if (!this.logEntries.has(entry.data.target.id)) {
         this.logEntries.set(entry.data.target.id, []);
       }
@@ -111,12 +111,12 @@ export class LogReporter implements Reporter {
     }
 
     // log to grouped entries
-    if (this.options.grouped && entry.data?.target) {
+    if (this.options.grouped && isTargetLog) {
       return this.logTargetEntryByGroup(entry);
     }
 
     // log normal target entries
-    if (entry.data && entry.data.target) {
+    if (isTargetLog) {
       return this.logTargetEntry(entry);
     }
 
@@ -126,7 +126,7 @@ export class LogReporter implements Reporter {
     }
   }
 
-  private printEntry(entry: LogEntry<any>, message: string) {
+  private printEntry(entry: TargetLogEntry, message: string) {
     let prefix = "";
     const msg = message;
 
@@ -142,7 +142,7 @@ export class LogReporter implements Reporter {
     this.logStream.write(message + "\n");
   }
 
-  private logTargetEntry(entry: LogEntry<TargetLogData>) {
+  private logTargetEntry(entry: TargetLogEntry) {
     const colorFn = colors[entry.level];
     const data = entry.data!;
 
@@ -180,8 +180,8 @@ export class LogReporter implements Reporter {
     }
   }
 
-  private logTargetEntryByGroup(entry: LogEntry<TargetLogData>) {
-    const data = entry.data!;
+  private logTargetEntryByGroup(entry: TargetLogEntry) {
+    const data = entry.data;
 
     const target = data.target;
     const { id } = target;
@@ -190,7 +190,7 @@ export class LogReporter implements Reporter {
       isTargetStatusLogEntry(data) &&
       (data.status === "success" || data.status === "failed" || data.status === "skipped" || data.status === "aborted")
     ) {
-      const entries = this.logEntries.get(id)! as LogEntry<TargetStatusData>[];
+      const entries = this.logEntries.get(id)!;
 
       for (const targetEntry of entries) {
         this.logTargetEntry(targetEntry);

@@ -1,0 +1,60 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/logger",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "Change the `Logger` signature to `Logger<TLogStructuredData extends LogStructuredData, TSummary>` and same for `Reporter`, to be strict about data types. Add an additional `otherData` parameter on log methods for arbitrary data.",
+      "email": "elcraig@microsoft.com"
+    },
+    {
+      "packageName": "@lage-run/reporters",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "Add `TargetReporter` and `TargetLogger` helper types, and make all reporters implement that. Update the reporters' method signatures and internal validation to be strict about data types. Add `TargetData` type rolling up all observed target-related logs, and remove `TargetMessageData` type which was never actually used.",
+      "email": "elcraig@microsoft.com"
+    },
+    {
+      "packageName": "@lage-run/cache",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "Update cache provider `logger` option to use `TargetLogger`",
+      "email": "elcraig@microsoft.com"
+    },
+    {
+      "packageName": "@lage-run/hasher",
+      "type": "patch",
+      "dependentChangeType": "none",
+      "comment": "Add generics to `TargetHasher` `logger` option (any logger will be accepted)",
+      "email": "elcraig@microsoft.com"
+    },
+    {
+      "packageName": "@lage-run/rpc",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Export `LageServer` and `LageServiceRunTargetResult` types",
+      "email": "elcraig@microsoft.com"
+    },
+    {
+      "packageName": "@lage-run/scheduler",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Update scheduler `logger` option types to use `TargetLogger` and `Logger<never, never>` (any logger). In `SimpleScheduler`, remove some structured data logs that appear to be unused leftovers from a previous ProgressReporter approach.",
+      "email": "elcraig@microsoft.com"
+    },
+    {
+      "packageName": "@lage-run/worker-threads-pool",
+      "type": "patch",
+      "dependentChangeType": "none",
+      "comment": "Add generics to `AggregatedPool` `logger` option (any logger will be accepted)",
+      "email": "elcraig@microsoft.com"
+    },
+    {
+      "packageName": "@lage-run/cli",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Update for new logger and reporters typings",
+      "email": "elcraig@microsoft.com"
+    }
+  ]
+}

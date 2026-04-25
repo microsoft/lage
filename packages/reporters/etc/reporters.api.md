@@ -4,10 +4,11 @@
 
 ```ts
 
-import { LogEntry } from '@lage-run/logger';
+import type { LogEntry } from '@lage-run/logger';
+import type { Logger } from '@lage-run/logger';
 import { LogLevel } from '@lage-run/logger';
-import { LogStructuredData } from '@lage-run/logger';
-import { Reporter } from '@lage-run/logger';
+import type { LogStructuredData } from '@lage-run/logger';
+import type { Reporter } from '@lage-run/logger';
 import type { SchedulerRunSummary } from '@lage-run/scheduler-types';
 import type { Target } from '@lage-run/target-graph';
 import type { TargetRun } from '@lage-run/scheduler-types';
@@ -32,7 +33,7 @@ export class AdoReporter extends GroupedReporter {
 }
 
 // @public
-export class BasicReporter implements Reporter {
+export class BasicReporter implements TargetReporter {
     constructor(params?: {
         concurrency?: number;
         version?: string;
@@ -42,13 +43,13 @@ export class BasicReporter implements Reporter {
     });
     cleanup(): void;
     // (undocumented)
-    log(entry: LogEntry): void;
+    log(entry: MaybeTargetLogEntry): void;
     // (undocumented)
     summarize(schedulerRunSummary: SchedulerRunSummary): void;
 }
 
 // @public
-export class ChromeTraceEventsReporter implements Reporter {
+export class ChromeTraceEventsReporter implements TargetReporter {
     // Warning: (ae-forgotten-export) The symbol "ChromeTraceEventsReporterOptions" needs to be exported by the entry point index.d.ts
     constructor(options: ChromeTraceEventsReporterOptions & {
         consoleLogStream?: Writable;
@@ -90,7 +91,7 @@ export class GithubActionsReporter extends GroupedReporter {
 }
 
 // @public
-abstract class GroupedReporter implements Reporter {
+abstract class GroupedReporter implements TargetReporter {
     constructor(options: {
         logLevel?: LogLevel;
         grouped?: boolean;
@@ -100,12 +101,12 @@ abstract class GroupedReporter implements Reporter {
     protected abstract formatGroupEnd(): string;
     protected abstract formatGroupStart(packageName: string, task: string, status: string, duration?: [number, number]): string;
     // (undocumented)
-    log(entry: LogEntry<any>): boolean | void;
+    log(entry: MaybeTargetLogEntry): boolean | void;
     // (undocumented)
-    protected logEntries: Map<string, LogEntry<LogStructuredData>[]>;
+    protected logEntries: Map<string, TargetLogEntry[]>;
+    protected logEntry(entry: MaybeTargetLogEntry): boolean | void;
     // (undocumented)
     protected logStream: Writable;
-    protected logTargetEntry(entry: LogEntry<TargetLogData>): boolean | void;
     // (undocumented)
     protected options: {
         logLevel?: LogLevel;
@@ -127,20 +128,17 @@ export function hrtimeDiff(start?: [number, number], end?: [number, number]): [n
 export function hrToSeconds(hrtime: [number, number]): string;
 
 // @public
-export class JsonReporter implements Reporter {
+export class JsonReporter implements TargetReporter {
     constructor(options: {
         logLevel: LogLevel;
         indented: boolean;
         logMemory?: boolean;
     });
     // (undocumented)
-    log(entry: LogEntry<TargetLogData>): void;
+    log(entry: MaybeTargetLogEntry): void;
     // (undocumented)
     summarize(schedulerRunSummary: SchedulerRunSummary): void;
 }
-
-// @public
-export type JsonReporterLogData = JsonReporterSummaryData | TargetLogData;
 
 // @public
 export interface JsonReporterSummaryData {
@@ -166,7 +164,7 @@ interface JsonReporterTaskStats {
 }
 
 // @public
-export class LogReporter implements Reporter {
+export class LogReporter implements TargetReporter {
     constructor(options: {
         logLevel?: LogLevel;
         grouped?: boolean;
@@ -174,7 +172,7 @@ export class LogReporter implements Reporter {
         logStream?: Writable;
     });
     // (undocumented)
-    log(entry: LogEntry<any>): void;
+    log(entry: MaybeTargetLogEntry): void;
     // (undocumented)
     resetLogEntries(): void;
     // (undocumented)
@@ -182,7 +180,13 @@ export class LogReporter implements Reporter {
 }
 
 // @public
-export class ProgressReporter implements Reporter {
+export type MaybeTargetLogData = TargetLogData | LogStructuredData;
+
+// @public
+export type MaybeTargetLogEntry = LogEntry<MaybeTargetLogData>;
+
+// @public
+export class ProgressReporter implements TargetReporter {
     constructor(options: {
         concurrency: number;
         version: string;
@@ -192,24 +196,37 @@ export class ProgressReporter implements Reporter {
     });
     cleanup(): Promise<void>;
     // (undocumented)
-    log(entry: LogEntry<any>): void;
+    log(entry: MaybeTargetLogEntry): void;
     // (undocumented)
     summarize(schedulerRunSummary: SchedulerRunSummary): void;
 }
 
 // @public
-export type TargetLogData = TargetStatusData | TargetMessageData;
-
-// @public
-export interface TargetMessageData {
-    // (undocumented)
-    pid: number;
+export interface TargetData {
     // (undocumented)
     target: Target;
 }
 
 // @public
-export interface TargetStatusData {
+export interface TargetErrorData extends TargetData {
+    // (undocumented)
+    error: unknown;
+}
+
+// @public
+export type TargetLogData = TargetData | TargetStatusData | TargetErrorData;
+
+// @public (undocumented)
+export type TargetLogEntry = LogEntry<TargetLogData> & Required<Pick<LogEntry<TargetLogData>, "data">>;
+
+// @public
+export type TargetLogger = Logger<TargetLogData, SchedulerRunSummary>;
+
+// @public
+export type TargetReporter = Reporter<TargetLogData, SchedulerRunSummary>;
+
+// @public
+export interface TargetStatusData extends TargetData {
     // (undocumented)
     duration?: [number, number];
     // (undocumented)
@@ -218,23 +235,33 @@ export interface TargetStatusData {
     // (undocumented)
     status: TargetStatus;
     // (undocumented)
-    target: Target;
+    threadId?: number;
 }
 
 // @public
-export class VerboseFileLogReporter implements Reporter {
+export class VerboseFileLogReporter implements TargetReporter {
+    // Warning: (ae-forgotten-export) The symbol "VerboseFileLogReporterOptions" needs to be exported by the entry point index.d.ts
+    constructor(options: VerboseFileLogReporterOptions);
+    // @deprecated
     constructor(logFile?: string, fileStream?: Writable, logMemory?: boolean);
     // (undocumented)
     cleanup(): void;
     // (undocumented)
-    log(entry: LogEntry<any>): void;
+    log(entry: MaybeTargetLogEntry): void;
     // (undocumented)
     summarize(): void;
 }
 
+// @public (undocumented)
+interface VerboseFileLogReporterOptions {
+    fileStream?: Writable;
+    logFile?: string;
+    logMemory?: boolean;
+}
+
 // Warnings were encountered during analysis:
 //
-// lib/JsonReporter.d.ts:15:9 - (ae-forgotten-export) The symbol "JsonReporterTaskStats" needs to be exported by the entry point index.d.ts
+// lib/JsonReporter.d.ts:14:9 - (ae-forgotten-export) The symbol "JsonReporterTaskStats" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

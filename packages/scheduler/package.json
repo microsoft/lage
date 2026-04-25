@@ -23,6 +23,7 @@
     "@lage-run/config": "workspace:^",
     "@lage-run/hasher": "workspace:^",
     "@lage-run/logger": "workspace:^",
+    "@lage-run/reporters": "workspace:^",
     "@lage-run/runners": "workspace:^",
     "@lage-run/target-graph": "workspace:^",
     "@lage-run/worker-threads-pool": "workspace:^"

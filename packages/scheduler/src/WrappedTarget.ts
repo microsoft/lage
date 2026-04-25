@@ -1,5 +1,5 @@
 import type { TargetHasher } from "@lage-run/hasher";
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 import { type LogEntry, LogLevel } from "@lage-run/logger";
 import type { TargetRun, TargetStatus } from "@lage-run/scheduler-types";
 import { getStartTargetId, type Target } from "@lage-run/target-graph";
@@ -14,7 +14,7 @@ import { getLageOutputCacheLocation } from "./getLageOutputCacheLocation.js";
 export interface WrappedTargetOptions {
   root: string;
   target: Target;
-  logger: Logger;
+  logger: TargetLogger;
   shouldCache: boolean;
   continueOnError: boolean;
   abortController: AbortController;

@@ -43,13 +43,16 @@ interface CreateClientOptions {
 }
 
 // @public (undocumented)
-export function createServer(lageService: ILageService, abortController: AbortController): Promise<FastifyInstance<Http2Server, Http2ServerRequest, Http2ServerResponse, FastifyBaseLogger, FastifyTypeProviderDefault>>;
+export function createServer(lageService: ILageService, abortController: AbortController): Promise<LageServer>;
 
 // @public (undocumented)
 export type ILageService = Partial<ServiceImpl<typeof LageService>>;
 
 // @public (undocumented)
 export type LageClient = ReturnType<typeof createClient>;
+
+// @public (undocumented)
+export type LageServer = FastifyInstance<Http2Server, Http2ServerRequest, Http2ServerResponse, FastifyBaseLogger, FastifyTypeProviderDefault>;
 
 // @public
 const LageService: {
@@ -69,6 +72,9 @@ const LageService: {
         };
     };
 };
+
+// @public (undocumented)
+export type LageServiceRunTargetResult = Awaited<ReturnType<NonNullable<ILageService["runTarget"]>>>;
 
 // @public
 class PingRequest extends Message<PingRequest> {
