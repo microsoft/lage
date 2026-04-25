@@ -3,12 +3,12 @@ import { cleanupFixtures, setupFixture } from "../setupFixture.js";
 import fs from "fs";
 import path from "path";
 import { git as _git, type GitOptions } from "../../git/git.js";
-import { getFileFromVersion } from "../../git/gitUtilities.js";
+import { getFileFromRef } from "../../git/gitUtilities.js";
 
 /** Call git helper but throw on error by default */
 const git = (args: string[], opts: GitOptions) => _git(args, { throwOnError: true, ...opts });
 
-describe("getFileFromVersion", () => {
+describe("getFileFromRef", () => {
   afterAll(() => {
     cleanupFixtures();
   });
@@ -30,11 +30,11 @@ describe("getFileFromVersion", () => {
     git(["commit", "-m", "second commit"], { cwd });
 
     // Should get the old version from the first commit
-    const result = getFileFromVersion({ filePath: "test.txt", ref: firstCommit, cwd });
+    const result = getFileFromRef({ filePath: "test.txt", ref: firstCommit, cwd });
     expect(result).toBe("version 1");
 
     // Should get the new version from HEAD
-    const resultHead = getFileFromVersion({ filePath: "test.txt", ref: "HEAD", cwd });
+    const resultHead = getFileFromRef({ filePath: "test.txt", ref: "HEAD", cwd });
     expect(resultHead).toBe("version 2");
   });
 
@@ -53,11 +53,11 @@ describe("getFileFromVersion", () => {
     git(["commit", "-m", "modify file on feature"], { cwd });
 
     // Should get the main version using branch ref
-    const result = getFileFromVersion({ filePath: "file.txt", ref: "main", cwd });
+    const result = getFileFromRef({ filePath: "file.txt", ref: "main", cwd });
     expect(result).toBe("main content");
 
     // Should get the feature version using branch ref
-    const resultFeature = getFileFromVersion({ filePath: "file.txt", ref: "feature", cwd });
+    const resultFeature = getFileFromRef({ filePath: "file.txt", ref: "feature", cwd });
     expect(resultFeature).toBe("feature content");
   });
 
@@ -77,7 +77,7 @@ describe("getFileFromVersion", () => {
     git(["commit", "-m", "add test.txt"], { cwd });
 
     // File doesn't exist at first commit
-    const result = getFileFromVersion({ filePath: "test.txt", ref: firstCommit, cwd });
+    const result = getFileFromRef({ filePath: "test.txt", ref: firstCommit, cwd });
     expect(result).toBeUndefined();
   });
 
@@ -88,7 +88,7 @@ describe("getFileFromVersion", () => {
     git(["add", "test.txt"], { cwd });
     git(["commit", "-m", "commit"], { cwd });
 
-    const result = getFileFromVersion({ filePath: "test.txt", ref: "nonexistent-ref", cwd });
+    const result = getFileFromRef({ filePath: "test.txt", ref: "nonexistent-ref", cwd });
     expect(result).toBeUndefined();
   });
 
@@ -100,7 +100,7 @@ describe("getFileFromVersion", () => {
     git(["add", "."], { cwd });
     git(["commit", "-m", "add nested file"], { cwd });
 
-    const result = getFileFromVersion({ filePath: "subdir/nested.txt", ref: "HEAD", cwd });
+    const result = getFileFromRef({ filePath: "subdir/nested.txt", ref: "HEAD", cwd });
     expect(result).toBe("nested content");
   });
 });

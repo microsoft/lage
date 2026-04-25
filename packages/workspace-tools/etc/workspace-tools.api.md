@@ -233,7 +233,7 @@ export function getFileAddedHash(options: {
 export function getFileAddedHash(filename: string, cwd: string): string | undefined;
 
 // @public
-export function getFileFromVersion(params: {
+export function getFileFromRef(params: {
     filePath: string;
     ref: string;
 } & GitCommonOptions): string | undefined;
