@@ -20,7 +20,6 @@ yarn api                # update API report files (via lage)
 yarn ci                 # full CI: transpile, types, build, test, lint, bundle, api (via lage)
 yarn format             # prettier --write
 yarn format:check       # prettier --check
-yarn change             # create beachball change files for versioning
 yarn checkchange        # validate change files exist
 yarn deps:check         # dependency audit (depcheck)
 yarn lage-local         # run the locally-built lage CLI (node packages/lage/dist/lage.js)
@@ -92,22 +91,4 @@ The **`workspace-tools`** helper library is also hosted in this repo.
 
 ## Versioning & release
 
-Every PR must include a [`beachball`](https://github.com/microsoft/beachball) change file. `beachball` normally uses an interactive CLI prompt, but an alternative is as follows:
-
-1. Stage or commit all changes
-2. Run `yarn checkchange` to get the list of changed packages detected by `beachball` (this excludes certain files such as tests)
-3. Create a file in the following format under `change/change-<random guid>.json`. There should be a `changes` entry for each package with `type` set to the appropriate semver change type.
-
-```json
-{
-  "changes": [
-    {
-      "type": "<patch|minor|major|none>",
-      "comment": "<describe changes to this package>",
-      "packageName": "<name>",
-      "email": "email not defined",
-      "dependentChangeType": "<'none' if 'type' is 'none', 'patch' otherwise>"
-    }
-  ]
-}
-```
+Every PR must include a [`beachball`](https://github.com/microsoft/beachball) change file. Use the `/beachball-change-file` skill to create one.
