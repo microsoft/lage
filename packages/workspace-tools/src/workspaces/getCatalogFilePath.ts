@@ -1,5 +1,6 @@
 import type { WorkspaceManager } from "../types/WorkspaceManager.js";
 import { getWorkspaceUtilities } from "./implementations/index.js";
+import type { CatalogFilePathResult } from "./implementations/WorkspaceUtilities.js";
 import { wrapWorkspaceUtility } from "./wrapWorkspaceUtility.js";
 
 /**
@@ -10,9 +11,9 @@ import { wrapWorkspaceUtility } from "./wrapWorkspaceUtility.js";
  * @param cwd - Current working directory. It will search up from here to find the root.
  * @param managerOverride - Workspace/monorepo manager to use instead of auto-detecting
  *
- * @returns Absolute path to the catalog file, or undefined if not available
+ * @returns Absolute path to the catalog file, along with the underlying manager, or undefined if not available
  */
-export function getCatalogFilePath(cwd: string, managerOverride?: WorkspaceManager): string | undefined {
+export function getCatalogFilePath(cwd: string, managerOverride?: WorkspaceManager): CatalogFilePathResult | undefined {
   return wrapWorkspaceUtility({
     cwd,
     managerOverride,

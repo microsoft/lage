@@ -130,42 +130,4 @@ describe("parseCatalogContent", () => {
       expect(result).toBeUndefined();
     });
   });
-
-  describe("unsupported managers", () => {
-    it("returns undefined for npm", () => {
-      const result = parseCatalogContent("{}", "npm");
-      expect(result).toBeUndefined();
-    });
-
-    it("returns undefined for rush", () => {
-      const result = parseCatalogContent("{}", "rush");
-      expect(result).toBeUndefined();
-    });
-  });
-
-  describe("lerna", () => {
-    it("parses pnpm-style YAML content", () => {
-      const content = `packages:\n  - packages/*\n${catalogsToYaml(defaultCatalogs)}`;
-      const result = parseCatalogContent(content, "lerna");
-      expect(result).toEqual(defaultCatalogs);
-    });
-
-    it("parses yarn v4 YAML content", () => {
-      const content = `nodeLinker: node-modules\n${catalogsToYaml(defaultCatalogs)}`;
-      const result = parseCatalogContent(content, "lerna");
-      expect(result).toEqual(defaultCatalogs);
-    });
-
-    it("parses midgard-yarn-strict JSON content", () => {
-      const packageJson = JSON.stringify({
-        name: "test",
-        workspaces: {
-          packages: ["packages/*"],
-          catalog: defaultCatalogs.default,
-        },
-      });
-      const result = parseCatalogContent(packageJson, "lerna");
-      expect(result).toEqual(defaultCatalogs);
-    });
-  });
 });

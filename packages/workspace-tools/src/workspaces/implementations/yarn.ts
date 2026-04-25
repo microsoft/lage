@@ -20,22 +20,24 @@ export const yarnUtilities: Required<WorkspaceUtilities> = {
 
   // See https://yarnpkg.com/features/catalogs
   getCatalogs: ({ root }) => {
-    const catalogFilePath = yarnUtilities.getCatalogFilePath({ root });
+    const catalogFilePath = yarnUtilities.getCatalogFilePath({ root })!.filePath;
     return yarnUtilities.parseCatalogContent({
       fileContent: fs.readFileSync(catalogFilePath, "utf8"),
-      root,
     });
   },
 
   getCatalogFilePath: ({ root }) => {
+    let filePath: string;
     // Yarn v4+ uses .yarnrc.yml for catalogs
     const yarnrcPath = getYarnrcYmlPath({ root });
     if (fs.existsSync(yarnrcPath)) {
-      return yarnrcPath;
+      filePath = yarnrcPath;
+    } else {
+      // midgard-yarn-strict uses package.json.
+      // It's okay to return package.json even if it might not have catalogs.
+      filePath = path.join(root, "package.json");
     }
-    // midgard-yarn-strict uses package.json.
-    // It's okay to return package.json even if it might not have catalogs.
-    return path.join(root, "package.json");
+    return { filePath, manager: "yarn" };
   },
 
   parseCatalogContent: ({ fileContent }) => {

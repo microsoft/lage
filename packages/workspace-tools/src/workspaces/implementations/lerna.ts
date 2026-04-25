@@ -33,11 +33,6 @@ export const lernaUtilities: WorkspaceUtilities = {
     const actualManager = getActualManager(params);
     return actualManager && getManagerUtils(actualManager).getCatalogFilePath?.(params);
   },
-
-  parseCatalogContent: (params) => {
-    const actualManager = getActualManager(params);
-    return actualManager && getManagerUtils(actualManager).parseCatalogContent?.(params);
-  },
 };
 
 /** Mapping from lerna repo root to actual package manager */

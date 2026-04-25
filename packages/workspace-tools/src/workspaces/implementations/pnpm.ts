@@ -26,13 +26,12 @@ export const pnpmUtilities: Required<WorkspaceUtilities> = {
   // See https://pnpm.io/catalogs
   getCatalogs: (params) => {
     const pnpmWorkspacesFile = getPnpmWorkspacesPath(params);
-    return pnpmUtilities.parseCatalogContent({
-      fileContent: fs.readFileSync(pnpmWorkspacesFile, "utf8"),
-      root: params.root,
-    });
+    return pnpmUtilities.parseCatalogContent({ fileContent: fs.readFileSync(pnpmWorkspacesFile, "utf8") });
   },
 
-  getCatalogFilePath: getPnpmWorkspacesPath,
+  getCatalogFilePath: (params) => {
+    return { filePath: getPnpmWorkspacesPath(params), manager: "pnpm" };
+  },
 
   parseCatalogContent: ({ fileContent }) => {
     const workspaceYaml = parseYaml<PnpmWorkspaceYaml>(fileContent);
