@@ -92,33 +92,33 @@ export class GithubActionsReporter extends GroupedReporter {
 
 // @public
 abstract class GroupedReporter implements TargetReporter {
-    constructor(options: {
-        logLevel?: LogLevel;
-        grouped?: boolean;
-        logMemory?: boolean;
-        logStream?: Writable;
-    });
+    constructor(options: GroupedReporterOptions);
     protected abstract formatGroupEnd(): string;
     protected abstract formatGroupStart(packageName: string, task: string, status: string, duration?: [number, number]): string;
     // (undocumented)
-    log(entry: MaybeTargetLogEntry): boolean | void;
-    // (undocumented)
+    log(entry: MaybeTargetLogEntry): void;
     protected logEntries: Map<string, TargetLogEntry[]>;
-    protected logEntry(entry: MaybeTargetLogEntry): boolean | void;
+    protected logEntry(entry: TargetLogEntry): boolean | void;
     // (undocumented)
     protected logStream: Writable;
+    // Warning: (ae-forgotten-export) The symbol "GroupedReporterOptions" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
-    protected options: {
-        logLevel?: LogLevel;
-        grouped?: boolean;
-        logMemory?: boolean;
-        logStream?: Writable;
-    };
+    protected options: GroupedReporterOptions;
+    protected shouldLog(entry: MaybeTargetLogEntry): boolean;
     // (undocumented)
     summarize(schedulerRunSummary: SchedulerRunSummary): void;
     protected abstract writeFailures(failed: string[], targetRuns: Map<string, TargetRun<unknown>>): void;
     protected abstract writeSummaryFooter(): void;
     protected abstract writeSummaryHeader(): void;
+}
+
+// @public (undocumented)
+interface GroupedReporterOptions {
+    grouped?: boolean;
+    logLevel?: LogLevel;
+    logMemory?: boolean;
+    logStream?: Writable;
 }
 
 // @public
@@ -165,12 +165,7 @@ interface JsonReporterTaskStats {
 
 // @public
 export class LogReporter implements TargetReporter {
-    constructor(options: {
-        logLevel?: LogLevel;
-        grouped?: boolean;
-        logMemory?: boolean;
-        logStream?: Writable;
-    });
+    constructor(options: GroupedReporterOptions);
     // (undocumented)
     log(entry: MaybeTargetLogEntry): void;
     // (undocumented)

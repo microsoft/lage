@@ -1,5 +1,5 @@
 import { formatHrtime } from "./formatDuration.js";
-import { isTargetLogEntry, isTargetStatusLogEntry } from "./isTargetLogEntry.js";
+import { isTargetLogEntry, isTargetStatusData } from "./isTargetLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
 import { Writable } from "stream";
 import fs from "fs";
@@ -96,7 +96,7 @@ export class VerboseFileLogReporter implements TargetReporter {
   private logTargetEntry(entry: TargetLogEntry) {
     const data = entry.data!;
 
-    if (isTargetStatusLogEntry(data)) {
+    if (isTargetStatusData(data)) {
       const { hash, duration, status, memoryUsage } = data;
       const mem = formatMemoryUsage(memoryUsage, this.logMemory);
 

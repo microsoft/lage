@@ -5,7 +5,8 @@ import chalk from "chalk";
 import { formatHrtime } from "./formatDuration.js";
 import { fancyGradient, formatBytes, formatMemoryUsage, hrLine } from "./formatHelpers.js";
 import type { TargetReporter, MaybeTargetLogEntry, TargetLogEntry } from "./types/TargetReporter.js";
-import { isTargetLogEntry } from "./isTargetLogEntry.js";
+import { isTargetLogEntry, isTargetStatusData } from "./isTargetLogEntry.js";
+import { isCompletionStatus, type CompletionStatus } from "./isCompletionStatus.js";
 
 type CoarseStatus = "completed" | "running" | "pending";
 
@@ -18,9 +19,6 @@ const coarseStatus: Record<TargetStatus, CoarseStatus> = {
   pending: "pending",
   queued: "pending",
 };
-
-type CompletionStatus = "success" | "failed" | "skipped" | "aborted";
-const isCompletionStatus = (status: TargetStatus): status is CompletionStatus => coarseStatus[status] === "completed";
 
 const colors = {
   label: chalk.white,
@@ -53,7 +51,8 @@ const terminal = {
  * the names of running targets for efficiency.
  */
 export class BasicReporter implements TargetReporter {
-  private taskData = new Map<string, { target: Target; status: TargetStatus; logEntries: TargetLogEntry[] }>();
+  /** Mapping from targetId to status and log entries (the logs will be cleared for non-failed completed targets) */
+  private taskData = new Map<string, { status: TargetStatus; logEntries: TargetLogEntry[] }>();
   private updateTimer: NodeJS.Timeout | undefined;
   private startTimer: () => void;
   private logMemory: boolean;
@@ -93,19 +92,26 @@ export class BasicReporter implements TargetReporter {
     if (!isTargetLogEntry(entry) || entry.data.target.hidden) return;
     const data = entry.data;
 
-    let taskData = this.taskData.get(data.target.id);
+    const { target } = data;
+    let taskData = this.taskData.get(target.id);
     if (!taskData) {
-      taskData = { target: data.target, status: "pending", logEntries: [] };
-      this.taskData.set(data.target.id, taskData);
+      taskData = { status: "pending", logEntries: [] };
+      this.taskData.set(target.id, taskData);
     }
 
     this.startTimer();
     taskData.logEntries.push(entry);
 
-    if ("status" in data) {
-      taskData.status = data.status;
-      if (isCompletionStatus(data.status)) {
-        this.reportCompletion({ target: data.target, status: data.status, duration: data.duration, memoryUsage: data.memoryUsage });
+    if (isTargetStatusData(data)) {
+      const { status, duration, memoryUsage } = data;
+      taskData.status = status;
+      if (isCompletionStatus(status)) {
+        this.reportCompletion({ target, status, duration, memoryUsage });
+
+        // Free log entries for non-failed completed targets (only needed for failure reporting at summary time)
+        if (status !== "failed") {
+          taskData.logEntries = [];
+        }
       }
     }
   }

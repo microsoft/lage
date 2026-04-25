@@ -6,6 +6,10 @@ export function isTargetLogEntry(entry: LogEntry<LogStructuredData>): entry is T
   return entry.data !== undefined && (entry.data as TargetData).target !== undefined;
 }
 
-export function isTargetStatusLogEntry(data?: LogStructuredData): data is TargetStatusData {
-  return data !== undefined && (data as TargetStatusData).target && (data as TargetStatusData).status !== undefined;
+export function isTargetStatusLogEntry(entry: LogEntry<any>): entry is Required<LogEntry<TargetStatusData>> {
+  return !!entry.data?.target && entry.data.status !== undefined;
+}
+
+export function isTargetStatusData(data: any | undefined): data is TargetStatusData {
+  return !!data?.target && data.status !== undefined;
 }

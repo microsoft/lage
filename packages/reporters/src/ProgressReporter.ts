@@ -7,7 +7,6 @@ import {
   type TaskReporterOptions,
   type TaskReporterTask,
 } from "@ms-cloudpack/task-reporter";
-import type { Target } from "@lage-run/target-graph";
 import chalk from "chalk";
 import type { Writable } from "stream";
 import { formatHrtime, hrtimeDiff } from "./formatDuration.js";
@@ -16,6 +15,7 @@ import { slowestTargetRuns } from "./slowestTargetRuns.js";
 import { colors, statusColorFn } from "./LogReporter.js";
 import type { TargetLogEntry, MaybeTargetLogEntry, TargetReporter } from "./types/TargetReporter.js";
 import { isTargetLogEntry, isTargetStatusLogEntry } from "./isTargetLogEntry.js";
+import { isCompletionStatus } from "./isCompletionStatus.js";
 
 /**
  * Shows progress including the names of currently running targets using `@ms-cloudpack/task-reporter`.
@@ -25,10 +25,10 @@ import { isTargetLogEntry, isTargetStatusLogEntry } from "./isTargetLogEntry.js"
 export class ProgressReporter implements TargetReporter {
   private logStream: Writable;
   private hasLogStreamOverride: boolean;
+  /** Mapping from targetId log entries (the logs will be cleared for completed targets) */
   private logEntries: Map<string, TargetLogEntry[]> = new Map<string, TargetLogEntry[]>();
   private taskReporter: TaskReporter;
   private tasks: Map<string, TaskReporterTask> = new Map();
-  private logMemory: boolean;
 
   constructor(
     private options: {
@@ -45,7 +45,6 @@ export class ProgressReporter implements TargetReporter {
       taskReporterOptions?: TaskReporterOptions;
     }
   ) {
-    this.logMemory = !!options.logMemory;
     this.logStream = options.logStream || process.stdout;
     this.hasLogStreamOverride = !!options.logStream;
     if (this.hasLogStreamOverride) {
@@ -76,32 +75,37 @@ export class ProgressReporter implements TargetReporter {
 
   public log(entry: MaybeTargetLogEntry): void {
     const isTargetLog = isTargetLogEntry(entry);
+    if (!isTargetLog) {
+      return;
+    }
+    const target = entry.data.target;
 
     // save the logs for errors
-    if (isTargetLog && entry.data.target.id) {
-      if (!this.logEntries.has(entry.data.target.id)) {
-        this.logEntries.set(entry.data.target.id, []);
+    if (target.id) {
+      if (!this.logEntries.has(target.id)) {
+        this.logEntries.set(target.id, []);
       }
-      this.logEntries.get(entry.data.target.id)!.push(entry);
+      this.logEntries.get(target.id)!.push(entry);
     }
 
-    // if "hidden", do not even attempt to record or report the entry
-    if (isTargetLog && entry.data.target.hidden) {
+    // if "hidden", do not even attempt to record or report the entry.
+    // also if not a status message, nothing else to do.
+    if (target.hidden || !isTargetStatusLogEntry(entry)) {
       return;
     }
 
-    if (!isTargetLog || !isTargetStatusLogEntry(entry.data)) {
-      return;
-    }
-
-    const target: Target = entry.data.target;
+    const { status, memoryUsage } = entry.data;
+    const memoryMessage = formatMemoryUsage(memoryUsage, this.options.logMemory);
 
     const reporterTask = this.tasks.has(target.id) ? this.tasks.get(target.id)! : this.taskReporter.addTask(target.label, true);
 
-    this.tasks.set(target.id, reporterTask);
-
-    const { status, memoryUsage } = entry.data;
-    const memoryMessage = formatMemoryUsage(memoryUsage, this.logMemory);
+    if (isCompletionStatus(status)) {
+      // If the reporter task will be completed below (any status), delete it from memory
+      // since it's not used at all in the summary logging
+      this.tasks.delete(target.id);
+    } else {
+      this.tasks.set(target.id, reporterTask);
+    }
 
     switch (status) {
       case "running":
@@ -157,9 +161,6 @@ export class ProgressReporter implements TargetReporter {
 
       for (const wrappedTarget of slowestTargets) {
         const { target, status, duration, queueTime, startTime } = wrappedTarget;
-        if (target.hidden) {
-          continue;
-        }
 
         const colorFn = statusColorFn[status] ?? chalk.white;
         const queueDuration = duration && queueTime ? hrtimeDiff(queueTime, startTime) : undefined;
@@ -188,25 +189,23 @@ export class ProgressReporter implements TargetReporter {
 
     this.print(hrLine);
 
-    if (failed.length > 0) {
-      for (const targetId of failed) {
-        const target = targetRuns.get(targetId)?.target;
+    for (const targetId of failed) {
+      const target = targetRuns.get(targetId)?.target;
 
-        if (target) {
-          const { packageName, task } = target;
-          const failureLogs = this.logEntries.get(targetId);
+      if (target) {
+        const { packageName, task } = target;
+        const failureLogs = this.logEntries.get(targetId);
 
-          this.print(`[${colors.pkg(packageName ?? "<root>")} ${colors.task(task)}] ${colors[LogLevel.error]("ERROR DETECTED")}`);
+        this.print(`[${colors.pkg(packageName ?? "<root>")} ${colors.task(task)}] ${colors[LogLevel.error]("ERROR DETECTED")}`);
 
-          if (failureLogs) {
-            for (const entry of failureLogs) {
-              // Log each entry separately to prevent truncation
-              this.print(entry.msg);
-            }
+        if (failureLogs) {
+          for (const entry of failureLogs) {
+            // Log each entry separately to prevent truncation
+            this.print(entry.msg);
           }
-
-          this.print(hrLine);
         }
+
+        this.print(hrLine);
       }
     }
 
