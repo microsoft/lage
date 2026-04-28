@@ -1,7 +1,7 @@
 import { afterAll, describe, expect, it } from "@jest/globals";
 import { cleanupFixtures, setupFixture } from "../setupFixture.js";
 import { git as _git, type GitOptions } from "../../git/git.js";
-import { parseRemoteBranch } from "../../git/gitUtilities.js";
+import { parseRemoteBranch } from "../../git/parseRemoteBranch.js";
 
 /** Call git helper but throw on error by default */
 const git = (args: string[], opts: GitOptions) => _git(args, { throwOnError: true, ...opts });

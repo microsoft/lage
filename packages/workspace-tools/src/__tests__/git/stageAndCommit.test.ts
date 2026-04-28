@@ -6,7 +6,7 @@ import { cleanupFixtures, setupFixture } from "../setupFixture.js";
 import fs from "fs";
 import path from "path";
 import { git as _git, type GitOptions } from "../../git/git.js";
-import { commit, stage, stageAndCommit } from "../../git/gitUtilities.js";
+import { commit, stage, stageAndCommit } from "../../git/stageAndCommit.js";
 
 /** Call git helper but throw on error by default */
 const git = (args: string[], opts: GitOptions) => _git(args, { throwOnError: true, ...opts });

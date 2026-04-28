@@ -12,4 +12,27 @@ export function getConfigValue(options: { key: string } & GitCommonOptions): str
   return results.success ? results.stdout.trim() : null;
 }
 
-// Other config helpers can move here in the future
+/**
+ * Gets the user email from the git config.
+ * @returns The email string if found, null otherwise
+ */
+export function getUserEmail(options: GitCommonOptions): string | null;
+/** @deprecated Use object params version */
+export function getUserEmail(cwd: string): string | null;
+export function getUserEmail(cwdOrOptions: string | GitCommonOptions): string | null {
+  const options: GitCommonOptions = typeof cwdOrOptions === "string" ? { cwd: cwdOrOptions } : cwdOrOptions;
+  return getConfigValue({ key: "user.email", ...options });
+}
+
+/**
+ * Gets the default branch based on `git config init.defaultBranch`, falling back to `master`.
+ */
+export function getDefaultBranch(options: GitCommonOptions): string;
+/** @deprecated Use object params version */
+export function getDefaultBranch(cwd: string): string;
+export function getDefaultBranch(cwdOrOptions: string | GitCommonOptions): string {
+  const options = typeof cwdOrOptions === "string" ? { cwd: cwdOrOptions } : cwdOrOptions;
+
+  // Default to the legacy 'master' for backwards compat and old git clients
+  return getConfigValue({ key: "init.defaultBranch", ...options }) || "master";
+}
