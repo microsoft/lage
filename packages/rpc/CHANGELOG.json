@@ -2,6 +2,21 @@
   "name": "@lage-run/rpc",
   "entries": [
     {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "1.4.6",
+      "tag": "@lage-run/rpc_v1.4.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Export `LageServer` and `LageServiceRunTargetResult` types"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Apr 2026 03:39:42 GMT",
       "version": "1.4.5",
       "tag": "@lage-run/rpc_v1.4.5",

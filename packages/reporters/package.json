@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/reporters",
-  "version": "1.7.5",
+  "version": "1.8.0",
   "description": "Log reporters for Lage",
   "repository": {
     "type": "git",

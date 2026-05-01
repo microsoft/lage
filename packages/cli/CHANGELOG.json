@@ -2,6 +2,21 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "0.36.7",
+      "tag": "@lage-run/cli_v0.36.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Update for new logger and reporters typings"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 10 Apr 2026 04:04:59 GMT",
       "version": "0.36.3",
       "tag": "@lage-run/cli_v0.36.3",

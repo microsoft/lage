@@ -1,8 +1,20 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Wed, 08 Apr 2026 03:39:42 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 01 May 2026 08:38:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.8.0
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Minor changes
+
+- Add `TargetReporter` and `TargetLogger` helper types, and make all reporters implement that. Update the reporters' method signatures and internal validation to be strict about data types. Add `TargetData` type rolling up all observed target-related logs, and remove `TargetMessageData` type which was never actually used. (elcraig@microsoft.com)
+
+### Patches
+
+- Reporters should delete log entries from memory when no longer needed (elcraig@microsoft.com)
 
 ## 1.7.1
 

@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache
 
-<!-- This log was last generated on Wed, 08 Apr 2026 03:39:42 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 01 May 2026 08:38:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.6.0
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Minor changes
+
+- Update cache provider `logger` option to use `TargetLogger` (elcraig@microsoft.com)
 
 ## 1.5.1
 

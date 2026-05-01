@@ -2,6 +2,21 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "1.10.7",
+      "tag": "@lage-run/hasher_v1.10.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add generics to `TargetHasher` `logger` option (any logger will be accepted)"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Apr 2026 03:39:42 GMT",
       "version": "1.10.2",
       "tag": "@lage-run/hasher_v1.10.2",

@@ -2,6 +2,27 @@
   "name": "workspace-tools",
   "entries": [
     {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "0.41.7",
+      "tag": "workspace-tools_v0.41.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Move git helpers to separate files"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add `resolveRemoteBranch` which parses the remote from the provided branch if present, or gets the remote (and branch if not provided) from `getDefaultRemoteBranch`. Improve efficiency and reduce git operations for various remote-related helpers."
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 25 Apr 2026 08:04:39 GMT",
       "version": "0.41.6",
       "tag": "workspace-tools_v0.41.6",
