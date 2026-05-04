@@ -3,7 +3,7 @@ import { PassThrough } from "stream";
 import createLogger, { type LogEntry, LogLevel, type LogStructuredData, type Reporter } from "../index.js";
 
 describe("logger", () => {
-  class TestReporter<T extends LogStructuredData = LogStructuredData> implements Reporter {
+  class TestReporter<T extends LogStructuredData = LogStructuredData, TSummary = unknown> implements Reporter<T, TSummary> {
     public logLevel = LogLevel.warn;
     public entries: LogEntry<T>[] = [];
 
@@ -45,9 +45,10 @@ describe("logger", () => {
   });
 
   it("should be able to report on structured data", () => {
-    const logger = createLogger();
+    type Foo = { foo: string };
+    const logger = createLogger<Foo, unknown>();
 
-    const reporter = new TestReporter();
+    const reporter = new TestReporter<Foo>();
 
     logger.addReporter(reporter);
     logger.info("info", { foo: "bar" });
@@ -60,7 +61,7 @@ describe("logger", () => {
 
   it("should allow creation of a logger with specific structured data shape", () => {
     type MyStructuredData = { somedata: { foo: string } };
-    const specificLogger = createLogger<MyStructuredData>();
+    const specificLogger = createLogger<MyStructuredData, unknown>();
     const reporter = new TestReporter<MyStructuredData>();
 
     specificLogger.addReporter(reporter);
@@ -73,9 +74,10 @@ describe("logger", () => {
   });
 
   it("should be able to log from a stream", () => {
-    const logger = createLogger();
+    type Foo = { foo: string };
+    const logger = createLogger<Foo, unknown>();
 
-    const reporter = new TestReporter();
+    const reporter = new TestReporter<Foo>();
 
     const stream = new PassThrough();
     logger.stream(LogLevel.info, stream, { foo: "bar" });

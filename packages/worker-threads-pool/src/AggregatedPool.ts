@@ -13,7 +13,8 @@ interface AggregatedPoolOptions {
   maxWorkers: number;
   script: string;
   workerOptions?: WorkerOptions;
-  logger: Logger;
+  // "never" means no structured data arguments are used
+  logger: Logger<never, never>;
   workerIdleMemoryLimit?: number; // in bytes
 }
 

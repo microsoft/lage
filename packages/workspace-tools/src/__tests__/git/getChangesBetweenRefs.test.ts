@@ -3,16 +3,17 @@ import { cleanupFixtures, setupFixture } from "../setupFixture.js";
 import fs from "fs";
 import path from "path";
 import { git as _git, type GitOptions } from "../../git/git.js";
-import { getChangesBetweenRefs, getCurrentHash } from "../../git/gitUtilities.js";
+import { getBranchChanges, getChangesBetweenRefs } from "../../git/getChanges.js";
+import { getCurrentHash } from "../../git/getCurrentHash.js";
 
 /** Call git helper but throw on error by default */
 const git = (args: string[], opts: GitOptions) => _git(args, { throwOnError: true, ...opts });
 
-describe("getChangesBetweenRefs", () => {
-  afterAll(() => {
-    cleanupFixtures();
-  });
+afterAll(() => {
+  cleanupFixtures();
+});
 
+describe("getChangesBetweenRefs", () => {
   it("throws on error, e.g. not a git repository", () => {
     const cwd = setupFixture();
 
@@ -118,5 +119,22 @@ describe("getChangesBetweenRefs", () => {
     });
 
     expect(result).toEqual(["file.ts"]);
+  });
+});
+
+describe("getBranchChanges", () => {
+  afterAll(() => {
+    cleanupFixtures();
+  });
+
+  it("passes correct args through to getChangesBetweenRefs", () => {
+    const cwd = setupFixture();
+
+    // This will fail since it's not a git repo.
+    // Verify the throwOnError option is true by default.
+    expect(() => getBranchChanges({ branch: "foo", cwd })).toThrow(
+      // The message shows the ref was passed through
+      "Gathering information about changes between refs (foo...) failed"
+    );
   });
 });

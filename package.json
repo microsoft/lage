@@ -39,7 +39,7 @@
   "devDependencies": {
     "@jest/globals": "^30.0.0",
     "@types/node": "^16.18.3",
-    "beachball": "2.64.0",
+    "beachball": "2.64.3",
     "dts-bundle-generator": "patch:dts-bundle-generator@npm%3A9.5.1#~/.yarn/patches/dts-bundle-generator-npm-9.5.1-0927b6826f.patch",
     "fast-glob": "3.3.3",
     "husky": "^9.1.5",
@@ -97,6 +97,5 @@
   },
   "engines": {
     "node": ">=16.14.0"
-  },
-  "packageManager": "yarn@4.12.0"
+  }
 }

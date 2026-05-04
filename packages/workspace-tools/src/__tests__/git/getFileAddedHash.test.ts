@@ -3,7 +3,7 @@ import { cleanupFixtures, setupFixture } from "../setupFixture.js";
 import fs from "fs";
 import path from "path";
 import { git as _git, type GitOptions } from "../../git/git.js";
-import { getFileAddedHash } from "../../git/gitUtilities.js";
+import { getFileAddedHash } from "../../git/getFileAddedHash.js";
 
 /** Call git helper but throw on error by default */
 const git = (args: string[], opts: GitOptions) => _git(args, { throwOnError: true, ...opts });

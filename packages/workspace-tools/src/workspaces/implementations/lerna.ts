@@ -24,9 +24,14 @@ export const lernaUtilities: WorkspaceUtilities = {
   },
 
   // lerna could theoretically use yarn or pnpm catalogs
-  getCatalogs: ({ root }) => {
-    const actualManager = getActualManager({ root });
-    return actualManager && getManagerUtils(actualManager).getCatalogs?.({ root });
+  getCatalogs: (params) => {
+    const actualManager = getActualManager(params);
+    return actualManager && getManagerUtils(actualManager).getCatalogs?.(params);
+  },
+
+  getCatalogFilePath: (params) => {
+    const actualManager = getActualManager(params);
+    return actualManager && getManagerUtils(actualManager).getCatalogFilePath?.(params);
   },
 };
 

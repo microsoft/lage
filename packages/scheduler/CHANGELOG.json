@@ -2,6 +2,21 @@
   "name": "@lage-run/scheduler",
   "entries": [
     {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "1.6.7",
+      "tag": "@lage-run/scheduler_v1.6.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Update scheduler `logger` option types to use `TargetLogger` and `Logger<never, never>` (any logger). In `SimpleScheduler`, remove some structured data logs that appear to be unused leftovers from a previous ProgressReporter approach."
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Apr 2026 03:39:42 GMT",
       "version": "1.6.2",
       "tag": "@lage-run/scheduler_v1.6.2",

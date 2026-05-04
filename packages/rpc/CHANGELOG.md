@@ -1,8 +1,16 @@
 # Change Log - @lage-run/rpc
 
-<!-- This log was last generated on Wed, 08 Apr 2026 03:39:42 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 01 May 2026 08:38:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.6
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Patches
+
+- Export `LageServer` and `LageServiceRunTargetResult` types (elcraig@microsoft.com)
 
 ## 1.4.5
 

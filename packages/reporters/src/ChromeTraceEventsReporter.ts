@@ -1,9 +1,9 @@
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
-import type { Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler-types";
 import type { Writable } from "stream";
+import type { TargetReporter } from "./types/TargetReporter.js";
 
 interface TraceEventsObject {
   traceEvents: CompleteEvent[];
@@ -41,7 +41,7 @@ function getTimeBasedFilename(prefix: string) {
 /**
  * Reporter that generates a Chrome dev tools profile file.
  */
-export class ChromeTraceEventsReporter implements Reporter {
+export class ChromeTraceEventsReporter implements TargetReporter {
   private consoleLogStream: Writable;
 
   private events: TraceEventsObject = {

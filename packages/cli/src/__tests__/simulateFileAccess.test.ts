@@ -15,7 +15,7 @@ const { simulateFileAccess } = require("../commands/exec/simulateFileAccess.js")
 
 // Mock the logger
 const mockSilly = jest.fn();
-class MockLogger extends Logger {
+class MockLogger extends Logger<never, never> {
   public override silly = mockSilly;
   // do nothing
   public override log() {}

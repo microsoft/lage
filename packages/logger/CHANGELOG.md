@@ -1,8 +1,16 @@
 # Change Log - @lage-run/logger
 
-<!-- This log was last generated on Wed, 08 Apr 2026 03:39:42 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 01 May 2026 08:38:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.5.0
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Minor changes
+
+- Change the `Logger` signature to `Logger<TLogStructuredData extends LogStructuredData, TSummary>` and same for `Reporter`, to be strict about data types. Add an additional `otherData` parameter on log methods for arbitrary data. (elcraig@microsoft.com)
 
 ## 1.4.1
 

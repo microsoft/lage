@@ -1,5 +1,11 @@
 import type { Catalogs } from "../../types/Catalogs.js";
 
+export interface CatalogFilePathResult {
+  filePath: string;
+  /** Actual underlying manager. This is needed for parsing later in the case of lerna. */
+  manager: "yarn" | "pnpm";
+}
+
 /**
  * Manager-specific implementations used internally by other workspace/monorepo utilities.
  */
@@ -25,4 +31,15 @@ export interface WorkspaceUtilities {
    * Returns undefined if not defined or not supported, or can throw an error.
    */
   getCatalogs?: (params: { root: string }) => Catalogs | undefined;
+
+  /**
+   * Get the absolute path to the file that may contain catalog definitions, if supported.
+   * Returns undefined if the actual manager doesn't support catalogs.
+   */
+  getCatalogFilePath?: (params: { root: string }) => CatalogFilePathResult | undefined;
+  /**
+   * Parse catalog definitions from raw file content (e.g. read from a different git ref).
+   * Returns undefined if no catalogs are found in the content or catalogs aren't supported.
+   */
+  parseCatalogContent?: (params: { fileContent: string }) => Catalogs | undefined;
 }

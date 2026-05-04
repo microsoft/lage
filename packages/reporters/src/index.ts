@@ -1,10 +1,11 @@
 export { AdoReporter } from "./AdoReporter.js";
 export { GithubActionsReporter } from "./GithubActionsReporter.js";
 export { BasicReporter } from "./BasicReporter.js";
-export { JsonReporter, type JsonReporterLogData, type JsonReporterSummaryData } from "./JsonReporter.js";
+export { JsonReporter, type JsonReporterSummaryData } from "./JsonReporter.js";
 export { LogReporter } from "./LogReporter.js";
 export { ChromeTraceEventsReporter } from "./ChromeTraceEventsReporter.js";
 export { ProgressReporter } from "./ProgressReporter.js";
 export { VerboseFileLogReporter } from "./VerboseFileLogReporter.js";
-export type { TargetStatusData, TargetMessageData, TargetLogData } from "./types/TargetLogData.js";
+export type { MaybeTargetLogData, TargetData, TargetErrorData, TargetLogData, TargetStatusData } from "./types/TargetLogData.js";
+export type { TargetReporter, TargetLogEntry, TargetLogger, MaybeTargetLogEntry } from "./types/TargetReporter.js";
 export { formatDuration, formatHrtime, hrToSeconds, hrtimeDiff } from "./formatDuration.js";

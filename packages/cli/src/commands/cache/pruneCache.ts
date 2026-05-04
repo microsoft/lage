@@ -1,4 +1,4 @@
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 import { getWorkspaceManagerRoot } from "workspace-tools";
 import { getConfig, getConcurrency } from "@lage-run/config";
 import { BackfillCacheProvider } from "@lage-run/cache";
@@ -6,7 +6,7 @@ import { BackfillCacheProvider } from "@lage-run/cache";
 export interface PruneCacheOptions {
   cwd: string;
   internalCacheFolder: string;
-  logger: Logger;
+  logger: TargetLogger;
   concurrency: number;
   pruneDays: number;
 }

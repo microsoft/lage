@@ -1,5 +1,5 @@
 import { createReporter } from "./createReporter.js";
-import type { LogStructuredData, Logger, Reporter } from "@lage-run/logger";
+import type { TargetLogger, TargetReporter } from "@lage-run/reporters";
 import {
   type BuiltInReporterName,
   type ReporterInitOptions,
@@ -15,14 +15,14 @@ import path from "path";
  */
 export async function initializeReporters(params: {
   /** Reporters will be added to this logger */
-  logger: Logger;
+  logger: TargetLogger;
   options: ReporterInitOptions;
   config: Pick<ConfigOptions, "reporter" | "reporters">;
   /** Monorepo root for resolving custom reporters */
   root: string;
   /** Reporter to use instead of `"default"` if none are specified */
   defaultReporter?: BuiltInReporterName;
-}): Promise<Reporter<LogStructuredData>[]> {
+}): Promise<void> {
   const { logger, options, config, root } = params;
 
   const customReporterNames = Object.keys(config.reporters);
@@ -56,7 +56,7 @@ export async function initializeReporters(params: {
       throw new Error(`Invalid --reporter option: "${rawReporterName}". Supported reporters are: ${reportersList}`);
     }
 
-    let reporterInstance: Reporter;
+    let reporterInstance: TargetReporter;
     if (config.reporters[reporterName]) {
       reporterInstance = await createReporter(reporterName, options, path.resolve(root, config.reporters[reporterName]));
     } else {
@@ -64,6 +64,4 @@ export async function initializeReporters(params: {
     }
     logger.addReporter(reporterInstance);
   }
-
-  return logger.reporters;
 }

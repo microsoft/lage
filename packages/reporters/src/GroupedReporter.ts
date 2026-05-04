@@ -1,14 +1,14 @@
 import { formatHrtime } from "./formatDuration.js";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
-import { LogLevel, type LogStructuredData } from "@lage-run/logger";
+import { isTargetLogEntry, isTargetStatusData } from "./isTargetLogEntry.js";
+import { LogLevel } from "@lage-run/logger";
 import chalk from "chalk";
-import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler-types";
-import type { TargetLogData, TargetStatusData } from "./types/TargetLogData.js";
 import type { Writable } from "stream";
 import { slowestTargetRuns } from "./slowestTargetRuns.js";
 import { formatMemoryUsage } from "./formatHelpers.js";
 import { statusColorFn } from "./LogReporter.js";
+import type { MaybeTargetLogEntry, TargetLogEntry, TargetReporter } from "./types/TargetReporter.js";
+import { isNonFailureCompletionStatus } from "./isCompletionStatus.js";
 
 export const colors = {
   [LogLevel.info]: chalk.white,
@@ -39,72 +39,88 @@ function format(level: LogLevel, prefix: string, message: string): string {
   return `${logLevelLabel[level]}: ${prefix} ${message}\n`;
 }
 
+export interface GroupedReporterOptions {
+  /** Only report logs with this level or numerically lower/logically higher (default info) */
+  logLevel?: LogLevel;
+
+  /** Whether to group log entries by target */
+  grouped?: boolean;
+
+  /** Whether to capture and report main process memory usage on target completion */
+  logMemory?: boolean;
+
+  /** stream for testing (defaults to stdout) */
+  logStream?: Writable;
+}
+
 /**
  * Abstract reporter which optionally groups log entries by target.
  * If grouping is enabled, it only flushes a target's log entries when it completes.
  */
-export abstract class GroupedReporter implements Reporter {
+export abstract class GroupedReporter implements TargetReporter {
   protected logStream: Writable;
-  protected logEntries = new Map<string, LogEntry[]>();
-  private readonly groupedEntries: Map<string, LogEntry<LogStructuredData>[]> = new Map<string, LogEntry[]>();
+  /** Mapping from targetId log entries (the logs will be cleared for non-failed completed targets) */
+  protected logEntries = new Map<string, TargetLogEntry[]>();
 
-  constructor(
-    protected options: {
-      logLevel?: LogLevel;
-      grouped?: boolean;
-      /** Whether to capture and report main process memory usage on target completion */
-      logMemory?: boolean;
-      /** stream for testing */
-      logStream?: Writable;
-    }
-  ) {
-    options.logLevel = options.logLevel || LogLevel.info;
+  constructor(protected options: GroupedReporterOptions) {
+    options.logLevel ??= LogLevel.info;
     this.logStream = options.logStream || process.stdout;
   }
 
-  public log(entry: LogEntry<any>): boolean | void {
-    if (entry.data && entry.data.target && entry.data.target.hidden) {
-      return;
-    }
-
-    if (entry.data && entry.data.target) {
-      if (!this.logEntries.has(entry.data.target.id)) {
-        this.logEntries.set(entry.data.target.id, []);
-      }
-
-      this.logEntries.get(entry.data.target.id)!.push(entry);
-    }
-
-    if (this.options.logLevel! >= entry.level) {
-      if (this.options.grouped && entry.data?.target) {
-        return this.logTargetEntryByGroup(entry);
-      }
-
-      return this.logTargetEntry(entry);
-    }
-  }
-
-  /** Print the entry for a target */
-  protected logTargetEntry(entry: LogEntry<TargetLogData>): boolean | void {
-    const colorFn = colors[entry.level];
-    const data = entry.data!;
-
-    if (!data?.target) {
-      if (entry.msg.trim()) {
+  public log(entry: MaybeTargetLogEntry): void {
+    if (isTargetLogEntry(entry)) {
+      if (entry.data.target.hidden) return;
+    } else {
+      // log generic entries (not related to target)
+      if (this.shouldLog(entry) && entry.msg.trim()) {
         this.logStream.write(format(entry.level, "", entry.msg));
       }
       return;
     }
 
+    // save the logs for errors (regardless of level)
+    const targetId = entry.data.target.id;
+    if (!this.logEntries.has(targetId)) {
+      this.logEntries.set(targetId, []);
+    }
+    this.logEntries.get(targetId)!.push(entry);
+
+    if (this.shouldLog(entry)) {
+      if (this.options.grouped) {
+        this.logTargetEntryByGroup(entry);
+      } else {
+        this.logEntry(entry);
+      }
+    }
+
+    // If it's a status message for non-failure completion, delete the target's entries to free memory
+    if (isTargetStatusData(entry.data) && isNonFailureCompletionStatus(entry.data.status)) {
+      this.logEntries.delete(targetId);
+    }
+  }
+
+  /**
+   * Whether the entry should be logged based solely on its level compared to the reporter's `logLevel`
+   * (does not consider `entry.target.hidden` or message presence)
+   */
+  protected shouldLog(entry: MaybeTargetLogEntry): boolean {
+    return this.options.logLevel! >= entry.level;
+  }
+
+  /** Print the entry for a target */
+  protected logEntry(entry: TargetLogEntry): boolean | void {
+    const colorFn = colors[entry.level];
+
+    const data = entry.data;
     const { target } = data;
     const { packageName, task } = target;
     const prefix = this.options.grouped ? "" : getTaskLogPrefix(packageName ?? "<root>", task);
 
-    if (!isTargetStatusLogEntry(data)) {
+    if (!isTargetStatusData(data)) {
       return this.logStream.write(format(entry.level, prefix, colorFn("|  " + entry.msg)));
     }
 
-    const { hash, duration, memoryUsage, status } = data as TargetStatusData;
+    const { hash, duration, memoryUsage, status } = data;
     const mem = formatMemoryUsage(memoryUsage, this.options.logMemory);
 
     const pkgTask = this.options.grouped ? `${chalk.magenta(packageName)} ${chalk.cyan(task)}` : "";
@@ -138,23 +154,20 @@ export abstract class GroupedReporter implements Reporter {
     }
   }
 
-  private logTargetEntryByGroup(entry: LogEntry<TargetLogData>) {
-    const data = entry.data!;
+  private logTargetEntryByGroup(entry: TargetLogEntry) {
+    const data = entry.data;
 
     const target = data.target;
     const { id } = target;
 
-    this.groupedEntries.set(id, this.groupedEntries.get(id) || []);
-    this.groupedEntries.get(id)?.push(entry);
-
-    if (isTargetStatusLogEntry(data)) {
+    if (isTargetStatusData(data)) {
       if (data.status === "success" || data.status === "failed" || data.status === "skipped" || data.status === "aborted") {
         const { status, duration } = data;
         this.logStream.write(this.formatGroupStart(data.target.packageName ?? "<root>", data.target.task, status, duration));
 
-        const entries = this.groupedEntries.get(id)! as LogEntry<TargetStatusData>[];
+        const entries = this.logEntries.get(id)!;
         for (const targetEntry of entries) {
-          this.logTargetEntry(targetEntry);
+          this.logEntry(targetEntry);
         }
 
         this.logStream.write(this.formatGroupEnd());

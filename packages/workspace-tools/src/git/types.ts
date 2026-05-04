@@ -47,9 +47,12 @@ export type ParseRemoteBranchOptions = GitCommonOptions & {
 };
 
 export type ParsedRemoteBranch = {
-  /** Remote name, e.g. `origin` */
+  /**
+   * Remote name, e.g. `origin`.
+   * May be an empty string if the original branch reference didn't include a remote.
+   */
   remote: string;
-  /** Branch name without remote, e.g. `main` */
+  /** Branch name without remote, e.g. `main`. This is always set. */
   remoteBranch: string;
 };
 

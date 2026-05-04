@@ -1,5 +1,6 @@
+import fs from "fs";
 import path from "path";
-import { readYaml } from "../../lockfile/readYaml.js";
+import { parseYaml } from "../../lockfile/readYaml.js";
 import type { Catalog, NamedCatalogs } from "../../types/Catalogs.js";
 import { managerFiles } from "./getWorkspaceManagerAndRoot.js";
 import type { WorkspaceUtilities } from "./WorkspaceUtilities.js";
@@ -11,20 +12,29 @@ type PnpmWorkspaceYaml = {
   catalogs?: NamedCatalogs;
 };
 
-function getPnpmWorkspaceYaml(params: { root: string }) {
-  const pnpmWorkspacesFile = path.join(params.root, managerFiles.pnpm);
-  return readYaml<PnpmWorkspaceYaml>(pnpmWorkspacesFile);
+function getPnpmWorkspacesPath(params: { root: string }): string {
+  return path.join(params.root, managerFiles.pnpm);
 }
 
-export const pnpmUtilities: WorkspaceUtilities = {
+export const pnpmUtilities: Required<WorkspaceUtilities> = {
   getWorkspacePatterns: (params) => {
-    const { packages } = getPnpmWorkspaceYaml(params);
+    const pnpmWorkspacesFile = getPnpmWorkspacesPath(params);
+    const { packages } = parseYaml<PnpmWorkspaceYaml>(fs.readFileSync(pnpmWorkspacesFile, "utf8"));
     return packages ? { patterns: packages, type: "pattern" } : undefined;
   },
 
   // See https://pnpm.io/catalogs
   getCatalogs: (params) => {
-    const workspaceYaml = getPnpmWorkspaceYaml(params);
+    const pnpmWorkspacesFile = getPnpmWorkspacesPath(params);
+    return pnpmUtilities.parseCatalogContent({ fileContent: fs.readFileSync(pnpmWorkspacesFile, "utf8") });
+  },
+
+  getCatalogFilePath: (params) => {
+    return { filePath: getPnpmWorkspacesPath(params), manager: "pnpm" };
+  },
+
+  parseCatalogContent: ({ fileContent }) => {
+    const workspaceYaml = parseYaml<PnpmWorkspaceYaml>(fileContent);
     if (!workspaceYaml.catalog && !workspaceYaml.catalogs) {
       return undefined;
     }

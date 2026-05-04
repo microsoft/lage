@@ -15,28 +15,36 @@ export function isCatalogVersion(version: string): boolean {
  *
  * Throws an error if there's anything invalid about the catalog spec (no catalogs defined,
  * no matching catalog, catalog doesn't contain `name`, recursive catalog version).
+ * If `allowNotFound` is true, it will return undefined if no match instead.
  *
  * Returns undefined if the version doesn't start with `catalog:`.
  * @see https://pnpm.io/catalogs
  * @see https://yarnpkg.com/features/catalogs
  *
- * @param name - Dependency package name
- * @param version - Dependency version spec, e.g. `catalog:my-catalog` or `catalog:`,
- * or some non-catalog spec like `^1.2.3`
  * @returns Actual version spec from the catalog, or undefined if not a catalog version
+ * (or undefined if `allowNotFound` is true and the package isn't in the catalog)
  */
 export function getCatalogVersion(params: {
+  /** Dependency package name */
   name: string;
+  /**
+   * Dependency version spec, e.g. `catalog:my-catalog` or `catalog:`, or some non-catalog
+   * spec like `^1.2.3`
+   */
   version: string;
   catalogs: Catalogs | undefined;
+  allowNotFound?: boolean;
 }): string | undefined {
-  const { name, version, catalogs } = params;
+  const { name, version, catalogs, allowNotFound } = params;
 
   if (!isCatalogVersion(version)) {
     return undefined;
   }
 
   if (!catalogs) {
+    if (allowNotFound) {
+      return undefined;
+    }
     throw new Error(`Dependency "${name}" uses a catalog version "${version}" but no catalogs are defined.`);
   }
 
@@ -54,12 +62,15 @@ export function getCatalogVersion(params: {
         : catalogs.default;
   const catalogNameStr = catalogName ? `catalogs.${catalogName}` : "the default catalog";
 
-  if (!checkCatalog) {
+  if (!checkCatalog && !allowNotFound) {
     throw new Error(`Dependency "${name}" uses a catalog version "${version}" but ${catalogNameStr} is not defined.`);
   }
 
-  const actualSpec = checkCatalog[name];
+  const actualSpec = checkCatalog?.[name];
   if (!actualSpec) {
+    if (allowNotFound) {
+      return undefined;
+    }
     throw new Error(
       `Dependency "${name}" uses a catalog version "${version}", but ${catalogNameStr} doesn't define a version for "${name}".`
     );

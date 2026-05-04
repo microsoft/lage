@@ -1,13 +1,14 @@
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 import fs from "fs";
 import path from "path";
 import lockfile from "proper-lockfile";
 import execa from "execa";
 import { getBinScripts } from "../getBinPaths.js";
 import { getCacheDirectoryRoot } from "@lage-run/cache";
+import type { LageServiceLogData } from "../types/LageServiceLogData.js";
 
 export interface LaunchServerInBackgroundOptions {
-  logger: Logger;
+  logger: TargetLogger;
   root: string;
   host: string;
   port: number;
@@ -46,10 +47,10 @@ export async function launchServerInBackground({
   });
 
   const pid = parseInt(fs.readFileSync(lockfilePath, "utf-8"));
-  const isServerRunning = pid && isAlive(pid);
-  logger.info("Checking if server is already running", { pid, isServerRunning });
+  const isServerRunning = !!pid && isAlive(pid);
+  logger.info("Checking if server is already running", undefined, { pid, isServerRunning } satisfies LageServiceLogData);
   if (pid && isServerRunning) {
-    logger.info("Server already running", { pid });
+    logger.info("Server already running", undefined, { pid } satisfies LageServiceLogData);
   } else {
     const binScripts = getBinScripts();
 
@@ -79,7 +80,7 @@ export async function launchServerInBackground({
     }
 
     child.unref();
-    logger.info("Server started", { pid: child.pid });
+    logger.info("Server started", undefined, { pid: child.pid } satisfies LageServiceLogData);
   }
 
   await releaseLock();

@@ -48,9 +48,12 @@ export function setupFixture(
   options?: {
     /** Whether to set up a git repo */
     git?: boolean;
+    /** Default branch name for the git repo */
+    defaultBranchName?: string;
   }
 ): string {
   const useGit = !!options?.git;
+  const defaultBranchName = options?.defaultBranchName || "main";
 
   let fixturePath: string | undefined;
   const realFixtureName = fixtureName?.replace("-lerna-", "-") as RealFixtureName | undefined;
@@ -73,7 +76,7 @@ export function setupFixture(
 
   if (useGit) {
     // git init if requested
-    basicGit(["init"], { cwd });
+    basicGit(["init", "-b", defaultBranchName], { cwd });
     basicGit(["config", "user.name", "test user"], { cwd });
     basicGit(["config", "user.email", "test@test.email"], { cwd });
     // Ensure GPG signing doesn't interfere with tests
@@ -83,8 +86,8 @@ export function setupFixture(
     // ensure that the configuration for this repo does not collide
     // with any global configuration the user had made, so we have
     // a 'fixed' value for our tests, regardless of user configuration
-    basicGit(["symbolic-ref", "HEAD", "refs/heads/main"], { cwd });
-    basicGit(["config", "init.defaultBranch", "main"], { cwd });
+    // basicGit(["symbolic-ref", "HEAD", "refs/heads/main"], { cwd });
+    basicGit(["config", "init.defaultBranch", defaultBranchName], { cwd });
   }
 
   // Copy and commit the fixture if requested
@@ -136,15 +139,20 @@ export function setupPackageJson(cwd: string, packageJson: Record<string, any> =
  * Create a separate local git repo and configure it as a remote for `cwd`.
  * @returns The path to the remote repo directory.
  */
-export function setupLocalRemote(params: { cwd: string; remoteName: string; fixtureName?: TestFixtureName }): string {
-  const { cwd, remoteName, fixtureName } = params;
+export function setupLocalRemote(params: {
+  cwd: string;
+  remoteName: string;
+  defaultBranchName?: string;
+  fixtureName?: TestFixtureName;
+}): string {
+  const { cwd, remoteName, defaultBranchName = "main", fixtureName } = params;
 
   // Create a separate repo and configure it as a remote
-  const remoteCwd = setupFixture(fixtureName, { git: true });
+  const remoteCwd = setupFixture(fixtureName, { git: true, defaultBranchName });
   const remoteUrl = remoteCwd.replace(/\\/g, "/");
   basicGit(["remote", "add", remoteName, remoteUrl], { cwd });
   basicGit(["config", "pull.rebase", "false"], { cwd });
-  basicGit(["pull", "-X", "ours", remoteName, "main", "--allow-unrelated-histories"], { cwd });
+  basicGit(["pull", "-X", "ours", remoteName, defaultBranchName, "--allow-unrelated-histories"], { cwd });
 
   // Configure url in package.json (make the same commit in local and remote so there's no diff;
   // note that we can't just commit locally and push since the remote isn't a bare repo)
@@ -155,7 +163,7 @@ export function setupLocalRemote(params: { cwd: string; remoteName: string; fixt
   }
 
   // Ensure remote is available for comparison
-  basicGit(["fetch", remoteName, "main"], { cwd });
+  basicGit(["fetch", remoteName, defaultBranchName], { cwd });
 
   return remoteCwd;
 }

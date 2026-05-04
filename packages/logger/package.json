@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/logger",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Logger for Lage",
   "repository": {
     "type": "git",

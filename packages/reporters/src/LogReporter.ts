@@ -1,15 +1,16 @@
 import { formatHrtime, hrtimeDiff } from "./formatDuration.js";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
+import { isTargetLogEntry, isTargetStatusData } from "./isTargetLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
 import chalk from "chalk";
 import type { Chalk } from "chalk";
-import type { Reporter, LogEntry } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
-import type { TargetLogData, TargetStatusData } from "./types/TargetLogData.js";
 import type { Writable } from "stream";
 import crypto from "crypto";
 import { fancyGradient, formatBytes, formatMemoryUsage, hrLine, stripAnsi } from "./formatHelpers.js";
 import { slowestTargetRuns } from "./slowestTargetRuns.js";
+import type { TargetLogEntry, MaybeTargetLogEntry, TargetReporter } from "./types/TargetReporter.js";
+import type { GroupedReporterOptions } from "./GroupedReporter.js";
+import { isCompletionStatus, isNonFailureCompletionStatus } from "./isCompletionStatus.js";
 
 /** Color scheme from lage v1's reporter and others derived from it */
 export const colors = {
@@ -55,6 +56,7 @@ function hashStringToNumber(str: string): number {
 
 const pkgNameToIndexInPkgColorArray = new Map<string, number>();
 
+/** Get the color for a package name per lage v1 package color logic */
 function getColorForPkg(pkg: string): Chalk {
   if (!pkgNameToIndexInPkgColorArray.has(pkg)) {
     const index = hashStringToNumber(pkg) % pkgColors.length;
@@ -73,60 +75,60 @@ function getTaskLogPrefix(pkg: string, task: string) {
  * Lage v1 reporter that logs tasks without progress spinners.
  * It can either log entries immediately, or grouped when a target completes.
  */
-export class LogReporter implements Reporter {
+export class LogReporter implements TargetReporter {
   private logStream: Writable;
-  private logEntries = new Map<string, LogEntry[]>();
+  /** Mapping from targetId log entries (the logs will be cleared for non-failed completed targets) */
+  private logEntries = new Map<string, TargetLogEntry[]>();
 
-  constructor(
-    private options: {
-      logLevel?: LogLevel;
-      grouped?: boolean;
-      /** Whether to capture and report main process memory usage on target completion */
-      logMemory?: boolean;
-      /** stream for testing */
-      logStream?: Writable;
-    }
-  ) {
-    options.logLevel = options.logLevel || LogLevel.info;
+  constructor(private options: GroupedReporterOptions) {
+    options.logLevel ??= LogLevel.info;
     this.logStream = options.logStream || process.stdout;
   }
 
-  public log(entry: LogEntry<any>): void {
-    // if "hidden", do not even attempt to record or report the entry
-    if (entry?.data?.target?.hidden) {
+  public log(entry: MaybeTargetLogEntry): void {
+    if (isTargetLogEntry(entry)) {
+      // if "hidden", do not even attempt to record or report the entry
+      if (entry.data.target.hidden) return;
+    } else {
+      // log generic entries (not related to target)
+      if (this.shouldLog(entry) && entry.msg) {
+        this.print(entry.msg);
+      }
       return;
     }
 
     // save the logs for errors
-    if (entry.data?.target?.id) {
-      if (!this.logEntries.has(entry.data.target.id)) {
-        this.logEntries.set(entry.data.target.id, []);
-      }
-      this.logEntries.get(entry.data.target.id)!.push(entry);
+    const targetId = entry.data.target.id;
+    if (!this.logEntries.has(targetId)) {
+      this.logEntries.set(targetId, []);
     }
+    this.logEntries.get(targetId)!.push(entry);
 
-    // if loglevel is not high enough, do not report the entry
-    if (this.options.logLevel! < entry.level) {
+    if (!this.shouldLog(entry)) {
       return;
     }
 
-    // log to grouped entries
-    if (this.options.grouped && entry.data?.target) {
-      return this.logTargetEntryByGroup(entry);
+    if (this.options.grouped) {
+      this.logTargetEntryByGroup(entry);
+    } else {
+      this.logTargetEntry(entry);
     }
 
-    // log normal target entries
-    if (entry.data && entry.data.target) {
-      return this.logTargetEntry(entry);
-    }
-
-    // log generic entries (not related to target)
-    if (entry.msg) {
-      return this.print(entry.msg);
+    // If it's a status message for non-failure completion, delete the target's entries to free memory
+    if (isTargetStatusData(entry.data) && isNonFailureCompletionStatus(entry.data.status)) {
+      this.logEntries.delete(targetId);
     }
   }
 
-  private printEntry(entry: LogEntry<any>, message: string) {
+  /**
+   * Whether the entry should be logged based solely on its level compared to the reporter's `logLevel`
+   * (does not consider `entry.target.hidden` or message presence)
+   */
+  private shouldLog(entry: MaybeTargetLogEntry): boolean {
+    return this.options.logLevel! >= entry.level;
+  }
+
+  private printEntry(entry: TargetLogEntry, message: string) {
     let prefix = "";
     const msg = message;
 
@@ -142,11 +144,11 @@ export class LogReporter implements Reporter {
     this.logStream.write(message + "\n");
   }
 
-  private logTargetEntry(entry: LogEntry<TargetLogData>) {
+  private logTargetEntry(entry: TargetLogEntry) {
     const colorFn = colors[entry.level];
     const data = entry.data!;
 
-    if (!isTargetStatusLogEntry(data)) {
+    if (!isTargetStatusData(data)) {
       return this.printEntry(entry, colorFn(":  " + stripAnsi(entry.msg)));
     }
 
@@ -180,17 +182,14 @@ export class LogReporter implements Reporter {
     }
   }
 
-  private logTargetEntryByGroup(entry: LogEntry<TargetLogData>) {
-    const data = entry.data!;
+  private logTargetEntryByGroup(entry: TargetLogEntry) {
+    const data = entry.data;
 
     const target = data.target;
     const { id } = target;
 
-    if (
-      isTargetStatusLogEntry(data) &&
-      (data.status === "success" || data.status === "failed" || data.status === "skipped" || data.status === "aborted")
-    ) {
-      const entries = this.logEntries.get(id)! as LogEntry<TargetStatusData>[];
+    if (isTargetStatusData(data) && isCompletionStatus(data.status)) {
+      const entries = this.logEntries.get(id)!;
 
       for (const targetEntry of entries) {
         this.logTargetEntry(targetEntry);
@@ -215,9 +214,6 @@ export class LogReporter implements Reporter {
 
       for (const wrappedTarget of slowestTargets) {
         const { target, status, duration } = wrappedTarget;
-        if (target.hidden) {
-          continue;
-        }
 
         const colorFn = statusColorFn[status] ?? chalk.white;
         const queueDuration = hrtimeDiff(wrappedTarget.queueTime, wrappedTarget.startTime);
@@ -246,25 +242,23 @@ export class LogReporter implements Reporter {
 
     this.print(hrLine);
 
-    if (failed.length > 0) {
-      for (const targetId of failed) {
-        const target = targetRuns.get(targetId)?.target;
+    for (const targetId of failed) {
+      const target = targetRuns.get(targetId)?.target;
 
-        if (target) {
-          const { packageName, task } = target;
-          const failureLogs = this.logEntries.get(targetId);
+      if (target) {
+        const { packageName, task } = target;
+        const failureLogs = this.logEntries.get(targetId);
 
-          this.print(`[${colors.pkg(packageName ?? "<root>")} ${colors.task(task)}] ${colors[LogLevel.error]("ERROR DETECTED")}`);
+        this.print(`[${colors.pkg(packageName ?? "<root>")} ${colors.task(task)}] ${colors[LogLevel.error]("ERROR DETECTED")}`);
 
-          if (failureLogs) {
-            for (const entry of failureLogs) {
-              // Log each entry separately to prevent truncation
-              this.print(entry.msg);
-            }
+        if (failureLogs) {
+          for (const entry of failureLogs) {
+            // Log each entry separately to prevent truncation
+            this.print(entry.msg);
           }
-
-          this.print(hrLine);
         }
+
+        this.print(hrLine);
       }
     }
 

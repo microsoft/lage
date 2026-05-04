@@ -1,8 +1,16 @@
 # Change Log - @lage-run/scheduler
 
-<!-- This log was last generated on Wed, 08 Apr 2026 03:39:42 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 01 May 2026 08:38:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.6.7
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Patches
+
+- Update scheduler `logger` option types to use `TargetLogger` and `Logger<never, never>` (any logger). In `SimpleScheduler`, remove some structured data logs that appear to be unused leftovers from a previous ProgressReporter approach. (elcraig@microsoft.com)
 
 ## 1.6.2
 

@@ -1,8 +1,33 @@
 # Change Log - workspace-tools
 
-<!-- This log was last generated on Wed, 08 Apr 2026 03:39:42 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 01 May 2026 08:38:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.41.7
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Patches
+
+- Move git helpers to separate files (elcraig@microsoft.com)
+- Add `resolveRemoteBranch` which parses the remote from the provided branch if present, or gets the remote (and branch if not provided) from `getDefaultRemoteBranch`. Improve efficiency and reduce git operations for various remote-related helpers. (elcraig@microsoft.com)
+
+## 0.41.6
+
+Sat, 25 Apr 2026 08:04:39 GMT
+
+### Patches
+
+- Rename `getFileFromVersion` to `getFileFromRef`. Also add `getCatalogVersion` option `allowNotFound`. (elcraig@microsoft.com)
+
+## 0.41.5
+
+Sat, 25 Apr 2026 03:32:41 GMT
+
+### Patches
+
+- Add getFileFromVersion, getCatalogFilePath, and parseCatalogContent utilities (email not defined)
 
 ## 0.41.3
 

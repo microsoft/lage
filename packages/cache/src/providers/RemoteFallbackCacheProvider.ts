@@ -1,10 +1,10 @@
 import type { CacheProvider } from "../types/CacheProvider.js";
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 import type { Target } from "@lage-run/target-graph";
 
 export interface RemoteFallbackCacheProviderOptions {
   root: string;
-  logger: Logger;
+  logger: TargetLogger;
 
   localCacheProvider?: CacheProvider;
   remoteCacheProvider?: CacheProvider;

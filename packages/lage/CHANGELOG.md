@@ -1,8 +1,57 @@
 # Change Log - lage
 
-<!-- This log was last generated on Thu, 16 Apr 2026 01:52:11 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 01 May 2026 08:38:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.15.12
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Minor changes
+
+- `@lage-run/logger`
+  - Change the `Logger` signature to `Logger<TLogStructuredData extends LogStructuredData, TSummary>` and same for `Reporter`, to be strict about data types. Add an additional `otherData` parameter on log methods for arbitrary data. (elcraig@microsoft.com)
+- `@lage-run/reporters`
+  - Add `TargetReporter` and `TargetLogger` helper types, and make all reporters implement that. Update the reporters' method signatures and internal validation to be strict about data types. Add `TargetData` type rolling up all observed target-related logs, and remove `TargetMessageData` type which was never actually used. (elcraig@microsoft.com)
+- `@lage-run/cache`
+  - Update cache provider `logger` option to use `TargetLogger` (elcraig@microsoft.com)
+
+### Patches
+
+- `workspace-tools`
+  - Move git helpers to separate files (elcraig@microsoft.com)
+  - Add `resolveRemoteBranch` which parses the remote from the provided branch if present, or gets the remote (and branch if not provided) from `getDefaultRemoteBranch`. Improve efficiency and reduce git operations for various remote-related helpers. (elcraig@microsoft.com)
+- `@lage-run/reporters`
+  - Reporters should delete log entries from memory when no longer needed (elcraig@microsoft.com)
+- `@lage-run/hasher`
+  - Add generics to `TargetHasher` `logger` option (any logger will be accepted) (elcraig@microsoft.com)
+- `@lage-run/rpc`
+  - Export `LageServer` and `LageServiceRunTargetResult` types (elcraig@microsoft.com)
+- `@lage-run/scheduler`
+  - Update scheduler `logger` option types to use `TargetLogger` and `Logger<never, never>` (any logger). In `SimpleScheduler`, remove some structured data logs that appear to be unused leftovers from a previous ProgressReporter approach. (elcraig@microsoft.com)
+- `@lage-run/worker-threads-pool`
+  - Add generics to `AggregatedPool` `logger` option (any logger will be accepted) (elcraig@microsoft.com)
+- `@lage-run/cli`
+  - Update for new logger and reporters typings (elcraig@microsoft.com)
+
+## 2.15.11
+
+Sat, 25 Apr 2026 08:04:39 GMT
+
+### Patches
+
+- `workspace-tools`
+  - Rename `getFileFromVersion` to `getFileFromRef`. Also add `getCatalogVersion` option `allowNotFound`. (elcraig@microsoft.com)
+
+## 2.15.10
+
+Sat, 25 Apr 2026 03:32:41 GMT
+
+### Patches
+
+- `workspace-tools`
+  - Add getFileFromVersion, getCatalogFilePath, and parseCatalogContent utilities (email not defined)
 
 ## 2.15.9
 

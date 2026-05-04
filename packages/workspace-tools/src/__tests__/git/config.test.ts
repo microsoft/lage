@@ -1,8 +1,7 @@
 import { afterAll, describe, expect, it } from "@jest/globals";
 import { cleanupFixtures, setupFixture } from "../setupFixture.js";
-import { getUserEmail, getDefaultBranch } from "../../git/gitUtilities.js";
 import { git as _git, type GitOptions } from "../../git/git.js";
-import { getConfigValue } from "../../git/config.js";
+import { getConfigValue, getUserEmail, getDefaultBranch } from "../../git/config.js";
 
 /** Call git helper but throw on error by default */
 const git = (args: string[], opts: GitOptions) => _git(args, { throwOnError: true, ...opts });

@@ -22,7 +22,8 @@ export interface TargetHasherOptions {
   environmentGlob: string[];
   cacheKey?: string;
   cliArgs?: string[];
-  logger?: Logger;
+  // "never" means no structured data arguments are used
+  logger?: Logger<never, never>;
 }
 
 export interface TargetManifest {
@@ -46,7 +47,7 @@ export interface TargetManifest {
  * It uses `glob-hasher` internally.
  */
 export class TargetHasher {
-  private logger: Logger | undefined;
+  private logger: Logger<never, never> | undefined;
   private fileHasher: FileHasher;
   public packageTree: PackageTree | undefined;
 

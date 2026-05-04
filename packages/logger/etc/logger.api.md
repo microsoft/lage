@@ -5,40 +5,37 @@
 ```ts
 
 // @public (undocumented)
-function createLogger<TLogStructuredData extends LogStructuredData = LogStructuredData>(): Logger<TLogStructuredData>;
+function createLogger<TLogStructuredData extends LogStructuredData, TSummary>(): Logger<TLogStructuredData, TSummary>;
+export { createLogger }
 export default createLogger;
 
 // @public (undocumented)
-export interface LogEntry<TLogStructuredData extends LogStructuredData = LogStructuredData> {
+export interface LogEntry<TLogStructuredData extends LogStructuredData> {
     data?: TLogStructuredData;
     level: LogLevel;
     msg: string;
     timestamp: number;
 }
 
-// @public (undocumented)
-export class Logger<TLogStructuredData extends LogStructuredData = LogStructuredData> {
+// @public
+export class Logger<TLogStructuredData extends LogStructuredData, TSummary> {
     // (undocumented)
-    addReporter(reporter: Reporter): void;
+    addReporter(reporter: Reporter<TLogStructuredData, TSummary>): void;
+    cleanup(): Promise<void>;
+    error(msg: string, data?: TLogStructuredData, otherData?: LogStructuredData): void;
+    info(msg: string, data?: TLogStructuredData, otherData?: LogStructuredData): void;
+    log(level: LogLevel, msg: string, data?: TLogStructuredData, otherData?: LogStructuredData): void;
     // (undocumented)
-    error(msg: string, data?: TLogStructuredData): void;
-    // (undocumented)
-    info(msg: string, data?: TLogStructuredData): void;
-    // (undocumented)
-    log(level: LogLevel, msg: string, data?: TLogStructuredData): void;
-    // (undocumented)
-    readonly reporters: Reporter[];
-    // (undocumented)
-    silly(msg: string, data?: TLogStructuredData): void;
+    get reporters(): ReadonlyArray<Reporter<TLogStructuredData, TSummary>>;
+    silly(msg: string, data?: TLogStructuredData, otherData?: LogStructuredData): void;
     // (undocumented)
     stream(level: LogLevel, input: NodeJS.ReadableStream, data?: TLogStructuredData): () => void;
-    // (undocumented)
-    verbose(msg: string, data?: TLogStructuredData): void;
-    // (undocumented)
-    warn(msg: string, data?: TLogStructuredData): void;
+    summarize(summary: TSummary): void;
+    verbose(msg: string, data?: TLogStructuredData, otherData?: LogStructuredData): void;
+    warn(msg: string, data?: TLogStructuredData, otherData?: LogStructuredData): void;
 }
 
-// @public (undocumented)
+// @public
 export const LogLevel: {
     readonly error: 10;
     readonly warn: 20;
@@ -50,15 +47,15 @@ export const LogLevel: {
 // @public (undocumented)
 export type LogLevel = (typeof LogLevel)[keyof typeof LogLevel];
 
-// @public (undocumented)
-export type LogStructuredData = Record<string, any>;
+// @public
+export type LogStructuredData = object;
 
 // @public (undocumented)
-export interface Reporter<TLogStructuredData extends LogStructuredData = LogStructuredData> {
+export interface Reporter<TLogStructuredData extends LogStructuredData, TSummary> {
     cleanup?: () => void | Promise<void>;
-    log(entry: LogEntry<TLogStructuredData>): void;
-    logLevel?: LogLevel;
-    summarize(context: unknown): void;
+    log(entry: LogEntry<TLogStructuredData | LogStructuredData>): void;
+    readonly logLevel?: LogLevel;
+    summarize(summary: TSummary): void;
 }
 
 // (No @packageDocumentation comment for this package)

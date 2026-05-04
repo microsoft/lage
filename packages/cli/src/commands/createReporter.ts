@@ -8,9 +8,9 @@ import {
   BasicReporter,
   VerboseFileLogReporter,
   ChromeTraceEventsReporter,
+  type TargetReporter,
 } from "@lage-run/reporters";
 import type { BuiltInReporterName, ReporterInitOptions } from "../types/ReporterInitOptions.js";
-import type { Reporter } from "@lage-run/logger";
 import { findPackageRoot } from "workspace-tools";
 import fs from "fs";
 import path from "path";
@@ -38,7 +38,7 @@ export function setMockImportReporter(mock: MockImportReporter | undefined): voi
  *
  * @param customReporterPath For a custom reporter, this is its absolute path (not verified to exist yet)
  */
-export async function createReporter(reporter: string, options: ReporterInitOptions, customReporterPath?: string): Promise<Reporter> {
+export async function createReporter(reporter: string, options: ReporterInitOptions, customReporterPath?: string): Promise<TargetReporter> {
   const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress, logFile, indented, logMemory } = options;
   const logLevel = LogLevel[logLevelName];
 
@@ -75,7 +75,7 @@ export async function createReporter(reporter: string, options: ReporterInitOpti
 
     case "verboseFileLog":
     case "vfl":
-      return new VerboseFileLogReporter(logFile, undefined, logMemory);
+      return new VerboseFileLogReporter({ logFile, logMemory });
   }
 
   // Default reporter behavior - auto-detect CI environments
@@ -94,12 +94,12 @@ export async function createReporter(reporter: string, options: ReporterInitOpti
   return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
 }
 
-async function loadCustomReporterModule(reporter: string, options: ReporterInitOptions, resolvedPath: string): Promise<Reporter> {
+async function loadCustomReporterModule(reporter: string, options: ReporterInitOptions, resolvedPath: string): Promise<TargetReporter> {
   if (!fs.existsSync(resolvedPath)) {
     throw new Error(`Custom reporter "${reporter}" file "${resolvedPath}" does not exist`);
   }
 
-  let reporterInstance: Reporter | undefined;
+  let reporterInstance: TargetReporter | undefined;
   try {
     // Use dynamic import to load the custom reporter module
     // This works with both ESM (.mjs, .js with type: module) and CommonJS (.cjs, .js) files

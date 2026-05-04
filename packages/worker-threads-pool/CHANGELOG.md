@@ -1,8 +1,16 @@
 # Change Log - @lage-run/worker-threads-pool
 
-<!-- This log was last generated on Wed, 08 Apr 2026 03:39:42 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 01 May 2026 08:38:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.10.3
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Patches
+
+- Add generics to `AggregatedPool` `logger` option (any logger will be accepted) (elcraig@microsoft.com)
 
 ## 0.10.2
 

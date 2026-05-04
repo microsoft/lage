@@ -1,13 +1,14 @@
-import createLogger, { type Logger } from "@lage-run/logger";
+import { createLogger } from "@lage-run/logger";
 import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import { initializeReporters } from "../initializeReporters.js";
 import { createLageService } from "./lageService.js";
-import { createServer } from "@lage-run/rpc";
+import { createServer, type LageServer } from "@lage-run/rpc";
 import { parseServerOption } from "../parseServerOption.js";
 import { getConfig } from "@lage-run/config";
 import { getWorkspaceManagerRoot } from "workspace-tools";
 import path from "path";
 import { getCacheDirectoryRoot } from "@lage-run/cache";
+import type { TargetLogger } from "@lage-run/reporters";
 
 interface WorkerOptions extends ReporterInitOptions {
   nodeArg?: string[];
@@ -25,9 +26,9 @@ export async function serverAction(options: WorkerOptions): Promise<void> {
   const root = getWorkspaceManagerRoot(cwd) ?? cwd;
   const config = await getConfig(cwd);
 
-  const logger = createLogger();
-  options.logLevel = options.logLevel ?? "info";
-  options.logFile = options.logFile ?? path.join(getCacheDirectoryRoot(root), "server.log");
+  const logger: TargetLogger = createLogger();
+  options.logLevel ??= "info";
+  options.logFile ??= path.join(getCacheDirectoryRoot(root), "server.log");
   await initializeReporters({ logger, options, config, root, defaultReporter: "verboseFileLog" });
 
   logger.info(`Starting server on http://${host}:${port}`);
@@ -52,13 +53,13 @@ export async function serverAction(options: WorkerOptions): Promise<void> {
 }
 
 let timeoutHandle: NodeJS.Timeout | undefined;
-function resetTimer(logger: Logger, timeout: number, abortController: AbortController, server: any) {
+function resetTimer(logger: TargetLogger, timeout: number, abortController: AbortController, server: LageServer) {
   clearTimer();
 
   timeoutHandle = globalThis.setTimeout(() => {
     logger.info(`Server timed out after ${timeout} seconds`);
     abortController.abort();
-    server.close();
+    void server.close();
   }, timeout * 1000);
 }
 

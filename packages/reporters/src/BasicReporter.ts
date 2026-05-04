@@ -1,10 +1,12 @@
-import type { LogEntry, Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetStatus } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
 import type { Writable } from "stream";
 import chalk from "chalk";
 import { formatHrtime } from "./formatDuration.js";
 import { fancyGradient, formatBytes, formatMemoryUsage, hrLine } from "./formatHelpers.js";
+import type { TargetReporter, MaybeTargetLogEntry, TargetLogEntry } from "./types/TargetReporter.js";
+import { isTargetLogEntry, isTargetStatusData } from "./isTargetLogEntry.js";
+import { isCompletionStatus, type CompletionStatus } from "./isCompletionStatus.js";
 
 type CoarseStatus = "completed" | "running" | "pending";
 
@@ -17,9 +19,6 @@ const coarseStatus: Record<TargetStatus, CoarseStatus> = {
   pending: "pending",
   queued: "pending",
 };
-
-type CompletionStatus = "success" | "failed" | "skipped" | "aborted";
-const isCompletionStatus = (status: TargetStatus): status is CompletionStatus => coarseStatus[status] === "completed";
 
 const colors = {
   label: chalk.white,
@@ -51,8 +50,9 @@ const terminal = {
  * Shows running/remaining target counts and completed targets, but does not display
  * the names of running targets for efficiency.
  */
-export class BasicReporter implements Reporter {
-  private taskData = new Map<string, { target: Target; status: TargetStatus; logEntries: LogEntry[] }>();
+export class BasicReporter implements TargetReporter {
+  /** Mapping from targetId to status and log entries (the logs will be cleared for non-failed completed targets) */
+  private taskData = new Map<string, { status: TargetStatus; logEntries: TargetLogEntry[] }>();
   private updateTimer: NodeJS.Timeout | undefined;
   private startTimer: () => void;
   private logMemory: boolean;
@@ -88,23 +88,30 @@ export class BasicReporter implements Reporter {
     }
   }
 
-  public log(entry: LogEntry): void {
+  public log(entry: MaybeTargetLogEntry): void {
+    if (!isTargetLogEntry(entry) || entry.data.target.hidden) return;
     const data = entry.data;
-    if (!data?.target || data.target.hidden) return;
 
-    let taskData = this.taskData.get(data.target.id);
+    const { target } = data;
+    let taskData = this.taskData.get(target.id);
     if (!taskData) {
-      taskData = { target: data.target, status: "pending", logEntries: [] };
-      this.taskData.set(data.target.id, taskData);
+      taskData = { status: "pending", logEntries: [] };
+      this.taskData.set(target.id, taskData);
     }
 
     this.startTimer();
     taskData.logEntries.push(entry);
 
-    if (data.status) {
-      taskData.status = data.status;
-      if (isCompletionStatus(data.status)) {
-        this.reportCompletion({ target: data.target, status: data.status, duration: data.duration, memoryUsage: data.memoryUsage });
+    if (isTargetStatusData(data)) {
+      const { status, duration, memoryUsage } = data;
+      taskData.status = status;
+      if (isCompletionStatus(status)) {
+        this.reportCompletion({ target, status, duration, memoryUsage });
+
+        // Free log entries for non-failed completed targets (only needed for failure reporting at summary time)
+        if (status !== "failed") {
+          taskData.logEntries = [];
+        }
       }
     }
   }

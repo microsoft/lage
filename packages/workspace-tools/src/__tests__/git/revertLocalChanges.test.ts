@@ -3,7 +3,7 @@ import { cleanupFixtures, setupFixture } from "../setupFixture.js";
 import fs from "fs";
 import path from "path";
 import { git as _git, type GitOptions } from "../../git/git.js";
-import { revertLocalChanges } from "../../git/gitUtilities.js";
+import { revertLocalChanges } from "../../git/revertLocalChanges.js";
 
 /** Call git helper but throw on error by default */
 const git = (args: string[], opts: GitOptions) => _git(args, { throwOnError: true, ...opts });

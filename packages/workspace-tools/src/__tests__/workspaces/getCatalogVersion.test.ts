@@ -86,6 +86,40 @@ describe("getCatalogVersion", () => {
     );
   });
 
+  describe("with allowNotFound: true", () => {
+    const allowNotFound = true;
+
+    it("returns undefined if no catalogs defined", () => {
+      const result = getCatalogVersion({ name: "react", version: "catalog:", catalogs: undefined, allowNotFound });
+      expect(result).toBeUndefined();
+    });
+
+    it("returns undefined if package not found in catalog", () => {
+      const result = getCatalogVersion({ name: "vue", version: "catalog:", catalogs: defaultCatalogs, allowNotFound });
+      expect(result).toBeUndefined();
+    });
+
+    it("returns undefined if default catalog version used but no default catalog defined", () => {
+      const result = getCatalogVersion({
+        name: "react",
+        version: "catalog:",
+        catalogs: { named: namedCatalogs.named },
+        allowNotFound,
+      });
+      expect(result).toBeUndefined();
+    });
+
+    it("returns undefined if named catalog version used but no named catalogs defined", () => {
+      const result = getCatalogVersion({
+        name: "react",
+        version: "catalog:react17",
+        catalogs: defaultCatalogs,
+        allowNotFound,
+      });
+      expect(result).toBeUndefined();
+    });
+  });
+
   it("returns workspace: catalog version", () => {
     // This is not supported by pnpm as of writing, but it would have already errored on install
     const catalogs: Catalogs = {

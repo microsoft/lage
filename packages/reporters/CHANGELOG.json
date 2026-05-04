@@ -2,6 +2,29 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "1.8.0",
+      "tag": "@lage-run/reporters_v1.8.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add `TargetReporter` and `TargetLogger` helper types, and make all reporters implement that. Update the reporters' method signatures and internal validation to be strict about data types. Add `TargetData` type rolling up all observed target-related logs, and remove `TargetMessageData` type which was never actually used."
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Reporters should delete log entries from memory when no longer needed"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Apr 2026 03:39:42 GMT",
       "version": "1.7.1",
       "tag": "@lage-run/reporters_v1.7.1",

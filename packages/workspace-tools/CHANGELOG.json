@@ -2,6 +2,57 @@
   "name": "workspace-tools",
   "entries": [
     {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "0.41.7",
+      "tag": "workspace-tools_v0.41.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Move git helpers to separate files"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add `resolveRemoteBranch` which parses the remote from the provided branch if present, or gets the remote (and branch if not provided) from `getDefaultRemoteBranch`. Improve efficiency and reduce git operations for various remote-related helpers."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 25 Apr 2026 08:04:39 GMT",
+      "version": "0.41.6",
+      "tag": "workspace-tools_v0.41.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "7545a88821578ba3f270aa779e6f89d8a2180053",
+            "comment": "Rename `getFileFromVersion` to `getFileFromRef`. Also add `getCatalogVersion` option `allowNotFound`."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 25 Apr 2026 03:32:41 GMT",
+      "version": "0.41.5",
+      "tag": "workspace-tools_v0.41.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "4e3d6c6a252b7d00135e915e7669697a5c2eb4a0",
+            "comment": "Add getFileFromVersion, getCatalogFilePath, and parseCatalogContent utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Apr 2026 03:39:42 GMT",
       "version": "0.41.3",
       "tag": "workspace-tools_v0.41.3",

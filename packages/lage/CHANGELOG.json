@@ -2,6 +2,113 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "2.15.12",
+      "tag": "lage_v2.15.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Move git helpers to separate files"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add `resolveRemoteBranch` which parses the remote from the provided branch if present, or gets the remote (and branch if not provided) from `getDefaultRemoteBranch`. Improve efficiency and reduce git operations for various remote-related helpers."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Reporters should delete log entries from memory when no longer needed"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add generics to `TargetHasher` `logger` option (any logger will be accepted)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Export `LageServer` and `LageServiceRunTargetResult` types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Update scheduler `logger` option types to use `TargetLogger` and `Logger<never, never>` (any logger). In `SimpleScheduler`, remove some structured data logs that appear to be unused leftovers from a previous ProgressReporter approach."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add generics to `AggregatedPool` `logger` option (any logger will be accepted)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Update for new logger and reporters typings"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Change the `Logger` signature to `Logger<TLogStructuredData extends LogStructuredData, TSummary>` and same for `Reporter`, to be strict about data types. Add an additional `otherData` parameter on log methods for arbitrary data."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add `TargetReporter` and `TargetLogger` helper types, and make all reporters implement that. Update the reporters' method signatures and internal validation to be strict about data types. Add `TargetData` type rolling up all observed target-related logs, and remove `TargetMessageData` type which was never actually used."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Update cache provider `logger` option to use `TargetLogger`"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 25 Apr 2026 08:04:39 GMT",
+      "version": "2.15.11",
+      "tag": "lage_v2.15.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "7545a88821578ba3f270aa779e6f89d8a2180053",
+            "comment": "Rename `getFileFromVersion` to `getFileFromRef`. Also add `getCatalogVersion` option `allowNotFound`."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 25 Apr 2026 03:32:41 GMT",
+      "version": "2.15.10",
+      "tag": "lage_v2.15.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "4e3d6c6a252b7d00135e915e7669697a5c2eb4a0",
+            "comment": "Add getFileFromVersion, getCatalogFilePath, and parseCatalogContent utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 16 Apr 2026 01:52:11 GMT",
       "version": "2.15.9",
       "tag": "lage_v2.15.9",

@@ -3,7 +3,7 @@ import { cleanupFixtures, setupFixture, setupLocalRemote } from "../setupFixture
 import fs from "fs";
 import path from "path";
 import { git as _git, type GitOptions } from "../../git/git.js";
-import { fetchRemote } from "../../git/gitUtilities.js";
+import { fetchRemote } from "../../git/fetchRemote.js";
 
 /** Call git helper but throw on error by default */
 const git = (args: string[], opts: GitOptions) => _git(args, { throwOnError: true, ...opts });

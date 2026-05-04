@@ -25,15 +25,16 @@ const { initializeReporters } = require("../commands/initializeReporters.js") as
 describe("initializeReporters", () => {
   const originalEnv = { ...process.env };
   let tmpDir: string | undefined;
-  let reporters: Reporter[] | undefined;
+  let reporters: ReadonlyArray<Reporter<never, never>> | undefined;
 
-  function callInitializeReporters(params?: {
+  async function callInitializeReporters(params?: {
     options?: Partial<ReporterInitOptions>;
     config?: { reporter?: string | string[] };
     defaultReporter?: BuiltInReporterName;
   }) {
-    return initializeReporters({
-      logger: new Logger(),
+    const logger = new Logger();
+    await initializeReporters({
+      logger,
       options: {
         concurrency: 1,
         grouped: false,
@@ -47,6 +48,7 @@ describe("initializeReporters", () => {
       root: "",
       defaultReporter: params?.defaultReporter,
     });
+    return logger.reporters;
   }
 
   beforeEach(() => {

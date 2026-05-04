@@ -12,6 +12,7 @@ import type { SchedulerRunSummary } from '@lage-run/scheduler-types';
 import { Target } from '@lage-run/target-graph';
 import type { TargetGraph } from '@lage-run/target-graph';
 import type { TargetHasher } from '@lage-run/hasher';
+import type { TargetLogger } from '@lage-run/reporters';
 import type { TargetRun } from '@lage-run/scheduler-types';
 import { TargetRunnerPicker } from '@lage-run/runners';
 import type { TargetRunnerPickerOptions } from '@lage-run/runners';
@@ -45,7 +46,7 @@ interface SimpleSchedulerOptions {
     // (undocumented)
     hasher: TargetHasher;
     // (undocumented)
-    logger: Logger;
+    logger: Logger<never, never>;
     // (undocumented)
     logMemory?: boolean;
     // (undocumented)
@@ -133,7 +134,7 @@ interface WrappedTargetOptions {
     // (undocumented)
     hasher: TargetHasher;
     // (undocumented)
-    logger: Logger;
+    logger: TargetLogger;
     // (undocumented)
     logMemory?: boolean;
     // (undocumented)

@@ -1,12 +1,12 @@
 import { getConfig, getConcurrency } from "@lage-run/config";
 import { getWorkspaceManagerRoot } from "workspace-tools";
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 import { BackfillCacheProvider } from "@lage-run/cache";
 
 export interface ClearCacheOptions {
   cwd: string;
   internalCacheFolder: string;
-  logger: Logger;
+  logger: TargetLogger;
   concurrency: number;
 }
 
