@@ -32,7 +32,7 @@ const config = {
       label: "pin dependencies",
       range: "",
       dependencyTypes: ["prod"],
-      packages: ["!@lage-run/docs", "!@lage-run/monorepo-scripts", "!backfill-utils-test"],
+      packages: ["!@lage-run/docs", "!@lage-run/monorepo-scripts", "!@lage-run/test-utilities", "!backfill-utils-test"],
     },
   ],
 };
