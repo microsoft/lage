@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Update dependency js-yaml to v4.2.0",
+      "packageName": "workspace-tools",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

@@ -41,7 +41,7 @@
     "globby": "11.1.0",
     "is-interactive": "1.0.0",
     "proper-lockfile": "4.1.2",
-    "shell-quote": "1.8.3",
+    "shell-quote": "1.8.4",
     "workspace-tools": "workspace:^"
   },
   "devDependencies": {
