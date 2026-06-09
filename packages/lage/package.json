@@ -29,7 +29,8 @@
     "@lage-run/cli": "workspace:^",
     "@lage-run/monorepo-scripts": "workspace:^",
     "@lage-run/runners": "workspace:^",
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.28.0",
+    "workspace-tools-npm": "npm:workspace-tools@latest"
   },
   "files": [
     "dist"

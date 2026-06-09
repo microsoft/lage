@@ -63,7 +63,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
         maxWorkersByGroup: options.maxWorkersPerTask,
         groupBy: ({ target }) => target.task,
         maxWorkers: options.concurrency,
-        script: require.resolve("./workers/targetWorker"),
+        script: require.resolve("./workers/targetWorker.js"),
         workerOptions: {
           stdout: true,
           stderr: true,
