@@ -1,8 +1,18 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Fri, 10 Apr 2026 04:04:59 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.9.11
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.4.10
+- Bump @lage-run/target-graph to v0.15.7
+- Bump workspace-tools to v0.41.8
 
 ## 0.9.6
 

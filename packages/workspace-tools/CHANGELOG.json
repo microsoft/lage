@@ -2,6 +2,21 @@
   "name": "workspace-tools",
   "entries": [
     {
+      "date": "Fri, 12 Jun 2026 20:31:24 GMT",
+      "version": "0.41.8",
+      "tag": "workspace-tools_v0.41.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "ce44a8e432bf8b251bf65265f9dbdf47073e4994",
+            "comment": "Update dependency js-yaml to v4.2.0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 May 2026 08:38:43 GMT",
       "version": "0.41.7",
       "tag": "workspace-tools_v0.41.7",

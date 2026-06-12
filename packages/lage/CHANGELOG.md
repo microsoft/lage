@@ -1,8 +1,20 @@
 # Change Log - lage
 
-<!-- This log was last generated on Fri, 01 May 2026 08:38:43 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.15.13
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- `workspace-tools`
+  - Update dependency js-yaml to v4.2.0 (email not defined)
+- `@lage-run/cli`
+  - Update dependency shell-quote to v1.8.4 (email not defined)
+  - Add `affected` options to the `affected` command (lutomanovic@microsoft.com)
 
 ## 2.15.12
 

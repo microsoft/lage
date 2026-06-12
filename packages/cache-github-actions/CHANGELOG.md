@@ -1,8 +1,16 @@
 # Change Log - @lage-run/cache-github-actions
 
-<!-- This log was last generated on Wed, 08 Apr 2026 03:39:42 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.1.38
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.41.8
 
 ## 0.1.33
 

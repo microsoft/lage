@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cache
 
-<!-- This log was last generated on Fri, 01 May 2026 08:38:43 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.6.1
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump @lage-run/config to v0.9.11
+- Bump @lage-run/reporters to v1.8.1
+- Bump @lage-run/target-graph to v0.15.7
 
 ## 1.6.0
 
