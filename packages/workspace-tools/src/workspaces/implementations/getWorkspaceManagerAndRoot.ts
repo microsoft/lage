@@ -24,8 +24,14 @@ export const managerFiles = {
   rush: "rush.json",
   yarn: "yarn.lock",
   pnpm: "pnpm-workspace.yaml",
+  bun: ["bun.lock", "bun.lockb"],
   npm: "package-lock.json",
 } as const;
+
+function getManagerFileNames(manager: WorkspaceManager): string[] {
+  const fileOrFiles = managerFiles[manager];
+  return typeof fileOrFiles === "string" ? [fileOrFiles] : [...fileOrFiles];
+}
 
 /**
  * Get the preferred workspace/monorepo manager based on `process.env.PREFERRED_WORKSPACE_MANAGER`
@@ -57,7 +63,9 @@ export function getWorkspaceManagerAndRoot(
   }
 
   managerOverride ??= getPreferredWorkspaceManager();
-  const filesToSearch = managerOverride ? managerFiles[managerOverride] : Object.values(managerFiles);
+  const filesToSearch = managerOverride
+    ? getManagerFileNames(managerOverride)
+    : Object.values(managerFiles).flatMap((files) => (Array.isArray(files) ? files : [files]));
   const managerFile = searchUp(filesToSearch, cwd);
 
   if (managerFile) {
@@ -65,7 +73,7 @@ export function getWorkspaceManagerAndRoot(
     cache.set(cwd, {
       manager:
         managerOverride ||
-        (Object.keys(managerFiles) as WorkspaceManager[]).find((name) => managerFiles[name] === managerFileName)!,
+        (Object.keys(managerFiles) as WorkspaceManager[]).find((name) => getManagerFileNames(name).includes(managerFileName))!,
       root: path.dirname(managerFile),
     });
   } else {

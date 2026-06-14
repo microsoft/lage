@@ -17,6 +17,7 @@ describe("getWorkspaceInfos", () => {
   }>([
     { manager: "yarn", desc: "yarn", fixtureName: "monorepo-basic-yarn-1" },
     { manager: "pnpm", desc: "pnpm", fixtureName: "monorepo-basic-pnpm" },
+    { manager: "bun", desc: "bun", fixtureName: "monorepo-basic-bun" },
     { manager: "rush", desc: "rush + pnpm", fixtureName: "monorepo-rush-pnpm" },
     { manager: "rush", desc: "rush + yarn", fixtureName: "monorepo-rush-yarn" },
     { manager: "npm", desc: "npm", fixtureName: "monorepo-basic-npm" },

@@ -696,7 +696,7 @@ export function stageAndCommit(patterns: string[], message: string, cwd: string,
 export type WorkspaceInfos = WorkspacePackageInfo[];
 
 // @public (undocumented)
-export type WorkspaceManager = "yarn" | "pnpm" | "rush" | "npm" | "lerna";
+export type WorkspaceManager = "yarn" | "pnpm" | "rush" | "npm" | "lerna" | "bun";
 
 // @public (undocumented)
 interface WorkspaceManagerAndRoot {
