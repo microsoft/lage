@@ -84,6 +84,10 @@ describe("parseLockFile()", () => {
       const which = Object.keys(parsedLockFile.object).find((key) => /^which@/.test(key));
       expect(which).toBeTruthy();
       expect(parsedLockFile.object[which!].dependencies?.["isexe"]).toBeTruthy();
+
+      // The parsed entry should preserve the resolved version.
+      expect(which).toBe("which@2.0.2");
+      expect(parsedLockFile.object[which!].version).toBe("2.0.2");
     });
 
     it("parses pnpm-lock.yaml file when it is found (lockfileVersion 6.0)", async () => {
@@ -94,6 +98,12 @@ describe("parseLockFile()", () => {
       const which = Object.keys(parsedLockFile.object).find((key) => /^which@/.test(key));
       expect(which).toBeTruthy();
       expect(parsedLockFile.object[which!].dependencies?.["isexe"]).toBeTruthy();
+
+      // The parsed entry should preserve the resolved version. This currently fails because the
+      // parser splits lockfileVersion 6.0 keys (e.g. "/which@2.0.2") on "/", so the version is
+      // silently dropped (key becomes "which@2.0.2@undefined" and `version` is undefined).
+      expect(which).toBe("which@2.0.2");
+      expect(parsedLockFile.object[which!].version).toBe("2.0.2");
     });
 
     it("parses pnpm-lock.yaml file when it is found (lockfileVersion 9.0)", async () => {
@@ -104,6 +114,12 @@ describe("parseLockFile()", () => {
       const which = Object.keys(parsedLockFile.object).find((key) => /^which@/.test(key));
       expect(which).toBeTruthy();
       expect(parsedLockFile.object[which!].dependencies?.["isexe"]).toBeTruthy();
+
+      // The parsed entry should preserve the resolved version. This currently fails because the
+      // parser splits package keys on "/" and only reads the `packages` section, so lockfileVersion
+      // 9.0 keys (e.g. "which@2.0.2", with dependency edges under `snapshots`) are not parsed at all.
+      expect(which).toBe("which@2.0.2");
+      expect(parsedLockFile.object[which!].version).toBe("2.0.2");
     });
   });
 });
