@@ -10,6 +10,8 @@ let tempNumber = 0;
 /** Full fixture folders under `__fixtures__` */
 type RealFixtureName =
   | "basic-pnpm"
+  | "basic-pnpm-6"
+  | "basic-pnpm-9"
   | "basic-without-lock-file"
   | "basic-yarn-1"
   | "basic-yarn-berry"

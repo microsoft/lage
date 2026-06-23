@@ -85,5 +85,25 @@ describe("parseLockFile()", () => {
       expect(which).toBeTruthy();
       expect(parsedLockFile.object[which!].dependencies?.["isexe"]).toBeTruthy();
     });
+
+    it("parses pnpm-lock.yaml file when it is found (lockfileVersion 6.0)", async () => {
+      const packageRoot = setupFixture("basic-pnpm-6");
+      const parsedLockFile = await parseLockFile(packageRoot);
+
+      // If the lock file is updated, you might need to switch to a different key and dependency
+      const which = Object.keys(parsedLockFile.object).find((key) => /^which@/.test(key));
+      expect(which).toBeTruthy();
+      expect(parsedLockFile.object[which!].dependencies?.["isexe"]).toBeTruthy();
+    });
+
+    it("parses pnpm-lock.yaml file when it is found (lockfileVersion 9.0)", async () => {
+      const packageRoot = setupFixture("basic-pnpm-9");
+      const parsedLockFile = await parseLockFile(packageRoot);
+
+      // If the lock file is updated, you might need to switch to a different key and dependency
+      const which = Object.keys(parsedLockFile.object).find((key) => /^which@/.test(key));
+      expect(which).toBeTruthy();
+      expect(parsedLockFile.object[which!].dependencies?.["isexe"]).toBeTruthy();
+    });
   });
 });

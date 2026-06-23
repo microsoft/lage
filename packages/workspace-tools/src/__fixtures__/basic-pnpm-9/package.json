@@ -1,0 +1,13 @@
+{
+  "name": "basic-pnpm-9",
+  "packageManager": "pnpm@11.9.0",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "description": "derived from sveltejs/kit",
+  "devDependencies": {
+    "@changesets/cli": "^2.14.1",
+    "prettier": "2.8.0",
+    "typescript": "^4.2.3"
+  }
+}
