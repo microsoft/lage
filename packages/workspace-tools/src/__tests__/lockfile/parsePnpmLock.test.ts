@@ -161,17 +161,28 @@ describe("parsePnpmLock", () => {
       });
     });
 
-    it("parses the git dependency encoding `github.com/owner/repo/ref`", () => {
+    it("preserves a git key verbatim as the version and takes the name from the entry", () => {
+      // 6.0 git dependency keys are not in `name@version` form (`github.com/owner/repo/<ref>`), so
+      // the key is kept as the version and the name is read from the entry's `name` field.
+      const key = "github.com/kevva/is-positive/97edff6f";
       const lock: PnpmLockFile = {
         lockfileVersion: "6.0",
-        packages: { "github.com/kevva/is-positive/97edff6f": {} },
+        packages: { [key]: { name: "is-positive", version: "3.1.0" } },
       };
 
       const { object } = parsePnpmLock(lock);
-      expect(object["github.com/kevva/is-positive@97edff6f"]).toEqual({
-        version: "97edff6f",
-        dependencies: undefined,
-      });
+      expect(object[`is-positive@${key}`]).toEqual({ version: key, dependencies: undefined });
+    });
+
+    it("falls back to the key as the name when a no-`@` entry has no name field", () => {
+      const key = "github.com/kevva/is-positive/97edff6f";
+      const lock: PnpmLockFile = {
+        lockfileVersion: "6.0",
+        packages: { [key]: {} },
+      };
+
+      const { object } = parsePnpmLock(lock);
+      expect(object[`${key}@${key}`]).toEqual({ version: key, dependencies: undefined });
     });
   });
 

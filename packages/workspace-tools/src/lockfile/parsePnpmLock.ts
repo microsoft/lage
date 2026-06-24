@@ -16,7 +16,7 @@ export function parsePnpmLock(yaml: PnpmLockFile): ParsedLock {
     // `packages`. Either way the keys share the same `name@version(suffixes)` format.
     const entries = yaml.snapshots ?? yaml.packages;
     for (const [pkgSpec, snapshot] of Object.entries(entries ?? {})) {
-      const { name, version } = parsePackageKey(pkgSpec);
+      const { name, version } = parsePackageKey(pkgSpec, snapshot ?? {});
       object[nameAtVersion(name, version)] = {
         version,
         dependencies: snapshot?.dependencies,
@@ -43,30 +43,31 @@ export function parsePnpmLock(yaml: PnpmLockFile): ParsedLock {
 }
 
 /**
- * Parse a lockfileVersion 6.0 / 9.0 package or snapshot key into its name and version. These keys
- * look like `name@version` or `@scope/name@version`, optionally with a leading `/` (6.0) and
- * trailing peer/patch suffixes, e.g.:
+ * Parse a lockfileVersion 6.0 / 9.0 package or snapshot key into its name and version. Keys may
+ * have a leading `/` (6.0) and trailing peer/patch suffixes, e.g.:
  * - `/react-dom@18.3.1(react@18.3.1)`
  * - `is-odd@3.0.1(patch_hash=...)`
  * - `@testing-library/react@16.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)`
+ * - `github.com/owner/repo/<ref>` (a 6.0 git dependency, which has no `name@version` form)
  *
- * The name/version separator is the first `@` at index >= 1 (mirroring pnpm's `parse`), so the
- * leading `@` of a scoped package is ignored and an `@` inside a non-semver version (e.g. a
- * `git+ssh://git@host/...` URL) is not mistaken for the separator.
+ * The name/version separator is the first `@` after the package name, so scoped package names and
+ * non-semver versions containing `@` (e.g. a `git+ssh://git@host/...` URL) are handled correctly.
+ *
+ * This intentionally does not handle pnpm <= 5.x `/name/version` keys; those are parsed by the
+ * legacy branch in `parsePnpmLock`.
+ *
+ * @param key A pnpm 6/9 `packages` or `snapshots` map key.
+ * @param entry The corresponding lockfile entry; `entry.name` is the fallback name for keys with no
+ *   `name@version` form (pnpm writes `name` onto the entry because it cannot be derived from the key).
  */
-function parsePackageKey(key: string): { name: string; version: string } {
+function parsePackageKey(key: string, entry: { name?: string }): { name: string; version: string } {
   // 6.0 keys have a leading "/"; 9.0 keys do not.
   const base = key.startsWith("/") ? key.slice(1) : key;
 
   const separatorIndex = base.indexOf("@", 1);
   if (separatorIndex === -1) {
-    // The only 6.0/9.0 keys without an `@` are git shorthand deps encoded as
-    // `github.com/owner/repo/<ref>`. Keep this narrow: treat the last path segment as the version.
-    const slashIndex = base.lastIndexOf("/");
-    if (slashIndex === -1) {
-      return { name: base, version: "" };
-    }
-    return { name: base.slice(0, slashIndex), version: base.slice(slashIndex + 1) };
+    // No `name@version` form (e.g. a git dependency): the key itself is the version.
+    return { name: entry.name ?? base, version: base };
   }
 
   return {

@@ -146,27 +146,24 @@ describe("parseLockFile()", () => {
         expect(object["is-odd@3.0.1"].dependencies?.["is-number"]).toBe("6.0.0");
         expect(Object.keys(object).some((key) => key.includes("patch_hash"))).toBe(false);
       });
-    });
 
-    it("keeps a non-semver (git tarball) version verbatim (lockfileVersion 9.0)", async () => {
-      const packageRoot = setupFixture("basic-pnpm-9");
-      const { object } = await parseLockFile(packageRoot);
+      it("keeps a non-semver git dependency version verbatim, keyed by package name", async () => {
+        const packageRoot = setupFixture(fixtureName);
+        const { object } = await parseLockFile(packageRoot);
 
-      // lockfileVersion 9.0 encodes the github dependency as `is-positive@<tarball-url>`.
-      const url = "https://codeload.github.com/kevva/is-positive/tar.gz/97edff6f525f192a3f83cea1944765f769ae2678";
-      expect(object[`is-positive@${url}`]).toBeTruthy();
-      expect(object[`is-positive@${url}`].version).toBe(url);
-    });
+        // Both lockfile versions key the parsed entry by the real package name (`is-positive`) with
+        // the git resolution descriptor preserved verbatim as the version. In 9.0 the name comes
+        // from the `name@<url>` key; in 6.0 the key has no `@` so the name comes from the entry's
+        // `name` field and the whole key is preserved as the version.
+        const versionByFixture = {
+          "basic-pnpm-9": "https://codeload.github.com/kevva/is-positive/tar.gz/97edff6f525f192a3f83cea1944765f769ae2678",
+          "basic-pnpm-6": "github.com/kevva/is-positive/97edff6f525f192a3f83cea1944765f769ae2678",
+        };
+        const version = versionByFixture[fixtureName];
 
-    it("parses the lockfileVersion 6.0 git dependency encoding", async () => {
-      const packageRoot = setupFixture("basic-pnpm-6");
-      const { object } = await parseLockFile(packageRoot);
-
-      // lockfileVersion 6.0 encodes the github dependency as `github.com/<owner>/<repo>/<ref>`
-      // (no `@`), so the final path segment is treated as the version.
-      const ref = "97edff6f525f192a3f83cea1944765f769ae2678";
-      expect(object[`github.com/kevva/is-positive@${ref}`]).toBeTruthy();
-      expect(object[`github.com/kevva/is-positive@${ref}`].version).toBe(ref);
+        expect(object[`is-positive@${version}`]).toBeTruthy();
+        expect(object[`is-positive@${version}`].version).toBe(version);
+      });
     });
   });
 });
