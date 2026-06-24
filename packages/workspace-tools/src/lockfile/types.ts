@@ -14,6 +14,8 @@ export type ParsedLock = {
 
 /** pnpm `pnpm-lock.yaml` format */
 export interface PnpmLockFile {
+  /** Lockfile format version, e.g. `5.4`, `'6.0'` or `'9.0'`. */
+  lockfileVersion?: number | string;
   /** Resolution metadata. In lockfileVersion <= 6.0 this also holds dependency edges. */
   packages?: { [name: string]: any };
   /** Dependency edges in lockfileVersion >= 9.0. */

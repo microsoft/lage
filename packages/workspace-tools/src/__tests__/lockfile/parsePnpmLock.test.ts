@@ -7,14 +7,16 @@ import type { PnpmLockFile } from "../../lockfile/types.js";
  * hand-crafted lockfile objects to exercise edge cases that are awkward to reproduce as real
  * fixtures (e.g. `git+ssh://` URLs that require network/auth to resolve).
  *
- * The expected behavior mirrors pnpm's own `parse` / `indexOfDepPathSuffix` in `@pnpm/deps.path`:
- * the name/version separator is the first `@` at index >= 1, and trailing peer-dependency and
- * patch-hash suffixes are removed by balanced-parenthesis matching.
+ * The expected behavior for lockfileVersion 6.0 / 9.0 mirrors pnpm's own `parse` /
+ * `indexOfDepPathSuffix` in `@pnpm/deps.path`: the name/version separator is the first `@` at
+ * index >= 1, and trailing peer-dependency and patch-hash suffixes are removed by
+ * balanced-parenthesis matching.
  */
 describe("parsePnpmLock", () => {
   describe("lockfileVersion >= 9.0 (snapshots section)", () => {
     it("reads dependency edges from `snapshots`, not `packages`", () => {
       const lock: PnpmLockFile = {
+        lockfileVersion: "9.0",
         packages: { "which@2.0.2": { resolution: { integrity: "sha512-..." } } },
         snapshots: { "which@2.0.2": { dependencies: { isexe: "2.0.0" } } },
       };
@@ -25,7 +27,7 @@ describe("parsePnpmLock", () => {
 
     it("ignores the scoped leading `@` when splitting name and version", () => {
       const lock: PnpmLockFile = {
-        packages: {},
+        lockfileVersion: "9.0",
         snapshots: { "@babel/runtime@7.28.4": { dependencies: { "regenerator-runtime": "0.14.1" } } },
       };
 
@@ -38,7 +40,7 @@ describe("parsePnpmLock", () => {
 
     it("strips a single peer-dependency suffix", () => {
       const lock: PnpmLockFile = {
-        packages: {},
+        lockfileVersion: "9.0",
         snapshots: { "react-dom@18.3.1(react@18.3.1)": { dependencies: { react: "18.3.1" } } },
       };
 
@@ -48,7 +50,7 @@ describe("parsePnpmLock", () => {
 
     it("strips multiple peer-dependency suffixes", () => {
       const lock: PnpmLockFile = {
-        packages: {},
+        lockfileVersion: "9.0",
         snapshots: { "foo@1.0.0(react@18.0.0)(react-dom@18.0.0)": { dependencies: {} } },
       };
 
@@ -59,7 +61,7 @@ describe("parsePnpmLock", () => {
 
     it("strips nested peer-dependency suffixes", () => {
       const lock: PnpmLockFile = {
-        packages: {},
+        lockfileVersion: "9.0",
         snapshots: {
           "@testing-library/react@16.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)": {
             dependencies: { "react-dom": "18.3.1" },
@@ -76,7 +78,7 @@ describe("parsePnpmLock", () => {
 
     it("strips a patch_hash suffix", () => {
       const lock: PnpmLockFile = {
-        packages: {},
+        lockfileVersion: "9.0",
         snapshots: { "is-odd@3.0.1(patch_hash=abc123)": { dependencies: { "is-number": "6.0.0" } } },
       };
 
@@ -86,7 +88,7 @@ describe("parsePnpmLock", () => {
 
     it("strips a combined patch_hash and peer suffix", () => {
       const lock: PnpmLockFile = {
-        packages: {},
+        lockfileVersion: "9.0",
         snapshots: { "foo@1.0.0(patch_hash=abc123)(react@18.0.0)": { dependencies: {} } },
       };
 
@@ -98,7 +100,7 @@ describe("parsePnpmLock", () => {
     it("keeps a non-semver tarball URL version verbatim", () => {
       const url = "https://codeload.github.com/kevva/is-positive/tar.gz/97edff6f";
       const lock: PnpmLockFile = {
-        packages: {},
+        lockfileVersion: "9.0",
         snapshots: { [`is-positive@${url}`]: {} },
       };
 
@@ -111,7 +113,7 @@ describe("parsePnpmLock", () => {
       // after the name, not the last (which would corrupt both the name and the version).
       const version = "git+ssh://git@github.com/sindresorhus/is-plain-obj.git#abc123";
       const lock: PnpmLockFile = {
-        packages: {},
+        lockfileVersion: "9.0",
         snapshots: { [`is-plain-obj@${version}`]: { dependencies: {} } },
       };
 
@@ -126,7 +128,7 @@ describe("parsePnpmLock", () => {
       // the version ends with `)`).
       const version = "https://example.com/pkg(beta).tgz";
       const lock: PnpmLockFile = {
-        packages: {},
+        lockfileVersion: "9.0",
         snapshots: { [`pkg@${version}`]: {} },
       };
 
@@ -138,6 +140,7 @@ describe("parsePnpmLock", () => {
   describe("lockfileVersion 6.0 (leading slash, dependencies inline in packages)", () => {
     it("strips the leading slash and splits on `@`", () => {
       const lock: PnpmLockFile = {
+        lockfileVersion: "6.0",
         packages: { "/which@2.0.2": { dependencies: { isexe: "2.0.0" } } },
       };
 
@@ -147,6 +150,7 @@ describe("parsePnpmLock", () => {
 
     it("handles a scoped name with a leading slash and peer suffix", () => {
       const lock: PnpmLockFile = {
+        lockfileVersion: "6.0",
         packages: { "/@testing-library/react@16.0.1(react@18.3.1)": { dependencies: { react: "18.3.1" } } },
       };
 
@@ -159,6 +163,7 @@ describe("parsePnpmLock", () => {
 
     it("parses the git dependency encoding `github.com/owner/repo/ref`", () => {
       const lock: PnpmLockFile = {
+        lockfileVersion: "6.0",
         packages: { "github.com/kevva/is-positive/97edff6f": {} },
       };
 
@@ -173,6 +178,7 @@ describe("parsePnpmLock", () => {
   describe("lockfileVersion <= 5.x (slash-separated keys)", () => {
     it("splits an unscoped `/name/version` key", () => {
       const lock: PnpmLockFile = {
+        lockfileVersion: 5.4,
         packages: { "/which/2.0.2": { dependencies: { isexe: "2.0.0" } } },
       };
 
@@ -182,6 +188,7 @@ describe("parsePnpmLock", () => {
 
     it("splits a scoped `/@scope/name/version` key", () => {
       const lock: PnpmLockFile = {
+        lockfileVersion: 5.4,
         packages: { "/@babel/runtime/7.28.4": { dependencies: {} } },
       };
 
@@ -197,6 +204,7 @@ describe("parsePnpmLock", () => {
 
     it("prefers `snapshots` over `packages` when both are present", () => {
       const lock: PnpmLockFile = {
+        lockfileVersion: "9.0",
         packages: { "foo@1.0.0": { dependencies: { fromPackages: "1.0.0" } } },
         snapshots: { "foo@1.0.0": { dependencies: { fromSnapshots: "1.0.0" } } },
       };
