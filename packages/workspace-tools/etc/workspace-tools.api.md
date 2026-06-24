@@ -652,9 +652,14 @@ type ParseRemoteBranchOptions = GitCommonOptions & {
 
 // @public
 export interface PnpmLockFile {
-    // (undocumented)
-    packages: {
+    lockfileVersion?: number | string;
+    packages?: {
         [name: string]: any;
+    };
+    snapshots?: {
+        [name: string]: {
+            dependencies?: Dependencies;
+        };
     };
 }
 
