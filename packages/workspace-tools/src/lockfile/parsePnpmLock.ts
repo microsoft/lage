@@ -1,5 +1,5 @@
 import { nameAtVersion } from "./nameAtVersion.js";
-import { type LockDependency, type ParsedLock, type PnpmLockFile } from "./types.js";
+import { type Dependencies, type LockDependency, type ParsedLock, type PnpmLockFile } from "./types.js";
 
 export function parsePnpmLock(yaml: PnpmLockFile): ParsedLock {
   const object: {
@@ -19,7 +19,7 @@ export function parsePnpmLock(yaml: PnpmLockFile): ParsedLock {
       const { name, version } = parsePackageKey(pkgSpec, snapshot ?? {});
       object[nameAtVersion(name, version)] = {
         version,
-        dependencies: snapshot?.dependencies,
+        dependencies: stripDependencySuffixes(snapshot?.dependencies),
       };
     }
   } else if (yaml?.packages) {
@@ -74,6 +74,27 @@ function parsePackageKey(key: string, entry: { name?: string }): { name: string;
     name: base.slice(0, separatorIndex),
     version: stripPeerAndPatchSuffix(base.slice(separatorIndex + 1)),
   };
+}
+
+/**
+ * Normalize the dependency-edge values of a lockfileVersion 6/9 snapshot so they line up with the
+ * peer/patch-stripped keys produced by `parsePackageKey`. pnpm records each edge's resolved version
+ * with the same peer/patch suffix it uses in the `packages`/`snapshots` keys (e.g.
+ * `react-dom: 18.3.1(react@18.3.1)`), while `parsePnpmLock` stores entries under the bare
+ * `name@version` key. Stripping the suffix here keeps the parsed graph self-consistent: every
+ * dependency value, combined with its name, references an existing entry in `object`. Values without
+ * a trailing suffix (the common case, plus `link:`/aliased specs) are returned unchanged.
+ */
+function stripDependencySuffixes(dependencies?: Dependencies): Dependencies | undefined {
+  if (!dependencies) {
+    return undefined;
+  }
+
+  const stripped: Dependencies = {};
+  for (const [name, version] of Object.entries(dependencies)) {
+    stripped[name] = stripPeerAndPatchSuffix(version);
+  }
+  return stripped;
 }
 
 /**

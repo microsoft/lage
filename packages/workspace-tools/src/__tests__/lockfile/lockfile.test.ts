@@ -88,6 +88,7 @@ describe("parseLockFile()", () => {
       // The parsed entry should preserve the resolved version.
       expect(which).toBe("which@2.0.2");
       expect(parsedLockFile.object[which!].version).toBe("2.0.2");
+      expect(parsedLockFile.object[which!].dependencies).toEqual({ isexe: "2.0.0" });
     });
 
     // The `basic-pnpm-6` (lockfileVersion 6.0) and `basic-pnpm-9` (lockfileVersion 9.0) fixtures
@@ -131,9 +132,10 @@ describe("parseLockFile()", () => {
         const key = "@testing-library/react@16.0.1";
         expect(object[key]).toBeTruthy();
         expect(object[key].version).toBe("16.0.1");
-        // The peer suffix is stripped from the parsed KEY, but dependency *values* are kept
-        // verbatim from the snapshot (they may still carry their own peer suffix).
-        expect(object[key].dependencies?.["react-dom"]).toBe("18.3.1(react@18.3.1)");
+        // The peer suffix is stripped from both the parsed KEY and the dependency *values*, so the
+        // resolved graph stays self-consistent (every value, combined with its name, references an
+        // existing entry in `object`).
+        expect(object[key].dependencies?.["react-dom"]).toBe("18.3.1");
       });
 
       it("strips a patch_hash suffix from the version", async () => {
@@ -156,7 +158,8 @@ describe("parseLockFile()", () => {
         // from the `name@<url>` key; in 6.0 the key has no `@` so the name comes from the entry's
         // `name` field and the whole key is preserved as the version.
         const versionByFixture = {
-          "basic-pnpm-9": "https://codeload.github.com/kevva/is-positive/tar.gz/97edff6f525f192a3f83cea1944765f769ae2678",
+          "basic-pnpm-9":
+            "https://codeload.github.com/kevva/is-positive/tar.gz/97edff6f525f192a3f83cea1944765f769ae2678",
           "basic-pnpm-6": "github.com/kevva/is-positive/97edff6f525f192a3f83cea1944765f769ae2678",
         };
         const version = versionByFixture[fixtureName];
