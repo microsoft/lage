@@ -1,0 +1,2 @@
+patchedDependencies:
+  is-odd@3.0.1: patches/is-odd@3.0.1.patch

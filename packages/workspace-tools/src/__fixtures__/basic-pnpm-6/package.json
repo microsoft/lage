@@ -4,10 +4,20 @@
   "version": "0.1.0",
   "license": "MIT",
   "private": true,
-  "description": "derived from sveltejs/kit",
+  "description": "derived from sveltejs/kit; includes edge-case deps (peer suffixes, patched dep, git/non-semver dep) for lockfile snapshot parsing tests",
   "devDependencies": {
     "@changesets/cli": "^2.14.1",
+    "@testing-library/react": "16.0.1",
+    "is-odd": "3.0.1",
+    "is-positive": "github:kevva/is-positive#97edff6f525f192a3f83cea1944765f769ae2678",
     "prettier": "2.8.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "typescript": "^4.2.3"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "is-odd@3.0.1": "patches/is-odd@3.0.1.patch"
+    }
   }
 }

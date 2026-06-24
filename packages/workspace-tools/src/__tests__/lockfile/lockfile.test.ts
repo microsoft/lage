@@ -90,32 +90,83 @@ describe("parseLockFile()", () => {
       expect(parsedLockFile.object[which!].version).toBe("2.0.2");
     });
 
-    it("parses pnpm-lock.yaml file when it is found (lockfileVersion 6.0)", async () => {
-      const packageRoot = setupFixture("basic-pnpm-6");
-      const parsedLockFile = await parseLockFile(packageRoot);
+    // The `basic-pnpm-6` (lockfileVersion 6.0) and `basic-pnpm-9` (lockfileVersion 9.0) fixtures
+    // contain the same edge-case dependencies so we can verify pnpm dependency-path parsing:
+    // - scoped names (`@scope/name@version`)
+    // - a single peer-dependency suffix (`react-dom@<v>(react@<v>)`)
+    // - multiple/nested peer suffixes (`@testing-library/react@<v>(...)(...)(...)`)
+    // - a patched dependency (`is-odd@<v>(patch_hash=...)`)
+    // - a non-semver (git/tarball) version
+    describe.each(["basic-pnpm-6", "basic-pnpm-9"] as const)("edge cases (%s)", (fixtureName) => {
+      it("keeps a plain transitive dependency and its version", async () => {
+        const packageRoot = setupFixture(fixtureName);
+        const { object } = await parseLockFile(packageRoot);
 
-      // If the lock file is updated, you might need to switch to a different key and dependency
-      const which = Object.keys(parsedLockFile.object).find((key) => /^which@/.test(key));
-      expect(which).toBeTruthy();
-      expect(parsedLockFile.object[which!].dependencies?.["isexe"]).toBeTruthy();
+        const which = Object.keys(object).find((key) => /^which@/.test(key));
+        expect(which).toBe("which@2.0.2");
+        expect(object[which!].version).toBe("2.0.2");
+        expect(object[which!].dependencies?.["isexe"]).toBe("2.0.0");
+      });
 
-      // The parsed entry should preserve the resolved version.
-      expect(which).toBe("which@2.0.2");
-      expect(parsedLockFile.object[which!].version).toBe("2.0.2");
+      it("strips a single peer-dependency suffix from the version", async () => {
+        const packageRoot = setupFixture(fixtureName);
+        const { object } = await parseLockFile(packageRoot);
+
+        // Snapshot key is `react-dom@18.3.1(react@18.3.1)`; the peer suffix must not leak into
+        // the parsed name or version.
+        expect(object["react-dom@18.3.1"]).toBeTruthy();
+        expect(object["react-dom@18.3.1"].version).toBe("18.3.1");
+        expect(object["react-dom@18.3.1"].dependencies?.["react"]).toBe("18.3.1");
+
+        // No parsed key should still contain a raw peer suffix.
+        expect(Object.keys(object).some((key) => key.includes("("))).toBe(false);
+      });
+
+      it("strips multiple/nested peer suffixes from a scoped package", async () => {
+        const packageRoot = setupFixture(fixtureName);
+        const { object } = await parseLockFile(packageRoot);
+
+        // Snapshot key has several peer groups (nested in 9.0):
+        // `@testing-library/react@16.0.1(@testing-library/dom@10.4.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)`
+        const key = "@testing-library/react@16.0.1";
+        expect(object[key]).toBeTruthy();
+        expect(object[key].version).toBe("16.0.1");
+        // The peer suffix is stripped from the parsed KEY, but dependency *values* are kept
+        // verbatim from the snapshot (they may still carry their own peer suffix).
+        expect(object[key].dependencies?.["react-dom"]).toBe("18.3.1(react@18.3.1)");
+      });
+
+      it("strips a patch_hash suffix from the version", async () => {
+        const packageRoot = setupFixture(fixtureName);
+        const { object } = await parseLockFile(packageRoot);
+
+        // Snapshot key is `is-odd@3.0.1(patch_hash=...)`.
+        expect(object["is-odd@3.0.1"]).toBeTruthy();
+        expect(object["is-odd@3.0.1"].version).toBe("3.0.1");
+        expect(object["is-odd@3.0.1"].dependencies?.["is-number"]).toBe("6.0.0");
+        expect(Object.keys(object).some((key) => key.includes("patch_hash"))).toBe(false);
+      });
     });
 
-    it("parses pnpm-lock.yaml file when it is found (lockfileVersion 9.0)", async () => {
+    it("keeps a non-semver (git tarball) version verbatim (lockfileVersion 9.0)", async () => {
       const packageRoot = setupFixture("basic-pnpm-9");
-      const parsedLockFile = await parseLockFile(packageRoot);
+      const { object } = await parseLockFile(packageRoot);
 
-      // If the lock file is updated, you might need to switch to a different key and dependency
-      const which = Object.keys(parsedLockFile.object).find((key) => /^which@/.test(key));
-      expect(which).toBeTruthy();
-      expect(parsedLockFile.object[which!].dependencies?.["isexe"]).toBeTruthy();
+      // lockfileVersion 9.0 encodes the github dependency as `is-positive@<tarball-url>`.
+      const url = "https://codeload.github.com/kevva/is-positive/tar.gz/97edff6f525f192a3f83cea1944765f769ae2678";
+      expect(object[`is-positive@${url}`]).toBeTruthy();
+      expect(object[`is-positive@${url}`].version).toBe(url);
+    });
 
-      // The parsed entry should preserve the resolved version.
-      expect(which).toBe("which@2.0.2");
-      expect(parsedLockFile.object[which!].version).toBe("2.0.2");
+    it("parses the lockfileVersion 6.0 git dependency encoding", async () => {
+      const packageRoot = setupFixture("basic-pnpm-6");
+      const { object } = await parseLockFile(packageRoot);
+
+      // lockfileVersion 6.0 encodes the github dependency as `github.com/<owner>/<repo>/<ref>`
+      // (no `@`), so the final path segment is treated as the version.
+      const ref = "97edff6f525f192a3f83cea1944765f769ae2678";
+      expect(object[`github.com/kevva/is-positive@${ref}`]).toBeTruthy();
+      expect(object[`github.com/kevva/is-positive@${ref}`].version).toBe(ref);
     });
   });
 });
