@@ -1,6 +1,6 @@
 {
   "name": "backfill-hasher",
-  "version": "6.7.10",
+  "version": "6.7.11",
   "description": "Backfill Hasher",
   "license": "MIT",
   "author": "Benjamin Weggersen <bewegger@microsoft.com>",

@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 25 Jun 2026 20:21:25 GMT",
+      "version": "2.15.16",
+      "tag": "lage_v2.15.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "6af70fb1c8228fae625c6c2a864222631916a9b4",
+            "comment": "Update `resolveRemoteAndBranch` to return `.remoteBranch` instead of `.branch` for consistency"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 Jun 2026 04:59:29 GMT",
       "version": "2.15.15",
       "tag": "lage_v2.15.15",
