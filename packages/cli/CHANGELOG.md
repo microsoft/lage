@@ -1,8 +1,24 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Jun 2026 02:50:11 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.36.9
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.2
+- Bump @lage-run/config to v0.9.12
+- Bump @lage-run/hasher to v1.10.9
+- Bump @lage-run/reporters to v1.8.2
+- Bump @lage-run/runners to v1.4.11
+- Bump @lage-run/scheduler to v1.6.9
+- Bump @lage-run/scheduler-types to v0.4.9
+- Bump @lage-run/target-graph to v0.15.8
+- Bump workspace-tools to v0.41.9
 
 ## 0.36.8
 

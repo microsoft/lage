@@ -2,6 +2,21 @@
   "name": "workspace-tools",
   "entries": [
     {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "0.41.9",
+      "tag": "workspace-tools_v0.41.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "b7626837ab7cb0772bfa33b17546e98b14da336a",
+            "comment": "Add `resolveRemoteAndBranch` helper, and export `getRemotes`"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 12 Jun 2026 20:31:24 GMT",
       "version": "0.41.8",
       "tag": "workspace-tools_v0.41.8",

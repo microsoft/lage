@@ -2,6 +2,21 @@
   "name": "@lage-run/runners",
   "entries": [
     {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "1.4.11",
+      "tag": "@lage-run/runners_v1.4.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.15.8",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 12 Jun 2026 20:31:24 GMT",
       "version": "1.4.10",
       "tag": "@lage-run/runners_v1.4.10",

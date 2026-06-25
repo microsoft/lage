@@ -2,6 +2,33 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "1.10.9",
+      "tag": "@lage-run/hasher_v1.10.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.15.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump backfill-hasher to v6.7.10",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump workspace-tools to v0.41.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 12 Jun 2026 20:31:24 GMT",
       "version": "1.10.8",
       "tag": "@lage-run/hasher_v1.10.8",

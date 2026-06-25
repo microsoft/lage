@@ -1,8 +1,19 @@
 # Change Log - lage
 
-<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Jun 2026 02:50:11 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.15.14
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- `workspace-tools`
+  - Add `resolveRemoteAndBranch` helper, and export `getRemotes` (elcraig@microsoft.com)
+- `lage`
+  - Update dependencies (elcraig@microsoft.com)
 
 ## 2.15.13
 
