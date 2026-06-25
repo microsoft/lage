@@ -167,6 +167,34 @@ describe("parseLockFile()", () => {
         expect(object[`is-positive@${version}`]).toBeTruthy();
         expect(object[`is-positive@${version}`].version).toBe(version);
       });
+
+      it("includes a snapshot's optionalDependencies among its dependency edges", async () => {
+        const packageRoot = setupFixture(fixtureName);
+        const { object } = await parseLockFile(packageRoot);
+
+        // `jsonfile@4.0.0` declares only an optional dependency on `graceful-fs` (no regular
+        // dependencies). The yarn lockfile parser merges optionalDependencies into a package's
+        // resolved edges, so the pnpm parser must include them too, in both 6.0 and 9.0.
+        expect(object["jsonfile@4.0.0"].dependencies?.["graceful-fs"]).toBe("4.2.11");
+      });
+    });
+
+    it("merges a snapshot's dependencies and optionalDependencies (chokidar -> fsevents)", async () => {
+      const packageRoot = setupFixture("basic-pnpm-9");
+      const { object } = await parseLockFile(packageRoot);
+
+      // chokidar@3.6.0 has seven regular dependencies plus an optional `fsevents`. All must appear
+      // as edges, mirroring how the yarn parser merges `{...dependencies, ...optionalDependencies}`.
+      expect(object["chokidar@3.6.0"].dependencies).toEqual({
+        anymatch: "3.1.3",
+        braces: "3.0.3",
+        "glob-parent": "5.1.2",
+        "is-binary-path": "2.1.0",
+        "is-glob": "4.0.3",
+        "normalize-path": "3.0.0",
+        readdirp: "3.6.0",
+        fsevents: "2.3.3",
+      });
     });
 
     describe("importers (workspace packages)", () => {

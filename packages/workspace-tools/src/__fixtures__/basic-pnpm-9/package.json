@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "private": true,
-  "description": "derived from sveltejs/kit; includes edge-case deps (peer/nested-peer suffixes, patched dep, git/non-semver dep) for lockfile snapshot parsing tests",
+  "description": "derived from sveltejs/kit; includes edge-case deps (peer/nested-peer suffixes, patched dep, git/non-semver dep, and chokidar for optionalDependencies->fsevents) for lockfile snapshot parsing tests",
   "devDependencies": {
     "@changesets/cli": "^2.14.1",
     "@testing-library/react": "16.0.1",
@@ -13,6 +13,7 @@
     "prettier": "2.8.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.3",
+    "chokidar": "3.6.0"
   }
 }

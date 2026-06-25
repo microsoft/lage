@@ -19,7 +19,9 @@ export interface PnpmLockFile {
   /** Resolution metadata. In lockfileVersion <= 6.0 this also holds dependency edges. */
   packages?: { [name: string]: any };
   /** Dependency edges in lockfileVersion >= 9.0. */
-  snapshots?: { [name: string]: { dependencies?: Dependencies } };
+  snapshots?: {
+    [name: string]: { name?: string; dependencies?: Dependencies; optionalDependencies?: Dependencies };
+  };
   /**
    * Workspace packages, keyed by their path relative to the lockfile root (`.`, `packages/foo`).
    * Present in monorepo (and all 9.0) lockfiles. Unlike `packages`/`snapshots` these have no

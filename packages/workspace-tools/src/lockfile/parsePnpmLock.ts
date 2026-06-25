@@ -25,7 +25,7 @@ export function parsePnpmLock(yaml: PnpmLockFile): ParsedLock {
       const { name, version } = parsePackageKey(pkgSpec, snapshot ?? {});
       object[nameAtVersion(name, version)] = {
         version,
-        dependencies: stripDependencySuffixes(snapshot?.dependencies),
+        dependencies: collectSnapshotDependencies(snapshot),
       };
     }
 
@@ -65,7 +65,10 @@ export function parsePnpmLock(yaml: PnpmLockFile): ParsedLock {
  * resolved `version` is run through `stripPeerAndPatchSuffix` so external deps line up with the
  * `name@version` keys parsed from `snapshots`; `link:<path>` references to sibling workspace packages
  * have no suffix and pass through unchanged for the consumer to resolve against the importer keys.
- * `optionalDependencies` are omitted, mirroring the snapshot edges which only expose `dependencies`.
+ * `optionalDependencies` are omitted here, matching the yarn lockfile parser's package.json handling
+ * (workspace packages expose `dependencies` + `devDependencies` only). Note this differs from the
+ * snapshot handling above, which *does* include `optionalDependencies` — mirroring how yarn merges
+ * them for non-workspace packages.
  */
 function collectImporterDependencies(importer: PnpmImporter | undefined): Dependencies {
   const dependencies: Dependencies = {};
@@ -118,24 +121,33 @@ function parsePackageKey(key: string, entry: { name?: string }): { name: string;
 }
 
 /**
- * Normalize the dependency-edge values of a lockfileVersion 6/9 snapshot so they line up with the
- * peer/patch-stripped keys produced by `parsePackageKey`. pnpm records each edge's resolved version
- * with the same peer/patch suffix it uses in the `packages`/`snapshots` keys (e.g.
- * `react-dom: 18.3.1(react@18.3.1)`), while `parsePnpmLock` stores entries under the bare
- * `name@version` key. Stripping the suffix here keeps the parsed graph self-consistent: every
- * dependency value, combined with its name, references an existing entry in `object`. Values without
- * a trailing suffix (the common case, plus `link:`/aliased specs) are returned unchanged.
+ * Collect a lockfileVersion 6/9 snapshot's resolved dependency edges into a single `name -> version`
+ * map. Both `dependencies` and `optionalDependencies` are included (optional last, so it wins on the
+ * rare key collision) to match the yarn lockfile parser, which merges `{...dependencies,
+ * ...optionalDependencies}` for non-workspace packages. Each value is run through
+ * `stripPeerAndPatchSuffix` so it lines up with the bare `name@version` keys this parser produces.
+ *
+ * pnpm records the resolved version with the same peer/patch suffix it uses in the
+ * `packages`/`snapshots` keys (e.g. `react-dom: 18.3.1(react@18.3.1)`), while `parsePnpmLock` stores
+ * entries under the bare `name@version` key. Stripping the suffix here keeps the parsed graph
+ * self-consistent: every dependency value, combined with its name, references an existing entry in
+ * `object`. Values without a trailing suffix (the common case, plus `link:`/aliased specs) are
+ * returned unchanged. Returns `undefined` when the snapshot has no dependency edges at all.
  */
-function stripDependencySuffixes(dependencies?: Dependencies): Dependencies | undefined {
-  if (!dependencies) {
+function collectSnapshotDependencies(
+  snapshot: { dependencies?: Dependencies; optionalDependencies?: Dependencies } | undefined
+): Dependencies | undefined {
+  if (!snapshot?.dependencies && !snapshot?.optionalDependencies) {
     return undefined;
   }
 
-  const stripped: Dependencies = {};
-  for (const [name, version] of Object.entries(dependencies)) {
-    stripped[name] = stripPeerAndPatchSuffix(version);
+  const collected: Dependencies = {};
+  for (const section of [snapshot.dependencies, snapshot.optionalDependencies]) {
+    for (const [name, version] of Object.entries(section ?? {})) {
+      collected[name] = stripPeerAndPatchSuffix(version);
+    }
   }
-  return stripped;
+  return collected;
 }
 
 /**
