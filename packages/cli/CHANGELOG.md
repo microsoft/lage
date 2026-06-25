@@ -1,8 +1,18 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Thu, 25 Jun 2026 02:50:11 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Jun 2026 04:59:29 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.36.10
+
+Thu, 25 Jun 2026 04:59:29 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.3
+- Bump @lage-run/config to v0.9.13
+- Bump @lage-run/scheduler to v1.6.10
 
 ## 0.36.9
 

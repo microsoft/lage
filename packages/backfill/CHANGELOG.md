@@ -1,8 +1,17 @@
 # Change Log - backfill
 
-<!-- This log was last generated on Fri, 10 Apr 2026 04:04:59 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Jun 2026 04:59:29 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 6.4.16
+
+Thu, 25 Jun 2026 04:59:29 GMT
+
+### Patches
+
+- `backfill`
+  - Update yargs packages to v16.2.2 (email not defined)
 
 ## 6.4.10
 

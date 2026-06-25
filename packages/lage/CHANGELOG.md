@@ -1,8 +1,19 @@
 # Change Log - lage
 
-<!-- This log was last generated on Thu, 25 Jun 2026 02:50:11 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Jun 2026 04:59:29 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.15.15
+
+Thu, 25 Jun 2026 04:59:29 GMT
+
+### Patches
+
+- `lage`
+  - Bundle with esbuild 0.28.1 (bumped from 0.25.12) (elcraig@microsoft.com)
+- `@lage-run/config`
+  - Update dependency cosmiconfig to v9.0.2 (renovate@whitesourcesoftware.com)
 
 ## 2.15.14
 

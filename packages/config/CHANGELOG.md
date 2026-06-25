@@ -1,8 +1,16 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Thu, 25 Jun 2026 02:50:11 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Jun 2026 04:59:29 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.9.13
+
+Thu, 25 Jun 2026 04:59:29 GMT
+
+### Patches
+
+- Update dependency cosmiconfig to v9.0.2 (renovate@whitesourcesoftware.com)
 
 ## 0.9.12
 

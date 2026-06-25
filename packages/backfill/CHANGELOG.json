@@ -2,6 +2,21 @@
   "name": "backfill",
   "entries": [
     {
+      "date": "Thu, 25 Jun 2026 04:59:29 GMT",
+      "version": "6.4.16",
+      "tag": "backfill_v6.4.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "backfill",
+            "commit": "c05cc77a8a8a52f57d5a2ce30b6ed57793f34d99",
+            "comment": "Update yargs packages to v16.2.2"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 10 Apr 2026 04:04:59 GMT",
       "version": "6.4.10",
       "tag": "backfill_v6.4.10",
