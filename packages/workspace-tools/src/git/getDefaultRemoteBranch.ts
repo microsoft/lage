@@ -1,13 +1,8 @@
 import { getDefaultRemote, type GetDefaultRemoteOptions } from "./getDefaultRemote.js";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- referenced by docs
 import type { getRemotes } from "./getRemotes.js";
 import { git } from "./git.js";
 import { getDefaultBranch } from "./gitUtilities.js";
-import {
-  parseRemoteBranchPlusRemotes,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  type parseRemoteBranch,
-} from "./parseRemoteBranch.js";
+import { parseRemoteBranchPlusRemotes, type parseRemoteBranch } from "./parseRemoteBranch.js";
 import type { RemoteBranch } from "./types.js";
 
 export type GetDefaultRemoteBranchOptions = GetDefaultRemoteOptions & {
@@ -19,6 +14,9 @@ export type GetDefaultRemoteBranchOptions = GetDefaultRemoteOptions & {
    */
   branch?: string;
 };
+
+// Re-export these so the @link references in jsdoc comments work in the generated .d.ts
+export type { getDefaultRemote as _1, getRemotes as _2, parseRemoteBranch as _3, parseRemoteBranchPlusRemotes as _4 };
 
 /**
  * Gets a reference to `options.branch` or the default branch relative to the default remote.
@@ -48,7 +46,7 @@ export function getDefaultRemoteBranch(...args: (string | GetDefaultRemoteBranch
       : branchOrOptions;
 
   const result = getDefaultRemoteAndBranch(options);
-  return `${result.remote}/${result.branch}`;
+  return `${result.remote}/${result.remoteBranch}`;
 }
 
 /**
@@ -62,7 +60,8 @@ function getDefaultRemoteAndBranch(options: GetDefaultRemoteBranchOptions): Remo
   const defaultRemote = getDefaultRemote(options);
 
   if (branch) {
-    return { remote: defaultRemote, branch };
+    // For this specific function, `branch` has no remote prefix
+    return { remote: defaultRemote, remoteBranch: branch };
   }
 
   let remoteDefaultBranch: string | undefined;
@@ -92,7 +91,7 @@ function getDefaultRemoteAndBranch(options: GetDefaultRemoteBranchOptions): Remo
   // (this can't use throwOnError in case the key isn't set)
   remoteDefaultBranch ||= getDefaultBranch({ cwd });
 
-  return { remote: defaultRemote, branch: remoteDefaultBranch };
+  return { remote: defaultRemote, remoteBranch: remoteDefaultBranch };
 }
 
 /**
@@ -107,7 +106,7 @@ export function resolveRemoteBranch(
   }
 ): string {
   const result = resolveRemoteAndBranch(options);
-  return `${result.remote}/${result.branch}`;
+  return `${result.remote}/${result.remoteBranch}`;
 }
 
 /**
@@ -135,7 +134,8 @@ export function resolveRemoteAndBranch(
     // The result is saved so the fetched list of remotes can be reused.
     parsed = parseRemoteBranchPlusRemotes({ ...options, branch });
     if (parsed.remote) {
-      return { remote: parsed.remote, branch: parsed.remoteBranch };
+      // have to extract these to avoid returning `remotes`
+      return { remote: parsed.remote, remoteBranch: parsed.remoteBranch };
     }
   }
 

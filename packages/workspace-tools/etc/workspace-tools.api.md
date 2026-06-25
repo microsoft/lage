@@ -665,9 +665,8 @@ export interface PnpmLockFile {
 export function queryLockFile(name: string, versionRange: string, lock: ParsedLock): LockDependency;
 
 // @public (undocumented)
-type RemoteBranch = {
+type RemoteBranch = Pick<ParsedRemoteBranch, "remoteBranch"> & {
     remote: string;
-    branch: string;
 };
 
 // Warning: (ae-forgotten-export) The symbol "RemoteBranch" needs to be exported by the entry point index.d.ts
