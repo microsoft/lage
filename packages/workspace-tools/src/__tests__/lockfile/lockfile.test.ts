@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { setupFixture } from "../setupFixture.js";
 import { parseLockFile } from "../../lockfile/parseLockFile.js";
+import { parsePnpmLock } from "../../lockfile/parsePnpmLock.js";
 import { getPackageInfo } from "../../getPackageInfo.js";
 
 const ERROR_MESSAGES = {
@@ -166,6 +167,56 @@ describe("parseLockFile()", () => {
 
         expect(object[`is-positive@${version}`]).toBeTruthy();
         expect(object[`is-positive@${version}`].version).toBe(version);
+      });
+    });
+
+    describe("importers (workspace packages)", () => {
+      it("stores each importer under its raw path, stripping suffixes but keeping link: verbatim", () => {
+        const { object } = parsePnpmLock({
+          lockfileVersion: "9.0",
+          importers: {
+            ".": {
+              devDependencies: { typescript: { specifier: "^4.2.3", version: "4.9.5" } },
+            },
+            "packages/package-a": {
+              dependencies: {
+                // External deps carry a peer/patch suffix that must be stripped to line up with
+                // the `name@version` keys parsed from `snapshots`.
+                "react-dom": { specifier: "^18.0.0", version: "18.3.1(react@18.3.1)" },
+                "is-odd": { specifier: "3.0.1", version: "3.0.1(patch_hash=abc)" },
+                // A sibling workspace package, recorded as a `link:` path relative to this importer.
+                "@scope/package-b": { specifier: "workspace:^", version: "link:../package-b" },
+              },
+            },
+            "packages/package-b": {},
+          },
+        });
+
+        // Each importer is keyed by its unmodified path, with the path preserved as the version.
+        expect(object["."]).toEqual({ version: ".", dependencies: { typescript: "4.9.5" } });
+        expect(object["packages/package-b"]).toEqual({
+          version: "packages/package-b",
+          dependencies: {},
+        });
+
+        // Peer/patch suffixes are stripped; the `link:` reference to a sibling workspace package is
+        // preserved verbatim so a consumer can resolve it against the `packages/package-b` key.
+        expect(object["packages/package-a"].dependencies).toEqual({
+          "react-dom": "18.3.1",
+          "is-odd": "3.0.1",
+          "@scope/package-b": "link:../package-b",
+        });
+      });
+
+      it("parses workspace importers from a 9.0 monorepo lockfile, keyed by path", async () => {
+        const packageRoot = setupFixture("monorepo-basic-pnpm");
+        const { object } = await parseLockFile(packageRoot);
+
+        // The root (".") and each nested workspace package appear under their lockfile importer path.
+        expect(object["."]).toBeTruthy();
+        expect(object["packages/package-a"]).toBeTruthy();
+        // External edges have their peer suffix stripped (`react-dom@19.2.4(react@19.2.4)`).
+        expect(object["packages/package-a"].dependencies?.["react-dom"]).toBe("19.2.4");
       });
     });
   });

@@ -1,5 +1,11 @@
 import { nameAtVersion } from "./nameAtVersion.js";
-import { type Dependencies, type LockDependency, type ParsedLock, type PnpmLockFile } from "./types.js";
+import {
+  type Dependencies,
+  type LockDependency,
+  type ParsedLock,
+  type PnpmImporter,
+  type PnpmLockFile,
+} from "./types.js";
 
 export function parsePnpmLock(yaml: PnpmLockFile): ParsedLock {
   const object: {
@@ -36,10 +42,44 @@ export function parsePnpmLock(yaml: PnpmLockFile): ParsedLock {
     }
   }
 
+  // Workspace packages live under `importers`, keyed by their path relative to the lockfile root
+  // (e.g. "." or "packages/foo"). They have no published `name@version`, so they are stored under the
+  // importer path verbatim, which lets a consumer resolve `link:<relative-path>` dependency values
+  // (references to sibling workspace packages) back to these keys.
+  for (const [importerPath, importer] of Object.entries(yaml?.importers ?? {})) {
+    object[importerPath] = {
+      version: importerPath,
+      dependencies: collectImporterDependencies(importer),
+    };
+  }
+
   return {
     object,
     type: "success",
   };
+}
+
+/**
+ * Flatten an importer's `dependencies` and `devDependencies` into a `name -> version` map. The
+ * resolved `version` is run through `stripPeerAndPatchSuffix` so external deps line up with the
+ * `name@version` keys parsed from `snapshots`; `link:<path>` references to sibling workspace packages
+ * have no suffix and pass through unchanged for the consumer to resolve against the importer keys.
+ * `optionalDependencies` are omitted, mirroring the snapshot edges which only expose `dependencies`.
+ */
+function collectImporterDependencies(importer: PnpmImporter | undefined): Dependencies {
+  const dependencies: Dependencies = {};
+
+  for (const section of [importer?.dependencies, importer?.devDependencies]) {
+    for (const [name, spec] of Object.entries(section ?? {})) {
+      const version = typeof spec === "string" ? spec : spec?.version;
+      if (version === undefined) {
+        continue;
+      }
+      dependencies[name] = stripPeerAndPatchSuffix(version);
+    }
+  }
+
+  return dependencies;
 }
 
 /**
