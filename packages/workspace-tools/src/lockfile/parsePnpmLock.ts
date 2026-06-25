@@ -28,6 +28,18 @@ export function parsePnpmLock(yaml: PnpmLockFile): ParsedLock {
         dependencies: stripDependencySuffixes(snapshot?.dependencies),
       };
     }
+
+    // Workspace packages live under `importers`, keyed by their path relative to the lockfile root
+    // (e.g. "." or "packages/foo"). They have no published `name@version`, so they are stored under
+    // the importer path verbatim, which lets a consumer resolve `link:<relative-path>` dependency
+    // values (references to sibling workspace packages) back to these keys. This is scoped to the
+    // 6.0+ codepath so the legacy `< 6` parsing below stays untouched.
+    for (const [importerPath, importer] of Object.entries(yaml?.importers ?? {})) {
+      object[importerPath] = {
+        version: importerPath,
+        dependencies: collectImporterDependencies(importer),
+      };
+    }
   } else if (yaml?.packages) {
     for (const [pkgSpec, snapshot] of Object.entries(yaml.packages)) {
       // TODO: handle file:foo.tgz syntax (rush uses this for internal package links)
@@ -40,17 +52,6 @@ export function parsePnpmLock(yaml: PnpmLockFile): ParsedLock {
         dependencies: snapshot.dependencies,
       };
     }
-  }
-
-  // Workspace packages live under `importers`, keyed by their path relative to the lockfile root
-  // (e.g. "." or "packages/foo"). They have no published `name@version`, so they are stored under the
-  // importer path verbatim, which lets a consumer resolve `link:<relative-path>` dependency values
-  // (references to sibling workspace packages) back to these keys.
-  for (const [importerPath, importer] of Object.entries(yaml?.importers ?? {})) {
-    object[importerPath] = {
-      version: importerPath,
-      dependencies: collectImporterDependencies(importer),
-    };
   }
 
   return {
