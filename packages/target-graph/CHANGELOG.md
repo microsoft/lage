@@ -1,8 +1,16 @@
 # Change Log - @lage-run/target-graph
 
-<!-- This log was last generated on Thu, 16 Apr 2026 01:52:11 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.15.7
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.41.8
 
 ## 0.15.3
 

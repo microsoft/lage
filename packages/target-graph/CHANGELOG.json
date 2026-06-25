@@ -2,6 +2,21 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Fri, 12 Jun 2026 20:31:24 GMT",
+      "version": "0.15.7",
+      "tag": "@lage-run/target-graph_v0.15.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/target-graph",
+            "comment": "Bump workspace-tools to v0.41.8",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 16 Apr 2026 01:52:11 GMT",
       "version": "0.15.3",
       "tag": "@lage-run/target-graph_v0.15.3",

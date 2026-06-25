@@ -2,6 +2,81 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 12 Jun 2026 20:31:24 GMT",
+      "version": "0.36.8",
+      "tag": "@lage-run/cli_v0.36.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "ce44a8e432bf8b251bf65265f9dbdf47073e4994",
+            "comment": "Update dependency shell-quote to v1.8.4"
+          },
+          {
+            "author": "lutomanovic@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "ce44a8e432bf8b251bf65265f9dbdf47073e4994",
+            "comment": "Add `affected` options to the `affected` command"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.6.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.9.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.10.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.8.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/runners to v1.4.10",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.6.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.15.7",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump workspace-tools to v0.41.8",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 May 2026 08:38:43 GMT",
       "version": "0.36.7",
       "tag": "@lage-run/cli_v0.36.7",

@@ -1,8 +1,17 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Fri, 01 May 2026 08:38:43 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.8.1
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.4.8
+- Bump @lage-run/target-graph to v0.15.7
 
 ## 1.8.0
 

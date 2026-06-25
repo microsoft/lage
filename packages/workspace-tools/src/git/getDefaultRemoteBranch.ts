@@ -8,11 +8,12 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   type parseRemoteBranch,
 } from "./parseRemoteBranch.js";
+import type { RemoteBranch } from "./types.js";
 
 export type GetDefaultRemoteBranchOptions = GetDefaultRemoteOptions & {
   /**
    * Name of branch to use, **without** a remote prefix. If you want to resolve a branch
-   * that may already include a remote prefix, use {@link resolveRemoteBranch}.
+   * that may already include a remote prefix, use {@link resolveRemoteAndBranch}.
    *
    * If undefined, uses the default branch name (falling back to `master`).
    */
@@ -25,7 +26,7 @@ export type GetDefaultRemoteBranchOptions = GetDefaultRemoteOptions & {
  * Throws if `options.cwd` is not in a git repo.
  *
  * If you want to resolve a branch that may already include a remote prefix, use
- * {@link resolveRemoteBranch} instead.
+ * {@link resolveRemoteAndBranch} instead.
  *
  * If `options.strict` is true, throws in the same cases as {@link getDefaultRemote}, {@link getRemotes},
  * or if querying the default branch from the remote fails.
@@ -45,12 +46,23 @@ export function getDefaultRemoteBranch(...args: (string | GetDefaultRemoteBranch
     typeof branchOrOptions === "string"
       ? ({ branch: branchOrOptions, cwd: argsCwd } as GetDefaultRemoteBranchOptions)
       : branchOrOptions;
+
+  const result = getDefaultRemoteAndBranch(options);
+  return `${result.remote}/${result.branch}`;
+}
+
+/**
+ * Like {@link getDefaultRemoteBranch} but it returns an object.
+ *
+ * @returns A branch reference like `{ remote: "upstream", branch: "master" }` or `{ remote: "origin", branch: "main" }`.
+ */
+function getDefaultRemoteAndBranch(options: GetDefaultRemoteBranchOptions): RemoteBranch {
   const { cwd, branch } = options;
 
   const defaultRemote = getDefaultRemote(options);
 
   if (branch) {
-    return `${defaultRemote}/${branch}`;
+    return { remote: defaultRemote, branch };
   }
 
   let remoteDefaultBranch: string | undefined;
@@ -80,7 +92,22 @@ export function getDefaultRemoteBranch(...args: (string | GetDefaultRemoteBranch
   // (this can't use throwOnError in case the key isn't set)
   remoteDefaultBranch ||= getDefaultBranch({ cwd });
 
-  return `${defaultRemote}/${remoteDefaultBranch}`;
+  return { remote: defaultRemote, branch: remoteDefaultBranch };
+}
+
+/**
+ * Resolve a user-provided branch (possibly with a remote) to a fully-qualified remote branch.
+ * @returns A fully-qualified target remote branch reference (e.g. `origin/main`)
+ * @deprecated Use {@link resolveRemoteAndBranch} instead
+ */
+export function resolveRemoteBranch(
+  options: Omit<GetDefaultRemoteBranchOptions, "branch" | "remotes"> & {
+    /** Branch which might include a remote prefix */
+    branch: string | undefined;
+  }
+): string {
+  const result = resolveRemoteAndBranch(options);
+  return `${result.remote}/${result.branch}`;
 }
 
 /**
@@ -92,14 +119,14 @@ export function getDefaultRemoteBranch(...args: (string | GetDefaultRemoteBranch
  * If `options.strict` is true, throws in the same cases as {@link parseRemoteBranch},
  * {@link getDefaultRemoteBranch}, {@link getDefaultRemote}, or {@link getRemotes}.
  *
- * @returns A fully-qualified target remote branch reference (e.g. `origin/main`)
+ * @returns A fully-qualified target remote branch reference (e.g. `{ remote: "origin", branch: "main" }`)
  */
-export function resolveRemoteBranch(
+export function resolveRemoteAndBranch(
   options: Omit<GetDefaultRemoteBranchOptions, "branch" | "remotes"> & {
     /** Branch which might include a remote prefix */
     branch: string | undefined;
   }
-): string {
+): RemoteBranch {
   const { branch } = options;
 
   let parsed: ReturnType<typeof parseRemoteBranchPlusRemotes> | undefined;
@@ -108,11 +135,11 @@ export function resolveRemoteBranch(
     // The result is saved so the fetched list of remotes can be reused.
     parsed = parseRemoteBranchPlusRemotes({ ...options, branch });
     if (parsed.remote) {
-      return `${parsed.remote}/${parsed.remoteBranch}`;
+      return { remote: parsed.remote, branch: parsed.remoteBranch };
     }
   }
 
   // No branch provided, or the provided branch didn't include a remote.
   // Get the default remote and possibly default branch.
-  return getDefaultRemoteBranch({ ...options, remotes: parsed?.remotes });
+  return getDefaultRemoteAndBranch({ ...options, remotes: parsed?.remotes });
 }

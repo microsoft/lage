@@ -1,8 +1,16 @@
 # Change Log - @lage-run/runners
 
-<!-- This log was last generated on Wed, 08 Apr 2026 03:39:42 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.10
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.7
 
 ## 1.4.4
 

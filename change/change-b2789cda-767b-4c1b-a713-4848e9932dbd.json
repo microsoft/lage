@@ -2,9 +2,9 @@
   "changes": [
     {
       "type": "patch",
-      "comment": "Update dependency js-yaml to v4.2.0",
+      "comment": "Add `resolveRemoteAndBranch` helper, and export `getRemotes`",
       "packageName": "workspace-tools",
-      "email": "email not defined",
+      "email": "elcraig@microsoft.com",
       "dependentChangeType": "patch"
     }
   ]

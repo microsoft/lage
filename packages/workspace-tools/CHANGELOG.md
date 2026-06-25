@@ -1,8 +1,16 @@
 # Change Log - workspace-tools
 
-<!-- This log was last generated on Fri, 01 May 2026 08:38:43 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.41.8
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Update dependency js-yaml to v4.2.0 (email not defined)
 
 ## 0.41.7
 
