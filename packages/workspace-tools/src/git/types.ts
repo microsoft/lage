@@ -56,6 +56,13 @@ export type ParsedRemoteBranch = {
   remoteBranch: string;
 };
 
+export type RemoteBranch = {
+  /** Remote name, e.g. `origin`. */
+  remote: string;
+  /** Branch name without remote, e.g. `main`. */
+  branch: string;
+};
+
 export type GitStageOptions = {
   /** File patterns to stage */
   patterns: string[];
