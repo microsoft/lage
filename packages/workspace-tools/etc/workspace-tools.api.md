@@ -651,14 +651,34 @@ type ParseRemoteBranchOptions = GitCommonOptions & {
 };
 
 // @public
+export interface PnpmImporter {
+    dependencies?: PnpmImporterDependencies;
+    devDependencies?: PnpmImporterDependencies;
+    optionalDependencies?: PnpmImporterDependencies;
+}
+
+// @public
+export type PnpmImporterDependencies = {
+    [name: string]: {
+        specifier?: string;
+        version?: string;
+    } | string;
+};
+
+// @public
 export interface PnpmLockFile {
+    importers?: {
+        [importerPath: string]: PnpmImporter;
+    };
     lockfileVersion?: number | string;
     packages?: {
         [name: string]: any;
     };
     snapshots?: {
         [name: string]: {
+            name?: string;
             dependencies?: Dependencies;
+            optionalDependencies?: Dependencies;
         };
     };
 }

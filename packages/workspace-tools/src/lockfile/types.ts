@@ -16,9 +16,9 @@ export type ParsedLock = {
 export interface PnpmLockFile {
   /** Lockfile format version, e.g. `5.4`, `'6.0'` or `'9.0'`. */
   lockfileVersion?: number | string;
-  /** Resolution metadata. In lockfileVersion <= 6.0 this also holds dependency edges. */
+  /** Resolution metadata. In lockfileVersion 6.0 and earlier this also holds dependency edges. */
   packages?: { [name: string]: any };
-  /** Dependency edges in lockfileVersion >= 9.0. */
+  /** Dependency edges in lockfileVersion 9.0 and later. */
   snapshots?: {
     [name: string]: { name?: string; dependencies?: Dependencies; optionalDependencies?: Dependencies };
   };
@@ -32,8 +32,11 @@ export interface PnpmLockFile {
 
 /** A single `importers` entry (one workspace package) in a pnpm lockfile. */
 export interface PnpmImporter {
+  /** The workspace package's `dependencies`. */
   dependencies?: PnpmImporterDependencies;
+  /** The workspace package's `devDependencies`. */
   devDependencies?: PnpmImporterDependencies;
+  /** The workspace package's `optionalDependencies`. */
   optionalDependencies?: PnpmImporterDependencies;
 }
 

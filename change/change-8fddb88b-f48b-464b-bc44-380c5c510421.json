@@ -2,7 +2,7 @@
   "changes": [
     {
       "type": "minor",
-      "comment": "Add support for modern (v8+) pnpm lockfiles to parseLockFile",
+      "comment": "Add support for pnpm lockfileVersion 6.0 (pnpm@8) and 9.0 (pnpm@9+) to parseLockFile",
       "packageName": "workspace-tools",
       "email": "ansteg@microsoft.com",
       "dependentChangeType": "patch"
