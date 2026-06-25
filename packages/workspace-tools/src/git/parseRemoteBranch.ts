@@ -1,6 +1,9 @@
 import { getRemotes } from "./getRemotes.js";
 import type { ParsedRemoteBranch, ParseRemoteBranchOptions } from "./types.js";
 
+// Re-export this so the @link references in jsdoc comments work in the generated .d.ts
+export type { getRemotes as _1 };
+
 /**
  * Get the remote and branch name from a full branch name that may include a remote prefix.
  * If the path doesn't start with one of `options.knownRemotes` (but has multiple segments),

@@ -144,14 +144,17 @@ describe("getDefaultRemoteBranch", () => {
 describe("resolveRemoteAndBranch", () => {
   it("returns branch as-is when it already has a known remote prefix (no git ops)", () => {
     const opts: GetDefaultRemoteBranchOptions = { cwd: "fake", strict: true };
-    expect(resolveRemoteAndBranch({ branch: "origin/main", ...opts })).toEqual({ remote: "origin", branch: "main" });
+    expect(resolveRemoteAndBranch({ branch: "origin/main", ...opts })).toEqual({
+      remote: "origin",
+      remoteBranch: "main",
+    });
     expect(resolveRemoteAndBranch({ branch: "upstream/develop", ...opts })).toEqual({
       remote: "upstream",
-      branch: "develop",
+      remoteBranch: "develop",
     });
     expect(resolveRemoteAndBranch({ branch: "origin/feature/foo", ...opts })).toEqual({
       remote: "origin",
-      branch: "feature/foo",
+      remoteBranch: "feature/foo",
     });
     expect(gitObserver).not.toHaveBeenCalled();
   });
@@ -162,7 +165,10 @@ describe("resolveRemoteAndBranch", () => {
     gitRemote("add", "origin", "https://github.com/microsoft/lage.git");
     gitObserver.mockClear();
 
-    expect(resolveRemoteAndBranch({ branch: "main", cwd, strict: true })).toEqual({ remote: "origin", branch: "main" });
+    expect(resolveRemoteAndBranch({ branch: "main", cwd, strict: true })).toEqual({
+      remote: "origin",
+      remoteBranch: "main",
+    });
 
     expect(getGitCalls()).toEqual([gitGetRemotesConfig, gitGetRoot]);
   });
@@ -176,7 +182,7 @@ describe("resolveRemoteAndBranch", () => {
 
     expect(resolveRemoteAndBranch({ branch: "myremote/feature", cwd, strict: true })).toEqual({
       remote: "myremote",
-      branch: "feature",
+      remoteBranch: "feature",
     });
 
     expect(getGitCalls()).toEqual([gitGetRemotesConfig]);
@@ -191,7 +197,7 @@ describe("resolveRemoteAndBranch", () => {
     // "feature" is not a remote, so the whole string is treated as the branch name
     expect(resolveRemoteAndBranch({ branch: "feature/foo", cwd, strict: true })).toEqual({
       remote: "origin",
-      branch: "feature/foo",
+      remoteBranch: "feature/foo",
     });
 
     expect(getGitCalls()).toEqual([gitGetRemotesConfig, gitGetRoot]);
@@ -204,7 +210,7 @@ describe("resolveRemoteAndBranch", () => {
 
     expect(resolveRemoteAndBranch({ branch: undefined, cwd, strict: true })).toEqual({
       remote: "origin",
-      branch: "main",
+      remoteBranch: "main",
     });
 
     expect(getGitCalls()).toEqual([gitGetRemotesConfig, gitGetOriginDefaultBranch]);

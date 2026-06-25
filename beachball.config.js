@@ -6,6 +6,7 @@ const config = {
   access: "public",
   groupChanges: true,
   branch: "main",
+  commit: false,
   changelog: {
     groups: [
       {

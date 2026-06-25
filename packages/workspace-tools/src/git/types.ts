@@ -56,11 +56,9 @@ export type ParsedRemoteBranch = {
   remoteBranch: string;
 };
 
-export type RemoteBranch = {
+export type RemoteBranch = Pick<ParsedRemoteBranch, "remoteBranch"> & {
   /** Remote name, e.g. `origin`. */
   remote: string;
-  /** Branch name without remote, e.g. `main`. */
-  branch: string;
 };
 
 export type GitStageOptions = {
