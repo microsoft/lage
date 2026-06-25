@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Add support for modern (v8+) pnpm lockfiles to parseLockFile",
+      "packageName": "workspace-tools",
+      "email": "ansteg@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
