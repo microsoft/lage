@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Update dependency shell-quote to v1.9.0",
+      "packageName": "@lage-run/cli",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
