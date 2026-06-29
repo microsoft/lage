@@ -14,8 +14,39 @@ export type ParsedLock = {
 
 /** pnpm `pnpm-lock.yaml` format */
 export interface PnpmLockFile {
-  packages: { [name: string]: any };
+  /** Lockfile format version, e.g. `5.4`, `'6.0'` or `'9.0'`. */
+  lockfileVersion?: number | string;
+  /** Resolution metadata. In lockfileVersion 6.0 and earlier this also holds dependency edges. */
+  packages?: { [name: string]: any };
+  /** Dependency edges in lockfileVersion 9.0 and later. */
+  snapshots?: {
+    [name: string]: { name?: string; dependencies?: Dependencies; optionalDependencies?: Dependencies };
+  };
+  /**
+   * Workspace packages, keyed by their path relative to the lockfile root (`.`, `packages/foo`).
+   * Present in monorepo (and all 9.0) lockfiles. Unlike `packages`/`snapshots` these have no
+   * published `name@version`; their dependency edges are recorded as `{ specifier, version }`.
+   */
+  importers?: { [importerPath: string]: PnpmImporter };
 }
+
+/** A single `importers` entry (one workspace package) in a pnpm lockfile. */
+export interface PnpmImporter {
+  /** The workspace package's `dependencies`. */
+  dependencies?: PnpmImporterDependencies;
+  /** The workspace package's `devDependencies`. */
+  devDependencies?: PnpmImporterDependencies;
+  /** The workspace package's `optionalDependencies`. */
+  optionalDependencies?: PnpmImporterDependencies;
+}
+
+/**
+ * Importer dependency edges. In lockfileVersion 6.0/9.0 each value is a `{ specifier, version }`
+ * object; older lockfiles use a bare version string.
+ */
+export type PnpmImporterDependencies = {
+  [name: string]: { specifier?: string; version?: string } | string;
+};
 
 export interface NpmWorkspacesInfo {
   version: string;

@@ -84,6 +84,163 @@ describe("parseLockFile()", () => {
       const which = Object.keys(parsedLockFile.object).find((key) => /^which@/.test(key));
       expect(which).toBeTruthy();
       expect(parsedLockFile.object[which!].dependencies?.["isexe"]).toBeTruthy();
+
+      // The parsed entry should preserve the resolved version.
+      expect(which).toBe("which@2.0.2");
+      expect(parsedLockFile.object[which!].version).toBe("2.0.2");
+      expect(parsedLockFile.object[which!].dependencies).toEqual({ isexe: "2.0.0" });
+    });
+
+    // The `basic-pnpm-6` (lockfileVersion 6.0) and `basic-pnpm-9` (lockfileVersion 9.0) fixtures
+    // contain the same edge-case dependencies so we can verify pnpm dependency-path parsing:
+    // - scoped names (`@scope/name@version`)
+    // - a single peer-dependency suffix (`react-dom@<v>(react@<v>)`)
+    // - multiple/nested peer suffixes (`@testing-library/react@<v>(...)(...)(...)`)
+    // - a patched dependency (`is-odd@<v>(patch_hash=...)`)
+    // - a non-semver (git/tarball) version
+    describe.each(["basic-pnpm-6", "basic-pnpm-9"] as const)("edge cases (%s)", (fixtureName) => {
+      it("keeps a plain transitive dependency and its version", async () => {
+        const packageRoot = setupFixture(fixtureName);
+        const { object } = await parseLockFile(packageRoot);
+
+        const which = Object.keys(object).find((key) => /^which@/.test(key));
+        expect(which).toBe("which@2.0.2");
+        expect(object[which!].version).toBe("2.0.2");
+        expect(object[which!].dependencies?.["isexe"]).toBe("2.0.0");
+      });
+
+      it("strips a single peer-dependency suffix from the version", async () => {
+        const packageRoot = setupFixture(fixtureName);
+        const { object } = await parseLockFile(packageRoot);
+
+        // Snapshot key is `react-dom@18.3.1(react@18.3.1)`; the peer suffix must not leak into
+        // the parsed name or version.
+        expect(object["react-dom@18.3.1"]).toBeTruthy();
+        expect(object["react-dom@18.3.1"].version).toBe("18.3.1");
+        expect(object["react-dom@18.3.1"].dependencies?.["react"]).toBe("18.3.1");
+
+        // No parsed key should still contain a raw peer suffix.
+        expect(Object.keys(object).some((key) => key.includes("("))).toBe(false);
+      });
+
+      it("strips multiple/nested peer suffixes from a scoped package", async () => {
+        const packageRoot = setupFixture(fixtureName);
+        const { object } = await parseLockFile(packageRoot);
+
+        // Snapshot key has several peer groups (nested in 9.0):
+        // `@testing-library/react@16.0.1(@testing-library/dom@10.4.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)`
+        const key = "@testing-library/react@16.0.1";
+        expect(object[key]).toBeTruthy();
+        expect(object[key].version).toBe("16.0.1");
+        // The peer suffix is stripped from both the parsed KEY and the dependency *values*, so the
+        // resolved graph stays self-consistent (every value, combined with its name, references an
+        // existing entry in `object`).
+        expect(object[key].dependencies?.["react-dom"]).toBe("18.3.1");
+      });
+
+      it("strips a patch_hash suffix from the version", async () => {
+        const packageRoot = setupFixture(fixtureName);
+        const { object } = await parseLockFile(packageRoot);
+
+        // Snapshot key is `is-odd@3.0.1(patch_hash=...)`.
+        expect(object["is-odd@3.0.1"]).toBeTruthy();
+        expect(object["is-odd@3.0.1"].version).toBe("3.0.1");
+        expect(object["is-odd@3.0.1"].dependencies?.["is-number"]).toBe("6.0.0");
+        expect(Object.keys(object).some((key) => key.includes("patch_hash"))).toBe(false);
+      });
+
+      it("keeps a non-semver git dependency version verbatim, keyed by package name", async () => {
+        const packageRoot = setupFixture(fixtureName);
+        const { object } = await parseLockFile(packageRoot);
+
+        // Both lockfile versions key the parsed entry by the real package name (`is-positive`) with
+        // the git resolution descriptor preserved verbatim as the version. In 9.0 the name comes
+        // from the `name@<url>` key; in 6.0 the key has no `@` so the name comes from the entry's
+        // `name` field and the whole key is preserved as the version.
+        const versionByFixture = {
+          "basic-pnpm-9":
+            "https://codeload.github.com/kevva/is-positive/tar.gz/97edff6f525f192a3f83cea1944765f769ae2678",
+          "basic-pnpm-6": "github.com/kevva/is-positive/97edff6f525f192a3f83cea1944765f769ae2678",
+        };
+        const version = versionByFixture[fixtureName];
+
+        expect(object[`is-positive@${version}`]).toBeTruthy();
+        expect(object[`is-positive@${version}`].version).toBe(version);
+      });
+
+      it("includes a snapshot's optionalDependencies among its dependency edges", async () => {
+        const packageRoot = setupFixture(fixtureName);
+        const { object } = await parseLockFile(packageRoot);
+
+        // `jsonfile@4.0.0` declares only an optional dependency on `graceful-fs` (no regular
+        // dependencies). The yarn lockfile parser merges optionalDependencies into a package's
+        // resolved edges, so the pnpm parser must include them too, in both 6.0 and 9.0.
+        expect(object["jsonfile@4.0.0"].dependencies?.["graceful-fs"]).toBe("4.2.11");
+      });
+    });
+
+    it("merges a snapshot's dependencies and optionalDependencies (chokidar -> fsevents)", async () => {
+      const packageRoot = setupFixture("basic-pnpm-9");
+      const { object } = await parseLockFile(packageRoot);
+
+      // chokidar@3.6.0 has seven regular dependencies plus an optional `fsevents`. All must appear
+      // as edges, mirroring how the yarn parser merges `{...dependencies, ...optionalDependencies}`.
+      expect(object["chokidar@3.6.0"].dependencies).toEqual({
+        anymatch: "3.1.3",
+        braces: "3.0.3",
+        "glob-parent": "5.1.2",
+        "is-binary-path": "2.1.0",
+        "is-glob": "4.0.3",
+        "normalize-path": "3.0.0",
+        readdirp: "3.6.0",
+        fsevents: "2.3.3",
+      });
+    });
+
+    describe("importers (workspace packages)", () => {
+      // The real lockfileVersion 9.0 `monorepo-basic-pnpm` fixture exercises path-keyed importers,
+      // peer-suffix stripping, and a `link:` reference to a sibling workspace package (package-a ->
+      // package-b via `workspace:^`).
+      it("stores each importer under its raw path, stripping peer suffixes but keeping link: verbatim", async () => {
+        const packageRoot = setupFixture("monorepo-basic-pnpm");
+        const { object } = await parseLockFile(packageRoot);
+
+        // Each importer is keyed by its unmodified path, with that path preserved as the version.
+        // The root and dependency-less workspace packages parse to empty dependency maps.
+        expect(object["."].version).toBe(".");
+        expect(object["individual"]).toEqual({ version: "individual", dependencies: {} });
+        expect(object["packages/package-b"]).toEqual({ version: "packages/package-b", dependencies: {} });
+
+        const packageA = object["packages/package-a"];
+        expect(packageA.version).toBe("packages/package-a");
+        // `react-dom@19.2.4(react@19.2.4)` -> the peer suffix is stripped so it lines up with the
+        // `name@version` key parsed from `snapshots`; `react` is plain; the `workspace:^` dependency
+        // on `package-b` is recorded as `link:../package-b` and preserved verbatim so a consumer can
+        // resolve it back to the `packages/package-b` importer key.
+        expect(packageA.dependencies).toEqual({
+          react: "19.2.4",
+          "react-dom": "19.2.4",
+          "package-b": "link:../package-b",
+        });
+      });
+
+      // The single-package `basic-pnpm-9` fixture's `.` importer carries the remaining real
+      // importer-value shapes (a patch_hash suffix, a nested peer suffix, and a git/tarball spec).
+      it("strips patch_hash and nested peer suffixes from `.` importer deps, keeping git specs verbatim", async () => {
+        const packageRoot = setupFixture("basic-pnpm-9");
+        const { object } = await parseLockFile(packageRoot);
+
+        const rootDependencies = object["."].dependencies;
+        // `is-odd@3.0.1(patch_hash=...)` -> patch suffix stripped.
+        expect(rootDependencies?.["is-odd"]).toBe("3.0.1");
+        // `@testing-library/react@16.0.1(...)(react-dom@18.3.1(react@18.3.1))(...)` -> all (nested)
+        // peer suffixes stripped.
+        expect(rootDependencies?.["@testing-library/react"]).toBe("16.0.1");
+        // A git/tarball resolution has no peer/patch suffix, so it is kept verbatim.
+        expect(rootDependencies?.["is-positive"]).toBe(
+          "https://codeload.github.com/kevva/is-positive/tar.gz/97edff6f525f192a3f83cea1944765f769ae2678"
+        );
+      });
     });
   });
 });

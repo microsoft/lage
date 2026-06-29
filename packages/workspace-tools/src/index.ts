@@ -20,6 +20,8 @@ export type {
   NpmSymlinkInfo,
   NpmWorkspacesInfo,
   ParsedLock,
+  PnpmImporter,
+  PnpmImporterDependencies,
   PnpmLockFile,
 } from "./lockfile/types.js";
 export { findGitRoot, findPackageRoot, findProjectRoot, isChildOf, searchUp } from "./paths.js";

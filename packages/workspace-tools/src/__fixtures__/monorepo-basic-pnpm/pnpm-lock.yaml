@@ -19,6 +19,9 @@ importers:
 
   packages/package-a:
     dependencies:
+      package-b:
+        specifier: workspace:^
+        version: link:../package-b
       react:
         specifier: ^19.0.0
         version: 19.2.4
