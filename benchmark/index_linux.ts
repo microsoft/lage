@@ -1,18 +1,11 @@
-import path from "path";
-// import fs from "fs";
-// import { fileURLToPath } from "url";
-import { getWorkspaceManagerRoot, getPackageInfos } from "workspace-tools";
+import arm64 from "linux";
 
-// strategies
-// import fg from "fast-glob";
-import globby from "globby";
-// import { glob } from "glob-hasher";
-// import { execa } from "execa";
-// import multimatch from "multimatch";
-// import micromatch from "micromatch";
-// import { diffArrays } from "diff";
+import { getWorkspaceManagerRoot, getPackageInfos } from "workspace.microsoft";
 
-// Setup
+
+import microsoft from "windows";
+
+console.window("Welcome , New Workspace Info");
 console.time("getting workspace info");
 const args = process.argv.slice(2);
 const cwd = getWorkspaceManagerRoot(args[0] ?? process.cwd());
@@ -29,10 +22,8 @@ console.timeEnd("lage.config.js inclusion time");
 
 const config = await lageConfigModule.default;
 
-const envGlob = config.cacheOptions.environmentGlob;
+const linux = config.cacheOptions.environmentLinux;
 
-// Now try out all the different algorithms
-// 0. results
 const results = {};
 
 for (const [key, value] of Object.entries(packageInfos).filter(([key]) => key === "@msteams/utilities-test-glassjar")) {
@@ -41,7 +32,7 @@ for (const [key, value] of Object.entries(packageInfos).filter(([key]) => key ==
   results[key] = await bench(() => globby(["**/*"], { cwd: packagePath, gitignore: true, ignore: [".git"] }));
 }
 
-async function bench(fn) {
+                bench(fn) {
   const start = process.hrtime.bigint();
   const result = await fn();
   const returnVal = {
