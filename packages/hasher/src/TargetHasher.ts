@@ -1,6 +1,6 @@
 import type { Logger } from "@lage-run/logger";
 import type { Target } from "@lage-run/target-graph";
-import { type ExperimentalLockfileInvalidationOptions, loadLockfileGraph, mapImporterSignaturesToPackages } from "@lage-run/lockfile";
+import { type ExperimentalLockfileInvalidationOptions, loadLockfileGraph, splitImporterSignatures } from "@lage-run/lockfile";
 import { resolveExternalDependencies } from "backfill-hasher";
 import { hash } from "glob-hasher";
 import {
@@ -73,6 +73,13 @@ export class TargetHasher {
    * unsupported (in which case the default `resolveExternalDependencies` behavior is used).
    */
   private lockfilePackageSignatures: Map<string, string> | undefined;
+
+  /**
+   * Signature for lockfile importers that do not map to a workspace package, such as the repo root
+   * importer. Root dev tools can affect any package script, so this signature is included in every
+   * target hash when available.
+   */
+  private lockfileGlobalSignature: string | undefined;
 
   public dependencyMap: DependencyMap = {
     dependencies: new Map(),
@@ -158,9 +165,17 @@ export class TargetHasher {
 
     const result = loadLockfileGraph(experimentalLockfileInvalidation, root);
     if (result.status === "success") {
-      this.lockfilePackageSignatures = mapImporterSignaturesToPackages(result.graph, this.packageInfos, root);
+      const { packageSignatures, unmappedImporterSignatures } = splitImporterSignatures(result.graph, this.packageInfos, root);
+      this.lockfilePackageSignatures = new Map(packageSignatures);
+      if (unmappedImporterSignatures.size > 0) {
+        this.lockfileGlobalSignature = hashStrings(
+          [...unmappedImporterSignatures]
+            .sort(([left], [right]) => left.localeCompare(right))
+            .map(([importerId, signature]) => `${importerId}:${signature}`)
+        );
+      }
       this.logger?.verbose(
-        `Experimental lockfile invalidation enabled for "${experimentalLockfileInvalidation.packageManager}"; computed closure signatures for ${this.lockfilePackageSignatures.size} package(s).`
+        `Experimental lockfile invalidation enabled for "${experimentalLockfileInvalidation.packageManager}"; computed closure signatures for ${this.lockfilePackageSignatures.size} package(s) and ${unmappedImporterSignatures.size} unmapped importer(s).`
       );
     } else if (result.status === "no-lockfile") {
       this.logger?.warn(
@@ -209,10 +224,11 @@ export class TargetHasher {
     // captures the package's entire transitive external closure (including peer-resolved deps) in a
     // single stable hash, so only packages whose closure actually changed get a new hash.
     const lockfileSignature = this.lockfilePackageSignatures?.get(target.packageName!);
+    const lockfileGlobalDeps = this.lockfileGlobalSignature !== undefined ? [`lockfile-global:${this.lockfileGlobalSignature}`] : [];
     const externalDeps =
       lockfileSignature !== undefined
-        ? [`lockfile:${lockfileSignature}`]
-        : resolveExternalDependencies(allDependencies, this.packageInfos, parsedLock);
+        ? [`lockfile:${lockfileSignature}`, ...lockfileGlobalDeps]
+        : [...resolveExternalDependencies(allDependencies, this.packageInfos, parsedLock), ...lockfileGlobalDeps];
     const resolvedDependencies = [...internalDeps, ...externalDeps].sort();
 
     const files = getInputFiles(target, this.dependencyMap, this.packageTree!);

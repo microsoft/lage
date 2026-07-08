@@ -3,7 +3,7 @@ import path from "path";
 import yaml from "js-yaml";
 import type { PackageInfos } from "workspace-tools";
 import { buildPnpmLockfileGraph, isSupportedPnpmLockfileVersion, type PnpmLockfile } from "./pnpmLockfileGraph.js";
-import type { LockfileGraph, LockfileGraphResult } from "./types.js";
+import type { LockfileGraph, LockfileGraphResult, PackageLockfileSignatures } from "./types.js";
 
 /** The default pnpm lockfile file name. */
 export const PNPM_LOCKFILE_NAME = "pnpm-lock.yaml";
@@ -80,23 +80,33 @@ function createImporterIdToPackageName(packageInfos: PackageInfos, root: string)
 }
 
 /**
- * Maps a lockfile graph's per-importer signatures to per-workspace-package signatures.
- *
- * Importers that do not correspond to a known workspace package (e.g. the root project when it is
- * not a package) are ignored.
+ * Splits a lockfile graph's per-importer signatures into workspace-package signatures and unmapped
+ * importer signatures. Unmapped importers (commonly the root importer `"."`) are not safe to ignore:
+ * root dev tools can affect every package script, so callers should treat changes to these
+ * signatures as global invalidation.
  */
-export function mapImporterSignaturesToPackages(graph: LockfileGraph, packageInfos: PackageInfos, root: string): Map<string, string> {
+export function splitImporterSignatures(graph: LockfileGraph, packageInfos: PackageInfos, root: string): PackageLockfileSignatures {
   const importerIdToPackageName = createImporterIdToPackageName(packageInfos, root);
   const packageSignatures = new Map<string, string>();
+  const unmappedImporterSignatures = new Map<string, string>();
 
   for (const [importerId, signature] of graph.importerSignatures) {
     const packageName = importerIdToPackageName.get(importerId);
     if (packageName !== undefined) {
       packageSignatures.set(packageName, signature);
+    } else {
+      unmappedImporterSignatures.set(importerId, signature);
     }
   }
 
-  return packageSignatures;
+  return { packageSignatures, unmappedImporterSignatures };
+}
+
+/**
+ * Maps a lockfile graph's per-importer signatures to per-workspace-package signatures.
+ */
+export function mapImporterSignaturesToPackages(graph: LockfileGraph, packageInfos: PackageInfos, root: string): Map<string, string> {
+  return new Map(splitImporterSignatures(graph, packageInfos, root).packageSignatures);
 }
 
 /**

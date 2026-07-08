@@ -132,6 +132,7 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
     enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
+    experimentalLockfileInvalidation: config.experimentalLockfileInvalidation,
   });
 
   const scope = getFilteredPackages({

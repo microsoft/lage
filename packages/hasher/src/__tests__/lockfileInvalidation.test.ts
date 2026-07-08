@@ -40,6 +40,23 @@ snapshots:
 // Only packages/c's dependency (js-yaml) changes.
 const changedLockfile = baseLockfile.replace(/4\.1\.0/g, "4.2.0");
 
+const rootImporterChangedLockfile = baseLockfile
+  .replace(
+    "  .: {}",
+    `  .:
+    devDependencies:
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3`
+  )
+  .replace(
+    "snapshots:\n",
+    `snapshots:
+
+  typescript@5.8.3: {}
+`
+  );
+
 describe("TargetHasher with experimental pnpm lockfile invalidation", () => {
   let monorepos: Monorepo[] = [];
 
@@ -102,5 +119,14 @@ describe("TargetHasher with experimental pnpm lockfile invalidation", () => {
     const second = await hashAll("second", baseLockfile);
 
     expect(second).toEqual(first);
+  });
+
+  it("changes every package hash when the root importer closure changes", async () => {
+    const baseHashes = await hashAll("base", baseLockfile);
+    const changedHashes = await hashAll("changed", rootImporterChangedLockfile);
+
+    expect(changedHashes.a).not.toEqual(baseHashes.a);
+    expect(changedHashes.b).not.toEqual(baseHashes.b);
+    expect(changedHashes.c).not.toEqual(baseHashes.c);
   });
 });

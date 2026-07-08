@@ -3,8 +3,8 @@ import path from "path";
 import {
   diffPackageSignatures,
   getLockfileName,
-  mapImporterSignaturesToPackages,
   parseLockfileGraph,
+  splitImporterSignatures,
   type ExperimentalLockfileInvalidationOptions,
 } from "@lage-run/lockfile";
 import { getFileFromRef, getMergeBase, type PackageInfos } from "workspace-tools";
@@ -77,9 +77,20 @@ export function getLockfileChangedPackages(options: {
     return { status: "fallback", reason: `could not analyze current ${lockfileName}: ${reason}` };
   }
 
-  const oldSignatures = mapImporterSignaturesToPackages(oldResult.graph, packageInfos, root);
-  const newSignatures = mapImporterSignaturesToPackages(newResult.graph, packageInfos, root);
-  const changed = diffPackageSignatures(oldSignatures, newSignatures);
+  const oldSignatures = splitImporterSignatures(oldResult.graph, packageInfos, root);
+  const newSignatures = splitImporterSignatures(newResult.graph, packageInfos, root);
+  const changedUnmappedImporters = diffPackageSignatures(
+    oldSignatures.unmappedImporterSignatures,
+    newSignatures.unmappedImporterSignatures
+  );
+  if (changedUnmappedImporters.size > 0) {
+    return {
+      status: "fallback",
+      reason: `${lockfileName} changed unmapped importer(s): ${[...changedUnmappedImporters].join(", ")}`,
+    };
+  }
+
+  const changed = diffPackageSignatures(oldSignatures.packageSignatures, newSignatures.packageSignatures);
 
   logger.verbose(
     `Experimental lockfile invalidation: ${lockfileName} changed; ${changed.size} package(s) affected: ${[...changed].join(",")}`

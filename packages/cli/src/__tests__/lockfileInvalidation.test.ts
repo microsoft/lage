@@ -40,6 +40,23 @@ snapshots:
 // Only packages/c's dependency (js-yaml) is bumped; a and b are untouched.
 const changedLockfile = baseLockfile.replace(/4\.1\.0/g, "4.2.0");
 
+const rootImporterChangedLockfile = baseLockfile
+  .replace(
+    "  .: {}",
+    `  .:
+    devDependencies:
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3`
+  )
+  .replace(
+    "snapshots:\n",
+    `snapshots:
+
+  typescript@5.8.3: {}
+`
+  );
+
 describe("experimental pnpm lockfile invalidation (--since)", () => {
   let monorepo: Monorepo | undefined;
 
@@ -143,6 +160,29 @@ describe("experimental pnpm lockfile invalidation (--since)", () => {
     });
 
     // Unsupported version -> keep blanket behavior (all packages run).
+    expect(filteredPackages.sort()).toEqual(["a", "b", "c"]);
+  });
+
+  it("falls back to blanket invalidation when the root importer changes", async () => {
+    const logger = createLogger();
+    monorepo = new Monorepo("lockfile-invalidation-root-importer");
+    await monorepo.init({ packages: { a: {}, b: {}, c: {} } });
+    await monorepo.commitFiles({ "pnpm-lock.yaml": baseLockfile });
+    await monorepo.commitFiles({ "pnpm-lock.yaml": rootImporterChangedLockfile });
+
+    const filteredPackages = getFilteredPackages({
+      root: monorepo.root,
+      packageInfos: await getPackageInfosAsync(monorepo.root),
+      includeDependents: false,
+      includeDependencies: false,
+      since: "HEAD~1",
+      sinceIgnoreGlobs: [],
+      scope: [],
+      logger,
+      repoWideChanges: ["pnpm-lock.yaml"],
+      experimentalLockfileInvalidation: { packageManager: "pnpm" },
+    });
+
     expect(filteredPackages.sort()).toEqual(["a", "b", "c"]);
   });
 });

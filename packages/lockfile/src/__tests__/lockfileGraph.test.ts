@@ -1,7 +1,12 @@
 import { describe, expect, it } from "@jest/globals";
 import fs from "fs";
 import path from "path";
-import { parsePnpmLockfileGraph, diffPackageSignatures, mapImporterSignaturesToPackages } from "../loadLockfileGraph.js";
+import {
+  parsePnpmLockfileGraph,
+  diffPackageSignatures,
+  mapImporterSignaturesToPackages,
+  splitImporterSignatures,
+} from "../loadLockfileGraph.js";
 import { isSupportedPnpmLockfileVersion } from "../pnpmLockfileGraph.js";
 import type { LockfileGraph } from "../types.js";
 
@@ -93,6 +98,86 @@ describe("closure change detection", () => {
     const signature = graph.importerSignatures.get("packages/app");
     expect(signature).toMatch(/^[a-f0-9]{40}$/);
   });
+
+  it("includes package artifact metadata in signatures", () => {
+    const base = parsePnpmLockfileGraph(`lockfileVersion: '9.0'
+importers:
+  packages/a:
+    dependencies:
+      semver:
+        specifier: 7.5.4
+        version: 7.5.4
+packages:
+  semver@7.5.4:
+    resolution:
+      integrity: sha512-base
+snapshots:
+  semver@7.5.4: {}
+`);
+    const changed = parsePnpmLockfileGraph(`lockfileVersion: '9.0'
+importers:
+  packages/a:
+    dependencies:
+      semver:
+        specifier: 7.5.4
+        version: 7.5.4
+packages:
+  semver@7.5.4:
+    resolution:
+      integrity: sha512-changed
+snapshots:
+  semver@7.5.4: {}
+`);
+
+    expect(base.status).toBe("success");
+    expect(changed.status).toBe("success");
+    if (base.status === "success" && changed.status === "success") {
+      expect(changed.graph.importerSignatures.get("packages/a")).not.toEqual(base.graph.importerSignatures.get("packages/a"));
+    }
+  });
+
+  it("propagates changes across cyclic dependency components", () => {
+    const base = parsePnpmLockfileGraph(`lockfileVersion: '9.0'
+importers:
+  packages/app:
+    dependencies:
+      cyclic-b:
+        specifier: 1.0.0
+        version: 1.0.0
+snapshots:
+  cyclic-a@1.0.0:
+    dependencies:
+      cyclic-b: 1.0.0
+      left-pad: 1.3.0
+  cyclic-b@1.0.0:
+    dependencies:
+      cyclic-a: 1.0.0
+  left-pad@1.3.0: {}
+`);
+    const changed = parsePnpmLockfileGraph(`lockfileVersion: '9.0'
+importers:
+  packages/app:
+    dependencies:
+      cyclic-b:
+        specifier: 1.0.0
+        version: 1.0.0
+snapshots:
+  cyclic-a@1.0.0:
+    dependencies:
+      cyclic-b: 1.0.0
+      left-pad: 1.3.1
+  cyclic-b@1.0.0:
+    dependencies:
+      cyclic-a: 1.0.0
+  left-pad@1.3.1: {}
+`);
+
+    expect(base.status).toBe("success");
+    expect(changed.status).toBe("success");
+    if (base.status === "success" && changed.status === "success") {
+      expect(changed.graph.importerSignatures.get("packages/app")).not.toEqual(base.graph.importerSignatures.get("packages/app"));
+    }
+  });
 });
 
 describe("mapImporterSignaturesToPackages", () => {
@@ -102,12 +187,14 @@ describe("mapImporterSignaturesToPackages", () => {
     "pkg-c": { packageJsonPath: "/root/packages/c/package.json" },
   } as any;
 
-  it("maps importer ids to workspace package names and ignores unknown importers", () => {
+  it("maps importer ids to workspace package names and tracks unknown importers separately", () => {
     const graph = graphOf("pnpm-lock-base");
     const signatures = mapImporterSignaturesToPackages(graph, packageInfos, "/root");
+    const splitSignatures = splitImporterSignatures(graph, packageInfos, "/root");
 
     expect([...signatures.keys()].sort()).toEqual(["pkg-a", "pkg-b", "pkg-c"]);
-    // The root importer "." has no matching workspace package and is dropped.
+    expect([...splitSignatures.packageSignatures.keys()].sort()).toEqual(["pkg-a", "pkg-b", "pkg-c"]);
+    expect([...splitSignatures.unmappedImporterSignatures.keys()]).toEqual(["."]);
     expect(signatures.has(".")).toBe(false);
   });
 });

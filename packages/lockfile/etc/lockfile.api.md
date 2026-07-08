@@ -49,6 +49,14 @@ export type LockfilePackageManager = "pnpm";
 export function mapImporterSignaturesToPackages(graph: LockfileGraph, packageInfos: PackageInfos, root: string): Map<string, string>;
 
 // @public
+export interface PackageLockfileSignatures {
+    // (undocumented)
+    readonly packageSignatures: ReadonlyMap<string, string>;
+    // (undocumented)
+    readonly unmappedImporterSignatures: ReadonlyMap<string, string>;
+}
+
+// @public
 export function parseLockfileGraph(options: ExperimentalLockfileInvalidationOptions, rawContent: string): LockfileGraphResult;
 
 // @public
@@ -56,6 +64,9 @@ export function parsePnpmLockfileGraph(rawContent: string): LockfileGraphResult;
 
 // @public
 export const PNPM_LOCKFILE_NAME = "pnpm-lock.yaml";
+
+// @public
+export function splitImporterSignatures(graph: LockfileGraph, packageInfos: PackageInfos, root: string): PackageLockfileSignatures;
 
 // @public (undocumented)
 export const supportedLockfilePackageManagers: readonly LockfilePackageManager[];

@@ -34,3 +34,12 @@ export interface LockfileGraph {
   /** Map of importer id (posix-relative path from the repo root) to a closure signature. */
   readonly importerSignatures: ReadonlyMap<string, string>;
 }
+
+/**
+ * A lockfile graph's importer signatures split into workspace package signatures and signatures for
+ * importers that do not correspond to a known workspace package (for example the root importer).
+ */
+export interface PackageLockfileSignatures {
+  readonly packageSignatures: ReadonlyMap<string, string>;
+  readonly unmappedImporterSignatures: ReadonlyMap<string, string>;
+}

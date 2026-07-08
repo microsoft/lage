@@ -1,7 +1,13 @@
 import { loadPnpmLockfileGraph, parsePnpmLockfileGraph, PNPM_LOCKFILE_NAME } from "./loadLockfileGraph.js";
 import type { ExperimentalLockfileInvalidationOptions, LockfileGraphResult } from "./types.js";
 
-export type { ExperimentalLockfileInvalidationOptions, LockfileGraph, LockfileGraphResult, LockfilePackageManager } from "./types.js";
+export type {
+  ExperimentalLockfileInvalidationOptions,
+  LockfileGraph,
+  LockfileGraphResult,
+  LockfilePackageManager,
+  PackageLockfileSignatures,
+} from "./types.js";
 export { supportedLockfilePackageManagers } from "./types.js";
 export {
   diffPackageSignatures,
@@ -9,6 +15,7 @@ export {
   mapImporterSignaturesToPackages,
   parsePnpmLockfileGraph,
   PNPM_LOCKFILE_NAME,
+  splitImporterSignatures,
 } from "./loadLockfileGraph.js";
 export { isSupportedPnpmLockfileVersion } from "./pnpmLockfileGraph.js";
 

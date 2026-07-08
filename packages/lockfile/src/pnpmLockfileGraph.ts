@@ -38,6 +38,8 @@ export interface PnpmSnapshot {
   optionalDependencies?: Record<string, string>;
 }
 
+export type PnpmPackageMetadata = Record<string, unknown>;
+
 /** An importer (workspace project) entry in a pnpm `9.0` lockfile's `importers` section. */
 export interface PnpmImporter {
   dependencies?: Record<string, { version: string }>;
@@ -49,6 +51,7 @@ export interface PnpmImporter {
 export interface PnpmLockfile {
   lockfileVersion?: string | number;
   importers?: Record<string, PnpmImporter>;
+  packages?: Record<string, PnpmPackageMetadata>;
   snapshots?: Record<string, PnpmSnapshot>;
 }
 
@@ -75,6 +78,22 @@ function hashOrdered(parts: string[]): string {
     hasher.update(part);
   }
   return hasher.digest("hex");
+}
+
+function stableSerialize(value: unknown): string {
+  if (value === null || typeof value !== "object") {
+    return JSON.stringify(value);
+  }
+
+  if (Array.isArray(value)) {
+    return `[${value.map((item) => stableSerialize(item)).join(",")}]`;
+  }
+
+  const entries = Object.entries(value as Record<string, unknown>)
+    .filter(([, entryValue]) => entryValue !== undefined)
+    .sort(([left], [right]) => left.localeCompare(right));
+
+  return `{${entries.map(([key, entryValue]) => `${JSON.stringify(key)}:${stableSerialize(entryValue)}`).join(",")}}`;
 }
 
 function resolveChildDepPaths(dependencies: Record<string, string> | undefined): string[] {
@@ -112,50 +131,121 @@ function resolveImporterDepPaths(dependencies: Record<string, { version: string 
   return depPaths;
 }
 
+function getChildDepPaths(snapshot: PnpmSnapshot | undefined): string[] {
+  return [...resolveChildDepPaths(snapshot?.dependencies), ...resolveChildDepPaths(snapshot?.optionalDependencies)].sort();
+}
+
+function getNodeMetadataHash(
+  depPath: string,
+  snapshots: Record<string, PnpmSnapshot>,
+  packages: Record<string, PnpmPackageMetadata>
+): string {
+  return hashOrdered([depPath, stableSerialize(packages[depPath] ?? null), stableSerialize(snapshots[depPath] ?? null)]);
+}
+
+function findStronglyConnectedComponents(depPaths: string[], getChildren: (depPath: string) => string[]): string[][] {
+  let index = 0;
+  const indexes = new Map<string, number>();
+  const lowLinks = new Map<string, number>();
+  const stack: string[] = [];
+  const onStack = new Set<string>();
+  const components: string[][] = [];
+
+  const strongConnect = (depPath: string): void => {
+    indexes.set(depPath, index);
+    lowLinks.set(depPath, index);
+    index++;
+    stack.push(depPath);
+    onStack.add(depPath);
+
+    for (const child of getChildren(depPath)) {
+      if (!indexes.has(child)) {
+        strongConnect(child);
+        lowLinks.set(depPath, Math.min(lowLinks.get(depPath)!, lowLinks.get(child)!));
+      } else if (onStack.has(child)) {
+        lowLinks.set(depPath, Math.min(lowLinks.get(depPath)!, indexes.get(child)!));
+      }
+    }
+
+    if (lowLinks.get(depPath) === indexes.get(depPath)) {
+      const component: string[] = [];
+      let member: string;
+      do {
+        member = stack.pop()!;
+        onStack.delete(member);
+        component.push(member);
+      } while (member !== depPath);
+      components.push(component.sort());
+    }
+  };
+
+  for (const depPath of depPaths.sort()) {
+    if (!indexes.has(depPath)) {
+      strongConnect(depPath);
+    }
+  }
+
+  return components;
+}
+
 /**
  * Computes a stable Merkle-style hash for every resolved package (snapshot) in the lockfile.
  *
- * Each node's hash is derived from its own dep path and the hashes of its resolved children, so a
- * change anywhere in a package's transitive closure changes its hash. Node hashes are memoized and
- * shared across all importers, so the total cost is roughly O(nodes + edges) once, rather than
- * O(importers x closure). Cycles (which can occur through peer dependencies) are broken
- * deterministically using the dep path as a placeholder.
+ * Each node's hash is derived from its own dep path, package metadata, snapshot metadata, and the
+ * hashes of its resolved children, so a change anywhere in a package's transitive closure changes
+ * its hash. Cycles are collapsed into strongly connected components so changes to any member of the
+ * cycle propagate to every importer that enters the component.
  */
-function computeSnapshotHashes(snapshots: Record<string, PnpmSnapshot>): Map<string, string> {
-  const nodeHashes = new Map<string, string>();
-  const onStack = new Set<string>();
+function computeSnapshotHashes(
+  snapshots: Record<string, PnpmSnapshot>,
+  packages: Record<string, PnpmPackageMetadata>
+): Map<string, string> {
+  const allDepPaths = [...new Set([...Object.keys(snapshots), ...Object.keys(packages)])].sort();
+  const knownDepPaths = new Set(allDepPaths);
+  const getKnownChildren = (depPath: string) => getChildDepPaths(snapshots[depPath]).filter((child) => knownDepPaths.has(child));
+  const components = findStronglyConnectedComponents(allDepPaths, getKnownChildren);
+  const componentByDepPath = new Map<string, number>();
 
-  const visit = (depPath: string): string => {
-    const cached = nodeHashes.get(depPath);
+  components.forEach((component, componentIndex) => {
+    for (const depPath of component) {
+      componentByDepPath.set(depPath, componentIndex);
+    }
+  });
+
+  const componentHashes = new Map<number, string>();
+  const visitComponent = (componentIndex: number): string => {
+    const cached = componentHashes.get(componentIndex);
     if (cached !== undefined) {
       return cached;
     }
 
-    if (onStack.has(depPath)) {
-      // Cycle detected: use the dep path itself as a stable placeholder without recursing.
-      return `cycle\0${depPath}`;
+    const component = components[componentIndex];
+    const memberHashes = component.map((depPath) => getNodeMetadataHash(depPath, snapshots, packages));
+    const childComponentIndexes = new Set<number>();
+
+    for (const depPath of component) {
+      for (const child of getKnownChildren(depPath)) {
+        const childComponentIndex = componentByDepPath.get(child);
+        if (childComponentIndex !== undefined && childComponentIndex !== componentIndex) {
+          childComponentIndexes.add(childComponentIndex);
+        }
+      }
     }
 
-    onStack.add(depPath);
-
-    const snapshot = snapshots[depPath];
-    const childDepPaths = snapshot
-      ? [...resolveChildDepPaths(snapshot.dependencies), ...resolveChildDepPaths(snapshot.optionalDependencies)]
-      : [];
-    childDepPaths.sort();
-
-    const childHashes = childDepPaths.map((child) => visit(child));
-    const hash = hashOrdered([depPath, ...childHashes]);
-
-    onStack.delete(depPath);
-    nodeHashes.set(depPath, hash);
+    const childComponentHashes = [...childComponentIndexes]
+      .sort((left, right) => left - right)
+      .map((childIndex) => visitComponent(childIndex));
+    const hash = hashOrdered(["component", ...memberHashes, ...childComponentHashes]);
+    componentHashes.set(componentIndex, hash);
     return hash;
   };
 
-  // Pre-warm in a deterministic (sorted) order so that memoized results do not depend on importer
-  // traversal order.
-  for (const depPath of Object.keys(snapshots).sort()) {
-    visit(depPath);
+  const nodeHashes = new Map<string, string>();
+  for (const depPath of allDepPaths) {
+    const componentIndex = componentByDepPath.get(depPath);
+    if (componentIndex !== undefined) {
+      nodeHashes.set(depPath, hashOrdered([depPath, visitComponent(componentIndex)]));
+    }
   }
 
   return nodeHashes;
@@ -178,7 +268,7 @@ function computeImporterSignature(importer: PnpmImporter, snapshotHashes: Map<st
  * Builds a {@link LockfileGraph} from a parsed pnpm lockfile.
  */
 export function buildPnpmLockfileGraph(lockfile: PnpmLockfile): LockfileGraph {
-  const snapshotHashes = computeSnapshotHashes(lockfile.snapshots ?? {});
+  const snapshotHashes = computeSnapshotHashes(lockfile.snapshots ?? {}, lockfile.packages ?? {});
 
   const importerSignatures = new Map<string, string>();
   for (const [importerId, importer] of Object.entries(lockfile.importers ?? {})) {
