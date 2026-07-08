@@ -1,7 +1,7 @@
 {
-  "name": "@lage-run/hasher",
-  "version": "1.10.10",
-  "description": "Hasher for Lage Targets",
+  "name": "@lage-run/lockfile",
+  "version": "0.1.0",
+  "description": "Experimental pnpm lockfile analysis for smarter cache and --since invalidation in Lage",
   "repository": {
     "url": "https://github.com/microsoft/lage"
   },
@@ -17,22 +17,12 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/lockfile": "workspace:^",
-    "@lage-run/logger": "workspace:^",
-    "@lage-run/target-graph": "workspace:^",
-    "backfill-hasher": "workspace:^",
-    "execa": "5.1.1",
-    "glob-hasher": "^1.4.2",
-    "globby": "11.1.0",
-    "graceful-fs": "4.2.11",
-    "micromatch": "4.0.8",
+    "js-yaml": "4.2.0",
     "workspace-tools": "workspace:^"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
-    "@lage-run/test-utilities": "workspace:^",
-    "@types/graceful-fs": "^4.1.6",
-    "@types/micromatch": "^4.0.0"
+    "@types/js-yaml": "4.0.9"
   },
   "files": [
     "lib/!(__*)",

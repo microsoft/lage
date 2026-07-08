@@ -53,3 +53,30 @@ In fact, this is so useful that `lage` has a special syntactic sugar for it:
 ## syntactic sugar for --scope build-tools --no-dependents
 lage build --to build-tools
 ```
+
+## Experimental: smarter lockfile invalidation with `--since`
+
+When you run `lage --since <ref>`, `lage` normally treats a lockfile change as a repo-wide change
+(via `repoWideChanges`) and runs **every** package. In PR builds the pnpm lockfile changes often, so
+this defeats the purpose of `--since`.
+
+The experimental `experimentalLockfileInvalidation` config option teaches `--since` to diff the old
+and new lockfile and only include the packages whose resolved dependency closure actually changed:
+
+```js title="/lage.config.js"
+const config = {
+  // Remove the lockfile from repoWideChanges when enabling this feature.
+  repoWideChanges: [],
+  experimentalLockfileInvalidation: { packageManager: "pnpm" }
+};
+```
+
+With this enabled, a lockfile change that only affects a couple of packages will only cause those
+packages (and their dependents) to run under `--since`, instead of the entire graph. When the
+lockfile is unchanged, this adds no extra work.
+
+**Only pnpm is supported** (latest `lockfileVersion 9.x`), because it depends on pnpm's strict,
+deterministic lockfile. Unsupported package managers or lockfile versions safely fall back to the
+previous blanket behavior. See the
+[configuration reference](../reference/config.md#experimental-smarter-lockfile-invalidation) and the
+[caching guide](./cache.md#experimental-smarter-lockfile-invalidation) for details.

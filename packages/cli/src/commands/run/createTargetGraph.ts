@@ -4,6 +4,7 @@ import type { PackageInfos } from "workspace-tools";
 import { getBranchChanges, getDefaultRemoteBranch, getStagedChanges, getUnstagedChanges, getUntrackedChanges } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import type { PipelineDefinition } from "@lage-run/config";
+import type { ExperimentalLockfileInvalidationOptions } from "@lage-run/lockfile";
 import { hasRepoChanged } from "../../filter/hasRepoChanged.js";
 
 interface CreateTargetGraphOptions {
@@ -22,6 +23,7 @@ interface CreateTargetGraphOptions {
   priorities: Priority[];
   enableTargetConfigMerging: boolean;
   enablePhantomTargetOptimization: boolean;
+  experimentalLockfileInvalidation?: ExperimentalLockfileInvalidationOptions;
 }
 
 function getChangedFiles(since: string, cwd: string) {
@@ -54,6 +56,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
     tasks,
     packageInfos,
     priorities,
+    experimentalLockfileInvalidation,
   } = options;
 
   const builder = new WorkspaceTargetGraphBuilder({ root, packageInfos, enableTargetConfigMerging, enablePhantomTargetOptimization });
@@ -68,6 +71,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
     scope,
     repoWideChanges,
     sinceIgnoreGlobs: ignore,
+    experimentalLockfileInvalidation,
   });
 
   let changedFiles: string[] = [];

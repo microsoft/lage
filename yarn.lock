@@ -1858,6 +1858,7 @@ __metadata:
     "@lage-run/cache": "workspace:^"
     "@lage-run/config": "workspace:^"
     "@lage-run/hasher": "workspace:^"
+    "@lage-run/lockfile": "workspace:^"
     "@lage-run/logger": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/reporters": "workspace:^"
@@ -1889,6 +1890,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lage-run/config@workspace:packages/config"
   dependencies:
+    "@lage-run/lockfile": "workspace:^"
     "@lage-run/logger": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/runners": "workspace:^"
@@ -1934,6 +1936,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lage-run/hasher@workspace:packages/hasher"
   dependencies:
+    "@lage-run/lockfile": "workspace:^"
     "@lage-run/logger": "workspace:^"
     "@lage-run/monorepo-scripts": "workspace:^"
     "@lage-run/target-graph": "workspace:^"
@@ -1968,6 +1971,17 @@ __metadata:
     syncpack: "npm:^13.0.0"
     ts-node: "npm:^10.9.1"
     typescript: "npm:~5.9.3"
+  languageName: unknown
+  linkType: soft
+
+"@lage-run/lockfile@workspace:^, @lage-run/lockfile@workspace:packages/lockfile":
+  version: 0.0.0-use.local
+  resolution: "@lage-run/lockfile@workspace:packages/lockfile"
+  dependencies:
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@types/js-yaml": "npm:4.0.9"
+    js-yaml: "npm:4.2.0"
+    workspace-tools: "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -2681,7 +2695,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/js-yaml@npm:^4.0.5":
+"@types/js-yaml@npm:4.0.9, @types/js-yaml@npm:^4.0.5":
   version: 4.0.9
   resolution: "@types/js-yaml@npm:4.0.9"
   checksum: 10c0/24de857aa8d61526bbfbbaa383aa538283ad17363fcd5bb5148e2c7f604547db36646440e739d78241ed008702a8920665d1add5618687b6743858fae00da211

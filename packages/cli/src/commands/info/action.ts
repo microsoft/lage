@@ -144,6 +144,7 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
     scope: (options.scope ?? []).concat(options.to ?? []), // --to is a short hand for --scope + --no-dependents
     repoWideChanges: config.repoWideChanges,
     sinceIgnoreGlobs: options.ignore.concat(config.ignore),
+    experimentalLockfileInvalidation: config.experimentalLockfileInvalidation,
   });
 
   const pickerOptions = getBuiltInRunners({ nodeArg: options.nodeArg, npmCmd: config.npmClient, taskArgs });

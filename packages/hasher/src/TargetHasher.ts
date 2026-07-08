@@ -1,5 +1,6 @@
 import type { Logger } from "@lage-run/logger";
 import type { Target } from "@lage-run/target-graph";
+import { type ExperimentalLockfileInvalidationOptions, loadLockfileGraph, mapImporterSignaturesToPackages } from "@lage-run/lockfile";
 import { resolveExternalDependencies } from "backfill-hasher";
 import { hash } from "glob-hasher";
 import {
@@ -24,6 +25,13 @@ export interface TargetHasherOptions {
   cliArgs?: string[];
   // "never" means no structured data arguments are used
   logger?: Logger<never, never>;
+  /**
+   * **Experimental.** When set, external dependency invalidation is computed from a precise
+   * per-package lockfile closure signature instead of the (less reliable) resolved dependency list.
+   * Only pnpm (lockfileVersion 9.x) is supported; other package managers/versions fall back to the
+   * default behavior.
+   */
+  experimentalLockfileInvalidation?: ExperimentalLockfileInvalidationOptions;
 }
 
 export interface TargetManifest {
@@ -57,6 +65,14 @@ export class TargetHasher {
   private globalInputsHash: Record<string, string> | undefined;
   private lockInfo: ParsedLock | undefined;
   private targetHashes: Record<string, string> = {};
+
+  /**
+   * When the experimental lockfile invalidation feature is enabled and the lockfile is supported,
+   * maps a workspace package name to a single stable signature capturing its entire resolved
+   * external dependency closure. Undefined when the feature is disabled or the lockfile is
+   * unsupported (in which case the default `resolveExternalDependencies` behavior is used).
+   */
+  private lockfilePackageSignatures: Map<string, string> | undefined;
 
   public dependencyMap: DependencyMap = {
     dependencies: new Map(),
@@ -120,9 +136,40 @@ export class TargetHasher {
 
     await this.initializedPromise;
 
+    this.initializeLockfileSignatures();
+
     if (this.logger !== undefined) {
       const globalInputsHash = hashStrings(Object.values(this.globalInputsHash ?? {}));
       this.logger.verbose(`Global inputs hash: ${globalInputsHash}`);
+    }
+  }
+
+  /**
+   * Computes the per-package lockfile closure signatures once, when the experimental lockfile
+   * invalidation feature is enabled. Runs after `packageInfos` is populated. On any unsupported or
+   * missing lockfile, logs a warning and leaves the signatures undefined so that `hash()` falls back
+   * to the default `resolveExternalDependencies` behavior (never silently under-invalidating).
+   */
+  private initializeLockfileSignatures(): void {
+    const { experimentalLockfileInvalidation, root } = this.options;
+    if (!experimentalLockfileInvalidation) {
+      return;
+    }
+
+    const result = loadLockfileGraph(experimentalLockfileInvalidation, root);
+    if (result.status === "success") {
+      this.lockfilePackageSignatures = mapImporterSignaturesToPackages(result.graph, this.packageInfos, root);
+      this.logger?.verbose(
+        `Experimental lockfile invalidation enabled for "${experimentalLockfileInvalidation.packageManager}"; computed closure signatures for ${this.lockfilePackageSignatures.size} package(s).`
+      );
+    } else if (result.status === "no-lockfile") {
+      this.logger?.warn(
+        `Experimental lockfile invalidation is enabled but no lockfile was found for "${experimentalLockfileInvalidation.packageManager}"; falling back to default dependency invalidation.`
+      );
+    } else {
+      this.logger?.warn(
+        `Experimental lockfile invalidation is enabled but the lockfile is not supported (${result.reason}); falling back to default dependency invalidation.`
+      );
     }
   }
 
@@ -156,7 +203,16 @@ export class TargetHasher {
     };
 
     const internalDeps = Object.keys(allDependencies).filter((dep) => this.packageInfos[dep]);
-    const externalDeps = resolveExternalDependencies(allDependencies, this.packageInfos, parsedLock);
+
+    // When the experimental lockfile invalidation feature is enabled and produced a signature for
+    // this package, use the precise closure signature instead of the resolved dependency list. This
+    // captures the package's entire transitive external closure (including peer-resolved deps) in a
+    // single stable hash, so only packages whose closure actually changed get a new hash.
+    const lockfileSignature = this.lockfilePackageSignatures?.get(target.packageName!);
+    const externalDeps =
+      lockfileSignature !== undefined
+        ? [`lockfile:${lockfileSignature}`]
+        : resolveExternalDependencies(allDependencies, this.packageInfos, parsedLock);
     const resolvedDependencies = [...internalDeps, ...externalDeps].sort();
 
     const files = getInputFiles(target, this.dependencyMap, this.packageTree!);
