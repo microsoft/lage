@@ -17,8 +17,17 @@ export function parsePnpmLock(yaml: PnpmLockFile): ParsedLock {
   // original slash-separated `name/version` format, which is parsed by the legacy branch below.
   const lockfileVersion = Number(yaml?.lockfileVersion ?? 0);
 
-  if (lockfileVersion >= 6) {
-    // lockfileVersion >= 9.0 stores dependency edges under `snapshots`; 6.0 keeps them inline in
+  // Fail loudly on a newer, unrecognized lockfile format rather than silently mis-parsing it: a
+  // future lockfileVersion could change the key/snapshot shape in a way that produces wrong results.
+  if (lockfileVersion > 9) {
+    throw new Error(
+      `Unsupported pnpm lockfileVersion "${yaml?.lockfileVersion}". This version of workspace-tools ` +
+        `supports pnpm lockfileVersion 9.0 and below. Please upgrade workspace-tools or use a different package manager.`
+    );
+  }
+
+  if (lockfileVersion >= 6 && lockfileVersion <= 9) {
+    // lockfileVersion 9.0 stores dependency edges under `snapshots`; 6.0 keeps them inline in
     // `packages`. Either way the keys share the same `name@version(suffixes)` format.
     const entries = yaml.snapshots ?? yaml.packages;
     for (const [pkgSpec, snapshot] of Object.entries(entries ?? {})) {

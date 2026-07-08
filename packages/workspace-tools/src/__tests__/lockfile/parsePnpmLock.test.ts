@@ -223,5 +223,14 @@ describe("parsePnpmLock", () => {
       const { object } = parsePnpmLock(lock);
       expect(object["foo@1.0.0"].dependencies).toEqual({ fromSnapshots: "1.0.0" });
     });
+
+    it("throws on an unrecognized newer lockfileVersion (> 9) instead of mis-parsing it", () => {
+      const lock: PnpmLockFile = {
+        lockfileVersion: "10.0",
+        snapshots: { "foo@1.0.0": { dependencies: {} } },
+      };
+
+      expect(() => parsePnpmLock(lock)).toThrow(/Unsupported pnpm lockfileVersion "10.0"/);
+    });
   });
 });
