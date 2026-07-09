@@ -38,13 +38,11 @@ jobs:
           # Use newer Node for trusted publishing
           node-version: 22
 
-      - name: Install npm@latest
+      - name: Install npm 11
         shell: bash
-        # Temporary extra command to work around weird node issue (swich to just npm i -g npm once fixed)
-        # https://github.com/nodejs/node/issues/62425#issuecomment-4200715930
         run: |
-          npm i -g npm@10.9.8
-          npm i -g npm
+          npm i -g npm@11
+          npm --version
 
       - run: yarn --immutable
 
