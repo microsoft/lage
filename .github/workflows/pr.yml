@@ -35,16 +35,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Use npm 11 when npm 12 is preinstalled
-        shell: bash
-        run: |
-          npm_version="$(npm --version)"
-          echo "Detected npm ${npm_version}"
-          if [[ "${npm_version%%.*}" == "12" ]]; then
-            npm i -g npm@11
-          fi
-          echo "Using npm $(npm --version)"
-
       - run: yarn --immutable
 
       - name: Build, Test, Lint
