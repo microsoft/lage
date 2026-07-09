@@ -1,8 +1,16 @@
 # Change Log - workspace-tools
 
-<!-- This log was last generated on Thu, 25 Jun 2026 20:21:25 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 09 Jul 2026 22:12:55 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.42.0
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Minor changes
+
+- Add support for pnpm lockfileVersion 6.0 (pnpm@8) and 9.0 (pnpm@9+) to parseLockFile (ansteg@microsoft.com)
 
 ## 0.41.10
 

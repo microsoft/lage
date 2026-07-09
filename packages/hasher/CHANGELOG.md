@@ -1,8 +1,18 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Thu, 25 Jun 2026 20:21:25 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 09 Jul 2026 22:12:55 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.10.11
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.10
+- Bump backfill-hasher to v6.7.12
+- Bump workspace-tools to v0.42.0
 
 ## 1.10.10
 

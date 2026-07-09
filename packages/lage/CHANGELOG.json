@@ -2,6 +2,21 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 09 Jul 2026 22:12:55 GMT",
+      "version": "2.15.17",
+      "tag": "lage_v2.15.17",
+      "comments": {
+        "minor": [
+          {
+            "author": "ansteg@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "ede5be1674282d60c1e03804de3c61f77df45e69",
+            "comment": "Add support for pnpm lockfileVersion 6.0 (pnpm@8) and 9.0 (pnpm@9+) to parseLockFile"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 Jun 2026 20:21:25 GMT",
       "version": "2.15.16",
       "tag": "lage_v2.15.16",

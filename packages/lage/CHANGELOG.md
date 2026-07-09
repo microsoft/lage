@@ -1,8 +1,17 @@
 # Change Log - lage
 
-<!-- This log was last generated on Thu, 25 Jun 2026 20:21:25 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 09 Jul 2026 22:12:55 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.15.17
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Minor changes
+
+- `workspace-tools`
+  - Add support for pnpm lockfileVersion 6.0 (pnpm@8) and 9.0 (pnpm@9+) to parseLockFile (ansteg@microsoft.com)
 
 ## 2.15.16
 
