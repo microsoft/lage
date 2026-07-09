@@ -22,7 +22,8 @@ export function parsePnpmLock(yaml: PnpmLockFile): ParsedLock {
   if (lockfileVersion > 9) {
     throw new Error(
       `Unsupported pnpm lockfileVersion "${yaml?.lockfileVersion}". This version of workspace-tools ` +
-        `supports pnpm lockfileVersion 9.0 and below. Please upgrade workspace-tools or use a different package manager.`
+        `supports pnpm lockfileVersion 9.0 and below. If your workspace-tools version is up to date, ` +
+        `please report this issue at https://github.com/microsoft/lage/issues so support can be added.`
     );
   }
 
