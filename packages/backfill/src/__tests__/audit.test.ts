@@ -41,11 +41,7 @@ describe("Audit", () => {
   it("correctly warns about side-effects", async () => {
     backfillOutput = await execa(
       "node",
-      [
-        pathToBackfill,
-        "--audit",
-        "npm run compile --scripts-prepend-node-path && npm run side-effect --scripts-prepend-node-path",
-      ],
+      [pathToBackfill, "--audit", "npm run compile && npm run side-effect"],
       { all: true, cwd: packageAPath }
     );
 
