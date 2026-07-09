@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/config",
-  "version": "0.9.11",
+  "version": "0.9.14",
   "description": "Config management for Lage",
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
     "@lage-run/runners": "workspace:^",
     "@lage-run/target-graph": "workspace:^",
     "backfill-config": "workspace:^",
-    "cosmiconfig": "9.0.1",
+    "cosmiconfig": "9.0.2",
     "workspace-tools": "workspace:^"
   },
   "devDependencies": {

@@ -2,6 +2,63 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Thu, 25 Jun 2026 20:21:25 GMT",
+      "version": "2.15.16",
+      "tag": "lage_v2.15.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "6af70fb1c8228fae625c6c2a864222631916a9b4",
+            "comment": "Update `resolveRemoteAndBranch` to return `.remoteBranch` instead of `.branch` for consistency"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 04:59:29 GMT",
+      "version": "2.15.15",
+      "tag": "lage_v2.15.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "c05cc77a8a8a52f57d5a2ce30b6ed57793f34d99",
+            "comment": "Bundle with esbuild 0.28.1 (bumped from 0.25.12)"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/config",
+            "commit": "c05cc77a8a8a52f57d5a2ce30b6ed57793f34d99",
+            "comment": "Update dependency cosmiconfig to v9.0.2"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "2.15.14",
+      "tag": "lage_v2.15.14",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "b7626837ab7cb0772bfa33b17546e98b14da336a",
+            "comment": "Add `resolveRemoteAndBranch` helper, and export `getRemotes`"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "b7626837ab7cb0772bfa33b17546e98b14da336a",
+            "comment": "Update dependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 12 Jun 2026 20:31:24 GMT",
       "version": "2.15.13",
       "tag": "lage_v2.15.13",

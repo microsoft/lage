@@ -296,6 +296,9 @@ export function getRemoteBranch(options: GitBranchOptions): string | null;
 export function getRemoteBranch(branch: string, cwd: string): string | null;
 
 // @public
+export function getRemotes(options: GitCommonOptions): Record<string, string>;
+
+// @public
 export function getScopedPackages(search: string[], packages: {
     [pkg: string]: unknown;
 } | string[]): string[];
@@ -686,7 +689,19 @@ export interface PnpmLockFile {
 // @public (undocumented)
 export function queryLockFile(name: string, versionRange: string, lock: ParsedLock): LockDependency;
 
+// @public (undocumented)
+type RemoteBranch = Pick<ParsedRemoteBranch, "remoteBranch"> & {
+    remote: string;
+};
+
+// Warning: (ae-forgotten-export) The symbol "RemoteBranch" needs to be exported by the entry point index.d.ts
+//
 // @public
+export function resolveRemoteAndBranch(options: Omit<GetDefaultRemoteBranchOptions, "branch" | "remotes"> & {
+    branch: string | undefined;
+}): RemoteBranch;
+
+// @public @deprecated
 export function resolveRemoteBranch(options: Omit<GetDefaultRemoteBranchOptions, "branch" | "remotes"> & {
     branch: string | undefined;
 }): string;

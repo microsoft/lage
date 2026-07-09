@@ -4,7 +4,7 @@ import { cleanupFixtures, setupFixture, setupLocalRemote, setupPackageJson } fro
 import { addGitObserver, clearGitObservers, gitFailFast, type GitObserver } from "../../git/git.js";
 import {
   getDefaultRemoteBranch,
-  resolveRemoteBranch,
+  resolveRemoteAndBranch,
   type GetDefaultRemoteBranchOptions,
 } from "../../git/getDefaultRemoteBranch.js";
 import { findGitRoot } from "../../paths.js";
@@ -141,12 +141,21 @@ describe("getDefaultRemoteBranch", () => {
   });
 });
 
-describe("resolveRemoteBranch", () => {
+describe("resolveRemoteAndBranch", () => {
   it("returns branch as-is when it already has a known remote prefix (no git ops)", () => {
     const opts: GetDefaultRemoteBranchOptions = { cwd: "fake", strict: true };
-    expect(resolveRemoteBranch({ branch: "origin/main", ...opts })).toBe("origin/main");
-    expect(resolveRemoteBranch({ branch: "upstream/develop", ...opts })).toBe("upstream/develop");
-    expect(resolveRemoteBranch({ branch: "origin/feature/foo", ...opts })).toBe("origin/feature/foo");
+    expect(resolveRemoteAndBranch({ branch: "origin/main", ...opts })).toEqual({
+      remote: "origin",
+      remoteBranch: "main",
+    });
+    expect(resolveRemoteAndBranch({ branch: "upstream/develop", ...opts })).toEqual({
+      remote: "upstream",
+      remoteBranch: "develop",
+    });
+    expect(resolveRemoteAndBranch({ branch: "origin/feature/foo", ...opts })).toEqual({
+      remote: "origin",
+      remoteBranch: "feature/foo",
+    });
     expect(gitObserver).not.toHaveBeenCalled();
   });
 
@@ -156,7 +165,10 @@ describe("resolveRemoteBranch", () => {
     gitRemote("add", "origin", "https://github.com/microsoft/lage.git");
     gitObserver.mockClear();
 
-    expect(resolveRemoteBranch({ branch: "main", cwd, strict: true })).toBe("origin/main");
+    expect(resolveRemoteAndBranch({ branch: "main", cwd, strict: true })).toEqual({
+      remote: "origin",
+      remoteBranch: "main",
+    });
 
     expect(getGitCalls()).toEqual([gitGetRemotesConfig, gitGetRoot]);
   });
@@ -168,7 +180,10 @@ describe("resolveRemoteBranch", () => {
     gitRemote("add", "myremote", "https://github.com/myuser/lage.git");
     gitObserver.mockClear();
 
-    expect(resolveRemoteBranch({ branch: "myremote/feature", cwd, strict: true })).toBe("myremote/feature");
+    expect(resolveRemoteAndBranch({ branch: "myremote/feature", cwd, strict: true })).toEqual({
+      remote: "myremote",
+      remoteBranch: "feature",
+    });
 
     expect(getGitCalls()).toEqual([gitGetRemotesConfig]);
   });
@@ -180,7 +195,10 @@ describe("resolveRemoteBranch", () => {
     gitObserver.mockClear();
 
     // "feature" is not a remote, so the whole string is treated as the branch name
-    expect(resolveRemoteBranch({ branch: "feature/foo", cwd, strict: true })).toBe("origin/feature/foo");
+    expect(resolveRemoteAndBranch({ branch: "feature/foo", cwd, strict: true })).toEqual({
+      remote: "origin",
+      remoteBranch: "feature/foo",
+    });
 
     expect(getGitCalls()).toEqual([gitGetRemotesConfig, gitGetRoot]);
   });
@@ -190,7 +208,10 @@ describe("resolveRemoteBranch", () => {
     setupLocalRemote({ cwd, remoteName: "origin" });
     jest.clearAllMocks();
 
-    expect(resolveRemoteBranch({ branch: undefined, cwd, strict: true })).toBe("origin/main");
+    expect(resolveRemoteAndBranch({ branch: undefined, cwd, strict: true })).toEqual({
+      remote: "origin",
+      remoteBranch: "main",
+    });
 
     expect(getGitCalls()).toEqual([gitGetRemotesConfig, gitGetOriginDefaultBranch]);
   });

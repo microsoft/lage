@@ -1,8 +1,24 @@
 # Change Log - workspace-tools
 
-<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Jun 2026 20:21:25 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.41.10
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- Update `resolveRemoteAndBranch` to return `.remoteBranch` instead of `.branch` for consistency (elcraig@microsoft.com)
+
+## 0.41.9
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Add `resolveRemoteAndBranch` helper, and export `getRemotes` (elcraig@microsoft.com)
 
 ## 0.41.8
 

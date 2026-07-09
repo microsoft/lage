@@ -1,8 +1,39 @@
 # Change Log - lage
 
-<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Jun 2026 20:21:25 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.15.16
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- `workspace-tools`
+  - Update `resolveRemoteAndBranch` to return `.remoteBranch` instead of `.branch` for consistency (elcraig@microsoft.com)
+
+## 2.15.15
+
+Thu, 25 Jun 2026 04:59:29 GMT
+
+### Patches
+
+- `lage`
+  - Bundle with esbuild 0.28.1 (bumped from 0.25.12) (elcraig@microsoft.com)
+- `@lage-run/config`
+  - Update dependency cosmiconfig to v9.0.2 (renovate@whitesourcesoftware.com)
+
+## 2.15.14
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- `workspace-tools`
+  - Add `resolveRemoteAndBranch` helper, and export `getRemotes` (elcraig@microsoft.com)
+- `lage`
+  - Update dependencies (elcraig@microsoft.com)
 
 ## 2.15.13
 

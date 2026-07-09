@@ -1,8 +1,24 @@
 # Change Log - @lage-run/grapher
 
-<!-- This log was last generated on Fri, 12 Jun 2026 20:31:24 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Jun 2026 20:21:25 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.2.29
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.41.10
+
+## 0.2.28
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.41.9
 
 ## 0.2.27
 

@@ -15,10 +15,12 @@ export {
   getDefaultRemoteBranch,
   type GetDefaultRemoteBranchOptions,
   resolveRemoteBranch,
+  resolveRemoteAndBranch,
 } from "./getDefaultRemoteBranch.js";
 export { getFileAddedHash } from "./getFileAddedHash.js";
 export { getFileFromRef } from "./getFileFromRef.js";
 export { getRecentCommitMessages } from "./getRecentCommitMessages.js";
+export { getRemotes } from "./getRemotes.js";
 export {
   addGitObserver,
   clearGitObservers,

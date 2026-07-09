@@ -21,6 +21,8 @@ const baseTestTarget = {
  * @type {Partial<Omit<ConfigOptions, 'cacheOptions'>> & { cacheOptions?: Partial<CacheOptions> }}
  */
 const config = {
+  // use fancy reporter locally and platform-specific ones for CI
+  reporter: process.env.CI || process.env.TF_BUILD ? undefined : "fancy",
   pipeline: {
     "lage#bundle": {
       dependsOn: ["^^transpile", "types"],

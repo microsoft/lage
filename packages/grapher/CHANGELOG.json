@@ -2,6 +2,36 @@
   "name": "@lage-run/grapher",
   "entries": [
     {
+      "date": "Thu, 25 Jun 2026 20:21:25 GMT",
+      "version": "0.2.29",
+      "tag": "@lage-run/grapher_v0.2.29",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/grapher",
+            "comment": "Bump workspace-tools to v0.41.10",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "0.2.28",
+      "tag": "@lage-run/grapher_v0.2.28",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/grapher",
+            "comment": "Bump workspace-tools to v0.41.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 12 Jun 2026 20:31:24 GMT",
       "version": "0.2.27",
       "tag": "@lage-run/grapher_v0.2.27",

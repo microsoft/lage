@@ -1,0 +1,94 @@
+# The publish pipeline to build and pack NPM packages ("lage - publish")
+# Based on https://github.com/microsoft/beachball/blob/main/.ado/publish.yml
+# references:
+# https://eng.ms/docs/coreai/devdiv/one-engineering-system-1es/1es-docs/1es-pipeline-templates/overview
+# https://eng.ms/docs/coreai/devdiv/one-engineering-system-1es/1es-docs/1es-pipeline-templates/migration/office-specific-guidance
+
+# Name of the run
+name: lage-publish-$(Date:yyyy-MM-dd).$(Rev:rr)
+
+# This script must never be triggered from YAML settings for security reasons.
+pr: none
+trigger: none
+
+resources:
+  repositories:
+    - repository: OfficePipelineTemplates
+      type: git
+      name: 1ESPipelineTemplates/OfficePipelineTemplates
+      ref: refs/tags/release
+
+variables:
+  - name: nodeVersion
+    value: 24
+  - name: npmVersion
+    value: 11
+  - name: registryUrl
+    value: https://pkgs.dev.azure.com/office/_packaging/Office/npm/registry/
+  - name: tags
+    value: production
+    readonly: true
+
+extends:
+  template: v1/Office.Official.PipelineTemplate.yml@OfficePipelineTemplates
+  parameters:
+    pool:
+      name: Azure-Pipelines-1ESPT-ExDShared
+      image: windows-latest
+      os: windows # We need windows because compliance task only run on windows.
+    sdl:
+      codeql:
+        runSourceLanguagesInSourceAnalysis: true
+
+    stages:
+      - stage: main
+        jobs:
+          - job: build
+            displayName: Build, test, pack
+            cancelTimeoutInMinutes: 45 # to allow more time to collect CodeQL debug info.
+
+            pool:
+              name: Azure-Pipelines-1ESPT-ExDShared
+              image: ubuntu-latest
+              os: linux
+
+            workspace:
+              clean: all
+
+            # templateContext:
+            #   outputParentDirectory: $(Build.StagingDirectory)/out
+            #   outputs:
+            #     - output: pipelineArtifact
+            #       artifactName: packed-packages
+            #       path: $(Build.StagingDirectory)/out/packed-packages
+            #     - output: pipelineArtifact
+            #       artifactName: release-api-tool
+            #       path: $(Build.StagingDirectory)/out/release-api-tool
+
+            steps:
+              - checkout: self
+
+              - task: UseNode@1
+                displayName: Install Node.js ${{ variables.nodeVersion }}
+                retryCountOnTaskFailure: 1
+                inputs:
+                  version: ${{ variables.nodeVersion }}.x
+                  checkLatest: false
+
+              # For multiline scripts, we want the whole task to fail if any line of the script fails.
+              # ADO doesn't have bash configured this way by default. To fix we override the SHELLOPTS built-in variable.
+              # https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
+              # The options below include ADO defaults (braceexpand:hashall:interactive-comments) plus
+              # errexit:errtrace for better error behavior.
+              - script: |
+                  echo "##vso[task.setvariable variable=shellopts]braceexpand:hashall:interactive-comments:errexit:errtrace"
+                displayName: Force exit on error (bash)
+
+              - script: |
+                  echo "node: `node -v`"
+                  echo "yarn: `yarn -v`"
+                  echo "npm: `npm -v`"
+                  printenv | sort
+                displayName: Show environment
+
+              # TODO: fill rest of pipeline
