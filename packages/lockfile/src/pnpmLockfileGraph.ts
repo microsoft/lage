@@ -40,11 +40,17 @@ export interface PnpmSnapshot {
 
 export type PnpmPackageMetadata = Record<string, unknown>;
 
+export interface PnpmImporterDependency {
+  specifier?: string;
+  version: string;
+}
+
 /** An importer (workspace project) entry in a pnpm `9.0` lockfile's `importers` section. */
 export interface PnpmImporter {
-  dependencies?: Record<string, { version: string }>;
-  devDependencies?: Record<string, { version: string }>;
-  optionalDependencies?: Record<string, { version: string }>;
+  dependencies?: Record<string, PnpmImporterDependency>;
+  devDependencies?: Record<string, PnpmImporterDependency>;
+  optionalDependencies?: Record<string, PnpmImporterDependency>;
+  [key: string]: unknown;
 }
 
 /** The parts of a parsed pnpm `9.0` lockfile that are relevant to closure analysis. */
@@ -53,6 +59,7 @@ export interface PnpmLockfile {
   importers?: Record<string, PnpmImporter>;
   packages?: Record<string, PnpmPackageMetadata>;
   snapshots?: Record<string, PnpmSnapshot>;
+  [key: string]: unknown;
 }
 
 /**
@@ -113,16 +120,13 @@ function resolveChildDepPaths(dependencies: Record<string, string> | undefined):
   return depPaths;
 }
 
-function resolveImporterDepPaths(dependencies: Record<string, { version: string }> | undefined): string[] {
+function resolveImporterDepPaths(dependencies: Record<string, PnpmImporterDependency> | undefined): string[] {
   if (!dependencies) {
     return [];
   }
 
   const depPaths: string[] = [];
   for (const [name, entry] of Object.entries(dependencies)) {
-    if (!entry || typeof entry.version !== "string") {
-      continue;
-    }
     const relative = refToRelative(entry.version, name);
     if (relative) {
       depPaths.push(relative);
@@ -135,54 +139,92 @@ function getChildDepPaths(snapshot: PnpmSnapshot | undefined): string[] {
   return [...resolveChildDepPaths(snapshot?.dependencies), ...resolveChildDepPaths(snapshot?.optionalDependencies)].sort();
 }
 
+function getPackageMetadata(depPath: string, packages: Record<string, PnpmPackageMetadata>): PnpmPackageMetadata | undefined {
+  const exact = packages[depPath];
+  if (exact !== undefined) {
+    return exact;
+  }
+
+  // pnpm v9 stores peer- and patch-resolved snapshots under suffixed keys such as
+  // `react-dom@18.3.1(react@18.3.1)` while artifact metadata remains under the base key.
+  const suffixIndex = depPath.indexOf("(");
+  return suffixIndex === -1 ? undefined : packages[depPath.slice(0, suffixIndex)];
+}
+
 function getNodeMetadataHash(
   depPath: string,
   snapshots: Record<string, PnpmSnapshot>,
   packages: Record<string, PnpmPackageMetadata>
 ): string {
-  return hashOrdered([depPath, stableSerialize(packages[depPath] ?? null), stableSerialize(snapshots[depPath] ?? null)]);
+  return hashOrdered([
+    depPath,
+    stableSerialize(getPackageMetadata(depPath, packages) ?? null),
+    stableSerialize(snapshots[depPath] ?? null),
+  ]);
 }
 
 function findStronglyConnectedComponents(depPaths: string[], getChildren: (depPath: string) => string[]): string[][] {
-  let index = 0;
-  const indexes = new Map<string, number>();
-  const lowLinks = new Map<string, number>();
-  const stack: string[] = [];
-  const onStack = new Set<string>();
-  const components: string[][] = [];
+  const sortedDepPaths = [...depPaths].sort();
+  const childrenByDepPath = new Map(sortedDepPaths.map((depPath) => [depPath, getChildren(depPath)]));
+  const reverseChildren = new Map(sortedDepPaths.map((depPath) => [depPath, [] as string[]]));
 
-  const strongConnect = (depPath: string): void => {
-    indexes.set(depPath, index);
-    lowLinks.set(depPath, index);
-    index++;
-    stack.push(depPath);
-    onStack.add(depPath);
+  for (const [depPath, children] of childrenByDepPath) {
+    for (const child of children) {
+      reverseChildren.get(child)?.push(depPath);
+    }
+  }
+  for (const parents of reverseChildren.values()) {
+    parents.sort();
+  }
 
-    for (const child of getChildren(depPath)) {
-      if (!indexes.has(child)) {
-        strongConnect(child);
-        lowLinks.set(depPath, Math.min(lowLinks.get(depPath)!, lowLinks.get(child)!));
-      } else if (onStack.has(child)) {
-        lowLinks.set(depPath, Math.min(lowLinks.get(depPath)!, indexes.get(child)!));
+  const visited = new Set<string>();
+  const finishOrder: string[] = [];
+  for (const start of sortedDepPaths) {
+    if (visited.has(start)) {
+      continue;
+    }
+
+    visited.add(start);
+    const stack: Array<{ depPath: string; childIndex: number }> = [{ depPath: start, childIndex: 0 }];
+    while (stack.length > 0) {
+      const frame = stack[stack.length - 1];
+      const children = childrenByDepPath.get(frame.depPath) ?? [];
+      const child = children[frame.childIndex];
+      if (child !== undefined) {
+        frame.childIndex++;
+        if (!visited.has(child)) {
+          visited.add(child);
+          stack.push({ depPath: child, childIndex: 0 });
+        }
+      } else {
+        finishOrder.push(frame.depPath);
+        stack.pop();
       }
     }
+  }
 
-    if (lowLinks.get(depPath) === indexes.get(depPath)) {
-      const component: string[] = [];
-      let member: string;
-      do {
-        member = stack.pop()!;
-        onStack.delete(member);
-        component.push(member);
-      } while (member !== depPath);
-      components.push(component.sort());
+  const assigned = new Set<string>();
+  const components: string[][] = [];
+  for (let index = finishOrder.length - 1; index >= 0; index--) {
+    const start = finishOrder[index];
+    if (assigned.has(start)) {
+      continue;
     }
-  };
 
-  for (const depPath of depPaths.sort()) {
-    if (!indexes.has(depPath)) {
-      strongConnect(depPath);
+    assigned.add(start);
+    const component: string[] = [];
+    const stack = [start];
+    while (stack.length > 0) {
+      const depPath = stack.pop()!;
+      component.push(depPath);
+      for (const parent of reverseChildren.get(depPath) ?? []) {
+        if (!assigned.has(parent)) {
+          assigned.add(parent);
+          stack.push(parent);
+        }
+      }
     }
+    components.push(component.sort());
   }
 
   return components;
@@ -200,9 +242,16 @@ function computeSnapshotHashes(
   snapshots: Record<string, PnpmSnapshot>,
   packages: Record<string, PnpmPackageMetadata>
 ): Map<string, string> {
-  const allDepPaths = [...new Set([...Object.keys(snapshots), ...Object.keys(packages)])].sort();
+  const allDepPaths = Object.keys(snapshots).sort();
   const knownDepPaths = new Set(allDepPaths);
-  const getKnownChildren = (depPath: string) => getChildDepPaths(snapshots[depPath]).filter((child) => knownDepPaths.has(child));
+  const getKnownChildren = (depPath: string): string[] => {
+    const children = getChildDepPaths(snapshots[depPath]);
+    const unresolvedChild = children.find((child) => !knownDepPaths.has(child));
+    if (unresolvedChild !== undefined) {
+      throw new Error(`snapshot "${depPath}" references missing snapshot "${unresolvedChild}"`);
+    }
+    return children;
+  };
   const components = findStronglyConnectedComponents(allDepPaths, getKnownChildren);
   const componentByDepPath = new Map<string, number>();
 
@@ -212,46 +261,51 @@ function computeSnapshotHashes(
     }
   });
 
-  const componentHashes = new Map<number, string>();
-  const visitComponent = (componentIndex: number): string => {
-    const cached = componentHashes.get(componentIndex);
-    if (cached !== undefined) {
-      return cached;
-    }
-
-    const component = components[componentIndex];
-    const memberHashes = component.map((depPath) => getNodeMetadataHash(depPath, snapshots, packages));
-    const childComponentIndexes = new Set<number>();
-
-    for (const depPath of component) {
-      for (const child of getKnownChildren(depPath)) {
-        const childComponentIndex = componentByDepPath.get(child);
-        if (childComponentIndex !== undefined && childComponentIndex !== componentIndex) {
-          childComponentIndexes.add(childComponentIndex);
-        }
+  const componentChildren = components.map(() => new Set<number>());
+  const componentParents = components.map(() => new Set<number>());
+  for (const [depPath, componentIndex] of componentByDepPath) {
+    for (const child of getKnownChildren(depPath)) {
+      const childComponentIndex = componentByDepPath.get(child)!;
+      if (childComponentIndex !== componentIndex) {
+        componentChildren[componentIndex].add(childComponentIndex);
+        componentParents[childComponentIndex].add(componentIndex);
       }
     }
+  }
 
-    const childComponentHashes = [...childComponentIndexes]
-      .sort((left, right) => left - right)
-      .map((childIndex) => visitComponent(childIndex));
-    const hash = hashOrdered(["component", ...memberHashes, ...childComponentHashes]);
-    componentHashes.set(componentIndex, hash);
-    return hash;
-  };
+  const componentHashes = new Map<number, string>();
+  const remainingChildren = componentChildren.map((children) => children.size);
+  const ready = remainingChildren.flatMap((count, componentIndex) => (count === 0 ? [componentIndex] : []));
+  while (ready.length > 0) {
+    const componentIndex = ready.pop()!;
+    const memberHashes = components[componentIndex].map((depPath) => getNodeMetadataHash(depPath, snapshots, packages));
+    const childHashes = [...componentChildren[componentIndex]].map((childIndex) => componentHashes.get(childIndex)!).sort();
+    componentHashes.set(componentIndex, hashOrdered(["component", ...memberHashes, ...childHashes]));
+
+    for (const parentIndex of componentParents[componentIndex]) {
+      remainingChildren[parentIndex]--;
+      if (remainingChildren[parentIndex] === 0) {
+        ready.push(parentIndex);
+      }
+    }
+  }
+
+  if (componentHashes.size !== components.length) {
+    throw new Error("could not hash the pnpm snapshot component graph");
+  }
 
   const nodeHashes = new Map<string, string>();
   for (const depPath of allDepPaths) {
     const componentIndex = componentByDepPath.get(depPath);
     if (componentIndex !== undefined) {
-      nodeHashes.set(depPath, hashOrdered([depPath, visitComponent(componentIndex)]));
+      nodeHashes.set(depPath, hashOrdered([depPath, componentHashes.get(componentIndex)!]));
     }
   }
 
   return nodeHashes;
 }
 
-function computeImporterSignature(importer: PnpmImporter, snapshotHashes: Map<string, string>): string {
+function computeImporterSignature(importerId: string, importer: PnpmImporter, snapshotHashes: Map<string, string>): string {
   const directDepPaths = [
     ...resolveImporterDepPaths(importer.dependencies),
     ...resolveImporterDepPaths(importer.devDependencies),
@@ -259,9 +313,15 @@ function computeImporterSignature(importer: PnpmImporter, snapshotHashes: Map<st
   ];
 
   const uniqueSorted = [...new Set(directDepPaths)].sort();
-  const childHashes = uniqueSorted.map((depPath) => snapshotHashes.get(depPath) ?? hashOrdered([depPath]));
+  const childHashes = uniqueSorted.map((depPath) => {
+    const signature = snapshotHashes.get(depPath);
+    if (signature === undefined) {
+      throw new Error(`importer "${importerId}" references missing snapshot "${depPath}"`);
+    }
+    return signature;
+  });
 
-  return hashOrdered(childHashes);
+  return hashOrdered([stableSerialize(importer), ...childHashes]);
 }
 
 /**
@@ -272,8 +332,9 @@ export function buildPnpmLockfileGraph(lockfile: PnpmLockfile): LockfileGraph {
 
   const importerSignatures = new Map<string, string>();
   for (const [importerId, importer] of Object.entries(lockfile.importers ?? {})) {
-    importerSignatures.set(importerId, computeImporterSignature(importer, snapshotHashes));
+    importerSignatures.set(importerId, computeImporterSignature(importerId, importer, snapshotHashes));
   }
 
-  return { importerSignatures };
+  const { importers: _importers, packages: _packages, snapshots: _snapshots, ...globalFields } = lockfile;
+  return { importerSignatures, globalSignature: hashOrdered([stableSerialize(globalFields)]) };
 }

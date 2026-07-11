@@ -1,12 +1,95 @@
 import fs from "fs";
+import { createRequire } from "module";
 import path from "path";
-import yaml from "js-yaml";
+import type jsYaml from "js-yaml";
 import type { PackageInfos } from "workspace-tools";
 import { buildPnpmLockfileGraph, isSupportedPnpmLockfileVersion, type PnpmLockfile } from "./pnpmLockfileGraph.js";
 import type { LockfileGraph, LockfileGraphResult, PackageLockfileSignatures } from "./types.js";
 
 /** The default pnpm lockfile file name. */
 export const PNPM_LOCKFILE_NAME = "pnpm-lock.yaml";
+
+const requireModule = createRequire(__filename);
+let yaml: typeof jsYaml | undefined;
+
+function parseYaml(rawContent: string): unknown {
+  yaml ??= requireModule("js-yaml") as typeof jsYaml;
+  return yaml.load(rawContent);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function validateStringRecord(value: unknown, context: string): void {
+  if (!isRecord(value)) {
+    throw new Error(`${context} must be an object`);
+  }
+  for (const [name, entry] of Object.entries(value)) {
+    if (typeof entry !== "string") {
+      throw new Error(`${context}.${name} must be a string`);
+    }
+  }
+}
+
+function validateImporterDependencies(value: unknown, context: string): void {
+  if (!isRecord(value)) {
+    throw new Error(`${context} must be an object`);
+  }
+  for (const [name, entry] of Object.entries(value)) {
+    if (!isRecord(entry) || typeof entry.version !== "string") {
+      throw new Error(`${context}.${name} must contain a string version`);
+    }
+    if (entry.specifier !== undefined && typeof entry.specifier !== "string") {
+      throw new Error(`${context}.${name}.specifier must be a string`);
+    }
+  }
+}
+
+function validatePnpmLockfile(doc: unknown): PnpmLockfile {
+  if (!isRecord(doc)) {
+    throw new Error("pnpm lockfile content was empty or malformed");
+  }
+  if (!isRecord(doc.importers)) {
+    throw new Error("pnpm lockfile importers must be an object");
+  }
+  if (doc.packages !== undefined && !isRecord(doc.packages)) {
+    throw new Error("pnpm lockfile packages must be an object");
+  }
+  if (doc.snapshots !== undefined && !isRecord(doc.snapshots)) {
+    throw new Error("pnpm lockfile snapshots must be an object");
+  }
+
+  for (const [importerId, importer] of Object.entries(doc.importers)) {
+    if (!isRecord(importer)) {
+      throw new Error(`pnpm importer "${importerId}" must be an object`);
+    }
+    for (const dependencyType of ["dependencies", "devDependencies", "optionalDependencies"] as const) {
+      if (importer[dependencyType] !== undefined) {
+        validateImporterDependencies(importer[dependencyType], `pnpm importer "${importerId}".${dependencyType}`);
+      }
+    }
+  }
+
+  for (const [depPath, metadata] of Object.entries((doc.packages as Record<string, unknown> | undefined) ?? {})) {
+    if (!isRecord(metadata)) {
+      throw new Error(`pnpm package "${depPath}" must be an object`);
+    }
+  }
+
+  for (const [depPath, snapshot] of Object.entries((doc.snapshots as Record<string, unknown> | undefined) ?? {})) {
+    if (!isRecord(snapshot)) {
+      throw new Error(`pnpm snapshot "${depPath}" must be an object`);
+    }
+    for (const dependencyType of ["dependencies", "optionalDependencies"] as const) {
+      if (snapshot[dependencyType] !== undefined) {
+        validateStringRecord(snapshot[dependencyType], `pnpm snapshot "${depPath}".${dependencyType}`);
+      }
+    }
+  }
+
+  return doc as PnpmLockfile;
+}
 
 /**
  * Parses raw pnpm lockfile content (e.g. read from disk or `git show`) into a {@link LockfileGraph}.
@@ -17,21 +100,26 @@ export const PNPM_LOCKFILE_NAME = "pnpm-lock.yaml";
 export function parsePnpmLockfileGraph(rawContent: string): LockfileGraphResult {
   let doc: unknown;
   try {
-    doc = yaml.load(rawContent);
+    doc = parseYaml(rawContent);
   } catch (e) {
     return { status: "unsupported", reason: `pnpm lockfile could not be parsed as YAML: ${e}` };
   }
 
-  if (!doc || typeof doc !== "object") {
+  if (!isRecord(doc)) {
     return { status: "unsupported", reason: "pnpm lockfile content was empty or malformed" };
   }
-
-  const lockfile = doc as PnpmLockfile;
-  if (!isSupportedPnpmLockfileVersion(lockfile.lockfileVersion)) {
+  if (!isSupportedPnpmLockfileVersion(doc.lockfileVersion as string | number | undefined)) {
     return {
       status: "unsupported",
-      reason: `unsupported pnpm lockfileVersion "${String(lockfile.lockfileVersion)}"; only the latest format (9.x) is supported`,
+      reason: `unsupported pnpm lockfileVersion "${String(doc.lockfileVersion)}"; only the latest format (9.x) is supported`,
     };
+  }
+
+  let lockfile: PnpmLockfile;
+  try {
+    lockfile = validatePnpmLockfile(doc);
+  } catch (e) {
+    return { status: "unsupported", reason: `pnpm lockfile schema is not supported: ${e}` };
   }
 
   let graph: LockfileGraph;

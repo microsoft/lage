@@ -28,6 +28,7 @@ export function loadPnpmLockfileGraph(root: string): LockfileGraphResult;
 
 // @public
 export interface LockfileGraph {
+    readonly globalSignature: string;
     readonly importerSignatures: ReadonlyMap<string, string>;
 }
 

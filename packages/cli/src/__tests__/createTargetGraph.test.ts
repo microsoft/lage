@@ -110,6 +110,41 @@ describe("createTargetGraph", () => {
       },
     ]);
   });
+
+  it.each([
+    { repoWideChanged: false, expectedStagedTarget: true },
+    { repoWideChanged: true, expectedStagedTarget: false },
+  ])("uses staged targets only when changes are not repo-wide", async ({ repoWideChanged, expectedStagedTarget }) => {
+    const packageInfos: PackageInfos = {
+      foo: stubPackage({ name: "foo", scripts: ["lint"] }),
+    };
+    const targetGraph = await createTargetGraph({
+      logger: createLogger(),
+      root: ROOT,
+      dependencies: false,
+      dependents: false,
+      enableTargetConfigMerging: true,
+      enablePhantomTargetOptimization: false,
+      ignore: [],
+      pipeline: {
+        lint: {
+          stagedTarget: {},
+        },
+      },
+      repoWideChanges: ["pnpm-lock.yaml"],
+      scope: [],
+      since: "main",
+      outputs: [],
+      tasks: ["lint"],
+      packageInfos,
+      priorities: [],
+      changedFiles: ["pnpm-lock.yaml"],
+      filteredPackages: ["foo"],
+      repoWideChanged,
+    });
+
+    expect(targetGraph.targets.has("Δlint")).toBe(expectedStagedTarget);
+  });
 });
 
 const ROOT = path.resolve("/fake/root");

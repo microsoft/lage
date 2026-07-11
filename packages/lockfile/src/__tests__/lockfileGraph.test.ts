@@ -7,7 +7,7 @@ import {
   mapImporterSignaturesToPackages,
   splitImporterSignatures,
 } from "../loadLockfileGraph.js";
-import { isSupportedPnpmLockfileVersion } from "../pnpmLockfileGraph.js";
+import { buildPnpmLockfileGraph, isSupportedPnpmLockfileVersion, type PnpmSnapshot } from "../pnpmLockfileGraph.js";
 import type { LockfileGraph } from "../types.js";
 
 const fixturesDir = path.join(__dirname, "..", "__fixtures__");
@@ -63,6 +63,49 @@ describe("parsePnpmLockfileGraph", () => {
   it("returns 'unsupported' for empty content", () => {
     const result = parsePnpmLockfileGraph("");
     expect(result.status).toBe("unsupported");
+  });
+
+  it.each([
+    ["missing importers", "lockfileVersion: '9.0'\nsnapshots: {}\n"],
+    [
+      "invalid importer dependency",
+      `lockfileVersion: '9.0'
+importers:
+  packages/a:
+    dependencies:
+      semver: 7.5.4
+snapshots: {}
+`,
+    ],
+    [
+      "unresolved importer dependency",
+      `lockfileVersion: '9.0'
+importers:
+  packages/a:
+    dependencies:
+      semver:
+        specifier: 7.5.4
+        version: 7.5.4
+snapshots: {}
+`,
+    ],
+    [
+      "unresolved snapshot dependency",
+      `lockfileVersion: '9.0'
+importers:
+  packages/a:
+    dependencies:
+      semver:
+        specifier: 7.5.4
+        version: 7.5.4
+snapshots:
+  semver@7.5.4:
+    dependencies:
+      missing: 1.0.0
+`,
+    ],
+  ])("returns 'unsupported' for %s", (_name, content) => {
+    expect(parsePnpmLockfileGraph(content).status).toBe("unsupported");
   });
 
   it("produces stable signatures across repeated parses", () => {
@@ -136,6 +179,70 @@ snapshots:
     }
   });
 
+  it.each([
+    ["peer", "react-dom@18.3.1(react@18.3.1)", "react-dom@18.3.1"],
+    ["patch", "react-dom@18.3.1(patch_hash=abc123)", "react-dom@18.3.1"],
+    ["scoped peer", "@scope/pkg@1.0.0(react@18.3.1)", "@scope/pkg@1.0.0"],
+  ])("associates %s snapshot keys with their package artifact metadata", (_name, snapshotKey, packageKey) => {
+    const createLockfile = (integrity: string) => `lockfileVersion: '9.0'
+importers:
+  packages/a:
+    dependencies:
+      dependency:
+        specifier: 1.0.0
+        version: ${JSON.stringify(snapshotKey)}
+packages:
+  ${JSON.stringify(packageKey)}:
+    resolution:
+      integrity: ${integrity}
+snapshots:
+  ${JSON.stringify(snapshotKey)}: {}
+`;
+    const base = parsePnpmLockfileGraph(createLockfile("sha512-base"));
+    const changed = parsePnpmLockfileGraph(createLockfile("sha512-changed"));
+
+    expect(base.status).toBe("success");
+    expect(changed.status).toBe("success");
+    if (base.status === "success" && changed.status === "success") {
+      expect(changed.graph.importerSignatures.get("packages/a")).not.toEqual(base.graph.importerSignatures.get("packages/a"));
+    }
+  });
+
+  it("resolves aliases to the actual snapshot key", () => {
+    const result = parsePnpmLockfileGraph(`lockfileVersion: '9.0'
+importers:
+  packages/a:
+    dependencies:
+      alias:
+        specifier: npm:real-package@1.0.0
+        version: real-package@1.0.0
+snapshots:
+  real-package@1.0.0: {}
+`);
+    expect(result.status).toBe("success");
+  });
+
+  it("includes top-level installation settings in the global signature", () => {
+    const base = parsePnpmLockfileGraph(`lockfileVersion: '9.0'
+settings:
+  autoInstallPeers: true
+importers:
+  packages/a: {}
+`);
+    const changed = parsePnpmLockfileGraph(`lockfileVersion: '9.0'
+settings:
+  autoInstallPeers: false
+importers:
+  packages/a: {}
+`);
+
+    expect(base.status).toBe("success");
+    expect(changed.status).toBe("success");
+    if (base.status === "success" && changed.status === "success") {
+      expect(changed.graph.globalSignature).not.toEqual(base.graph.globalSignature);
+    }
+  });
+
   it("propagates changes across cyclic dependency components", () => {
     const base = parsePnpmLockfileGraph(`lockfileVersion: '9.0'
 importers:
@@ -177,6 +284,28 @@ snapshots:
     if (base.status === "success" && changed.status === "success") {
       expect(changed.graph.importerSignatures.get("packages/app")).not.toEqual(base.graph.importerSignatures.get("packages/app"));
     }
+  });
+
+  it("handles a deeply nested dependency graph without overflowing the call stack", () => {
+    const nodeCount = 20_000;
+    const snapshots: Record<string, PnpmSnapshot> = {};
+    for (let index = 0; index < nodeCount; index++) {
+      snapshots[`dependency-${index}@1.0.0`] = index === nodeCount - 1 ? {} : { dependencies: { [`dependency-${index + 1}`]: "1.0.0" } };
+    }
+
+    const graph = buildPnpmLockfileGraph({
+      lockfileVersion: "9.0",
+      importers: {
+        "packages/app": {
+          dependencies: {
+            "dependency-0": { specifier: "1.0.0", version: "1.0.0" },
+          },
+        },
+      },
+      snapshots,
+    });
+
+    expect(graph.importerSignatures.get("packages/app")).toMatch(/^[a-f0-9]{40}$/);
   });
 });
 

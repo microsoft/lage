@@ -33,6 +33,8 @@ export type LockfileGraphResult =
 export interface LockfileGraph {
   /** Map of importer id (posix-relative path from the repo root) to a closure signature. */
   readonly importerSignatures: ReadonlyMap<string, string>;
+  /** Signature of lockfile fields whose changes can affect every importer. */
+  readonly globalSignature: string;
 }
 
 /**

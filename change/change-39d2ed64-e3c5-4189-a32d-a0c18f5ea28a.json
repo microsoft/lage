@@ -18,7 +18,7 @@
       "packageName": "@lage-run/hasher",
       "type": "minor",
       "dependentChangeType": "patch",
-      "comment": "`TargetHasher` accepts an experimental `experimentalLockfileInvalidation` option. When enabled, external dependency invalidation uses a precise per-package pnpm lockfile closure signature instead of the resolved dependency list, so only packages whose closure changed get a new cache key. Falls back to the previous behavior when disabled or unsupported.",
+      "comment": "`TargetHasher` accepts an experimental `experimentalLockfileInvalidation` option. When enabled, external dependency invalidation uses a precise per-package pnpm lockfile closure signature instead of the resolved dependency list, so only packages whose closure changed get a new cache key. Unsupported lockfiles conservatively hash their complete content into every target.",
       "email": "email not defined"
     },
     {

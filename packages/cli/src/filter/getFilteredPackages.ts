@@ -1,10 +1,13 @@
 import type { PackageInfos } from "workspace-tools";
 import {
   getScopedPackages,
-  getChangedPackages,
+  getPackagesByFiles,
   getTransitiveDependents,
   getTransitiveDependencies,
   getBranchChanges,
+  getStagedChanges,
+  getUnstagedChanges,
+  getUntrackedChanges,
 } from "workspace-tools";
 
 import type { ExperimentalLockfileInvalidationOptions } from "@lage-run/lockfile";
@@ -24,6 +27,10 @@ export function getFilteredPackages(options: {
   includeDependents: boolean;
   includeDependencies: boolean;
   experimentalLockfileInvalidation?: ExperimentalLockfileInvalidationOptions;
+  /** Complete changed-file set, if the caller already computed it. */
+  changedFiles?: string[];
+  /** Reports whether repo-wide changes caused every package to be selected. */
+  onRepoWideChange?: (detected: boolean) => void;
 }): string[] {
   const {
     scope,
@@ -36,6 +43,8 @@ export function getFilteredPackages(options: {
     packageInfos,
     root,
     experimentalLockfileInvalidation,
+    changedFiles: providedChangedFiles,
+    onRepoWideChange,
   } = options;
 
   // If scoped is defined, get scoped packages
@@ -60,22 +69,25 @@ export function getFilteredPackages(options: {
   }
   // If since is defined, get changed packages.
   else if (hasSince) {
+    let changedFiles: string[] | undefined = providedChangedFiles;
+    if (changedFiles === undefined) {
+      try {
+        changedFiles = getChangedFilesSince(root, since!);
+      } catch (e) {
+        logger.warn(`An error in the git command has caused this scope run to include every package\n${e}`);
+      }
+    }
+
     // When experimental lockfile invalidation is enabled, analyze the lockfile change (if any) so
     // that the lockfile does not trigger a blanket invalidation. On any analysis failure, we keep
     // the previous blanket behavior so builds never silently under-invalidate.
     let lockfileAffectedPackages: string[] | undefined;
     let effectiveIgnoreGlobs = sinceIgnoreGlobs;
     let effectiveRepoWideChanges = repoWideChanges;
+    let effectiveChangedFiles = changedFiles;
 
-    if (experimentalLockfileInvalidation) {
+    if (experimentalLockfileInvalidation && changedFiles !== undefined) {
       const lockfileName = getLockfileName(experimentalLockfileInvalidation);
-      let changedFiles: string[] = [];
-      try {
-        changedFiles = getBranchChanges({ branch: since!, cwd: root });
-      } catch (e) {
-        logger.warn(`Experimental lockfile invalidation could not determine changed files; using blanket behavior\n${e}`);
-      }
-
       const lockfileResult = getLockfileChangedPackages({
         root,
         since: since!,
@@ -91,6 +103,7 @@ export function getFilteredPackages(options: {
         // "all packages" behavior in both the changed-packages and repo-wide-changes paths.
         effectiveIgnoreGlobs = [...(sinceIgnoreGlobs ?? []), lockfileName];
         effectiveRepoWideChanges = repoWideChanges.filter((glob) => glob !== lockfileName);
+        effectiveChangedFiles = changedFiles.filter((file) => file !== lockfileName);
       } else if (lockfileResult.status === "fallback") {
         logger.warn(
           `Experimental lockfile invalidation could not analyze the lockfile change (${lockfileResult.reason}); falling back to blanket invalidation.`
@@ -99,15 +112,13 @@ export function getFilteredPackages(options: {
       // "unchanged": nothing to do; the lockfile is not among the changed files.
     }
 
-    try {
-      changedPackages = getChangedPackages({
-        cwd: root,
-        target: since,
+    if (changedFiles !== undefined) {
+      changedPackages = getPackagesByFiles({
+        root,
+        files: changedFiles,
         ignoreGlobs: effectiveIgnoreGlobs,
+        returnAllPackagesOnNoMatch: true,
       });
-    } catch (e) {
-      logger.warn(`An error in the git command has caused this scope run to include every package\n${e}`);
-      // if getChangedPackages throws, we will assume all have changed (using changedPackage = undefined)
     }
 
     // Merge in packages whose dependency closure changed due to the lockfile.
@@ -126,7 +137,15 @@ export function getFilteredPackages(options: {
 
     // If the defined repo-wide changes are detected the get all packages and append to the filtered packages.
     // This alo ensures that the modified packages are always run first.
-    if (hasRepoChanged({ since, root, environmentGlob: effectiveRepoWideChanges, logger })) {
+    const repoWideChanged = hasRepoChanged({
+      since,
+      root,
+      environmentGlob: effectiveRepoWideChanges,
+      logger,
+      changedFiles: effectiveChangedFiles,
+    });
+    onRepoWideChange?.(repoWideChanged);
+    if (repoWideChanged) {
       logger.verbose(
         `Repo-wide changes detected, running all packages. The following changed packages and their deps (if specified) will be run first: ${filteredPackages.join(
           ","
@@ -134,11 +153,23 @@ export function getFilteredPackages(options: {
       );
       filteredPackages = [...new Set(filteredPackages.concat(Object.keys(packageInfos)))];
     }
+
     return filteredPackages;
   } else {
     // If neither scope or since is defined, return all packages
     return Object.keys(packageInfos);
   }
+}
+
+export function getChangedFilesSince(root: string, since: string): string[] {
+  return [
+    ...new Set([
+      ...getUntrackedChanges({ cwd: root }),
+      ...getUnstagedChanges({ cwd: root }),
+      ...getBranchChanges({ branch: since, cwd: root }),
+      ...getStagedChanges({ cwd: root }),
+    ]),
+  ];
 }
 
 export function filterPackages(options: {

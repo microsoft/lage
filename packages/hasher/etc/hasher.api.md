@@ -68,6 +68,7 @@ export class TargetHasher {
     initialize(): Promise<void>;
     // (undocumented)
     packageTree: PackageTree | undefined;
+    refreshLockfileSignatures(): void;
 }
 
 // @public (undocumented)

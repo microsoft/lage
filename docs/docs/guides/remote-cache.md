@@ -138,16 +138,18 @@ continue to hit the remote cache:
 ```js title="/lage.config.js"
 const config = {
   cacheOptions: {
-    // Do NOT include the lockfile here when using this feature.
-    environmentGlob: ["package.json", "lage.config.js"]
+    environmentGlob: ["package.json", "lage.config.js", "pnpm-lock.yaml"]
   },
-  repoWideChanges: [],
+  repoWideChanges: ["pnpm-lock.yaml"],
   experimentalLockfileInvalidation: { packageManager: "pnpm" }
 };
 ```
 
+`lage` automatically removes the lockfile from global cache inputs while applying its per-package
+signature, so existing exact or wildcard environment globs do not defeat the optimization.
+
 Only pnpm (latest `lockfileVersion 9.x`) is supported; unsupported package managers or lockfile
-versions fall back to the previous blanket behavior. See the
+versions fall back to raw lockfile content in every cache key. See the
 [caching guide](./cache.md#experimental-smarter-lockfile-invalidation) and the
 [configuration reference](../reference/config.md#experimental-smarter-lockfile-invalidation) for
 details.

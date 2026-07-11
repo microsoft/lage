@@ -59,7 +59,10 @@ export function getLockfileChangedPackages(options: {
 
   // Read the old lockfile from the merge-base so it is consistent with the changed-files set.
   const mergeBase = getMergeBase({ ref: since, cwd: root, throwOnError: false });
-  const oldRef = mergeBase ?? since;
+  if (mergeBase === undefined) {
+    return { status: "fallback", reason: `could not determine the merge-base for ref "${since}"` };
+  }
+  const oldRef = mergeBase;
   const oldContent = getFileFromRef({ filePath: lockfileName, ref: oldRef, cwd: root, throwOnError: false });
   if (oldContent === undefined) {
     return { status: "fallback", reason: `could not read ${lockfileName} at ref "${oldRef}"` };
@@ -75,6 +78,10 @@ export function getLockfileChangedPackages(options: {
   if (newResult.status !== "success") {
     const reason = newResult.status === "unsupported" ? newResult.reason : "no lockfile content";
     return { status: "fallback", reason: `could not analyze current ${lockfileName}: ${reason}` };
+  }
+
+  if (oldResult.graph.globalSignature !== newResult.graph.globalSignature) {
+    return { status: "fallback", reason: `${lockfileName} global installation metadata changed` };
   }
 
   const oldSignatures = splitImporterSignatures(oldResult.graph, packageInfos, root);

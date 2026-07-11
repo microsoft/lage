@@ -141,20 +141,24 @@ const config = {
 };
 ```
 
-When you enable this, you should **remove the lockfile from `repoWideChanges` and from
-`cacheOptions.environmentGlob`** so that this feature can own lockfile handling:
+When enabled, `lage` takes ownership of `pnpm-lock.yaml` handling. It excludes the lockfile from
+`repoWideChanges` and `cacheOptions.environmentGlob` matches, including wildcard matches, so existing
+configuration does not need to change:
 
 ```js title="/lage.config.js"
 const config = {
   cacheOptions: {
-    // Note: pnpm-lock.yaml is intentionally NOT listed here.
-    environmentGlob: ["package.json", "lage.config.js"]
+    environmentGlob: ["package.json", "lage.config.js", "pnpm-lock.yaml"]
   },
-  // Note: pnpm-lock.yaml is intentionally NOT listed here.
-  repoWideChanges: [],
+  repoWideChanges: ["pnpm-lock.yaml"],
   experimentalLockfileInvalidation: { packageManager: "pnpm" }
 };
 ```
+
+Changes to top-level pnpm settings and metadata (such as overrides, patched dependencies, and unknown
+future fields) still invalidate every package because they can affect the entire install. Staged and
+unstaged lockfile edits are analyzed precisely. A missing, deleted, newly added, malformed, or
+unsupported lockfile safely uses the blanket fallback.
 
 ### Supported package managers
 
@@ -168,8 +172,9 @@ managers with looser or less deterministic lockfiles (npm, yarn) do not provide 
 so they are intentionally not supported here.
 
 For anything unsupported — a different package manager, an older pnpm lockfile version, or a lockfile
-that cannot be parsed — `lage` logs a warning and **safely falls back to the previous blanket
-invalidation behavior**, so builds never silently under-invalidate.
+that cannot be parsed — `lage` logs a warning and **safely falls back to blanket invalidation**. The
+raw lockfile content is included in every cache key, and `--since` runs every package, so builds never
+silently under-invalidate.
 
 :::caution Experimental
 This option is experimental and may change. It is opt-in and has no effect on other `lage` commands

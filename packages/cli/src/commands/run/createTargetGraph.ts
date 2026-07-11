@@ -1,11 +1,9 @@
 import type { TargetLogger } from "@lage-run/reporters";
 import { type Priority, type TargetGraph, WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
 import type { PackageInfos } from "workspace-tools";
-import { getBranchChanges, getDefaultRemoteBranch, getStagedChanges, getUnstagedChanges, getUntrackedChanges } from "workspace-tools";
-import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
+import { getChangedFilesSince, getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import type { PipelineDefinition } from "@lage-run/config";
 import type { ExperimentalLockfileInvalidationOptions } from "@lage-run/lockfile";
-import { hasRepoChanged } from "../../filter/hasRepoChanged.js";
 
 interface CreateTargetGraphOptions {
   logger: TargetLogger;
@@ -24,19 +22,9 @@ interface CreateTargetGraphOptions {
   enableTargetConfigMerging: boolean;
   enablePhantomTargetOptimization: boolean;
   experimentalLockfileInvalidation?: ExperimentalLockfileInvalidationOptions;
-}
-
-function getChangedFiles(since: string, cwd: string) {
-  const targetBranch = since || getDefaultRemoteBranch({ cwd });
-
-  return [
-    ...new Set([
-      ...(getUntrackedChanges({ cwd }) || []),
-      ...(getUnstagedChanges({ cwd }) || []),
-      ...(getBranchChanges({ branch: targetBranch, cwd }) || []),
-      ...(getStagedChanges({ cwd }) || []),
-    ]),
-  ];
+  changedFiles?: string[];
+  filteredPackages?: string[];
+  repoWideChanged?: boolean;
 }
 
 export async function createTargetGraph(options: CreateTargetGraphOptions): Promise<TargetGraph> {
@@ -57,32 +45,42 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
     packageInfos,
     priorities,
     experimentalLockfileInvalidation,
+    changedFiles: providedChangedFiles,
+    filteredPackages: providedFilteredPackages,
+    repoWideChanged: providedRepoWideChanged,
   } = options;
 
   const builder = new WorkspaceTargetGraphBuilder({ root, packageInfos, enableTargetConfigMerging, enablePhantomTargetOptimization });
 
-  const packages = getFilteredPackages({
-    root,
-    logger,
-    packageInfos,
-    includeDependencies: dependencies,
-    includeDependents: dependents,
-    since,
-    scope,
-    repoWideChanges,
-    sinceIgnoreGlobs: ignore,
-    experimentalLockfileInvalidation,
-  });
-
-  let changedFiles: string[] = [];
-
-  // TODO: enhancement would be for workspace-tools to implement a "getChangedPackageFromChangedFiles()" type function
-  // TODO: optimize this so that we don't double up the work to determine if repo has changed
-  if (since) {
-    if (!hasRepoChanged({ since, root, environmentGlob: repoWideChanges, logger })) {
-      changedFiles = getChangedFiles(since, root);
+  let changedFiles = providedChangedFiles;
+  if (since && changedFiles === undefined) {
+    try {
+      changedFiles = getChangedFilesSince(root, since);
+    } catch (e) {
+      logger.warn(`An error in the git command has caused this scope run to include every package\n${e}`);
     }
   }
+
+  let repoWideChanged = providedRepoWideChanged ?? false;
+  const packages =
+    providedFilteredPackages ??
+    getFilteredPackages({
+      root,
+      logger,
+      packageInfos,
+      includeDependencies: dependencies,
+      includeDependents: dependents,
+      since,
+      scope,
+      repoWideChanges,
+      sinceIgnoreGlobs: ignore,
+      experimentalLockfileInvalidation,
+      changedFiles,
+      onRepoWideChange: (detected) => {
+        repoWideChanged = detected;
+      },
+    });
+  const targetConfigChangedFiles = repoWideChanged ? [] : (changedFiles ?? []);
 
   const pipelineEntries = Object.entries(pipeline);
 
@@ -114,10 +112,10 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
           options: {},
           outputs,
         },
-        changedFiles
+        targetConfigChangedFiles
       );
     } else {
-      builder.addTargetConfig(id, definition, changedFiles);
+      builder.addTargetConfig(id, definition, targetConfigChangedFiles);
     }
   }
 

@@ -238,6 +238,7 @@ export function createLageService({ cwd, serverControls, logger, concurrency, ta
           fs.mkdirSync(path.dirname(targetHashFullPath), { recursive: true });
         }
 
+        targetHasher.refreshLockfileSignatures();
         fs.writeFileSync(targetHashFullPath, await targetHasher.hash(target));
       } catch {
         throw new ConnectError(`Error writing target hash file: ${targetHashFullPath}`, Code.Internal);

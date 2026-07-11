@@ -65,18 +65,20 @@ and new lockfile and only include the packages whose resolved dependency closure
 
 ```js title="/lage.config.js"
 const config = {
-  // Remove the lockfile from repoWideChanges when enabling this feature.
-  repoWideChanges: [],
+  repoWideChanges: ["pnpm-lock.yaml"],
   experimentalLockfileInvalidation: { packageManager: "pnpm" }
 };
 ```
 
 With this enabled, a lockfile change that only affects a couple of packages will only cause those
 packages (and their dependents) to run under `--since`, instead of the entire graph. When the
-lockfile is unchanged, this adds no extra work.
+lockfile is unchanged, this adds no lockfile parsing work. `lage` automatically ignores the lockfile
+in repo-wide matches while analyzing it, including wildcard matches. Staged and unstaged lockfile
+edits receive the same precise analysis as committed changes.
 
 **Only pnpm is supported** (latest `lockfileVersion 9.x`), because it depends on pnpm's strict,
 deterministic lockfile. Unsupported package managers or lockfile versions safely fall back to the
-previous blanket behavior. See the
+previous blanket behavior. Missing, added, deleted, malformed, or globally significant lockfile
+changes also fall back to all packages. See the
 [configuration reference](../reference/config.md#experimental-smarter-lockfile-invalidation) and the
 [caching guide](./cache.md#experimental-smarter-lockfile-invalidation) for details.

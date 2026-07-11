@@ -57,6 +57,24 @@ const rootImporterChangedLockfile = baseLockfile
 `
   );
 
+const unsupportedLockfile = `lockfileVersion: '8.0'
+importers:
+  .: {}
+  packages/a: {}
+  packages/b: {}
+  packages/c: {}
+`;
+
+const malformedLockfile = `lockfileVersion: '9.0'
+importers:
+  .: {}
+  packages/a:
+    dependencies:
+      invalid: 1.0.0
+  packages/b: {}
+  packages/c: {}
+`;
+
 describe("TargetHasher with experimental pnpm lockfile invalidation", () => {
   let monorepos: Monorepo[] = [];
 
@@ -88,11 +106,25 @@ describe("TargetHasher with experimental pnpm lockfile invalidation", () => {
     };
   }
 
-  async function hashAll(root: string, lockfile: string): Promise<Record<string, string>> {
+  function createRootTarget(root: string): Target {
+    return {
+      cache: true,
+      cwd: root,
+      dependencies: [],
+      dependents: [],
+      depSpecs: [],
+      id: "//#build",
+      inputs: ["lage.config.js"],
+      label: "//#build",
+      task: "build",
+    };
+  }
+
+  async function hashAll(root: string, lockfile: string, environmentGlob: string[] = []): Promise<Record<string, string>> {
     const monorepo = await setup(lockfile);
     const hasher = new TargetHasher({
       root: monorepo.root,
-      environmentGlob: [],
+      environmentGlob,
       experimentalLockfileInvalidation: { packageManager: "pnpm" },
     });
     await hasher.initialize();
@@ -104,11 +136,33 @@ describe("TargetHasher with experimental pnpm lockfile invalidation", () => {
     return result;
   }
 
+  async function hashRoot(lockfile: string): Promise<string> {
+    const monorepo = await setup(lockfile);
+    const hasher = new TargetHasher({
+      root: monorepo.root,
+      environmentGlob: [],
+      experimentalLockfileInvalidation: { packageManager: "pnpm" },
+    });
+    await hasher.initialize();
+    const result = await hasher.hash(createRootTarget(monorepo.root));
+    hasher.cleanup();
+    return result;
+  }
+
   it("only changes the hash of packages whose lockfile closure changed", async () => {
     const baseHashes = await hashAll("base", baseLockfile);
     const changedHashes = await hashAll("changed", changedLockfile);
 
     // Only package c's closure changed in the lockfile.
+    expect(changedHashes.a).toEqual(baseHashes.a);
+    expect(changedHashes.b).toEqual(baseHashes.b);
+    expect(changedHashes.c).not.toEqual(baseHashes.c);
+  });
+
+  it("owns lockfile matches from wildcard environment globs", async () => {
+    const baseHashes = await hashAll("base", baseLockfile, ["**/*.yaml"]);
+    const changedHashes = await hashAll("changed", changedLockfile, ["**/*.yaml"]);
+
     expect(changedHashes.a).toEqual(baseHashes.a);
     expect(changedHashes.b).toEqual(baseHashes.b);
     expect(changedHashes.c).not.toEqual(baseHashes.c);
@@ -128,5 +182,55 @@ describe("TargetHasher with experimental pnpm lockfile invalidation", () => {
     expect(changedHashes.a).not.toEqual(baseHashes.a);
     expect(changedHashes.b).not.toEqual(baseHashes.b);
     expect(changedHashes.c).not.toEqual(baseHashes.c);
+  });
+
+  it("changes every package hash when precise lockfile analysis is unsupported", async () => {
+    const baseHashes = await hashAll("base", unsupportedLockfile);
+    const changedHashes = await hashAll("changed", `${unsupportedLockfile}\nunknownField: changed\n`);
+
+    expect(changedHashes.a).not.toEqual(baseHashes.a);
+    expect(changedHashes.b).not.toEqual(baseHashes.b);
+    expect(changedHashes.c).not.toEqual(baseHashes.c);
+  });
+
+  it("changes every package hash when malformed v9 lockfile content changes", async () => {
+    const baseHashes = await hashAll("base", malformedLockfile);
+    const changedHashes = await hashAll("changed", `${malformedLockfile}\nunknownField: changed\n`);
+
+    expect(changedHashes.a).not.toEqual(baseHashes.a);
+    expect(changedHashes.b).not.toEqual(baseHashes.b);
+    expect(changedHashes.c).not.toEqual(baseHashes.c);
+  });
+
+  it("changes every package hash when global installation settings change", async () => {
+    const baseHashes = await hashAll("base", `settings:\n  autoInstallPeers: true\n${baseLockfile}`);
+    const changedHashes = await hashAll("changed", `settings:\n  autoInstallPeers: false\n${baseLockfile}`);
+
+    expect(changedHashes.a).not.toEqual(baseHashes.a);
+    expect(changedHashes.b).not.toEqual(baseHashes.b);
+    expect(changedHashes.c).not.toEqual(baseHashes.c);
+  });
+
+  it("includes all lockfile importers in cached root target hashes", async () => {
+    expect(await hashRoot(changedLockfile)).not.toEqual(await hashRoot(baseLockfile));
+    expect(await hashRoot(rootImporterChangedLockfile)).not.toEqual(await hashRoot(baseLockfile));
+  });
+
+  it("refreshes lockfile signatures for long-lived hasher instances", async () => {
+    const monorepo = await setup(baseLockfile);
+    const hasher = new TargetHasher({
+      root: monorepo.root,
+      environmentGlob: [],
+      experimentalLockfileInvalidation: { packageManager: "pnpm" },
+    });
+    await hasher.initialize();
+    const target = createTarget(monorepo.root, "c");
+    const originalHash = await hasher.hash(target);
+
+    monorepo.writeFiles({ "pnpm-lock.yaml": baseLockfile.replace(/4\.1\.0/g, "4.20.0") });
+    hasher.refreshLockfileSignatures();
+
+    expect(await hasher.hash(target)).not.toEqual(originalHash);
+    hasher.cleanup();
   });
 });
