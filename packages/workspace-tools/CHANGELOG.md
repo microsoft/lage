@@ -11,6 +11,7 @@ Thu, 09 Jul 2026 22:12:55 GMT
 ### Minor changes
 
 - Add support for pnpm lockfileVersion 6.0 (pnpm@8) and 9.0 (pnpm@9+) to parseLockFile (ansteg@microsoft.com)
+  - This was accidentally marked as minor, but should **not** be a breaking change.
 
 ## 0.41.10
 
