@@ -124,3 +124,32 @@ const config = {
 };
 module.exports = config;
 ```
+
+## Improving remote cache hit rates on lockfile changes
+
+Remote cache is most valuable in PR builds, where one branch can reuse cache entries produced by
+another. However, by default any lockfile change invalidates every package's cache key, so a single
+dependency bump in a PR causes remote cache misses across the entire repo.
+
+If you use pnpm, the experimental `experimentalLockfileInvalidation` option makes cache keys change
+only for the packages whose resolved dependency closure actually changed, so unaffected packages
+continue to hit the remote cache:
+
+```js title="/lage.config.js"
+const config = {
+  cacheOptions: {
+    environmentGlob: ["package.json", "lage.config.js", "pnpm-lock.yaml"]
+  },
+  repoWideChanges: ["pnpm-lock.yaml"],
+  experimentalLockfileInvalidation: { packageManager: "pnpm" }
+};
+```
+
+`lage` automatically removes the lockfile from global cache inputs while applying its per-package
+signature, so existing exact or wildcard environment globs do not defeat the optimization.
+
+Only pnpm (latest `lockfileVersion 9.x`) is supported; unsupported package managers or lockfile
+versions fall back to raw lockfile content in every cache key. See the
+[caching guide](./cache.md#experimental-smarter-lockfile-invalidation) and the
+[configuration reference](../reference/config.md#experimental-smarter-lockfile-invalidation) for
+details.

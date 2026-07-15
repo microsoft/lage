@@ -1,0 +1,24 @@
+lockfileVersion: "9.0"
+
+importers:
+  .: {}
+
+  packages/app:
+    dependencies:
+      cyclic-a:
+        specifier: 1.0.0
+        version: 1.0.0
+
+packages:
+  cyclic-a@1.0.0:
+    resolution: { integrity: sha512-aaa }
+  cyclic-b@1.0.0:
+    resolution: { integrity: sha512-bbb }
+
+snapshots:
+  cyclic-a@1.0.0:
+    dependencies:
+      cyclic-b: 1.0.0
+  cyclic-b@1.0.0:
+    dependencies:
+      cyclic-a: 1.0.0

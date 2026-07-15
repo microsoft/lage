@@ -4,7 +4,7 @@ import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import type { ConfigOptions } from "@lage-run/config";
 import { getConfig } from "@lage-run/config";
 import { type PackageInfos, getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
-import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
+import { getChangedFilesSince, getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import createLogger from "@lage-run/logger";
 import path from "path";
 import fs from "fs";
@@ -115,6 +115,32 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
   const packageInfos = getPackageInfos(root);
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
+  let changedFiles: string[] | undefined;
+  if (options.since) {
+    try {
+      changedFiles = getChangedFilesSince(root, options.since);
+    } catch (e) {
+      logger.warn(`An error in the git command has caused this scope run to include every package\n${e}`);
+    }
+  }
+
+  let repoWideChanged = false;
+  const scope = getFilteredPackages({
+    root,
+    packageInfos,
+    logger,
+    includeDependencies: options.dependencies,
+    includeDependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
+    since: options.since,
+    scope: (options.scope ?? []).concat(options.to ?? []), // --to is a short hand for --scope + --no-dependents
+    repoWideChanges: config.repoWideChanges,
+    sinceIgnoreGlobs: options.ignore.concat(config.ignore),
+    experimentalLockfileInvalidation: config.experimentalLockfileInvalidation,
+    changedFiles,
+    onRepoWideChange: (detected) => {
+      repoWideChanged = detected;
+    },
+  });
 
   const targetGraph = await createTargetGraph({
     logger,
@@ -132,18 +158,10 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
     enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
-  });
-
-  const scope = getFilteredPackages({
-    root,
-    packageInfos,
-    logger,
-    includeDependencies: options.dependencies,
-    includeDependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
-    since: options.since,
-    scope: (options.scope ?? []).concat(options.to ?? []), // --to is a short hand for --scope + --no-dependents
-    repoWideChanges: config.repoWideChanges,
-    sinceIgnoreGlobs: options.ignore.concat(config.ignore),
+    experimentalLockfileInvalidation: config.experimentalLockfileInvalidation,
+    changedFiles,
+    filteredPackages: scope,
+    repoWideChanged,
   });
 
   const pickerOptions = getBuiltInRunners({ nodeArg: options.nodeArg, npmCmd: config.npmClient, taskArgs });

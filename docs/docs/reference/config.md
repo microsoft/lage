@@ -117,3 +117,66 @@ const config = {
 
 module.exports = config;
 ```
+
+## Experimental: smarter lockfile invalidation
+
+By default, any change to your package manager's lockfile (e.g. `pnpm-lock.yaml`) is treated as a
+repo-wide change: it invalidates **every** package's cache and, when using `--since`, forces
+**every** package to run. This is safe but expensive — in PR builds the lockfile changes often, and
+a single dependency bump ends up rebuilding the whole graph and missing the cache (including the
+remote cache) for packages that were not actually affected.
+
+The `experimentalLockfileInvalidation` option makes `lage` analyze the lockfile to determine
+**exactly which workspace packages had their resolved dependency closure changed**, and only those
+packages (and their dependents) are invalidated. Everything else keeps its cache hits.
+
+```js title="/lage.config.js"
+/** @type {import("lage").ConfigFileOptions} */
+const config = {
+  // ...
+  experimentalLockfileInvalidation: {
+    // Only "pnpm" is supported today.
+    packageManager: "pnpm"
+  }
+};
+```
+
+When enabled, `lage` takes ownership of `pnpm-lock.yaml` handling. It excludes the lockfile from
+`repoWideChanges` and `cacheOptions.environmentGlob` matches, including wildcard matches, so existing
+configuration does not need to change:
+
+```js title="/lage.config.js"
+const config = {
+  cacheOptions: {
+    environmentGlob: ["package.json", "lage.config.js", "pnpm-lock.yaml"]
+  },
+  repoWideChanges: ["pnpm-lock.yaml"],
+  experimentalLockfileInvalidation: { packageManager: "pnpm" }
+};
+```
+
+Changes to top-level pnpm settings and metadata (such as overrides, patched dependencies, and unknown
+future fields) still invalidate every package because they can affect the entire install. Staged and
+unstaged lockfile edits are analyzed precisely. A missing, deleted, newly added, malformed, or
+unsupported lockfile safely uses the blanket fallback.
+
+### Supported package managers
+
+Only **pnpm** is supported, and only the **latest pnpm lockfile format (`lockfileVersion 9.x`)**.
+
+This feature relies on the lockfile being **strict and deterministic** — that is, it must fully and
+unambiguously describe each workspace project's entire resolved dependency graph (including
+peer-dependency resolution). pnpm's lockfile provides exactly this via its `importers` and
+`snapshots` sections, which is what lets `lage` compute a precise per-package signature. Package
+managers with looser or less deterministic lockfiles (npm, yarn) do not provide the same guarantees,
+so they are intentionally not supported here.
+
+For anything unsupported — a different package manager, an older pnpm lockfile version, or a lockfile
+that cannot be parsed — `lage` logs a warning and **safely falls back to blanket invalidation**. The
+raw lockfile content is included in every cache key, and `--since` runs every package, so builds never
+silently under-invalidate.
+
+:::caution Experimental
+This option is experimental and may change. It is opt-in and has no effect on other `lage` commands
+when disabled. See the [caching guide](../guides/cache.md) for more details.
+:::
