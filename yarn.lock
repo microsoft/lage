@@ -3684,7 +3684,7 @@ __metadata:
     fs-extra: "npm:8.1.0"
     globby: "npm:11.1.0"
     p-limit: "npm:3.1.0"
-    tar-fs: "npm:2.1.4"
+    tar-fs: "npm:2.1.5"
   languageName: unknown
   linkType: soft
 
@@ -8790,15 +8790,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar-fs@npm:2.1.4":
-  version: 2.1.4
-  resolution: "tar-fs@npm:2.1.4"
+"tar-fs@npm:2.1.5":
+  version: 2.1.5
+  resolution: "tar-fs@npm:2.1.5"
   dependencies:
     chownr: "npm:^1.1.1"
     mkdirp-classic: "npm:^0.5.2"
     pump: "npm:^3.0.0"
     tar-stream: "npm:^2.1.4"
-  checksum: 10c0/decb25acdc6839182c06ec83cba6136205bda1db984e120c8ffd0d80182bc5baa1d916f9b6c5c663ea3f9975b4dd49e3c6bb7b1707cbcdaba4e76042f43ec84c
+  checksum: 10c0/b987429214c3ab3be1f439b4e097dc310acf449c35f355956d801f59ef4cfde3b9827797ab2d2f087ed024e459eedc9b3cd860c9190b86e356ba348ade928684
   languageName: node
   linkType: hard
 

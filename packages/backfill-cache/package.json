@@ -26,7 +26,7 @@
     "fs-extra": "8.1.0",
     "globby": "11.1.0",
     "p-limit": "3.1.0",
-    "tar-fs": "2.1.4"
+    "tar-fs": "2.1.5"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
