@@ -25,8 +25,7 @@ describe("lageserver", () => {
 
   function findServerPid(jsonOutput: ParsedLogEntry[]) {
     const entry = jsonOutput.find((e) => (e.data as LageServiceStatusData)?.pid && e.msg === "Server started") as
-      | LogEntry<LageServiceStatusData>
-      | undefined;
+      LogEntry<LageServiceStatusData> | undefined;
     return entry?.data?.pid;
   }
 
