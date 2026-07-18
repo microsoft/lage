@@ -30,8 +30,7 @@ type AugmentedAzureBlobConfig = AzureBlobFromBackfill extends {
  *  without affecting other cache storage configs.
  */
 type ExtendedCacheStorageConfig =
-  | Exclude<BackfillCacheOptions["cacheStorageConfig"], { provider: "azure-blob" } | CustomStorageConfig>
-  | AugmentedAzureBlobConfig;
+  Exclude<BackfillCacheOptions["cacheStorageConfig"], { provider: "azure-blob" } | CustomStorageConfig> | AugmentedAzureBlobConfig;
 
 export type CacheOptions = Omit<BackfillCacheOptions, "cacheStorageConfig"> & {
   /**
