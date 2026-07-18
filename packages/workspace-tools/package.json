@@ -26,7 +26,7 @@
     "fast-glob": "3.3.3",
     "git-url-parse": "16.1.0",
     "jju": "1.4.0",
-    "js-yaml": "4.2.0",
+    "js-yaml": "4.3.0",
     "micromatch": "4.0.8"
   },
   "devDependencies": {
