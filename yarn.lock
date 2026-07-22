@@ -3475,7 +3475,7 @@ __metadata:
     backfill-hasher: "workspace:^"
     backfill-logger: "workspace:^"
     chokidar: "npm:3.6.0"
-    dotenv: "npm:8.6.0"
+    dotenv: "npm:17.4.2"
     execa: "npm:5.1.1"
     find-up: "npm:5.0.0"
     fs-extra: "npm:8.1.0"
@@ -4159,10 +4159,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:8.6.0":
-  version: 8.6.0
-  resolution: "dotenv@npm:8.6.0"
-  checksum: 10c0/6750431dea8efbd54b9f2d9681b04e1ccc7989486461dcf058bb708d9e3d63b04115fcdf8840e38ad1e24a4a2e1e7c1560626c5e3ac7bc09371b127c49e2d45f
+"dotenv@npm:17.4.2":
+  version: 17.4.2
+  resolution: "dotenv@npm:17.4.2"
+  checksum: 10c0/164f8e77a646c8446867d5b588d26ea6005c8ea7c5eb41cf926f6113d23f2191355f6e0cfd95ea9bab98394a5b0a3f1e51a8399711b666fe55cc7b0bd745f942
   languageName: node
   linkType: hard
 

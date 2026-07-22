@@ -56,6 +56,12 @@ async function run(data) {
   // so that they're also reflected if used by the per-package `types` script (`yarn run -T tsc`).
   const compilerOptions = parsedCommandLine.options;
 
+  if (!compilerOptions.noEmit) {
+    // If these are missing, it won't directly be an error, but will cause unexpected output
+    if (!compilerOptions.rootDir) throw new Error('Missing required tsconfig option "rootDir"');
+    if (!compilerOptions.outDir) throw new Error('Missing required tsconfig option "outDir"');
+  }
+
   // Creating compilation host program
   verbose && console.log(`Creating host compiler...`);
   const compilerHost = ts.createCompilerHost(compilerOptions);

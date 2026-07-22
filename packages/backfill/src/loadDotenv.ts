@@ -9,6 +9,6 @@ export function loadDotenv(): void {
   const path = findUp.sync(".env");
 
   if (path) {
-    config({ path });
+    config({ path, quiet: true });
   }
 }
