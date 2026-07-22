@@ -3,7 +3,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>microsoft/beachball//renovate/presets/default",
     "github>microsoft/beachball//renovate/presets/beachball",
     "github>microsoft/beachball//renovate/presets/disableEsmVersions",
     "github>microsoft/beachball//renovate/presets/groupMore",
