@@ -3,13 +3,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>microsoft/m365-renovate-config",
-    "github>microsoft/m365-renovate-config:beachball",
-    "github>microsoft/m365-renovate-config:disableEsmVersions",
-    "github>microsoft/m365-renovate-config:groupMore",
-    "github>microsoft/m365-renovate-config:keepFresh",
-    "github>microsoft/m365-renovate-config:restrictNode(16)",
-    "github>microsoft/m365-renovate-config:scheduleNoisy"
+    "github>microsoft/beachball//renovate/presets/default",
+    "github>microsoft/beachball//renovate/presets/beachball",
+    "github>microsoft/beachball//renovate/presets/disableEsmVersions",
+    "github>microsoft/beachball//renovate/presets/groupMore",
+    "github>microsoft/beachball//renovate/presets/keepFresh",
+    "github>microsoft/beachball//renovate/presets/restrictNode(16)",
+    "github>microsoft/beachball//renovate/presets/scheduleNoisy"
   ],
   "labels": ["renovate"],
   "prHourlyLimit": 5,
