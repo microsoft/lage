@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     // NOTE: This target isn't actually used, since most packages use SWC for emit
     "target": "ES2020",
     "declaration": true,

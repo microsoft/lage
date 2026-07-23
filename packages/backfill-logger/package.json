@@ -12,7 +12,9 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "api": "monorepo-scripts api",
-    "build": "tsc --pretty",
+    "build": "yarn types && yarn transpile",
+    "transpile": "monorepo-scripts transpile",
+    "types": "yarn run -T tsc",
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
