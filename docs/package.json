@@ -29,7 +29,7 @@
     "typescript": "^5.0.0"
   },
   "resolutions": {
-    "@algolia/autocomplete-js@npm:^1.8.2": "1.17.9",
+    "@algolia/autocomplete-js@npm:^1.8.2": "1.19.9",
     "@cmfcmf/docusaurus-search-local@npm:1.2.0/cheerio": "1.0.0-rc.12",
     "@types/node@npm:*": "^18.0.0",
     "@types/react@npm:*": "^18.0.0",
