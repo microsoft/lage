@@ -35,8 +35,8 @@
     "@types/react@npm:*": "^18.0.0",
     "lodash-es@npm:4.17.23": "^4.18.1",
     "serve-handler/minimatch@npm:3.1.2": "^3.1.5",
-    "webpack@npm:^5.88.1": "~5.105.0",
-    "webpack@npm:^5.95.0": "~5.105.0"
+    "webpack@npm:^5.88.1": "~5.109.0",
+    "webpack@npm:^5.95.0": "~5.109.0"
   },
   "rationale": {
     "dependencies": {
