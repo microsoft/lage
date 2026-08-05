@@ -12,6 +12,7 @@ type RealFixtureName =
   | "basic-pnpm"
   | "basic-pnpm-6"
   | "basic-pnpm-9"
+  | "basic-pnpm-9-env-lockfile"
   | "basic-without-lock-file"
   | "basic-yarn-1"
   | "basic-yarn-berry"

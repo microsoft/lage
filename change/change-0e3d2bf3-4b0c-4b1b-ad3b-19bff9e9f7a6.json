@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "workspace-tools",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Fix `parseLockFile` throwing on pnpm \"env lockfile\" `pnpm-lock.yaml` files (a 2-document YAML format pnpm writes when `configDependencies` and/or `packageManagerDependencies` are recorded). Only the main (last) document is now parsed; the env document is discarded so its entries never leak into the parsed dependency graph.",
+      "email": "ansteg@microsoft.com"
+    }
+  ]
+}
