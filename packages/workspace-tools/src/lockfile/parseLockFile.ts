@@ -5,7 +5,7 @@ import { type ParsedLock, type PnpmLockFile, type NpmLockFile, type BerryLockFil
 import { searchUp } from "../paths.js";
 import { parsePnpmLock } from "./parsePnpmLock.js";
 import { parseNpmLock } from "./parseNpmLock.js";
-import { readYaml } from "./readYaml.js";
+import { readYaml, readYamlDocuments } from "./readYaml.js";
 import { parseBerryLock } from "./parseBerryLock.js";
 
 const memoization: { [path: string]: ParsedLock } = {};
@@ -56,7 +56,16 @@ export async function parseLockFile(packageRoot: string): Promise<ParsedLock> {
       return memoization[pnpmLockPath];
     }
 
-    const yaml = readYaml<PnpmLockFile>(pnpmLockPath);
+    // pnpm v11+ can write `pnpm-lock.yaml` as two `---`-separated YAML documents when
+    // `configDependencies` and/or `packageManagerDependencies` are recorded: an "env" document
+    // (holding only those fields) followed by the regular lockfile document (see
+    // https://github.com/pnpm/pnpm/pull/10964). This only happens for lockfileVersion 9.0+ (the
+    // pnpm 6/9 codepath in `parsePnpmLock`) — legacy (< 6.0) lockfiles are always a single
+    // document, so `documents[documents.length - 1]` is a no-op for them. Using only the last
+    // document means the env document's `configDependencies`/`packageManagerDependencies` entries
+    // are intentionally discarded and never leak into the parsed dependency graph.
+    const documents = readYamlDocuments<PnpmLockFile>(pnpmLockPath);
+    const yaml = documents[documents.length - 1];
     const parsed = parsePnpmLock(yaml);
     memoization[pnpmLockPath] = parsed;
 

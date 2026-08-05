@@ -197,6 +197,26 @@ describe("parseLockFile()", () => {
       });
     });
 
+    // pnpm v11+ writes `pnpm-lock.yaml` as two `---`-separated YAML documents (an "env" document
+    // followed by the regular lockfile document) whenever `configDependencies` and/or
+    // `packageManagerDependencies` are recorded (see https://github.com/pnpm/pnpm/pull/10964).
+    // `basic-pnpm-9-env-lockfile` is `basic-pnpm-9` with such an env document prepended; its env
+    // document also declares a `which@2.0.2` entry with a bogus `not-a-real-dep` dependency edge,
+    // to verify the env document (and any name collisions with it) is fully ignored.
+    it("parses a 2-document 'env lockfile', ignoring the env document entirely", async () => {
+      const packageRoot = setupFixture("basic-pnpm-9-env-lockfile");
+      const { object } = await parseLockFile(packageRoot);
+
+      // The regular dependency graph, from the main document, still parses correctly.
+      expect(object["which@2.0.2"]).toEqual({ version: "2.0.2", dependencies: { isexe: "2.0.0" } });
+
+      // Nothing from the env document (configDependencies, packageManagerDependencies, or their
+      // resolved packages) leaks into the parsed output.
+      expect(object["which@2.0.2"].dependencies?.["not-a-real-dep"]).toBeUndefined();
+      expect(object["@pnpm/plugin-better-defaults@0.3.0"]).toBeUndefined();
+      expect(object["pnpm@12.0.0-beta.1"]).toBeUndefined();
+    });
+
     describe("importers (workspace packages)", () => {
       // The real lockfileVersion 9.0 `monorepo-basic-pnpm` fixture exercises path-keyed importers,
       // peer-suffix stripping, and a `link:` reference to a sibling workspace package (package-a ->
