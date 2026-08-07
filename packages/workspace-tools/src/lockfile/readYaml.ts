@@ -20,3 +20,17 @@ export function readYaml<TReturn>(file: string): TReturn {
   const content = fs.readFileSync(file, "utf8");
   return parseYaml<TReturn>(content);
 }
+
+/**
+ * Read a YAML file from disk that may contain multiple `---`-separated documents, returning each
+ * parsed document in order. Delay-loads `js-yaml` to avoid perf penalty.
+ */
+export function readYamlDocuments<TReturn>(file: string): TReturn[] {
+  // This is delay loaded to avoid the perf penalty of parsing YAML utilities any time the package
+  // is used (since usage of the YAML utilities is less common).
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const jsYaml: typeof jsYamlType = require("js-yaml");
+  const content = fs.readFileSync(file, "utf8");
+
+  return jsYaml.loadAll(content) as TReturn[];
+}
