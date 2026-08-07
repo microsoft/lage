@@ -7,7 +7,6 @@
     "start": "docusaurus start",
     "build": "tsc && docusaurus build",
     "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve"
   },

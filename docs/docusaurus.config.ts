@@ -43,6 +43,15 @@ const config: Config = {
   ],
 
   themeConfig: {
+    mermaid: {
+      options: {
+        gantt: {
+          fontSize: 16,
+          sectionFontSize: 16,
+          useWidth: 900,
+        },
+      },
+    },
     navbar: {
       logo: {
         alt: "Lage Logo",
@@ -53,7 +62,19 @@ const config: Config = {
           type: "doc",
           docId: "introduction",
           position: "left",
-          label: "Guide",
+          label: "Introduction",
+        },
+        {
+          type: "doc",
+          docId: "reference/cli",
+          position: "left",
+          label: "CLI",
+        },
+        {
+          type: "doc",
+          docId: "reference/config",
+          position: "left",
+          label: "Configuration",
         },
         {
           href: "https://github.com/microsoft/lage",
