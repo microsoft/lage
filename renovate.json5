@@ -50,8 +50,9 @@
         "@azure/*",
         "node-gyp",
         "@microsoft/api-extractor",
-        // This is pinned in docs/package.json (see rationale there)
-        "@algolia/autocomplete-js"
+        // These are pinned in docs/package.json (see rationale there)
+        "@algolia/autocomplete-js",
+        "webpack"
       ],
       "enabled": false
     },
