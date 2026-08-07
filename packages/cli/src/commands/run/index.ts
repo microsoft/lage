@@ -2,7 +2,7 @@ import { Command } from "commander";
 import { action } from "./action.js";
 import { addOptions } from "../addOptions.js";
 
-const command: Command = new Command("run");
+const command: Command = new Command("run").description("Run commands in a target graph");
 
 addOptions("filter", command);
 addOptions("logger", command);
