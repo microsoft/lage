@@ -1,8 +1,30 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Thu, 09 Jul 2026 22:12:55 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.36.13
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Update dependency shell-quote to v1.10.0 (renovate@whitesourcesoftware.com)
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Add command descriptions (elcraig@microsoft.com)
+- Bump @lage-run/cache to v1.6.6
+- Bump @lage-run/config to v0.9.16
+- Bump @lage-run/hasher to v1.10.12
+- Bump @lage-run/logger to v1.5.1
+- Bump @lage-run/reporters to v1.8.5
+- Bump @lage-run/rpc to v1.4.7
+- Bump @lage-run/runners to v1.4.14
+- Bump @lage-run/scheduler to v1.6.13
+- Bump @lage-run/scheduler-types to v0.4.12
+- Bump @lage-run/target-graph to v0.15.11
+- Bump @lage-run/worker-threads-pool to v0.10.4
+- Bump workspace-tools to v0.42.1
 
 ## 0.36.12
 

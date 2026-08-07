@@ -1,8 +1,18 @@
 # Change Log - backfill-hasher
 
-<!-- This log was last generated on Thu, 09 Jul 2026 22:12:55 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 6.7.13
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump backfill-logger to v5.4.3
+- Bump workspace-tools to v0.42.1
 
 ## 6.7.12
 

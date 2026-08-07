@@ -1,8 +1,19 @@
 # Change Log - backfill-cache
 
-<!-- This log was last generated on Wed, 08 Apr 2026 03:39:42 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 5.12.6
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Update dependency tar-fs to v2.1.5 (email not defined)
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump backfill-config to v6.7.5
+- Bump backfill-logger to v5.4.3
 
 ## 5.12.4
 

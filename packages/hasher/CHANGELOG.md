@@ -1,8 +1,20 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Thu, 09 Jul 2026 22:12:55 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.10.12
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump @lage-run/logger to v1.5.1
+- Bump @lage-run/target-graph to v0.15.11
+- Bump backfill-hasher to v6.7.13
+- Bump workspace-tools to v0.42.1
 
 ## 1.10.11
 

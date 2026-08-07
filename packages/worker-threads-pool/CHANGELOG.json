@@ -2,6 +2,27 @@
   "name": "@lage-run/worker-threads-pool",
   "entries": [
     {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "0.10.4",
+      "tag": "@lage-run/worker-threads-pool_v0.10.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/worker-threads-pool",
+            "comment": "Bump @lage-run/logger to v1.5.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 May 2026 08:38:43 GMT",
       "version": "0.10.3",
       "tag": "@lage-run/worker-threads-pool_v0.10.3",

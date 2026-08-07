@@ -1,6 +1,6 @@
 {
   "name": "normalized-tmpdir",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
   "description": "Normalize os.tmpdir() to eliminate OS-specific symlinks and naming variations",
   "keywords": [

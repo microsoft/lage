@@ -1,8 +1,18 @@
 # Change Log - workspace-tools
 
-<!-- This log was last generated on Thu, 09 Jul 2026 22:12:55 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.42.1
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Fix `parseLockFile` throwing on pnpm "env lockfile" `pnpm-lock.yaml` files (a 2-document YAML format pnpm writes when `configDependencies` and/or `packageManagerDependencies` are recorded). Only the main (last) document is now parsed; the env document is discarded so its entries never leak into the parsed dependency graph. (ansteg@microsoft.com)
+- Update dependency js-yaml to v4.3.0 (renovate@whitesourcesoftware.com)
+- Transpile with typescript 6 (elcraig@microsoft.com)
 
 ## 0.42.0
 
