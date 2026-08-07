@@ -6547,6 +6547,7 @@ __metadata:
     esbuild: "npm:^0.28.1"
     fsevents: "npm:~2.3.2"
     glob-hasher: "npm:^1.4.2"
+    workspace-tools-npm: "npm:workspace-tools@latest"
   dependenciesMeta:
     fsevents:
       optional: true
