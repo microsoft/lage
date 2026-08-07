@@ -45,8 +45,14 @@
       "enabled": false
     },
     {
-      // Disable due to Node version compatibility
-      "matchPackageNames": ["@azure/*", "node-gyp", "@microsoft/api-extractor"],
+      "matchPackageNames": [
+        // Disable due to Node version compatibility
+        "@azure/*",
+        "node-gyp",
+        "@microsoft/api-extractor",
+        // This is pinned in docs/package.json (see rationale there)
+        "@algolia/autocomplete-js"
+      ],
       "enabled": false
     },
     {
