@@ -1,8 +1,23 @@
 # Change Log - @lage-run/cache
 
-<!-- This log was last generated on Thu, 09 Jul 2026 22:12:55 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.6.6
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump @lage-run/config to v0.9.16
+- Bump @lage-run/reporters to v1.8.5
+- Bump @lage-run/target-graph to v0.15.11
+- Bump backfill-cache to v5.12.6
+- Bump backfill-config to v6.7.5
+- Bump backfill-logger to v5.4.3
+- Bump @lage-run/logger to v1.5.1
 
 ## 1.6.5
 

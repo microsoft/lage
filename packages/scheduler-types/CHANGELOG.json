@@ -2,6 +2,27 @@
   "name": "@lage-run/scheduler-types",
   "entries": [
     {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "0.4.12",
+      "tag": "@lage-run/scheduler-types_v0.4.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/scheduler-types",
+            "comment": "Bump @lage-run/target-graph to v0.15.11",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 09 Jul 2026 22:12:55 GMT",
       "version": "0.4.11",
       "tag": "@lage-run/scheduler-types_v0.4.11",

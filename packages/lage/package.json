@@ -1,6 +1,6 @@
 {
   "name": "lage",
-  "version": "2.15.17",
+  "version": "2.16.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/microsoft/lage"
@@ -29,7 +29,8 @@
     "@lage-run/cli": "workspace:^",
     "@lage-run/monorepo-scripts": "workspace:^",
     "@lage-run/runners": "workspace:^",
-    "esbuild": "^0.28.1"
+    "esbuild": "^0.28.1",
+    "workspace-tools-npm": "npm:workspace-tools@latest"
   },
   "files": [
     "dist"

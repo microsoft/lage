@@ -2,6 +2,39 @@
   "name": "backfill-cache",
   "entries": [
     {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "5.12.6",
+      "tag": "backfill-cache_v5.12.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "backfill-cache",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependency tar-fs to v2.1.5"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-cache",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "beachball",
+            "package": "backfill-cache",
+            "comment": "Bump backfill-config to v6.7.5",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "backfill-cache",
+            "comment": "Bump backfill-logger to v5.4.3",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Apr 2026 03:39:42 GMT",
       "version": "5.12.4",
       "tag": "backfill-cache_v5.12.4",

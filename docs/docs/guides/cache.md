@@ -24,6 +24,6 @@ Once in a while, the cache might need to be recreated from scratch. In those sit
 lage build --reset-cache
 ```
 
-## Cache Options
+## Cache options
 
 Caching capability is provided by `backfill`. All of the configuration under the `cacheOptions` key is passed to `backfill`. For the complete documentation of `cacheOptions`, see the [`backfill` configuration documentation](https://www.npmjs.com/package/backfill#configuration).

@@ -2,6 +2,21 @@
   "name": "normalized-tmpdir",
   "entries": [
     {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "1.1.1",
+      "tag": "normalized-tmpdir_v1.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "normalized-tmpdir",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 10 Apr 2026 04:04:59 GMT",
       "version": "1.1.0",
       "tag": "normalized-tmpdir_v1.1.0",

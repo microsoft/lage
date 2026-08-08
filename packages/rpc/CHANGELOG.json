@@ -2,6 +2,21 @@
   "name": "@lage-run/rpc",
   "entries": [
     {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "1.4.7",
+      "tag": "@lage-run/rpc_v1.4.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 May 2026 08:38:43 GMT",
       "version": "1.4.6",
       "tag": "@lage-run/rpc_v1.4.6",

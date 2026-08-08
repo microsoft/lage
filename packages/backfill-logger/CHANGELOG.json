@@ -2,6 +2,21 @@
   "name": "backfill-logger",
   "entries": [
     {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "5.4.3",
+      "tag": "backfill-logger_v5.4.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-logger",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Apr 2026 03:39:42 GMT",
       "version": "5.4.2",
       "tag": "backfill-logger_v5.4.2",

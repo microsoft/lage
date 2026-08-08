@@ -2,6 +2,39 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "0.1.42",
+      "tag": "@lage-run/cache-github-actions_v0.1.42",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache-github-actions",
+            "comment": "Bump backfill-config to v6.7.5",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache-github-actions",
+            "comment": "Bump backfill-logger to v5.4.3",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache-github-actions",
+            "comment": "Bump workspace-tools to v0.42.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 09 Jul 2026 22:12:55 GMT",
       "version": "0.1.41",
       "tag": "@lage-run/cache-github-actions_v0.1.41",

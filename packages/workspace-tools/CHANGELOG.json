@@ -2,6 +2,33 @@
   "name": "workspace-tools",
   "entries": [
     {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "0.42.1",
+      "tag": "workspace-tools_v0.42.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ansteg@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Fix `parseLockFile` throwing on pnpm \"env lockfile\" `pnpm-lock.yaml` files (a 2-document YAML format pnpm writes when `configDependencies` and/or `packageManagerDependencies` are recorded). Only the main (last) document is now parsed; the env document is discarded so its entries never leak into the parsed dependency graph."
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependency js-yaml to v4.3.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 09 Jul 2026 22:12:55 GMT",
       "version": "0.42.0",
       "tag": "workspace-tools_v0.42.0",

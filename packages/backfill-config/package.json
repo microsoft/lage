@@ -1,6 +1,6 @@
 {
   "name": "backfill-config",
-  "version": "6.7.4",
+  "version": "6.7.5",
   "description": "Backfill Config",
   "license": "MIT",
   "author": "Benjamin Weggersen <bewegger@microsoft.com>",

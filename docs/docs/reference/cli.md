@@ -1,5 +1,5 @@
 ---
-title: Command Line Options
+title: Command line options
 ---
 
 `lage` is meant to be run as a CLI. After installing `lage` inside the repository or globally, you can run the npm scripts from your repository like this:
@@ -10,11 +10,11 @@ lage [options] <command>
 
 ---
 
-## Run Command
+## `run` command
 
 Runs a set of commands in a target graph. The targets are defined by packages and their scripts as defined the package.json files.
 
-Usage: `lage [run] <command1> [command2...commandN] [options]  run commands`
+Usage: `lage [run] <command1> [command2...commandN] [options]`
 
 ### Options
 
@@ -106,6 +106,14 @@ lage build test lint --nodearg=--max_old_space_size=1234 --nodearg=--heap-prof
 lage build test lint --continue
 ```
 
+#### Disabling cache
+
+`lage` by default will skip tasks that it has already done recently. As long as the source file and the command called to `lage` has not changed, those packages will be skipped. Sometimes, this incremental behavior is not desired. You can override the caching behavior by using the `no-cache` argument:
+
+```
+lage build --no-cache
+```
+
 #### Controlling logged outputs
 
 Show verbose output for each target:
@@ -146,13 +154,11 @@ lage build test lint --since origin/main --ignore "package.json" "yarn.lock" "**
 
 ---
 
-## Cache Command
+## `cache` command
 
-`lage` by default will skip tasks that it has already done recently. As long as the source file and the command called to `lage` has not changed, those packages will be skipped. Sometimes, this incremental behavior is not desired. You can override the caching behavior by using the `no-cache` argument.
+Manage the lage cache.
 
-```
-lage build --no-cache
-```
+Usage: `lage cache [options]`
 
 ### Options
 

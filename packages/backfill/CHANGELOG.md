@@ -1,8 +1,27 @@
 # Change Log - backfill
 
-<!-- This log was last generated on Thu, 25 Jun 2026 04:59:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 6.4.19
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- `backfill`
+  - Update dotenv to v17 (elcraig@microsoft.com)
+  - Transpile with typescript 6 (elcraig@microsoft.com)
+- `backfill-cache`
+  - Update dependency tar-fs to v2.1.5 (email not defined)
+  - Transpile with typescript 6 (elcraig@microsoft.com)
+- `backfill-config`
+  - Transpile with typescript 6 (elcraig@microsoft.com)
+- `backfill-hasher`
+  - Transpile with typescript 6 (elcraig@microsoft.com)
+- `backfill-logger`
+  - Transpile with typescript 6 (elcraig@microsoft.com)
 
 ## 6.4.16
 
