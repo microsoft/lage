@@ -73,7 +73,9 @@ export function getWorkspaceManagerAndRoot(
     cache.set(cwd, {
       manager:
         managerOverride ||
-        (Object.keys(managerFiles) as WorkspaceManager[]).find((name) => getManagerFileNames(name).includes(managerFileName))!,
+        (Object.keys(managerFiles) as WorkspaceManager[]).find((name) =>
+          getManagerFileNames(name).includes(managerFileName)
+        )!,
       root: path.dirname(managerFile),
     });
   } else {
