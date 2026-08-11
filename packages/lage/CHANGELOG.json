@@ -2,6 +2,27 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 11 Aug 2026 09:42:15 GMT",
+      "version": "2.16.1",
+      "tag": "lage_v2.16.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "25f1b8686c1f4ebf4ec372703c4b7a435522de3a",
+            "comment": "Add bun as a supported workspace manager in workspace-tools, including manager detection and workspace fixture/test coverage."
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "25f1b8686c1f4ebf4ec372703c4b7a435522de3a",
+            "comment": "Update dependency js-yaml to v4.3.1 [SECURITY]"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 07 Aug 2026 09:19:09 GMT",
       "version": "2.16.0",
       "tag": "lage_v2.16.0",

@@ -2,6 +2,21 @@
   "name": "backfill-hasher",
   "entries": [
     {
+      "date": "Tue, 11 Aug 2026 09:42:15 GMT",
+      "version": "6.7.14",
+      "tag": "backfill-hasher_v6.7.14",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "backfill-hasher",
+            "comment": "Bump workspace-tools to v0.42.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 07 Aug 2026 09:19:09 GMT",
       "version": "6.7.13",
       "tag": "backfill-hasher_v6.7.13",

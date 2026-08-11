@@ -2,6 +2,21 @@
   "name": "@lage-run/cache-github-actions",
   "entries": [
     {
+      "date": "Tue, 11 Aug 2026 09:42:15 GMT",
+      "version": "0.1.43",
+      "tag": "@lage-run/cache-github-actions_v0.1.43",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache-github-actions",
+            "comment": "Bump workspace-tools to v0.42.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 07 Aug 2026 09:19:09 GMT",
       "version": "0.1.42",
       "tag": "@lage-run/cache-github-actions_v0.1.42",

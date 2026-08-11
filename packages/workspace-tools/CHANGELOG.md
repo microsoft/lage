@@ -1,8 +1,17 @@
 # Change Log - workspace-tools
 
-<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 11 Aug 2026 09:42:15 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.42.2
+
+Tue, 11 Aug 2026 09:42:15 GMT
+
+### Patches
+
+- Add bun as a supported workspace manager in workspace-tools, including manager detection and workspace fixture/test coverage. (email not defined)
+- Update dependency js-yaml to v4.3.1 [SECURITY] (email not defined)
 
 ## 0.42.1
 

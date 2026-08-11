@@ -1,8 +1,16 @@
 # Change Log - backfill-hasher
 
-<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 11 Aug 2026 09:42:15 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 6.7.14
+
+Tue, 11 Aug 2026 09:42:15 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.42.2
 
 ## 6.7.13
 
