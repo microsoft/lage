@@ -243,7 +243,7 @@ Available reporters:
 | Name | Internal class | Description |
 | ---- | ----- | ----------- |
 | `default`/not specified | `ProgressReporter`, `BasicReporter` or `LogReporter` | If running in an interactive terminal without `--grouped` or `--verbose`, uses `basic` in known slow terminals (Codespaces, SSH) and `fancy` otherwise. Otherwise, uses `npmLog`. |
-| `fancy` | `ProgressReporter` | Shows progress including the names of currently running targets, but is slower. This was the default in v2 prior to 2.14.16, and is the default after 2.17.0 unless running in known slow terminals. |
+| `fancy` | `ProgressReporter` | Shows progress including the names of currently running targets, but is slower. This was the default in v2 prior to 2.14.16, and is the default in 2.17.0+ unless running in known slow terminals. |
 | `basic` | `BasicReporter` | Shows progress without the names of running targets. This was the default from 2.14.16 to 2.16.1, and is still the default if running in known slow terminals. |
 | `npmLog` (`old`) | `LogReporter` | This is the reporter from lage v1. It logs tasks without progress info. |
 | `azureDevops` (`adoLog`) | `AdoReporter` | Logs tasks with ADO-specific formatting prefixes |

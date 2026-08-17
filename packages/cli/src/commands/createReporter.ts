@@ -69,6 +69,9 @@ export async function createReporter(reporter: string, options: ReporterInitOpti
     case "old":
       return new LogReporter({ grouped, logLevel, logMemory });
 
+    case "basic":
+      return new BasicReporter({ concurrency, version, logMemory });
+
     case "fancy":
       return new ProgressReporter({ concurrency, version, logMemory });
 
