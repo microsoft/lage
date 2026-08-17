@@ -21,8 +21,6 @@ const baseTestTarget = {
  * @type {Partial<Omit<ConfigOptions, 'cacheOptions'>> & { cacheOptions?: Partial<CacheOptions> }}
  */
 const config = {
-  // use fancy reporter locally and platform-specific ones for CI
-  reporter: process.env.CI || process.env.TF_BUILD ? undefined : "fancy",
   pipeline: {
     "lage#bundle": {
       dependsOn: ["^^transpile", "types"],
@@ -77,8 +75,10 @@ const config = {
     "@lage-run/e2e-tests#test": {
       ...baseTestTarget,
       dependsOn: ["^^transpile", "lage#bundle"],
-      // This runs last, so give it all available resources
-      weight: os.availableParallelism(),
+      // weight is used in scripts/worker/jest.js to determine max jest workers.
+      // Make this task run last and give it all available resources.
+      // But on CI, allow only one worker since this runs lage which internally creates workers.
+      weight: process.env.CI ? 1 : os.availableParallelism(),
       priority: -9999,
     },
   },

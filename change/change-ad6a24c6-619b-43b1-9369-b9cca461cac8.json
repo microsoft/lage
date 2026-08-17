@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Revert to using fancier reporter by default when running locally, except in known slow terminals (codespaces, SSH)",
+      "packageName": "@lage-run/cli",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "minor"
+    },
+    {
+      "type": "none",
+      "comment": "update comment",
+      "packageName": "@lage-run/config",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "minor",
+      "comment": "Remove unused `ChromeTraceEventsReporter` `concurrency` option that was not used",
+      "packageName": "@lage-run/reporters",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

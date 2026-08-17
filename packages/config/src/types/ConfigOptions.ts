@@ -94,7 +94,8 @@ export interface ConfigOptions {
   enablePhantomTargetOptimization: boolean;
 
   /**
-   * Built-in or custom reporter name(s) to use. This is **overridden** by the `--reporter` CLI flag.
+   * Built-in or custom reporter name(s) to use. This is **overridden** by the `--reporter` flag,
+   * but **overrides** `--verbose`, `--grouped`, and other context-based defaults (such as CI env detection).
    *
    * See https://microsoft.github.io/lage/docs/reference/cli#reporter for the list of built-in reporters.
    */

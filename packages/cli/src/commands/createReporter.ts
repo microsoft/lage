@@ -40,7 +40,7 @@ export function setMockImportReporter(mock: MockImportReporter | undefined): voi
  */
 export async function createReporter(reporter: string, options: ReporterInitOptions, customReporterPath?: string): Promise<TargetReporter> {
   const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress, logFile, indented, logMemory } = options;
-  const logLevel = LogLevel[logLevelName];
+  const logLevel = verbose ? LogLevel.verbose : LogLevel[logLevelName];
 
   if (customReporterPath) {
     return loadCustomReporterModule(reporter, options, customReporterPath);
@@ -53,22 +53,24 @@ export async function createReporter(reporter: string, options: ReporterInitOpti
   switch (reporter as BuiltInReporterName) {
     case "profile":
       return new ChromeTraceEventsReporter({
-        concurrency,
         outputFile: typeof profile === "string" ? profile : undefined,
       });
     case "json":
       return new JsonReporter({ logLevel, indented: indented ?? false, logMemory });
     case "azureDevops":
     case "adoLog":
-      return new AdoReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
+      return new AdoReporter({ grouped, logLevel, logMemory });
 
     case "githubActions":
     case "gha":
-      return new GithubActionsReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
+      return new GithubActionsReporter({ grouped, logLevel, logMemory });
 
     case "npmLog":
     case "old":
-      return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
+      return new LogReporter({ grouped, logLevel, logMemory });
+
+    case "basic":
+      return new BasicReporter({ concurrency, version, logMemory });
 
     case "fancy":
       return new ProgressReporter({ concurrency, version, logMemory });
@@ -80,18 +82,22 @@ export async function createReporter(reporter: string, options: ReporterInitOpti
 
   // Default reporter behavior - auto-detect CI environments
   if (process.env.GITHUB_ACTIONS) {
-    return new GithubActionsReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
+    return new GithubActionsReporter({ grouped: true, logLevel, logMemory });
   }
-
   if (process.env.TF_BUILD) {
-    return new AdoReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
+    return new AdoReporter({ grouped: true, logLevel, logMemory });
   }
 
-  if (progress && isInteractive() && !(logLevel >= LogLevel.verbose || verbose || grouped)) {
-    return new BasicReporter({ concurrency, version, logMemory });
+  // --progress defaults to true in local runs but is overridden by --grouped or --verbose
+  if (progress && isInteractive() && !grouped && logLevel < LogLevel.verbose) {
+    // For known slow terminals, use the fastest BasicReporter.
+    // Otherwise use ProgressReporter which is more informative (and reasonably fast after fixes).
+    return process.env.CODESPACES || process.env.SSH_CONNECTION || process.env.SSH_CLIENT
+      ? new BasicReporter({ concurrency, version, logMemory })
+      : new ProgressReporter({ concurrency, version, logMemory });
   }
 
-  return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel, logMemory });
+  return new LogReporter({ grouped, logLevel, logMemory });
 }
 
 async function loadCustomReporterModule(reporter: string, options: ReporterInitOptions, resolvedPath: string): Promise<TargetReporter> {

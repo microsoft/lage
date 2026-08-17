@@ -71,7 +71,7 @@ describe("initializeReporters with custom reporters", () => {
         config: { reporters: {} },
       })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `"Invalid --reporter option: "nonExistentReporter123". Supported reporters are: json, azureDevops, npmLog, verboseFileLog, vfl, adoLog, githubActions, gha, fancy, default"`
+      `"Invalid --reporter option: "nonExistentReporter123". Supported reporters are: default, basic, fancy, npmLog, adoLog, azureDevops, githubActions, gha, json, verboseFileLog, vfl"`
     );
   });
 

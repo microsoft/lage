@@ -65,8 +65,6 @@ interface ChromeTraceEventsReporterOptions {
     // (undocumented)
     categorize?: (targetRun?: TargetRun) => string;
     // (undocumented)
-    concurrency: number;
-    // (undocumented)
     outputFile?: string;
 }
 

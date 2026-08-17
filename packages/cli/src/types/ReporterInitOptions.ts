@@ -2,33 +2,45 @@ import type { LogLevel } from "@lage-run/logger";
 
 /** All the built-in reporter names */
 export type BuiltInReporterName =
+  // See initializeReporters and createReporter
   | "default"
+  // ChromeTraceEventsReporter (via --profile)
   | "profile"
+  // JsonReporter
   | "json"
+  // AdoReporter
   | "azureDevops"
   | "adoLog"
+  // GithubActionsReporter
   | "githubActions"
   | "gha"
+  // LogReporter
   | "npmLog"
   | "old"
+  // VerboseFileLogReporter
   | "verboseFileLog"
   | "vfl"
-  | "fancy";
+  // ProgressReporter
+  | "fancy"
+  // BasicReporter
+  | "basic";
 /** Built-in or custom reporter name */
 export type ReporterName = BuiltInReporterName | string;
 
 /** Whether each built-in reporter name should be listed in doc output */
 const shouldListBuiltInReporters: Record<BuiltInReporterName, boolean> = {
-  json: true,
-  azureDevops: true,
+  // this determines the order in help output
+  default: true,
+  basic: true,
+  fancy: true,
   npmLog: true,
-  verboseFileLog: true,
-  vfl: true,
   adoLog: true,
+  azureDevops: true,
   githubActions: true,
   gha: true,
-  fancy: true,
-  default: true,
+  json: true,
+  verboseFileLog: true,
+  vfl: true,
   // Not encouraged
   old: false,
   // Intended to be set via --profile
