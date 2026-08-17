@@ -32,13 +32,9 @@ export async function initializeReporters(params: {
     [...builtInReporterNames, ...customReporterNames].map((name) => [name.toLowerCase(), name])
   );
 
-  // filter out falsy values (e.g. undefined) from the reporter array
-  const useReporterOption = options.reporter?.length ? options.reporter : config.reporter;
-  const reporterOptions = (Array.isArray(useReporterOption) ? [...useReporterOption] : [useReporterOption]).filter(
-    Boolean
-  ) as ReporterName[];
+  const reporterOptions = options.reporter?.length ? toArray(options.reporter) : toArray(config.reporter);
 
-  if (reporterOptions.length === 0) {
+  if (!reporterOptions.length) {
     // "default" is just a dummy name to trigger the default case in createReporter
     reporterOptions.push(params.defaultReporter || ("default" satisfies BuiltInReporterName));
   }
@@ -64,4 +60,8 @@ export async function initializeReporters(params: {
     }
     logger.addReporter(reporterInstance);
   }
+}
+
+function toArray(value: string | string[] | undefined = []): ReporterName[] {
+  return (Array.isArray(value) ? value : [value]).filter(Boolean);
 }

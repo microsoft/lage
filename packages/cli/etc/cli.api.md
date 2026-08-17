@@ -27,7 +27,7 @@ import { WorkerRunnerOptions } from '@lage-run/runners';
 import { WorkerTargetOptions } from '@lage-run/runners';
 
 // @public
-type BuiltInReporterName = "default" | "profile" | "json" | "azureDevops" | "adoLog" | "githubActions" | "gha" | "npmLog" | "old" | "verboseFileLog" | "vfl" | "fancy";
+type BuiltInReporterName = "default" | "profile" | "json" | "azureDevops" | "adoLog" | "githubActions" | "gha" | "npmLog" | "old" | "verboseFileLog" | "vfl" | "fancy" | "basic";
 
 export { CacheOptions }
 

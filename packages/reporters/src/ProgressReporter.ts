@@ -20,7 +20,7 @@ import { isCompletionStatus } from "./isCompletionStatus.js";
 /**
  * Shows progress including the names of currently running targets using `@ms-cloudpack/task-reporter`.
  * It may be slightly slower than `BasicReporter` (though its performance has been improved substantially
- * with `task-reporter` updates) and was the default reporter in lage v2 prior to 2.14.16.
+ * with `task-reporter` updates).
  */
 export class ProgressReporter implements TargetReporter {
   private logStream: Writable;

@@ -2,11 +2,11 @@ import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals
 import { Logger, type Reporter } from "@lage-run/logger";
 import {
   AdoReporter,
-  BasicReporter,
   ChromeTraceEventsReporter,
   GithubActionsReporter,
   JsonReporter,
   LogReporter,
+  ProgressReporter,
 } from "@lage-run/reporters";
 import path from "path";
 import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
@@ -74,7 +74,8 @@ describe("initializeReporters", () => {
       options: { progress: true },
     });
 
-    expect(reporters).toEqual([expect.any(BasicReporter)]);
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(ProgressReporter);
   });
 
   it("should initialize old reporter when shell is not interactive", async () => {

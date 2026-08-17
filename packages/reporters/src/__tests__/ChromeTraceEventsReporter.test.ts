@@ -22,7 +22,7 @@ describe("ChromeTraceEventsReporter", () => {
   it("can group verbose messages, displaying summary", () => {
     const writer = new MemoryStream();
 
-    const reporter = new ChromeTraceEventsReporter({ concurrency: 4, outputFile, consoleLogStream: writer });
+    const reporter = new ChromeTraceEventsReporter({ outputFile, consoleLogStream: writer });
 
     const aBuildTarget = createTarget("a", "build");
     const aTestTarget = createTarget("a", "test");

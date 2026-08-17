@@ -23,7 +23,6 @@ interface CompleteEvent {
 
 export interface ChromeTraceEventsReporterOptions {
   outputFile?: string;
-  concurrency: number;
   categorize?: (targetRun?: TargetRun) => string;
 }
 
