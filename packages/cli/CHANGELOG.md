@@ -1,8 +1,19 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Tue, 11 Aug 2026 09:42:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 18 Aug 2026 02:26:59 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.37.0
+
+Tue, 18 Aug 2026 02:26:59 GMT
+
+### Minor changes
+
+- Revert to using fancier reporter by default when running locally, except in known slow terminals (codespaces, SSH) (elcraig@microsoft.com)
+- Bump @lage-run/cache to v1.6.8
+- Bump @lage-run/reporters to v1.9.0
+- Bump @lage-run/scheduler to v1.6.15
 
 ## 0.36.14
 

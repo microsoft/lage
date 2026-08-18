@@ -2,6 +2,43 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Tue, 18 Aug 2026 02:26:59 GMT",
+      "version": "2.17.0",
+      "tag": "lage_v2.17.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "8a3a9eb6a5f3227d0525a021b64b671d5e3870ca",
+            "comment": "Update bundled dependencies"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8a3a9eb6a5f3227d0525a021b64b671d5e3870ca",
+            "comment": "Revert to using fancier reporter by default when running locally, except in known slow terminals (codespaces, SSH)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "8a3a9eb6a5f3227d0525a021b64b671d5e3870ca",
+            "comment": "Remove unused `ChromeTraceEventsReporter` `concurrency` option that was not used"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "8a3a9eb6a5f3227d0525a021b64b671d5e3870ca",
+            "comment": "update comment"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 11 Aug 2026 09:42:15 GMT",
       "version": "2.16.1",
       "tag": "lage_v2.16.1",

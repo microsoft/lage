@@ -2,6 +2,21 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Tue, 18 Aug 2026 02:26:59 GMT",
+      "version": "1.6.8",
+      "tag": "@lage-run/cache_v1.6.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/reporters to v1.9.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 11 Aug 2026 09:42:15 GMT",
       "version": "1.6.7",
       "tag": "@lage-run/cache_v1.6.7",

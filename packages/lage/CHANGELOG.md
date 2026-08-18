@@ -1,8 +1,24 @@
 # Change Log - lage
 
-<!-- This log was last generated on Tue, 11 Aug 2026 09:42:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 18 Aug 2026 02:26:59 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.17.0
+
+Tue, 18 Aug 2026 02:26:59 GMT
+
+### Minor changes
+
+- `@lage-run/cli`
+  - Revert to using fancier reporter by default when running locally, except in known slow terminals (codespaces, SSH) (elcraig@microsoft.com)
+- `@lage-run/reporters`
+  - Remove unused `ChromeTraceEventsReporter` `concurrency` option that was not used (elcraig@microsoft.com)
+
+### Patches
+
+- `lage`
+  - Update bundled dependencies (elcraig@microsoft.com)
 
 ## 2.16.1
 

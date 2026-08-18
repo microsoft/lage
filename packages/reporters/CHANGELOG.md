@@ -1,8 +1,16 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Tue, 11 Aug 2026 09:42:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 18 Aug 2026 02:26:59 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.9.0
+
+Tue, 18 Aug 2026 02:26:59 GMT
+
+### Minor changes
+
+- Remove unused `ChromeTraceEventsReporter` `concurrency` option that was not used (elcraig@microsoft.com)
 
 ## 1.8.6
 

@@ -2,6 +2,21 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Tue, 18 Aug 2026 02:26:59 GMT",
+      "version": "1.9.0",
+      "tag": "@lage-run/reporters_v1.9.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "8a3a9eb6a5f3227d0525a021b64b671d5e3870ca",
+            "comment": "Remove unused `ChromeTraceEventsReporter` `concurrency` option that was not used"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 11 Aug 2026 09:42:15 GMT",
       "version": "1.8.6",
       "tag": "@lage-run/reporters_v1.8.6",
