@@ -34,5 +34,6 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
     enablePhantomTargetOptimization: config?.enablePhantomTargetOptimization ?? false,
     reporter: config?.reporter,
     reporters: config?.reporters ?? {},
+    experimentalLockfileInvalidation: config?.experimentalLockfileInvalidation,
   };
 }

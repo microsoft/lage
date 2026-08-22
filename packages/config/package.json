@@ -19,6 +19,7 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
+    "@lage-run/lockfile": "workspace:^",
     "@lage-run/logger": "workspace:^",
     "@lage-run/runners": "workspace:^",
     "@lage-run/target-graph": "workspace:^",

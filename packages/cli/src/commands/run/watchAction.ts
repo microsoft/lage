@@ -61,6 +61,7 @@ export async function watchAction(options: RunOptions, command: Command): Promis
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
     enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
+    experimentalLockfileInvalidation: config.experimentalLockfileInvalidation,
   });
 
   // Make sure we do not attempt writeRemoteCache in watch mode
@@ -76,6 +77,7 @@ export async function watchAction(options: RunOptions, command: Command): Promis
     cacheOptions: config.cacheOptions,
     cliArgs: taskArgs,
     skipLocalCache: options.skipLocalCache,
+    experimentalLockfileInvalidation: config.experimentalLockfileInvalidation,
   });
 
   const scheduler = new SimpleScheduler({

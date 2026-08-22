@@ -6,6 +6,7 @@
 
 import type { Config } from 'backfill-config';
 import type { CustomStorageConfig } from 'backfill-config';
+import type { ExperimentalLockfileInvalidationOptions } from '@lage-run/lockfile';
 import type { LogLevel } from '@lage-run/logger';
 import type { Priority } from '@lage-run/target-graph';
 import type { TargetConfig } from '@lage-run/target-graph';
@@ -56,6 +57,7 @@ export interface ConfigOptions {
     concurrency: number;
     enablePhantomTargetOptimization: boolean;
     enableTargetConfigMerging: boolean;
+    experimentalLockfileInvalidation?: ExperimentalLockfileInvalidationOptions;
     ignore: string[];
     loggerOptions: LoggerOptions;
     // Warning: (ae-forgotten-export) The symbol "NpmClient" needs to be exported by the entry point index.d.ts

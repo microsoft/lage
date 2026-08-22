@@ -3,6 +3,7 @@ import type { Priority } from "@lage-run/target-graph";
 import type { PipelineDefinition } from "./PipelineDefinition.js";
 import type { LoggerOptions } from "./LoggerOptions.js";
 import type { TargetRunnerPickerOptions } from "@lage-run/runners";
+import type { ExperimentalLockfileInvalidationOptions } from "@lage-run/lockfile";
 
 export type NpmClient = "npm" | "yarn" | "pnpm";
 
@@ -47,6 +48,33 @@ export interface ConfigOptions {
 
   /** Disable the `--since` flag when any of these files changed */
   repoWideChanges: string[];
+
+  /**
+   * **Experimental.** Opt in to smarter, per-package lockfile invalidation.
+   *
+   * By default, any change to the package manager lockfile (e.g. `pnpm-lock.yaml`) is treated as a
+   * repo-wide change: it invalidates every package's cache and, with `--since`, forces every package
+   * to run. When this option is set, Lage instead analyzes the lockfile to determine exactly which
+   * workspace packages had their resolved dependency closure changed, and only those packages (and
+   * their dependents) are invalidated — preserving cache hits (including remote cache reuse) for the
+   * rest.
+   *
+   * Only `pnpm` is supported today, and only the latest pnpm lockfile format (`lockfileVersion 9.x`).
+   * Strict, deterministic lockfiles (like pnpm's) are what make this analysis reliable. For
+   * unsupported package managers or lockfile versions, Lage safely falls back to the previous
+   * blanket invalidation behavior.
+   *
+   * When enabling this, remove the lockfile from `repoWideChanges` and from
+   * `cacheOptions.environmentGlob` so that the feature can own lockfile handling.
+   *
+   * Example:
+   * ```js
+   * {
+   *   experimentalLockfileInvalidation: { packageManager: "pnpm" }
+   * }
+   * ```
+   */
+  experimentalLockfileInvalidation?: ExperimentalLockfileInvalidationOptions;
 
   /** Which NPM Client to use when running npm lifecycle scripts */
   npmClient: NpmClient;

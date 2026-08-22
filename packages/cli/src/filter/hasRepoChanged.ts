@@ -14,8 +14,10 @@ export function hasRepoChanged(params: {
   /** `environmentGlob` from cache config */
   environmentGlob: string[];
   logger: TargetLogger;
+  /** Complete changed-file set, if already available. */
+  changedFiles?: string[];
 }): boolean {
-  const { since, root, environmentGlob, logger } = params;
+  const { since, root, environmentGlob, logger, changedFiles: providedChangedFiles } = params;
 
   if (!environmentGlob.length) {
     // Following old logic: if no environmentGlob, it hasn't changed
@@ -23,10 +25,12 @@ export function hasRepoChanged(params: {
   }
 
   try {
-    const changedFiles = getBranchChanges({
-      branch: since,
-      cwd: root,
-    });
+    const changedFiles =
+      providedChangedFiles ??
+      getBranchChanges({
+        branch: since,
+        cwd: root,
+      });
     if (!changedFiles.length) {
       return false;
     }
