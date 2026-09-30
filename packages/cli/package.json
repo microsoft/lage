@@ -26,6 +26,7 @@
     "@lage-run/cache": "workspace:^",
     "@lage-run/config": "workspace:^",
     "@lage-run/hasher": "workspace:^",
+    "@lage-run/lockfile": "workspace:^",
     "@lage-run/logger": "workspace:^",
     "@lage-run/reporters": "workspace:^",
     "@lage-run/rpc": "workspace:^",

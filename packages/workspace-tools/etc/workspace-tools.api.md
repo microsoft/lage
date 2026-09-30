@@ -250,6 +250,12 @@ export function getFullBranchRef(branch: string, cwd: string): string | null;
 export const getInternalDeps: typeof getPackageDependencies;
 
 // @public
+export function getMergeBase(params: {
+    ref: string;
+    otherRef?: string;
+} & GitCommonOptions): string | undefined;
+
+// @public
 export function getPackageDependencies(info: PackageInfo, internalPackages: Set<string>, options?: PackageDependenciesOptions): string[];
 
 // @public

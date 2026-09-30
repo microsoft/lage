@@ -79,6 +79,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
     enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
+    experimentalLockfileInvalidation: config.experimentalLockfileInvalidation,
   });
 
   const targetHasher = new TargetHasher({
@@ -87,6 +88,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     logger,
     cacheKey: config.cacheOptions?.cacheKey,
     cliArgs: taskArgs,
+    experimentalLockfileInvalidation: config.experimentalLockfileInvalidation,
   });
 
   logger.info("Initializing hasher");
@@ -236,6 +238,7 @@ export function createLageService({ cwd, serverControls, logger, concurrency, ta
           fs.mkdirSync(path.dirname(targetHashFullPath), { recursive: true });
         }
 
+        targetHasher.refreshLockfileSignatures();
         fs.writeFileSync(targetHashFullPath, await targetHasher.hash(target));
       } catch {
         throw new ConnectError(`Error writing target hash file: ${targetHashFullPath}`, Code.Internal);

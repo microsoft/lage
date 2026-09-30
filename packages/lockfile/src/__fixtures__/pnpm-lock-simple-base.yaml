@@ -1,0 +1,62 @@
+lockfileVersion: "9.0"
+
+importers:
+  .: {}
+
+  packages/a:
+    dependencies:
+      pkg-b:
+        specifier: workspace:*
+        version: link:../b
+      semver:
+        specifier: 7.5.4
+        version: 7.5.4
+
+  packages/b:
+    dependencies:
+      chalk:
+        specifier: 4.1.2
+        version: 4.1.2
+
+  packages/c:
+    dependencies:
+      js-yaml:
+        specifier: 4.1.0
+        version: 4.1.0
+
+packages:
+  ansi-styles@4.3.0:
+    resolution: { integrity: sha512-aaa }
+  chalk@4.1.2:
+    resolution: { integrity: sha512-bbb }
+  color-convert@2.0.1:
+    resolution: { integrity: sha512-ccc }
+  color-name@1.1.4:
+    resolution: { integrity: sha512-ddd }
+  has-flag@4.0.0:
+    resolution: { integrity: sha512-eee }
+  js-yaml@4.1.0:
+    resolution: { integrity: sha512-fff }
+  semver@7.5.4:
+    resolution: { integrity: sha512-ggg }
+  supports-color@7.2.0:
+    resolution: { integrity: sha512-hhh }
+
+snapshots:
+  ansi-styles@4.3.0:
+    dependencies:
+      color-convert: 2.0.1
+  chalk@4.1.2:
+    dependencies:
+      ansi-styles: 4.3.0
+      supports-color: 7.2.0
+  color-convert@2.0.1:
+    dependencies:
+      color-name: 1.1.4
+  color-name@1.1.4: {}
+  has-flag@4.0.0: {}
+  js-yaml@4.1.0: {}
+  semver@7.5.4: {}
+  supports-color@7.2.0:
+    dependencies:
+      has-flag: 4.0.0

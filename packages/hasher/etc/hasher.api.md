@@ -5,6 +5,7 @@
 ```ts
 
 import { DependencyMap } from 'workspace-tools';
+import { ExperimentalLockfileInvalidationOptions } from '@lage-run/lockfile';
 import type { Logger } from '@lage-run/logger';
 import { PackageInfos } from 'workspace-tools';
 import { Target } from '@lage-run/target-graph';
@@ -67,6 +68,7 @@ export class TargetHasher {
     initialize(): Promise<void>;
     // (undocumented)
     packageTree: PackageTree | undefined;
+    refreshLockfileSignatures(): void;
 }
 
 // @public (undocumented)
@@ -77,6 +79,7 @@ interface TargetHasherOptions {
     cliArgs?: string[];
     // (undocumented)
     environmentGlob: string[];
+    experimentalLockfileInvalidation?: ExperimentalLockfileInvalidationOptions;
     // (undocumented)
     logger?: Logger<never, never>;
     // (undocumented)

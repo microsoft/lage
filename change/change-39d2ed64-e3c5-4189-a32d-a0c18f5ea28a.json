@@ -1,0 +1,39 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/lockfile",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "New experimental package that analyzes a pnpm lockfile (`lockfileVersion 9.x`) to compute a precise per-package dependency-closure signature, so cache hashing and `--since` filtering can avoid treating a lockfile change as a repo-wide invalidation.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/config",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Add experimental opt-in `experimentalLockfileInvalidation` config option (`{ packageManager: \"pnpm\" }`) for smarter, per-package lockfile invalidation.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/hasher",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "`TargetHasher` accepts an experimental `experimentalLockfileInvalidation` option. When enabled, external dependency invalidation uses a precise per-package pnpm lockfile closure signature instead of the resolved dependency list, so only packages whose closure changed get a new cache key. Unsupported lockfiles conservatively hash their complete content into every target.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/cli",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Support the experimental `experimentalLockfileInvalidation` config option so that `--since` filtering and cache hashing only invalidate packages actually affected by a pnpm lockfile change, instead of the whole graph. Only pnpm (`lockfileVersion 9.x`) is supported; other package managers/versions fall back to blanket invalidation.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "workspace-tools",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Add `getMergeBase` git helper to resolve the merge-base commit SHA between two refs.",
+      "email": "email not defined"
+    }
+  ]
+}

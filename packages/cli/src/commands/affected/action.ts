@@ -28,6 +28,7 @@ export async function affectedAction(options: AffectedOptions): Promise<void> {
     scope,
     repoWideChanges: config.repoWideChanges,
     sinceIgnoreGlobs: ignore,
+    experimentalLockfileInvalidation: config.experimentalLockfileInvalidation,
   });
 
   let output = "";

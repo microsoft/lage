@@ -62,6 +62,7 @@ export async function runAction(options: RunOptions, command: Command): Promise<
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
     enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
+    experimentalLockfileInvalidation: config.experimentalLockfileInvalidation,
   });
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);
@@ -78,6 +79,7 @@ export async function runAction(options: RunOptions, command: Command): Promise<
     cacheOptions: config.cacheOptions,
     cliArgs: taskArgs,
     skipLocalCache: options.skipLocalCache,
+    experimentalLockfileInvalidation: config.experimentalLockfileInvalidation,
   });
 
   const scheduler = new SimpleScheduler({
