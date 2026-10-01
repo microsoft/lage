@@ -1736,7 +1736,7 @@ __metadata:
   dependencies:
     "@jest/globals": "npm:^30.0.0"
     "@types/node": "npm:^16.18.3"
-    beachball: "npm:2.65.5"
+    beachball: "npm:2.66.0"
     dts-bundle-generator: "patch:dts-bundle-generator@npm%3A9.5.1#~/.yarn/patches/dts-bundle-generator-npm-9.5.1-0927b6826f.patch"
     fast-glob: "npm:3.3.3"
     husky: "npm:^9.1.5"
@@ -3516,9 +3516,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"beachball@npm:2.65.5":
-  version: 2.65.5
-  resolution: "beachball@npm:2.65.5"
+"beachball@npm:2.66.0":
+  version: 2.66.0
+  resolution: "beachball@npm:2.66.0"
   dependencies:
     "@vercel/detect-agent": "npm:^1.2.1"
     cosmiconfig: "npm:^9.0.1"
@@ -3532,7 +3532,7 @@ __metadata:
     yargs-parser: "npm:^21.1.1"
   bin:
     beachball: bin/beachball.js
-  checksum: 10c0/198a5acb78a7f675fb22e6283b0e2f79fd82eaf8e49331b4fa1f8fb7fcc2bd25bc430973c0675a769c7a794b3cedb35343fc0f881a538f9b6f9432b6b23aadbd
+  checksum: 10c0/0564026648baced64f6f92b19d12aeb883abe5c55dfa05f3b612635eae8312a487cdef6664d39932d80156364fc95bd13f935687ffa6445ca62ba8917da5e12d
   languageName: node
   linkType: hard
 
