@@ -41,7 +41,7 @@ describe("getFilteredPackages", () => {
     expect(filteredPackages.length).toEqual(0);
     expect(log).toHaveBeenCalledWith(
       expect.objectContaining({
-        level: LogLevel.info,
+        level: LogLevel.silly,
         data: {
           event: "packageFiltering",
           since: "HEAD~1",
@@ -127,7 +127,7 @@ describe("getFilteredPackages", () => {
     expect(filteredPackages).toEqual(expectedPackages);
     expect(log).toHaveBeenCalledWith(
       expect.objectContaining({
-        level: LogLevel.info,
+        level: LogLevel.silly,
         msg: `Repo-wide changes detected: ${repoChanged}`,
         data: {
           event: "packageFiltering",

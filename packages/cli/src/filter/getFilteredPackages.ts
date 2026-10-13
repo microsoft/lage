@@ -71,7 +71,7 @@ export function getFilteredPackages(options: {
       );
       filteredPackages = [...new Set(filteredPackages.concat(Object.keys(packageInfos)))];
     }
-    logger.info(`Repo-wide changes detected: ${repoChanged}`, undefined, {
+    logger.silly(`Repo-wide changes detected: ${repoChanged}`, undefined, {
       event: "packageFiltering",
       since,
       repoWideChanges: repoChanged,
