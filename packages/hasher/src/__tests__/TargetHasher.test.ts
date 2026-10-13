@@ -7,7 +7,7 @@ import { TargetHasher } from "../TargetHasher.js";
 
 const fixturesPath = path.resolve(__dirname, "../__fixtures__");
 
-describe("The main Hasher class", () => {
+describe("TargetHasher", () => {
   let monorepos: Monorepo[] = [];
 
   afterEach(async () => {
@@ -122,6 +122,34 @@ describe("The main Hasher class", () => {
     const hash2 = await getHash(hasher2, target2);
 
     expect(hash).not.toEqual(hash2);
+  });
+
+  it("applies specific input file paths to dependencies", async () => {
+    const monorepo1 = await setupFixture("monorepo-with-deps");
+    const hasher = new TargetHasher({ root: monorepo1.root, environmentGlob: [] });
+    const target = createTarget(monorepo1.root, "package-a", "build");
+    target.inputs = ["**/*", "^src/index.ts"];
+
+    const hash = await getHash(hasher, target);
+
+    const monorepo2 = await setupFixture("monorepo-with-deps");
+    await monorepo2.commitFiles({ "packages/package-b/src/other.ts": "console.log('ignored');" });
+    const hasher2 = new TargetHasher({ root: monorepo2.root, environmentGlob: [] });
+    const target2 = createTarget(monorepo2.root, "package-a", "build");
+    target2.inputs = ["**/*", "^src/index.ts"];
+
+    const hash2 = await getHash(hasher2, target2);
+
+    const monorepo3 = await setupFixture("monorepo-with-deps");
+    await monorepo3.commitFiles({ "packages/package-b/src/index.ts": "console.log('included');" });
+    const hasher3 = new TargetHasher({ root: monorepo3.root, environmentGlob: [] });
+    const target3 = createTarget(monorepo3.root, "package-a", "build");
+    target3.inputs = ["**/*", "^src/index.ts"];
+
+    const hash3 = await getHash(hasher3, target3);
+
+    expect(hash).toEqual(hash2);
+    expect(hash).not.toEqual(hash3);
   });
 
   it("creates different hashes when the target has a different env glob", async () => {
