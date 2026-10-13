@@ -2,11 +2,16 @@ import { getBranchChanges } from "workspace-tools";
 import * as fg from "fast-glob";
 import type { TargetLogger } from "@lage-run/reporters";
 
+export interface RepoChanges {
+  hasChanged: boolean;
+  changedFiles: string[] | null;
+}
+
 /**
- * Check whether any `environmentGlob` files have changed since the `--since` ref.
- * If `environmentGlob` is empty, it returns false.
+ * Find `environmentGlob` files that changed since the `--since` ref.
+ * A null file list indicates that detection failed and a full build is required.
  */
-export function hasRepoChanged(params: {
+export function getRepoChanges(params: {
   /** `--since` CLI arg */
   since: string;
   /** Absolute path to monorepo root */
@@ -14,12 +19,12 @@ export function hasRepoChanged(params: {
   /** `environmentGlob` from cache config */
   environmentGlob: string[];
   logger: TargetLogger;
-}): boolean {
+}): RepoChanges {
   const { since, root, environmentGlob, logger } = params;
 
   if (!environmentGlob.length) {
     // Following old logic: if no environmentGlob, it hasn't changed
-    return false;
+    return { hasChanged: false, changedFiles: [] };
   }
 
   try {
@@ -28,15 +33,16 @@ export function hasRepoChanged(params: {
       cwd: root,
     });
     if (!changedFiles.length) {
-      return false;
+      return { hasChanged: false, changedFiles: [] };
     }
 
     const envFiles = fg.sync(environmentGlob, { cwd: root });
 
-    return envFiles.some((envFile) => changedFiles.includes(envFile));
+    const repoWideChangedFiles = envFiles.filter((envFile) => changedFiles.includes(envFile));
+    return { hasChanged: repoWideChangedFiles.length > 0, changedFiles: repoWideChangedFiles };
   } catch (e) {
     // if this fails, let's assume repo has changed
     logger.warn(`An error in the git command has caused this to consider the repo has changed\n${e}`);
-    return true;
+    return { hasChanged: true, changedFiles: null };
   }
 }
