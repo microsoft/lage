@@ -1,13 +1,68 @@
-import { describe, expect, it } from "@jest/globals";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import type { PipelineDefinition } from "@lage-run/config";
 import createLogger from "@lage-run/logger";
+import { Monorepo } from "@lage-run/test-utilities";
 import path from "path";
 import type { PackageInfo, PackageInfos } from "workspace-tools";
+import { addGitObserver, getPackageInfosAsync, type GitObserver } from "workspace-tools";
 import { generatePackageTask, type PackageTask } from "../commands/info/action.js";
 import { createTargetGraph } from "../commands/run/createTargetGraph.js";
 import { getBinPaths } from "../getBinPaths.js";
 
 describe("createTargetGraph", () => {
+  let monorepo: Monorepo | undefined;
+  let stopObserving: (() => void) | undefined;
+
+  afterEach(async () => {
+    stopObserving?.();
+    stopObserving = undefined;
+    await monorepo?.cleanup();
+    monorepo = undefined;
+  });
+
+  it.each([
+    { scope: undefined, expectedTargets: ["__start", "foo1#build", "foo2#build"], expectedBranchDiffs: 2 },
+    { scope: ["foo1"], expectedTargets: ["__start", "foo1#build"], expectedBranchDiffs: 1 },
+  ])("checks repo-wide changes only once with scope $scope", async ({ scope, expectedTargets, expectedBranchDiffs }) => {
+    monorepo = new Monorepo("createTargetGraph-repoWideChanges");
+    await monorepo.init({
+      packages: {
+        foo1: { scripts: { build: "echo build" } },
+        foo2: { scripts: { build: "echo build" } },
+      },
+    });
+    await monorepo.commitFiles({
+      "tsconfig.json": "{}",
+      "packages/foo1/test.txt": "test content",
+    });
+    const packageInfos = await getPackageInfosAsync(monorepo.root);
+    const gitObserver = jest.fn<GitObserver>();
+    stopObserving = addGitObserver(gitObserver);
+
+    const graph = await createTargetGraph({
+      logger: createLogger(),
+      root: monorepo.root,
+      dependencies: false,
+      dependents: false,
+      enableTargetConfigMerging: true,
+      enablePhantomTargetOptimization: false,
+      ignore: [],
+      pipeline: { build: [] },
+      repoWideChanges: ["tsconfig.json"],
+      scope,
+      since: "HEAD~1",
+      outputs: [],
+      tasks: ["build"],
+      packageInfos,
+      priorities: [],
+    });
+
+    // Unscoped filtering also reads the branch diff to identify changed packages.
+    const branchDiffs = gitObserver.mock.calls.filter(([args]) => args.includes("diff") && args.includes("HEAD~1..."));
+    expect(branchDiffs).toHaveLength(expectedBranchDiffs);
+    expect([...graph.targets.keys()]).toEqual(expectedTargets);
+  });
+
   it("creates basic graph with separate nodes", async () => {
     const packageInfos: PackageInfos = {
       foo1: stubPackage({ name: "foo1", scripts: ["build"], deps: ["foo2"] }),

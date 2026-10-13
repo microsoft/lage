@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/cli",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Report structured repo-wide change details and full-build decisions, and reuse change detection during target graph creation.",
+      "email": "nemanjatesic@microsoft.com"
+    }
+  ]
+}

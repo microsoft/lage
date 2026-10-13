@@ -4,7 +4,7 @@ import type { PackageInfos } from "workspace-tools";
 import { getBranchChanges, getDefaultRemoteBranch, getStagedChanges, getUnstagedChanges, getUntrackedChanges } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import type { PipelineDefinition } from "@lage-run/config";
-import { hasRepoChanged } from "../../filter/hasRepoChanged.js";
+import { getRepoChanges } from "../../filter/getRepoChanges.js";
 
 interface CreateTargetGraphOptions {
   logger: TargetLogger;
@@ -57,6 +57,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
   } = options;
 
   const builder = new WorkspaceTargetGraphBuilder({ root, packageInfos, enableTargetConfigMerging, enablePhantomTargetOptimization });
+  const repoChanges = since ? getRepoChanges({ since, root, environmentGlob: repoWideChanges, logger }) : undefined;
 
   const packages = getFilteredPackages({
     root,
@@ -67,17 +68,15 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
     since,
     scope,
     repoWideChanges,
+    repoChanges,
     sinceIgnoreGlobs: ignore,
   });
 
   let changedFiles: string[] = [];
 
   // TODO: enhancement would be for workspace-tools to implement a "getChangedPackageFromChangedFiles()" type function
-  // TODO: optimize this so that we don't double up the work to determine if repo has changed
-  if (since) {
-    if (!hasRepoChanged({ since, root, environmentGlob: repoWideChanges, logger })) {
-      changedFiles = getChangedFiles(since, root);
-    }
+  if (since && !repoChanges?.hasChanged) {
+    changedFiles = getChangedFiles(since, root);
   }
 
   const pipelineEntries = Object.entries(pipeline);

@@ -2,7 +2,7 @@ import type { PackageInfos } from "workspace-tools";
 import { getScopedPackages, getChangedPackages, getTransitiveDependents, getTransitiveDependencies } from "workspace-tools";
 
 import type { TargetLogger } from "@lage-run/reporters";
-import { hasRepoChanged } from "./hasRepoChanged.js";
+import { getRepoChanges, type RepoChanges } from "./getRepoChanges.js";
 
 export function getFilteredPackages(options: {
   root: string;
@@ -12,6 +12,7 @@ export function getFilteredPackages(options: {
   since: string | undefined;
   sinceIgnoreGlobs: string[] | undefined;
   repoWideChanges: string[];
+  repoChanges?: RepoChanges;
   includeDependents: boolean;
   includeDependencies: boolean;
 }): string[] {
@@ -60,7 +61,9 @@ export function getFilteredPackages(options: {
 
     // If the defined repo-wide changes are detected the get all packages and append to the filtered packages.
     // This alo ensures that the modified packages are always run first.
-    if (hasRepoChanged({ since, root, environmentGlob: repoWideChanges, logger })) {
+    const { hasChanged: repoChanged, changedFiles: repoWideChangedFiles } =
+      options.repoChanges ?? getRepoChanges({ since, root, environmentGlob: repoWideChanges, logger });
+    if (repoChanged) {
       logger.verbose(
         `Repo-wide changes detected, running all packages. The following changed packages and their deps (if specified) will be run first: ${filteredPackages.join(
           ","
@@ -68,6 +71,16 @@ export function getFilteredPackages(options: {
       );
       filteredPackages = [...new Set(filteredPackages.concat(Object.keys(packageInfos)))];
     }
+    logger.silly(`Repo-wide changes detected: ${repoChanged}`, undefined, {
+      event: "packageFiltering",
+      since,
+      repoWideChanges: repoChanged,
+      repoWideChangedFiles,
+      changedPackages: changedPackages ?? null,
+      hasChanges: repoChanged || (changedPackages ? changedPackages.length > 0 : null),
+      fullBuild: repoChanged || changedPackages === undefined,
+      packages: filteredPackages,
+    });
     return filteredPackages;
   } else {
     // If neither scope or since is defined, return all packages
