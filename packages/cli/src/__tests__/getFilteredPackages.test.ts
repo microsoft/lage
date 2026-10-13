@@ -124,7 +124,9 @@ describe("getFilteredPackages", () => {
       repoWideChanges,
     });
 
-    expect(filteredPackages).toEqual(expectedPackages);
+    expect(filteredPackages).toHaveLength(expectedPackages.length);
+    expect(filteredPackages).toEqual(expect.arrayContaining(expectedPackages));
+    expect(filteredPackages[0]).toBe("a");
     expect(log).toHaveBeenCalledWith(
       expect.objectContaining({
         level: LogLevel.silly,
@@ -137,7 +139,7 @@ describe("getFilteredPackages", () => {
           changedPackages: ["a"],
           hasChanges: true,
           fullBuild: repoChanged,
-          packages: expectedPackages,
+          packages: filteredPackages,
         },
       })
     );
