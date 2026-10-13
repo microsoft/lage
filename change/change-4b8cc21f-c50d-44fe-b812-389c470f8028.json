@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "none",
+      "comment": "Clarify docs about target inputs and outputs",
+      "packageName": "@lage-run/target-graph",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    }
+  ]
+}
