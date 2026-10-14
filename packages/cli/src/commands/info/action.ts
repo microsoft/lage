@@ -1,40 +1,25 @@
-import type { Command } from "commander";
-import { createTargetGraph } from "../run/createTargetGraph.js";
-import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import type { ConfigOptions } from "@lage-run/config";
 import { getConfig } from "@lage-run/config";
+import { FileHasher, hashStrings } from "@lage-run/hasher";
+import createLogger from "@lage-run/logger";
+import { TargetRunnerPicker } from "@lage-run/runners";
+import { type Target, builtInTargetTypes, getStartTargetId } from "@lage-run/target-graph";
+import type { Command } from "commander";
+import fs from "fs";
+import { sync as globbySync } from "globby";
+import path from "path";
+import { parse } from "shell-quote";
 import { type PackageInfos, getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
-import createLogger from "@lage-run/logger";
-import path from "path";
-import fs from "fs";
-import { parse } from "shell-quote";
-
-import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import { type Target, builtInTargetTypes, getStartTargetId } from "@lage-run/target-graph";
-import { initializeReporters } from "../initializeReporters.js";
-import { TargetRunnerPicker } from "@lage-run/runners";
 import { getBinPaths } from "../../getBinPaths.js";
 import { getBuiltInRunners } from "../../getBuiltInRunners.js";
-import { parseServerOption } from "../parseServerOption.js";
 import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
-import { sync as globbySync } from "globby";
-import { FileHasher, hashStrings } from "@lage-run/hasher";
+import { initializeReporters } from "../initializeReporters.js";
+import { parseServerOption } from "../parseServerOption.js";
+import { createTargetGraph } from "../run/createTargetGraph.js";
+import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { getGlobalInputHashFilePath } from "../targetHashFilePath.js";
-
-export interface InfoActionOptions extends ReporterInitOptions {
-  dependencies: boolean;
-  dependents: boolean;
-  since: string;
-  scope: string[];
-  to: string[];
-  cache: boolean;
-  nodeArg: string;
-  ignore: string[];
-  server: string;
-  outputFile?: string;
-  optimizeGraph: boolean;
-}
+import type { InfoCommandOptions } from "./index.js";
 
 export interface PackageTask {
   id: string;
@@ -103,11 +88,10 @@ export interface InfoResult {
  * ]
  * ```
  */
-export async function infoAction(options: InfoActionOptions, command: Command): Promise<void> {
+export async function infoAction(options: InfoCommandOptions, command: Command): Promise<void> {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
   const logger = createLogger();
-  options.logLevel = options.logLevel ?? "info";
   options.server = typeof options.server === "boolean" && options.server ? "localhost:5332" : options.server;
   const root = getWorkspaceManagerRoot(cwd) ?? cwd;
   await initializeReporters({ logger, options, config, root, defaultReporter: "json" });
@@ -119,7 +103,7 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
   const targetGraph = await createTargetGraph({
     logger,
     root,
-    dependencies: options.dependencies,
+    dependencies: !!options.dependencies,
     dependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
     ignore: options.ignore.concat(config.ignore),
     pipeline: config.pipeline,
@@ -138,7 +122,7 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
     root,
     packageInfos,
     logger,
-    includeDependencies: options.dependencies,
+    includeDependencies: !!options.dependencies,
     includeDependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
     since: options.since,
     scope: (options.scope ?? []).concat(options.to ?? []), // --to is a short hand for --scope + --no-dependents
@@ -160,7 +144,7 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
   const optimizedTargets = await optimizeTargetGraph(targetGraph, runnerPicker, createBackwardsCompatGraph);
   const binPaths = getBinPaths();
   const packageTasks = optimizedTargets.map((target) =>
-    generatePackageTask(target, taskArgs, config, options, binPaths, packageInfos, tasks)
+    generatePackageTask({ target, taskArgs, config, options, binPaths, packageInfos, tasks })
   );
 
   // In worker server mode, we need to actually speed up the BuildXL runs with presupplied global input hashes so that it doesn't try to read it over and over again
@@ -234,16 +218,19 @@ export async function infoAction(options: InfoActionOptions, command: Command): 
   }
 }
 
-export function generatePackageTask(
-  target: Target,
-  taskArgs: string[],
-  config: Pick<ConfigOptions, "npmClient">,
-  options: Pick<InfoActionOptions, "concurrency" | "server">,
-  binPaths: { lage: string; "lage-server": string },
-  packageInfos: PackageInfos,
-  tasks: string[]
-): PackageTask {
-  const command = generateCommand(target, taskArgs, config, options, binPaths, packageInfos, tasks);
+interface GeneratePackageTaskParams {
+  target: Target;
+  taskArgs: string[];
+  config: Pick<ConfigOptions, "npmClient">;
+  options: Pick<InfoCommandOptions, "concurrency" | "server">;
+  binPaths: { lage: string; "lage-server": string };
+  packageInfos: PackageInfos;
+  tasks: string[];
+}
+
+export function generatePackageTask(params: GeneratePackageTaskParams): PackageTask {
+  const { target, taskArgs, config, options, binPaths, packageInfos, tasks } = params;
+  const command = generateCommand({ target, taskArgs, config, options, binPaths, packageInfos, tasks });
   const workingDirectory = getWorkingDirectory(target);
 
   const packageTask: PackageTask = {
@@ -268,19 +255,13 @@ export function generatePackageTask(
   return packageTask;
 }
 
-function shouldRunWorkersAsService(options: Pick<InfoActionOptions, "server">) {
+function shouldRunWorkersAsService(options: Pick<InfoCommandOptions, "server">) {
   return (typeof process.env.LAGE_WORKER_SERVER === "string" && process.env.LAGE_WORKER_SERVER !== "false") || !!options.server;
 }
 
-function generateCommand(
-  target: Target,
-  taskArgs: string[],
-  config: Pick<ConfigOptions, "npmClient">,
-  options: Pick<InfoActionOptions, "concurrency" | "server">,
-  binPaths: { lage: string; "lage-server": string },
-  packageInfos: PackageInfos,
-  tasks: string[]
-) {
+function generateCommand(params: GeneratePackageTaskParams) {
+  const { target, taskArgs, config, options, binPaths, packageInfos, tasks } = params;
+
   if (target.type === builtInTargetTypes.npmScript) {
     const script = target.packageName !== undefined ? packageInfos[target.packageName]?.scripts?.[target.task] : undefined;
 
@@ -300,6 +281,7 @@ function generateCommand(
   if (target.type === builtInTargetTypes.worker && shouldRunWorkersAsService(options)) {
     const { host, port } = parseServerOption(options.server);
     const command = [binPaths["lage"], "exec", "--tasks", ...tasks, "--server", `${host}:${port}`];
+    // NOTE: didn't previously respect config.concurrency or default value; not sure if intentional
     if (options.concurrency) {
       command.push("--concurrency", options.concurrency.toString());
     }

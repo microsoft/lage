@@ -37,6 +37,18 @@ export { ConfigOptions }
 
 export { LogEntry }
 
+// @public (undocumented)
+interface LoggerCliOptions {
+    grouped?: boolean;
+    indented?: boolean;
+    logFile?: string;
+    logLevel: keyof typeof LogLevel;
+    progress: boolean;
+    // Warning: (ae-forgotten-export) The symbol "ReporterName" needs to be exported by the entry point index.d.ts
+    reporter?: ReporterName | ReporterName[];
+    verbose?: boolean;
+}
+
 export { LoggerOptions }
 
 export { LogLevel }
@@ -49,39 +61,40 @@ export { NpmScriptTargetOptions }
 
 export { PipelineDefinition }
 
+// @public (undocumented)
+interface PoolCliOptions {
+    concurrency?: number;
+    continue?: boolean;
+    maxWorkersPerTask: string[];
+}
+
 export { Priority }
 
 export { Reporter }
 
+// Warning: (ae-forgotten-export) The symbol "LoggerCliOptions" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "RunCliOptions" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "PoolCliOptions" needs to be exported by the entry point index.d.ts
+//
 // @public
-export interface ReporterInitOptions {
-    // (undocumented)
-    concurrency: number;
-    // (undocumented)
-    grouped: boolean;
-    // (undocumented)
-    indented?: boolean;
-    // (undocumented)
-    logFile?: string;
-    // (undocumented)
-    logLevel: keyof typeof LogLevel;
-    logMemory?: boolean;
-    // (undocumented)
-    profile?: boolean | string;
-    // (undocumented)
-    progress: boolean;
-    // Warning: (ae-forgotten-export) The symbol "ReporterName" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    reporter: ReporterName[] | ReporterName | undefined;
-    // (undocumented)
-    verbose: boolean;
-}
+export type ReporterInitOptions = Pick<LoggerCliOptions, "reporter" | "progress" | "verbose" | "grouped" | "logLevel" | "logFile" | "indented"> & Pick<RunCliOptions, "profile" | "logMemory"> & Pick<PoolCliOptions, "concurrency">;
 
 // Warning: (ae-forgotten-export) The symbol "BuiltInReporterName" needs to be exported by the entry point index.d.ts
 //
 // @public
 type ReporterName = BuiltInReporterName | string;
+
+// @public (undocumented)
+interface RunCliOptions {
+    allowNoTargetRuns?: boolean;
+    cache: boolean;
+    continue?: boolean;
+    logMemory?: boolean;
+    profile?: boolean | string;
+    resetCache?: boolean;
+    skipLocalCache?: boolean;
+    watch?: boolean;
+}
 
 export { Target }
 

@@ -1,24 +1,19 @@
-import path from "path";
-import type { TargetLogger } from "@lage-run/reporters";
+import { getConfig } from "@lage-run/config";
 import createLogger from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
+import { ConnectError, createClient, type LageClient } from "@lage-run/rpc";
+import type { Command } from "commander";
+import path from "path";
+import { getWorkspaceManagerRoot } from "workspace-tools";
 import { initializeReporters } from "../initializeReporters.js";
-import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import type { LageClient } from "@lage-run/rpc";
-import { ConnectError, createClient } from "@lage-run/rpc";
+import { launchServerInBackground } from "../launchServerInBackground.js";
+import { parseServerOption } from "../parseServerOption.js";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { simulateFileAccess } from "./simulateFileAccess.js";
-import { parseServerOption } from "../parseServerOption.js";
-import { getConfig } from "@lage-run/config";
-import { getWorkspaceManagerRoot } from "workspace-tools";
-import type { Command } from "commander";
-import { launchServerInBackground } from "../launchServerInBackground.js";
+import type { ExecCommandOptions } from "./index.js";
 
-interface ExecRemotelyOptions extends ReporterInitOptions {
-  cwd?: string;
-  server?: string | boolean;
-  timeout?: number;
-  tasks: string[];
-  nodeArg?: string;
+export interface ExecRemotelyOptions extends Omit<ExecCommandOptions, "tasks">, Required<Pick<ExecCommandOptions, "tasks">> {
+  cwd: string;
 }
 
 async function tryCreateClient(host: string, port: number) {
@@ -96,16 +91,14 @@ async function executeOnServer(args: string[], client: LageClient, logger: Targe
 export async function executeRemotely(options: ExecRemotelyOptions, command: Command): Promise<void> {
   // launch a 'lage-server.js' process, detached if it is not already running
   // send the command to the server process
-  const { server, tasks, nodeArg } = options;
+  const { server, tasks, nodeArg, cwd } = options;
   const timeout = options.timeout ?? 5 * 60;
 
   const { host, port } = parseServerOption(server);
-  const cwd = options.cwd ?? process.cwd();
   const root = getWorkspaceManagerRoot(cwd) ?? cwd;
   const config = await getConfig(cwd);
 
   const logger = createLogger();
-  options.logLevel = options.logLevel ?? "info";
   await initializeReporters({ logger, options, config, root, defaultReporter: "json" });
 
   let client = await tryCreateClient(host, port);
@@ -114,16 +107,7 @@ export async function executeRemotely(options: ExecRemotelyOptions, command: Com
   logger.info(`Command args ${command.args.join(" ")}`);
 
   if (!client) {
-    await launchServerInBackground({
-      host,
-      port,
-      tasks,
-      args,
-      timeout,
-      logger,
-      root,
-      nodeArg,
-    });
+    await launchServerInBackground({ host, port, tasks, args, timeout, logger, root, nodeArg });
 
     logger.info("Creating a client to connect to the background services");
     client = await tryCreateClientWithRetries(host, port, logger);

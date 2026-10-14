@@ -1,12 +1,12 @@
 import type { CacheOptions } from "@lage-run/cache";
 import { TargetHasher } from "@lage-run/hasher";
 import type { TargetLogger } from "@lage-run/reporters";
+import type { RunCliOptions } from "../commands/options.js";
 
-interface CreateCacheOptions {
+interface CreateCacheOptions extends Pick<RunCliOptions, "skipLocalCache"> {
   cacheOptions?: CacheOptions;
   logger: TargetLogger;
   root: string;
-  skipLocalCache: boolean;
   cliArgs: string[];
 }
 

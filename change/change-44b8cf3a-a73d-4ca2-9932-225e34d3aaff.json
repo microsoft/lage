@@ -1,0 +1,32 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Ensure types in CLI commands match the actual options used, and fix some mismatches with defaulting behavior that resulted from the bad types",
+      "packageName": "@lage-run/cli",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "none",
+      "comment": "Update docs",
+      "packageName": "@lage-run/config",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Update docs",
+      "packageName": "@lage-run/target-graph",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    },
+    {
+      "type": "none",
+      "comment": "Update docs",
+      "packageName": "workspace-tools",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "none"
+    }
+  ]
+}

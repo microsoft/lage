@@ -1,14 +1,10 @@
+import { getConfig } from "@lage-run/config";
 import createLogger from "@lage-run/logger";
 import { getPackageInfosAsync, getWorkspaceManagerRoot, type PackageInfos } from "workspace-tools";
-import { getConfig } from "@lage-run/config";
+import type { AffectedCommandOptions } from "./index.js";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
-import type { FilterOptions } from "../../types/FilterOptions.js";
 
-interface AffectedOptions extends FilterOptions {
-  outputFormat?: "json" | "graph" | "default";
-}
-
-export async function affectedAction(options: AffectedOptions): Promise<void> {
+export async function affectedAction(options: AffectedCommandOptions): Promise<void> {
   const { dependencies, dependents, since, scope, ignore, outputFormat } = options;
 
   const cwd = process.cwd();
@@ -22,7 +18,7 @@ export async function affectedAction(options: AffectedOptions): Promise<void> {
     root,
     logger,
     packageInfos,
-    includeDependencies: dependencies,
+    includeDependencies: !!dependencies,
     includeDependents: dependents,
     since,
     scope,

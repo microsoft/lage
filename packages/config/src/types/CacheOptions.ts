@@ -51,8 +51,11 @@ export type CacheOptions = Omit<BackfillCacheOptions, "cacheStorageConfig"> & {
   skipLocalCache?: boolean;
 
   /**
-   * A list of globs to match files whose contents will determine the cache key in addition to the package file contents
-   * The globs are relative to the root of the project.
+   * Repo-root-relative globs for files whose current contents contribute to package-target cache keys
+   * (in addition to package-specific inputs). A target's `environmentGlob` overrides these patterns.
+   *
+   * Within lage, this does not affect selection of packages to run. If any of these globs should also
+   * invalidate the `--since` flag, they should be listed in the lage config's `repoWideChanges` as well.
    */
   environmentGlob?: string[];
 

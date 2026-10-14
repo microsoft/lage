@@ -1,42 +1,28 @@
-import type { Command } from "commander";
-import { createTargetGraph } from "./createTargetGraph.js";
-import { filterArgsForTasks } from "./filterArgsForTasks.js";
-import { getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions, getConcurrency } from "@lage-run/config";
-import { getPackageInfosAsync, getWorkspaceManagerRoot } from "workspace-tools";
-import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
+import { getConcurrency, getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions } from "@lage-run/config";
+import createLogger from "@lage-run/logger";
 import { LogReporter, type TargetLogger } from "@lage-run/reporters";
 import { SimpleScheduler } from "@lage-run/scheduler";
-import { watch } from "./watcher.js";
-import createLogger, { LogLevel } from "@lage-run/logger";
-import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
 import type { SchedulerRunSummary } from "@lage-run/scheduler-types";
 import type { Target } from "@lage-run/target-graph";
-import type { FilterOptions } from "../../types/FilterOptions.js";
+import type { Command } from "commander";
+import { getPackageInfosAsync, getWorkspaceManagerRoot } from "workspace-tools";
 import { createCache } from "../../cache/createCacheProvider.js";
 import { getBuiltInRunners } from "../../getBuiltInRunners.js";
+import { getLogLevel } from "../createReporter.js";
+import { createTargetGraph } from "./createTargetGraph.js";
+import { filterArgsForTasks } from "./filterArgsForTasks.js";
+import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
+import type { RunCommandOptions } from "./index.js";
+import { watch } from "./watcher.js";
 
-interface RunOptions extends ReporterInitOptions, FilterOptions {
-  concurrency: number;
-  maxWorkersPerTask: string[];
-  profile: string | boolean | undefined;
-  skipLocalCache: boolean;
-  continue: boolean;
-  cache: boolean;
-  resetCache: boolean;
-  nodeArg: string;
-  allowNoTargetRuns: boolean;
-}
-
-export async function watchAction(options: RunOptions, command: Command): Promise<void> {
+export async function watchAction(options: RunCommandOptions, command: Command): Promise<void> {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
   const concurrency = getConcurrency(options.concurrency, config.concurrency);
 
   // Configure logger
   const logger = createLogger();
-  const reporter = new LogReporter({
-    logLevel: LogLevel[options.logLevel],
-  });
+  const reporter = new LogReporter({ logLevel: getLogLevel(options) });
   logger.addReporter(reporter);
 
   // Build Target Graph
@@ -48,7 +34,7 @@ export async function watchAction(options: RunOptions, command: Command): Promis
   const targetGraph = await createTargetGraph({
     logger,
     root,
-    dependencies: options.dependencies,
+    dependencies: !!options.dependencies,
     dependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
     ignore: options.ignore.concat(config.ignore),
     pipeline: config.pipeline,
@@ -93,7 +79,7 @@ export async function watchAction(options: RunOptions, command: Command): Promis
       },
     },
     shouldCache: options.cache,
-    shouldResetCache: options.resetCache,
+    shouldResetCache: !!options.resetCache,
     maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, concurrency), ...maxWorkersPerTaskMap]),
     hasher,
     workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes

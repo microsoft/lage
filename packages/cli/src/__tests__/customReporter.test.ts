@@ -1,13 +1,12 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
-import { Logger } from "@lage-run/logger";
+import type { ConfigOptions } from "@lage-run/config";
 import type { Reporter } from "@lage-run/logger";
+import { Logger } from "@lage-run/logger";
+import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
 import fs from "fs";
 import path from "path";
-import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
-import { initializeReporters } from "../commands/initializeReporters.js";
 import { setMockImportReporter } from "../commands/createReporter.js";
-import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
-import type { ConfigOptions } from "@lage-run/config";
+import { initializeReporters, type ReporterInitOptions } from "../commands/initializeReporters.js";
 
 /**
  * These tests cover some scenarios for custom reporters, but they can't cover actual importing

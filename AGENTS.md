@@ -2,6 +2,8 @@
 
 This file provides guidance to AI agents when working with code in this repository.
 
+This repo is public on GitHub. Do not use MCPs for Azure DevOps (unless the request relates to Azure DevOps pipelines).
+
 ## What is Lage?
 
 Lage ("make" in Norwegian) is a task runner for JavaScript/TypeScript monorepos. It pipelines npm scripts across packages so that, for example, `test` can start as soon as its own package's `build` finishes rather than waiting for all builds. This is a Yarn Berry (v4) workspace monorepo with ~28 packages under `packages/`.

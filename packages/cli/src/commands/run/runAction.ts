@@ -1,33 +1,20 @@
-import type { Command } from "commander";
-import { createTargetGraph } from "./createTargetGraph.js";
-import { filterArgsForTasks } from "./filterArgsForTasks.js";
-import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
-import { getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions, getConcurrency } from "@lage-run/config";
-import { getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
-import { initializeReporters } from "../initializeReporters.js";
-import { SimpleScheduler } from "@lage-run/scheduler";
+import { getConcurrency, getConfig, getMaxWorkersPerTask, getMaxWorkersPerTaskFromOptions } from "@lage-run/config";
 import createLogger from "@lage-run/logger";
-import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import type { FilterOptions } from "../../types/FilterOptions.js";
+import { SimpleScheduler } from "@lage-run/scheduler";
 import type { TargetGraph } from "@lage-run/target-graph";
-import { NoTargetFoundError } from "../../types/errors.js";
+import type { Command } from "commander";
+import { getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
 import { createCache } from "../../cache/createCacheProvider.js";
 import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
+import { NoTargetFoundError } from "../../types/errors.js";
+import { initializeReporters } from "../initializeReporters.js";
+import { createTargetGraph } from "./createTargetGraph.js";
+import { filterArgsForTasks } from "./filterArgsForTasks.js";
+import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
+import type { RunCommandOptions } from "./index.js";
 
-interface RunOptions extends ReporterInitOptions, FilterOptions {
-  concurrency: number;
-  maxWorkersPerTask: string[];
-  profile: string | boolean | undefined;
-  skipLocalCache: boolean;
-  continue: boolean;
-  cache: boolean;
-  resetCache: boolean;
-  nodeArg: string;
-  allowNoTargetRuns: boolean;
-}
-
-export async function runAction(options: RunOptions, command: Command): Promise<void> {
+export async function runAction(options: RunCommandOptions, command: Command): Promise<void> {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
 
@@ -49,7 +36,7 @@ export async function runAction(options: RunOptions, command: Command): Promise<
   const targetGraph = await createTargetGraph({
     logger,
     root,
-    dependencies: options.dependencies,
+    dependencies: !!options.dependencies,
     dependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
     ignore: options.ignore.concat(config.ignore),
     pipeline: config.pipeline,
@@ -83,9 +70,9 @@ export async function runAction(options: RunOptions, command: Command): Promise<
   const scheduler = new SimpleScheduler({
     logger,
     concurrency,
-    continueOnError: options.continue,
+    continueOnError: !!options.continue,
     shouldCache: options.cache,
-    shouldResetCache: options.resetCache,
+    shouldResetCache: !!options.resetCache,
     workerData: {
       root,
       taskArgs,

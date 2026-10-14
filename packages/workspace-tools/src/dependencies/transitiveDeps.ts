@@ -65,9 +65,10 @@ export function getDependentMap(packages: PackageInfos): Map<string, Set<string>
 }
 
 /**
- * For a package graph of `a->b->c` (where `b` depends on `a`), transitive consumers of `a` are `b` & `c`
- * and their consumers (or what are the consequences of `a`)
- * @deprecated Do not use
+ * Returns the direct and transitive dependents of `targets` within `packages`, excluding the targets themselves.
+ * For example, if `c` depends on `b` and `b` depends on `a`, the result for `["a"]` contains `b` and `c`.
+ *
+ * @deprecated Use `getTransitiveDependents` instead.
  */
 export function getTransitiveConsumers(targets: string[], packages: PackageInfos, scope: string[] = []): string[] {
   const graph = getPackageGraph(packages, scope);
@@ -92,10 +93,10 @@ export function getTransitiveConsumers(targets: string[], packages: PackageInfos
 }
 
 /**
- * For a package graph of `a->b->c` (where `b` depends on `a`), transitive providers of `c` are `a` & `b`
- * and their providers (or what is needed to satisfy `c`)
+ * Returns the direct and transitive dependencies of `targets` within `packages`, excluding the targets themselves.
+ * For example, if `c` depends on `b` and `b` depends on `a`, the result for `["c"]` contains `b` and `a`.
  *
- * @deprecated Do not use
+ * @deprecated Use `getTransitiveDependencies` instead.
  */
 export function getTransitiveProviders(targets: string[], packages: PackageInfos): string[] {
   const graph = getPackageGraph(packages);

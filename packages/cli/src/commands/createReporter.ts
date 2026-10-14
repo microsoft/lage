@@ -1,21 +1,22 @@
 import { LogLevel } from "@lage-run/logger";
 import {
-  JsonReporter,
   AdoReporter,
+  BasicReporter,
+  ChromeTraceEventsReporter,
   GithubActionsReporter,
+  JsonReporter,
   LogReporter,
   ProgressReporter,
-  BasicReporter,
   VerboseFileLogReporter,
-  ChromeTraceEventsReporter,
   type TargetReporter,
 } from "@lage-run/reporters";
-import type { BuiltInReporterName, ReporterInitOptions } from "../types/ReporterInitOptions.js";
-import { findPackageRoot } from "workspace-tools";
 import fs from "fs";
+import isInteractive from "is-interactive";
 import path from "path";
 import { pathToFileURL } from "url";
-import isInteractive from "is-interactive";
+import { findPackageRoot } from "workspace-tools";
+import type { BuiltInReporterName, ReporterName } from "../types/ReporterNames.js";
+import type { ReporterInitOptions } from "./initializeReporters.js";
 
 type MockImportReporter = (params: { reporterName: string; resolvedPath: string }) => unknown;
 
@@ -30,6 +31,10 @@ export function setMockImportReporter(mock: MockImportReporter | undefined): voi
   mockImportReporter = mock;
 }
 
+export function getLogLevel(options: Pick<ReporterInitOptions, "logLevel" | "verbose">): LogLevel {
+  return options.verbose ? LogLevel.verbose : LogLevel[options.logLevel || "info"];
+}
+
 /**
  * Create a reporter of the given type.
  *
@@ -38,9 +43,13 @@ export function setMockImportReporter(mock: MockImportReporter | undefined): voi
  *
  * @param customReporterPath For a custom reporter, this is its absolute path (not verified to exist yet)
  */
-export async function createReporter(reporter: string, options: ReporterInitOptions, customReporterPath?: string): Promise<TargetReporter> {
-  const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress, logFile, indented, logMemory } = options;
-  const logLevel = verbose ? LogLevel.verbose : LogLevel[logLevelName];
+export async function createReporter(
+  reporter: ReporterName,
+  options: ReporterInitOptions & Required<Pick<ReporterInitOptions, "concurrency">>,
+  customReporterPath?: string
+): Promise<TargetReporter> {
+  const { grouped, concurrency, profile, progress, logFile, indented, logMemory } = options;
+  const logLevel = getLogLevel(options);
 
   if (customReporterPath) {
     return loadCustomReporterModule(reporter, options, customReporterPath);
@@ -100,7 +109,11 @@ export async function createReporter(reporter: string, options: ReporterInitOpti
   return new LogReporter({ grouped, logLevel, logMemory });
 }
 
-async function loadCustomReporterModule(reporter: string, options: ReporterInitOptions, resolvedPath: string): Promise<TargetReporter> {
+async function loadCustomReporterModule(
+  reporter: ReporterName,
+  options: ReporterInitOptions,
+  resolvedPath: string
+): Promise<TargetReporter> {
   if (!fs.existsSync(resolvedPath)) {
     throw new Error(`Custom reporter "${reporter}" file "${resolvedPath}" does not exist`);
   }

@@ -212,12 +212,19 @@ async function createPackageTasks(
   // });
 
   const binPaths = getBinPaths();
-  const targets = [...targetGraph.targets.values()];
-  const packageTasks = targets.map((target) =>
-    generatePackageTask(target, [], { npmClient: "yarn" }, { concurrency: 1, server: "" }, binPaths, packageInfos, tasks)
-  );
 
-  return packageTasks.map((obj) => Object.fromEntries(Object.entries(obj).filter(([key]) => fields.includes(key as keyof PackageTask))));
+  return [...targetGraph.targets.values()].map((target) => {
+    const task = generatePackageTask({
+      target,
+      taskArgs: [],
+      config: { npmClient: "yarn" },
+      options: { concurrency: 1, server: "" },
+      binPaths,
+      packageInfos,
+      tasks,
+    });
+    return Object.fromEntries(Object.entries(task).filter(([key]) => fields.includes(key as keyof PackageTask)));
+  });
 }
 
 function stubPackage(args: { name: string; deps?: string[]; scripts?: string[]; extra?: object }): PackageInfo {
