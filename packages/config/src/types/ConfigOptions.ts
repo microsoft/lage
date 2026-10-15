@@ -45,7 +45,15 @@ export interface ConfigOptions {
   /** Which files to ignore when calculating scopes with `--since` */
   ignore: string[];
 
-  /** Disable the `--since` flag when any of these files changed */
+  /**
+   * Ignore the `--since` flag when any files matching these repo-relative globs change
+   * (including committed and uncommitted changes). Defaults to lage configs and lock files.
+   *
+   * This is ignored for package selection if `--scope` or `--to` is provided.
+   *
+   * This does NOT invalidate cached results. Shared inputs should also be listed in
+   * `cacheOptions.environmentGlob` if changes should also invalidate caches.
+   */
   repoWideChanges: string[];
 
   /** Which NPM Client to use when running npm lifecycle scripts */

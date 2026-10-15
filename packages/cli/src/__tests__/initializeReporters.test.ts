@@ -9,9 +9,10 @@ import {
   LogReporter,
   ProgressReporter,
 } from "@lage-run/reporters";
-import path from "path";
 import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
-import type { BuiltInReporterName, ReporterInitOptions } from "../types/ReporterInitOptions.js";
+import path from "path";
+import type { ReporterInitOptions } from "../commands/initializeReporters.js";
+import type { BuiltInReporterName } from "../types/ReporterNames.js";
 
 jest.mock("is-interactive", () => jest.fn(() => true));
 

@@ -1,43 +1,30 @@
-import type { Command } from "commander";
+import { getConcurrency, getConfig } from "@lage-run/config";
 import createLogger from "@lage-run/logger";
-import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
+import type { Command } from "commander";
+import { getWorkspaceManagerRoot } from "workspace-tools";
 import { initializeReporters } from "../initializeReporters.js";
 import { executeInProcess } from "./executeInProcess.js";
 import { executeRemotely } from "./executeRemotely.js";
-import { getConfig } from "@lage-run/config";
-import { getWorkspaceManagerRoot } from "workspace-tools";
+import type { ExecCommandOptions } from "./index.js";
 
-interface ExecOptions extends ReporterInitOptions {
-  cwd?: string;
-  server?: boolean | string;
-  timeout?: number;
-  nodeArg?: string;
-  tasks?: string[];
-}
-
-interface ExecRemoteOptions extends ExecOptions {
-  tasks: string[];
-}
-
-export async function execAction(options: ExecOptions, command: Command): Promise<void> {
-  const cwd = options.cwd ?? process.cwd();
+export async function execAction(options: ExecCommandOptions, command: Command): Promise<void> {
+  const cwd = process.cwd();
   const root = getWorkspaceManagerRoot(cwd) ?? cwd;
   const config = await getConfig(cwd);
   const logger = createLogger();
-  options.cwd = cwd;
-  options.logLevel = options.logLevel ?? "info";
   await initializeReporters({ logger, options, config, root, defaultReporter: "json" });
 
-  const { server } = options;
-  if (server) {
+  if (options.server) {
     logger.info("Running in server mode");
 
-    if (typeof options.tasks === "undefined") {
+    if (!options.tasks?.length) {
       throw new Error("No tasks specified, this is required for when running in server mode");
     }
 
-    await executeRemotely(options as ExecRemoteOptions, command);
+    const concurrency = getConcurrency(options.concurrency, config.concurrency);
+
+    await executeRemotely({ ...options, cwd, concurrency, tasks: options.tasks }, command);
   } else {
-    await executeInProcess({ logger, args: command.args, cwd: options.cwd, nodeArg: options.nodeArg });
+    await executeInProcess({ logger, args: command.args, cwd, nodeArg: options.nodeArg });
   }
 }

@@ -320,11 +320,11 @@ export function getStagedChanges(cwd: string): string[];
 // @public @deprecated
 export function getTransitiveConsumers(targets: string[], packages: PackageInfos, scope?: string[]): string[];
 
-// @public (undocumented)
-export const getTransitiveDependencies: typeof getTransitiveProviders;
+// @public
+export function getTransitiveDependencies(targets: string[], packages: PackageInfos): string[];
 
-// @public (undocumented)
-export const getTransitiveDependents: typeof getTransitiveConsumers;
+// @public
+export function getTransitiveDependents(targets: string[], packages: PackageInfos, scope?: string[]): string[];
 
 // @public @deprecated
 export function getTransitiveProviders(targets: string[], packages: PackageInfos): string[];

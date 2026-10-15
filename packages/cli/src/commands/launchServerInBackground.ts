@@ -1,33 +1,24 @@
+import { getCacheDirectoryRoot } from "@lage-run/cache";
 import type { TargetLogger } from "@lage-run/reporters";
+import execa from "execa";
 import fs from "fs";
 import path from "path";
 import lockfile from "proper-lockfile";
-import execa from "execa";
 import { getBinScripts } from "../getBinPaths.js";
-import { getCacheDirectoryRoot } from "@lage-run/cache";
 import type { LageServiceLogData } from "../types/LageServiceLogData.js";
+import type { ExecCommandOptions } from "./exec/index.js";
 
-export interface LaunchServerInBackgroundOptions {
+export interface LaunchServerInBackgroundOptions
+  extends Required<Pick<ExecCommandOptions, "tasks">>, Pick<ExecCommandOptions, "nodeArg" | "timeout"> {
   logger: TargetLogger;
   root: string;
   host: string;
   port: number;
-  tasks: string[];
-  timeout: number;
   args: string[];
-  nodeArg?: string;
 }
 
-export async function launchServerInBackground({
-  logger,
-  root,
-  host,
-  port,
-  tasks,
-  timeout,
-  args,
-  nodeArg,
-}: LaunchServerInBackgroundOptions): Promise<void> {
+export async function launchServerInBackground(params: LaunchServerInBackgroundOptions): Promise<void> {
+  const { logger, root, host, port, tasks, timeout, args, nodeArg } = params;
   const lockfilePath = path.join(getCacheDirectoryRoot(root), `.lage-server-${host}-${port}.pid`);
 
   logger.info(`Starting server on http://${host}:${port}`);

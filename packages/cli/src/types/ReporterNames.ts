@@ -1,5 +1,3 @@
-import type { LogLevel } from "@lage-run/logger";
-
 /** All the built-in reporter names */
 export type BuiltInReporterName =
   // See initializeReporters and createReporter
@@ -54,21 +52,3 @@ export const builtInReporterNames: string[] = Object.keys(shouldListBuiltInRepor
 export const logBuiltInReporterNames: string[] = builtInReporterNames.filter(
   (name) => shouldListBuiltInReporters[name as BuiltInReporterName]
 );
-
-/**
- * Options for initializing reporters.
- * This is also passed to the constructor of a custom reporter class.
- */
-export interface ReporterInitOptions {
-  reporter: ReporterName[] | ReporterName | undefined;
-  progress: boolean;
-  verbose: boolean;
-  grouped: boolean;
-  concurrency: number;
-  logLevel: keyof typeof LogLevel;
-  profile?: boolean | string;
-  logFile?: string;
-  indented?: boolean;
-  /** Whether to capture and report main process memory usage on target completion */
-  logMemory?: boolean;
-}

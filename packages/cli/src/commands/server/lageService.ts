@@ -1,21 +1,22 @@
-import { type ConfigOptions, getConfig, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
-import { ConnectError, Code, type ILageService, type LageServiceRunTargetResult } from "@lage-run/rpc";
-import { getStartTargetId, getTargetId, type TargetGraph } from "@lage-run/target-graph";
-import { type DependencyMap, getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
-import { createTargetGraph } from "../run/createTargetGraph.js";
-import type { Readable } from "stream";
-import { type Pool, AggregatedPool } from "@lage-run/worker-threads-pool";
+import { type ConfigOptions, getConcurrency, getConfig, getMaxWorkersPerTask } from "@lage-run/config";
 import { getInputFiles, type PackageTree, TargetHasher } from "@lage-run/hasher";
-import { getOutputFiles } from "./getOutputFiles.js";
-import { MemoryStream } from "./MemoryStream.js";
-import { getBuiltInRunners } from "../../getBuiltInRunners.js";
-import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
-import type { TargetRun } from "@lage-run/scheduler-types";
 import { formatHrtime, hrtimeDiff, type TargetLogger } from "@lage-run/reporters";
-import path from "path";
+import { Code, ConnectError, type ILageService, type LageServiceRunTargetResult } from "@lage-run/rpc";
+import type { TargetRun } from "@lage-run/scheduler-types";
+import { getStartTargetId, getTargetId, type TargetGraph } from "@lage-run/target-graph";
+import { AggregatedPool, type Pool } from "@lage-run/worker-threads-pool";
 import fs from "fs";
-import { getGlobalInputHashFilePath, getHashFilePath } from "../targetHashFilePath.js";
+import path from "path";
+import type { Readable } from "stream";
+import { type DependencyMap, getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
+import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 import type { LageServiceLogData } from "../../types/LageServiceLogData.js";
+import { createTargetGraph } from "../run/createTargetGraph.js";
+import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
+import { getGlobalInputHashFilePath, getHashFilePath } from "../targetHashFilePath.js";
+import { getOutputFiles } from "./getOutputFiles.js";
+import type { ServerCommandOptions } from "./index.js";
+import { MemoryStream } from "./MemoryStream.js";
 
 interface LageServiceContext {
   config: ConfigOptions;
@@ -28,19 +29,18 @@ interface LageServiceContext {
 }
 
 let initializedPromise: Promise<LageServiceContext> | undefined;
+
 interface ServiceControls {
   abortController: AbortController;
   countdownToShutdown: () => void;
   clearCountdown: () => void;
 }
-interface InitializeOptions {
+
+interface InitializeOptions extends Pick<ServerCommandOptions, "nodeArg" | "concurrency">, Required<Pick<ServerCommandOptions, "tasks">> {
   cwd: string;
   logger: TargetLogger;
   serverControls: ServiceControls;
-  concurrency?: number;
-  nodeArg?: string;
   taskArgs: string[];
-  tasks: string[];
 }
 
 function formatBytes(bytes: number) {

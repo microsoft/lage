@@ -1,8 +1,11 @@
 import micromatch from "micromatch";
 
 /**
- * Searches all package names based on "scoping" (i.e. "scope" in the sense of inclusion).
- * NOTE: this is not the same as package scopes (`@scope/package`).
+ * Get package names that are in-scope for an operation, based on the provided search patterns.
+ * Negations are supported.
+ *
+ * Patterns that don't start with `@` or `!@` are considered "bare" package names, and will match
+ * any `@scoped` package with a matching basename.
  */
 export function getScopedPackages(search: string[], packages: { [pkg: string]: unknown } | string[]): string[] {
   const packageNames = Array.isArray(packages) ? packages : Object.keys(packages);

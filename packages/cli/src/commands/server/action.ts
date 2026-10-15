@@ -1,25 +1,21 @@
-import { createLogger } from "@lage-run/logger";
-import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import { initializeReporters } from "../initializeReporters.js";
-import { createLageService } from "./lageService.js";
-import { createServer, type LageServer } from "@lage-run/rpc";
-import { parseServerOption } from "../parseServerOption.js";
-import { getConfig } from "@lage-run/config";
-import { getWorkspaceManagerRoot } from "workspace-tools";
-import path from "path";
 import { getCacheDirectoryRoot } from "@lage-run/cache";
+import { getConfig } from "@lage-run/config";
+import { createLogger } from "@lage-run/logger";
 import type { TargetLogger } from "@lage-run/reporters";
+import { createServer, type LageServer } from "@lage-run/rpc";
+import path from "path";
+import { getWorkspaceManagerRoot } from "workspace-tools";
+import { initializeReporters } from "../initializeReporters.js";
+import { parseServerOption } from "../parseServerOption.js";
+import type { ServerCommandOptions } from "./index.js";
+import { createLageService } from "./lageService.js";
 
-interface WorkerOptions extends ReporterInitOptions {
-  nodeArg?: string[];
-  server?: string;
-  timeout?: number;
-  shutdown: boolean;
-  tasks: string[];
-}
-
-export async function serverAction(options: WorkerOptions): Promise<void> {
+export async function serverAction(options: ServerCommandOptions): Promise<void> {
   const { server = "localhost:5332", timeout = 1, tasks } = options;
+
+  if (!tasks?.length) {
+    throw new Error("No tasks specified, this is required for when running in server mode");
+  }
 
   const { host, port } = parseServerOption(server);
   const cwd = process.cwd();
@@ -27,7 +23,6 @@ export async function serverAction(options: WorkerOptions): Promise<void> {
   const config = await getConfig(cwd);
 
   const logger: TargetLogger = createLogger();
-  options.logLevel ??= "info";
   options.logFile ??= path.join(getCacheDirectoryRoot(root), "server.log");
   await initializeReporters({ logger, options, config, root, defaultReporter: "verboseFileLog" });
 

@@ -1,17 +1,17 @@
 import { getConfig } from "@lage-run/config";
+import type { TargetLogger } from "@lage-run/reporters";
+import { TargetRunnerPicker } from "@lage-run/runners";
 import { TargetFactory } from "@lage-run/target-graph";
-import path from "path";
 import fs from "fs";
+import path from "path";
 import { getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
+import { getBuiltInRunners } from "../../getBuiltInRunners.js";
+import type { RunnerCliOptions } from "../options.js";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { expandTargetDefinition } from "./expandTargetDefinition.js";
-import { TargetRunnerPicker } from "@lage-run/runners";
-import type { TargetLogger } from "@lage-run/reporters";
-import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 
-interface ExecuteInProcessOptions {
-  cwd?: string;
-  nodeArg?: string;
+interface ExecuteInProcessOptions extends Pick<RunnerCliOptions, "nodeArg"> {
+  cwd: string;
   args?: string[];
   logger: TargetLogger;
 }
