@@ -5,12 +5,11 @@ import type { TargetGraph } from "@lage-run/target-graph";
 import type { Command } from "commander";
 import { getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
 import { createCache } from "../../cache/createCacheProvider.js";
-import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
 import { NoTargetFoundError } from "../../types/errors.js";
 import { initializeReporters } from "../initializeReporters.js";
-import { createTargetGraph } from "./createTargetGraph.js";
+import { createFilteredTargetGraph } from "./createTargetGraph.js";
 import { filterArgsForTasks } from "./filterArgsForTasks.js";
 import { filterPipelineDefinitions } from "./filterPipelineDefinitions.js";
 import type { RunCommandOptions } from "./index.js";
@@ -34,16 +33,7 @@ export async function runAction(options: RunCommandOptions, command: Command): P
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
-  const { packages, changes } = getFilteredPackages({
-    root,
-    logger,
-    packageInfos,
-    options,
-    config,
-    collectChangesForSince: true,
-  });
-
-  const targetGraph = await createTargetGraph({ root, packages, changes, config, tasks, packageInfos });
+  const { targetGraph } = await createFilteredTargetGraph({ root, logger, packageInfos, options, config, tasks });
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);
 

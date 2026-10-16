@@ -4,7 +4,7 @@ import type { TargetLogger } from "@lage-run/reporters";
 import type { ConfigOptions } from "@lage-run/config";
 import type { FilterCliOptions } from "../commands/options.js";
 
-/** Git change detection result; only successful detection includes file paths. */
+/** Git change detection result */
 export type ChangedFiles =
   | {
       /**

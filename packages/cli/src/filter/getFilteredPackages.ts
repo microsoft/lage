@@ -17,44 +17,34 @@ export interface GetFilteredPackagesParams {
   options: Pick<FilterCliOptions, "dependencies" | "dependents" | "ignore" | "scope" | "since" | "to">;
   config: Pick<ConfigOptions, "ignore" | "repoWideChanges">;
   /**
-   * If `--since` is set, collect git changes even when scoped (`--scope`/`--to`).
-   * This should be enabled for commands that support staged targets.
+   * Reuse precomputed changes without retrying detection, including failed or skipped results.
+   * If omitted, collect changes only when needed for unscoped `--since` package selection.
    */
-  collectChangesForSince?: boolean;
+  changes?: ChangedFiles;
 }
 
 /**
  * Shared package selection and change detection for `affected`, `run`, `info`, and the initial `--watch` run.
  * Combines CLI/config ignores and treats `--to` as `--scope` without dependents.
+ * @returns Selected package names, including requested dependencies and dependents.
  */
-export function getFilteredPackages(params: GetFilteredPackagesParams): {
-  /** Selected package names, including requested dependencies and dependents. */
-  packages: string[];
-  /** Detection status and, on success, the unfiltered git change snapshot (does not respect ignores). */
-  changes: ChangedFiles;
-} {
-  const { root, packageInfos, logger, options, config, collectChangesForSince = false } = params;
-  const { since, dependencies: includeDependencies } = options;
-  const to = options.to ?? [];
+export function getFilteredPackages(params: GetFilteredPackagesParams): string[] {
+  const { root, packageInfos, logger, options, config } = params;
+  const { since, dependencies: includeDependencies, to = [] } = options;
   const scope = (options.scope ?? []).concat(to);
   // Disable dependents if --to is specified
   const includeDependents = options.dependents && !to.length;
   // Explicit scope (including --to) takes precedence over --since, so selection alone needs no git changes.
-  // Graph consumers can still request the snapshot for staged targets; detection is skipped without --since.
-  const changes: ChangedFiles =
-    scope.length && !collectChangesForSince
-      ? { status: "skipped" }
-      : getChangedFiles({ since, root, repoWideChanges: config.repoWideChanges, logger });
+  const {
+    changes = scope.length ? { status: "skipped" } : getChangedFiles({ since, root, repoWideChanges: config.repoWideChanges, logger }),
+  } = params;
 
   let packages: string[];
 
   // If scope is defined, get scoped packages and return
   if (scope.length) {
     const scopedPackages = getScopedPackages(scope, packageInfos);
-    return {
-      changes,
-      packages: _filterPackages({ logger, packageInfos, scopedPackages, includeDependencies, includeDependents }),
-    };
+    return _filterPackages({ logger, packageInfos, scopedPackages, includeDependencies, includeDependents });
   }
 
   // If since is defined, get changed packages.
@@ -93,11 +83,11 @@ export function getFilteredPackages(params: GetFilteredPackagesParams): {
       fullBuild: repoChanged || changedPackages === undefined,
       packages,
     });
-    return { packages, changes };
+    return packages;
   }
 
   // If neither scope or since is defined, return all packages
-  return { packages: Object.keys(packageInfos), changes };
+  return Object.keys(packageInfos);
 }
 
 export function _filterPackages(options: {
