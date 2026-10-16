@@ -6,6 +6,7 @@ import { removeTempDirAsync } from "./removeTempDir.js";
 
 interface MonorepoPackages {
   [name: string]: {
+    /** Names of other fixture packages to add to this package's `dependencies` with version `"*"`. */
     internalDeps?: string[];
     scripts?: { [script: string]: string };
     /** Mapping from **package-relative** path to file contents */
@@ -170,7 +171,17 @@ export class Monorepo {
     return execa("git", ["push", origin, branch], { cwd: this.root });
   }
 
-  public writeFiles(files: { [file: string]: string | object }, options: { executable?: boolean } = {}): void {
+  public writeFiles(
+    files: { [file: string]: string | object },
+    options: {
+      /** Mark files as executable */
+      executable?: boolean;
+      /** Stage files after writing */
+      stage?: boolean;
+      /** Stage and commit files after writing */
+      commit?: boolean;
+    } = {}
+  ): void {
     for (const [file, contents] of Object.entries(files)) {
       const out = typeof contents === "string" ? contents : JSON.stringify(contents, null, 2);
 
@@ -185,6 +196,13 @@ export class Monorepo {
       if (options.executable) {
         fs.chmodSync(path.join(this.root, file), 0o755);
       }
+    }
+
+    if (options.stage || options.commit) {
+      execa.sync("git", ["add", "--", ...Object.keys(files)], { cwd: this.root });
+    }
+    if (options.commit) {
+      execa.sync("git", ["commit", "-m", "commit files"], { cwd: this.root });
     }
   }
 
@@ -201,10 +219,12 @@ export class Monorepo {
     return contents;
   }
 
-  public async commitFiles(files: { [name: string]: string | object }, options: { executable?: boolean } = {}): Promise<void> {
-    this.writeFiles(files, options);
-    await execa("git", ["add", "--", ...Object.keys(files)], { cwd: this.root });
-    await execa("git", ["commit", "-m", "commit files"], { cwd: this.root });
+  public stageFiles(files: { [name: string]: string | object }): void {
+    this.writeFiles(files, { stage: true });
+  }
+
+  public commitFiles(files: { [name: string]: string | object }, options: { executable?: boolean } = {}): void {
+    this.writeFiles(files, { ...options, commit: true });
   }
 
   public run(command: string, args?: string[], silent?: boolean, options?: Partial<execa.Options>): execa.ExecaChildProcess<string> {

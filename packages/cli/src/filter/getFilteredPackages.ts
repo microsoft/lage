@@ -1,102 +1,114 @@
-import type { PackageInfos } from "workspace-tools";
-import { getScopedPackages, getChangedPackages, getTransitiveDependents, getTransitiveDependencies } from "workspace-tools";
-
+import type { ConfigOptions } from "@lage-run/config";
 import type { TargetLogger } from "@lage-run/reporters";
+import {
+  getPackagesByFiles,
+  getScopedPackages,
+  getTransitiveDependencies,
+  getTransitiveDependents,
+  type PackageInfos,
+} from "workspace-tools";
+import type { FilterCliOptions } from "../commands/options.js";
 import { getRepoChanges, type RepoChanges } from "./getRepoChanges.js";
 
-export function getFilteredPackages(options: {
+export interface GetFilteredPackagesParams {
   root: string;
   packageInfos: PackageInfos;
   logger: TargetLogger;
-  scope: string[] | undefined;
-  since: string | undefined;
-  sinceIgnoreGlobs: string[] | undefined;
-  repoWideChanges: string[];
-  repoChanges?: RepoChanges;
-  includeDependents: boolean;
-  includeDependencies: boolean;
-}): string[] {
-  const { scope, since, sinceIgnoreGlobs, repoWideChanges, includeDependents, includeDependencies, logger, packageInfos, root } = options;
+  options: Pick<FilterCliOptions, "dependencies" | "dependents" | "ignore" | "scope" | "since" | "to">;
+  config: Pick<ConfigOptions, "ignore" | "repoWideChanges">;
+  /**
+   * If `--since` is set, collect git changes even when scoped (`--scope`/`--to`).
+   * This should be enabled for commands that support staged targets.
+   */
+  collectChangesForSince?: boolean;
+}
 
-  // If scoped is defined, get scoped packages
-  const hasScopes = Array.isArray(scope) && scope.length > 0;
-  let scopedPackages: string[] | undefined = undefined;
-  let filteredPackages: string[] | undefined = undefined;
-  let changedPackages: string[] | undefined = undefined;
-  const hasSince = typeof since !== "undefined";
+/**
+ * Shared package selection and change detection for `affected`, `run`, `info`, and the initial `--watch` run.
+ * Combines CLI/config ignores and treats `--to` as `--scope` without dependents.
+ */
+export function getFilteredPackages(params: GetFilteredPackagesParams): {
+  /** Selected package names, including requested dependencies and dependents. */
+  packages: string[];
+  /** Detection status and, on success, the unfiltered git change snapshot (does not respect ignores). */
+  repoChanges: RepoChanges;
+} {
+  const { root, packageInfos, logger, options, config, collectChangesForSince = false } = params;
+  const { since, dependencies: includeDependencies } = options;
+  const to = options.to ?? [];
+  const scope = (options.scope ?? []).concat(to);
+  // Disable dependents if --to is specified
+  const includeDependents = options.dependents && !to.length;
+  // Explicit scope (including --to) takes precedence over --since, so selection alone needs no git changes.
+  // Graph consumers can still request the snapshot for staged targets; detection is skipped without --since.
+  const repoChanges: RepoChanges =
+    scope.length && !collectChangesForSince
+      ? { status: "skipped" }
+      : getRepoChanges({ since, root, repoWideChanges: config.repoWideChanges, logger });
+
+  let packages: string[];
 
   // If scope is defined, get scoped packages and return
-  if (hasScopes) {
-    scopedPackages = getScopedPackages(scope!, packageInfos);
-    // return filteredPackages;
-    return filterPackages({
-      logger,
-      packageInfos,
-      scopedPackages,
-      changedPackages,
-      includeDependencies,
-      includeDependents,
-    });
+  if (scope.length) {
+    const scopedPackages = getScopedPackages(scope, packageInfos);
+    return {
+      repoChanges,
+      packages: _filterPackages({ logger, packageInfos, scopedPackages, includeDependencies, includeDependents }),
+    };
   }
-  // If since is defined, get changed packages.
-  else if (hasSince) {
-    try {
-      changedPackages = getChangedPackages({
-        cwd: root,
-        target: since,
-        ignoreGlobs: sinceIgnoreGlobs,
-      });
-    } catch (e) {
-      logger.warn(`An error in the git command has caused this scope run to include every package\n${e}`);
-      // if getChangedPackages throws, we will assume all have changed (using changedPackage = undefined)
-    }
-    filteredPackages = filterPackages({
-      logger,
-      packageInfos,
-      scopedPackages,
-      changedPackages,
-      includeDependencies,
-      includeDependents,
-    });
 
-    // If the defined repo-wide changes are detected the get all packages and append to the filtered packages.
-    // This alo ensures that the modified packages are always run first.
-    const { hasChanged: repoChanged, changedFiles: repoWideChangedFiles } =
-      options.repoChanges ?? getRepoChanges({ since, root, environmentGlob: repoWideChanges, logger });
+  // If since is defined, get changed packages.
+  if (since !== undefined) {
+    let changedPackages: string[] | undefined;
+    if (repoChanges.status === "success") {
+      changedPackages = getPackagesByFiles({
+        root,
+        packageInfos,
+        files: repoChanges.changedFiles,
+        ignoreGlobs: options.ignore.concat(config.ignore),
+        returnAllPackagesOnNoMatch: true,
+      });
+    }
+    packages = _filterPackages({ logger, packageInfos, changedPackages, includeDependencies, includeDependents });
+
+    // If repo-wide changes are detected, append all other packages to the filtered packages
+    // to ensure that the modified packages are always run first.
+    const repoWideChangedFiles = repoChanges.status === "success" ? repoChanges.repoWideChangedFiles : [];
+    const repoChanged = !!repoWideChangedFiles.length;
     if (repoChanged) {
       logger.verbose(
-        `Repo-wide changes detected, running all packages. The following changed packages and their deps (if specified) will be run first: ${filteredPackages.join(
+        `Repo-wide changes detected, running all packages. The following changed packages and their deps (if specified) will be run first: ${packages.join(
           ","
         )}`
       );
-      filteredPackages = [...new Set(filteredPackages.concat(Object.keys(packageInfos)))];
+      packages = [...new Set(packages.concat(Object.keys(packageInfos)))];
     }
     logger.silly(`Repo-wide changes detected: ${repoChanged}`, undefined, {
       event: "packageFiltering",
       since,
-      repoWideChanges: repoChanged,
+      repoChanged,
       repoWideChangedFiles,
-      changedPackages: changedPackages ?? null,
-      hasChanges: repoChanged || (changedPackages ? changedPackages.length > 0 : null),
+      changedPackages,
+      hasChanges: repoChanged || !!changedPackages?.length,
       fullBuild: repoChanged || changedPackages === undefined,
-      packages: filteredPackages,
+      packages,
     });
-    return filteredPackages;
-  } else {
-    // If neither scope or since is defined, return all packages
-    return Object.keys(packageInfos);
+    return { packages, repoChanges };
   }
+
+  // If neither scope or since is defined, return all packages
+  return { packages: Object.keys(packageInfos), repoChanges };
 }
 
-export function filterPackages(options: {
+export function _filterPackages(options: {
   logger: TargetLogger;
   packageInfos: PackageInfos;
   includeDependents: boolean;
-  includeDependencies: boolean;
-  scopedPackages: string[] | undefined;
-  changedPackages: string[] | undefined;
+  includeDependencies: boolean | undefined;
+  scopedPackages?: string[];
+  changedPackages?: string[];
 }): string[] {
-  const { scopedPackages, changedPackages, packageInfos, includeDependents, includeDependencies, logger } = options;
+  const { scopedPackages, changedPackages, packageInfos, includeDependencies, includeDependents, logger } = options;
 
   let filtered: string[] = [];
 
@@ -112,7 +124,7 @@ export function filterPackages(options: {
     logger.verbose(`filterPackages changed within scope: ${filtered.join(",")}`);
   } else if (typeof changedPackages !== "undefined") {
     filtered = [...changedPackages];
-    logger.verbose(`filterPackages changed: ${changedPackages.join(",")}`);
+    logger.verbose(`filterPackages changed: ${filtered.join(",")}`);
   } else if (typeof scopedPackages !== "undefined") {
     filtered = [...scopedPackages];
     logger.verbose(`filterPackages scope: ${scopedPackages.join(",")}`);

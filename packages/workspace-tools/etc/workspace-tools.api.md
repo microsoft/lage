@@ -276,6 +276,7 @@ export function getPackagesByFiles(root: string, files: string[], ignoreGlobs?: 
 interface GetPackagesByFilesOptions {
     files: string[];
     ignoreGlobs?: string[];
+    packageInfos?: PackageInfos;
     returnAllPackagesOnNoMatch?: boolean;
     root: string;
 }
