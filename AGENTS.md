@@ -27,7 +27,7 @@ yarn deps:check         # dependency audit (depcheck)
 yarn lage-local         # run the locally-built lage CLI (node packages/lage/dist/lage.js)
 ```
 
-Before finalizing changes, run `yarn ci` from the root for complete build/test/lint verification.
+When completing more complex changes, run `yarn ci` from the root for complete build/test/lint verification. (It's not necessary to run this for test-only changes.)
 
 ### Single-package commands
 

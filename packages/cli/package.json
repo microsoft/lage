@@ -37,9 +37,9 @@
     "chokidar": "3.6.0",
     "commander": "9.5.0",
     "execa": "5.1.1",
-    "fast-glob": "3.3.3",
     "globby": "11.1.0",
     "is-interactive": "1.0.0",
+    "micromatch": "4.0.8",
     "proper-lockfile": "4.1.2",
     "shell-quote": "1.10.0",
     "workspace-tools": "workspace:^"
@@ -47,6 +47,7 @@
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
     "@lage-run/test-utilities": "workspace:^",
+    "@types/micromatch": "^4.0.0",
     "@types/proper-lockfile": "^4.1.4",
     "@types/shell-quote": "^1.7.5"
   },
