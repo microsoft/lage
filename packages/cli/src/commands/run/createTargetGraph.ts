@@ -1,87 +1,41 @@
-import type { TargetLogger } from "@lage-run/reporters";
-import { type Priority, type TargetGraph, WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
+import { type TargetGraph, WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
 import type { PackageInfos } from "workspace-tools";
-import { getBranchChanges, getDefaultRemoteBranch, getStagedChanges, getUnstagedChanges, getUntrackedChanges } from "workspace-tools";
-import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
-import type { PipelineDefinition } from "@lage-run/config";
-import { getRepoChanges } from "../../filter/getRepoChanges.js";
+import type { CacheOptions, ConfigOptions, PipelineDefinition } from "@lage-run/config";
+import type { RepoChanges } from "../../filter/getRepoChanges.js";
 
-interface CreateTargetGraphOptions {
-  logger: TargetLogger;
+export interface CreateTargetGraphOptions {
   root: string;
-  dependencies: boolean;
-  dependents: boolean;
-  since?: string;
-  scope?: string[];
-  ignore: string[];
-  repoWideChanges: string[];
-  pipeline: PipelineDefinition;
-  outputs: string[];
+  /**
+   * Build the target graph for these packages.
+   * This may be either a hardcoded list, or determined by `getFilteredPackages`.
+   */
+  packages: string[];
+  /**
+   * Precomputed changes used here only for staged-target optimization.
+   * If omitted, staged targets are disabled and the supplied packages keep their normal targets.
+   * (Package selection happens separately via `packages`.)
+   */
+  repoChanges?: RepoChanges;
+  config: Pick<ConfigOptions, "pipeline" | "priorities" | "enableTargetConfigMerging" | "enablePhantomTargetOptimization"> & {
+    cacheOptions: Pick<CacheOptions, "outputGlob">;
+  };
   tasks: string[];
   packageInfos: PackageInfos;
-  priorities: Priority[];
-  enableTargetConfigMerging: boolean;
-  enablePhantomTargetOptimization: boolean;
-}
-
-function getChangedFiles(since: string, cwd: string) {
-  const targetBranch = since || getDefaultRemoteBranch({ cwd });
-
-  return [
-    ...new Set([
-      ...(getUntrackedChanges({ cwd }) || []),
-      ...(getUnstagedChanges({ cwd }) || []),
-      ...(getBranchChanges({ branch: targetBranch, cwd }) || []),
-      ...(getStagedChanges({ cwd }) || []),
-    ]),
-  ];
 }
 
 export async function createTargetGraph(options: CreateTargetGraphOptions): Promise<TargetGraph> {
-  const {
-    logger,
-    root,
-    dependencies,
-    dependents,
-    enableTargetConfigMerging,
-    enablePhantomTargetOptimization,
-    since,
-    scope,
-    repoWideChanges,
-    ignore,
-    pipeline,
-    outputs,
-    tasks,
-    packageInfos,
-    priorities,
-  } = options;
+  const { root, packages, repoChanges, config, tasks, packageInfos } = options;
+  const { pipeline, cacheOptions, priorities, enableTargetConfigMerging, enablePhantomTargetOptimization } = config;
 
   const builder = new WorkspaceTargetGraphBuilder({ root, packageInfos, enableTargetConfigMerging, enablePhantomTargetOptimization });
-  const repoChanges = since ? getRepoChanges({ since, root, environmentGlob: repoWideChanges, logger }) : undefined;
-
-  const packages = getFilteredPackages({
-    root,
-    logger,
-    packageInfos,
-    includeDependencies: dependencies,
-    includeDependents: dependents,
-    since,
-    scope,
-    repoWideChanges,
-    repoChanges,
-    sinceIgnoreGlobs: ignore,
-  });
-
-  let changedFiles: string[] = [];
-
-  // TODO: enhancement would be for workspace-tools to implement a "getChangedPackageFromChangedFiles()" type function
-  if (since && !repoChanges?.hasChanged) {
-    changedFiles = getChangedFiles(since, root);
-  }
+  // Staged targets require successful change detection with no repo-wide changes.
+  // Passing [] disables the optimization and keeps normal targets for the selected packages
+  // if there are repo-wide changes (or it couldn't be determined, or isn't relevant).
+  const changedFiles = repoChanges?.status === "success" && !repoChanges.repoWideChangedFiles.length ? repoChanges.changedFiles : [];
 
   const pipelineEntries = Object.entries(pipeline);
 
-  // Add lage pipeline configuration in the package.json files.
+  // Add lage pipeline configuration from the package.json files.
   // They are configured in the lage field, but without the package id.
   // i.e. having this package.json
   //    { "name": "foo", "lage": { "transpile": { type: "npmScript" } }}
@@ -107,7 +61,7 @@ export async function createTargetGraph(options: CreateTargetGraphOptions): Prom
           cache: true,
           dependsOn: definition,
           options: {},
-          outputs,
+          outputs: cacheOptions.outputGlob,
         },
         changedFiles
       );

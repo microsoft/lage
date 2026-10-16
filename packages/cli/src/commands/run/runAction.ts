@@ -5,6 +5,7 @@ import type { TargetGraph } from "@lage-run/target-graph";
 import type { Command } from "commander";
 import { getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
 import { createCache } from "../../cache/createCacheProvider.js";
+import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
 import { NoTargetFoundError } from "../../types/errors.js";
@@ -33,23 +34,16 @@ export async function runAction(options: RunCommandOptions, command: Command): P
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
-  const targetGraph = await createTargetGraph({
-    logger,
+  const { packages, repoChanges } = getFilteredPackages({
     root,
-    dependencies: !!options.dependencies,
-    dependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
-    ignore: options.ignore.concat(config.ignore),
-    pipeline: config.pipeline,
-    repoWideChanges: config.repoWideChanges,
-    scope: (options.scope ?? []).concat(options.to ?? []), // --to is a short hand for --scope + --no-dependents
-    since: options.since,
-    outputs: config.cacheOptions.outputGlob,
-    tasks,
+    logger,
     packageInfos,
-    priorities: config.priorities,
-    enableTargetConfigMerging: config.enableTargetConfigMerging,
-    enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
+    options,
+    config,
+    collectChangesForSince: true,
   });
+
+  const targetGraph = await createTargetGraph({ root, packages, repoChanges, config, tasks, packageInfos });
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);
 

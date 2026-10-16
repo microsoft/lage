@@ -97,7 +97,7 @@ describe("TargetHasher", () => {
     const hasher2 = new TargetHasher({ root: monorepo2.root, environmentGlob: [] });
     const target2 = createTarget(monorepo2.root, "package-a", "build");
 
-    await monorepo2.commitFiles({ "packages/package-a/src/index.ts": "console.log('hello world');" });
+    monorepo2.commitFiles({ "packages/package-a/src/index.ts": "console.log('hello world');" });
 
     const hash2 = await getHash(hasher2, target2);
 
@@ -113,7 +113,7 @@ describe("TargetHasher", () => {
     const hash = await getHash(hasher, target);
 
     const monorepo2 = await setupFixture("monorepo-with-deps");
-    await monorepo2.commitFiles({ "packages/package-b/src/index.ts": "console.log('hello world');" });
+    monorepo2.commitFiles({ "packages/package-b/src/index.ts": "console.log('hello world');" });
 
     const hasher2 = new TargetHasher({ root: monorepo2.root, environmentGlob: [] });
     const target2 = createTarget(monorepo2.root, "package-a", "build");
@@ -133,7 +133,7 @@ describe("TargetHasher", () => {
     const hash = await getHash(hasher, target);
 
     const monorepo2 = await setupFixture("monorepo-with-deps");
-    await monorepo2.commitFiles({ "packages/package-b/src/other.ts": "console.log('ignored');" });
+    monorepo2.commitFiles({ "packages/package-b/src/other.ts": "console.log('ignored');" });
     const hasher2 = new TargetHasher({ root: monorepo2.root, environmentGlob: [] });
     const target2 = createTarget(monorepo2.root, "package-a", "build");
     target2.inputs = ["**/*", "^src/index.ts"];
@@ -141,7 +141,7 @@ describe("TargetHasher", () => {
     const hash2 = await getHash(hasher2, target2);
 
     const monorepo3 = await setupFixture("monorepo-with-deps");
-    await monorepo3.commitFiles({ "packages/package-b/src/index.ts": "console.log('included');" });
+    monorepo3.commitFiles({ "packages/package-b/src/index.ts": "console.log('included');" });
     const hasher3 = new TargetHasher({ root: monorepo3.root, environmentGlob: [] });
     const target3 = createTarget(monorepo3.root, "package-a", "build");
     target3.inputs = ["**/*", "^src/index.ts"];

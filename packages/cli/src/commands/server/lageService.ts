@@ -58,27 +58,19 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
 
   logger.info(`Initializing with ${maxWorkers} workers, tasks: ${tasks.join(", ")}`);
 
-  const { pipeline } = config;
-
   const packageInfos = getPackageInfos(root);
 
   logger.info("Initializing target graph");
+
+  // Omit repoChanges: the service reuses this graph without a per-request change snapshot.
+  // It executes individual package/task requests, not their dependencies, so staged target
+  // optimization could leave requested targets as no-ops.
   const targetGraph = await createTargetGraph({
-    logger,
     root,
-    dependencies: false,
-    dependents: false,
-    ignore: [],
-    pipeline,
-    repoWideChanges: config.repoWideChanges,
-    scope: undefined,
-    since: undefined,
-    outputs: config.cacheOptions.outputGlob,
+    packages: Object.keys(packageInfos),
+    config,
     tasks,
     packageInfos,
-    priorities: config.priorities,
-    enableTargetConfigMerging: config.enableTargetConfigMerging,
-    enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
   });
 
   const targetHasher = new TargetHasher({

@@ -100,35 +100,16 @@ export async function infoAction(options: InfoCommandOptions, command: Command):
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
-  const targetGraph = await createTargetGraph({
-    logger,
+  const { packages, repoChanges } = getFilteredPackages({
     root,
-    dependencies: !!options.dependencies,
-    dependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
-    ignore: options.ignore.concat(config.ignore),
-    pipeline: config.pipeline,
-    repoWideChanges: config.repoWideChanges,
-    scope: (options.scope ?? []).concat(options.to ?? []), // --to is a short hand for --scope + --no-dependents
-    since: options.since,
-    outputs: config.cacheOptions.outputGlob,
-    tasks,
     packageInfos,
-    priorities: config.priorities,
-    enableTargetConfigMerging: config.enableTargetConfigMerging,
-    enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
+    logger,
+    options,
+    config,
+    collectChangesForSince: true,
   });
 
-  const scope = getFilteredPackages({
-    root,
-    packageInfos,
-    logger,
-    includeDependencies: !!options.dependencies,
-    includeDependents: options.dependents && !options.to, // --to is a short hand for --scope + --no-dependents
-    since: options.since,
-    scope: (options.scope ?? []).concat(options.to ?? []), // --to is a short hand for --scope + --no-dependents
-    repoWideChanges: config.repoWideChanges,
-    sinceIgnoreGlobs: options.ignore.concat(config.ignore),
-  });
+  const targetGraph = await createTargetGraph({ root, packages, repoChanges, config, tasks, packageInfos });
 
   const pickerOptions = getBuiltInRunners({ nodeArg: options.nodeArg, npmCmd: config.npmClient, taskArgs });
 
@@ -201,7 +182,7 @@ export async function infoAction(options: InfoCommandOptions, command: Command):
 
   const infoResult: InfoResult = {
     command: command.args,
-    scope,
+    scope: packages,
     packageTasks,
   };
 
@@ -228,7 +209,7 @@ interface GeneratePackageTaskParams {
   tasks: string[];
 }
 
-export function generatePackageTask(params: GeneratePackageTaskParams): PackageTask {
+function generatePackageTask(params: GeneratePackageTaskParams): PackageTask {
   const { target, taskArgs, config, options, binPaths, packageInfos, tasks } = params;
   const command = generateCommand({ target, taskArgs, config, options, binPaths, packageInfos, tasks });
   const workingDirectory = getWorkingDirectory(target);
