@@ -21,7 +21,7 @@ describe("getFilteredPackages", () => {
     const gitObserver = jest.fn<GitObserver>();
     stopObserving = addGitObserver(gitObserver);
 
-    const { repoChanges, packages } = getFilteredPackages({
+    const { changes, packages } = getFilteredPackages({
       root: monorepo!.root,
       packageInfos: getPackageInfos(monorepo!.root),
       logger,
@@ -32,7 +32,7 @@ describe("getFilteredPackages", () => {
 
     params.expectGitCalls !== undefined && expect(gitObserver).toHaveBeenCalledTimes(params.expectGitCalls);
 
-    return { repoChanges, packages: [...packages].sort(), log };
+    return { changes, packages: [...packages].sort(), log };
   }
 
   afterEach(async () => {
@@ -47,12 +47,12 @@ describe("getFilteredPackages", () => {
       monorepo = new Monorepo("getFilteredPackages-withoutSince");
       await monorepo.init({ packages: { a: {}, b: {} } });
 
-      const { packages, repoChanges } = getFilteredPackagesWrapper({
+      const { packages, changes } = getFilteredPackagesWrapper({
         collectChangesForSince: true,
         expectGitCalls: 0,
       });
       expect(packages).toEqual(["a", "b"]);
-      expect(repoChanges).toEqual({ status: "skipped" });
+      expect(changes).toEqual({ status: "skipped" });
     });
 
     it.each<Partial<Omit<GetFilteredPackagesParams["options"], "ignore" | "since">> & { desc: string; expected: string[] }>([
@@ -71,13 +71,13 @@ describe("getFilteredPackages", () => {
       monorepo = new Monorepo("getFilteredPackages-scopeWithoutSince");
       await monorepo.init({ packages: { a: {}, b: { internalDeps: ["a"] }, c: {} } });
 
-      const { packages, repoChanges } = getFilteredPackagesWrapper({
+      const { packages, changes } = getFilteredPackagesWrapper({
         options,
         expectGitCalls: 0,
         collectChangesForSince: true,
       });
       expect(packages).toEqual(expected);
-      expect(repoChanges).toEqual({ status: "skipped" });
+      expect(changes).toEqual({ status: "skipped" });
     });
   });
 
@@ -101,14 +101,14 @@ describe("getFilteredPackages", () => {
         "packages/foo1/test.txt": "test content",
       });
 
-      const { packages, repoChanges, log } = getFilteredPackagesWrapper({
+      const { packages, changes, log } = getFilteredPackagesWrapper({
         options: { since: "HEAD~1" },
         collectChangesForSince: true,
         expectGitCalls: 4,
       });
 
       expect(packages).toEqual(["foo1", "foo2"]);
-      expect(repoChanges).toEqual({
+      expect(changes).toEqual({
         status: "success",
         changedFiles: ["packages/foo1/test.txt", "tsconfig.json"],
         repoWideChangedFiles: [],
@@ -136,28 +136,28 @@ describe("getFilteredPackages", () => {
       monorepo = new Monorepo("getFilteredPackages-failedChanges");
       await monorepo.init({ packages: { a: {}, b: {} } });
 
-      const { packages, repoChanges } = getFilteredPackagesWrapper({
+      const { packages, changes } = getFilteredPackagesWrapper({
         options: { since: "missing-ref" },
         expectGitCalls: 1,
       });
       expect(packages).toEqual(["a", "b"]);
-      expect(repoChanges).toEqual({ status: "failed" });
+      expect(changes).toEqual({ status: "failed" });
     });
 
     it.each(["scope", "to"] as const)("respects `%s` even with failed git change detection", async (arg) => {
       monorepo = new Monorepo("getFilteredPackages-scopedFailure");
       await monorepo.init({ packages: { a: {}, b: {} } });
 
-      const { packages, repoChanges } = getFilteredPackagesWrapper({
+      const { packages, changes } = getFilteredPackagesWrapper({
         options: { since: "missing-ref", [arg]: ["a"] },
         collectChangesForSince: true,
         expectGitCalls: 1,
       });
       expect(packages).toEqual(["a"]);
-      expect(repoChanges).toEqual({ status: "failed" });
+      expect(changes).toEqual({ status: "failed" });
     });
 
-    // The detailed logic of different git tracking scenarios is tested in getRepoChanges
+    // The detailed logic of different git tracking scenarios is tested in getChangedFiles
     it("collects package and repo-wide changes", async () => {
       monorepo = new Monorepo("getFilteredPackages-collectChanges");
       await monorepo.init({ packages: { a: {}, b: {} } });
@@ -166,14 +166,14 @@ describe("getFilteredPackages", () => {
         "repo-wide.txt": "changed",
       });
 
-      const { packages, repoChanges, log } = getFilteredPackagesWrapper({
+      const { packages, changes, log } = getFilteredPackagesWrapper({
         options: { since: "HEAD" },
         config: { repoWideChanges: ["repo-wide.txt"] },
         expectGitCalls: 4,
       });
 
       expect(packages).toEqual(["a", "b"]);
-      expect(repoChanges).toEqual({
+      expect(changes).toEqual({
         status: "success",
         changedFiles: ["packages/a/changed.txt", "repo-wide.txt"],
         repoWideChangedFiles: ["repo-wide.txt"],
@@ -211,7 +211,7 @@ describe("getFilteredPackages", () => {
         "packages/c/changed.ts": "changed",
       });
 
-      const { packages, repoChanges } = getFilteredPackagesWrapper({
+      const { packages, changes } = getFilteredPackagesWrapper({
         options: { since: "HEAD", ignore: ["**/*.test.ts"] },
         config: { ignore: ["**/*.md"], repoWideChanges },
         expectGitCalls: 4,
@@ -219,7 +219,7 @@ describe("getFilteredPackages", () => {
 
       // Without repoWideChanges, only "c" is considered changed (files in "a" and "b" changed, but are ignored)
       expect(packages).toEqual(hasRepoWideChanges ? ["a", "b", "c"] : ["c"]);
-      expect(repoChanges).toEqual({
+      expect(changes).toEqual({
         status: "success",
         // ignores do NOT apply to the raw list of changed files
         changedFiles: ["packages/a/ignored.md", "packages/b/ignored.test.ts", "packages/c/changed.ts"],
@@ -235,14 +235,14 @@ describe("getFilteredPackages", () => {
         "yarn.lock": "repo-wide change",
       });
 
-      const { packages, repoChanges } = getFilteredPackagesWrapper({
+      const { packages, changes } = getFilteredPackagesWrapper({
         options: { since: "HEAD", [arg]: ["a"] },
         config: { repoWideChanges: ["yarn.lock"] },
         expectGitCalls: 0,
       });
 
       expect(packages).toEqual(["a"]);
-      expect(repoChanges).toEqual({ status: "skipped" });
+      expect(changes).toEqual({ status: "skipped" });
     });
 
     // All these cases use --to/--scope but explicitly set collectChangesForSince: true.
@@ -260,7 +260,7 @@ describe("getFilteredPackages", () => {
         "yarn.lock": "repo-wide change",
       });
 
-      const { packages, repoChanges } = getFilteredPackagesWrapper({
+      const { packages, changes } = getFilteredPackagesWrapper({
         options: {
           since: "HEAD",
           [testCase.option]: ["a"],
@@ -273,7 +273,7 @@ describe("getFilteredPackages", () => {
 
       // Only the explicitly scoped package should be included in the selection
       expect(packages).toEqual(["a"]);
-      expect(repoChanges).toEqual({
+      expect(changes).toEqual({
         status: "success",
         changedFiles: ["packages/b/changed.ts", "yarn.lock"],
         repoWideChangedFiles: testCase.repoWideChanges ? ["yarn.lock"] : [],
@@ -285,10 +285,10 @@ describe("getFilteredPackages", () => {
       await monorepo.init({ packages: { a: {}, b: {}, c: {} } });
       monorepo.commitFiles({ "packages/a/just-a-test.txt": "test" });
 
-      const { log, packages, repoChanges } = getFilteredPackagesWrapper({
+      const { log, packages, changes } = getFilteredPackagesWrapper({
         options: { since: "HEAD~1", ignore: ["packages/a/just-a-test.txt"] },
       });
-      expect(repoChanges).toEqual({ status: "success", changedFiles: ["packages/a/just-a-test.txt"], repoWideChangedFiles: [] });
+      expect(changes).toEqual({ status: "success", changedFiles: ["packages/a/just-a-test.txt"], repoWideChangedFiles: [] });
       expect(packages).toHaveLength(0);
       expect(log).toHaveBeenCalledWith(
         expect.objectContaining({

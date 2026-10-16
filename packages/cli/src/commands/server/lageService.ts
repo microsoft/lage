@@ -62,7 +62,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
 
   logger.info("Initializing target graph");
 
-  // Omit repoChanges: the service reuses this graph without a per-request change snapshot.
+  // Omit changes: the service reuses this graph without a per-request change snapshot.
   // It executes individual package/task requests, not their dependencies, so staged target
   // optimization could leave requested targets as no-ops.
   const targetGraph = await createTargetGraph({

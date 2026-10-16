@@ -34,7 +34,7 @@ export async function runAction(options: RunCommandOptions, command: Command): P
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
-  const { packages, repoChanges } = getFilteredPackages({
+  const { packages, changes } = getFilteredPackages({
     root,
     logger,
     packageInfos,
@@ -43,7 +43,7 @@ export async function runAction(options: RunCommandOptions, command: Command): P
     collectChangesForSince: true,
   });
 
-  const targetGraph = await createTargetGraph({ root, packages, repoChanges, config, tasks, packageInfos });
+  const targetGraph = await createTargetGraph({ root, packages, changes, config, tasks, packageInfos });
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);
 

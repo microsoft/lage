@@ -5,7 +5,7 @@ import type { ConfigOptions } from "@lage-run/config";
 import type { FilterCliOptions } from "../commands/options.js";
 
 /** Git change detection result; only successful detection includes file paths. */
-export type RepoChanges =
+export type ChangedFiles =
   | {
       /**
        * - `"skipped"`: `since` is undefined, so change detection was skipped.
@@ -32,14 +32,14 @@ export type RepoChanges =
  * Collect branch and working-copy changes once for a command.
  * If `since` is undefined, detection is skipped.
  */
-export function getRepoChanges(
+export function getChangedFiles(
   params: Pick<ConfigOptions, "repoWideChanges"> &
     Pick<FilterCliOptions, "since"> & {
       /** Absolute path to monorepo root */
       root: string;
       logger: TargetLogger;
     }
-): RepoChanges {
+): ChangedFiles {
   const { since, root, repoWideChanges, logger } = params;
 
   if (since === undefined) {
