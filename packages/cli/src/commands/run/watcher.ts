@@ -15,7 +15,7 @@ interface PathIndex {
   [pathPart: string]: PathIndexItem;
 }
 
-export function watch(cwd: string, packageInfos: PackageInfos): EventEmitter {
+export function startWatcher(cwd: string, packageInfos: PackageInfos): EventEmitter {
   const events = new EventEmitter();
   const root = getWorkspaceManagerRoot(cwd);
 
