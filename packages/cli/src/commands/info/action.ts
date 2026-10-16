@@ -100,7 +100,7 @@ export async function infoAction(options: InfoCommandOptions, command: Command):
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
-  const { packages, repoChanges } = getFilteredPackages({
+  const { packages, changes } = getFilteredPackages({
     root,
     packageInfos,
     logger,
@@ -109,7 +109,7 @@ export async function infoAction(options: InfoCommandOptions, command: Command):
     collectChangesForSince: true,
   });
 
-  const targetGraph = await createTargetGraph({ root, packages, repoChanges, config, tasks, packageInfos });
+  const targetGraph = await createTargetGraph({ root, packages, changes, config, tasks, packageInfos });
 
   const pickerOptions = getBuiltInRunners({ nodeArg: options.nodeArg, npmCmd: config.npmClient, taskArgs });
 

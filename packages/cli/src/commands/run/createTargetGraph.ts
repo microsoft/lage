@@ -1,7 +1,7 @@
 import { type TargetGraph, WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
 import type { PackageInfos } from "workspace-tools";
 import type { CacheOptions, ConfigOptions, PipelineDefinition } from "@lage-run/config";
-import type { RepoChanges } from "../../filter/getRepoChanges.js";
+import type { ChangedFiles } from "../../filter/getChangedFiles.js";
 
 export interface CreateTargetGraphOptions {
   root: string;
@@ -15,7 +15,7 @@ export interface CreateTargetGraphOptions {
    * If omitted, staged targets are disabled and the supplied packages keep their normal targets.
    * (Package selection happens separately via `packages`.)
    */
-  repoChanges?: RepoChanges;
+  changes?: ChangedFiles;
   config: Pick<ConfigOptions, "pipeline" | "priorities" | "enableTargetConfigMerging" | "enablePhantomTargetOptimization"> & {
     cacheOptions: Pick<CacheOptions, "outputGlob">;
   };
@@ -24,14 +24,14 @@ export interface CreateTargetGraphOptions {
 }
 
 export async function createTargetGraph(options: CreateTargetGraphOptions): Promise<TargetGraph> {
-  const { root, packages, repoChanges, config, tasks, packageInfos } = options;
+  const { root, packages, changes, config, tasks, packageInfos } = options;
   const { pipeline, cacheOptions, priorities, enableTargetConfigMerging, enablePhantomTargetOptimization } = config;
 
   const builder = new WorkspaceTargetGraphBuilder({ root, packageInfos, enableTargetConfigMerging, enablePhantomTargetOptimization });
   // Staged targets require successful change detection with no repo-wide changes.
   // Passing [] disables the optimization and keeps normal targets for the selected packages
   // if there are repo-wide changes (or it couldn't be determined, or isn't relevant).
-  const changedFiles = repoChanges?.status === "success" && !repoChanges.repoWideChangedFiles.length ? repoChanges.changedFiles : [];
+  const changedFiles = changes?.status === "success" && !changes.repoWideChangedFiles.length ? changes.changedFiles : [];
 
   const pipelineEntries = Object.entries(pipeline);
 

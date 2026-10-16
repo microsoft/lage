@@ -32,7 +32,7 @@ export async function watchAction(options: RunCommandOptions, command: Command):
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
-  const { packages, repoChanges } = getFilteredPackages({
+  const { packages, changes } = getFilteredPackages({
     root,
     logger,
     packageInfos,
@@ -41,7 +41,7 @@ export async function watchAction(options: RunCommandOptions, command: Command):
     collectChangesForSince: true,
   });
 
-  const targetGraph = await createTargetGraph({ root, packages, repoChanges, config, tasks, packageInfos });
+  const targetGraph = await createTargetGraph({ root, packages, changes, config, tasks, packageInfos });
 
   // Make sure we do not attempt writeRemoteCache in watch mode
   config.cacheOptions.writeRemoteCache = false;

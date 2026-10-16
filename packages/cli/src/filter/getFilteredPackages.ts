@@ -8,7 +8,7 @@ import {
   type PackageInfos,
 } from "workspace-tools";
 import type { FilterCliOptions } from "../commands/options.js";
-import { getRepoChanges, type RepoChanges } from "./getRepoChanges.js";
+import { getChangedFiles, type ChangedFiles } from "./getChangedFiles.js";
 
 export interface GetFilteredPackagesParams {
   root: string;
@@ -31,7 +31,7 @@ export function getFilteredPackages(params: GetFilteredPackagesParams): {
   /** Selected package names, including requested dependencies and dependents. */
   packages: string[];
   /** Detection status and, on success, the unfiltered git change snapshot (does not respect ignores). */
-  repoChanges: RepoChanges;
+  changes: ChangedFiles;
 } {
   const { root, packageInfos, logger, options, config, collectChangesForSince = false } = params;
   const { since, dependencies: includeDependencies } = options;
@@ -41,10 +41,10 @@ export function getFilteredPackages(params: GetFilteredPackagesParams): {
   const includeDependents = options.dependents && !to.length;
   // Explicit scope (including --to) takes precedence over --since, so selection alone needs no git changes.
   // Graph consumers can still request the snapshot for staged targets; detection is skipped without --since.
-  const repoChanges: RepoChanges =
+  const changes: ChangedFiles =
     scope.length && !collectChangesForSince
       ? { status: "skipped" }
-      : getRepoChanges({ since, root, repoWideChanges: config.repoWideChanges, logger });
+      : getChangedFiles({ since, root, repoWideChanges: config.repoWideChanges, logger });
 
   let packages: string[];
 
@@ -52,7 +52,7 @@ export function getFilteredPackages(params: GetFilteredPackagesParams): {
   if (scope.length) {
     const scopedPackages = getScopedPackages(scope, packageInfos);
     return {
-      repoChanges,
+      changes,
       packages: _filterPackages({ logger, packageInfos, scopedPackages, includeDependencies, includeDependents }),
     };
   }
@@ -60,11 +60,11 @@ export function getFilteredPackages(params: GetFilteredPackagesParams): {
   // If since is defined, get changed packages.
   if (since !== undefined) {
     let changedPackages: string[] | undefined;
-    if (repoChanges.status === "success") {
+    if (changes.status === "success") {
       changedPackages = getPackagesByFiles({
         root,
         packageInfos,
-        files: repoChanges.changedFiles,
+        files: changes.changedFiles,
         ignoreGlobs: options.ignore.concat(config.ignore),
         returnAllPackagesOnNoMatch: true,
       });
@@ -73,7 +73,7 @@ export function getFilteredPackages(params: GetFilteredPackagesParams): {
 
     // If repo-wide changes are detected, append all other packages to the filtered packages
     // to ensure that the modified packages are always run first.
-    const repoWideChangedFiles = repoChanges.status === "success" ? repoChanges.repoWideChangedFiles : [];
+    const repoWideChangedFiles = changes.status === "success" ? changes.repoWideChangedFiles : [];
     const repoChanged = !!repoWideChangedFiles.length;
     if (repoChanged) {
       logger.verbose(
@@ -93,11 +93,11 @@ export function getFilteredPackages(params: GetFilteredPackagesParams): {
       fullBuild: repoChanged || changedPackages === undefined,
       packages,
     });
-    return { packages, repoChanges };
+    return { packages, changes };
   }
 
   // If neither scope or since is defined, return all packages
-  return { packages: Object.keys(packageInfos), repoChanges };
+  return { packages: Object.keys(packageInfos), changes };
 }
 
 export function _filterPackages(options: {

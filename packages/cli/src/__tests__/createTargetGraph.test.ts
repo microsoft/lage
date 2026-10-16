@@ -4,7 +4,7 @@ import { Monorepo } from "@lage-run/test-utilities";
 import path from "path";
 import { addGitObserver, getPackageInfos, type GitObserver, type PackageInfo, type PackageInfos } from "workspace-tools";
 import { createTargetGraph, type CreateTargetGraphOptions } from "../commands/run/createTargetGraph.js";
-import type { RepoChanges } from "../filter/getRepoChanges.js";
+import type { ChangedFiles } from "../filter/getChangedFiles.js";
 import type { Target } from "@lage-run/target-graph";
 
 const ROOT = path.resolve("/fake/root");
@@ -30,7 +30,7 @@ describe("createTargetGraph", () => {
       packageInfos,
       packages: Object.keys(packageInfos),
       tasks: [],
-      repoChanges: undefined,
+      changes: undefined,
       ...params,
       root,
       config: {
@@ -90,7 +90,7 @@ describe("createTargetGraph", () => {
       const result = await createTargetGraphWrapper({
         root: monorepo.root,
         packages,
-        repoChanges: {
+        changes: {
           status: "success",
           changedFiles: ["packages/foo1/test.txt", "tsconfig.json"],
           repoWideChangedFiles,
@@ -104,13 +104,13 @@ describe("createTargetGraph", () => {
     }
   );
 
-  it.each<Exclude<RepoChanges, { status: "success" }> | undefined>([undefined, { status: "skipped" }, { status: "failed" }])(
-    "does not create staged targets when repoChanges is %p",
-    async (repoChanges) => {
+  it.each<Exclude<ChangedFiles, { status: "success" }> | undefined>([undefined, { status: "skipped" }, { status: "failed" }])(
+    "does not create staged targets when changes is %p",
+    async (changes) => {
       const targets = await createTargetGraphWrapper({
         root: ROOT,
         packages: ["foo1"],
-        repoChanges,
+        changes,
         config: {
           pipeline: { build: { stagedTarget: { type: "npmScript", options: { script: "build" } } } },
         },
@@ -123,17 +123,17 @@ describe("createTargetGraph", () => {
     }
   );
 
-  it.each<{ repoChanges: Extract<RepoChanges, { status: "success" }>; expectedStaged: boolean }>([
-    { repoChanges: { status: "success", changedFiles: [], repoWideChangedFiles: [] }, expectedStaged: false },
-    { repoChanges: { status: "success", changedFiles: ["packages/foo1/file.ts"], repoWideChangedFiles: [] }, expectedStaged: true },
+  it.each<{ changes: Extract<ChangedFiles, { status: "success" }>; expectedStaged: boolean }>([
+    { changes: { status: "success", changedFiles: [], repoWideChangedFiles: [] }, expectedStaged: false },
+    { changes: { status: "success", changedFiles: ["packages/foo1/file.ts"], repoWideChangedFiles: [] }, expectedStaged: true },
     {
-      repoChanges: { status: "success", changedFiles: ["lage.config.js"], repoWideChangedFiles: ["lage.config.js"] },
+      changes: { status: "success", changedFiles: ["lage.config.js"], repoWideChangedFiles: ["lage.config.js"] },
       expectedStaged: false,
     },
-  ])("only creates staged targets for successful non-repo-wide changes: $repoChanges", async ({ repoChanges, expectedStaged }) => {
+  ])("only creates staged targets for successful non-repo-wide changes: $changes", async ({ changes, expectedStaged }) => {
     const targets = await createTargetGraphWrapper({
       packages: ["foo1"],
-      repoChanges,
+      changes,
       config: {
         pipeline: { build: { stagedTarget: { type: "npmScript", options: { script: "build" } } } },
       },
@@ -145,7 +145,7 @@ describe("createTargetGraph", () => {
     const stagedTargets = targets.filter((target) => target.id?.startsWith("Δ"));
     expect(stagedTargets).toHaveLength(expectedStaged ? 1 : 0);
     if (expectedStaged) {
-      expect(stagedTargets[0].options?.taskArgs).toEqual(repoChanges.changedFiles);
+      expect(stagedTargets[0].options?.taskArgs).toEqual(changes.changedFiles);
     }
   });
 

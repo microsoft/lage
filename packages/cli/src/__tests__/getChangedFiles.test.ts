@@ -4,15 +4,15 @@ import { Monorepo } from "@lage-run/test-utilities";
 import fs from "fs";
 import path from "path";
 import { addGitObserver, git, type GitObserver } from "workspace-tools";
-import { getRepoChanges } from "../filter/getRepoChanges.js";
+import { getChangedFiles } from "../filter/getChangedFiles.js";
 
-describe("getRepoChanges", () => {
+describe("getChangedFiles", () => {
   let monorepo: Monorepo | undefined;
   let stopObserving: (() => void) | undefined;
 
   /** Collect changes while capturing logs and optionally checking git call counts. Sorts result arrays. */
-  function getRepoChangesWrapper(
-    params: Pick<Parameters<typeof getRepoChanges>[0], "since"> & {
+  function getChangedFilesWrapper(
+    params: Pick<Parameters<typeof getChangedFiles>[0], "since"> & {
       repoWideChanges?: string[];
       expectGitCalls?: number;
     }
@@ -20,7 +20,7 @@ describe("getRepoChanges", () => {
     const gitObserver = jest.fn<GitObserver>();
     stopObserving = addGitObserver(gitObserver);
 
-    const repoChanges = getRepoChanges({
+    const changes = getChangedFiles({
       root: monorepo!.root,
       logger: createLogger(),
       since: params.since,
@@ -29,12 +29,12 @@ describe("getRepoChanges", () => {
 
     params.expectGitCalls !== undefined && expect(gitObserver).toHaveBeenCalledTimes(params.expectGitCalls);
 
-    if (repoChanges.status === "success") {
-      repoChanges.changedFiles.sort();
-      repoChanges.repoWideChangedFiles.sort();
+    if (changes.status === "success") {
+      changes.changedFiles.sort();
+      changes.repoWideChangedFiles.sort();
     }
 
-    return repoChanges;
+    return changes;
   }
 
   afterEach(async () => {
@@ -45,31 +45,31 @@ describe("getRepoChanges", () => {
   });
 
   it("skips git detection without `since`", async () => {
-    monorepo = new Monorepo("getRepoChanges-skippedChanges");
+    monorepo = new Monorepo("getChangedFiles-skippedChanges");
     await monorepo.init({ packages: { a: {} } });
 
-    const repoChanges = getRepoChangesWrapper({ since: undefined, expectGitCalls: 0 });
-    expect(repoChanges).toEqual({ status: "skipped" });
+    const changes = getChangedFilesWrapper({ since: undefined, expectGitCalls: 0 });
+    expect(changes).toEqual({ status: "skipped" });
   });
 
   it("returns a successful empty result when no files changed", async () => {
-    monorepo = new Monorepo("getRepoChanges-noChanges");
+    monorepo = new Monorepo("getChangedFiles-noChanges");
     await monorepo.init({ packages: { a: {} } });
 
-    const repoChanges = getRepoChangesWrapper({ since: "HEAD", expectGitCalls: 4 });
-    expect(repoChanges).toEqual({ status: "success", changedFiles: [], repoWideChangedFiles: [] });
+    const changes = getChangedFilesWrapper({ since: "HEAD", expectGitCalls: 4 });
+    expect(changes).toEqual({ status: "success", changedFiles: [], repoWideChangedFiles: [] });
   });
 
   it("reports failed detection without retrying git", async () => {
-    monorepo = new Monorepo("getRepoChanges-failedChanges");
+    monorepo = new Monorepo("getChangedFiles-failedChanges");
     await monorepo.init({ packages: { a: {} } });
 
-    const repoChanges = getRepoChangesWrapper({ since: "missing-ref", expectGitCalls: 1 });
-    expect(repoChanges).toEqual({ status: "failed" });
+    const changes = getChangedFilesWrapper({ since: "missing-ref", expectGitCalls: 1 });
+    expect(changes).toEqual({ status: "failed" });
   });
 
   it.each(["committed", "staged", "unstaged", "untracked"] as const)("reports %s changes and repoWideChanges", async (changeType) => {
-    monorepo = new Monorepo(`getRepoChanges-${changeType}Changes`);
+    monorepo = new Monorepo(`getChangedFiles-${changeType}Changes`);
     await monorepo.init({
       packages: { a: {} },
       extraFiles: {
@@ -88,12 +88,12 @@ describe("getRepoChanges", () => {
       { stage: changeType === "staged", commit: changeType === "committed" }
     );
 
-    const repoChanges = getRepoChangesWrapper({
+    const changes = getChangedFilesWrapper({
       since: changeType === "committed" ? "HEAD~1" : "HEAD",
       expectGitCalls: 4,
       repoWideChanges: ["config/*.json"],
     });
-    expect(repoChanges).toEqual({
+    expect(changes).toEqual({
       status: "success",
       changedFiles: [extraFilePath, filePath],
       repoWideChangedFiles: [extraFilePath],
@@ -101,7 +101,7 @@ describe("getRepoChanges", () => {
   });
 
   it.each(["committed", "staged", "unstaged"] as const)("reports %s deleted changes and repoWideChanges", async (changeType) => {
-    monorepo = new Monorepo(`getRepoChanges-${changeType}DeletedChanges`);
+    monorepo = new Monorepo(`getChangedFiles-${changeType}DeletedChanges`);
     const filePath = "packages/a/deleted.txt";
     const configPath = "config/deleted.json";
     await monorepo.init({
@@ -120,27 +120,27 @@ describe("getRepoChanges", () => {
       }
     }
 
-    const repoChanges = getRepoChangesWrapper({
+    const changes = getChangedFilesWrapper({
       since: changeType === "committed" ? "HEAD~1" : "HEAD",
       expectGitCalls: 4,
       repoWideChanges: ["config/*.json"],
     });
-    expect(repoChanges).toEqual({ status: "success", changedFiles: [configPath, filePath], repoWideChangedFiles: [configPath] });
+    expect(changes).toEqual({ status: "success", changedFiles: [configPath, filePath], repoWideChangedFiles: [configPath] });
   });
 
   it("excludes files matched by negated repoWideChanges", async () => {
-    monorepo = new Monorepo("getRepoChanges-negated");
+    monorepo = new Monorepo("getChangedFiles-negated");
     await monorepo.init({
       packages: { a: {} },
       extraFiles: { "config/excluded.json": "{}", "config/included.json": "{}" },
     });
     monorepo.commitFiles({ "config/included.json": '{"updated": true}', "config/excluded.json": '{"updated": true}' });
 
-    const repoChanges = getRepoChangesWrapper({
+    const changes = getChangedFilesWrapper({
       since: "HEAD~1",
       repoWideChanges: ["config/*.json", "!config/excluded.json"],
     });
-    expect(repoChanges).toEqual({
+    expect(changes).toEqual({
       status: "success",
       changedFiles: ["config/excluded.json", "config/included.json"],
       repoWideChangedFiles: ["config/included.json"],
@@ -148,7 +148,7 @@ describe("getRepoChanges", () => {
   });
 
   it("deduplicates change categories", async () => {
-    monorepo = new Monorepo("getRepoChanges-deduplicate");
+    monorepo = new Monorepo("getChangedFiles-deduplicate");
     await monorepo.init({
       packages: { a: {} },
       extraFiles: {
@@ -159,8 +159,8 @@ describe("getRepoChanges", () => {
     monorepo.stageFiles({ "packages/a/file.txt": "staged" });
     monorepo.writeFiles({ "packages/a/file.txt": "unstaged" });
 
-    const repoChanges = getRepoChangesWrapper({ since: "HEAD~1", expectGitCalls: 4 });
-    expect(repoChanges).toEqual({
+    const changes = getChangedFilesWrapper({ since: "HEAD~1", expectGitCalls: 4 });
+    expect(changes).toEqual({
       status: "success",
       changedFiles: ["packages/a/file.txt"],
       repoWideChangedFiles: [],
