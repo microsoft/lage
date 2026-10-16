@@ -10,13 +10,12 @@ import { sync as globbySync } from "globby";
 import path from "path";
 import { parse } from "shell-quote";
 import { type PackageInfos, getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
-import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
 import { getBinPaths } from "../../getBinPaths.js";
 import { getBuiltInRunners } from "../../getBuiltInRunners.js";
 import { optimizeTargetGraph } from "../../optimizeTargetGraph.js";
 import { initializeReporters } from "../initializeReporters.js";
 import { parseServerOption } from "../parseServerOption.js";
-import { createTargetGraph } from "../run/createTargetGraph.js";
+import { createFilteredTargetGraph } from "../run/createTargetGraph.js";
 import { filterArgsForTasks } from "../run/filterArgsForTasks.js";
 import { getGlobalInputHashFilePath } from "../targetHashFilePath.js";
 import type { InfoCommandOptions } from "./index.js";
@@ -100,16 +99,7 @@ export async function infoAction(options: InfoCommandOptions, command: Command):
 
   const { tasks, taskArgs } = filterArgsForTasks(command.args);
 
-  const { packages, changes } = getFilteredPackages({
-    root,
-    packageInfos,
-    logger,
-    options,
-    config,
-    collectChangesForSince: true,
-  });
-
-  const targetGraph = await createTargetGraph({ root, packages, changes, config, tasks, packageInfos });
+  const { packages, targetGraph } = await createFilteredTargetGraph({ root, packageInfos, logger, options, config, tasks });
 
   const pickerOptions = getBuiltInRunners({ nodeArg: options.nodeArg, npmCmd: config.npmClient, taskArgs });
 

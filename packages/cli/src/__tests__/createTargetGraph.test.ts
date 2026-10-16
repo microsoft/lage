@@ -1,9 +1,15 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import type { PipelineDefinition } from "@lage-run/config";
+import createLogger from "@lage-run/logger";
 import { Monorepo } from "@lage-run/test-utilities";
 import path from "path";
 import { addGitObserver, getPackageInfos, type GitObserver, type PackageInfo, type PackageInfos } from "workspace-tools";
-import { createTargetGraph, type CreateTargetGraphOptions } from "../commands/run/createTargetGraph.js";
+import {
+  createTargetGraph,
+  createFilteredTargetGraph,
+  type CreateTargetGraphOptions,
+  type CreateFilteredTargetGraphOptions,
+} from "../commands/run/createTargetGraph.js";
 import type { ChangedFiles } from "../filter/getChangedFiles.js";
 import type { Target } from "@lage-run/target-graph";
 
@@ -264,5 +270,160 @@ describe("createTargetGraph", () => {
         outputs: ["lib/**"],
       },
     ]);
+  });
+
+  describe("createFilteredTargetGraph", () => {
+    /** Prepare a filtered graph and verify only the expected change-collection commands run. */
+    async function getFilteredTargetGraphWrapper(params: {
+      options?: Partial<CreateFilteredTargetGraphOptions["options"]>;
+      config?: Partial<CreateFilteredTargetGraphOptions["config"]>;
+      stagedConfig?: "root" | "package";
+      expectGitCalls: number;
+    }) {
+      const packageInfos = getPackageInfos(monorepo!.root);
+      const stagedPipeline: PipelineDefinition = {
+        build: { stagedTarget: { type: "npmScript", options: { script: "build" } } },
+      };
+      if (params.stagedConfig === "package") {
+        packageInfos.a.lage = stagedPipeline;
+      }
+      const gitObserver = jest.fn<GitObserver>();
+      stopObserving = addGitObserver(gitObserver);
+
+      const { packages, targetGraph } = await createFilteredTargetGraph({
+        root: monorepo!.root,
+        packageInfos,
+        logger: createLogger(),
+        options: { dependencies: false, dependents: false, ignore: [], ...params.options },
+        config: {
+          pipeline: params.stagedConfig === "root" ? stagedPipeline : { build: [] },
+          cacheOptions: { outputGlob: [] },
+          priorities: [],
+          enableTargetConfigMerging: false,
+          enablePhantomTargetOptimization: false,
+          ignore: [],
+          repoWideChanges: [],
+          ...params.config,
+        },
+        tasks: ["build"],
+      });
+
+      expect(gitObserver).toHaveBeenCalledTimes(params.expectGitCalls);
+      return {
+        packages: [...packages].sort(),
+        targets: [...targetGraph.targets.values()].sort((a, b) => a.id.localeCompare(b.id)),
+      };
+    }
+
+    it("without since, builds normal scoped targets even with staged configuration", async () => {
+      monorepo = new Monorepo("createFilteredTargetGraph-withoutSince");
+      await monorepo.init({ packages: { a: {}, b: {} } });
+
+      const { packages, targets } = await getFilteredTargetGraphWrapper({
+        options: { scope: ["a"] },
+        stagedConfig: "root",
+        expectGitCalls: 0,
+      });
+      expect(packages).toEqual(["a"]);
+      expect(targets.map(({ id }) => id)).toEqual(["__start", "a#build"]);
+    });
+
+    it.each(["scope", "to"] as const)("with `%s` and no staged configuration, skips git detection", async (arg) => {
+      monorepo = new Monorepo("createFilteredTargetGraph-withoutStagedTargets");
+      await monorepo.init({ packages: { a: {}, b: {} } });
+      monorepo.writeFiles({ "packages/b/changed.ts": "changed" });
+
+      const { packages, targets } = await getFilteredTargetGraphWrapper({
+        options: { since: "HEAD", [arg]: ["a"] },
+        expectGitCalls: 0,
+      });
+      expect(packages).toEqual(["a"]);
+      expect(targets.map(({ id }) => id)).toEqual(["__start", "a#build"]);
+    });
+
+    it.each<{ desc: string; stagedConfig?: "root" }>([
+      { desc: "without staged targets" },
+      { desc: "and shares the snapshot with staged targets", stagedConfig: "root" },
+    ])("when unscoped, collects changes once $desc", async ({ stagedConfig }) => {
+      monorepo = new Monorepo("createFilteredTargetGraph-unscoped");
+      await monorepo.init({ packages: { a: {}, b: {} } });
+      monorepo.writeFiles({ "packages/a/changed.ts": "changed" });
+
+      const { packages, targets } = await getFilteredTargetGraphWrapper({
+        options: { since: "HEAD" },
+        stagedConfig,
+        expectGitCalls: 4,
+      });
+      expect(packages).toEqual(["a"]);
+      const stagedTargets = targets.filter(({ id }) => id.startsWith("Δ"));
+      expect(stagedTargets).toHaveLength(stagedConfig ? 1 : 0);
+      if (stagedConfig) {
+        expect(stagedTargets[0].options?.taskArgs).toEqual(["packages/a/changed.ts"]);
+      }
+    });
+
+    it.each<{
+      desc: string;
+      options: Partial<CreateFilteredTargetGraphOptions["options"]>;
+      stagedConfig: "root" | "package";
+      expected: string[];
+    }>([
+      {
+        desc: "includes scoped dependents with root staged configuration",
+        options: { scope: ["a"], dependents: true },
+        stagedConfig: "root",
+        expected: ["a", "b"],
+      },
+      {
+        desc: "excludes to dependents with root staged configuration",
+        options: { to: ["a"], dependents: true },
+        stagedConfig: "root",
+        expected: ["a"],
+      },
+      {
+        desc: "includes to dependencies with package-level staged configuration",
+        options: { to: ["b"], dependencies: true, dependents: true },
+        stagedConfig: "package",
+        expected: ["a", "b"],
+      },
+    ])("collects changes once and $desc", async ({ options, stagedConfig, expected }) => {
+      monorepo = new Monorepo("createFilteredTargetGraph-scopedStagedTargets");
+      await monorepo.init({ packages: { a: {}, b: { internalDeps: ["a"] }, c: {} } });
+      monorepo.writeFiles({ "packages/c/changed.ts": "changed outside scope" });
+
+      const { packages, targets } = await getFilteredTargetGraphWrapper({
+        options: { since: "HEAD", ...options },
+        stagedConfig,
+        expectGitCalls: 4,
+      });
+      expect(packages).toEqual(expected);
+      const stagedTargets = targets.filter(({ id }) => id.startsWith("Δ"));
+      expect(stagedTargets).toHaveLength(1);
+      expect(stagedTargets[0].options?.taskArgs).toEqual(["packages/c/changed.ts"]);
+    });
+
+    it.each([
+      { desc: "keeps normal scoped targets for repo-wide changes", since: "HEAD", scope: ["a"], expected: ["a"], expectGitCalls: 4 },
+      {
+        desc: "keeps all normal targets after failed detection without retrying",
+        since: "missing-ref",
+        scope: undefined,
+        expected: ["a", "b"],
+        expectGitCalls: 1,
+      },
+    ])("with staged configuration, $desc", async ({ since, scope, expected, expectGitCalls }) => {
+      monorepo = new Monorepo("createFilteredTargetGraph-disabledStagedTargets");
+      await monorepo.init({ packages: { a: {}, b: {} } });
+      monorepo.writeFiles({ "packages/b/changed.ts": "changed", "repo-wide.txt": "repo-wide change" });
+
+      const { packages, targets } = await getFilteredTargetGraphWrapper({
+        options: { since, scope },
+        config: { repoWideChanges: ["repo-wide.txt"] },
+        stagedConfig: "root",
+        expectGitCalls,
+      });
+      expect(packages).toEqual(expected);
+      expect(targets.map(({ id }) => id)).toEqual(["__start", ...expected.map((packageName) => `${packageName}#build`)]);
+    });
   });
 });

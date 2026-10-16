@@ -12,7 +12,7 @@ export async function affectedAction(options: AffectedCommandOptions): Promise<v
   const root = getWorkspaceManagerRoot(cwd)!;
   const packageInfos = await getPackageInfosAsync(root);
 
-  const { packages } = getFilteredPackages({ root, logger, packageInfos, options, config });
+  const packages = getFilteredPackages({ root, logger, packageInfos, options, config });
 
   let output = "";
   switch (options.outputFormat) {

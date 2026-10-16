@@ -1,7 +1,8 @@
 import { type TargetGraph, WorkspaceTargetGraphBuilder } from "@lage-run/target-graph";
 import type { PackageInfos } from "workspace-tools";
 import type { CacheOptions, ConfigOptions, PipelineDefinition } from "@lage-run/config";
-import type { ChangedFiles } from "../../filter/getChangedFiles.js";
+import { getChangedFiles, type ChangedFiles } from "../../filter/getChangedFiles.js";
+import { getFilteredPackages, type GetFilteredPackagesParams } from "../../filter/getFilteredPackages.js";
 
 export interface CreateTargetGraphOptions {
   root: string;
@@ -19,8 +20,36 @@ export interface CreateTargetGraphOptions {
   config: Pick<ConfigOptions, "pipeline" | "priorities" | "enableTargetConfigMerging" | "enablePhantomTargetOptimization"> & {
     cacheOptions: Pick<CacheOptions, "outputGlob">;
   };
+  /** Requested tasks to run */
   tasks: string[];
   packageInfos: PackageInfos;
+}
+
+export type CreateFilteredTargetGraphOptions = Omit<CreateTargetGraphOptions, "packages" | "changes"> &
+  Pick<GetFilteredPackagesParams, "logger" | "options"> & {
+    config: CreateTargetGraphOptions["config"] & GetFilteredPackagesParams["config"];
+  };
+
+/** Select packages and build their target graph, only getting changes from git once. */
+export async function createFilteredTargetGraph(
+  params: CreateFilteredTargetGraphOptions
+): Promise<{ packages: string[]; targetGraph: TargetGraph }> {
+  const { root, packageInfos, logger, options, config, tasks } = params;
+
+  // Change detection is only needed upfront if there are staged targets defined in the pipeline.
+  const hasStagedTarget = [config.pipeline, ...Object.values(packageInfos).map((info) => info.lage as PipelineDefinition | undefined)].some(
+    (pipeline) => pipeline && Object.values(pipeline).some((definition) => "stagedTarget" in definition)
+  );
+
+  const changes = hasStagedTarget
+    ? getChangedFiles({ since: options.since, root, repoWideChanges: config.repoWideChanges, logger })
+    : undefined;
+
+  const packages = getFilteredPackages({ root, packageInfos, logger, options, config, changes });
+
+  const targetGraph = await createTargetGraph({ root, packageInfos, config, tasks, packages, changes });
+
+  return { packages, targetGraph };
 }
 
 export async function createTargetGraph(options: CreateTargetGraphOptions): Promise<TargetGraph> {
