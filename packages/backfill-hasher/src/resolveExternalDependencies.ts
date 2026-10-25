@@ -29,7 +29,10 @@ function _filterExternalDependencies(
 export function _addToQueue(
   dependencies: Dependencies | undefined,
   done: Set<DependencySpec>,
-  queue: DependencyQueue
+  queue: DependencyQueue,
+  queued = new Set<DependencySpec>(
+    queue.map(([name, versionRange]) => `${name}@${versionRange}` as const)
+  )
 ): void {
   if (!dependencies) return;
 
@@ -38,8 +41,9 @@ export function _addToQueue(
 
     if (
       !done.has(versionRangeSignature) &&
-      !queue.some(([n, v]) => `${n}@${v}` === versionRangeSignature)
+      !queued.has(versionRangeSignature)
     ) {
+      queued.add(versionRangeSignature);
       queue.push([name, versionRange]);
     }
   }
@@ -63,6 +67,9 @@ export function resolveExternalDependencies(
   const done = new Set<DependencySpec>();
   const doneRange = new Set<DependencySpec>();
   const queue: DependencyQueue = Object.entries(externalDependencies);
+  const queued = new Set<DependencySpec>(
+    queue.map(([name, versionRange]) => `${name}@${versionRange}` as const)
+  );
 
   while (queue.length > 0) {
     const next = queue.shift()!;
@@ -75,7 +82,7 @@ export function resolveExternalDependencies(
     if (lockFileResult) {
       const { version, dependencies } = lockFileResult;
 
-      _addToQueue(dependencies, doneRange, queue);
+      _addToQueue(dependencies, doneRange, queue, queued);
       done.add(`${name}@${version}`);
     } else {
       done.add(`${name}@${versionRange}`);
