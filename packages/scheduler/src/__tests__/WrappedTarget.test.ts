@@ -3,7 +3,7 @@ import { TargetHasher } from "@lage-run/hasher";
 import { Logger } from "@lage-run/logger";
 import type { TargetRunner } from "@lage-run/runners";
 import type { Target } from "@lage-run/target-graph";
-import type { Pool } from "@lage-run/worker-threads-pool";
+import { WorkerPool, type Pool } from "@lage-run/worker-threads-pool";
 import path from "path";
 import { createTempDir } from "@lage-run/test-utilities";
 import { WrappedTarget } from "../WrappedTarget.js";
@@ -75,6 +75,7 @@ describe("WrappedTarget", () => {
       mockHash?: string | Error;
       skippy?: boolean;
       shouldCache?: boolean;
+      experimentalCacheHitOptimization?: boolean;
       targetCache?: boolean;
       abortController?: AbortController;
       localCacheProvider?: { isUpToDate(hash: string, target: Target): Promise<boolean> };
@@ -105,6 +106,7 @@ describe("WrappedTarget", () => {
       logger,
       root,
       shouldCache,
+      experimentalCacheHitOptimization: "experimentalCacheHitOptimization" in overrides ? overrides.experimentalCacheHitOptimization : true,
       target,
       pool,
       hasher,
@@ -312,6 +314,24 @@ describe("WrappedTarget", () => {
     expect(wrappedTarget.threadId).toBe(0);
   });
 
+  it.each([undefined, false])("keeps worker dispatch and skips preflight validation without opt-in (%s)", async (enabled) => {
+    const localCacheProvider = {
+      isUpToDate: jest.fn<(hash: string, target: Target) => Promise<boolean>>().mockResolvedValue(true),
+    };
+    const { wrappedTarget, hashSpy, exec, target } = createCacheTest({
+      skippy: true,
+      localCacheProvider,
+      experimentalCacheHitOptimization: enabled,
+    });
+
+    await wrappedTarget.run();
+
+    expect(hashSpy).not.toHaveBeenCalled();
+    expect(localCacheProvider.isUpToDate).not.toHaveBeenCalled();
+    expect(exec.mock.calls[0][0]).toEqual({ target });
+    expect(wrappedTarget.status).toBe("skipped");
+  });
+
   it("passes the input hash to the worker when outputs need restoration", async () => {
     const localCacheProvider = {
       isUpToDate: jest.fn<(hash: string, target: Target) => Promise<boolean>>().mockResolvedValue(false),
@@ -368,5 +388,31 @@ describe("WrappedTarget", () => {
     expect(wrappedTarget.status).toBe("failed");
     expect(error).toHaveBeenCalled();
     expect(exec).not.toHaveBeenCalled();
+  });
+
+  it("fails even when a legacy worker ignores hash errors, then reuses the pool", async () => {
+    const failure = new Error("Cannot read build input");
+    const { wrappedTarget, hashSpy, abortController } = createCacheTest({
+      experimentalCacheHitOptimization: false,
+      mockHash: failure,
+    });
+    const pool = new WorkerPool({
+      script: path.join(__dirname, "fixtures", "legacy-hash-worker.cjs"),
+      minWorkers: 0,
+      maxWorkers: 1,
+    });
+    wrappedTarget.options.pool = pool;
+    wrappedTarget.options.continueOnError = true;
+    try {
+      await expect(wrappedTarget.run()).rejects.toBe(failure);
+      expect(wrappedTarget.status).toBe("failed");
+      expect(abortController.signal.aborted).toBe(false);
+
+      hashSpy.mockResolvedValue("recovery-hash");
+      const recovery = new WrappedTarget(wrappedTarget.options);
+      await expect(recovery.run()).resolves.toMatchObject({ skipped: true, hash: "recovery-hash" });
+    } finally {
+      await pool.close();
+    }
   });
 });

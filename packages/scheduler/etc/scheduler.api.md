@@ -44,6 +44,8 @@ interface SimpleSchedulerOptions {
     // (undocumented)
     continueOnError: boolean;
     // (undocumented)
+    experimentalCacheHitOptimization?: boolean;
+    // (undocumented)
     hasher: TargetHasher;
     // (undocumented)
     logger: Logger<never, never>;
@@ -131,6 +133,8 @@ interface WrappedTargetOptions {
     abortController: AbortController;
     // (undocumented)
     continueOnError: boolean;
+    // (undocumented)
+    experimentalCacheHitOptimization?: boolean;
     // (undocumented)
     hasher: TargetHasher;
     // (undocumented)

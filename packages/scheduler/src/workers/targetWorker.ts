@@ -13,6 +13,7 @@ interface TargetWorkerDataOptions {
   skipLocalCache: boolean;
   shouldCache: boolean;
   shouldResetCache: boolean;
+  experimentalCacheHitOptimization?: boolean;
   taskArgs: string[];
   root: string;
   cacheOptions?: CacheOptions;
@@ -34,6 +35,7 @@ function setup(options: TargetWorkerDataOptions) {
     logger,
     cacheOptions,
     skipLocalCache: options.skipLocalCache,
+    experimentalCacheHitOptimization: options.experimentalCacheHitOptimization,
   });
 
   const runnerPicker = new TargetRunnerPicker(runners);
@@ -53,6 +55,23 @@ async function getCache(target: Target, hash: string | undefined) {
 
   if (!shouldCache || !target.cache || !cacheProvider) {
     return { hash: undefined, cacheHit };
+  }
+
+  if (!options.experimentalCacheHitOptimization) {
+    hash = await new Promise<string>((resolve, reject) => {
+      const onMessage = (data: { type: string; hash: string; error?: string }) => {
+        if (data.type === "hash") {
+          parentPort!.off("message", onMessage);
+          if (data.error !== undefined) {
+            reject(new Error(data.error));
+          } else {
+            resolve(data.hash);
+          }
+        }
+      };
+      parentPort!.on("message", onMessage);
+      parentPort!.postMessage({ type: "hash" });
+    });
   }
 
   if (hash && !shouldResetCache) {

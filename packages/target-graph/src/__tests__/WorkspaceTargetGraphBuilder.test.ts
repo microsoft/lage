@@ -55,6 +55,7 @@ describe("workspace target graph builder", () => {
       packageInfos: createPackageInfo({ a: ["b"], b: [], c: [] }),
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
+      experimentalCacheHitOptimization: true,
     });
     const buildWeight = jest.fn(() => 2);
     const testWeight = jest.fn(() => {

@@ -21,6 +21,7 @@ export interface SimpleSchedulerOptions {
   continueOnError: boolean;
   shouldCache: boolean;
   shouldResetCache: boolean;
+  experimentalCacheHitOptimization?: boolean;
   workerData: {
     runners: TargetRunnerPickerOptions;
     root: string;
@@ -58,13 +59,15 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
   public readonly runnerPicker: TargetRunnerPicker;
 
   constructor(private options: SimpleSchedulerOptions) {
+    const experimentalCacheHitOptimization = options.experimentalCacheHitOptimization === true;
     this.localCacheProvider =
-      options.shouldCache && !options.shouldResetCache
+      experimentalCacheHitOptimization && options.shouldCache && !options.shouldResetCache
         ? createLocalCacheProvider({
             root: options.workerData.root,
             logger: options.logger,
             cacheOptions: options.workerData.cacheOptions,
             skipLocalCache: options.workerData.skipLocalCache,
+            experimentalCacheHitOptimization,
           })
         : undefined;
 
@@ -75,11 +78,17 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
         maxWorkersByGroup: options.maxWorkersPerTask,
         groupBy: ({ target }) => target.task,
         maxWorkers: options.concurrency,
+        minWorkers: experimentalCacheHitOptimization ? 0 : undefined,
         script: require.resolve("./workers/targetWorker.js"),
         workerOptions: {
           stdout: true,
           stderr: true,
-          workerData: { ...options.workerData, shouldCache: options.shouldCache, shouldResetCache: options.shouldResetCache },
+          workerData: {
+            ...options.workerData,
+            shouldCache: options.shouldCache,
+            shouldResetCache: options.shouldResetCache,
+            experimentalCacheHitOptimization,
+          },
         },
         workerIdleMemoryLimit: options.workerIdleMemoryLimit, // in bytes
       });
@@ -128,6 +137,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
           root,
           logger,
           shouldCache,
+          experimentalCacheHitOptimization: this.options.experimentalCacheHitOptimization,
           continueOnError,
           abortController,
           pool,

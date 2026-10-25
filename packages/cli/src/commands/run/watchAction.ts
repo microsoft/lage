@@ -47,6 +47,7 @@ export async function watchAction(options: RunCommandOptions, command: Command):
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
     enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
+    experimentalCacheHitOptimization: config.experimentalCacheHitOptimization,
   });
 
   // Make sure we do not attempt writeRemoteCache in watch mode
@@ -81,6 +82,7 @@ export async function watchAction(options: RunCommandOptions, command: Command):
     },
     shouldCache: options.cache,
     shouldResetCache: !!options.resetCache,
+    experimentalCacheHitOptimization: config.experimentalCacheHitOptimization,
     maxWorkersPerTask: new Map([...getMaxWorkersPerTask(filteredPipeline, concurrency), ...maxWorkersPerTaskMap]),
     hasher,
     workerIdleMemoryLimit: config.workerIdleMemoryLimit, // in bytes

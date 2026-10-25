@@ -25,8 +25,8 @@ describe("AggregatedPool", () => {
     expect(group1Pool).not.toBe(group2Pool);
     expect(group1Pool?.maxWorkers).toBe(5);
     expect(group2Pool?.maxWorkers).toBe(5);
-    expect(group1Pool?.workers).toHaveLength(0);
-    expect(group2Pool?.workers).toHaveLength(0);
+    expect(group1Pool?.workers).toHaveLength(2);
+    expect(group2Pool?.workers).toHaveLength(2);
 
     expect(pool.defaultPool).toBeUndefined();
 
@@ -58,7 +58,7 @@ describe("AggregatedPool", () => {
 
     expect(pool.defaultPool).toBeTruthy();
     expect(pool.defaultPool?.maxWorkers).toBe(5);
-    expect(pool.defaultPool?.workers).toHaveLength(0);
+    expect(pool.defaultPool?.workers).toHaveLength(2);
 
     await pool.close();
   });
@@ -68,6 +68,7 @@ describe("AggregatedPool", () => {
       groupBy: (data: { group: string }) => data.group,
       logger: new Logger(),
       maxWorkers: 4,
+      minWorkers: 0,
       maxWorkersByGroup: new Map([["build", 2]]),
       script: path.join(__dirname, "fixtures", "my-worker.js"),
     });

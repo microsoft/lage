@@ -21,6 +21,7 @@ export interface BackfillCacheProviderOptions {
   root: string;
   logger: TargetLogger;
   cacheOptions: Partial<CacheOptions>;
+  experimentalCacheHitOptimization?: boolean;
 }
 
 export class BackfillCacheProvider implements CacheProvider {
@@ -35,15 +36,22 @@ export class BackfillCacheProvider implements CacheProvider {
 
     const cachePath = this.getCachePath(cwd, hash);
 
-    return getCacheStorageProvider(cacheStorageConfig ?? { provider: "local" }, cachePath, this.backfillLogger, cwd, incrementalCaching);
+    return getCacheStorageProvider(
+      cacheStorageConfig ?? { provider: "local" },
+      cachePath,
+      this.backfillLogger,
+      cwd,
+      incrementalCaching,
+      this.options.experimentalCacheHitOptimization === true
+    );
   }
 
   constructor(private options: BackfillCacheProviderOptions) {
-    this.backfillLogger = createBackfillLogger(options.logger);
+    this.backfillLogger = createBackfillLogger(options.experimentalCacheHitOptimization === true ? options.logger : undefined);
   }
 
   public async isUpToDate(hash: string, target: Target): Promise<boolean> {
-    if (!hash) {
+    if (!hash || this.options.experimentalCacheHitOptimization !== true) {
       return false;
     }
     try {

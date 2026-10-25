@@ -9,6 +9,8 @@ export interface TargetFactoryOptions {
   root: string;
   packageInfos: PackageInfos;
   resolve(packageName: string): string;
+  /** Defer function-valued weights until first read. Defaults to false. */
+  lazyWeights?: boolean;
 }
 
 export class TargetFactory {
@@ -45,7 +47,7 @@ export class TargetFactory {
 
   private setWeight(target: Target, config: TargetConfig): void {
     const { weight, maxWorkers } = config;
-    if (typeof weight !== "function") {
+    if (this.options.lazyWeights !== true || typeof weight !== "function") {
       target.weight = getWeight(target, weight, maxWorkers);
       return;
     }

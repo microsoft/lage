@@ -37,6 +37,25 @@ See the source for [`ConfigOptions`](https://github.com/microsoft/lage/blob/main
 
 Some options can also be set with [CLI options or environment variables](./cli).
 
+### `experimentalCacheHitOptimization`
+
+Set this top-level boolean in your workspace's `lage.config.js` to try the candidate local cache-hit runtime:
+
+```js title="/lage.config.js"
+module.exports = {
+  experimentalCacheHitOptimization: true,
+  pipeline: { build: ["^build"] }
+};
+```
+
+Omitting the setting or using `false` preserves the legacy runtime, including eager function-valued target weights.
+With `true`, Lage enables cache-hit optimizations and defers function-valued weights until first needed.
+Non-boolean values such as `"true"` are rejected.
+
+Existing `--no-cache`, `--reset-cache`, and `--skip-local-cache` options retain precedence; this setting does not override them.
+`BACKFILL_CACHE_NATIVE` only selects the cache backend after opt-in; it does not enable the experiment.
+The setting controls the local optimized runtime, not optional compiler installation or automatic global environment configuration.
+
 ### Example
 
 This example demonstrates many of the available options, including some advanced cases. Your config probably doesn't need to be this complicated, at least starting out.

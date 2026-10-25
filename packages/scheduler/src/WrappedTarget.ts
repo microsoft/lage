@@ -16,6 +16,7 @@ export interface WrappedTargetOptions {
   target: Target;
   logger: TargetLogger;
   shouldCache: boolean;
+  experimentalCacheHitOptimization?: boolean;
   continueOnError: boolean;
   abortController: AbortController;
   pool: Pool;
@@ -151,36 +152,40 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     }
 
     try {
-      const cacheStart = process.hrtime();
-      const hash = target.cache && shouldCache ? await this.options.hasher.hash(target) : undefined;
+      if (this.options.experimentalCacheHitOptimization === true) {
+        const cacheStart = process.hrtime();
+        const hash = target.cache && shouldCache ? await this.options.hasher.hash(target) : undefined;
 
-      if (abortSignal.aborted) {
-        this.onStart(0);
-        this.onAbort();
-        return;
-      }
+        if (abortSignal.aborted) {
+          this.onStart(0);
+          this.onAbort();
+          return;
+        }
 
-      const cacheHit = hash ? await this.options.localCacheProvider?.isUpToDate(hash, target) : false;
+        const cacheHit = hash ? await this.options.localCacheProvider?.isUpToDate(hash, target) : false;
 
-      if (abortSignal.aborted) {
-        this.onStart(0);
-        this.onAbort();
-        return;
-      }
+        if (abortSignal.aborted) {
+          this.onStart(0);
+          this.onAbort();
+          return;
+        }
 
-      if (hash && cacheHit) {
-        this.onStart(0, cacheStart);
-        this.duration = process.hrtime(cacheStart);
-        this.#result = {
-          id: target.id,
-          hash,
-          skipped: true,
-          value: undefined,
-          stdoutBuffer: "",
-          stderrBuffer: "",
-        };
+        if (hash && cacheHit) {
+          this.onStart(0, cacheStart);
+          this.duration = process.hrtime(cacheStart);
+          this.#result = {
+            id: target.id,
+            hash,
+            skipped: true,
+            value: undefined,
+            stdoutBuffer: "",
+            stderrBuffer: "",
+          };
+        } else {
+          this.#result = await this.runInPool(hash);
+        }
       } else {
-        this.#result = await this.runInPool(hash);
+        this.#result = await this.runInPool();
       }
 
       const cacheEnabled = target.cache && shouldCache && this.#result.hash;
@@ -228,7 +233,7 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     }
   }
 
-  private async runInPool(hash: string | undefined): Promise<WorkerResult> {
+  private async runInPool(hash?: string): Promise<WorkerResult> {
     const { target, logger, abortController, pool } = this.options;
     const abortSignal = abortController.signal;
 
@@ -239,9 +244,10 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
     const bufferStderr = bufferTransform();
 
     let msgHandler: (data: LogEntry<any> & { type: string }) => void;
+    let hashError: Error | undefined;
 
     const result = await (pool.exec(
-      { target, hash },
+      this.options.experimentalCacheHitOptimization === true ? { target, hash } : { target },
       target.weight ?? 1,
       (worker, stdout, stderr) => {
         const postMessage = worker.postMessage.bind(worker);
@@ -249,6 +255,20 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
         msgHandler = (data) => {
           if (data.type === "log") {
             logger.log(data.level, data.msg, { target, threadId: worker.threadId });
+          } else if (data.type === "hash") {
+            void (hash !== undefined ? Promise.resolve(hash) : this.options.hasher.hash(target))
+              .then(
+                (targetHash) => postMessage({ type: "hash", hash: targetHash }),
+                (error: unknown) => {
+                  const message = error instanceof Error ? error.message : String(error);
+                  hashError = error instanceof Error ? error : new Error(message);
+                  logger.warn(`Failed to hash target ${target.id}: ${message}`);
+                  postMessage({ type: "hash", error: message });
+                }
+              )
+              .catch((error: unknown) => {
+                logger.warn(`Failed to send hash response for ${target.id}: ${error instanceof Error ? error.message : String(error)}`);
+              });
           } else if (this.options.onMessage) {
             this.options.onMessage(data, postMessage);
           }
@@ -286,6 +306,11 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
       abortSignal,
       target.priority
     ) as Promise<{ value?: unknown; skipped: boolean; hash: string; id: string }>);
+
+    // Legacy custom workers may ignore the error field and complete without a hash.
+    if (hashError) {
+      throw hashError;
+    }
 
     return {
       stdoutBuffer: bufferStdout.buffer,

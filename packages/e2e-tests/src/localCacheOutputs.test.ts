@@ -46,6 +46,7 @@ describe("materialized local cache outputs", () => {
     await repo.init({
       lageConfig: {
         npmClient: "npm",
+        experimentalCacheHitOptimization: true,
         pipeline: {
           build: {
             dependsOn: ["^build"],
@@ -92,10 +93,10 @@ describe("materialized local cache outputs", () => {
     await repo?.cleanup();
   });
 
-  async function run(mode: "0" | "1", task = "build", args: string[] = []) {
+  async function run(mode: "0" | "1" | "invalid-mode", task = "build", args: string[] = [], configFlag?: "true" | "false") {
     // CI normally defaults to --skip-local-cache; these cases explicitly exercise local caching.
     const result = await repo.run(task, ["--concurrency", "2", ...args], false, {
-      env: { CI: "", TF_BUILD: "", BACKFILL_CACHE_NATIVE: mode },
+      env: { CI: "", TF_BUILD: "", BACKFILL_CACHE_NATIVE: mode, LAGE_TEST_CACHE_HIT: configFlag },
     });
     expect(result.exitCode).toBe(0);
     return getStatusEntriesData(parseNdJson(result.stdout, result.stderr));
@@ -123,6 +124,35 @@ describe("materialized local cache outputs", () => {
       return { mtimeMs, ctimeMs };
     });
   }
+
+  it("defaults to legacy restoration and supports opting in and back out without changing cache keys", async () => {
+    const config = repo.readFiles(["lage.config.js"])["lage.config.js"];
+    repo.writeFiles({
+      "lage.config.js": `${config}
+delete module.exports.experimentalCacheHitOptimization;
+if (process.env.LAGE_TEST_CACHE_HIT !== undefined) {
+  module.exports.experimentalCacheHitOptimization = process.env.LAGE_TEST_CACHE_HIT === "true";
+}
+`,
+    });
+
+    expectStatus(await run("invalid-mode"), "success");
+    const builtTimes = outputTimes();
+    expectStatus(await run("invalid-mode"), "skipped");
+    expect(outputTimes()).not.toEqual(builtTimes);
+    expect(runCounts()).toEqual([1, 1]);
+
+    expectStatus(await run(primaryMode, "build", [], "true"), "skipped");
+    const enabledTimes = outputTimes();
+    expectStatus(await run(primaryMode, "build", [], "true"), "skipped");
+    expect(outputTimes()).toEqual(enabledTimes);
+
+    expectStatus(await run("invalid-mode", "build", [], "false"), "skipped");
+    expect(outputTimes()).not.toEqual(enabledTimes);
+    expectStatus(await run(primaryMode, "build", [], "true"), "skipped");
+    expect(runCounts()).toEqual([1, 1]);
+    expectOutputs("a1:b1", "b1");
+  }, 120_000);
 
   it("reuses intact outputs, repairs cache damage and rebuilds affected dependents", async () => {
     expectStatus(await run(primaryMode), "success");

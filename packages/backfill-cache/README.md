@@ -7,13 +7,19 @@
 This package shouldn't be used directly. It's an internal package to
 [`backfill`](https://www.npmjs.com/package/backfill).
 
-Local cache entries retain their existing directory layout. An optional
+`LocalCacheStorage` retains the original copy-based fetch and put behavior.
+Lage selects the experimental materialized-output provider only when
+`experimentalCacheHitOptimization: true` is set in `lage.config.js`.
+Standalone Backfill callers retain the legacy provider by default.
+
+Experimental cache entries retain their existing directory layout. An optional
 `<hash>.state.json` sibling records verified output identities, sizes, permissions,
 and nanosecond modification/status-change timestamps. Unchanged outputs are not
 rewritten on subsequent fetches; missing or modified outputs are restored.
 Older entries work without this metadata and acquire it after verification.
 
-`CacheStorage.isUpToDate(hash)` is a read-only local-output check. It returns false
+`CacheStorage.isUpToDate(hash)` defaults to false. The experimental provider
+implements it as a read-only local-output check. It returns false
 without complete metadata, when the cache directory is missing or replaced, or
 when any output changes. It never restores files or contacts remote storage.
 Symlinks and filesystems without usable file identities/status timestamps use the
@@ -30,7 +36,8 @@ The addon image is retained before asynchronous work is queued so its shared
 worker pool remains safe across Node Worker teardown. Platforms without module
 retention support use serial native validation instead of unmanaged threads.
 
-`BACKFILL_CACHE_NATIVE` selects the backend:
+After configuration opt-in, `BACKFILL_CACHE_NATIVE` selects the backend.
+It does not enable the optimization or load the addon when the setting is off:
 
 - `auto` (default): use a compatible packaged binary when available; otherwise
   use JavaScript. An incompatible or unloadable binary produces a warning.

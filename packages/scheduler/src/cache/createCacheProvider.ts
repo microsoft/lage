@@ -8,6 +8,7 @@ interface CreateCacheOptions {
   logger: TargetLogger;
   root: string;
   skipLocalCache?: boolean;
+  experimentalCacheHitOptimization?: boolean;
 }
 
 export function createLocalCacheProvider(options: CreateCacheOptions): BackfillCacheProvider | undefined {
@@ -19,6 +20,7 @@ export function createLocalCacheProvider(options: CreateCacheOptions): BackfillC
   return new BackfillCacheProvider({
     logger,
     root,
+    experimentalCacheHitOptimization: options.experimentalCacheHitOptimization,
     cacheOptions: {
       outputGlob: cacheOptions?.outputGlob,
       ...(cacheOptions?.internalCacheFolder && { internalCacheFolder: cacheOptions.internalCacheFolder }),
@@ -40,7 +42,14 @@ export function createCache(options: CreateCacheOptions): {
     root,
     logger,
     localCacheProvider: createLocalCacheProvider(options),
-    remoteCacheProvider: hasRemoteCacheConfig ? new BackfillCacheProvider({ logger, root, cacheOptions: cacheOptions ?? {} }) : undefined,
+    remoteCacheProvider: hasRemoteCacheConfig
+      ? new BackfillCacheProvider({
+          logger,
+          root,
+          cacheOptions: cacheOptions ?? {},
+          experimentalCacheHitOptimization: options.experimentalCacheHitOptimization,
+        })
+      : undefined,
     writeRemoteCache:
       (cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI) &&
       String(process.env.LAGE_WRITE_CACHE).toLowerCase() !== "false",

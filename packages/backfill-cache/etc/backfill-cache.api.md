@@ -28,7 +28,7 @@ export abstract class CacheStorage implements ICacheStorage {
 }
 
 // @public
-export function getCacheStorageProvider(cacheStorageConfig: CacheStorageConfig, internalCacheFolder: string, logger: Logger, cwd: string, incrementalCaching?: boolean): ICacheStorage;
+export function getCacheStorageProvider(cacheStorageConfig: CacheStorageConfig, internalCacheFolder: string, logger: Logger, cwd: string, incrementalCaching?: boolean, experimentalCacheHitOptimization?: boolean): ICacheStorage;
 
 export { ICacheStorage }
 

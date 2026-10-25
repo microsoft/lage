@@ -127,6 +127,7 @@ describe("BackfillCacheProvider", () => {
     const options: BackfillCacheProviderOptions = {
       logger: createLogger(),
       root,
+      experimentalCacheHitOptimization: true,
       cacheOptions: { outputGlob: ["output.txt"] },
     };
     const provider = new BackfillCacheProvider(options);
@@ -151,6 +152,7 @@ describe("BackfillCacheProvider", () => {
     const provider = new BackfillCacheProvider({
       logger: createLogger(),
       root,
+      experimentalCacheHitOptimization: true,
       cacheOptions: {
         cacheStorageConfig: {
           provider: "azure-blob",
@@ -169,12 +171,22 @@ describe("BackfillCacheProvider", () => {
     const provider = new BackfillCacheProvider({
       logger: createLogger(),
       root,
+      experimentalCacheHitOptimization: true,
       cacheOptions: {},
     });
     const target = makeTarget(root);
     const previous = process.env.BACKFILL_CACHE_NATIVE;
     process.env.BACKFILL_CACHE_NATIVE = "invalid-mode";
     try {
+      for (const experimentalCacheHitOptimization of [undefined, false]) {
+        const legacy = new BackfillCacheProvider({
+          logger: createLogger(),
+          root,
+          cacheOptions: {},
+          experimentalCacheHitOptimization,
+        });
+        expect(await legacy.isUpToDate("hash", target)).toBe(false);
+      }
       await expect(provider.isUpToDate("hash", target)).rejects.toThrow(NativeCacheValidationError);
     } finally {
       if (previous === undefined) {

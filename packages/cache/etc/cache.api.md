@@ -29,6 +29,8 @@ interface BackfillCacheProviderOptions {
     // (undocumented)
     cacheOptions: Partial<CacheOptions>;
     // (undocumented)
+    experimentalCacheHitOptimization?: boolean;
+    // (undocumented)
     logger: TargetLogger;
     // (undocumented)
     root: string;

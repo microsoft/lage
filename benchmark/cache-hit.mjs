@@ -115,7 +115,7 @@ const report = {
   cliSha256,
   nativeBinary,
   node: process.version,
-  nativeValidation,
+  requestedNativeValidation: nativeValidation,
   command: [process.execPath, cli, "run", "build", "--reporter", "json", "--log-level", "error"],
   expectedTargets,
   maxSeconds,

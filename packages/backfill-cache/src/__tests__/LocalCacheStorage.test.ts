@@ -10,6 +10,7 @@ import fs from "fs-extra";
 import { promises as fsPromises } from "fs";
 import path from "path";
 import { LocalCacheStorage } from "../LocalCacheStorage.js";
+import { MaterializedCacheStorage } from "../MaterializedCacheStorage.js";
 import { getCacheStorageProvider } from "../getCacheStorageProvider.js";
 
 /**
@@ -130,7 +131,7 @@ describe("LocalCacheStorage", () => {
         ".cache",
         "backfill"
       );
-      const cacheStorage = new LocalCacheStorage(
+      const cacheStorage = new MaterializedCacheStorage(
         internalCacheFolder,
         makeLogger("mute"),
         fixtureLocation
@@ -153,7 +154,7 @@ describe("LocalCacheStorage", () => {
       const { fixtureLocation, internalCacheFolder, cacheStorage, hash } =
         setupOutputs();
       await cacheStorage.put(hash, ["lib/**"]);
-      const freshStorage = new LocalCacheStorage(
+      const freshStorage = new MaterializedCacheStorage(
         internalCacheFolder,
         makeLogger("mute"),
         fixtureLocation
@@ -371,7 +372,7 @@ describe("LocalCacheStorage", () => {
         internalCacheFolder,
         cacheFolder,
       } = setupOutputs();
-      const other = new LocalCacheStorage(
+      const other = new MaterializedCacheStorage(
         internalCacheFolder,
         makeLogger("mute"),
         fixtureLocation
@@ -400,6 +401,44 @@ describe("LocalCacheStorage", () => {
       expect(await cacheStorage.fetch(hash)).toBe(true);
       expect(await fs.readFile(outputFile, "utf8")).toBe("updated");
       expect(await fs.readFile(added, "utf8")).toBe("new");
+    });
+
+    it("keeps legacy storage as the default and invalidates proofs when switching back", async () => {
+      const {
+        fixtureLocation,
+        internalCacheFolder,
+        cacheStorage,
+        hash,
+        cacheFolder,
+        outputFile,
+      } = setupOutputs();
+      const args = [
+        { provider: "local" } as const,
+        internalCacheFolder,
+        makeLogger("mute"),
+        fixtureLocation,
+      ] as const;
+      const legacy = getCacheStorageProvider(...args);
+      const enabled = getCacheStorageProvider(...args, false, true);
+      expect(legacy).toBeInstanceOf(LocalCacheStorage);
+      expect(legacy).not.toBeInstanceOf(MaterializedCacheStorage);
+      expect(enabled).toBeInstanceOf(MaterializedCacheStorage);
+      expect(getCacheStorageProvider(...args, false, false)).toBe(legacy);
+      expect(getCacheStorageProvider(...args, false, true)).toBe(enabled);
+
+      await legacy.put(hash, ["lib/**"]);
+      expect(await fs.pathExists(`${cacheFolder}.state.json`)).toBe(false);
+      await fs.writeFile(outputFile, "modified");
+      expect(await legacy.fetch(hash)).toBe(true);
+      expect(await fs.readFile(outputFile, "utf8")).toBe("original");
+
+      await cacheStorage.fetch(hash);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+      await legacy.put(hash, ["lib/**"]);
+      expect(await fs.pathExists(`${cacheFolder}.state.json`)).toBe(false);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+      await cacheStorage.fetch(hash);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
     });
   });
 

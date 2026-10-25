@@ -101,6 +101,7 @@ export class TargetFactory {
 
 // @public (undocumented)
 interface TargetFactoryOptions {
+    lazyWeights?: boolean;
     // (undocumented)
     packageInfos: PackageInfos;
     // (undocumented)
@@ -138,6 +139,7 @@ export class WorkspaceTargetGraphBuilder {
         packageInfos: PackageInfos;
         enableTargetConfigMerging: boolean;
         enablePhantomTargetOptimization: boolean;
+        experimentalCacheHitOptimization?: boolean;
     });
     addTargetConfig(id: string, config?: TargetConfig, changedFiles?: string[]): void;
     build(tasks: string[], scope?: string[], priorities?: Priority[]): Promise<TargetGraph>;
