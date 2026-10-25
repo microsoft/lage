@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Preserve reverse topological traversal order by appending entries and reversing the completed list.",
+      "packageName": "@lage-run/target-graph",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
