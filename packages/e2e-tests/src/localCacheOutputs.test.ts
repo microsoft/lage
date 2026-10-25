@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 import fs from "fs";
 import path from "path";
+import { sync as globSync } from "globby";
 import { Monorepo } from "./mock/monorepo.js";
 import { getStatusEntriesData, parseNdJson } from "./parseNdJson.js";
 
@@ -31,7 +32,7 @@ const output = source + dependency;
 fs.mkdirSync(path.join("dist", "nested"), { recursive: true });
 for (const file of [path.join("dist", "output.txt"), path.join("dist", "nested", "output.txt")]) {
   fs.writeFileSync(file, output);
-  // A fixed subsecond mtime makes output rewrites observable without timing sleeps.
+  // Use a stable subsecond mtime when checking that validation leaves outputs untouched.
   const timestamp = new Date("2001-02-03T04:05:06.789Z");
   fs.utimesSync(file, timestamp, timestamp);
 }
@@ -136,20 +137,34 @@ if (process.env.LAGE_TEST_CACHE_HIT !== undefined) {
 `,
     });
 
+    const receiptFiles = () => globSync("node_modules/.cache/lage/cache/**/*.state.json", { cwd: repo.root, absolute: true });
     expectStatus(await run("invalid-mode"), "success");
-    const builtTimes = outputTimes();
+    expect(receiptFiles()).toHaveLength(0);
+    fs.unlinkSync(path.join(repo.root, outputFiles[0]));
     expectStatus(await run("invalid-mode"), "skipped");
-    expect(outputTimes()).not.toEqual(builtTimes);
+    expectOutputs("a1:b1", "b1");
+    expect(receiptFiles()).toHaveLength(0);
     expect(runCounts()).toEqual([1, 1]);
 
     expectStatus(await run(primaryMode, "build", [], "true"), "skipped");
+    const receipts = receiptFiles();
+    expect(receipts).toHaveLength(2);
     const enabledTimes = outputTimes();
     expectStatus(await run(primaryMode, "build", [], "true"), "skipped");
     expect(outputTimes()).toEqual(enabledTimes);
 
+    const invalidReceipt = "Disabled mode must ignore this receipt";
+    for (const receipt of receipts) {
+      fs.writeFileSync(receipt, invalidReceipt);
+    }
+    fs.unlinkSync(path.join(repo.root, outputFiles[0]));
     expectStatus(await run("invalid-mode", "build", [], "false"), "skipped");
-    expect(outputTimes()).not.toEqual(enabledTimes);
+    expectOutputs("a1:b1", "b1");
+    expect(receipts.map((receipt) => fs.readFileSync(receipt, "utf8"))).toEqual([invalidReceipt, invalidReceipt]);
     expectStatus(await run(primaryMode, "build", [], "true"), "skipped");
+    for (const receipt of receipts) {
+      expect(JSON.parse(fs.readFileSync(receipt, "utf8"))).toMatchObject({ version: 1, complete: true });
+    }
     expect(runCounts()).toEqual([1, 1]);
     expectOutputs("a1:b1", "b1");
   }, 120_000);
