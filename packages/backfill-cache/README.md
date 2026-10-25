@@ -21,10 +21,14 @@ Older entries work without this metadata and acquire it after verification.
 `CacheStorage.isUpToDate(hash)` defaults to false. The experimental provider
 implements it as a read-only local-output check. It returns false
 without complete metadata, when the cache directory is missing or replaced, or
-when any output changes. It never restores files or contacts remote storage.
+when any recorded output metadata changes. It never restores files or contacts remote storage.
 Symlinks and filesystems without usable file identities/status timestamps use the
 normal fetch path. Content verification brackets reads with metadata checks, and
 new entries and metadata are published by rename only after writes finish.
+
+Both validators compare metadata, not file contents. A same-size edit that restores
+mtime within one filesystem timestamp tick can leave every recorded field unchanged;
+metadata-only validation cannot detect that case. The fast path remains opt-in.
 
 ## Optional Rust output validation
 

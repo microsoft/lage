@@ -3,6 +3,7 @@ import fs from "fs";
 import { spawnSync } from "child_process";
 import { createRequire } from "module";
 import path from "path";
+import { performance } from "perf_hooks";
 import { makeLogger } from "backfill-logger";
 import { createTempDir, removeTempDirAsync } from "@lage-run/test-utilities";
 import {
@@ -82,18 +83,30 @@ describe("native output validation against Node metadata", () => {
     await expect(validate(root, [], [])).resolves.toBe(true);
   });
 
-  it("detects same-size changes even when modification time is restored", async () => {
+  it("detects ctime changes when size and modification time are preserved", async () => {
     const filename = write("output.txt");
     const originalTime = new Date("2001-02-03T04:05:06.789Z");
     fs.utimesSync(filename, originalTime, originalTime);
-    const before = fs.lstatSync(filename);
+    const before = fs.lstatSync(filename, { bigint: true });
     const expected = fingerprint(filename);
 
-    fs.writeFileSync(filename, "modified");
-    fs.utimesSync(filename, before.atime, before.mtime);
+    // Windows can give consecutive writes the same timestamp. Establish a real
+    // metadata change rather than expecting the validator to compare contents.
+    const deadline = performance.now() + 2000;
+    let after = before;
+    do {
+      fs.writeFileSync(filename, "modified");
+      fs.utimesSync(filename, originalTime, originalTime);
+      after = fs.lstatSync(filename, { bigint: true });
+      if (after.ctimeNs !== before.ctimeNs) {
+        break;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1));
+    } while (performance.now() < deadline);
 
-    expect(fs.statSync(filename).size).toBe(before.size);
-    expect(fs.statSync(filename).mtimeMs).toBe(before.mtimeMs);
+    expect(after.size).toBe(before.size);
+    expect(after.mtimeNs).toBe(before.mtimeNs);
+    expect(after.ctimeNs).not.toBe(before.ctimeNs);
     await expect(validate(root, ["output.txt"], [expected])).resolves.toBe(
       false
     );
