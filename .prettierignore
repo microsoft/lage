@@ -24,3 +24,8 @@ yarn.js
 pnpm-lock.*
 package-lock.json
 *.api.md
+
+# Native Rust sources use cargo fmt; Prettier has no Rust or TOML parser.
+packages/backfill-cache/native/**/*.rs
+packages/backfill-cache/native/Cargo.toml
+packages/backfill-cache/native/Cargo.lock

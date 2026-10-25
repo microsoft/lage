@@ -1,0 +1,26 @@
+[package]
+name = "lage-cache-validator"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.88"
+publish = false
+license = "MIT"
+
+[lib]
+name = "lage_cache_validator"
+crate-type = ["cdylib"]
+
+[dependencies]
+napi = { version = "=3.15.0", default-features = false, features = ["napi4", "dyn-symbols"] }
+napi-derive = "=3.6.13"
+rayon = "=1.12.0"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "=0.61.2", features = ["Win32_Foundation", "Win32_Security", "Win32_Storage_FileSystem", "Win32_System_LibraryLoader"] }
+
+[build-dependencies]
+napi-build = "=2.6.0"
+
+[profile.release]
+lto = "thin"
+strip = "symbols"

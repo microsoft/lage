@@ -42,6 +42,27 @@ export function expandDepSpecs(
   enablePhantomTargetOptimization: boolean
 ): [string, string][] {
   const dependencies: [string, string][] = [];
+  const targetList = [...targets.values()];
+  const targetsByTask = new Map<string, { ids: string[]; byPackage: Map<string, number[]> }>();
+  const cachedTransitiveTaskDependencies = new Map<string, "walk-in-progress" | Set<string>>();
+
+  for (const { id, task, packageName } of targetList) {
+    let taskTargets = targetsByTask.get(task);
+    if (!taskTargets) {
+      taskTargets = { ids: [], byPackage: new Map() };
+      targetsByTask.set(task, taskTargets);
+    }
+
+    const index = taskTargets.ids.push(id) - 1;
+    if (packageName !== undefined) {
+      const indices = taskTargets.byPackage.get(packageName);
+      if (indices) {
+        indices.push(index);
+      } else {
+        taskTargets.byPackage.set(packageName, [index]);
+      }
+    }
+  }
 
   /**
    * Adds a dependency in the form of [from, to] to the dependency list.
@@ -53,20 +74,26 @@ export function expandDepSpecs(
   /**
    * Finds all transitive dependencies, given a task and optionally a dependency list.
    */
-  const findDependenciesByTask = (task: string, deps?: string[]) => {
-    if (!deps) {
-      return targetList.filter((needle) => needle.task === task).map((needle) => needle.id);
+  const findDependenciesByTask = (task: string, deps?: Set<string>) => {
+    const taskTargets = targetsByTask.get(task);
+    if (!taskTargets) {
+      return [];
     }
 
-    return targetList
-      .filter((needle) => {
-        const { task: needleTask, packageName: needlePackageName } = needle;
-        return needleTask === task && deps.some((depPkg) => depPkg === needlePackageName);
-      })
-      .map((needle) => needle.id);
-  };
+    if (!deps) {
+      return taskTargets.ids;
+    }
 
-  const targetList = [...targets.values()];
+    const indices: number[] = [];
+    for (const packageName of deps) {
+      for (const index of taskTargets.byPackage.get(packageName) ?? []) {
+        indices.push(index);
+      }
+    }
+
+    // Match the target registration order, not the package dependency order.
+    return indices.sort((a, b) => a - b).map((index) => taskTargets.ids[index]);
+  };
 
   for (const target of targetList) {
     const { depSpecs, packageName, id: to } = target;
@@ -104,7 +131,7 @@ export function expandDepSpecs(
       } else if (dependencyTargetId.startsWith("^^") && packageName) {
         // Transitive depdency (e.g. bundle: ['^^transpile'])
         const depTask = dependencyTargetId.substring(2);
-        const targetDependencies = [...(getTransitiveGraphDependencies(packageName, dependencyMap) ?? [])];
+        const targetDependencies = getTransitiveGraphDependencies(packageName, dependencyMap, cachedTransitiveTaskDependencies);
         const dependencyTargetIds = findDependenciesByTask(depTask, targetDependencies);
         for (const from of dependencyTargetIds) {
           // Skip phantom targets: packages that don't define this task as a real npm script.
@@ -115,7 +142,7 @@ export function expandDepSpecs(
       } else if (dependencyTargetId.startsWith("^") && packageName) {
         // Topological dependency (e.g. build: ['^build'])
         const depTask = dependencyTargetId.substring(1);
-        const targetDependencies = [...(dependencyMap.dependencies.get(packageName) ?? [])];
+        const targetDependencies = dependencyMap.dependencies.get(packageName) ?? new Set<string>();
         const dependencyTargetIds = findDependenciesByTask(depTask, targetDependencies);
         for (const from of dependencyTargetIds) {
           // Skip phantom targets: packages that don't define this task as a real npm script.
@@ -147,9 +174,6 @@ export function expandDepSpecs(
   return dependencies;
 }
 
-/** Cached transitive task dependency */
-const cachedTransitiveTaskDependencies: Map<string, "walk-in-progress" | Set<string>> = new Map();
-
 /**
  * Gets a list of package names that are direct or indirect dependencies of rootPackageName in this.graph,
  * and caches them on the Pipeline.
@@ -158,7 +182,11 @@ const cachedTransitiveTaskDependencies: Map<string, "walk-in-progress" | Set<str
  *
  * @param packageName the root package to begin walking from
  */
-function getTransitiveGraphDependencies(packageName: string, dependencyMap: DependencyMap): Set<string> {
+function getTransitiveGraphDependencies(
+  packageName: string,
+  dependencyMap: DependencyMap,
+  cachedTransitiveTaskDependencies: Map<string, "walk-in-progress" | Set<string>>
+): Set<string> {
   const cachedResult = cachedTransitiveTaskDependencies.get(packageName);
   if (cachedResult) {
     return cachedResult === "walk-in-progress"
@@ -183,7 +211,11 @@ function getTransitiveGraphDependencies(packageName: string, dependencyMap: Depe
     // immediate dependencies' dependencies.
     const transitiveDepSet = new Set<string>(immediateDependencies);
     for (const immediateDependency of immediateDependencies) {
-      for (const transitiveSubDependency of getTransitiveGraphDependencies(immediateDependency, dependencyMap)) {
+      for (const transitiveSubDependency of getTransitiveGraphDependencies(
+        immediateDependency,
+        dependencyMap,
+        cachedTransitiveTaskDependencies
+      )) {
         transitiveDepSet.add(transitiveSubDependency);
       }
     }

@@ -43,6 +43,8 @@ interface AggregatedPoolOptions {
     // (undocumented)
     maxWorkersByGroup: Map<string, number>;
     // (undocumented)
+    minWorkers?: number;
+    // (undocumented)
     script: string;
     // (undocumented)
     workerIdleMemoryLimit?: number;

@@ -1,6 +1,7 @@
 import type { CacheOptions } from "@lage-run/cache";
 import { TargetHasher } from "@lage-run/hasher";
 import type { TargetLogger } from "@lage-run/reporters";
+import type { PackageInfos } from "workspace-tools";
 import type { RunCliOptions } from "../commands/options.js";
 
 interface CreateCacheOptions extends Pick<RunCliOptions, "skipLocalCache"> {
@@ -8,6 +9,7 @@ interface CreateCacheOptions extends Pick<RunCliOptions, "skipLocalCache"> {
   logger: TargetLogger;
   root: string;
   cliArgs: string[];
+  packageInfos?: PackageInfos;
 }
 
 export async function createCache(options: CreateCacheOptions): Promise<{
@@ -21,6 +23,7 @@ export async function createCache(options: CreateCacheOptions): Promise<{
     cacheKey: cacheOptions?.cacheKey,
     cliArgs,
     logger,
+    packageInfos: options.packageInfos,
   });
 
   await hasher.initialize();

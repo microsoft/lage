@@ -23,8 +23,18 @@ const baseTestTarget = {
 const config = {
   pipeline: {
     "lage#bundle": {
-      dependsOn: ["^^transpile", "types"],
+      dependsOn: ["^^transpile", "types", "backfill-cache#native:build"],
       outputs: ["dist/**/*"],
+      // Bundles may contain a platform-specific binary, or omit it when Rust is unavailable.
+      cache: false,
+    },
+    "backfill-cache#native:build": {
+      outputs: ["lib/native/*.node", "native/target/cache-validator-*.json"],
+      cache: false,
+    },
+    "backfill-cache#build": {
+      type: "noop",
+      dependsOn: ["transpile", "types", "native:build"],
     },
     types: {
       type: "worker",

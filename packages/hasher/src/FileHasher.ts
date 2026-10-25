@@ -94,6 +94,9 @@ export class FileHasher {
 
   public hash(files: string[]): Record<string, string> {
     const hashes: Record<string, string> = {};
+    if (!files.length) {
+      return hashes;
+    }
 
     const updatedFiles: string[] = [];
 
@@ -103,20 +106,24 @@ export class FileHasher {
       const stat = stats[file];
 
       const info = this.#store[file];
-      if (info && stat.mtime === info.mtime && stat.size == info.size) {
+      if (info && stat && stat.mtime === info.mtime && stat.size == info.size) {
         hashes[file] = info.hash;
       } else {
         updatedFiles.push(file);
       }
     }
 
-    const updatedHashes = fastHash(updatedFiles, { cwd: this.options.root, concurrency: 4 }) ?? {};
+    const updatedHashes = updatedFiles.length ? (fastHash(updatedFiles, { cwd: this.options.root, concurrency: 4 }) ?? {}) : {};
 
     for (const [file, hash] of Object.entries(updatedHashes)) {
-      const stat = fs.statSync(path.join(this.options.root, file), { bigint: true });
+      const stat = stats[file];
+      if (!stat) {
+        delete this.#store[file];
+        continue;
+      }
       this.#store[file] = {
-        mtime: stat.mtimeMs,
-        size: Number(stat.size),
+        mtime: stat.mtime,
+        size: stat.size,
         hash: hash ?? "",
       };
       hashes[file] = hash ?? "";

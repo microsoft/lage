@@ -49,6 +49,7 @@ export async function runAction(options: RunCommandOptions, command: Command): P
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
     enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
+    experimentalCacheHitOptimization: config.experimentalCacheHitOptimization,
   });
 
   validateTargetGraph(targetGraph, allowNoTargetRuns);
@@ -65,6 +66,7 @@ export async function runAction(options: RunCommandOptions, command: Command): P
     cacheOptions: config.cacheOptions,
     cliArgs: taskArgs,
     skipLocalCache: options.skipLocalCache,
+    packageInfos,
   });
 
   const scheduler = new SimpleScheduler({
@@ -73,6 +75,7 @@ export async function runAction(options: RunCommandOptions, command: Command): P
     continueOnError: !!options.continue,
     shouldCache: options.cache,
     shouldResetCache: !!options.resetCache,
+    experimentalCacheHitOptimization: config.experimentalCacheHitOptimization,
     workerData: {
       root,
       taskArgs,

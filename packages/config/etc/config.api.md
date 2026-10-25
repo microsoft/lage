@@ -56,6 +56,7 @@ export interface ConfigOptions {
     concurrency: number;
     enablePhantomTargetOptimization: boolean;
     enableTargetConfigMerging: boolean;
+    experimentalCacheHitOptimization: boolean;
     ignore: string[];
     loggerOptions: LoggerOptions;
     // Warning: (ae-forgotten-export) The symbol "NpmClient" needs to be exported by the entry point index.d.ts

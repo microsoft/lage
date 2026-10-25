@@ -57,7 +57,7 @@ describe("RemoteFallbackCacheProvider", () => {
     expect(formattedOutput).toContain("remote fallback put");
   });
 
-  it("should operate with local provider ONLY by default", async () => {
+  it("should preserve the local-provider default when CI is set", async () => {
     repo = new Monorepo("fallback-local-only");
 
     await repo.init({
@@ -72,7 +72,7 @@ describe("RemoteFallbackCacheProvider", () => {
     });
     repo.install();
 
-    const results = await repo.run("test");
+    const results = await repo.run("test", [], false, { env: { CI: "true" } });
 
     const formattedOutput = formatEntries(results.stdout, results.stderr);
 

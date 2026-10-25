@@ -17,6 +17,8 @@ export class BackfillCacheProvider implements CacheProvider {
     // (undocumented)
     fetch(hash: string, target: Target): Promise<boolean>;
     // (undocumented)
+    isUpToDate(hash: string, target: Target): Promise<boolean>;
+    // (undocumented)
     purge(prunePeriod?: number, concurrency?: number): Promise<void>;
     // (undocumented)
     put(hash: string, target: Target): Promise<void>;
@@ -26,6 +28,8 @@ export class BackfillCacheProvider implements CacheProvider {
 interface BackfillCacheProviderOptions {
     // (undocumented)
     cacheOptions: Partial<CacheOptions>;
+    // (undocumented)
+    experimentalCacheHitOptimization?: boolean;
     // (undocumented)
     logger: TargetLogger;
     // (undocumented)

@@ -102,6 +102,13 @@ export interface ConfigOptions {
   enablePhantomTargetOptimization: boolean;
 
   /**
+   * Opts in to the experimental local cache-hit runtime and lazy target weights.
+   * Omitted or false preserves legacy behavior.
+   * @default false
+   */
+  experimentalCacheHitOptimization: boolean;
+
+  /**
    * Built-in or custom reporter name(s) to use. This is **overridden** by the `--reporter` flag,
    * but **overrides** `--verbose`, `--grouped`, and other context-based defaults (such as CI env detection).
    *

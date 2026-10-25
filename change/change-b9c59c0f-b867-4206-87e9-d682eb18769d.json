@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Add default-off experimentalCacheHitOptimization configuration",
+      "packageName": "@lage-run/config",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

@@ -25,35 +25,17 @@ export class LocalCacheStorage extends CacheStorage {
 
   protected async _fetch(hash: string): Promise<boolean> {
     const localCacheFolder = this.getLocalCacheFolder(hash);
-
     if (!fs.existsSync(localCacheFolder)) {
       return false;
     }
 
-    const files = await globby([`**/*`], {
-      cwd: localCacheFolder,
-      dot: true,
-    });
-
+    const files = await globby(["**/*"], { cwd: localCacheFolder, dot: true });
     const madeDirs: Record<string, string> = {};
 
     await Promise.all(
       files.map(async (file) => {
         const src = path.join(localCacheFolder, file);
         const dest = path.join(this.cwd, file);
-
-        // Previously, some logic was added attempting to only copy files with a different mtime.
-        // However, this never worked because it was implemented with files.filter(async f => { ... }),
-        // which returns a promise, which is always truthy. It's also unclear whether this would
-        // have any benefit for a local cache specific to the current repo when combined with the
-        // hashing logic in other places (plus tools such as tsc will usually overwrite all files).
-        // If this was desired in the future, the proper logic would be as follows:
-        //   const [srcStat, destStat] = await Promise.all([
-        //     fsPromises.stat(src, { bigint: true }).catch(() => null),
-        //     fsPromises.stat(dest, { bigint: true }).catch(() => null),
-        //   ]);
-        //   if (srcStat && destStat && srcStat.mtimeNs === destStat.mtimeNs) return;
-
         const destDir = path.dirname(dest);
         if (!madeDirs[destDir]) {
           await fs.mkdirp(destDir);
@@ -62,22 +44,17 @@ export class LocalCacheStorage extends CacheStorage {
         await fs.copyFile(src, dest);
       })
     );
-
     return true;
   }
 
   protected async _put(hash: string, filesToCache: string[]): Promise<void> {
     const localCacheFolder = this.getLocalCacheFolder(hash);
-
+    // A legacy writer cannot preserve an experimental proof for the same entry.
+    await fs.remove(`${localCacheFolder}.state.json`);
     await fs.mkdirp(localCacheFolder);
-
     await Promise.all(
       filesToCache.map(async (file) => {
-        const destinationFolder = path.join(
-          localCacheFolder,
-          path.dirname(file)
-        );
-        await fs.mkdirp(destinationFolder);
+        await fs.mkdirp(path.join(localCacheFolder, path.dirname(file)));
         await fs.copy(
           path.join(this.cwd, file),
           path.join(localCacheFolder, file)

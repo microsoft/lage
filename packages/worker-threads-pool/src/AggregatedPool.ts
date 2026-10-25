@@ -11,6 +11,7 @@ interface AggregatedPoolOptions {
   groupBy: (data: any) => string;
   maxWorkersByGroup: Map<string, number>;
   maxWorkers: number;
+  minWorkers?: number;
   script: string;
   workerOptions?: WorkerOptions;
   // "never" means no structured data arguments are used
@@ -32,6 +33,7 @@ export class AggregatedPool extends EventEmitter implements Pool {
     let totalGroupedWorkers = 0;
     for (const [group, groupMaxWorkers] of maxWorkersByGroup.entries()) {
       const pool = new WorkerPool({
+        minWorkers: options.minWorkers,
         maxWorkers: groupMaxWorkers,
         workerOptions,
         script,
@@ -51,6 +53,7 @@ export class AggregatedPool extends EventEmitter implements Pool {
 
     if (defaultPoolWorkersCount > 0) {
       this.defaultPool = new WorkerPool({
+        minWorkers: options.minWorkers,
         maxWorkers: defaultPoolWorkersCount,
         workerOptions,
         script,

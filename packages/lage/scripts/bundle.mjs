@@ -4,16 +4,26 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { getPackageInfos } from "workspace-tools-npm";
+import { publishNativeBinary } from "../../backfill-cache/native/build.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(dirname, "..");
 const repoRoot = path.resolve(packageRoot, "../..");
 const runnerDir = path.resolve(packageRoot, "../runners/src");
 const outdir = "dist";
+const distDir = path.join(packageRoot, outdir);
+const nativeOutdir = path.join(distDir, "native");
 
 const internalPackages = Object.values(getPackageInfos(repoRoot)).filter((info) => !info.private);
 
-fs.rmSync(path.join(packageRoot, outdir), { recursive: true, force: true });
+// Keep the live native module until its verified replacement can be renamed into place.
+if (fs.existsSync(distDir)) {
+  for (const file of fs.readdirSync(distDir)) {
+    if (file !== "native") {
+      fs.rmSync(path.join(distDir, file), { recursive: true, force: true });
+    }
+  }
+}
 
 console.log("Bundling with esbuild...");
 
@@ -63,6 +73,23 @@ for (const bin of ["lage", "lage-server"]) {
   const filePath = path.join(packageRoot, outdir, bin + ".js");
   const content = fs.readFileSync(filePath, "utf8");
   fs.writeFileSync(filePath, "#!/usr/bin/env node\n" + content);
+}
+
+const nativeFilename = `cache-validator-${process.platform}-${process.arch}.node`;
+const nativeSource = path.join(repoRoot, "packages", "backfill-cache", "lib", "native", nativeFilename);
+const hasNative = fs.existsSync(nativeSource);
+if (hasNative) {
+  publishNativeBinary(nativeSource, path.join(nativeOutdir, nativeFilename));
+  console.log(`Bundled native/${nativeFilename}`);
+} else {
+  console.warn("No optional native cache validator found; bundling with the portable JavaScript fallback.");
+}
+if (fs.existsSync(nativeOutdir)) {
+  for (const file of fs.readdirSync(nativeOutdir)) {
+    if (file.startsWith("cache-validator-") && file.endsWith(".node") && (!hasNative || file !== nativeFilename)) {
+      fs.unlinkSync(path.join(nativeOutdir, file));
+    }
+  }
 }
 
 console.log("Bundling succeeded\n");

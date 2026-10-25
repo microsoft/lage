@@ -44,6 +44,8 @@ interface SimpleSchedulerOptions {
     // (undocumented)
     continueOnError: boolean;
     // (undocumented)
+    experimentalCacheHitOptimization?: boolean;
+    // (undocumented)
     hasher: TargetHasher;
     // (undocumented)
     logger: Logger<never, never>;
@@ -132,7 +134,13 @@ interface WrappedTargetOptions {
     // (undocumented)
     continueOnError: boolean;
     // (undocumented)
+    experimentalCacheHitOptimization?: boolean;
+    // (undocumented)
     hasher: TargetHasher;
+    // (undocumented)
+    localCacheProvider?: {
+        isUpToDate(hash: string, target: Target): Promise<boolean>;
+    };
     // (undocumented)
     logger: TargetLogger;
     // (undocumented)
