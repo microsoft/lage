@@ -13,15 +13,14 @@ import { logVerboseWarning } from "./logging.js";
 export function getPackageInfo(cwd: string): PackageInfo | undefined {
   const packageJsonPath = path.join(cwd, "package.json");
   try {
-    if (!fs.existsSync(packageJsonPath)) {
-      logVerboseWarning(`File does not exist: ${packageJsonPath}`);
-      return undefined;
-    }
-
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
     return { ...packageJson, packageJsonPath };
   } catch (e) {
-    logVerboseWarning(`Error reading or parsing ${packageJsonPath}: ${(e as Error)?.message || e}`);
+    logVerboseWarning(
+      fs.existsSync(packageJsonPath)
+        ? `Error reading or parsing ${packageJsonPath}: ${(e as Error)?.message || e}`
+        : `File does not exist: ${packageJsonPath}`
+    );
   }
 }
 
@@ -34,14 +33,13 @@ export function getPackageInfo(cwd: string): PackageInfo | undefined {
 export async function getPackageInfoAsync(cwd: string): Promise<PackageInfo | undefined> {
   const packageJsonPath = path.join(cwd, "package.json");
   try {
-    if (!fs.existsSync(packageJsonPath)) {
-      logVerboseWarning(`File does not exist: ${packageJsonPath}`);
-      return undefined;
-    }
-
     const packageJson = JSON.parse(await fsPromises.readFile(packageJsonPath, "utf-8"));
     return { ...packageJson, packageJsonPath };
   } catch (e) {
-    logVerboseWarning(`Error reading or parsing ${packageJsonPath}: ${(e as Error)?.message || e}`);
+    logVerboseWarning(
+      fs.existsSync(packageJsonPath)
+        ? `Error reading or parsing ${packageJsonPath}: ${(e as Error)?.message || e}`
+        : `File does not exist: ${packageJsonPath}`
+    );
   }
 }

@@ -31,6 +31,11 @@ builder.addTargetConfig("build", {
 const targetGraph = builder.build(tasks, packages);
 ```
 
+Function-valued target weights are evaluated only for selected targets and their dependencies
+(or when a callback explicitly reads another target's weight). Each result is memoized on its
+target. Weight functions receive the target definition before graph edges and cumulative
+priorities are added, and should calculate a weight without side effects.
+
 ## TargetGraphBuilder usage
 
 ```typescript

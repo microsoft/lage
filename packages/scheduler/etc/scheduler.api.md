@@ -134,6 +134,10 @@ interface WrappedTargetOptions {
     // (undocumented)
     hasher: TargetHasher;
     // (undocumented)
+    localCacheProvider?: {
+        isUpToDate(hash: string, target: Target): Promise<boolean>;
+    };
+    // (undocumented)
     logger: TargetLogger;
     // (undocumented)
     logMemory?: boolean;

@@ -59,21 +59,34 @@ export class PackageTree {
       currentNode.isPackage = true;
     }
 
-    // Get all files in the workspace (scale: ~2000) according to git
-    const lsFilesResults = await execa("git", ["ls-files", "-z"], { cwd: root });
+    const [lsFilesResults, lsOtherResults] = await Promise.all([
+      execa("git", ["ls-files", "--cached", "--deleted", "--stage", "-t", "-z"], { cwd: root }),
+      includeUntracked ? execa("git", ["ls-files", "-o", "-z", "--exclude-standard"], { cwd: root }) : undefined,
+    ]);
 
-    if (lsFilesResults.exitCode === 0) {
-      const files = lsFilesResults.stdout.split("\0").filter((f) => Boolean(f) && fs.existsSync(path.join(root, f)));
-      this.addToPackageTree(files);
-    }
-
-    if (includeUntracked) {
-      // Also get all untracked files in the workspace according to git
-      const lsOtherResults = await execa("git", ["ls-files", "-o", "-z", "--exclude-standard"], { cwd: root });
-      if (lsOtherResults.exitCode === 0) {
-        const files = lsOtherResults.stdout.split("\0").filter(Boolean);
-        this.addToPackageTree(files);
+    const files: string[] = [];
+    const deletedFiles = new Set<string>();
+    for (const entry of lsFilesResults.stdout.split("\0")) {
+      if (!entry) {
+        continue;
       }
+
+      const file = entry.slice(entry.indexOf("\t") + 1);
+      if (entry.startsWith("R ")) {
+        deletedFiles.add(file);
+      } else if (entry.startsWith("S ") || entry.slice(2, 8) === "120000") {
+        // Git skips deletion checks for skip-worktree entries, and lstat keeps dangling symlinks.
+        if (fs.existsSync(path.join(root, file))) {
+          files.push(file);
+        }
+      } else {
+        files.push(file);
+      }
+    }
+    this.addToPackageTree(files.filter((file) => !deletedFiles.has(file)));
+
+    if (lsOtherResults) {
+      this.addToPackageTree(lsOtherResults.stdout.split("\0").filter(Boolean));
     }
   }
 

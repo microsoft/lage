@@ -32,6 +32,7 @@ export class AggregatedPool extends EventEmitter implements Pool {
     let totalGroupedWorkers = 0;
     for (const [group, groupMaxWorkers] of maxWorkersByGroup.entries()) {
       const pool = new WorkerPool({
+        minWorkers: 0,
         maxWorkers: groupMaxWorkers,
         workerOptions,
         script,
@@ -51,6 +52,7 @@ export class AggregatedPool extends EventEmitter implements Pool {
 
     if (defaultPoolWorkersCount > 0) {
       this.defaultPool = new WorkerPool({
+        minWorkers: 0,
         maxWorkers: defaultPoolWorkersCount,
         workerOptions,
         script,

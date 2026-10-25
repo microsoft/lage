@@ -36,6 +36,12 @@ export abstract class CacheStorage implements ICacheStorage {
     protected cwd: string,
     private incrementalCaching = false
   ) {}
+
+  /** Validate existing outputs without restoring files. Providers without local proofs return false. */
+  public isUpToDate(_hash: string): Promise<boolean> {
+    return Promise.resolve(false);
+  }
+
   public async fetch(hash: string): Promise<boolean> {
     const tracer = this.logger.setTime("fetchTime");
 

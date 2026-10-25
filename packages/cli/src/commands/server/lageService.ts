@@ -87,6 +87,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     logger,
     cacheKey: config.cacheOptions?.cacheKey,
     cliArgs: taskArgs,
+    packageInfos,
   });
 
   logger.info("Initializing hasher");

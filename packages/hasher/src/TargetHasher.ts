@@ -22,6 +22,8 @@ export interface TargetHasherOptions {
   environmentGlob: string[];
   cacheKey?: string;
   cliArgs?: string[];
+  /** Reuse package metadata already loaded for this invocation. */
+  packageInfos?: PackageInfos;
   // "never" means no structured data arguments are used
   logger?: Logger<never, never>;
 }
@@ -57,6 +59,7 @@ export class TargetHasher {
   private globalInputsHash: Record<string, string> | undefined;
   private lockInfo: ParsedLock | undefined;
   private targetHashes: Record<string, string> = {};
+  private resolvedPackageDependencies = new Map<string, string[]>();
 
   public dependencyMap: DependencyMap = {
     dependencies: new Map(),
@@ -93,7 +96,7 @@ export class TargetHasher {
         .then((files) => this.fileHasher.hash(files))
         .then((h) => (this.globalInputsHash = h)),
 
-      getPackageInfosAsync(root).then((packageInfos) => {
+      (this.options.packageInfos ? Promise.resolve(this.options.packageInfos) : getPackageInfosAsync(root)).then((packageInfos) => {
         if (Object.keys(packageInfos).length) {
           this.packageInfos = packageInfos;
         } else {
@@ -146,18 +149,7 @@ export class TargetHasher {
 
     // 1. add hash of target's inputs
     // 2. add hash of target packages' internal and external deps
-    const { dependencies, devDependencies } = this.packageInfos[target.packageName!];
-
-    const parsedLock = this.lockInfo!;
-
-    const allDependencies: Record<string, string> = {
-      ...dependencies,
-      ...devDependencies,
-    };
-
-    const internalDeps = Object.keys(allDependencies).filter((dep) => this.packageInfos[dep]);
-    const externalDeps = resolveExternalDependencies(allDependencies, this.packageInfos, parsedLock);
-    const resolvedDependencies = [...internalDeps, ...externalDeps].sort();
+    const resolvedDependencies = this.getPackageDependencies(target.packageName!);
 
     const files = getInputFiles(target, this.dependencyMap, this.packageTree!);
     const fileHashes = this.fileHasher.hash(files) ?? {}; // this list is sorted by file name
@@ -186,6 +178,19 @@ export class TargetHasher {
     this.targetHashes[target.id] = hashString;
 
     return hashString;
+  }
+
+  private getPackageDependencies(packageName: string): string[] {
+    let resolvedDependencies = this.resolvedPackageDependencies.get(packageName);
+    if (!resolvedDependencies) {
+      const { dependencies, devDependencies } = this.packageInfos[packageName];
+      const allDependencies = { ...dependencies, ...devDependencies };
+      const internalDeps = Object.keys(allDependencies).filter((dep) => this.packageInfos[dep]);
+      const externalDeps = resolveExternalDependencies(allDependencies, this.packageInfos, this.lockInfo!);
+      resolvedDependencies = [...internalDeps, ...externalDeps].sort();
+      this.resolvedPackageDependencies.set(packageName, resolvedDependencies);
+    }
+    return resolvedDependencies;
   }
 
   private async getEnvironmentGlobHashes(root: string, target: Target): Promise<Record<string, string>> {

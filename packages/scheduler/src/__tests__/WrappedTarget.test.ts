@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "@jest/globals";
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { TargetHasher } from "@lage-run/hasher";
 import { Logger } from "@lage-run/logger";
 import type { TargetRunner } from "@lage-run/runners";
@@ -69,6 +69,49 @@ describe("WrappedTarget", () => {
   beforeEach(() => {
     root = createTempDir({ prefix: "lage-wrapped-target-" });
   });
+
+  function createCacheTest(
+    overrides: {
+      mockHash?: string | Error;
+      skippy?: boolean;
+      shouldCache?: boolean;
+      targetCache?: boolean;
+      abortController?: AbortController;
+      localCacheProvider?: { isUpToDate(hash: string, target: Target): Promise<boolean> };
+    } = {}
+  ) {
+    const {
+      mockHash = "cached-hash",
+      skippy = false,
+      shouldCache = true,
+      targetCache = true,
+      abortController = new AbortController(),
+    } = overrides;
+    const logger = new Logger();
+    const hasher = new TargetHasher({ root, environmentGlob: [] });
+    const hashSpy = jest.spyOn(hasher, "hash");
+    if (mockHash instanceof Error) {
+      hashSpy.mockRejectedValue(mockHash);
+    } else {
+      hashSpy.mockResolvedValue(mockHash);
+    }
+    const runner: TargetRunner = { shouldRun: () => Promise.resolve(true), async run() {} };
+    const pool = skippy ? new SkippyInProcPool(runner) : new InProcPool(runner);
+    const exec = jest.spyOn(pool, "exec");
+    const target = { ...createTarget("a"), cache: targetCache };
+    const wrappedTarget = new WrappedTarget({
+      abortController,
+      continueOnError: false,
+      logger,
+      root,
+      shouldCache,
+      target,
+      pool,
+      hasher,
+      ...("localCacheProvider" in overrides ? { localCacheProvider: overrides.localCacheProvider } : {}),
+    });
+    return { wrappedTarget, logger, hasher, hashSpy, pool, exec, target, abortController };
+  }
 
   it("should be able to run a target to completion", async () => {
     const logger = new Logger();
@@ -228,6 +271,8 @@ describe("WrappedTarget", () => {
 
   it("should skip the work if cache is hit", async () => {
     const logger = new Logger();
+    const hasher = new TargetHasher({ root, environmentGlob: [] });
+    jest.spyOn(hasher, "hash").mockResolvedValue("1234");
 
     const runner: TargetRunner = {
       shouldRun: () => Promise.resolve(true),
@@ -242,7 +287,7 @@ describe("WrappedTarget", () => {
       shouldCache: true,
       target: { ...createTarget("a"), cache: true },
       pool: new SkippyInProcPool(runner),
-      hasher: new TargetHasher({ root, environmentGlob: [] }),
+      hasher,
     });
 
     expect(wrappedTarget.status).toBe("pending");
@@ -250,5 +295,78 @@ describe("WrappedTarget", () => {
     await wrappedTarget.run();
 
     expect(wrappedTarget.status).toBe("skipped");
+  });
+
+  it("skips intact local outputs without starting a worker", async () => {
+    const localCacheProvider = {
+      isUpToDate: jest.fn<(hash: string, target: Target) => Promise<boolean>>().mockResolvedValue(true),
+    };
+    const { wrappedTarget, hashSpy, exec, target } = createCacheTest({ skippy: true, localCacheProvider });
+
+    await expect(wrappedTarget.run()).resolves.toMatchObject({ skipped: true, hash: "cached-hash", id: target.id });
+
+    expect(wrappedTarget.status).toBe("skipped");
+    expect(hashSpy).toHaveBeenCalledTimes(1);
+    expect(localCacheProvider.isUpToDate).toHaveBeenCalledWith("cached-hash", target);
+    expect(exec).not.toHaveBeenCalled();
+    expect(wrappedTarget.threadId).toBe(0);
+  });
+
+  it("passes the input hash to the worker when outputs need restoration", async () => {
+    const localCacheProvider = {
+      isUpToDate: jest.fn<(hash: string, target: Target) => Promise<boolean>>().mockResolvedValue(false),
+    };
+    const { wrappedTarget, exec, target } = createCacheTest({ skippy: true, localCacheProvider });
+
+    await wrappedTarget.run();
+
+    expect(exec).toHaveBeenCalledTimes(1);
+    expect(exec.mock.calls[0][0]).toEqual({ target, hash: "cached-hash" });
+  });
+
+  it.each([true, false])("honors cancellation during local cache validation (hit: %s)", async (cacheHit) => {
+    const abortController = new AbortController();
+    const { wrappedTarget, exec } = createCacheTest({
+      abortController,
+      localCacheProvider: {
+        isUpToDate() {
+          abortController.abort();
+          return Promise.resolve(cacheHit);
+        },
+      },
+    });
+
+    await expect(wrappedTarget.run()).resolves.toBeUndefined();
+
+    expect(wrappedTarget.status).toBe("aborted");
+    expect(exec).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    { shouldCache: false, targetCache: true },
+    { shouldCache: true, targetCache: false },
+  ])("does not check local outputs when caching is disabled (%j)", async ({ shouldCache, targetCache }) => {
+    const localCacheProvider = {
+      isUpToDate: jest.fn<(hash: string, target: Target) => Promise<boolean>>(),
+    };
+    const { wrappedTarget, hashSpy, exec } = createCacheTest({ shouldCache, targetCache, localCacheProvider });
+
+    await wrappedTarget.run();
+
+    expect(wrappedTarget.status).toBe("success");
+    expect(hashSpy).not.toHaveBeenCalled();
+    expect(localCacheProvider.isUpToDate).not.toHaveBeenCalled();
+    expect(exec).toHaveBeenCalledTimes(1);
+  });
+
+  it("fails promptly when hashing fails instead of leaving a worker waiting for a hash", async () => {
+    const { wrappedTarget, logger, exec } = createCacheTest({ mockHash: new Error("Cannot read build input") });
+    const error = jest.spyOn(logger, "error");
+
+    await expect(wrappedTarget.run()).rejects.toThrow("Cannot read build input");
+
+    expect(wrappedTarget.status).toBe("failed");
+    expect(error).toHaveBeenCalled();
+    expect(exec).not.toHaveBeenCalled();
   });
 });

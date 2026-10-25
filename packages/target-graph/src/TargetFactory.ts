@@ -43,6 +43,28 @@ export class TargetFactory {
     return config.type || (this.packageScripts.has(task) ? builtInTargetTypes.npmScript : builtInTargetTypes.noop);
   }
 
+  private setWeight(target: Target, config: TargetConfig): void {
+    const { weight, maxWorkers } = config;
+    if (typeof weight !== "function") {
+      target.weight = getWeight(target, weight, maxWorkers);
+      return;
+    }
+
+    // Weight callbacks receive the definition-time fields, before graph edges and priorities are added.
+    const definition = { ...target, dependencies: [...target.dependencies], dependents: [...target.dependents] };
+    const setWeight = (value: Target["weight"]) => Object.defineProperty(target, "weight", { value, writable: true });
+    Object.defineProperty(target, "weight", {
+      enumerable: true,
+      configurable: true,
+      get: () => {
+        const value = getWeight(definition, weight, maxWorkers);
+        setWeight(value);
+        return value;
+      },
+      set: setWeight,
+    });
+  }
+
   /**
    * Creates a package task `Target`
    */
@@ -71,7 +93,7 @@ export class TargetFactory {
       shouldRun: true,
     };
 
-    target.weight = getWeight(target, config.weight, config.maxWorkers);
+    this.setWeight(target, config);
 
     return target;
   }
@@ -99,7 +121,7 @@ export class TargetFactory {
       shouldRun: true,
     };
 
-    target.weight = getWeight(target, config.weight, config.maxWorkers);
+    this.setWeight(target, config);
 
     return target;
   }

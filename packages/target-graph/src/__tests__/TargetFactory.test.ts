@@ -1,7 +1,8 @@
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
 import path from "path";
 import type { PackageInfo } from "workspace-tools";
 import { TargetFactory, type TargetFactoryOptions } from "../TargetFactory.js";
+import type { Target } from "../types/Target.js";
 
 describe("TargetFactory", () => {
   const root = path.resolve("/fake/root");
@@ -21,6 +22,55 @@ describe("TargetFactory", () => {
   }
 
   const resolve: TargetFactoryOptions["resolve"] = (packageName) => path.join(root, packageName);
+
+  it.each(["package", "global"])("evaluates a %s target's functional weight once on first use", (kind) => {
+    const factory = new TargetFactory({
+      root,
+      packageInfos: makePackages({ a: { build: "echo build" } }),
+      resolve,
+    });
+    const weight = jest.fn<(target: Target, maxWorkers?: number) => number>(() => 3);
+    const config = { weight, maxWorkers: 4, priority: 2 };
+    const target = kind === "package" ? factory.createPackageTarget("a", "build", config) : factory.createGlobalTarget("#build", config);
+    target.dependencies.push("__start");
+    target.priority = 10;
+
+    expect(weight).not.toHaveBeenCalled();
+    expect(target.weight).toBe(3);
+    expect({ ...target }.weight).toBe(3);
+    expect(weight).toHaveBeenCalledTimes(1);
+    expect(weight).toHaveBeenCalledWith(
+      expect.objectContaining({ id: target.id, weight: 1, priority: 2, dependencies: [], dependents: [] }),
+      4
+    );
+    target.weight = 5;
+    expect(target.weight).toBe(5);
+    expect(weight).toHaveBeenCalledTimes(1);
+  });
+
+  it("allows overriding a weight without evaluating the original function", () => {
+    const factory = new TargetFactory({ root, packageInfos: makePackages({ a: {} }), resolve });
+    const weight = jest.fn(() => 3);
+    const target = factory.createPackageTarget("a", "build", { weight });
+    target.weight = 2;
+
+    expect(target.weight).toBe(2);
+    expect(weight).not.toHaveBeenCalled();
+  });
+
+  it("does not cache a failed weight evaluation", () => {
+    const factory = new TargetFactory({ root, packageInfos: makePackages({ a: {} }), resolve });
+    const weight = jest
+      .fn(() => 3)
+      .mockImplementationOnce(() => {
+        throw new Error("weight failed");
+      });
+    const target = factory.createPackageTarget("a", "build", { weight });
+
+    expect(() => target.weight).toThrow("weight failed");
+    expect(target.weight).toBe(3);
+    expect(weight).toHaveBeenCalledTimes(2);
+  });
 
   it("should give a type of 'npmScript' if the package contains that script", () => {
     const factory = new TargetFactory({

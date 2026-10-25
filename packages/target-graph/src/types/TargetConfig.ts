@@ -38,6 +38,10 @@ export interface TargetConfig extends Pick<
    * An example is jest targets that can take up multiple cores with its own worker pool.
    *
    * This weight will be "culled" to the max number of workers (concurrency) for the target type. (i.e. maxWorkers above)
+   *
+   * A function-valued weight is evaluated once, when the target is selected or its weight is first read.
+   * It receives the target definition before graph edges and cumulative priorities are added.
+   * Weight functions should only calculate the weight, without mutating the target or relying on side effects.
    */
   weight?: number | ((target: Target, maxWorkers?: number) => number);
 

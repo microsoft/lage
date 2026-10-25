@@ -3,6 +3,21 @@ import { TargetGraphBuilder } from "../TargetGraphBuilder.js";
 import type { Target } from "../types/Target.js";
 
 describe("Target Graph Builder", () => {
+  it("visits shared dependencies once without changing breadth-first order", () => {
+    const builder = new TargetGraphBuilder();
+    for (const name of ["a", "b", "c", "d"]) {
+      builder.addTarget(createTarget(name, "build", 1));
+    }
+    builder.addDependency("c#build", "a#build");
+    builder.addDependency("c#build", "b#build");
+    builder.addDependency("d#build", "c#build");
+
+    const graph = builder.subgraph(["a#build", "b#build", "a#build"]);
+    expect([...graph.targets.keys()]).toEqual(["__start", "a#build", "b#build", "c#build", "d#build"]);
+    expect(graph.targets.get("c#build")!.dependents).toEqual(["a#build", "b#build"]);
+    expect(graph.targets.get("d#build")!.priority).toBe(3);
+  });
+
   it("should build a full graph", () => {
     const target1 = createTarget("a", "build", 1);
     const target2 = createTarget("b", "build", 1);

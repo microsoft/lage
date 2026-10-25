@@ -10,6 +10,7 @@ import type { Pool } from "@lage-run/worker-threads-pool";
 import { AggregatedPool } from "@lage-run/worker-threads-pool";
 import type { MessagePort } from "worker_threads";
 import { categorizeTargetRuns } from "./categorizeTargetRuns.js";
+import { createLocalCacheProvider } from "./cache/createCacheProvider.js";
 import { formatBytes } from "./formatBytes.js";
 import type { WorkerResult } from "./WrappedTarget.js";
 import { WrappedTarget } from "./WrappedTarget.js";
@@ -53,9 +54,20 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
   private abortController: AbortController = new AbortController();
   private abortSignal: AbortSignal = this.abortController.signal;
   private pool: Pool;
+  private localCacheProvider: ReturnType<typeof createLocalCacheProvider>;
   public readonly runnerPicker: TargetRunnerPicker;
 
   constructor(private options: SimpleSchedulerOptions) {
+    this.localCacheProvider =
+      options.shouldCache && !options.shouldResetCache
+        ? createLocalCacheProvider({
+            root: options.workerData.root,
+            logger: options.logger,
+            cacheOptions: options.workerData.cacheOptions,
+            skipLocalCache: options.workerData.skipLocalCache,
+          })
+        : undefined;
+
     this.pool =
       options.pool ??
       new AggregatedPool({
@@ -120,6 +132,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
           abortController,
           pool,
           hasher: this.options.hasher,
+          localCacheProvider: this.localCacheProvider,
           logMemory: this.options.logMemory,
           onMessage: this.options.onMessage,
         });

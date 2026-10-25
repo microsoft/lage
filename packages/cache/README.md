@@ -5,6 +5,11 @@ This package provides:
 1. `CacheProvider` interface
 2. a default cache provider that uses [`backfill`](https://www.npmjs.com/package/backfill)
 
+`CacheProvider.isUpToDate`, when implemented, only validates previously materialized
+outputs. A false result requires the normal `fetch` or build path; the check never
+restores files or contacts remote storage. `BackfillCacheProvider` supports this
+check for local caches with complete output metadata.
+
 ## Usage
 
 The following example shows standalone cache usage. If you're using the `lage` CLI, provider creation is handled internally (though you can customize `cacheOptions` in `lage.config.js`).

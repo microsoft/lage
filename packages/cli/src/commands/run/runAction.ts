@@ -65,6 +65,7 @@ export async function runAction(options: RunCommandOptions, command: Command): P
     cacheOptions: config.cacheOptions,
     cliArgs: taskArgs,
     skipLocalCache: options.skipLocalCache,
+    packageInfos,
   });
 
   const scheduler = new SimpleScheduler({

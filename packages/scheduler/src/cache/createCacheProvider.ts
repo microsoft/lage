@@ -7,14 +7,30 @@ interface CreateCacheOptions {
   cacheOptions?: CacheOptions;
   logger: TargetLogger;
   root: string;
-  skipLocalCache: boolean;
-  cliArgs: string[];
+  skipLocalCache?: boolean;
+}
+
+export function createLocalCacheProvider(options: CreateCacheOptions): BackfillCacheProvider | undefined {
+  const { cacheOptions, logger, root, skipLocalCache } = options;
+  if (skipLocalCache) {
+    return undefined;
+  }
+
+  return new BackfillCacheProvider({
+    logger,
+    root,
+    cacheOptions: {
+      outputGlob: cacheOptions?.outputGlob,
+      ...(cacheOptions?.internalCacheFolder && { internalCacheFolder: cacheOptions.internalCacheFolder }),
+      ...(cacheOptions?.incrementalCaching && { incrementalCaching: cacheOptions.incrementalCaching }),
+    },
+  });
 }
 
 export function createCache(options: CreateCacheOptions): {
   cacheProvider: RemoteFallbackCacheProvider;
 } {
-  const { cacheOptions, logger, root, skipLocalCache } = options;
+  const { cacheOptions, logger, root } = options;
 
   const hasRemoteCacheConfig =
     !!cacheOptions?.cacheStorageConfig || !!process.env.BACKFILL_CACHE_PROVIDER || !!process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
@@ -23,18 +39,7 @@ export function createCache(options: CreateCacheOptions): {
   const cacheProvider = new RemoteFallbackCacheProvider({
     root,
     logger,
-    localCacheProvider:
-      skipLocalCache === true
-        ? undefined
-        : new BackfillCacheProvider({
-            logger,
-            root,
-            cacheOptions: {
-              outputGlob: cacheOptions?.outputGlob,
-              ...(cacheOptions?.internalCacheFolder && { internalCacheFolder: cacheOptions.internalCacheFolder }),
-              ...(cacheOptions?.incrementalCaching && { incrementalCaching: cacheOptions.incrementalCaching }),
-            },
-          }),
+    localCacheProvider: createLocalCacheProvider(options),
     remoteCacheProvider: hasRemoteCacheConfig ? new BackfillCacheProvider({ logger, root, cacheOptions: cacheOptions ?? {} }) : undefined,
     writeRemoteCache:
       (cacheOptions?.writeRemoteCache === true || String(process.env.LAGE_WRITE_CACHE).toLowerCase() === "true" || isRunningFromCI) &&
