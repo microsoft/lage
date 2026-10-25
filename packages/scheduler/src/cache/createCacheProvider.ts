@@ -13,7 +13,8 @@ interface CreateCacheOptions {
 
 export function createLocalCacheProvider(options: CreateCacheOptions): BackfillCacheProvider | undefined {
   const { cacheOptions, logger, root, skipLocalCache } = options;
-  if (skipLocalCache) {
+  // Commander can supply a CI-derived string default; only the boolean flag skips local storage.
+  if (skipLocalCache === true) {
     return undefined;
   }
 
