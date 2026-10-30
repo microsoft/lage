@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "private": true,
-  "dependencies": {
+  "devDependencies": {
     "array-differ": "^4.0.0",
     "execa": "^9.3.0",
     "fast-glob": "^3.3.2",

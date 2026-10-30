@@ -16,7 +16,6 @@ const config: Config = {
   url: process.env.DEPLOY_URL || "https://microsoft.github.io",
   baseUrl: "/lage/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "throw",
   // no longer exists
   // favicon: "/img/lage-logo.svg",
   organizationName: "microsoft",
@@ -24,6 +23,9 @@ const config: Config = {
 
   markdown: {
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: "throw",
+    },
   },
 
   themes: ["@docusaurus/theme-mermaid"],

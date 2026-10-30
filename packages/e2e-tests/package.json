@@ -16,7 +16,7 @@
     "test": "yarn run -T jest",
     "lint": "monorepo-scripts lint"
   },
-  "dependencies": {
+  "devDependencies": {
     "@lage-run/cli": "workspace:^",
     "@lage-run/logger": "workspace:^",
     "@lage-run/monorepo-scripts": "workspace:^",
