@@ -267,7 +267,7 @@ function generateCommand(params: GeneratePackageTaskParams) {
 
     // If the script is a node script, and that it does not have any shell operators (&&, ||, etc)
     // then we can simply pass this along to info command rather than using npm client to run it.
-    if (script && script.startsWith("node")) {
+    if (script?.startsWith("node ")) {
       const parsed = parse(script);
       if (parsed.length > 0 && parsed.every((entry) => typeof entry === "string")) {
         return [...(parsed as string[]), ...taskArgs];
