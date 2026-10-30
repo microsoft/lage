@@ -29,7 +29,7 @@
   },
   "resolutions": {
     "@docsearch/react/@algolia/autocomplete-core@npm:1.19.2": "1.19.12",
-    "@cmfcmf/docusaurus-search-local@npm:1.2.0/cheerio": "1.0.0-rc.12",
+    "@cmfcmf/docusaurus-search-local@npm:1.2.0/cheerio": "1.2.0",
     "@docusaurus/core/tinypool": "2.2.0",
     "@types/node@npm:*": "^24.0.0",
     "@types/react@npm:*": "^18.0.0",
