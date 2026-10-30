@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Use a Set for external dependency queue membership checks without changing traversal order.",
+      "packageName": "backfill-hasher",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
