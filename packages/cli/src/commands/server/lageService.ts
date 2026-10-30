@@ -47,7 +47,15 @@ function formatBytes(bytes: number) {
   return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
 }
 
-async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, taskArgs, concurrency, tasks }: InitializeOptions) {
+async function createInitializedPromise({
+  cwd,
+  logger,
+  serverControls,
+  nodeArg,
+  taskArgs,
+  concurrency,
+  tasks,
+}: InitializeOptions): Promise<LageServiceContext> {
   if (initializedPromise) {
     return initializedPromise;
   }
@@ -58,28 +66,14 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
 
   logger.info(`Initializing with ${maxWorkers} workers, tasks: ${tasks.join(", ")}`);
 
-  const { pipeline } = config;
-
   const packageInfos = getPackageInfos(root);
 
   logger.info("Initializing target graph");
-  const targetGraph = await createTargetGraph({
-    logger,
-    root,
-    dependencies: false,
-    dependents: false,
-    ignore: [],
-    pipeline,
-    repoWideChanges: config.repoWideChanges,
-    scope: undefined,
-    since: undefined,
-    outputs: config.cacheOptions.outputGlob,
-    tasks,
-    packageInfos,
-    priorities: config.priorities,
-    enableTargetConfigMerging: config.enableTargetConfigMerging,
-    enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
-  });
+
+  // Omit git changes: the service reuses this graph without a per-request change snapshot.
+  // It executes individual package/task requests, not their dependencies, so staged target
+  // optimization could leave requested targets as no-ops.
+  const targetGraph = await createTargetGraph({ root, packages: Object.keys(packageInfos), config, tasks, packageInfos });
 
   const targetHasher = new TargetHasher({
     root,
