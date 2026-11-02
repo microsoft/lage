@@ -42,6 +42,26 @@ export function expandDepSpecs(
   enablePhantomTargetOptimization: boolean
 ): [string, string][] {
   const dependencies: [string, string][] = [];
+  const targetList = [...targets.values()];
+  const targetsByTask = new Map<string, { ids: string[]; byPackage: Map<string, number[]> }>();
+
+  for (const { id, task, packageName } of targetList) {
+    let taskTargets = targetsByTask.get(task);
+    if (!taskTargets) {
+      taskTargets = { ids: [], byPackage: new Map() };
+      targetsByTask.set(task, taskTargets);
+    }
+
+    const index = taskTargets.ids.push(id) - 1;
+    if (packageName !== undefined) {
+      const indices = taskTargets.byPackage.get(packageName);
+      if (indices) {
+        indices.push(index);
+      } else {
+        taskTargets.byPackage.set(packageName, [index]);
+      }
+    }
+  }
 
   /**
    * Adds a dependency in the form of [from, to] to the dependency list.
@@ -53,20 +73,26 @@ export function expandDepSpecs(
   /**
    * Finds all transitive dependencies, given a task and optionally a dependency list.
    */
-  const findDependenciesByTask = (task: string, deps?: string[]) => {
-    if (!deps) {
-      return targetList.filter((needle) => needle.task === task).map((needle) => needle.id);
+  const findDependenciesByTask = (task: string, deps?: Set<string>) => {
+    const taskTargets = targetsByTask.get(task);
+    if (!taskTargets) {
+      return [];
     }
 
-    return targetList
-      .filter((needle) => {
-        const { task: needleTask, packageName: needlePackageName } = needle;
-        return needleTask === task && deps.some((depPkg) => depPkg === needlePackageName);
-      })
-      .map((needle) => needle.id);
-  };
+    if (!deps) {
+      return taskTargets.ids;
+    }
 
-  const targetList = [...targets.values()];
+    const indices: number[] = [];
+    for (const packageName of deps) {
+      for (const index of taskTargets.byPackage.get(packageName) ?? []) {
+        indices.push(index);
+      }
+    }
+
+    // Preserve target registration order rather than package dependency order.
+    return indices.sort((a, b) => a - b).map((index) => taskTargets.ids[index]);
+  };
 
   for (const target of targetList) {
     const { depSpecs, packageName, id: to } = target;
@@ -104,7 +130,7 @@ export function expandDepSpecs(
       } else if (dependencyTargetId.startsWith("^^") && packageName) {
         // Transitive depdency (e.g. bundle: ['^^transpile'])
         const depTask = dependencyTargetId.substring(2);
-        const targetDependencies = [...(getTransitiveGraphDependencies(packageName, dependencyMap) ?? [])];
+        const targetDependencies = getTransitiveGraphDependencies(packageName, dependencyMap);
         const dependencyTargetIds = findDependenciesByTask(depTask, targetDependencies);
         for (const from of dependencyTargetIds) {
           // Skip phantom targets: packages that don't define this task as a real npm script.
@@ -115,7 +141,7 @@ export function expandDepSpecs(
       } else if (dependencyTargetId.startsWith("^") && packageName) {
         // Topological dependency (e.g. build: ['^build'])
         const depTask = dependencyTargetId.substring(1);
-        const targetDependencies = [...(dependencyMap.dependencies.get(packageName) ?? [])];
+        const targetDependencies = dependencyMap.dependencies.get(packageName) ?? new Set<string>();
         const dependencyTargetIds = findDependenciesByTask(depTask, targetDependencies);
         for (const from of dependencyTargetIds) {
           // Skip phantom targets: packages that don't define this task as a real npm script.

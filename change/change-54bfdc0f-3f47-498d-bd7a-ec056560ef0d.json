@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/target-graph",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Index dependency expansion by task and package while preserving target registration order.",
+      "email": "djmaks@microsoft.com"
+    }
+  ]
+}

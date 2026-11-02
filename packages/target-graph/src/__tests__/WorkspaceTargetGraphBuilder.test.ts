@@ -201,6 +201,58 @@ describe("workspace target graph builder", () => {
     ]);
   });
 
+  it.each([
+    { depSpec: "^transpile", expected: ["@scope/early", "@scope/late"] },
+    { depSpec: "^^transpile", expected: ["leaf", "@scope/early", "@scope/late"] },
+  ])("preserves target registration order for $depSpec rather than package dependency order", async ({ depSpec, expected }) => {
+    const packageInfos = createPackageInfoWithScripts({
+      consumer: { deps: ["@scope/late", "@scope/early"], scripts: ["bundle"] },
+      "@scope/late": { deps: ["leaf"], scripts: ["transpile"] },
+      "@scope/early": { deps: ["leaf"], scripts: ["transpile"] },
+      leaf: { deps: [], scripts: ["transpile"] },
+      unrelated: { deps: [], scripts: ["transpile"] },
+    });
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos,
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: true,
+    });
+    builder.addTargetConfig("consumer#bundle", { dependsOn: [depSpec, "^missing", "^^missing"] });
+    builder.addTargetConfig("leaf#transpile");
+    builder.addTargetConfig("#transpile");
+    builder.addTargetConfig("@scope/early#transpile");
+    builder.addTargetConfig("unrelated#transpile");
+    builder.addTargetConfig("@scope/late#lint");
+    builder.addTargetConfig("@scope/late#transpile");
+
+    const graph = await builder.build(["bundle"], ["consumer"]);
+
+    expect(graph.targets.get("consumer#bundle")!.dependencies).toEqual(["__start", ...expected.map((name) => `${name}#transpile`)]);
+    expect([...graph.targets.keys()]).toEqual(["__start", "consumer#bundle", ...expected.map((name) => `${name}#transpile`)]);
+  });
+
+  it("preserves interleaved global and package task order without reusing a previous expansion's index", async () => {
+    for (const order of [["@scope/b#transpile", "#transpile", "@scope/a#transpile"], ["@scope/a#transpile", "#transpile"], []]) {
+      const builder = new WorkspaceTargetGraphBuilder({
+        root,
+        packageInfos: createPackageInfo({ "@scope/a": [], "@scope/b": [] }),
+        enableTargetConfigMerging: false,
+        enablePhantomTargetOptimization: false,
+      });
+      builder.addTargetConfig("#bundle", { dependsOn: ["transpile", "missing"] });
+      builder.addTargetConfig("@scope/a#lint");
+      for (const id of order) {
+        builder.addTargetConfig(id);
+      }
+
+      const graph = await builder.build(["bundle"]);
+
+      expect(graph.targets.get("#bundle")!.dependencies).toEqual(["__start", ...order]);
+      expect([...graph.targets.keys()]).toEqual(["__start", "#bundle", ...order]);
+    }
+  });
+
   it("should generate target graph for a general task on a specific target", async () => {
     const packageInfos = createPackageInfo({
       a: [],
