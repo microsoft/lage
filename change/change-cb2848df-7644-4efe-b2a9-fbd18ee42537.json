@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/target-graph",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Preserve priority traversal order by appending task IDs and reversing the completed list.",
+      "email": "djmaks@microsoft.com"
+    }
+  ]
+}
