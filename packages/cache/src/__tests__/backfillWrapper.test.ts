@@ -4,6 +4,20 @@ import path from "path";
 import { createBackfillCacheConfig, createBackfillLogger } from "../backfillWrapper.js";
 import { CredentialCache } from "../CredentialCache.js";
 
+describe("createBackfillLogger", () => {
+  it("forwards native diagnostics through the owning Lage logger", () => {
+    const warn = jest.fn<(message: string) => void>();
+    const verbose = jest.fn<(message: string) => void>();
+    const logger = createBackfillLogger({ warn, verbose });
+
+    logger.warn("Native validator", "could not be loaded");
+    logger.verbose("Using Rust cache output validation");
+
+    expect(warn).toHaveBeenCalledWith("Native validator could not be loaded");
+    expect(verbose).toHaveBeenCalledWith("Using Rust cache output validation");
+  });
+});
+
 describe("backfill-config", () => {
   const originalEnv = process.env;
 

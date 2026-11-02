@@ -1,0 +1,74 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Prototype faster cached builds with verified local outputs and optional native validation",
+      "packageName": "backfill-cache",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Prototype faster cached builds with verified local outputs and optional native validation",
+      "packageName": "backfill-hasher",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Prototype faster cached builds with verified local outputs and optional native validation",
+      "packageName": "@lage-run/cache",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Prototype faster cached builds with verified local outputs and optional native validation",
+      "packageName": "@lage-run/cli",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Prototype faster cached builds with verified local outputs and optional native validation",
+      "packageName": "@lage-run/hasher",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Prototype faster cached builds with verified local outputs and optional native validation",
+      "packageName": "lage",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Prototype faster cached builds with verified local outputs and optional native validation",
+      "packageName": "@lage-run/scheduler",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Prototype faster cached builds with verified local outputs and optional native validation",
+      "packageName": "@lage-run/target-graph",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Prototype faster cached builds with verified local outputs and optional native validation",
+      "packageName": "@lage-run/worker-threads-pool",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Prototype faster cached builds with verified local outputs and optional native validation",
+      "packageName": "workspace-tools",
+      "email": "nemanjatesic@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

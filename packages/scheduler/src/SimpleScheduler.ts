@@ -10,6 +10,7 @@ import type { Pool } from "@lage-run/worker-threads-pool";
 import { AggregatedPool } from "@lage-run/worker-threads-pool";
 import type { MessagePort } from "worker_threads";
 import { categorizeTargetRuns } from "./categorizeTargetRuns.js";
+import { createLocalCacheProvider } from "./cache/createCacheProvider.js";
 import { formatBytes } from "./formatBytes.js";
 import type { WorkerResult } from "./WrappedTarget.js";
 import { WrappedTarget } from "./WrappedTarget.js";
@@ -20,6 +21,7 @@ export interface SimpleSchedulerOptions {
   continueOnError: boolean;
   shouldCache: boolean;
   shouldResetCache: boolean;
+  experimentalCacheHitOptimization?: boolean;
   workerData: {
     runners: TargetRunnerPickerOptions;
     root: string;
@@ -53,9 +55,22 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
   private abortController: AbortController = new AbortController();
   private abortSignal: AbortSignal = this.abortController.signal;
   private pool: Pool;
+  private localCacheProvider: ReturnType<typeof createLocalCacheProvider>;
   public readonly runnerPicker: TargetRunnerPicker;
 
   constructor(private options: SimpleSchedulerOptions) {
+    const experimentalCacheHitOptimization = options.experimentalCacheHitOptimization === true;
+    this.localCacheProvider =
+      experimentalCacheHitOptimization && options.shouldCache && !options.shouldResetCache
+        ? createLocalCacheProvider({
+            root: options.workerData.root,
+            logger: options.logger,
+            cacheOptions: options.workerData.cacheOptions,
+            skipLocalCache: options.workerData.skipLocalCache,
+            experimentalCacheHitOptimization,
+          })
+        : undefined;
+
     this.pool =
       options.pool ??
       new AggregatedPool({
@@ -63,11 +78,17 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
         maxWorkersByGroup: options.maxWorkersPerTask,
         groupBy: ({ target }) => target.task,
         maxWorkers: options.concurrency,
+        minWorkers: experimentalCacheHitOptimization ? 0 : undefined,
         script: require.resolve("./workers/targetWorker.js"),
         workerOptions: {
           stdout: true,
           stderr: true,
-          workerData: { ...options.workerData, shouldCache: options.shouldCache, shouldResetCache: options.shouldResetCache },
+          workerData: {
+            ...options.workerData,
+            shouldCache: options.shouldCache,
+            shouldResetCache: options.shouldResetCache,
+            experimentalCacheHitOptimization,
+          },
         },
         workerIdleMemoryLimit: options.workerIdleMemoryLimit, // in bytes
       });
@@ -116,10 +137,12 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
           root,
           logger,
           shouldCache,
+          experimentalCacheHitOptimization: this.options.experimentalCacheHitOptimization,
           continueOnError,
           abortController,
           pool,
           hasher: this.options.hasher,
+          localCacheProvider: this.localCacheProvider,
           logMemory: this.options.logMemory,
           onMessage: this.options.onMessage,
         });

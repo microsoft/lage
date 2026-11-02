@@ -8,6 +8,11 @@ import type { CacheOptions } from "./types/CacheOptions.js";
  */
 export async function getConfig(cwd: string): Promise<ConfigOptions> {
   const config = (await readConfigFile(cwd)) || ({} as Partial<ConfigOptions>);
+  const { experimentalCacheHitOptimization = false } = config;
+  if (typeof experimentalCacheHitOptimization !== "boolean") {
+    throw new Error("experimentalCacheHitOptimization must be a boolean");
+  }
+
   const availableParallelism = "availableParallelism" in os ? (os as any)["availableParallelism"]() : os.cpus().length - 1;
   return {
     cacheOptions: config?.cacheOptions ?? ({} as CacheOptions),
@@ -32,6 +37,7 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
     allowNoTargetRuns: config?.allowNoTargetRuns ?? false,
     enableTargetConfigMerging: config?.enableTargetConfigMerging ?? false,
     enablePhantomTargetOptimization: config?.enablePhantomTargetOptimization ?? false,
+    experimentalCacheHitOptimization,
     reporter: config?.reporter,
     reporters: config?.reporters ?? {},
   };

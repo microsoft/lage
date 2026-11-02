@@ -111,21 +111,16 @@ export class TargetGraphBuilder {
     const queue: string[] = [];
 
     for (const targetId of entriesTargetIds) {
-      if (this.targets.has(targetId)) {
+      if (this.targets.has(targetId) && !visited.has(targetId)) {
         const target = this.targets.get(targetId)!;
         subgraphBuilder.addTarget({ ...target, dependencies: [], dependents: [] });
+        visited.add(targetId);
         queue.push(targetId);
       }
     }
 
-    while (queue.length > 0) {
-      const targetId = queue.shift()!;
-      if (visited.has(targetId)) {
-        continue;
-      }
-
-      visited.add(targetId);
-
+    for (let index = 0; index < queue.length; index++) {
+      const targetId = queue[index];
       const target = this.targets.get(targetId);
 
       if (!target) {
@@ -142,6 +137,7 @@ export class TargetGraphBuilder {
         }
 
         if (!visited.has(dependency)) {
+          visited.add(dependency);
           queue.push(dependency);
         }
       }

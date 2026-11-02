@@ -1,9 +1,25 @@
-import { afterEach, describe, expect, it } from "@jest/globals";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import { Monorepo } from "@lage-run/test-utilities";
 import type { Target } from "@lage-run/target-graph";
 import fs from "fs";
 import path from "path";
-import { TargetHasher } from "../TargetHasher.js";
+import type * as TargetHasherModule from "../TargetHasher.js";
+import type * as BackfillHasher from "backfill-hasher";
+import type * as WorkspaceTools from "workspace-tools";
+
+jest.mock("backfill-hasher", () => {
+  const actual = jest.requireActual<typeof BackfillHasher>("backfill-hasher");
+  return { ...actual, resolveExternalDependencies: jest.fn(actual.resolveExternalDependencies) };
+});
+
+jest.mock("workspace-tools", () => {
+  const actual = jest.requireActual<typeof WorkspaceTools>("workspace-tools");
+  return { ...actual, getPackageInfosAsync: jest.fn(actual.getPackageInfosAsync) };
+});
+
+const { TargetHasher } = jest.requireActual<typeof TargetHasherModule>("../TargetHasher.js");
+const { resolveExternalDependencies } = jest.requireMock<typeof BackfillHasher>("backfill-hasher");
+const { getPackageInfos, getPackageInfosAsync } = jest.requireMock<typeof WorkspaceTools>("workspace-tools");
 
 const fixturesPath = path.resolve(__dirname, "../__fixtures__");
 
@@ -25,7 +41,7 @@ describe("TargetHasher", () => {
     return monorepo;
   }
 
-  async function getHash(hasher: TargetHasher, target: Target) {
+  async function getHash(hasher: InstanceType<typeof TargetHasher>, target: Target) {
     await hasher.initialize();
     const hash = await hasher.hash(target);
     hasher.cleanup();
@@ -45,6 +61,29 @@ describe("TargetHasher", () => {
       task,
     };
   }
+
+  it("reuses supplied package metadata and resolves dependencies once per package", async () => {
+    const monorepo = await setupFixture();
+    const packageInfos = getPackageInfos(monorepo.root);
+    const options = { root: monorepo.root, environmentGlob: [] };
+    const hasher = new TargetHasher({ ...options, packageInfos });
+    await hasher.initialize();
+    const build = createTarget(monorepo.root, "package-a", "build");
+    const firstHash = await hasher.hash(build);
+    await hasher.hash(createTarget(monorepo.root, "package-a", "test"));
+    expect(resolveExternalDependencies).toHaveBeenCalledTimes(1);
+    expect(getPackageInfosAsync).not.toHaveBeenCalled();
+
+    await hasher.hash(createTarget(monorepo.root, "package-b", "build"));
+    expect(resolveExternalDependencies).toHaveBeenCalledTimes(2);
+    hasher.cleanup();
+
+    const fallbackHasher = new TargetHasher(options);
+    await fallbackHasher.initialize();
+    expect(await fallbackHasher.hash(build)).toBe(firstHash);
+    expect(getPackageInfosAsync).toHaveBeenCalledTimes(1);
+    fallbackHasher.cleanup();
+  });
 
   it("creates different hashes given different global environment glob", async () => {
     const monorepo1 = await setupFixture("monorepo-with-global-files");

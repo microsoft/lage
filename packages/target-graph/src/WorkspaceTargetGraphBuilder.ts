@@ -62,6 +62,8 @@ export class WorkspaceTargetGraphBuilder {
       packageInfos: PackageInfos;
       enableTargetConfigMerging: boolean;
       enablePhantomTargetOptimization: boolean;
+      /** Opt in to lazy target weights. Defaults to false. */
+      experimentalCacheHitOptimization?: boolean;
     }
   ) {
     this.dependencyMap = createDependencyMap(options.packageInfos, { withDevDependencies: true, withPeerDependencies: false });
@@ -69,6 +71,7 @@ export class WorkspaceTargetGraphBuilder {
     this.targetFactory = new TargetFactory({
       root: options.root,
       packageInfos: options.packageInfos,
+      lazyWeights: options.experimentalCacheHitOptimization,
       resolve(packageName: string) {
         const pkg = options.packageInfos[packageName];
         if (!pkg?.packageJsonPath) {

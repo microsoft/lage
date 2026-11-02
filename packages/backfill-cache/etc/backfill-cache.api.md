@@ -18,6 +18,7 @@ export abstract class CacheStorage implements ICacheStorage {
     fetch(hash: string): Promise<boolean>;
     // (undocumented)
     protected abstract _fetch(hash: string): Promise<boolean>;
+    isUpToDate(_hash: string): Promise<boolean>;
     // (undocumented)
     protected logger: Logger;
     // (undocumented)
@@ -27,12 +28,17 @@ export abstract class CacheStorage implements ICacheStorage {
 }
 
 // @public
-export function getCacheStorageProvider(cacheStorageConfig: CacheStorageConfig, internalCacheFolder: string, logger: Logger, cwd: string, incrementalCaching?: boolean): ICacheStorage;
+export function getCacheStorageProvider(cacheStorageConfig: CacheStorageConfig, internalCacheFolder: string, logger: Logger, cwd: string, incrementalCaching?: boolean, experimentalCacheHitOptimization?: boolean): ICacheStorage;
 
 export { ICacheStorage }
 
 // @public (undocumented)
 export function isCustomProvider(config: CacheStorageConfig): config is CustomStorageConfig;
+
+// @public
+export class NativeCacheValidationError extends Error {
+    constructor(message: string);
+}
 
 // (No @packageDocumentation comment for this package)
 

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
 import path from "path";
 import type { PackageInfos } from "workspace-tools";
 import { WorkspaceTargetGraphBuilder } from "../WorkspaceTargetGraphBuilder.js";
@@ -49,6 +49,35 @@ function getGraphFromTargets(targetGraph: TargetGraph) {
 }
 
 describe("workspace target graph builder", () => {
+  it("evaluates weights only for scoped targets and their dependencies before shouldRun", async () => {
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos: createPackageInfo({ a: ["b"], b: [], c: [] }),
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: false,
+      experimentalCacheHitOptimization: true,
+    });
+    const buildWeight = jest.fn(() => 2);
+    const testWeight = jest.fn(() => {
+      throw new Error("Unselected target weight must not run");
+    });
+    const shouldRun = jest.fn((target: { weight?: number }) => target.weight === 2);
+    builder.addTargetConfig("build", { dependsOn: ["^build"], weight: buildWeight, shouldRun });
+    builder.addTargetConfig("test", { weight: testWeight });
+
+    expect(buildWeight).not.toHaveBeenCalled();
+    const graph = await builder.build(["build"], ["a"]);
+    expect([...graph.targets.keys()]).toEqual(["__start", "a#build", "b#build"]);
+    expect(graph.targets.get("a#build")).toMatchObject({ weight: 2, shouldRun: true });
+    expect(graph.targets.get("b#build")).toMatchObject({ weight: 2, shouldRun: true });
+    expect(buildWeight).toHaveBeenCalledTimes(2);
+    expect(testWeight).not.toHaveBeenCalled();
+    expect(shouldRun).toHaveBeenCalledTimes(2);
+
+    await builder.build(["build"], ["a"]);
+    expect(buildWeight).toHaveBeenCalledTimes(2);
+  });
+
   it("should build a target based on a simple package graph and task graph", async () => {
     const packageInfos = createPackageInfo({
       a: ["b"],
@@ -199,6 +228,41 @@ describe("workspace target graph builder", () => {
       ["__start", "b#transpile"],
       ["__start", "c#transpile"],
     ]);
+  });
+
+  it.each([
+    { dependsOn: "^build", expected: ["b#build", "d#build"] },
+    { dependsOn: "^^build", expected: ["b#build", "c#build", "d#build"] },
+  ])("preserves target registration order for $dependsOn", async ({ dependsOn, expected }) => {
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos: createPackageInfo({ a: ["d", "b"], b: ["c"], c: [], d: [] }),
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: false,
+    });
+    builder.addTargetConfig("build");
+    builder.addTargetConfig("bundle", { dependsOn: [dependsOn] });
+    builder.addTargetConfig("#all", { dependsOn: ["build"] });
+
+    const graph = await builder.build(["bundle", "all"], ["a"]);
+    expect(graph.targets.get("a#bundle")!.dependencies).toEqual(["__start", ...expected]);
+    expect(graph.targets.get("#all")!.dependencies).toEqual(["__start", "a#build", "b#build", "c#build", "d#build"]);
+  });
+
+  it("does not reuse transitive dependencies from a different package graph", async () => {
+    for (const dependency of ["b", "c"]) {
+      const builder = new WorkspaceTargetGraphBuilder({
+        root,
+        packageInfos: createPackageInfo({ a: [dependency], b: [], c: [] }),
+        enableTargetConfigMerging: false,
+        enablePhantomTargetOptimization: false,
+      });
+      builder.addTargetConfig("build");
+      builder.addTargetConfig("bundle", { dependsOn: ["^^build"] });
+
+      const graph = await builder.build(["bundle"], ["a"]);
+      expect(graph.targets.get("a#bundle")!.dependencies).toEqual(["__start", `${dependency}#build`]);
+    }
   });
 
   it("should generate target graph for a general task on a specific target", async () => {

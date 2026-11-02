@@ -8,12 +8,13 @@ import { makeLogger } from "backfill-logger";
 import type { Logger as BackfillLogger } from "backfill-logger";
 import type { CacheOptions } from "@lage-run/config";
 import type { AzureCredentialName } from "@lage-run/config";
+import type { TargetLogger } from "@lage-run/reporters";
 import { CredentialCache } from "./CredentialCache.js";
 
-export function createBackfillLogger(): BackfillLogger {
+export function createBackfillLogger(targetLogger?: Pick<TargetLogger, "warn" | "verbose">): BackfillLogger {
   const stdout = process.stdout;
   const stderr = process.stderr;
-  return makeLogger("error", {
+  const logger = makeLogger("error", {
     console: {
       info(...args) {
         stdout.write(args.join(" ") + os.EOL);
@@ -26,6 +27,13 @@ export function createBackfillLogger(): BackfillLogger {
       },
     },
   });
+  return targetLogger
+    ? {
+        ...logger,
+        warn: (...args) => targetLogger.warn(args.join(" ")),
+        verbose: (...args) => targetLogger.verbose(args.join(" ")),
+      }
+    : logger;
 }
 
 export function createBackfillCacheConfig(

@@ -1,9 +1,16 @@
-import { describe, expect, it } from "@jest/globals";
-import { setupFixture, type FixtureName } from "@lage-run/test-utilities";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
+import {
+  createTempDir,
+  removeTempDirAsync,
+  setupFixture,
+  type FixtureName,
+} from "@lage-run/test-utilities";
 import { makeLogger } from "backfill-logger";
 import fs from "fs-extra";
+import { promises as fsPromises } from "fs";
 import path from "path";
 import { LocalCacheStorage } from "../LocalCacheStorage.js";
+import { MaterializedCacheStorage } from "../MaterializedCacheStorage.js";
 import { getCacheStorageProvider } from "../getCacheStorageProvider.js";
 
 /**
@@ -103,6 +110,338 @@ async function putInCache(
 }
 
 describe("LocalCacheStorage", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  describe("materialized outputs", () => {
+    let tempDir: string | undefined;
+
+    afterEach(async () => {
+      const dir = tempDir;
+      tempDir = undefined;
+      await removeTempDirAsync(dir, { throwOnError: true, maxAttempts: 3 });
+    });
+
+    function setupOutputs() {
+      tempDir = createTempDir({ prefix: "backfill-outputs-" });
+      const fixtureLocation = tempDir;
+      const internalCacheFolder = path.join(
+        "node_modules",
+        ".cache",
+        "backfill"
+      );
+      const cacheStorage = new MaterializedCacheStorage(
+        internalCacheFolder,
+        makeLogger("mute"),
+        fixtureLocation
+      );
+      const hash = "materialized-outputs";
+      const cacheFolder = path.join(fixtureLocation, internalCacheFolder, hash);
+      const outputFile = path.join(fixtureLocation, "lib", "index.js");
+      fs.outputFileSync(outputFile, "original");
+      return {
+        fixtureLocation,
+        internalCacheFolder,
+        cacheStorage,
+        hash,
+        cacheFolder,
+        outputFile,
+      };
+    }
+
+    it("validates across storage instances without rewriting outputs or metadata", async () => {
+      const { fixtureLocation, internalCacheFolder, cacheStorage, hash } =
+        setupOutputs();
+      await cacheStorage.put(hash, ["lib/**"]);
+      const freshStorage = new MaterializedCacheStorage(
+        internalCacheFolder,
+        makeLogger("mute"),
+        fixtureLocation
+      );
+      const copy = jest.spyOn(fsPromises, "copyFile");
+      const write = jest.spyOn(fs, "writeFile");
+      const rename = jest.spyOn(fs, "rename");
+
+      expect(await freshStorage.isUpToDate(hash)).toBe(true);
+      expect(await freshStorage.fetch(hash)).toBe(true);
+      expect(copy).not.toHaveBeenCalled();
+      expect(write).not.toHaveBeenCalled();
+      expect(rename).not.toHaveBeenCalled();
+    });
+
+    it("rejects and restores a same-size edit even when its mtime is preserved", async () => {
+      const { cacheStorage, hash, outputFile } = setupOutputs();
+      const timestamp = new Date("2020-01-01T00:00:00Z");
+      await fs.utimes(outputFile, timestamp, timestamp);
+      await cacheStorage.put(hash, ["lib/**"]);
+      await fs.writeFile(outputFile, "modified");
+      await fs.utimes(outputFile, timestamp, timestamp);
+
+      expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+      expect(await fs.readFile(outputFile, "utf8")).toBe("modified");
+      expect(await cacheStorage.fetch(hash)).toBe(true);
+      expect(await fs.readFile(outputFile, "utf8")).toBe("original");
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+    });
+
+    it("restores only deleted outputs, leaving intact outputs untouched", async () => {
+      const { cacheStorage, hash, outputFile, fixtureLocation } =
+        setupOutputs();
+      const intactFile = path.join(
+        fixtureLocation,
+        "lib",
+        "nested",
+        ".manifest"
+      );
+      await fs.outputFile(intactFile, "intact");
+      await cacheStorage.put(hash, ["lib/**"]);
+      const intactBefore = await fs.stat(intactFile);
+      await fs.remove(outputFile);
+      const copy = jest.spyOn(fsPromises, "copyFile");
+
+      expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+      expect(await fs.pathExists(outputFile)).toBe(false);
+      expect(await cacheStorage.fetch(hash)).toBe(true);
+      expect(await fs.readFile(outputFile, "utf8")).toBe("original");
+      expect((await fs.stat(intactFile)).mtimeMs).toBe(intactBefore.mtimeMs);
+      expect(copy).toHaveBeenCalledTimes(1);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+    });
+
+    it("restores deleted output directories and replaced files", async () => {
+      const { cacheStorage, hash, outputFile } = setupOutputs();
+      await cacheStorage.put(hash, ["lib/**"]);
+      await fs.remove(path.dirname(outputFile));
+      expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+      expect(await cacheStorage.fetch(hash)).toBe(true);
+      await fs.remove(outputFile);
+      await fs.outputFile(outputFile, "replaced");
+      expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+      expect(await cacheStorage.fetch(hash)).toBe(true);
+      expect(await fs.readFile(outputFile, "utf8")).toBe("original");
+    });
+
+    it("verifies legacy entries before using the validation-only shortcut", async () => {
+      const { cacheStorage, hash, outputFile, cacheFolder } = setupOutputs();
+      await fs.outputFile(path.join(cacheFolder, "lib", "index.js"), "cached");
+      expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+      expect(await fs.readFile(outputFile, "utf8")).toBe("original");
+      expect(await cacheStorage.fetch(hash)).toBe(true);
+      expect(await fs.readFile(outputFile, "utf8")).toBe("cached");
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+      expect(await fs.readdir(cacheFolder)).toEqual(["lib"]);
+    });
+
+    it.each([
+      "{broken",
+      "null",
+      "{}",
+      '{"version":99}',
+      '{"version":1,"files":[]}',
+    ])(
+      "safely refreshes missing or invalid output metadata: %s",
+      async (metadata) => {
+        const { cacheStorage, hash, cacheFolder } = setupOutputs();
+        await cacheStorage.put(hash, ["lib/**"]);
+        await fs.writeFile(`${cacheFolder}.state.json`, metadata);
+        expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+        expect(await cacheStorage.fetch(hash)).toBe(true);
+        expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+      }
+    );
+
+    it("does not trust metadata for a removed or replaced cache directory", async () => {
+      const { cacheStorage, hash, cacheFolder } = setupOutputs();
+      await cacheStorage.put(hash, ["lib/**"]);
+      await fs.remove(cacheFolder);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+      await fs.outputFile(
+        path.join(cacheFolder, "lib", "index.js"),
+        "replaced"
+      );
+      expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+      expect(await cacheStorage.fetch(hash)).toBe(true);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+    });
+
+    it("checks modified cached files on the normal fetch path", async () => {
+      const { cacheStorage, hash, cacheFolder, outputFile } = setupOutputs();
+      await cacheStorage.put(hash, ["lib/**"]);
+      await fs.writeFile(path.join(cacheFolder, "lib", "index.js"), "changed");
+      expect(await cacheStorage.fetch(hash)).toBe(true);
+      expect(await fs.readFile(outputFile, "utf8")).toBe("changed");
+    });
+
+    it("supports cache entries with no outputs", async () => {
+      const { cacheStorage, hash } = setupOutputs();
+      await cacheStorage.put(hash, ["missing/**"]);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+      expect(await cacheStorage.fetch(hash)).toBe(true);
+    });
+
+    it("validates every output across multiple stat batches", async () => {
+      const { cacheStorage, hash, outputFile } = setupOutputs();
+      const outputs = Array.from({ length: 300 }, (_, index) =>
+        path.join(path.dirname(outputFile), `${index}.js`)
+      );
+      await Promise.all(outputs.map((file) => fs.writeFile(file, "output")));
+      await cacheStorage.put(hash, ["lib/**"]);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+
+      await fs.remove(outputs[outputs.length - 1]);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+      expect(await cacheStorage.fetch(hash)).toBe(true);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+    });
+
+    it("rejects malformed file proofs and paths outside the output root", async () => {
+      const { cacheStorage, hash, cacheFolder } = setupOutputs();
+      await cacheStorage.put(hash, ["lib/**"]);
+      const stateFile = `${cacheFolder}.state.json`;
+      const state = await fs.readJSON(stateFile);
+      const proof = state.files["lib/index.js"];
+      for (const file of [
+        "../outside",
+        "..\\outside",
+        "/outside",
+        "C:outside",
+        "lib/index.js\0",
+      ]) {
+        await fs.writeJSON(stateFile, {
+          ...state,
+          files: { [file]: proof },
+        });
+        expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+      }
+      await fs.writeJSON(stateFile, {
+        ...state,
+        files: { "lib/index.js": {} },
+      });
+      expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+    });
+
+    it("publishes an entry only after every output has been copied", async () => {
+      const { cacheStorage, hash } = setupOutputs();
+      const copyFile = fsPromises.copyFile;
+      let startCopy!: () => void;
+      let finishCopy!: () => void;
+      const started = new Promise<void>((resolve) => {
+        startCopy = resolve;
+      });
+      const finish = new Promise<void>((resolve) => {
+        finishCopy = resolve;
+      });
+      jest
+        .spyOn(fsPromises, "copyFile")
+        .mockImplementationOnce(async (src, dest) => {
+          startCopy();
+          await finish;
+          await copyFile(src, dest);
+        });
+
+      const pending = cacheStorage.put(hash, ["lib/**"]);
+      try {
+        await started;
+        expect(await cacheStorage.fetch(hash)).toBe(false);
+        expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+      } finally {
+        finishCopy();
+        await pending;
+      }
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+    });
+
+    it("cleans up failed writes without publishing a partial cache entry", async () => {
+      const { cacheStorage, hash, cacheFolder } = setupOutputs();
+      jest.spyOn(fsPromises, "copyFile").mockImplementationOnce(() => {
+        throw new Error("copy failed");
+      });
+      await expect(cacheStorage.put(hash, ["lib/**"])).rejects.toThrow(
+        "copy failed"
+      );
+      expect(await cacheStorage.fetch(hash)).toBe(false);
+      expect(await fs.readdir(path.dirname(cacheFolder))).toEqual([]);
+    });
+
+    it("keeps concurrent writes atomic and their output proofs valid", async () => {
+      const {
+        cacheStorage,
+        hash,
+        fixtureLocation,
+        internalCacheFolder,
+        cacheFolder,
+      } = setupOutputs();
+      const other = new MaterializedCacheStorage(
+        internalCacheFolder,
+        makeLogger("mute"),
+        fixtureLocation
+      );
+      await Promise.all([
+        cacheStorage.put(hash, ["lib/**"]),
+        other.put(hash, ["lib/**"]),
+      ]);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+      expect((await fs.readdir(path.dirname(cacheFolder))).sort()).toEqual([
+        hash,
+        `${hash}.state.json`,
+      ]);
+    });
+
+    it("replaces an existing same-hash entry with the complete new snapshot", async () => {
+      const { cacheStorage, hash, outputFile } = setupOutputs();
+      await cacheStorage.put(hash, ["lib/**"]);
+      await fs.writeFile(outputFile, "updated");
+      const added = path.join(path.dirname(outputFile), "new.js");
+      await fs.writeFile(added, "new");
+      await cacheStorage.put(hash, ["lib/**"]);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+
+      await fs.remove(path.dirname(outputFile));
+      expect(await cacheStorage.fetch(hash)).toBe(true);
+      expect(await fs.readFile(outputFile, "utf8")).toBe("updated");
+      expect(await fs.readFile(added, "utf8")).toBe("new");
+    });
+
+    it("keeps legacy storage as the default and invalidates proofs when switching back", async () => {
+      const {
+        fixtureLocation,
+        internalCacheFolder,
+        cacheStorage,
+        hash,
+        cacheFolder,
+        outputFile,
+      } = setupOutputs();
+      const args = [
+        { provider: "local" } as const,
+        internalCacheFolder,
+        makeLogger("mute"),
+        fixtureLocation,
+      ] as const;
+      const legacy = getCacheStorageProvider(...args);
+      const enabled = getCacheStorageProvider(...args, false, true);
+      expect(legacy).toBeInstanceOf(LocalCacheStorage);
+      expect(legacy).not.toBeInstanceOf(MaterializedCacheStorage);
+      expect(enabled).toBeInstanceOf(MaterializedCacheStorage);
+      expect(getCacheStorageProvider(...args, false, false)).toBe(legacy);
+      expect(getCacheStorageProvider(...args, false, true)).toBe(enabled);
+
+      await legacy.put(hash, ["lib/**"]);
+      expect(await fs.pathExists(`${cacheFolder}.state.json`)).toBe(false);
+      await fs.writeFile(outputFile, "modified");
+      expect(await legacy.fetch(hash)).toBe(true);
+      expect(await fs.readFile(outputFile, "utf8")).toBe("original");
+
+      await cacheStorage.fetch(hash);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+      await legacy.put(hash, ["lib/**"]);
+      expect(await fs.pathExists(`${cacheFolder}.state.json`)).toBe(false);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(false);
+      await cacheStorage.fetch(hash);
+      expect(await cacheStorage.isUpToDate(hash)).toBe(true);
+    });
+  });
+
   describe("fetch", () => {
     it("will fetch on cache hit", async () => {
       await fetchFromCache({

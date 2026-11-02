@@ -116,6 +116,7 @@ export async function infoAction(options: InfoCommandOptions, command: Command):
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
     enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
+    experimentalCacheHitOptimization: config.experimentalCacheHitOptimization,
   });
 
   const scope = getFilteredPackages({

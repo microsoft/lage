@@ -13,6 +13,7 @@ interface TargetWorkerDataOptions {
   skipLocalCache: boolean;
   shouldCache: boolean;
   shouldResetCache: boolean;
+  experimentalCacheHitOptimization?: boolean;
   taskArgs: string[];
   root: string;
   cacheOptions?: CacheOptions;
@@ -33,8 +34,8 @@ function setup(options: TargetWorkerDataOptions) {
     root,
     logger,
     cacheOptions,
-    cliArgs: options.taskArgs,
     skipLocalCache: options.skipLocalCache,
+    experimentalCacheHitOptimization: options.experimentalCacheHitOptimization,
   });
 
   const runnerPicker = new TargetRunnerPicker(runners);
@@ -48,29 +49,30 @@ function setup(options: TargetWorkerDataOptions) {
 
 const { cacheProvider, runnerPicker, options } = setup(workerData);
 
-let hashPromiseResolve = (_hash: string) => {};
-
-// main thread sends hash to worker because it keeps a global memory cache of the hashes
-parentPort!.on("message", (data: any) => {
-  if (data.type === "hash") {
-    hashPromiseResolve(data.hash);
-  }
-});
-
-async function getCache(target: Target) {
+async function getCache(target: Target, hash: string | undefined) {
   const { shouldCache, shouldResetCache } = options;
-  let hash: string | undefined = undefined;
   let cacheHit = false;
 
   if (!shouldCache || !target.cache || !cacheProvider) {
-    return { hash, cacheHit };
+    return { hash: undefined, cacheHit };
   }
 
-  // using a special pattern in communicating with the main thread to get the hash for the target
-  hash = await new Promise((resolve) => {
-    hashPromiseResolve = resolve;
-    parentPort!.postMessage({ type: "hash" });
-  });
+  if (!options.experimentalCacheHitOptimization) {
+    hash = await new Promise<string>((resolve, reject) => {
+      const onMessage = (data: { type: string; hash: string; error?: string }) => {
+        if (data.type === "hash") {
+          parentPort!.off("message", onMessage);
+          if (data.error !== undefined) {
+            reject(new Error(data.error));
+          } else {
+            resolve(data.hash);
+          }
+        }
+      };
+      parentPort!.on("message", onMessage);
+      parentPort!.postMessage({ type: "hash" });
+    });
+  }
 
   if (hash && !shouldResetCache) {
     cacheHit = await cacheProvider.fetch(hash, target);
@@ -86,8 +88,8 @@ async function saveCache(target: Target, hash: string | undefined) {
   await cacheProvider.put(hash, target);
 }
 
-async function run(data: any, abortSignal?: AbortSignal) {
-  const { hash, cacheHit } = await getCache(data.target);
+async function run(data: { target: Target; hash?: string; weight: number }, abortSignal?: AbortSignal) {
+  const { hash, cacheHit } = await getCache(data.target, data.hash);
 
   const cacheEnabled = data.target.cache && options.shouldCache && hash;
 

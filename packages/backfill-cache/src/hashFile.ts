@@ -1,5 +1,5 @@
 import * as path from "path";
-import { promises as fs } from "fs";
+import { createReadStream, promises as fs } from "fs";
 import * as crypto from "crypto";
 import pLimit from "p-limit";
 
@@ -19,15 +19,17 @@ const diskLimit = pLimit(MAX_FILE_OPERATIONS);
 // The first key is the file path, the second key is mtime
 const memo = new Map<string, Map<number, string>>();
 
-async function computeHash(filePath: string): Promise<string> {
-  const fileBuffer = await diskLimit(() => {
-    return fs.readFile(filePath);
+export function computeHash(
+  filePath: string,
+  algorithm: "sha1" | "sha256" = "sha1"
+): Promise<string> {
+  return diskLimit(async () => {
+    const hash = crypto.createHash(algorithm);
+    for await (const chunk of createReadStream(filePath)) {
+      hash.update(chunk);
+    }
+    return hash.digest("hex");
   });
-  // We use sha1 for perf reason and because the hashing is not used for security reason.
-  const hashSum = crypto.createHash("sha1");
-  hashSum.update(fileBuffer);
-  const hash = hashSum.digest("hex");
-  return hash;
 }
 
 /*

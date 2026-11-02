@@ -4,6 +4,7 @@ import type { Logger } from "backfill-logger";
 import type { ICacheStorage } from "./CacheStorage.js";
 import { AzureBlobCacheStorage } from "./AzureBlobCacheStorage.js";
 import { LocalCacheStorage } from "./LocalCacheStorage.js";
+import { MaterializedCacheStorage } from "./MaterializedCacheStorage.js";
 import { NpmCacheStorage } from "./NpmCacheStorage.js";
 import { LocalSkipCacheStorage } from "./LocalSkipCacheStorage.js";
 
@@ -25,7 +26,8 @@ export function getCacheStorageProvider(
   internalCacheFolder: string,
   logger: Logger,
   cwd: string,
-  incrementalCaching = false
+  incrementalCaching = false,
+  experimentalCacheHitOptimization = false
 ): ICacheStorage {
   let cacheStorage: ICacheStorage | undefined;
 
@@ -37,7 +39,13 @@ export function getCacheStorageProvider(
     }
   }
 
-  const key = `${cacheStorageConfig.provider}${internalCacheFolder}${cwd}`;
+  const key = JSON.stringify([
+    cacheStorageConfig.provider,
+    internalCacheFolder,
+    cwd,
+    incrementalCaching,
+    experimentalCacheHitOptimization,
+  ]);
   cacheStorage = memo.get(key);
   if (cacheStorage) {
     return cacheStorage;
@@ -66,7 +74,11 @@ export function getCacheStorageProvider(
       incrementalCaching
     );
   } else {
-    cacheStorage = new LocalCacheStorage(
+    const Storage =
+      experimentalCacheHitOptimization === true
+        ? MaterializedCacheStorage
+        : LocalCacheStorage;
+    cacheStorage = new Storage(
       internalCacheFolder,
       logger,
       cwd,

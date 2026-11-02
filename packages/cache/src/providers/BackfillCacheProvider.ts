@@ -1,5 +1,5 @@
 import { createBackfillCacheConfig, createBackfillLogger } from "../backfillWrapper.js";
-import { getCacheStorageProvider } from "backfill-cache";
+import { CacheStorage, getCacheStorageProvider, NativeCacheValidationError } from "backfill-cache";
 import { promisify } from "util";
 import * as fs from "fs";
 import * as path from "path";
@@ -21,6 +21,7 @@ export interface BackfillCacheProviderOptions {
   root: string;
   logger: TargetLogger;
   cacheOptions: Partial<CacheOptions>;
+  experimentalCacheHitOptimization?: boolean;
 }
 
 export class BackfillCacheProvider implements CacheProvider {
@@ -35,11 +36,35 @@ export class BackfillCacheProvider implements CacheProvider {
 
     const cachePath = this.getCachePath(cwd, hash);
 
-    return getCacheStorageProvider(cacheStorageConfig ?? { provider: "local" }, cachePath, this.backfillLogger, cwd, incrementalCaching);
+    return getCacheStorageProvider(
+      cacheStorageConfig ?? { provider: "local" },
+      cachePath,
+      this.backfillLogger,
+      cwd,
+      incrementalCaching,
+      this.options.experimentalCacheHitOptimization === true
+    );
   }
 
   constructor(private options: BackfillCacheProviderOptions) {
-    this.backfillLogger = createBackfillLogger();
+    this.backfillLogger = createBackfillLogger(options.experimentalCacheHitOptimization === true ? options.logger : undefined);
+  }
+
+  public async isUpToDate(hash: string, target: Target): Promise<boolean> {
+    if (!hash || this.options.experimentalCacheHitOptimization !== true) {
+      return false;
+    }
+    try {
+      const storage = this.getTargetCacheStorageProvider(target.cwd, hash);
+      return storage instanceof CacheStorage && (await storage.isUpToDate(hash));
+    } catch (error) {
+      if (error instanceof NativeCacheValidationError) {
+        throw error;
+      }
+      const message = error instanceof Error ? error.message : String(error);
+      this.options.logger.silly(`Local cache validation failed: ${message}`, { target });
+      return false;
+    }
   }
 
   public async fetch(hash: string, target: Target): Promise<boolean> {

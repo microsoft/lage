@@ -79,6 +79,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     priorities: config.priorities,
     enableTargetConfigMerging: config.enableTargetConfigMerging,
     enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
+    experimentalCacheHitOptimization: config.experimentalCacheHitOptimization,
   });
 
   const targetHasher = new TargetHasher({
@@ -87,6 +88,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
     logger,
     cacheKey: config.cacheOptions?.cacheKey,
     cliArgs: taskArgs,
+    packageInfos,
   });
 
   logger.info("Initializing hasher");

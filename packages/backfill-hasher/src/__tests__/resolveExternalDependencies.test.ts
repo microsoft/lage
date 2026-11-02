@@ -4,7 +4,11 @@ import {
   removeTempDir,
   type FixtureName,
 } from "@lage-run/test-utilities";
-import { parseLockFile, getPackageInfos } from "workspace-tools";
+import {
+  parseLockFile,
+  getPackageInfos,
+  type ParsedLock,
+} from "workspace-tools";
 import {
   resolveExternalDependencies,
   _addToQueue,
@@ -50,6 +54,40 @@ describe("resolveExternalDependencies", () => {
   afterEach(() => {
     root && removeTempDir(root);
     root = "";
+  });
+
+  it("preserves breadth-first order with cycles, shared dependencies and multiple ranges", () => {
+    const parsedLock: ParsedLock = {
+      type: "success",
+      object: {
+        "first@^1": {
+          version: "1.1.0",
+          dependencies: { shared: "^1", first: "^1", missing: "^3" },
+        },
+        "second@^2": {
+          version: "2.1.0",
+          dependencies: { shared: "^1", first: "~1" },
+        },
+        "shared@^1": {
+          version: "1.0.0",
+          dependencies: { second: "^2" },
+        },
+        "first@~1": {
+          version: "1.1.0",
+          dependencies: { extra: "^1" },
+        },
+      },
+    };
+
+    expect(
+      resolveExternalDependencies({ first: "^1", second: "^2" }, {}, parsedLock)
+    ).toEqual([
+      "first@1.1.0",
+      "second@2.1.0",
+      "shared@1.0.0",
+      "missing@^3",
+      "extra@^1",
+    ]);
   });
 
   it.each<{
