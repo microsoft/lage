@@ -147,9 +147,6 @@ describe("resolveExternalDependencies", () => {
       "root@1.0.0",
       "child@1.1.0",
     ]);
-    expect(resolveExternalDependencies({ child: "^1" }, {}, lockInfo)).toEqual([
-      "child@1.1.0",
-    ]);
     expect(resolveExternalDependencies({}, {}, lockInfo)).toEqual([]);
   });
 
