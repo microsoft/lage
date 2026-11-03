@@ -83,6 +83,7 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
 
   const targetHasher = new TargetHasher({
     root,
+    packageInfos,
     environmentGlob: config.cacheOptions?.environmentGlob ?? [],
     logger,
     cacheKey: config.cacheOptions?.cacheKey,
