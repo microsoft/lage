@@ -8,7 +8,7 @@
     "lint": "monorepo-scripts lint",
     "types": "tsc"
   },
-  "dependencies": {
+  "devDependencies": {
     "@eslint/js": "^9.0.0",
     "@microsoft/api-extractor": "7.52.9",
     "@swc/core": "^1.9.1",
@@ -29,7 +29,7 @@
     "zimmerframe": "^1.1.4"
   },
   "rationale": {
-    "dependencies": {
+    "devDependencies": {
       "workspace-tools-npm": "This must point to a different workspace-tools version to avoid circular deps"
     }
   }
