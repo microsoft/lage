@@ -4,7 +4,7 @@
       "packageName": "@lage-run/target-graph",
       "type": "patch",
       "dependentChangeType": "patch",
-      "comment": "Preserve priority traversal order by appending task IDs and reversing the completed list.",
+      "comment": "Improve performance of target priority calculation for large target graphs",
       "email": "djmaks@microsoft.com"
     }
   ]
