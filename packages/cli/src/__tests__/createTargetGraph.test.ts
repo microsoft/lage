@@ -352,7 +352,7 @@ describe("createTargetGraph", () => {
       const { packages, targets } = await getFilteredTargetGraphWrapper({
         options: { since: "HEAD" },
         stagedConfig,
-        expectGitCalls: 4,
+        expectGitCalls: 2,
       });
       expect(packages).toEqual(["a"]);
       const stagedTargets = targets.filter(({ id }) => id.startsWith("Δ"));
@@ -394,7 +394,7 @@ describe("createTargetGraph", () => {
       const { packages, targets } = await getFilteredTargetGraphWrapper({
         options: { since: "HEAD", ...options },
         stagedConfig,
-        expectGitCalls: 4,
+        expectGitCalls: 2,
       });
       expect(packages).toEqual(expected);
       const stagedTargets = targets.filter(({ id }) => id.startsWith("Δ"));
@@ -403,7 +403,7 @@ describe("createTargetGraph", () => {
     });
 
     it.each([
-      { desc: "keeps normal scoped targets for repo-wide changes", since: "HEAD", scope: ["a"], expected: ["a"], expectGitCalls: 4 },
+      { desc: "keeps normal scoped targets for repo-wide changes", since: "HEAD", scope: ["a"], expected: ["a"], expectGitCalls: 2 },
       {
         desc: "keeps all normal targets after failed detection without retrying",
         since: "missing-ref",

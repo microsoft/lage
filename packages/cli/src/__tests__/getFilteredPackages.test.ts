@@ -82,7 +82,7 @@ describe("getFilteredPackages", () => {
 
       const { packages } = getFilteredPackagesWrapper({
         options: { since: "HEAD" },
-        expectGitCalls: 4,
+        expectGitCalls: 2,
       });
       expect(packages).toEqual([]);
     });
@@ -97,7 +97,7 @@ describe("getFilteredPackages", () => {
 
       const { packages, log } = getFilteredPackagesWrapper({
         options: { since: "HEAD~1" },
-        expectGitCalls: 4,
+        expectGitCalls: 2,
       });
 
       expect(packages).toEqual(["foo1", "foo2"]);
@@ -166,7 +166,7 @@ describe("getFilteredPackages", () => {
       const { packages, log } = getFilteredPackagesWrapper({
         options: { since: "HEAD" },
         config: { repoWideChanges: ["repo-wide.txt"] },
-        expectGitCalls: 4,
+        expectGitCalls: 2,
       });
 
       expect(packages).toEqual(["a", "b"]);
@@ -206,7 +206,7 @@ describe("getFilteredPackages", () => {
       const { packages } = getFilteredPackagesWrapper({
         options: { since: "HEAD", ignore: ["**/*.test.ts"] },
         config: { ignore: ["**/*.md"], repoWideChanges },
-        expectGitCalls: 4,
+        expectGitCalls: 2,
       });
 
       // Without repoWideChanges, only "c" is considered changed (files in "a" and "b" changed, but are ignored)

@@ -56,7 +56,7 @@ describe("getChangedFiles", () => {
     monorepo = new Monorepo("getChangedFiles-noChanges");
     await monorepo.init({ packages: { a: {} } });
 
-    const changes = getChangedFilesWrapper({ since: "HEAD", expectGitCalls: 4 });
+    const changes = getChangedFilesWrapper({ since: "HEAD", expectGitCalls: 2 });
     expect(changes).toEqual({ status: "success", changedFiles: [], repoWideChangedFiles: [] });
   });
 
@@ -90,7 +90,7 @@ describe("getChangedFiles", () => {
 
     const changes = getChangedFilesWrapper({
       since: changeType === "committed" ? "HEAD~1" : "HEAD",
-      expectGitCalls: 4,
+      expectGitCalls: 2,
       repoWideChanges: ["config/*.json"],
     });
     expect(changes).toEqual({
@@ -122,7 +122,7 @@ describe("getChangedFiles", () => {
 
     const changes = getChangedFilesWrapper({
       since: changeType === "committed" ? "HEAD~1" : "HEAD",
-      expectGitCalls: 4,
+      expectGitCalls: 2,
       repoWideChanges: ["config/*.json"],
     });
     expect(changes).toEqual({ status: "success", changedFiles: [configPath, filePath], repoWideChangedFiles: [configPath] });
@@ -159,7 +159,7 @@ describe("getChangedFiles", () => {
     monorepo.stageFiles({ "packages/a/file.txt": "staged" });
     monorepo.writeFiles({ "packages/a/file.txt": "unstaged" });
 
-    const changes = getChangedFilesWrapper({ since: "HEAD~1", expectGitCalls: 4 });
+    const changes = getChangedFilesWrapper({ since: "HEAD~1", expectGitCalls: 2 });
     expect(changes).toEqual({
       status: "success",
       changedFiles: ["packages/a/file.txt"],

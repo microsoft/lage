@@ -349,6 +349,9 @@ export function getUserEmail(options: GitCommonOptions): string | null;
 export function getUserEmail(cwd: string): string | null;
 
 // @public
+export function getWorkingTreeChanges(options: GitCommonOptions): string[];
+
+// @public
 export function getWorkspaceInfos(cwd: string, managerOverride?: WorkspaceManager): WorkspaceInfos | undefined;
 
 // @public

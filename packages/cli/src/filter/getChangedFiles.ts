@@ -1,4 +1,4 @@
-import { getChangesBetweenRefs, getDefaultRemoteBranch, getStagedChanges, getUnstagedChanges, getUntrackedChanges } from "workspace-tools";
+import { getChangesBetweenRefs, getDefaultRemoteBranch, getWorkingTreeChanges } from "workspace-tools";
 import micromatch from "micromatch";
 import type { TargetLogger } from "@lage-run/reporters";
 import type { ConfigOptions } from "@lage-run/config";
@@ -51,14 +51,7 @@ export function getChangedFiles(
       fromRef: since || getDefaultRemoteBranch({ cwd: root }),
       cwd: root,
     });
-    const changedFiles = [
-      ...new Set([
-        ...getUntrackedChanges({ cwd: root }),
-        ...getUnstagedChanges({ cwd: root }),
-        ...getStagedChanges({ cwd: root }),
-        ...sinceChanges,
-      ]),
-    ];
+    const changedFiles = [...new Set([...getWorkingTreeChanges({ cwd: root }), ...sinceChanges])];
     const repoWideChangedFiles = repoWideChanges.length ? micromatch(changedFiles, repoWideChanges) : [];
 
     return { status: "success", changedFiles, repoWideChangedFiles };
