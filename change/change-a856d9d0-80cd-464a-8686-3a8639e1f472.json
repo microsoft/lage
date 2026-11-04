@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "backfill-hasher",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Use a Set for external dependency queue membership checks while preserving resolution order.",
+      "email": "djmaks@microsoft.com"
+    }
+  ]
+}
