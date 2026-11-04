@@ -30,6 +30,7 @@ function reverseTopoSort(targets: Map<string, Target>, nodesWithNoDependencies: 
   while (nodesWithNoDependenciesClone.length > 0) {
     const currentId = nodesWithNoDependenciesClone.pop()!;
 
+    // Push (not unshift) then reverse at the end for better perf
     sortedList.push(currentId);
 
     const node = targets.get(currentId)!;
