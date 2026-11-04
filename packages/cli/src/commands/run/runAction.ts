@@ -61,6 +61,7 @@ export async function runAction(options: RunCommandOptions, command: Command): P
 
   const { hasher } = await createCache({
     root,
+    packageInfos,
     logger,
     cacheOptions: config.cacheOptions,
     cliArgs: taskArgs,

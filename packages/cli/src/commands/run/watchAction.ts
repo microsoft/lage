@@ -58,6 +58,7 @@ export async function watchAction(options: RunCommandOptions, command: Command):
 
   const { hasher } = await createCache({
     root,
+    packageInfos,
     logger,
     cacheOptions: config.cacheOptions,
     cliArgs: taskArgs,
