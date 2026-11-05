@@ -19,6 +19,8 @@ import { globAsyncCached } from "./globAsyncCached.js";
 
 export interface TargetHasherOptions {
   root: string;
+  /** Complete package metadata for this root and invocation. Omit to discover packages during initialization. */
+  packageInfos?: PackageInfos;
   environmentGlob: string[];
   cacheKey?: string;
   cliArgs?: string[];
@@ -95,7 +97,7 @@ export class TargetHasher {
         .then((files) => this.fileHasher.hash(files))
         .then((h) => (this.globalInputsHash = h)),
 
-      getPackageInfosAsync(root).then((packageInfos) => {
+      (this.options.packageInfos ? Promise.resolve(this.options.packageInfos) : getPackageInfosAsync(root)).then((packageInfos) => {
         if (Object.keys(packageInfos).length) {
           this.packageInfos = packageInfos;
         } else {
