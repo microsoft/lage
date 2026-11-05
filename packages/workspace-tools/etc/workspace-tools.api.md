@@ -276,6 +276,7 @@ export function getPackagesByFiles(root: string, files: string[], ignoreGlobs?: 
 interface GetPackagesByFilesOptions {
     files: string[];
     ignoreGlobs?: string[];
+    packageInfos?: PackageInfos;
     returnAllPackagesOnNoMatch?: boolean;
     root: string;
 }
@@ -346,6 +347,9 @@ export function getUserEmail(options: GitCommonOptions): string | null;
 
 // @public @deprecated (undocumented)
 export function getUserEmail(cwd: string): string | null;
+
+// @public
+export function getWorkingTreeChanges(options: GitCommonOptions): string[];
 
 // @public
 export function getWorkspaceInfos(cwd: string, managerOverride?: WorkspaceManager): WorkspaceInfos | undefined;
