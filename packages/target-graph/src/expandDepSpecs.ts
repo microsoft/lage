@@ -42,10 +42,11 @@ export function expandDepSpecs(
   enablePhantomTargetOptimization: boolean
 ): [string, string][] {
   const dependencies: [string, string][] = [];
-  const targetList = [...targets.values()];
+  // Group targets by task and package so each dependency lookup visits only matching targets.
+  // Save each target's position so matches can be returned in their original registration order.
   const targetsByTask = new Map<string, { ids: string[]; byPackage: Map<string, number[]> }>();
 
-  for (const { id, task, packageName } of targetList) {
+  for (const { id, task, packageName } of targets.values()) {
     let taskTargets = targetsByTask.get(task);
     if (!taskTargets) {
       taskTargets = { ids: [], byPackage: new Map() };
@@ -94,7 +95,7 @@ export function expandDepSpecs(
     return indices.sort((a, b) => a - b).map((index) => taskTargets.ids[index]);
   };
 
-  for (const target of targetList) {
+  for (const target of targets.values()) {
     const { depSpecs, packageName, id: to } = target;
 
     // Always start with a root node with a special "START_TARGET_ID"
