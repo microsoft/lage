@@ -253,6 +253,38 @@ describe("workspace target graph builder", () => {
     }
   });
 
+  it.each([false, true])(
+    "isolates transitive dependencies between graph expansions (phantom optimization: %s)",
+    async (enablePhantomTargetOptimization) => {
+      for (const leafDependencies of [["firstLeaf"], ["secondLeaf"], [], ["firstLeaf", "secondLeaf"]]) {
+        const packageInfos = createPackageInfoWithScripts({
+          consumer: { deps: ["provider"], scripts: ["bundle", "transpile"] },
+          provider: { deps: leafDependencies, scripts: ["transpile"] },
+          firstLeaf: { deps: [], scripts: ["transpile"] },
+          secondLeaf: { deps: [], scripts: ["transpile"] },
+        });
+        const builder = new WorkspaceTargetGraphBuilder({
+          root,
+          packageInfos,
+          enableTargetConfigMerging: false,
+          enablePhantomTargetOptimization,
+        });
+        builder.addTargetConfig("bundle", { dependsOn: ["^^transpile"] });
+        builder.addTargetConfig("transpile");
+
+        const targetGraph = await builder.build(["bundle"], ["consumer"]);
+
+        expect(getGraphFromTargets(targetGraph)).toEqual([
+          ["__start", "consumer#bundle"],
+          ["provider#transpile", "consumer#bundle"],
+          ...leafDependencies.map((leaf) => [`${leaf}#transpile`, "consumer#bundle"]),
+          ["__start", "provider#transpile"],
+          ...leafDependencies.map((leaf) => ["__start", `${leaf}#transpile`]),
+        ]);
+      }
+    }
+  );
+
   it("should generate target graph for a general task on a specific target", async () => {
     const packageInfos = createPackageInfo({
       a: [],

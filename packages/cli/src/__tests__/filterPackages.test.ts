@@ -1,9 +1,9 @@
 import { describe, expect, it } from "@jest/globals";
 import { Logger } from "@lage-run/logger";
 import type { PackageInfo, PackageInfos } from "workspace-tools";
-import { filterPackages } from "../filter/getFilteredPackages.js";
+import { _filterPackages } from "../filter/getFilteredPackages.js";
 
-describe("filterPackages", () => {
+describe("_filterPackages", () => {
   const logger = new Logger();
   it("intersecting scope and since with no overlap yields no packages", () => {
     const packageInfos: PackageInfos = {
@@ -14,7 +14,7 @@ describe("filterPackages", () => {
     const scopedPackages = ["foo"];
     const changedPackages = ["bar"];
 
-    const filtered = filterPackages({
+    const filtered = _filterPackages({
       packageInfos,
       includeDependents: false,
       changedPackages,
@@ -35,7 +35,7 @@ describe("filterPackages", () => {
     const scopedPackages = ["foo1", "foo2"];
     const changedPackages = ["foo1"];
 
-    const filtered = filterPackages({
+    const filtered = _filterPackages({
       packageInfos,
       includeDependents: false,
       changedPackages,
@@ -58,7 +58,7 @@ describe("filterPackages", () => {
     const scopedPackages = ["foo2"];
     const changedPackages = ["bar"];
 
-    const filtered = filterPackages({
+    const filtered = _filterPackages({
       packageInfos,
       includeDependents: false,
       changedPackages,
@@ -82,7 +82,7 @@ describe("filterPackages", () => {
     const scopedPackages = ["bar"];
     const changedPackages = undefined;
 
-    const filtered = filterPackages({
+    const filtered = _filterPackages({
       packageInfos,
       includeDependents: true,
       changedPackages,
@@ -107,7 +107,7 @@ describe("filterPackages", () => {
     const scopedPackages = ["foo1"];
     const changedPackages = undefined;
 
-    const filtered = filterPackages({
+    const filtered = _filterPackages({
       packageInfos,
       includeDependents: true,
       changedPackages,

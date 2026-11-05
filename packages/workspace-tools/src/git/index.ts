@@ -8,6 +8,7 @@ export {
   getStagedChanges,
   getUnstagedChanges,
   getUntrackedChanges,
+  getWorkingTreeChanges,
 } from "./getChanges.js";
 export { getCurrentHash } from "./getCurrentHash.js";
 export { getDefaultRemote, type GetDefaultRemoteOptions } from "./getDefaultRemote.js";

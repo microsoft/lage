@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "Deduplicate git change detection and apply consistent behavior with repoWideChanges",
+      "packageName": "@lage-run/cli",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "patch",
+      "comment": "Add option to pass pre-calculated `packageInfos` to `getPackagesByFiles`",
+      "packageName": "workspace-tools",
+      "email": "elcraig@microsoft.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

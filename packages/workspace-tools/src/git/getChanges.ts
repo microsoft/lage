@@ -42,6 +42,37 @@ export function getChangesBetweenRefs(
 }
 
 /**
+ * Gets staged, unstaged, and untracked file paths in one git status call.
+ * Paths are relative to the repository root, and node_modules paths are excluded.
+ * Renames report the destination path. Throws an error on failure by default.
+ */
+export function getWorkingTreeChanges(options: GitCommonOptions): string[] {
+  const results = git(["status", "--porcelain=v1", "-z", "--untracked-files=all"], {
+    description: "Gathering information about working tree changes",
+    throwOnError: true,
+    ...options,
+  });
+  if (!results.success) {
+    return [];
+  }
+
+  const entries = results.stdout.split("\0");
+  const changedFiles: string[] = [];
+  for (let entryIndex = 0; entryIndex < entries.length; entryIndex++) {
+    const entry = entries[entryIndex];
+    const file = entry.slice(3);
+    if (file && !file.includes("node_modules")) {
+      changedFiles.push(file);
+    }
+    if (entry[0] === "R" || entry[0] === "C" || entry[1] === "R" || entry[1] === "C") {
+      entryIndex++;
+    }
+  }
+
+  return changedFiles;
+}
+
+/**
  * Gets file paths with changes between the current branch and the given branch.
  * Throws an error on failure.
  *
@@ -71,6 +102,7 @@ export function getBranchChanges(branchOrOptions: string | GitBranchOptions, cwd
 /**
  * Get a list of files with untracked changes.
  * Throws an error on failure by default.
+ * (To get all local uncommitted changes, use `getWorkingTreeChanges`.)
  *
  * @returns An array of file paths with untracked changes
  */
@@ -91,6 +123,7 @@ export function getUntrackedChanges(cwdOrOptions: string | GitCommonOptions): st
 /**
  * Gets file paths with changes that have not been staged yet.
  * Throws an error on failure by default.
+ * (To get all local uncommitted changes, use `getWorkingTreeChanges`.)
  *
  * @returns An array of relative file paths with unstaged changes
  */
@@ -111,6 +144,7 @@ export function getUnstagedChanges(cwdOrOptions: string | GitCommonOptions): str
 /**
  * Gets all files with staged changes (files added to the index).
  * Throws an error on failure by default.
+ * (To get all local uncommitted changes, use `getWorkingTreeChanges`.)
  *
  * @returns An array of relative file paths that have been staged
  */
