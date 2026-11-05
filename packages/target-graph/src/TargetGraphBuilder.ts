@@ -107,25 +107,24 @@ export class TargetGraphBuilder {
 
   public subgraph(entriesTargetIds: string[]): TargetGraph {
     const subgraphBuilder = new TargetGraphBuilder();
+    // Mark targets visited when enqueued, not when processed, so duplicate entries
+    // and shared dependencies cannot queue the same target more than once.
     const visited: Set<string> = new Set();
     const queue: string[] = [];
 
     for (const targetId of entriesTargetIds) {
-      if (this.targets.has(targetId)) {
+      if (this.targets.has(targetId) && !visited.has(targetId)) {
         const target = this.targets.get(targetId)!;
         subgraphBuilder.addTarget({ ...target, dependencies: [], dependents: [] });
+        visited.add(targetId);
         queue.push(targetId);
       }
     }
 
-    while (queue.length > 0) {
-      const targetId = queue.shift()!;
-      if (visited.has(targetId)) {
-        continue;
-      }
-
-      visited.add(targetId);
-
+    // Advance a cursor instead of using shift() to avoid moving the remaining queue
+    // elements on each iteration while preserving first-in, first-out traversal.
+    for (let index = 0; index < queue.length; index++) {
+      const targetId = queue[index];
       const target = this.targets.get(targetId);
 
       if (!target) {
@@ -142,6 +141,7 @@ export class TargetGraphBuilder {
         }
 
         if (!visited.has(dependency)) {
+          visited.add(dependency);
           queue.push(dependency);
         }
       }
