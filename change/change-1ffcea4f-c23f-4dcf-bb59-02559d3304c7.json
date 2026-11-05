@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Fix parseLockFile choosing a lock file from a parent directory over a closer one for a different package manager",
+      "packageName": "workspace-tools",
+      "email": "shreerajjadhav19@gmail.com",
+      "dependentChangeType": "patch"
+    }
+  ]
+}

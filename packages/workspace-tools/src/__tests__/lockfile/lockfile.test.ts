@@ -18,6 +18,25 @@ describe("parseLockFile()", () => {
 
       await expect(parseLockFile(packageRoot)).rejects.toThrow(ERROR_MESSAGES.NO_LOCK);
     });
+
+    it("prefers a pnpm lock file in the package root over a yarn.lock in a parent directory", async () => {
+      const packageRoot = setupFixture("basic-pnpm");
+      // Each fixture is copied into its own numbered temp directory, so this doesn't affect other tests
+      fs.writeFileSync(path.join(path.dirname(packageRoot), "yarn.lock"), "# yarn lockfile v1\n");
+
+      const { object } = await parseLockFile(packageRoot);
+
+      expect(Object.keys(object).some((key) => /^which@/.test(key))).toBe(true);
+    });
+
+    it("prefers an npm lock file in the package root over a pnpm lock file in a parent directory", async () => {
+      const packageRoot = setupFixture("monorepo-basic-npm");
+      fs.writeFileSync(path.join(path.dirname(packageRoot), "pnpm-lock.yaml"), "lockfileVersion: '9.0'\n");
+
+      const parsedLockFile = await parseLockFile(packageRoot);
+
+      expect(Object.keys(parsedLockFile.object).length).toBeGreaterThan(0);
+    });
   });
 
   describe("NPM", () => {
