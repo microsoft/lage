@@ -2,6 +2,101 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "0.38.0",
+      "tag": "@lage-run/cli_v0.38.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "fa3d0abd108ef9d00643642ca4cf1b89e8f39220",
+            "comment": "Deduplicate git change detection and apply consistent behavior with repoWideChanges"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.6.9",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.9.18",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.11.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.9.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/runners to v1.4.16",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.6.16",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.14",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.15.13",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump workspace-tools to v0.42.3",
+            "commit": "not available"
+          }
+        ],
+        "patch": [
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "26b070319157bc731aa483bcaa22288d77688d4a",
+            "comment": "Reuse loaded package metadata when initializing the hasher in run, watch, and server modes."
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "5b0cb67fbab65de618fe2f6ea3122f43cb3da93a",
+            "comment": "Update dependency shell-quote to v1.12.0 [SECURITY]"
+          },
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "13ab9ff8d9c002b946bbe4067772ef588fbbd3c5",
+            "comment": "Report structured repo-wide change details and full-build decisions, and reuse change detection during target graph creation."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Ensure types in CLI commands match the actual options used, and fix some mismatches with defaulting behavior that resulted from the bad types"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 18 Aug 2026 02:26:59 GMT",
       "version": "0.37.0",
       "tag": "@lage-run/cli_v0.37.0",

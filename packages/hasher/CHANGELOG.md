@@ -1,8 +1,19 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Tue, 11 Aug 2026 09:42:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.11.0
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Minor changes
+
+- Accept optional package metadata in `TargetHasher` to avoid redundant package discovery. (djmaks@microsoft.com)
+- Bump @lage-run/target-graph to v0.15.13
+- Bump backfill-hasher to v6.7.15
+- Bump workspace-tools to v0.42.3
 
 ## 1.10.13
 

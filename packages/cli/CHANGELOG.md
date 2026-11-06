@@ -1,8 +1,32 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Tue, 18 Aug 2026 02:26:59 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.38.0
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Minor changes
+
+- Deduplicate git change detection and apply consistent behavior with repoWideChanges (elcraig@microsoft.com)
+- Bump @lage-run/cache to v1.6.9
+- Bump @lage-run/config to v0.9.18
+- Bump @lage-run/hasher to v1.11.0
+- Bump @lage-run/reporters to v1.9.1
+- Bump @lage-run/runners to v1.4.16
+- Bump @lage-run/scheduler to v1.6.16
+- Bump @lage-run/scheduler-types to v0.4.14
+- Bump @lage-run/target-graph to v0.15.13
+- Bump workspace-tools to v0.42.3
+
+### Patches
+
+- Reuse loaded package metadata when initializing the hasher in run, watch, and server modes. (djmaks@microsoft.com)
+- Update dependency shell-quote to v1.12.0 [SECURITY]
+- Report structured repo-wide change details and full-build decisions, and reuse change detection during target graph creation. (nemanjatesic@microsoft.com)
+- Ensure types in CLI commands match the actual options used, and fix some mismatches with defaulting behavior that resulted from the bad types (elcraig@microsoft.com)
 
 ## 0.37.0
 

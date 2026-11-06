@@ -2,6 +2,59 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "0.15.13",
+      "tag": "@lage-run/target-graph_v0.15.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "2946c284e9bd101553246d8cc3d9b4a4a00edbbc",
+            "comment": "Improve performance of target priority calculation for large target graphs"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "39d417a25d629ab4c7fa7d203061bdbdf11fbe0e",
+            "comment": "Avoid queue shifting and duplicate enqueues when building subgraphs while preserving graph order and priorities."
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "3f38ac46f389c76a6c5fababe2e1d62e26eb28fb",
+            "comment": "Prevent stale transitive dependencies when building multiple target graphs in the same process."
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "cf1552163285990ee76930138393bc42e0004b8c",
+            "comment": "Improve performance of dependency expansion when building large target graphs"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/target-graph",
+            "comment": "Bump workspace-tools to v0.42.3",
+            "commit": "not available"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Update docs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "e735f8e557c6ae7c45c970e0ab3256038fcf7069",
+            "comment": "Clarify docs about target inputs and outputs"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 11 Aug 2026 09:42:15 GMT",
       "version": "0.15.12",
       "tag": "@lage-run/target-graph_v0.15.12",

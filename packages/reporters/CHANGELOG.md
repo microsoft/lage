@@ -1,8 +1,18 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Tue, 18 Aug 2026 02:26:59 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.9.1
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Update dependency @ms-cloudpack/task-reporter to v0.21.7 (renovate@whitesourcesoftware.com)
+- Bump @lage-run/scheduler-types to v0.4.14
+- Bump @lage-run/target-graph to v0.15.13
 
 ## 1.9.0
 
