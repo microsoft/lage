@@ -2,6 +2,145 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "2.17.1",
+      "tag": "lage_v2.17.1",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "fa3d0abd108ef9d00643642ca4cf1b89e8f39220",
+            "comment": "Deduplicate git change detection and apply consistent behavior with repoWideChanges"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "26b070319157bc731aa483bcaa22288d77688d4a",
+            "comment": "Accept optional package metadata in `TargetHasher` to avoid redundant package discovery."
+          }
+        ],
+        "patch": [
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "26b070319157bc731aa483bcaa22288d77688d4a",
+            "comment": "Reuse loaded package metadata when initializing the hasher in run, watch, and server modes."
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "5b0cb67fbab65de618fe2f6ea3122f43cb3da93a",
+            "comment": "Update dependency shell-quote to v1.12.0 [SECURITY]"
+          },
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "13ab9ff8d9c002b946bbe4067772ef588fbbd3c5",
+            "comment": "Report structured repo-wide change details and full-build decisions, and reuse change detection during target graph creation."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Ensure types in CLI commands match the actual options used, and fix some mismatches with defaulting behavior that resulted from the bad types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "fa3d0abd108ef9d00643642ca4cf1b89e8f39220",
+            "comment": "Add option to pass pre-calculated `packageInfos` to `getPackagesByFiles`"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "26b070319157bc731aa483bcaa22288d77688d4a",
+            "comment": "Avoid redundant existence checks when reading package metadata successfully."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "fa3d0abd108ef9d00643642ca4cf1b89e8f39220",
+            "comment": "Add getWorkingTreeChanges helper"
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "a9cd1a2c6e2852ac1f35ac5828ac54ac70321116",
+            "comment": "Update dependency js-yaml to v4.3.2 [SECURITY]"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "2946c284e9bd101553246d8cc3d9b4a4a00edbbc",
+            "comment": "Improve performance of target priority calculation for large target graphs"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "39d417a25d629ab4c7fa7d203061bdbdf11fbe0e",
+            "comment": "Avoid queue shifting and duplicate enqueues when building subgraphs while preserving graph order and priorities."
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "3f38ac46f389c76a6c5fababe2e1d62e26eb28fb",
+            "comment": "Prevent stale transitive dependencies when building multiple target graphs in the same process."
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "cf1552163285990ee76930138393bc42e0004b8c",
+            "comment": "Improve performance of dependency expansion when building large target graphs"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "backfill-hasher",
+            "commit": "fc2ba943e7d5865d2d46f219d6ef301ffc4246d7",
+            "comment": "Use a Set for external dependency queue membership checks while preserving resolution order."
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/reporters",
+            "commit": "41f78cc25b255e6871602456c4091e785b3320e6",
+            "comment": "Update dependency @ms-cloudpack/task-reporter to v0.21.7"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "1b06e2c4421eeece4e473d01569640f74ce7c6c9",
+            "comment": "Update bundled dependencies"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Update docs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Update docs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "e735f8e557c6ae7c45c970e0ab3256038fcf7069",
+            "comment": "Clarify docs about target inputs and outputs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Update docs"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 18 Aug 2026 02:26:59 GMT",
       "version": "2.17.0",
       "tag": "lage_v2.17.0",

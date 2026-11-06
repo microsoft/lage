@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/hasher",
-  "version": "1.10.13",
+  "version": "1.11.0",
   "description": "Hasher for Lage Targets",
   "repository": {
     "url": "https://github.com/microsoft/lage"

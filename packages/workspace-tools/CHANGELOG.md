@@ -1,8 +1,19 @@
 # Change Log - workspace-tools
 
-<!-- This log was last generated on Tue, 11 Aug 2026 09:42:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.42.3
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Add option to pass pre-calculated `packageInfos` to `getPackagesByFiles` (elcraig@microsoft.com)
+- Avoid redundant existence checks when reading package metadata successfully. (djmaks@microsoft.com)
+- Add getWorkingTreeChanges helper (elcraig@microsoft.com)
+- Update dependency js-yaml to v4.3.2 [SECURITY]
 
 ## 0.42.2
 

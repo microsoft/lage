@@ -2,6 +2,21 @@
   "name": "backfill",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "6.4.21",
+      "tag": "backfill_v6.4.21",
+      "comments": {
+        "patch": [
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "backfill-hasher",
+            "commit": "fc2ba943e7d5865d2d46f219d6ef301ffc4246d7",
+            "comment": "Use a Set for external dependency queue membership checks while preserving resolution order."
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 07 Aug 2026 09:19:09 GMT",
       "version": "6.4.19",
       "tag": "backfill_v6.4.19",

@@ -1,8 +1,43 @@
 # Change Log - lage
 
-<!-- This log was last generated on Tue, 18 Aug 2026 02:26:59 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.17.1
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Minor changes
+
+- `@lage-run/cli`
+  - Deduplicate git change detection and apply consistent behavior with repoWideChanges (elcraig@microsoft.com)
+- `@lage-run/hasher`
+  - Accept optional package metadata in `TargetHasher` to avoid redundant package discovery. (djmaks@microsoft.com)
+
+### Patches
+
+- `@lage-run/cli`
+  - Reuse loaded package metadata when initializing the hasher in run, watch, and server modes. (djmaks@microsoft.com)
+  - Update dependency shell-quote to v1.12.0 [SECURITY]
+  - Report structured repo-wide change details and full-build decisions, and reuse change detection during target graph creation. (nemanjatesic@microsoft.com)
+  - Ensure types in CLI commands match the actual options used, and fix some mismatches with defaulting behavior that resulted from the bad types (elcraig@microsoft.com)
+- `workspace-tools`
+  - Add option to pass pre-calculated `packageInfos` to `getPackagesByFiles` (elcraig@microsoft.com)
+  - Avoid redundant existence checks when reading package metadata successfully. (djmaks@microsoft.com)
+  - Add getWorkingTreeChanges helper (elcraig@microsoft.com)
+  - Update dependency js-yaml to v4.3.2 [SECURITY]
+- `@lage-run/target-graph`
+  - Improve performance of target priority calculation for large target graphs (djmaks@microsoft.com)
+  - Avoid queue shifting and duplicate enqueues when building subgraphs while preserving graph order and priorities. (djmaks@microsoft.com)
+  - Prevent stale transitive dependencies when building multiple target graphs in the same process. (djmaks@microsoft.com)
+  - Improve performance of dependency expansion when building large target graphs (djmaks@microsoft.com)
+- `backfill-hasher`
+  - Use a Set for external dependency queue membership checks while preserving resolution order. (djmaks@microsoft.com)
+- `@lage-run/reporters`
+  - Update dependency @ms-cloudpack/task-reporter to v0.21.7 (renovate@whitesourcesoftware.com)
+- `lage`
+  - Update bundled dependencies (elcraig@microsoft.com)
 
 ## 2.17.0
 

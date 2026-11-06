@@ -2,6 +2,27 @@
   "name": "backfill-hasher",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "6.7.15",
+      "tag": "backfill-hasher_v6.7.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "backfill-hasher",
+            "commit": "fc2ba943e7d5865d2d46f219d6ef301ffc4246d7",
+            "comment": "Use a Set for external dependency queue membership checks while preserving resolution order."
+          },
+          {
+            "author": "beachball",
+            "package": "backfill-hasher",
+            "comment": "Bump workspace-tools to v0.42.3",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 11 Aug 2026 09:42:15 GMT",
       "version": "6.7.14",
       "tag": "backfill-hasher_v6.7.14",

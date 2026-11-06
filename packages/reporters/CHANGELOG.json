@@ -2,6 +2,33 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "1.9.1",
+      "tag": "@lage-run/reporters_v1.9.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/reporters",
+            "commit": "41f78cc25b255e6871602456c4091e785b3320e6",
+            "comment": "Update dependency @ms-cloudpack/task-reporter to v0.21.7"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.14",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.15.13",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 18 Aug 2026 02:26:59 GMT",
       "version": "1.9.0",
       "tag": "@lage-run/reporters_v1.9.0",

@@ -1,8 +1,17 @@
 # Change Log - backfill-hasher
 
-<!-- This log was last generated on Tue, 11 Aug 2026 09:42:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 6.7.15
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Use a Set for external dependency queue membership checks while preserving resolution order. (djmaks@microsoft.com)
+- Bump workspace-tools to v0.42.3
 
 ## 6.7.14
 
