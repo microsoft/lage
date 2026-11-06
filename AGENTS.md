@@ -27,7 +27,7 @@ yarn deps:check         # dependency audit (depcheck)
 yarn lage-local         # run the locally-built lage CLI (node packages/lage/dist/lage.js)
 ```
 
-When completing more complex changes, run `yarn ci` from the root for complete build/test/lint verification. (It's not necessary to run this for test-only changes.)
+When completing more complex production-code changes, run `yarn ci` from the root for complete build/test/lint verification. For test-only changes, run focused tests in the affected package instead of full CI. For comment-only changes, format the touched files without running CI. Honor explicit requests not to run tests, CI, or typechecking, and report which checks were skipped.
 
 ### Single-package commands
 
@@ -44,6 +44,32 @@ yarn api    # single-package update API report files
 ```
 
 If changes span multiple packages, you should `yarn build` from the root instead of one package. This is the best way to ensure all dependencies build in proper order.
+
+## Coding patterns
+
+Code must work on Windows, Mac, and Linux.
+
+### Testing conventions
+
+- Keep tests for each utility in its own file. Reuse existing suite wrappers and helpers rather than replacing their assertion structure.
+- Test filtering and graph logic with prepared inputs or change snapshots rather than invoking upstream Git collectors; cover collection behavior in the collector's own suite.
+- Give parameterized cases semantic descriptions that state the scenario and expected behavior. Ensure titles match the effective configuration and assertions, and avoid redundant cases that exercise the same behavior.
+
+### Git change collection
+
+Git calls are expensive in large monorepos. Collect changes once per command and pass the resulting snapshot to filtering and graph construction. Reuse existing `workspace-tools` helpers and collected package metadata rather than adding redundant queries; check Git call counts when changing collection paths.
+
+### Code style
+
+- TypeScript strict mode, ES2020 target, CommonJS modules
+- **Consistent type imports required**: use `import type { Foo }` or `import { type Foo, ValueBar }`
+- **File extensions required in TS imports**: e.g., `import { foo } from "./foo.js"`
+- **No `require()` in .ts files**
+- **No `console.log`** — use the logger package
+- **No floating promises** — all promises must be awaited
+- **Explicit return types** on exported functions
+- Prettier: 140 char width, double quotes, 2-space indent, LF line endings
+- Pre-commit hook runs prettier via lint-staged
 
 ## Architecture
 
@@ -78,18 +104,6 @@ The **`workspace-tools`** helper library is also hosted in this repo.
 
 - `lib/` — transpiled JS + type declarations (all packages except `lage`)
 - `dist/` — esbuild bundle (`lage` package only)
-
-## Code style
-
-- TypeScript strict mode, ES2020 target, CommonJS modules
-- **Consistent type imports required**: use `import type { Foo }` or `import { type Foo, ValueBar }`
-- **File extensions required in TS imports**: e.g., `import { foo } from "./foo.js"`
-- **No `require()` in .ts files**
-- **No `console.log`** — use the logger package
-- **No floating promises** — all promises must be awaited
-- **Explicit return types** on exported functions
-- Prettier: 140 char width, double quotes, 2-space indent, LF line endings
-- Pre-commit hook runs prettier via lint-staged
 
 ## Versioning & release
 

@@ -30,9 +30,9 @@ describe("transitive task deps test", () => {
         b: { scripts: { build: "echo b:build" } },
       },
     });
-    repo.install();
+    repo.prepare();
 
-    const results = await repo.run("test");
+    const results = await repo.runLage("test");
 
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const indices = getStatusIndices({
@@ -63,9 +63,9 @@ describe("transitive task deps test", () => {
         c: { scripts: { transpile: "echo c:transpile" } },
       },
     });
-    repo.install();
+    repo.prepare();
 
-    const results = await repo.run("bundle", ["--scope", "a"]);
+    const results = await repo.runLage("bundle", ["--scope", "a"]);
 
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const indices = getStatusIndices({
@@ -98,9 +98,9 @@ describe("transitive task deps test", () => {
         c: { scripts: { transpile: "echo c:transpile" } },
       },
     });
-    repo.install();
+    repo.prepare();
 
-    const results = await repo.run("bundle", ["--scope", "a"]);
+    const results = await repo.runLage("bundle", ["--scope", "a"]);
 
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const indices = getStatusIndices({
@@ -147,9 +147,9 @@ describe("transitive task deps test", () => {
         c: { scripts: { transpile: "echo c:transpile" } },
       },
     });
-    repo.install();
+    repo.prepare();
 
-    const results = await repo.run("bundle", ["--scope", "a"]);
+    const results = await repo.runLage("bundle", ["--scope", "a"]);
 
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const indices = getStatusIndices({
@@ -196,9 +196,9 @@ describe("transitive task deps test", () => {
       },
     });
 
-    repo.install();
+    repo.prepare();
 
-    const results = await repo.run("writeInfo", ["typecheck", "--scope", "app"]);
+    const results = await repo.runLage("writeInfo", ["typecheck", "--scope", "app"]);
 
     const output = results.stdout + "\n" + results.stderr;
     const infoJsonOutput = parseNdJson(output)[0];

@@ -20,7 +20,7 @@ describe("lageserver", () => {
    * Run `lage exec --server localhost:<port> <args...>` with the current test's port.
    */
   function execOnServer(...args: string[]) {
-    return repo!.run("lage", ["exec", "--server", `localhost:${port}`, ...args]);
+    return repo!.runLage("lage", ["exec", "--server", `localhost:${port}`, ...args]);
   }
 
   function findServerPid(jsonOutput: ParsedLogEntry[]) {
@@ -59,7 +59,7 @@ describe("lageserver", () => {
     await repo.init({
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
-    repo.install();
+    repo.prepare();
 
     serverProcess = repo.runServer(["build"], port);
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -82,7 +82,7 @@ describe("lageserver", () => {
     await repo.init({
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
-    repo.install();
+    repo.prepare();
 
     const results = await execOnServer("--tasks", "build", "--", "b", "build");
 
@@ -117,7 +117,7 @@ describe("lageserver", () => {
       },
       extraFiles: {},
     });
-    repo.install();
+    repo.prepare();
 
     const results = await execOnServer("c", "build", "--tasks", "build", "--timeout", "60", "--reporter", "json");
 
