@@ -29,7 +29,7 @@ describe("Cache clear", () => {
     await repo.install();
 
     // Run build so we get a cache folder
-    await repo.run("build");
+    await repo.runLage("build");
 
     const cacheFolder = path.join(repo.root, defaultCacheLocation);
 
@@ -40,7 +40,7 @@ describe("Cache clear", () => {
     expect(fs.readdirSync(cacheFolder)).toHaveLength(2);
 
     // Clear the cache
-    await repo.run("clear");
+    await repo.runLage("clear");
 
     // Cache folders should be empty
     expect(fs.readdirSync(cacheFolder)).toHaveLength(0);

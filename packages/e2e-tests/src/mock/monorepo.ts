@@ -135,6 +135,32 @@ export class Monorepo extends BaseMonorepo {
     await execa.default(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
   }
 
+  /** Run a root Lage script directly. Only unquoted, space-separated arguments are supported. */
+  public runLage(scriptName: string, args: string[] = [], options?: Partial<execa.Options>): execa.ExecaChildProcess<string> {
+    const script = getPackageInfo(this.root)?.scripts?.[scriptName];
+    if (!script) {
+      throw new Error(`Missing root package script "${scriptName}"`);
+    }
+
+    if (/[^\w -]/.test(script)) {
+      throw new Error(
+        `Root package script "${scriptName}" contains unsupported characters; only letters, digits, spaces, "_" and "-" are allowed`
+      );
+    }
+
+    const [command, ...scriptArgs] = script.trim().split(/ +/);
+    if (command !== "lage") {
+      throw new Error(`Root package script "${scriptName}" must be a simple Lage command`);
+    }
+
+    const cliPath = path.join(this.root, "node_modules/lage/dist/lage.js");
+    return execa.default(process.execPath, [cliPath, ...scriptArgs, ...args], {
+      cwd: this.root,
+      ...options,
+      shell: false,
+    });
+  }
+
   public runServer(tasks: string[], port: number): execa.ExecaChildProcess<string> {
     const lageServerPath = path.join(this.root, "node_modules/lage/dist/lage-server.js");
     const cp = execa.default(process.execPath, [lageServerPath, "--server", `localhost:${port}`, "--tasks", ...tasks], {

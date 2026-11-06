@@ -10,7 +10,7 @@ describe("basics", () => {
     repo = undefined;
   });
 
-  it("basic test case", async () => {
+  it("runs Lage through a Yarn script", async () => {
     repo = new Monorepo("basics");
 
     await repo.init({
@@ -49,7 +49,7 @@ describe("basics", () => {
 
     await repo.install();
 
-    const results = await repo.run("extra");
+    const results = await repo.runLage("extra");
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const statusEntries = getStatusEntriesData(jsonOutput);
 
@@ -70,10 +70,10 @@ describe("basics", () => {
     await repo.install();
 
     // run once without params
-    await repo.run("test");
+    await repo.runLage("test");
 
     // run with some params, expected actual runs
-    const results = await repo.run("test", ["--1", "--2"]);
+    const results = await repo.runLage("test", ["--1", "--2"]);
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const statusEntries = getStatusEntriesData(jsonOutput);
 
@@ -84,7 +84,7 @@ describe("basics", () => {
     expect(statusEntries).not.toContainEqual({ target: { packageName: "a", task: "lint" }, status: "success" });
 
     // run with some params, expected skips
-    const results2 = await repo.run("test", ["--1", "--2"]);
+    const results2 = await repo.runLage("test", ["--1", "--2"]);
     const jsonOutput2 = parseNdJson(results2.stdout, results2.stderr);
     const statusEntries2 = getStatusEntriesData(jsonOutput2);
 
@@ -95,7 +95,7 @@ describe("basics", () => {
     expect(statusEntries2).not.toContainEqual({ target: { packageName: "a", task: "lint" }, status: "skipped" });
 
     // run with some lage specific params, expected skips
-    const results3 = await repo.run("test", ["--concurrency", "1"]);
+    const results3 = await repo.runLage("test", ["--concurrency", "1"]);
     const jsonOutput3 = parseNdJson(results3.stdout, results3.stderr);
     const statusEntries3 = getStatusEntriesData(jsonOutput3);
 
@@ -106,7 +106,7 @@ describe("basics", () => {
     expect(statusEntries3).not.toContainEqual({ target: { packageName: "a", task: "lint" }, status: "skipped" });
 
     // run with some params AND lage specific params, expected skips
-    const results4 = await repo.run("test", ["--1", "--2", "--concurrency", "1"]);
+    const results4 = await repo.runLage("test", ["--1", "--2", "--concurrency", "1"]);
     const jsonOutput4 = parseNdJson(results4.stdout, results4.stderr);
     const statusEntries4 = getStatusEntriesData(jsonOutput4);
 
@@ -117,7 +117,7 @@ describe("basics", () => {
     expect(statusEntries4).not.toContainEqual({ target: { packageName: "a", task: "lint" }, status: "skipped" });
   });
 
-  it("works in repo with spaces", async () => {
+  it("works in repo with spaces (and package.json script with spaces)", async () => {
     repo = new Monorepo("spaces why");
 
     await repo.init({
@@ -126,7 +126,7 @@ describe("basics", () => {
 
     await repo.install();
 
-    const results = await repo.run("test");
+    const results = await repo.run("test"); // NOT runLage (test real space handling)
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const statusEntries = getStatusEntriesData(jsonOutput);
 

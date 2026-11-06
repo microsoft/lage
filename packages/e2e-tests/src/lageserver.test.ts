@@ -20,7 +20,7 @@ describe("lageserver", () => {
    * Run `lage exec --server localhost:<port> <args...>` with the current test's port.
    */
   function execOnServer(...args: string[]) {
-    return repo!.run("lage", ["exec", "--server", `localhost:${port}`, ...args]);
+    return repo!.runLage("lage", ["exec", "--server", `localhost:${port}`, ...args]);
   }
 
   function findServerPid(jsonOutput: ParsedLogEntry[]) {
