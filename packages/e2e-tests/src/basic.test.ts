@@ -17,7 +17,7 @@ describe("basics", () => {
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
 
-    repo.install();
+    await repo.install();
 
     const results = await repo.run("test");
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
@@ -47,7 +47,7 @@ describe("basics", () => {
       },
     });
 
-    repo.install();
+    await repo.install();
 
     const results = await repo.run("extra");
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
@@ -67,7 +67,7 @@ describe("basics", () => {
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
 
-    repo.install();
+    await repo.install();
 
     // run once without params
     await repo.run("test");
@@ -124,7 +124,7 @@ describe("basics", () => {
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
 
-    repo.install();
+    await repo.install();
 
     const results = await repo.run("test");
     const jsonOutput = parseNdJson(results.stdout, results.stderr);

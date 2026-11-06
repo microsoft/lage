@@ -131,8 +131,8 @@ export class Monorepo extends BaseMonorepo {
   /**
    * Run `yarn install` for the fixture
    */
-  public install(): void {
-    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
+  public async install(): Promise<void> {
+    await execa.default(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
   }
 
   public runServer(tasks: string[], port: number): execa.ExecaChildProcess<string> {

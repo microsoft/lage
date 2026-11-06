@@ -82,7 +82,7 @@ describe("custom reporters", () => {
       },
     });
 
-    repo.install();
+    await repo.install();
 
     const results = await repo.run("build", ["--reporter", "customTest", "--reporter", "cjs"]);
     const output = results.stdout + "\n" + results.stderr;
@@ -112,7 +112,7 @@ describe("custom reporters", () => {
       },
     });
 
-    repo.install();
+    await repo.install();
 
     // Use a default reporter here too
     const results = await repo.run("build", [
@@ -152,7 +152,7 @@ describe("custom reporters", () => {
       },
     });
 
-    repo.install();
+    await repo.install();
 
     // Should throw an error when trying to use a reporter that exports a string
     await expect(repo!.run("build", ["--reporter", "bad"])).rejects.toThrow(/does not export a valid reporter class or instance/);
@@ -193,7 +193,7 @@ export default objectReporter;
       },
     });
 
-    repo.install();
+    await repo.install();
 
     // reporter was specified in the config file
     const results = await repo.run("build");
