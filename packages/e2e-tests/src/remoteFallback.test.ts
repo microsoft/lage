@@ -26,12 +26,14 @@ describe("RemoteFallbackCacheProvider", () => {
     repo = undefined;
   });
 
-  it("should skip local cache population if --skip-local-cache is enabled", async () => {
+  // These tests are expensive, so most cases are covered in RemoteCacheFallbackProvider.test.ts.
+  // Only cover an E2E options-passing case here.
+  it("should wire remote cache configuration and --skip-local-cache through the CLI", async () => {
     repo = new Monorepo("fallback");
 
     await repo.init({
       lageConfig: {
-        pipeline: { build: [], test: [] },
+        pipeline: { test: [] },
         cacheOptions: {
           writeRemoteCache: true,
           cacheStorageConfig: {
@@ -41,8 +43,7 @@ describe("RemoteFallbackCacheProvider", () => {
         },
       },
       packages: {
-        a: { scripts: { build: "echo a:build", test: "echo a:test" } },
-        b: { scripts: { build: "echo b:build" } },
+        a: { scripts: { test: "echo a:test" } },
       },
     });
     await repo.install();
@@ -54,92 +55,6 @@ describe("RemoteFallbackCacheProvider", () => {
     expect(formattedOutput).not.toContain("local cache fetch");
     expect(formattedOutput).toContain("remote fallback fetch");
     expect(formattedOutput).not.toContain("local cache put");
-    expect(formattedOutput).toContain("remote fallback put");
-  });
-
-  it("should operate with local provider ONLY by default", async () => {
-    repo = new Monorepo("fallback-local-only");
-
-    await repo.init({
-      lageConfig: {
-        pipeline: { build: [], test: [] },
-        cacheOptions: {},
-      },
-      packages: {
-        a: { scripts: { build: "echo a:build", test: "echo a:test" } },
-        b: { scripts: { build: "echo b:build" } },
-      },
-    });
-    repo.install();
-
-    const results = await repo.run("test");
-
-    const formattedOutput = formatEntries(results.stdout, results.stderr);
-
-    expect(formattedOutput).toContain("local cache fetch");
-    expect(formattedOutput).not.toContain("remote fallback fetch");
-    expect(formattedOutput).toContain("local cache put");
-    expect(formattedOutput).not.toContain("remote fallback put");
-  });
-
-  it("should allow read-only mode when given a remote (or custom) cache config", async () => {
-    repo = new Monorepo("fallback-read-only");
-
-    await repo.init({
-      lageConfig: {
-        pipeline: { build: [], test: [] },
-        cacheOptions: {
-          cacheStorageConfig: {
-            provider: "local",
-          },
-          internalCacheFolder: path.join(repo.root, ".lage-cache-test"),
-        },
-      },
-      packages: {
-        a: { scripts: { build: "echo a:build", test: "echo a:test" } },
-        b: { scripts: { build: "echo b:build" } },
-      },
-    });
-    repo.install();
-
-    const results = await repo.run("test", ["--log-level", "silly"]);
-
-    const formattedOutput = formatEntries(results.stdout, results.stderr);
-
-    expect(formattedOutput).toContain("local cache fetch");
-    expect(formattedOutput).toContain("remote fallback fetch");
-    expect(formattedOutput).toContain("local cache put");
-    expect(formattedOutput).not.toContain("remote fallback put");
-  });
-
-  it("should allow read-write mode when given a special environment variable", async () => {
-    repo = new Monorepo("fallback-read-write-env-var");
-
-    await repo.init({
-      lageConfig: {
-        pipeline: { build: [], test: [] },
-        cacheOptions: {
-          writeRemoteCache: true,
-          cacheStorageConfig: {
-            provider: "local",
-          },
-          internalCacheFolder: path.join(repo.root, ".lage-cache-test"),
-        },
-      },
-      packages: {
-        a: { scripts: { build: "echo a:build", test: "echo a:test" } },
-        b: { scripts: { build: "echo b:build" } },
-      },
-    });
-    repo.install();
-
-    const results = await repo.run("test", ["--log-level", "silly"]);
-
-    const formattedOutput = formatEntries(results.stdout, results.stderr);
-
-    expect(formattedOutput).toContain("local cache fetch");
-    expect(formattedOutput).toContain("remote fallback fetch");
-    expect(formattedOutput).toContain("local cache put");
     expect(formattedOutput).toContain("remote fallback put");
   });
 });
