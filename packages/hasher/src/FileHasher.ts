@@ -94,6 +94,9 @@ export class FileHasher {
 
   public hash(files: string[]): Record<string, string> {
     const hashes: Record<string, string> = {};
+    if (files.length === 0) {
+      return hashes;
+    }
 
     const updatedFiles: string[] = [];
 
@@ -103,23 +106,40 @@ export class FileHasher {
       const stat = stats[file];
 
       const info = this.#store[file];
-      if (info && stat.mtime === info.mtime && stat.size == info.size) {
+      if (info && stat && stat.mtime === info.mtime && stat.size == info.size) {
         hashes[file] = info.hash;
       } else {
+        // Invalidate before hashing so a failed refresh cannot leave a stale entry.
+        delete this.#store[file];
         updatedFiles.push(file);
       }
     }
 
-    const updatedHashes = fastHash(updatedFiles, { cwd: this.options.root, concurrency: 4 }) ?? {};
+    if (updatedFiles.length === 0) {
+      return hashes;
+    }
+
+    const updatedHashes = fastHash(updatedFiles, { cwd: this.options.root, concurrency: 4 });
+    if (!updatedHashes) {
+      throw new Error("Failed to hash files");
+    }
 
     for (const [file, hash] of Object.entries(updatedHashes)) {
-      const stat = fs.statSync(path.join(this.options.root, file), { bigint: true });
-      this.#store[file] = {
-        mtime: stat.mtimeMs,
-        size: Number(stat.size),
-        hash: hash ?? "",
-      };
-      hashes[file] = hash ?? "";
+      if (hash == null) {
+        // Evict the native result's normalized key; input paths may use a different form.
+        delete this.#store[file];
+        throw new Error(`Failed to hash file "${file}"`);
+      }
+
+      const stat = stats[file];
+      if (stat) {
+        // Keep pre-hash metadata so edits during hashing invalidate the next lookup.
+        this.#store[file] = { mtime: stat.mtime, size: stat.size, hash };
+      } else {
+        // Without pre-hash metadata, return the hash but do not cache it for reuse.
+        delete this.#store[file];
+      }
+      hashes[file] = hash;
     }
 
     return hashes;
