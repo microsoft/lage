@@ -150,6 +150,36 @@ describe("resolveExternalDependencies", () => {
     expect(resolveExternalDependencies({}, {}, lockInfo)).toEqual([]);
   });
 
+  it("visits a wide queue and newly appended dependencies in breadth-first order", () => {
+    const names = Array.from(
+      { length: 64 },
+      (_, index) => `dependency-${index}`
+    );
+    const roots = Object.fromEntries(names.map((name) => [name, "^1"]));
+    const children = Object.fromEntries(
+      names.map((name) => [`${name}-child`, "^2"])
+    );
+    const lockInfo: ParsedLock = {
+      type: "success",
+      object: Object.fromEntries([
+        ...names.map((name) => [
+          `${name}@^1`,
+          { version: "1.0.0", dependencies: children },
+        ]),
+        ...names.map((name) => [
+          `${name}-child@^2`,
+          { version: "2.0.0", dependencies: { ...roots, leaf: "^3" } },
+        ]),
+      ]),
+    };
+
+    expect(resolveExternalDependencies(roots, {}, lockInfo)).toEqual([
+      ...names.map((name) => `${name}@1.0.0`),
+      ...names.map((name) => `${name}-child@2.0.0`),
+      "leaf@^3",
+    ]);
+  });
+
   it.each<{
     manager: "yarn" | "pnpm" | "rush";
     name: string;

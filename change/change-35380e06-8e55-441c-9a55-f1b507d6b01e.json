@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "backfill-hasher",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Traverse the external dependency queue with a cursor instead of repeatedly removing its first entry.",
+      "email": "djmaks@microsoft.com"
+    }
+  ]
+}
