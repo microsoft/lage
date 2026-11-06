@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/hasher",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Reduce per-file filesystem checks when enumerating Git-tracked inputs while preserving deleted-file, sparse-checkout, and symlink handling.",
+      "email": "djmaks@microsoft.com"
+    }
+  ]
+}
