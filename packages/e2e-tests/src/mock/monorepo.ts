@@ -36,7 +36,7 @@ export class Monorepo extends BaseMonorepo {
   }
 
   /**
-   * Init the repo and files. Note you must separately call `install()` before running lage.
+   * Init the repo and files. Call `prepare()` before running lage, or `yarnInstall()` for Yarn-specific e2e tests.
    *
    * The default fixture for the e2e tests includes a bunch of scripts which mostly run
    * `lage <script> --reporter json --log-level silly` so the output can be parsed with `parseNdJson`.
@@ -60,7 +60,7 @@ export class Monorepo extends BaseMonorepo {
           lint: [],
           extra: [],
         },
-        npmClient: "yarn",
+        npmClient: "npm",
       },
       scripts,
       packages = {},
@@ -129,10 +129,19 @@ export class Monorepo extends BaseMonorepo {
   }
 
   /**
-   * Run `yarn install` for the fixture
+   * Run `yarn install` for the fixture. (Assumes `npmClient: 'yarn'` is explicitly set.)
    */
-  public async install(): Promise<void> {
+  public async yarnInstall(): Promise<void> {
     await execa.default(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
+  }
+
+  /**
+   * Link fixture packages and the built Lage package without running a package manager.
+   * Assumes `npmClient: 'npm'` is implicitly or explicitly set.
+   */
+  public prepare(): void {
+    this.linkPackages();
+    fs.symlinkSync(lagePackageRoot, path.join(this.nodeModulesPath, "lage"), "junction");
   }
 
   /** Run a root Lage script directly. Only unquoted, space-separated arguments are supported. */

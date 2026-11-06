@@ -46,7 +46,7 @@ describe("RemoteFallbackCacheProvider", () => {
         a: { scripts: { test: "echo a:test" } },
       },
     });
-    await repo.install();
+    repo.prepare();
 
     const results = await repo.runLage("test", ["--skip-local-cache"]);
 

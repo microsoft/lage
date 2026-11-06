@@ -15,9 +15,14 @@ describe("basics", () => {
 
     await repo.init({
       packages: { a: { internalDeps: ["b"] }, b: {} },
+      lageConfig: {
+        pipeline: { build: ["^build"], test: ["build"], lint: [], extra: [] },
+        npmClient: "yarn",
+      },
     });
 
-    await repo.install();
+    // must use yarnInstall() since this test uses npmClient: yarn
+    await repo.yarnInstall();
 
     const results = await repo.run("test");
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
@@ -47,7 +52,7 @@ describe("basics", () => {
       },
     });
 
-    await repo.install();
+    repo.prepare();
 
     const results = await repo.runLage("extra");
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
@@ -67,7 +72,7 @@ describe("basics", () => {
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
 
-    await repo.install();
+    repo.prepare();
 
     // run once without params
     await repo.runLage("test");
@@ -122,9 +127,14 @@ describe("basics", () => {
 
     await repo.init({
       packages: { a: { internalDeps: ["b"] }, b: {} },
+      lageConfig: {
+        pipeline: { build: ["^build"], test: ["build"], lint: [], extra: [] },
+        npmClient: "yarn",
+      },
     });
 
-    await repo.install();
+    // must use yarnInstall() since this test uses npmClient: yarn
+    await repo.yarnInstall();
 
     const results = await repo.run("test"); // NOT runLage (test real space handling)
     const jsonOutput = parseNdJson(results.stdout, results.stderr);

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
+import fs from "fs";
 import path from "path";
 import type execa from "execa";
 import type * as workspaceTools from "workspace-tools";
@@ -15,7 +16,10 @@ jest.mock("workspace-tools", () => ({
 }));
 
 const { Monorepo } = jest.requireActual<typeof monorepo>("./monorepo.js");
-const { default: mockExeca } = jest.requireMock<{ default: jest.Mock<typeof execa> }>("execa");
+const { default: mockExeca, sync: mockExecaSync } = jest.requireMock<{
+  default: jest.Mock<typeof execa>;
+  sync: jest.Mock<typeof execa.sync>;
+}>("execa");
 
 describe("Monorepo", () => {
   let repo: monorepo.Monorepo;
@@ -25,7 +29,38 @@ describe("Monorepo", () => {
   });
 
   afterEach(async () => {
+    jest.restoreAllMocks();
     await repo.cleanup();
+  });
+
+  describe("prepare", () => {
+    it("links workspace packages and built Lage without running a package manager", () => {
+      const mockSymlink = jest.spyOn(fs, "symlinkSync").mockImplementation(() => {});
+      repo.writeFiles({
+        "package.json": { name: "monorepo-unit", version: "0.1.0", workspaces: ["packages/*"] },
+        "packages/a/package.json": { name: "a", version: "0.1.0", dependencies: { b: "*" } },
+        "packages/b/package.json": { name: "b", version: "0.1.0" },
+      });
+
+      repo.prepare();
+
+      expect(mockSymlink).toHaveBeenCalledTimes(3);
+      for (const packageName of ["a", "b"]) {
+        expect(mockSymlink).toHaveBeenCalledWith(
+          path.join(repo.root, "packages", packageName),
+          path.join(repo.root, "node_modules", packageName),
+          "junction"
+        );
+      }
+      expect(mockSymlink).toHaveBeenCalledWith(
+        path.resolve("mock-lage-repo", "packages", "lage"),
+        path.join(repo.root, "node_modules", "lage"),
+        "junction"
+      );
+      expect(fs.readFileSync(path.join(repo.root, "yarn.lock"), "utf-8")).toContain('"a@^0.1.0":');
+      expect(mockExeca).not.toHaveBeenCalled();
+      expect(mockExecaSync).not.toHaveBeenCalled();
+    });
   });
 
   describe("runLage", () => {

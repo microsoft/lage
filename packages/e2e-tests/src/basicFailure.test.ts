@@ -20,7 +20,7 @@ describe("basic failure case where a dependent target has failed", () => {
         c: {},
       },
     });
-    await repo.install();
+    repo.prepare();
 
     let results: execa.ExecaError<string> | undefined;
 
@@ -54,7 +54,7 @@ describe("basic failure case where a dependent target has failed", () => {
         c: {},
       },
     });
-    await repo.install();
+    repo.prepare();
 
     let results: execa.ExecaError<string> | undefined;
 

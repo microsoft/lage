@@ -47,6 +47,8 @@ If changes span multiple packages, you should `yarn build` from the root instead
 
 ## Coding patterns
 
+Code must work on Windows, Mac, and Linux.
+
 ### Testing conventions
 
 - Keep tests for each utility in its own file. Reuse existing suite wrappers and helpers rather than replacing their assertion structure.

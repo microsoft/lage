@@ -44,7 +44,7 @@ describe("custom reporters", () => {
           build: ["^build"],
           test: ["build"],
         },
-        npmClient: "yarn",
+        npmClient: "npm",
         reporters: params.reporters,
         ...(params.reporter && { reporter: params.reporter }),
       },
@@ -82,7 +82,7 @@ describe("custom reporters", () => {
       },
     });
 
-    await repo.install();
+    repo.prepare();
 
     const results = await repo.runLage("build", ["--reporter", "customTest", "--reporter", "cjs"]);
     const output = results.stdout + "\n" + results.stderr;
@@ -112,7 +112,7 @@ describe("custom reporters", () => {
       },
     });
 
-    await repo.install();
+    repo.prepare();
 
     // Use a default reporter here too
     const results = await repo.runLage("build", [
@@ -152,7 +152,7 @@ describe("custom reporters", () => {
       },
     });
 
-    await repo.install();
+    repo.prepare();
 
     // Should throw an error when trying to use a reporter that exports a string
     await expect(repo!.runLage("build", ["--reporter", "bad"])).rejects.toThrow(/does not export a valid reporter class or instance/);
@@ -193,7 +193,7 @@ export default objectReporter;
       },
     });
 
-    await repo.install();
+    repo.prepare();
 
     // reporter was specified in the config file
     const results = await repo.runLage("build");

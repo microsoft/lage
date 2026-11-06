@@ -18,7 +18,7 @@ describe("info command", () => {
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
 
-    await repo.install();
+    repo.prepare();
 
     const results = await repo.runLage("writeInfo", ["test"]);
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
@@ -33,7 +33,7 @@ describe("info command", () => {
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
 
-    await repo.install();
+    repo.prepare();
 
     const results = await repo.runLage("writeInfo", ["test", "--to", "b"]);
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
@@ -50,7 +50,7 @@ describe("info command", () => {
         c: { scripts: { build: "echo 'building c'" } },
       },
     });
-    await repo.install();
+    repo.prepare();
 
     const results = await repo.runLage("writeInfo", ["build", "prepare"]);
 
@@ -80,7 +80,7 @@ describe("info command", () => {
         d: { scripts: { nobuild: "echo 'no build'" } },
       },
     });
-    await repo.install();
+    repo.prepare();
 
     const results = await repo.runLage("writeInfo", ["build"]);
 
@@ -106,7 +106,7 @@ describe("info command", () => {
         d: { scripts: { nobuild: "echo 'no build'" } },
       },
     });
-    await repo.install();
+    repo.prepare();
 
     const backCompatEnvVars = { DOMINO: "1" };
     const results = await repo.runLage("writeInfo", ["build"], { env: backCompatEnvVars });
@@ -147,7 +147,7 @@ describe("info command", () => {
         b: {},
       },
     });
-    await repo.install();
+    repo.prepare();
 
     const results = await repo.runLage("writeInfo", ["test", "build"]);
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
@@ -179,7 +179,7 @@ describe("info command", () => {
         b: {},
       },
     });
-    await repo.install();
+    repo.prepare();
 
     const results = await repo.runLage("writeInfo", ["test", "build"]);
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
