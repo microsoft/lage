@@ -51,6 +51,9 @@
     "@types/proper-lockfile": "^4.1.4",
     "@types/shell-quote": "^1.7.5"
   },
+  "engines": {
+    "node": ">=24.22.1"
+  },
   "files": [
     "lib/!(__*)",
     "lib/!(__*)/**"

@@ -30,6 +30,9 @@
     "@lage-run/monorepo-scripts": "workspace:^",
     "@lage-run/test-utilities": "workspace:^"
   },
+  "engines": {
+    "node": ">=24.22.1"
+  },
   "files": [
     "lib/!(__*)",
     "lib/!(__*)/**"

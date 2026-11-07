@@ -28,7 +28,7 @@
     "@lage-run/test-utilities": "workspace:^"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=24.22.1"
   },
   "files": [
     "lib/!(__*)",
