@@ -4,24 +4,18 @@
 
 ```ts
 
-import type { BinaryReadOptions } from '@bufbuild/protobuf';
+import { Client } from '@connectrpc/connect';
 import { Code } from '@connectrpc/connect';
 import { ConnectError } from '@connectrpc/connect';
 import type { FastifyBaseLogger } from 'fastify';
 import type { FastifyInstance } from 'fastify';
 import type { FastifyTypeProviderDefault } from 'fastify';
-import type { FieldList } from '@bufbuild/protobuf';
+import type { GenMessage } from '@bufbuild/protobuf/codegenv2';
+import type { GenService } from '@bufbuild/protobuf/codegenv2';
 import type { Http2Server } from 'http2';
 import type { Http2ServerRequest } from 'http2';
 import type { Http2ServerResponse } from 'http2';
-import type { JsonReadOptions } from '@bufbuild/protobuf';
-import type { JsonValue } from '@bufbuild/protobuf';
-import { Message } from '@bufbuild/protobuf';
-import { MethodKind } from '@bufbuild/protobuf';
-import type { PartialMessage } from '@bufbuild/protobuf';
-import type { PlainMessage } from '@bufbuild/protobuf';
-import { PromiseClient } from '@connectrpc/connect';
-import { proto3 } from '@bufbuild/protobuf';
+import type { Message } from '@bufbuild/protobuf';
 import type { ServiceImpl } from '@connectrpc/connect';
 
 export { Code }
@@ -32,14 +26,12 @@ export { ConnectError }
 // Warning: (ae-forgotten-export) The symbol "LageService" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export function createClient({ baseUrl, httpVersion }: CreateClientOptions): PromiseClient<typeof LageService>;
+export function createClient({ baseUrl }: CreateClientOptions): Client<typeof LageService>;
 
 // @public (undocumented)
 interface CreateClientOptions {
     // (undocumented)
     baseUrl: string;
-    // (undocumented)
-    httpVersion: "1.1" | "2";
 }
 
 // @public (undocumented)
@@ -55,125 +47,79 @@ export type LageClient = ReturnType<typeof createClient>;
 export type LageServer = FastifyInstance<Http2Server, Http2ServerRequest, Http2ServerResponse, FastifyBaseLogger, FastifyTypeProviderDefault>;
 
 // @public
-const LageService: {
-    readonly typeName: "connectrpc.lage.v1.LageService";
-    readonly methods: {
-        readonly runTarget: {
-            readonly name: "RunTarget";
-            readonly I: typeof RunTargetRequest;
-            readonly O: typeof RunTargetResponse;
-            readonly kind: MethodKind.Unary;
-        };
-        readonly ping: {
-            readonly name: "Ping";
-            readonly I: typeof PingRequest;
-            readonly O: typeof PingResponse;
-            readonly kind: MethodKind.Unary;
-        };
+const LageService: GenService<{
+    runTarget: {
+        methodKind: "unary";
+        input: typeof RunTargetRequestSchema;
+        output: typeof RunTargetResponseSchema;
     };
-};
+    ping: {
+        methodKind: "unary";
+        input: typeof PingRequestSchema;
+        output: typeof PingResponseSchema;
+    };
+}>;
 
 // @public (undocumented)
 export type LageServiceRunTargetResult = Awaited<ReturnType<NonNullable<ILageService["runTarget"]>>>;
 
 // @public
-class PingRequest extends Message<PingRequest> {
-    constructor(data?: PartialMessage<PingRequest>);
-    // (undocumented)
-    static equals(a: PingRequest | PlainMessage<PingRequest> | undefined, b: PingRequest | PlainMessage<PingRequest> | undefined): boolean;
-    // (undocumented)
-    static readonly fields: FieldList;
-    // (undocumented)
-    static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PingRequest;
-    // (undocumented)
-    static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PingRequest;
-    // (undocumented)
-    static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PingRequest;
-    // (undocumented)
-    static readonly runtime: typeof proto3;
-    // (undocumented)
-    static readonly typeName = "connectrpc.lage.v1.PingRequest";
-}
+type PingRequest = Message<"connectrpc.lage.v1.PingRequest"> & {};
+
+// Warning: (ae-forgotten-export) The symbol "PingRequest" needs to be exported by the entry point index.d.ts
+//
+// @public
+const PingRequestSchema: GenMessage<PingRequest>;
 
 // @public
-class PingResponse extends Message<PingResponse> {
-    constructor(data?: PartialMessage<PingResponse>);
-    // (undocumented)
-    static equals(a: PingResponse | PlainMessage<PingResponse> | undefined, b: PingResponse | PlainMessage<PingResponse> | undefined): boolean;
-    // (undocumented)
-    static readonly fields: FieldList;
-    // (undocumented)
-    static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PingResponse;
-    // (undocumented)
-    static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PingResponse;
-    // (undocumented)
-    static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PingResponse;
+type PingResponse = Message<"connectrpc.lage.v1.PingResponse"> & {
     pong: boolean;
-    // (undocumented)
-    static readonly runtime: typeof proto3;
-    // (undocumented)
-    static readonly typeName = "connectrpc.lage.v1.PingResponse";
-}
+};
+
+// Warning: (ae-forgotten-export) The symbol "PingResponse" needs to be exported by the entry point index.d.ts
+//
+// @public
+const PingResponseSchema: GenMessage<PingResponse>;
 
 // @public
-class RunTargetRequest extends Message<RunTargetRequest> {
-    constructor(data?: PartialMessage<RunTargetRequest>);
-    // (undocumented)
-    static equals(a: RunTargetRequest | PlainMessage<RunTargetRequest> | undefined, b: RunTargetRequest | PlainMessage<RunTargetRequest> | undefined): boolean;
-    // (undocumented)
-    static readonly fields: FieldList;
-    // (undocumented)
-    static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RunTargetRequest;
-    // (undocumented)
-    static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RunTargetRequest;
-    // (undocumented)
-    static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RunTargetRequest;
-    nodeOptions: string;
-    npmClient: string;
-    packageName?: string;
-    // (undocumented)
-    static readonly runtime: typeof proto3;
+type RunTargetRequest = Message<"connectrpc.lage.v1.RunTargetRequest"> & {
+    packageName?: string | undefined;
     task: string;
     taskArgs: string[];
-    // (undocumented)
-    static readonly typeName = "connectrpc.lage.v1.RunTargetRequest";
-}
+    nodeOptions: string;
+    npmClient: string;
+};
+
+// Warning: (ae-forgotten-export) The symbol "RunTargetRequest" needs to be exported by the entry point index.d.ts
+//
+// @public
+const RunTargetRequestSchema: GenMessage<RunTargetRequest>;
 
 // @public
-class RunTargetResponse extends Message<RunTargetResponse> {
-    constructor(data?: PartialMessage<RunTargetResponse>);
-    cwd: string;
-    // (undocumented)
-    static equals(a: RunTargetResponse | PlainMessage<RunTargetResponse> | undefined, b: RunTargetResponse | PlainMessage<RunTargetResponse> | undefined): boolean;
-    exitCode: number;
-    // (undocumented)
-    static readonly fields: FieldList;
-    // (undocumented)
-    static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RunTargetResponse;
-    // (undocumented)
-    static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RunTargetResponse;
-    // (undocumented)
-    static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RunTargetResponse;
-    globalInputHashFile: string;
+type RunTargetResponse = Message<"connectrpc.lage.v1.RunTargetResponse"> & {
     id: string;
+    packageName?: string | undefined;
+    cwd: string;
+    task: string;
+    exitCode: number;
     inputs: string[];
     outputs: string[];
-    packageName?: string;
-    // (undocumented)
-    static readonly runtime: typeof proto3;
-    stderr: string;
     stdout: string;
-    task: string;
-    // (undocumented)
-    static readonly typeName = "connectrpc.lage.v1.RunTargetResponse";
-}
+    stderr: string;
+    globalInputHashFile: string;
+};
+
+// Warning: (ae-forgotten-export) The symbol "RunTargetResponse" needs to be exported by the entry point index.d.ts
+//
+// @public
+const RunTargetResponseSchema: GenMessage<RunTargetResponse>;
 
 // Warnings were encountered during analysis:
 //
-// lib/gen/lage/v1/lage_connect.d.ts:14:13 - (ae-forgotten-export) The symbol "RunTargetRequest" needs to be exported by the entry point index.d.ts
-// lib/gen/lage/v1/lage_connect.d.ts:15:13 - (ae-forgotten-export) The symbol "RunTargetResponse" needs to be exported by the entry point index.d.ts
-// lib/gen/lage/v1/lage_connect.d.ts:25:13 - (ae-forgotten-export) The symbol "PingRequest" needs to be exported by the entry point index.d.ts
-// lib/gen/lage/v1/lage_connect.d.ts:26:13 - (ae-forgotten-export) The symbol "PingResponse" needs to be exported by the entry point index.d.ts
+// lib/gen/lage/v1/lage_pb.d.ts:119:9 - (ae-forgotten-export) The symbol "RunTargetRequestSchema" needs to be exported by the entry point index.d.ts
+// lib/gen/lage/v1/lage_pb.d.ts:120:9 - (ae-forgotten-export) The symbol "RunTargetResponseSchema" needs to be exported by the entry point index.d.ts
+// lib/gen/lage/v1/lage_pb.d.ts:129:9 - (ae-forgotten-export) The symbol "PingRequestSchema" needs to be exported by the entry point index.d.ts
+// lib/gen/lage/v1/lage_pb.d.ts:130:9 - (ae-forgotten-export) The symbol "PingResponseSchema" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

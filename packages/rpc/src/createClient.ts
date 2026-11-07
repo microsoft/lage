@@ -1,19 +1,17 @@
-import { createPromiseClient, type PromiseClient } from "@connectrpc/connect";
+import { createClient as connectCreateClient, type Client } from "@connectrpc/connect";
 import { createGrpcTransport } from "@connectrpc/connect-node";
-import { LageService } from "./gen/lage/v1/lage_connect.js";
+import { LageService } from "./gen/lage/v1/lage_pb.js";
 
 export interface CreateClientOptions {
   baseUrl: string;
-  httpVersion: "1.1" | "2";
 }
 
 export type LageClient = ReturnType<typeof createClient>;
 
-export function createClient({ baseUrl, httpVersion }: CreateClientOptions): PromiseClient<typeof LageService> {
+export function createClient({ baseUrl }: CreateClientOptions): Client<typeof LageService> {
   const transport = createGrpcTransport({
-    httpVersion,
     baseUrl,
   });
 
-  return createPromiseClient(LageService, transport);
+  return connectCreateClient(LageService, transport);
 }

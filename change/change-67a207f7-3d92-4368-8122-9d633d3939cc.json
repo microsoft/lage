@@ -1,0 +1,32 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/rpc",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Upgrade to Fastify 5, Connect 2, and Protobuf-ES 2. Clients now use the Connect `Client` type and always use HTTP/2; the `httpVersion` option is removed.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/cli",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Adapt remote execution to Connect 2 and Protobuf-ES 2.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/config",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Use the native `os.availableParallelism()` API on supported Node.js versions.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/scheduler",
+      "type": "none",
+      "dependentChangeType": "none",
+      "comment": "Refresh the API report for Node.js 24 typings.",
+      "email": "email not defined"
+    }
+  ]
+}
