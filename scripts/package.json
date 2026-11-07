@@ -17,7 +17,7 @@
     "@types/node": "^24.19.2",
     "@typescript-eslint/parser": "^8.0.0",
     "@typescript-eslint/types": "^8.0.0",
-    "depcheck": "^1.4.7",
+    "depcheck": "patch:depcheck@npm%3A1.4.7#~/.yarn/patches/depcheck-npm-1.4.7-d4cc813cc3.patch",
     "eslint": "^9.0.0",
     "eslint-plugin-file-extension-in-import-ts": "^2.1.1",
     "globals": "^15.0.0",
