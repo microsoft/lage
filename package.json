@@ -51,15 +51,7 @@
     "typescript": "~6.0.0"
   },
   "resolutions": {
-    "@azure/core-auth": "1.9.0",
-    "@azure/core-client": "1.9.4",
-    "@azure/core-http-compat": "2.3.0",
-    "@azure/core-rest-pipeline": "1.21.0",
-    "@azure/core-tracing": "1.2.0",
-    "@azure/core-util": "1.12.0",
-    "@azure/core-xml": "1.4.5",
-    "@azure/logger": "1.2.0",
-    "@azure/storage-blob": "12.27.0",
+    "@actions/cache/@azure/core-rest-pipeline": "^1.25.0",
     "@microsoft/api-extractor/lodash@npm:~4.17.15": "^4.18.1",
     "@microsoft/api-extractor/minimatch@npm:~3.0.3": "^3.1.5",
     "@microsoft/api-extractor/typescript": "~6.0.0",
@@ -76,7 +68,7 @@
   },
   "rationale": {
     "resolutions": {
-      "@azure/*": "Pin to newest versions compatible with Node 18",
+      "@actions/cache/@azure/core-rest-pipeline": "Share the current Azure pipeline; cache only imports its TransferProgressEvent type",
       "@microsoft/api-extractor/lodash@npm:~4.17.15": "Unpin from api-extractor to fix security issue",
       "@microsoft/api-extractor/minimatch@npm:~3.0.3": "Unpin from api-extractor to fix security issue",
       "@microsoft/api-extractor/typescript": "Prevent duplicate TS version",

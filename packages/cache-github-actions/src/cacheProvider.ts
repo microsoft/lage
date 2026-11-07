@@ -1,4 +1,3 @@
-import cache from "@actions/cache";
 import type { CustomStorageConfig } from "backfill-config";
 import type { Logger } from "backfill-logger";
 import path from "path";
@@ -17,7 +16,8 @@ const cacheProvider: CustomStorageConfig = {
         const paths = [path.relative(root, path.join(cwd, "**"))];
         const restoreKeys = ["lage-"];
 
-        const cacheKey = await cache.restoreCache(paths, hash, restoreKeys);
+        const { restoreCache } = await import("@actions/cache");
+        const cacheKey = await restoreCache(paths, hash, restoreKeys);
 
         return !!cacheKey;
       },
@@ -29,7 +29,8 @@ const cacheProvider: CustomStorageConfig = {
 
         const paths = filesToCache.map((files) => path.relative(root, path.join(cwd, files)));
 
-        await cache.saveCache(paths, hash);
+        const { saveCache } = await import("@actions/cache");
+        await saveCache(paths, hash);
       },
     };
   },
