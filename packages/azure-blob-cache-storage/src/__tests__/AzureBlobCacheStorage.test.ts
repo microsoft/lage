@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
+import { beforeEach, afterEach, describe, expect, it } from "@jest/globals";
 import {
   createTempDir as _createTempDir,
   makeAzureStorageClientMocks,
@@ -50,9 +50,7 @@ describe("AzureBlobCacheStorage", () => {
     /** Get a tar stream containing `entries` from `dir` */
     async function getTarStream(dir: string, entries: string[]) {
       // tar-fs mutates its input...
-      return Readable.from(
-        await buffer(tarFs.pack(dir, { entries: [...entries] }))
-      );
+      return Readable.from(await buffer(tarFs.pack(dir, { entries: [...entries] })));
     }
 
     it("returns true and extracts files on cache hit", async () => {
@@ -64,17 +62,11 @@ describe("AzureBlobCacheStorage", () => {
         readableStreamBody: await getTarStream(sourceDir, ["lib/index.js"]),
       });
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient }, logger, cwd);
       const result = await storage.fetch("test-hash");
 
       expect(result).toBe(true);
-      expect(fs.readFileSync(path.join(cwd, "lib", "index.js"), "utf-8")).toBe(
-        "hello"
-      );
+      expect(fs.readFileSync(path.join(cwd, "lib", "index.js"), "utf-8")).toBe("hello");
       expect(blobClient.download).toHaveBeenCalledWith(0);
     });
 
@@ -84,11 +76,7 @@ describe("AzureBlobCacheStorage", () => {
         message: "BlobNotFound",
       });
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient }, logger, cwd);
       const result = await storage.fetch("test-hash");
 
       expect(result).toBe(false);
@@ -100,11 +88,7 @@ describe("AzureBlobCacheStorage", () => {
         message: "AuthorizationFailure",
       });
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient }, logger, cwd);
 
       await expect(storage.fetch("test-hash")).rejects.toMatchObject({
         statusCode: 403,
@@ -116,25 +100,15 @@ describe("AzureBlobCacheStorage", () => {
         readableStreamBody: undefined,
       });
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient }, logger, cwd);
 
-      await expect(storage.fetch("test-hash")).rejects.toThrow(
-        "Unable to fetch blob"
-      );
+      await expect(storage.fetch("test-hash")).rejects.toThrow("Unable to fetch blob");
     });
 
     it("skips download when blob exceeds maxSize", async () => {
       blobClient.getProperties.mockResolvedValue({ contentLength: 2000 });
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient, maxSize: 1000 },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient, maxSize: 1000 }, logger, cwd);
       const result = await storage.fetch("test-hash");
 
       expect(result).toBe(false);
@@ -149,11 +123,7 @@ describe("AzureBlobCacheStorage", () => {
         readableStreamBody: await getTarStream(sourceDir, []),
       });
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient, maxSize: 1000 },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient, maxSize: 1000 }, logger, cwd);
       await storage.fetch("test-hash");
 
       expect(blobClient.download).toHaveBeenCalled();
@@ -165,11 +135,7 @@ describe("AzureBlobCacheStorage", () => {
         readableStreamBody: await getTarStream(sourceDir, []),
       });
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient }, logger, cwd);
       await storage.fetch("test-hash");
 
       expect(blobClient.getProperties).not.toHaveBeenCalled();
@@ -178,11 +144,7 @@ describe("AzureBlobCacheStorage", () => {
     it("calls getBlobClient with the hash", async () => {
       blobClient.download.mockRejectedValue({ statusCode: 404 });
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient }, logger, cwd);
       await storage.fetch("abc123");
 
       expect(containerClient.getBlobClient).toHaveBeenCalledWith("abc123");
@@ -195,17 +157,11 @@ describe("AzureBlobCacheStorage", () => {
       fs.writeFileSync(path.join(cwd, "lib", "index.js"), "hello");
 
       let capturedData: Buffer = Buffer.alloc(0);
-      blockBlobClient.uploadStream.mockImplementation(
-        async (stream: NodeJS.ReadableStream) => {
-          capturedData = await buffer(stream);
-        }
-      );
+      blockBlobClient.uploadStream.mockImplementation(async (stream: NodeJS.ReadableStream) => {
+        capturedData = await buffer(stream);
+      });
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient }, logger, cwd);
       await storage.put("test-hash", ["lib/**"]);
 
       expect(blockBlobClient.uploadStream).toHaveBeenCalledWith(
@@ -217,9 +173,7 @@ describe("AzureBlobCacheStorage", () => {
       // Verify the tar archive actually contains the expected file
       const extractDir = createTempDir({ prefix: "test-azure-extract-" });
       await pipeline(Readable.from(capturedData), tarFs.extract(extractDir));
-      expect(
-        fs.readFileSync(path.join(extractDir, "lib", "index.js"), "utf-8")
-      ).toBe("hello");
+      expect(fs.readFileSync(path.join(extractDir, "lib", "index.js"), "utf-8")).toBe("hello");
     });
 
     it("skips upload when total file size exceeds maxSize", async () => {
@@ -227,11 +181,7 @@ describe("AzureBlobCacheStorage", () => {
       fs.writeFileSync(path.join(cwd, "lib", "large1.js"), Buffer.alloc(900));
       fs.writeFileSync(path.join(cwd, "lib", "large2.js"), Buffer.alloc(200));
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient, maxSize: 1000 },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient, maxSize: 1000 }, logger, cwd);
       await storage.put("test-hash", ["lib/**"]);
 
       expect(blockBlobClient.uploadStream).not.toHaveBeenCalled();
@@ -241,17 +191,11 @@ describe("AzureBlobCacheStorage", () => {
       fs.mkdirSync(path.join(cwd, "lib"), { recursive: true });
       fs.writeFileSync(path.join(cwd, "lib", "small.js"), Buffer.alloc(500));
 
-      blockBlobClient.uploadStream.mockImplementation(
-        async (stream: NodeJS.ReadableStream) => {
-          await buffer(stream);
-        }
-      );
+      blockBlobClient.uploadStream.mockImplementation(async (stream: NodeJS.ReadableStream) => {
+        await buffer(stream);
+      });
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient, maxSize: 1000 },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient, maxSize: 1000 }, logger, cwd);
       await storage.put("test-hash", ["lib/**"]);
 
       expect(blockBlobClient.uploadStream).toHaveBeenCalledTimes(1);
@@ -261,17 +205,11 @@ describe("AzureBlobCacheStorage", () => {
       fs.mkdirSync(path.join(cwd, "lib"), { recursive: true });
       fs.writeFileSync(path.join(cwd, "lib", "index.js"), "x");
 
-      blockBlobClient.uploadStream.mockImplementation(
-        async (stream: NodeJS.ReadableStream) => {
-          await buffer(stream);
-        }
-      );
+      blockBlobClient.uploadStream.mockImplementation(async (stream: NodeJS.ReadableStream) => {
+        await buffer(stream);
+      });
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient }, logger, cwd);
       await storage.put("myHash123", ["lib/**"]);
 
       expect(containerClient.getBlobClient).toHaveBeenCalledWith("myHash123");
@@ -286,11 +224,7 @@ describe("AzureBlobCacheStorage", () => {
       // --- fetch (miss) ---
       blobClient.download.mockRejectedValueOnce({ statusCode: 404 });
 
-      const storage = new AzureBlobCacheStorage(
-        { containerClient },
-        logger,
-        cwd
-      );
+      const storage = new AzureBlobCacheStorage({ containerClient }, logger, cwd);
 
       const missResult = await storage.fetch(hash);
       expect(missResult).toBe(false);
@@ -301,11 +235,9 @@ describe("AzureBlobCacheStorage", () => {
 
       // --- put (capture the uploaded tar) ---
       let capturedTar: Buffer = Buffer.alloc(0);
-      blockBlobClient.uploadStream.mockImplementation(
-        async (stream: NodeJS.ReadableStream) => {
-          capturedTar = await buffer(stream);
-        }
-      );
+      blockBlobClient.uploadStream.mockImplementation(async (stream: NodeJS.ReadableStream) => {
+        capturedTar = await buffer(stream);
+      });
 
       await storage.put(hash, ["lib/**"]);
       expect(capturedTar.length).toBeGreaterThan(0);
@@ -323,9 +255,7 @@ describe("AzureBlobCacheStorage", () => {
 
       const hitResult = await storage.fetch(hash);
       expect(hitResult).toBe(true);
-      expect(fs.readFileSync(path.join(cwd, "lib", "index.js"), "utf-8")).toBe(
-        "built output"
-      );
+      expect(fs.readFileSync(path.join(cwd, "lib", "index.js"), "utf-8")).toBe("built output");
     });
   });
 });

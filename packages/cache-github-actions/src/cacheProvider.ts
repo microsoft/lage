@@ -1,13 +1,14 @@
 import cache from "@actions/cache";
-import type { CustomStorageConfig } from "backfill-config";
+import type { CustomCacheStoragePlugin, ICacheStorage } from "backfill-config";
 import type { Logger } from "backfill-logger";
 import path from "path";
 import { getWorkspaceManagerRoot } from "workspace-tools";
 
 const root = getWorkspaceManagerRoot(process.cwd())!;
 
-const cacheProvider: CustomStorageConfig = {
-  provider: (_logger: Logger, cwd: string) => {
+const plugin: CustomCacheStoragePlugin = {
+  name: "github-actions",
+  getProvider(_logger: Logger, cwd: string): ICacheStorage {
     return {
       async fetch(hash: string): Promise<boolean> {
         if (!hash) {
@@ -33,7 +34,6 @@ const cacheProvider: CustomStorageConfig = {
       },
     };
   },
-  name: "github-actions",
 };
 
-export { cacheProvider };
+export default plugin;

@@ -72,7 +72,8 @@ wish to override. All properties in are optional in the config file.
 /** @type {Partial<import("backfill").Config>} */
 const config = {
   cacheStorageConfig: {
-    provider: "azure-blob",
+    provider: "custom",
+    plugin: "@lage-run/azure-blob-cache-storage",
     options: { ... }
   },
   outputGlob: ["lib/**/*", "dist/bundles/**/*"]
@@ -193,12 +194,19 @@ instance.
 Backfill supports multiple cache storage providers:
 
 - Local folder (`local`), the default option
-- [Azure blob storage (`azure-blob`)](#azure-blob-storage)
+- [Azure blob storage (plugin)](#azure-blob-storage)
 - [NPM package (`npm`)](#npm-package)
 - [Skip cache locally (`local-skip`)](#skipping-cache-locally)
-- [Custom (`custom`)](#custom-storage-providers)
+- [Custom plugin (`custom`)](#custom-storage-plugins)
+- [Custom inline provider](#custom-inline-providers)
 
 ### Azure Blob Storage
+
+Azure Blob Storage cache is available as a plugin. First, install the plugin:
+
+```
+npm install @lage-run/azure-blob-cache-storage
+```
 
 To cache to Microsoft Azure Blob Storage, you need to provide a connection
 string and the container name. If you are configuring via `backfill.config.js`,
@@ -207,13 +215,14 @@ use the following syntax:
 ```js
 module.exports = {
   cacheStorageConfig: {
-    provider: "azure-blob",
+    provider: "custom",
+    plugin: "@lage-run/azure-blob-cache-storage",
     options: {
       connectionString: "...",
-      container: "..."
-      maxSize: 12345
-    }
-  }
+      container: "...",
+      maxSize: 12345,
+    },
+  },
 };
 ```
 
@@ -222,31 +231,36 @@ does not have a SAS token. This is useful if you want to use a managed identity
 or interactive browser login. For example:
 
 ```js
-import { InteractiveBrowserCredential } from '@azure/identity'
+import { InteractiveBrowserCredential } from "@azure/identity";
 
 module.exports = {
   cacheStorageConfig: {
-    provider: "azure-blob",
+    provider: "custom",
+    plugin: "@lage-run/azure-blob-cache-storage",
     options: {
-      connectionString: "https://<your-storage-account-name>.blob.core.windows.net",
-      credential: new InteractiveBrowserCredential()
-      container: "..."
-      maxSize: 12345
-    }
-  }
+      connectionString:
+        "https://<your-storage-account-name>.blob.core.windows.net",
+      credential: new InteractiveBrowserCredential(),
+      container: "...",
+      maxSize: 12345,
+    },
+  },
 };
-
 ```
 
-#### `azure-blob` options
+#### Azure Blob Storage options
 
 - `connectionString`: retrieve this from the Azure Portal interface
 - `container`: the name of the blob storage container
 - `maxSize` (optional): max size of a single package cache, in the number of
   bytes
 - `credential` (optional): one of the credential types from `@azure/identity`.
+- `credentialName` (optional): name of the credential type to use for Azure
+  Identity authentication. Supported values: `"azure-cli"`,
+  `"managed-identity"`, `"visual-studio-code"`, `"environment"`,
+  `"workload-identity"`.
 
-You can also use environment variables for configuration.
+You can also use environment variables for configuration (backward compatible):
 
 ```
 BACKFILL_CACHE_PROVIDER="azure-blob"
@@ -317,9 +331,53 @@ storage strategy:
 BACKFILL_CACHE_PROVIDER="local-skip"
 ```
 
-### Custom storage providers
+### Custom storage plugins
 
-It is also possible to use a custom storage provider. This allows ultimate
+You can use a custom cache storage plugin by setting `provider` to `"custom"`
+and specifying the `plugin` package name or path. The plugin module should
+export a `CustomCacheStoragePlugin` as its default export.
+
+```js
+// backfill.config.js
+/** @type {Partial<import("backfill").Config>} */
+const config = {
+  cacheStorageConfig: {
+    provider: "custom",
+    plugin: "my-custom-cache-plugin",
+    options: {
+      key1: "value1",
+      key2: "value2",
+    },
+  },
+};
+module.exports = config;
+```
+
+A plugin module should have the following structure:
+
+```js
+// my-custom-cache-plugin/index.js
+/** @type {import("backfill-config").CustomCacheStoragePlugin} */
+const plugin = {
+  name: "my-custom-cache",
+  getProvider(logger, cwd, options) {
+    return {
+      async fetch(hash) {
+        // some fetch logic
+        return false;
+      },
+      async put(hash, filesToCache) {
+        // some putting logic
+      },
+    };
+  },
+};
+module.exports = plugin;
+```
+
+### Custom inline providers
+
+It is also possible to use a custom storage provider inline. This allows ultimate
 flexibility in how to handle cache fetching and putting.
 
 Configure the custom cache provider this way:
