@@ -1,148 +1,203 @@
+import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { Logger, type Reporter } from "@lage-run/logger";
-import { AdoReporter, BasicReporter, ChromeTraceEventsReporter, GithubActionsReporter, LogReporter } from "@lage-run/reporters";
-import fs from "fs";
-import isInteractive from "is-interactive";
-import os from "os";
+import {
+  AdoReporter,
+  BasicReporter,
+  ChromeTraceEventsReporter,
+  GithubActionsReporter,
+  JsonReporter,
+  LogReporter,
+  ProgressReporter,
+} from "@lage-run/reporters";
+import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
 import path from "path";
-import { initializeReporters } from "../commands/initializeReporters.js";
-import type { ReporterInitOptions } from "../types/ReporterInitOptions.js";
+import type { ReporterInitOptions } from "../commands/initializeReporters.js";
+import type { BuiltInReporterName } from "../types/ReporterNames.js";
 
 jest.mock("is-interactive", () => jest.fn(() => true));
 
+// jest.mock() is not hoisted above imports when jest is imported from @jest/globals.
+// NOTE: Once lage uses ESM, this should be replaced with jest.unstable_mockModule() and await import(...).
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/consistent-type-imports
+const isInteractive = require("is-interactive") as jest.MockedFunction<typeof import("is-interactive")>;
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/consistent-type-imports
+const { initializeReporters } = require("../commands/initializeReporters.js") as typeof import("../commands/initializeReporters.js");
+
 // The tests for custom reporters are in customReporter.test.ts
 describe("initializeReporters", () => {
+  const originalEnv = { ...process.env };
   let tmpDir: string | undefined;
-  let reporters: Reporter[] | undefined;
-  let savedGithubActions: string | undefined;
-  let savedTfBuild: string | undefined;
+  let reporters: ReadonlyArray<Reporter<never, never>> | undefined;
 
-  const options: ReporterInitOptions = {
-    concurrency: 1,
-    grouped: false,
-    logLevel: "info",
-    progress: false,
-    reporter: [],
-    verbose: false,
-  };
+  async function callInitializeReporters(params?: {
+    options?: Partial<ReporterInitOptions>;
+    config?: { reporter?: string | string[] };
+    defaultReporter?: BuiltInReporterName;
+  }) {
+    const logger = new Logger();
+    await initializeReporters({
+      logger,
+      options: {
+        concurrency: 1,
+        grouped: false,
+        logLevel: "info",
+        progress: false,
+        reporter: undefined,
+        verbose: false,
+        ...params?.options,
+      },
+      config: { reporters: {}, ...params?.config },
+      root: "",
+      defaultReporter: params?.defaultReporter,
+    });
+    return logger.reporters;
+  }
 
   beforeEach(() => {
-    // Save and clear CI env vars so default-reporter tests are environment-independent
-    savedGithubActions = process.env.GITHUB_ACTIONS;
-    savedTfBuild = process.env.TF_BUILD;
-    delete process.env.GITHUB_ACTIONS;
-    delete process.env.TF_BUILD;
+    // Clear CI env vars so default-reporter tests are environment-independent
+    process.env = {};
+    isInteractive.mockReturnValue(true);
   });
 
   afterEach(async () => {
     for (const reporter of reporters || []) {
-      reporter.cleanup?.();
+      await reporter.cleanup?.();
     }
     reporters = undefined;
-    // Restore CI env vars
-    if (savedGithubActions !== undefined) {
-      process.env.GITHUB_ACTIONS = savedGithubActions;
-    }
-    if (savedTfBuild !== undefined) {
-      process.env.TF_BUILD = savedTfBuild;
-    }
-    try {
-      tmpDir && fs.rmSync(tmpDir, { recursive: true, force: true });
-    } catch {
-      // ignore
-    }
+    process.env = { ...originalEnv };
+    tmpDir && removeTempDir(tmpDir);
     tmpDir = undefined;
     jest.restoreAllMocks();
   });
 
-  it("should initialize progress reporter when param is progress passed as true", async () => {
-    const logger = new Logger();
-    reporters = await initializeReporters(
-      logger,
-      {
-        ...options,
-        progress: true,
-      },
-      undefined
-    );
+  // progress: true is the default in local runs
+  it("uses progress reporter with progress: true", async () => {
+    reporters = await callInitializeReporters({
+      options: { progress: true },
+    });
 
-    expect(reporters).toEqual([expect.any(BasicReporter)]);
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(ProgressReporter);
   });
 
-  it("should initialize old reporter when shell is not interactive", async () => {
-    (isInteractive as jest.Mock).mockReturnValueOnce(false);
-    const logger = new Logger();
-    reporters = await initializeReporters(logger, { ...options }, undefined);
+  it("uses basic reporter in slow terminal with progress: true", async () => {
+    process.env.CODESPACES = "true";
+    reporters = await callInitializeReporters({
+      options: { progress: true },
+    });
+
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(BasicReporter);
+  });
+
+  it("uses old reporter when shell is not interactive", async () => {
+    isInteractive.mockReturnValueOnce(false);
+    reporters = await callInitializeReporters();
 
     expect(reporters).toEqual([expect.any(LogReporter)]);
   });
 
-  it("should initialize old reporter when grouped", async () => {
-    const logger = new Logger();
-    reporters = await initializeReporters(
-      logger,
-      {
-        ...options,
-        grouped: true,
-      },
-      undefined
-    );
-    expect(reporters).toEqual([expect.any(LogReporter)]);
+  it("uses old reporter when grouped", async () => {
+    reporters = await callInitializeReporters({
+      options: { grouped: true },
+    });
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(LogReporter);
   });
 
-  it("should initialize old reporter when verbose", async () => {
-    const logger = new Logger();
-    reporters = await initializeReporters(
-      logger,
-      {
-        ...options,
-        verbose: true,
-      },
-      undefined
-    );
-    expect(reporters).toEqual([expect.any(LogReporter)]);
+  it("uses old reporter when verbose", async () => {
+    reporters = await callInitializeReporters({
+      options: { verbose: true },
+    });
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(LogReporter);
   });
 
-  it("should initialize profile reporter", async () => {
-    const logger = new Logger();
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "lage-profile-"));
-    reporters = await initializeReporters(
-      logger,
-      {
-        ...options,
-        progress: true,
-        profile: path.join(tmpDir, "profile.json"),
-      },
-      undefined
-    );
+  it("uses profile reporter", async () => {
+    tmpDir = createTempDir({ prefix: "lage-profile-" });
+    reporters = await callInitializeReporters({
+      options: { progress: true, profile: path.join(tmpDir, "profile.json") },
+    });
 
-    expect(reporters.length).toBe(2);
+    expect(reporters).toHaveLength(2);
     expect(reporters).toContainEqual(expect.any(ChromeTraceEventsReporter));
   });
 
-  it("should initialize ADO reporter when reporter arg is adoLog", async () => {
-    const logger = new Logger();
-    reporters = await initializeReporters(
-      logger,
-      {
-        ...options,
-        reporter: ["adoLog"],
-      },
-      undefined
-    );
-    expect(reporters).toEqual([expect.any(AdoReporter)]);
+  it("uses ADO reporter when reporter arg is adoLog", async () => {
+    reporters = await callInitializeReporters({
+      options: { reporter: ["adoLog"] },
+    });
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(AdoReporter);
   });
 
-  it("should auto-detect GitHub Actions and use GithubActionsReporter", async () => {
+  it("auto-detects GitHub Actions and use GithubActionsReporter", async () => {
     process.env.GITHUB_ACTIONS = "true";
-    const logger = new Logger();
-    reporters = await initializeReporters(logger, { ...options }, undefined);
-    expect(reporters).toEqual([expect.any(GithubActionsReporter)]);
+    reporters = await callInitializeReporters();
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(GithubActionsReporter);
   });
 
-  it("should auto-detect Azure DevOps and use AdoReporter", async () => {
+  it("auto-detects Azure DevOps and use AdoReporter", async () => {
     process.env.TF_BUILD = "True";
-    const logger = new Logger();
-    reporters = await initializeReporters(logger, { ...options }, undefined);
-    expect(reporters).toEqual([expect.any(AdoReporter)]);
+    reporters = await callInitializeReporters();
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(AdoReporter);
+  });
+
+  it("uses config.reporter string when no CLI --reporter is given", async () => {
+    reporters = await callInitializeReporters({
+      config: { reporter: "json" },
+      // config.reporter overrides these
+      options: { verbose: true, grouped: true },
+    });
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(JsonReporter);
+  });
+
+  it("uses config.reporter array when no CLI --reporter is given", async () => {
+    reporters = await callInitializeReporters({
+      config: { reporter: ["adoLog", "json"] },
+      // config.reporter overrides these
+      options: { verbose: true, grouped: true },
+    });
+    expect(reporters).toEqual([expect.any(AdoReporter), expect.any(JsonReporter)]);
+  });
+
+  it("overrides config.reporter when CLI --reporter is given", async () => {
+    reporters = await callInitializeReporters({
+      options: { reporter: ["adoLog"] },
+      config: { reporter: "json" },
+    });
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(AdoReporter);
+  });
+
+  it("adds profile reporter alongside config.reporter when --profile is used", async () => {
+    tmpDir = createTempDir({ prefix: "lage-profile-" });
+    reporters = await callInitializeReporters({
+      options: { profile: path.join(tmpDir, "profile.json") },
+      config: { reporter: "adoLog" },
+    });
+    expect(reporters).toHaveLength(2);
+    expect(reporters[0]).toBeInstanceOf(AdoReporter);
+    expect(reporters[1]).toBeInstanceOf(ChromeTraceEventsReporter);
+  });
+
+  it("uses config.reporter instead of defaultReporter", async () => {
+    reporters = await callInitializeReporters({
+      config: { reporter: "adoLog" },
+      defaultReporter: "json",
+    });
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(AdoReporter);
+  });
+
+  it("falls back to defaultReporter when no other reporter option is set", async () => {
+    reporters = await callInitializeReporters({
+      defaultReporter: "json",
+    });
+    expect(reporters).toHaveLength(1);
+    expect(reporters[0]).toBeInstanceOf(JsonReporter);
   });
 });

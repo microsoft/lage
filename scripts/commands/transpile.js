@@ -1,6 +1,6 @@
 const path = require("path");
 const transpileWorker = require("../worker/transpile");
-const { getPackageInfo } = require("workspace-tools");
+const { getPackageInfo } = require("workspace-tools-npm");
 
 (async function main() {
   const packageJson = getPackageInfo(process.cwd());

@@ -2,6 +2,1260 @@
   "name": "lage",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "2.17.1",
+      "tag": "lage_v2.17.1",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "fa3d0abd108ef9d00643642ca4cf1b89e8f39220",
+            "comment": "Deduplicate git change detection and apply consistent behavior with repoWideChanges"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "26b070319157bc731aa483bcaa22288d77688d4a",
+            "comment": "Accept optional package metadata in `TargetHasher` to avoid redundant package discovery."
+          }
+        ],
+        "patch": [
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "26b070319157bc731aa483bcaa22288d77688d4a",
+            "comment": "Reuse loaded package metadata when initializing the hasher in run, watch, and server modes."
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "5b0cb67fbab65de618fe2f6ea3122f43cb3da93a",
+            "comment": "Update dependency shell-quote to v1.12.0 [SECURITY]"
+          },
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "13ab9ff8d9c002b946bbe4067772ef588fbbd3c5",
+            "comment": "Report structured repo-wide change details and full-build decisions, and reuse change detection during target graph creation."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Ensure types in CLI commands match the actual options used, and fix some mismatches with defaulting behavior that resulted from the bad types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "fa3d0abd108ef9d00643642ca4cf1b89e8f39220",
+            "comment": "Add option to pass pre-calculated `packageInfos` to `getPackagesByFiles`"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "26b070319157bc731aa483bcaa22288d77688d4a",
+            "comment": "Avoid redundant existence checks when reading package metadata successfully."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "fa3d0abd108ef9d00643642ca4cf1b89e8f39220",
+            "comment": "Add getWorkingTreeChanges helper"
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "a9cd1a2c6e2852ac1f35ac5828ac54ac70321116",
+            "comment": "Update dependency js-yaml to v4.3.2 [SECURITY]"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "2946c284e9bd101553246d8cc3d9b4a4a00edbbc",
+            "comment": "Improve performance of target priority calculation for large target graphs"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "39d417a25d629ab4c7fa7d203061bdbdf11fbe0e",
+            "comment": "Avoid queue shifting and duplicate enqueues when building subgraphs while preserving graph order and priorities."
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "3f38ac46f389c76a6c5fababe2e1d62e26eb28fb",
+            "comment": "Prevent stale transitive dependencies when building multiple target graphs in the same process."
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "cf1552163285990ee76930138393bc42e0004b8c",
+            "comment": "Improve performance of dependency expansion when building large target graphs"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "backfill-hasher",
+            "commit": "fc2ba943e7d5865d2d46f219d6ef301ffc4246d7",
+            "comment": "Use a Set for external dependency queue membership checks while preserving resolution order."
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/reporters",
+            "commit": "41f78cc25b255e6871602456c4091e785b3320e6",
+            "comment": "Update dependency @ms-cloudpack/task-reporter to v0.21.7"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "1b06e2c4421eeece4e473d01569640f74ce7c6c9",
+            "comment": "Update bundled dependencies"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Update docs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Update docs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "e735f8e557c6ae7c45c970e0ab3256038fcf7069",
+            "comment": "Clarify docs about target inputs and outputs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Update docs"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 18 Aug 2026 02:26:59 GMT",
+      "version": "2.17.0",
+      "tag": "lage_v2.17.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "8a3a9eb6a5f3227d0525a021b64b671d5e3870ca",
+            "comment": "Update bundled dependencies"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8a3a9eb6a5f3227d0525a021b64b671d5e3870ca",
+            "comment": "Revert to using fancier reporter by default when running locally, except in known slow terminals (codespaces, SSH)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "8a3a9eb6a5f3227d0525a021b64b671d5e3870ca",
+            "comment": "Remove unused `ChromeTraceEventsReporter` `concurrency` option that was not used"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "8a3a9eb6a5f3227d0525a021b64b671d5e3870ca",
+            "comment": "update comment"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Aug 2026 09:42:15 GMT",
+      "version": "2.16.1",
+      "tag": "lage_v2.16.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "25f1b8686c1f4ebf4ec372703c4b7a435522de3a",
+            "comment": "Add bun as a supported workspace manager in workspace-tools, including manager detection and workspace fixture/test coverage."
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "25f1b8686c1f4ebf4ec372703c4b7a435522de3a",
+            "comment": "Update dependency js-yaml to v4.3.1 [SECURITY]"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "2.16.0",
+      "tag": "lage_v2.16.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/reporters",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependency @ms-cloudpack/task-reporter to v0.21.6"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/reporters",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependency @ms-cloudpack/task-reporter to v0.21.5"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "ansteg@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Fix `parseLockFile` throwing on pnpm \"env lockfile\" `pnpm-lock.yaml` files (a 2-document YAML format pnpm writes when `configDependencies` and/or `packageManagerDependencies` are recorded). Only the main (last) document is now parsed; the env document is discarded so its entries never leak into the parsed dependency graph."
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependency js-yaml to v4.3.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "email not defined",
+            "package": "backfill-cache",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependency tar-fs to v2.1.5"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-cache",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependency shell-quote to v1.10.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Add command descriptions"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-config",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-hasher",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-logger",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "normalized-tmpdir",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Fix targetWorker import path extension"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependencies"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update nested dependencies"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "delete unused file"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "update formatting"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Generate the CLI bundles directly from TypeScript code, not from the intermediate CJS generated by swc. This is marked as a minor change due to slight chance of behavior differences."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Jul 2026 22:12:55 GMT",
+      "version": "2.15.17",
+      "tag": "lage_v2.15.17",
+      "comments": {
+        "minor": [
+          {
+            "author": "ansteg@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "ede5be1674282d60c1e03804de3c61f77df45e69",
+            "comment": "Add support for pnpm lockfileVersion 6.0 (pnpm@8) and 9.0 (pnpm@9+) to parseLockFile"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 20:21:25 GMT",
+      "version": "2.15.16",
+      "tag": "lage_v2.15.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "6af70fb1c8228fae625c6c2a864222631916a9b4",
+            "comment": "Update `resolveRemoteAndBranch` to return `.remoteBranch` instead of `.branch` for consistency"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 04:59:29 GMT",
+      "version": "2.15.15",
+      "tag": "lage_v2.15.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "c05cc77a8a8a52f57d5a2ce30b6ed57793f34d99",
+            "comment": "Bundle with esbuild 0.28.1 (bumped from 0.25.12)"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/config",
+            "commit": "c05cc77a8a8a52f57d5a2ce30b6ed57793f34d99",
+            "comment": "Update dependency cosmiconfig to v9.0.2"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "2.15.14",
+      "tag": "lage_v2.15.14",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "b7626837ab7cb0772bfa33b17546e98b14da336a",
+            "comment": "Add `resolveRemoteAndBranch` helper, and export `getRemotes`"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "b7626837ab7cb0772bfa33b17546e98b14da336a",
+            "comment": "Update dependencies"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 12 Jun 2026 20:31:24 GMT",
+      "version": "2.15.13",
+      "tag": "lage_v2.15.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "ce44a8e432bf8b251bf65265f9dbdf47073e4994",
+            "comment": "Update dependency js-yaml to v4.2.0"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "ce44a8e432bf8b251bf65265f9dbdf47073e4994",
+            "comment": "Update dependency shell-quote to v1.8.4"
+          },
+          {
+            "author": "lutomanovic@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "ce44a8e432bf8b251bf65265f9dbdf47073e4994",
+            "comment": "Add `affected` options to the `affected` command"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "2.15.12",
+      "tag": "lage_v2.15.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Move git helpers to separate files"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add `resolveRemoteBranch` which parses the remote from the provided branch if present, or gets the remote (and branch if not provided) from `getDefaultRemoteBranch`. Improve efficiency and reduce git operations for various remote-related helpers."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Reporters should delete log entries from memory when no longer needed"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add generics to `TargetHasher` `logger` option (any logger will be accepted)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Export `LageServer` and `LageServiceRunTargetResult` types"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Update scheduler `logger` option types to use `TargetLogger` and `Logger<never, never>` (any logger). In `SimpleScheduler`, remove some structured data logs that appear to be unused leftovers from a previous ProgressReporter approach."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add generics to `AggregatedPool` `logger` option (any logger will be accepted)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Update for new logger and reporters typings"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Change the `Logger` signature to `Logger<TLogStructuredData extends LogStructuredData, TSummary>` and same for `Reporter`, to be strict about data types. Add an additional `otherData` parameter on log methods for arbitrary data."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add `TargetReporter` and `TargetLogger` helper types, and make all reporters implement that. Update the reporters' method signatures and internal validation to be strict about data types. Add `TargetData` type rolling up all observed target-related logs, and remove `TargetMessageData` type which was never actually used."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Update cache provider `logger` option to use `TargetLogger`"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 25 Apr 2026 08:04:39 GMT",
+      "version": "2.15.11",
+      "tag": "lage_v2.15.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "7545a88821578ba3f270aa779e6f89d8a2180053",
+            "comment": "Rename `getFileFromVersion` to `getFileFromRef`. Also add `getCatalogVersion` option `allowNotFound`."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 25 Apr 2026 03:32:41 GMT",
+      "version": "2.15.10",
+      "tag": "lage_v2.15.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "4e3d6c6a252b7d00135e915e7669697a5c2eb4a0",
+            "comment": "Add getFileFromVersion, getCatalogFilePath, and parseCatalogContent utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 16 Apr 2026 01:52:11 GMT",
+      "version": "2.15.9",
+      "tag": "lage_v2.15.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/target-graph",
+            "commit": "31ad3cc44d94dd14f0f2dbf48955c0b355052ed7",
+            "comment": "Add another test case and fix for the enablePhantomTargetOptimization feature"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 10 Apr 2026 04:04:59 GMT",
+      "version": "2.15.8",
+      "tag": "lage_v2.15.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "56f718d23f300624711312c4d2e200afad3696c7",
+            "comment": "Respect `reporter` option from config file"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "56f718d23f300624711312c4d2e200afad3696c7",
+            "comment": "Add `reporter` option to config file"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "normalized-tmpdir",
+            "commit": "56f718d23f300624711312c4d2e200afad3696c7",
+            "comment": "Convert package to TS and publish from lage repo"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Apr 2026 03:39:42 GMT",
+      "version": "2.15.7",
+      "tag": "lage_v2.15.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-cache",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-config",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-hasher",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-logger",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-utils-dotenv",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 06 Apr 2026 21:27:03 GMT",
+      "version": "2.15.6",
+      "tag": "lage_v2.15.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Update reporter cleanup"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Use `formatHrtime` helper"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Allow reporter cleanup to be async"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Add testing options for BasicReporter and ProgressReporter. Fix ProgressReporter aborted tasks counts and add cleanup."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Update `@ms-cloudpack/task-reporter`, which should significantly improve `ProgressReporter` performance. Add `formatHrtime` helper and reduce formatting repetition across reporters."
+          },
+          {
+            "author": "lutomanovic@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Add target property for controlling whether remote cache should be used for that target or not."
+          },
+          {
+            "author": "lutomanovic@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Add target property for controlling whether remote cache should be used for that target or not."
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Add TargetStatus comment"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "update eslint config"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Apr 2026 03:54:25 GMT",
+      "version": "2.15.5",
+      "tag": "lage_v2.15.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-cache",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Directly use `globby` v11 instead of `@lage-run/globby`"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-cache",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "LocalCacheStorage: remove incorrect check for file changes between source and dest while fetching from cache (removes superfluous stat calls)"
+          },
+          {
+            "author": "email not defined",
+            "package": "backfill-cache",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Remove unused catch binding"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Directly use `globby` v11 instead of `@lage-run/globby`"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Import formatDuration/hrToSeconds/hrtimeDiff from @lage-run/reporters instead of @lage-run/format-hrtime"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Use cache directory helpers"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Remove unused catch bindings"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Directly use `globby` v11 instead of `@lage-run/globby` (implement caching internally)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Use cache directory helpers"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/scheduler",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Remove unused catch bindings"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Upgrade typescript-eslint to v8 and fix lint issues"
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Upgrade typescript-eslint to v8 and fix lint issues"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Add `--log-memory` option to the `run` command"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "TargetHasher: remove unnecessary writes to `node_modules/.cache/lage/hashes`"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/reporters",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Merge @lage-run/format-hrtime into @lage-run/reporters; re-export formatDuration, hrToSeconds, hrtimeDiff"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Add logMemory option to certain reporters"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Add logMemory option for SimpleScheduler and WrappedTarget"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/scheduler-types",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Update cleanup() return type to allow Promise<void>"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Fix `terminate()` to be async and await worker termination"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "update dev deps"
+          },
+          {
+            "author": "email not defined",
+            "package": "backfill-config",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "update lint disables"
+          },
+          {
+            "author": "email not defined",
+            "package": "backfill-hasher",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "update lint disables"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 30 Mar 2026 21:21:13 GMT",
+      "version": "2.15.4",
+      "tag": "lage_v2.15.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/globby",
+            "commit": "e38b72e356def2567dba0600f4b634f628523548",
+            "comment": "Fix bug introduced where globby results were being cached"
+          },
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/cli",
+            "commit": "e38b72e356def2567dba0600f4b634f628523548",
+            "comment": "Reintroduce fix: include dotfiles in cache output glob matching"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 28 Mar 2026 00:04:36 GMT",
+      "version": "2.15.3",
+      "tag": "lage_v2.15.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/format-hrtime",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler-types",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          }
+        ],
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Revert glob caching changes due to potential regression"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "2.15.2",
+      "tag": "lage_v2.15.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache-github-actions",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Use version of workspace-tools published from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Use version of workspace-tools published from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update \"master\" references to \"main\""
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Use version of workspace-tools published from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/config",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/grapher",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Use version of workspace-tools published from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Use version of workspace-tools published from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Use version of workspace-tools published from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Publish workspace-tools from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Clarify comments and deprecate findWorkspacePath"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/rpc",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/worker-threads-pool",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "lage",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update \"master\" references to \"main\""
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update test dev dep names"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update test dev dep names"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update test dev dep names"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update test dev dep names"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/scheduler",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update test dev dep names"
+          }
+        ],
+        "minor": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/cli",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Start caching more subfolders with dots in the name, fixing issues internal repos were having with .vite and the lage cache"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Mar 2026 23:52:35 GMT",
       "version": "2.15.1",
       "tag": "lage_v2.15.1",

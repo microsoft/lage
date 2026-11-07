@@ -1,7 +1,8 @@
+import { describe, expect, it, jest } from "@jest/globals";
 import path from "path";
 import fs from "fs-extra";
 
-import { setupFixture } from "backfill-utils-test";
+import { setupFixture } from "@lage-run/test-utilities";
 import { createConfig } from "backfill-config";
 import { makeLogger } from "backfill-logger";
 
@@ -12,7 +13,7 @@ const logger = makeLogger("mute");
 describe("backfill", () => {
   it("with modified source files", async () => {
     //  Set up
-    const fixtureLocation = await setupFixture("basic");
+    const fixtureLocation = setupFixture("basic");
 
     const config = createConfig(logger, fixtureLocation);
     config.outputGlob = ["src/*"];
@@ -60,7 +61,7 @@ describe("backfill", () => {
   });
   it("with cache miss and then cache hit", async () => {
     //  Set up
-    const fixtureLocation = await setupFixture("basic");
+    const fixtureLocation = setupFixture("basic");
 
     const config = createConfig(logger, fixtureLocation);
 
@@ -102,9 +103,9 @@ describe("backfill", () => {
     ).toBe(outputContent);
   });
 
-  it("should set the proper custom cache provider name", async () => {
+  it("should set the custom cache plugin path as the provider name", async () => {
     //  Set up
-    const fixtureLocation = await setupFixture("custom-cache-provider");
+    const fixtureLocation = setupFixture("custom-cache-provider");
 
     const spyLogger = jest.spyOn(logger, "setCacheProvider");
 
@@ -121,7 +122,6 @@ describe("backfill", () => {
 
     // Assert
 
-    // See `packages/utils-test/__fixtures__/custom-cache-provider/backfill.config.js`'s provider.name
-    expect(spyLogger).toHaveBeenCalledWith("custom-provider");
+    expect(spyLogger).toHaveBeenCalledWith("./custom-provider.js");
   });
 });

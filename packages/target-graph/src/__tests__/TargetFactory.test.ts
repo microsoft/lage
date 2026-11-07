@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import path from "path";
 import type { PackageInfo } from "workspace-tools";
 import { TargetFactory, type TargetFactoryOptions } from "../TargetFactory.js";

@@ -1,14 +1,21 @@
+import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { Logger } from "@lage-run/logger";
-import fs, { type Stats } from "fs";
+import type { Stats } from "fs";
 import os from "os";
 import path from "path";
-import { simulateFileAccess } from "../commands/exec/simulateFileAccess.js";
 
 jest.mock("fs");
 
+// jest.mock() is not hoisted above imports when jest is imported from @jest/globals.
+// NOTE: Once lage uses ESM, this should be replaced with jest.unstable_mockModule() and await import(...).
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/consistent-type-imports
+const fs = require("fs") as typeof import("fs");
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/consistent-type-imports
+const { simulateFileAccess } = require("../commands/exec/simulateFileAccess.js") as typeof import("../commands/exec/simulateFileAccess.js");
+
 // Mock the logger
 const mockSilly = jest.fn();
-class MockLogger extends Logger {
+class MockLogger extends Logger<never, never> {
   public override silly = mockSilly;
   // do nothing
   public override log() {}
@@ -20,11 +27,11 @@ const mockLogger = new MockLogger();
 
 describe("simulateFileAccess", () => {
   let mockRoot: string;
-  let mockOpenSync: jest.SpyInstance;
-  let mockReadSync: jest.SpyInstance;
-  let mockCloseSync: jest.SpyInstance;
-  let mockReaddirSync: jest.SpyInstance;
-  let mockUtimesSync: jest.SpyInstance;
+  let mockOpenSync: jest.SpiedFunction<typeof fs.openSync>;
+  let mockReadSync: jest.SpiedFunction<typeof fs.readSync>;
+  let mockCloseSync: jest.SpiedFunction<typeof fs.closeSync>;
+  let mockReaddirSync: jest.SpiedFunction<(pth: string) => string[]>; // variadic signature problems
+  let mockUtimesSync: jest.SpiedFunction<typeof fs.utimesSync>;
 
   beforeEach(() => {
     mockRoot = path.join(os.tmpdir(), "lage-test-root");
@@ -32,7 +39,7 @@ describe("simulateFileAccess", () => {
     mockOpenSync = jest.spyOn(fs, "openSync").mockReturnValue(123);
     mockReadSync = jest.spyOn(fs, "readSync").mockImplementation(() => 1);
     mockCloseSync = jest.spyOn(fs, "closeSync").mockImplementation(() => {});
-    mockReaddirSync = jest.spyOn(fs, "readdirSync").mockImplementation(() => []);
+    mockReaddirSync = jest.spyOn(fs, "readdirSync").mockImplementation(() => []) as any;
     mockUtimesSync = jest.spyOn(fs, "utimesSync").mockImplementation(() => {});
     jest.spyOn(fs, "lstatSync").mockImplementation((inputPath: any) => {
       const strPath = Buffer.isBuffer(inputPath) ? inputPath.toString() : String(inputPath);
@@ -46,12 +53,12 @@ describe("simulateFileAccess", () => {
     jest.resetAllMocks();
   });
 
-  test("should probe files and their parent directories for inputs", async () => {
+  it("should probe files and their parent directories for inputs", () => {
     // Nested directory structure with a file at the deepest level
     const inputs = ["packages/a/src/components/Button.tsx", "packages/b/dist/index.js"];
     const outputs: string[] = [];
 
-    await simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
+    simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
     // Verify the files were probed
     expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/a/src/components/Button.tsx"), "r");
@@ -68,12 +75,12 @@ describe("simulateFileAccess", () => {
     expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "packages/b"));
   });
 
-  test("should handle deeply nested directories", async () => {
+  it("should handle deeply nested directories", () => {
     // Very deep nesting with a single file at the deepest level
     const inputs = ["level1/level2/level3/level4/level5/file.txt"];
     const outputs: string[] = [];
 
-    await simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
+    simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
     // Verify the file was probed
     expect(mockOpenSync).toHaveBeenCalledWith(path.join(mockRoot, "level1/level2/level3/level4/level5/file.txt"), "r");
@@ -86,11 +93,11 @@ describe("simulateFileAccess", () => {
     expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "level1"));
   });
 
-  test("should update timestamps for output files and their directories", async () => {
+  it("should update timestamps for output files and their directories", () => {
     const inputs: string[] = [];
     const outputs = ["dist/bundles/main.js", "dist/types/index.d.ts"];
 
-    await simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
+    simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
     // Verify timestamps were updated for output files
     expect(mockUtimesSync).toHaveBeenCalledWith(path.join(mockRoot, "dist/bundles/main.js"), expect.any(Date), expect.any(Date));
@@ -102,11 +109,11 @@ describe("simulateFileAccess", () => {
     expect(mockUtimesSync).toHaveBeenCalledWith(path.join(mockRoot, "dist"), expect.any(Date), expect.any(Date));
   });
 
-  test("should handle mixed inputs and outputs with overlapping directories", async () => {
+  it("should handle mixed inputs and outputs with overlapping directories", () => {
     const inputs = ["src/components/Button.tsx", "src/utils/helpers.ts"];
     const outputs = ["dist/components/Button.js", "dist/utils/helpers.js"];
 
-    await simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
+    simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
     // Verify both input and output files were handled correctly
     // Input files should be opened and closed
@@ -128,7 +135,7 @@ describe("simulateFileAccess", () => {
     expect(mockUtimesSync).toHaveBeenCalledWith(path.join(mockRoot, "dist"), expect.any(Date), expect.any(Date));
   });
 
-  test("should handle errors during file operations", async () => {
+  it("should handle errors during file operations", () => {
     // Restore original mocks to allow error simulation
     mockOpenSync.mockRestore();
     mockReadSync.mockRestore();
@@ -151,19 +158,19 @@ describe("simulateFileAccess", () => {
     const outputs: string[] = [];
 
     // Function should not throw even when file operations fail
-    await expect(simulateFileAccess(mockLogger, mockRoot, inputs, outputs)).resolves.not.toThrow();
+    simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
     // Verify that other operations still proceed despite errors
     expect(fs.openSync).toHaveBeenCalledWith(path.join(mockRoot, "src/components/Button.tsx"), "r");
     expect(fs.openSync).toHaveBeenCalledWith(failingPath, "r");
   });
 
-  test("should handle empty directories with only a single file", async () => {
+  it("should handle empty directories with only a single file", () => {
     // Create a test case where the input list contains only directories and a single file
     const inputs = ["empty-dir-1/", "empty-dir-2/", "empty-dir-3/single-file.txt"];
     const outputs: string[] = [];
 
-    await simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
+    simulateFileAccess(mockLogger, mockRoot, inputs, outputs);
 
     // Verify all directories were enumerated using readdirSync
     expect(mockReaddirSync).toHaveBeenCalledWith(path.join(mockRoot, "empty-dir-1/"));

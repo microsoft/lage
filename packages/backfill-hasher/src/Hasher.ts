@@ -83,7 +83,7 @@ export class Hasher implements IHasher {
     while (queue.length > 0) {
       const nextPackageRoot = queue.shift()!;
 
-      const packageHash = await getPackageHash(
+      const packageHash = getPackageHash(
         nextPackageRoot,
         repoInfo,
         this.logger

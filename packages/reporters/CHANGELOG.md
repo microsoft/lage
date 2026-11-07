@@ -1,8 +1,122 @@
 # Change Log - @lage-run/reporters
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.9.1
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Update dependency @ms-cloudpack/task-reporter to v0.21.7 (renovate@whitesourcesoftware.com)
+- Bump @lage-run/scheduler-types to v0.4.14
+- Bump @lage-run/target-graph to v0.15.13
+
+## 1.9.0
+
+Tue, 18 Aug 2026 02:26:59 GMT
+
+### Minor changes
+
+- Remove unused `ChromeTraceEventsReporter` `concurrency` option that was not used (elcraig@microsoft.com)
+
+## 1.8.6
+
+Tue, 11 Aug 2026 09:42:15 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.4.13
+- Bump @lage-run/target-graph to v0.15.12
+
+## 1.8.5
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Update dependency @ms-cloudpack/task-reporter to v0.21.6 (email not defined)
+- Update dependency @ms-cloudpack/task-reporter to v0.21.5 (renovate@whitesourcesoftware.com)
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump @lage-run/logger to v1.5.1
+- Bump @lage-run/scheduler-types to v0.4.12
+- Bump @lage-run/target-graph to v0.15.11
+
+## 1.8.4
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.4.11
+- Bump @lage-run/target-graph to v0.15.10
+
+## 1.8.3
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.4.10
+- Bump @lage-run/target-graph to v0.15.9
+
+## 1.8.2
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.4.9
+- Bump @lage-run/target-graph to v0.15.8
+
+## 1.8.1
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump @lage-run/scheduler-types to v0.4.8
+- Bump @lage-run/target-graph to v0.15.7
+
+## 1.8.0
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Minor changes
+
+- Add `TargetReporter` and `TargetLogger` helper types, and make all reporters implement that. Update the reporters' method signatures and internal validation to be strict about data types. Add `TargetData` type rolling up all observed target-related logs, and remove `TargetMessageData` type which was never actually used. (elcraig@microsoft.com)
+
+### Patches
+
+- Reporters should delete log entries from memory when no longer needed (elcraig@microsoft.com)
+
+## 1.7.1
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 1.7.0
+
+Mon, 06 Apr 2026 21:27:03 GMT
+
+### Minor changes
+
+- Add testing options for BasicReporter and ProgressReporter. Fix ProgressReporter aborted tasks counts and add cleanup. (elcraig@microsoft.com)
+- Update `@ms-cloudpack/task-reporter`, which should significantly improve `ProgressReporter` performance. Add `formatHrtime` helper and reduce formatting repetition across reporters. (elcraig@microsoft.com)
+
+## 1.6.0
+
+Thu, 02 Apr 2026 03:54:25 GMT
+
+### Minor changes
+
+- Merge @lage-run/format-hrtime into @lage-run/reporters; re-export formatDuration, hrToSeconds, hrtimeDiff (email not defined)
+- Add logMemory option to certain reporters (elcraig@microsoft.com)
 
 ## 1.5.0
 

@@ -1,0 +1,2356 @@
+{
+  "name": "workspace-tools",
+  "entries": [
+    {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "0.42.3",
+      "tag": "workspace-tools_v0.42.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "fa3d0abd108ef9d00643642ca4cf1b89e8f39220",
+            "comment": "Add option to pass pre-calculated `packageInfos` to `getPackagesByFiles`"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "26b070319157bc731aa483bcaa22288d77688d4a",
+            "comment": "Avoid redundant existence checks when reading package metadata successfully."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "fa3d0abd108ef9d00643642ca4cf1b89e8f39220",
+            "comment": "Add getWorkingTreeChanges helper"
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "a9cd1a2c6e2852ac1f35ac5828ac54ac70321116",
+            "comment": "Update dependency js-yaml to v4.3.2 [SECURITY]"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Update docs"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Aug 2026 09:42:15 GMT",
+      "version": "0.42.2",
+      "tag": "workspace-tools_v0.42.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "25f1b8686c1f4ebf4ec372703c4b7a435522de3a",
+            "comment": "Add bun as a supported workspace manager in workspace-tools, including manager detection and workspace fixture/test coverage."
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "25f1b8686c1f4ebf4ec372703c4b7a435522de3a",
+            "comment": "Update dependency js-yaml to v4.3.1 [SECURITY]"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "0.42.1",
+      "tag": "workspace-tools_v0.42.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ansteg@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Fix `parseLockFile` throwing on pnpm \"env lockfile\" `pnpm-lock.yaml` files (a 2-document YAML format pnpm writes when `configDependencies` and/or `packageManagerDependencies` are recorded). Only the main (last) document is now parsed; the env document is discarded so its entries never leak into the parsed dependency graph."
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependency js-yaml to v4.3.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Jul 2026 22:12:55 GMT",
+      "version": "0.42.0",
+      "tag": "workspace-tools_v0.42.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "ansteg@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "ede5be1674282d60c1e03804de3c61f77df45e69",
+            "comment": "Add support for pnpm lockfileVersion 6.0 (pnpm@8) and 9.0 (pnpm@9+) to parseLockFile"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 20:21:25 GMT",
+      "version": "0.41.10",
+      "tag": "workspace-tools_v0.41.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "6af70fb1c8228fae625c6c2a864222631916a9b4",
+            "comment": "Update `resolveRemoteAndBranch` to return `.remoteBranch` instead of `.branch` for consistency"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "0.41.9",
+      "tag": "workspace-tools_v0.41.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "b7626837ab7cb0772bfa33b17546e98b14da336a",
+            "comment": "Add `resolveRemoteAndBranch` helper, and export `getRemotes`"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 12 Jun 2026 20:31:24 GMT",
+      "version": "0.41.8",
+      "tag": "workspace-tools_v0.41.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "ce44a8e432bf8b251bf65265f9dbdf47073e4994",
+            "comment": "Update dependency js-yaml to v4.2.0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "0.41.7",
+      "tag": "workspace-tools_v0.41.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Move git helpers to separate files"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add `resolveRemoteBranch` which parses the remote from the provided branch if present, or gets the remote (and branch if not provided) from `getDefaultRemoteBranch`. Improve efficiency and reduce git operations for various remote-related helpers."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 25 Apr 2026 08:04:39 GMT",
+      "version": "0.41.6",
+      "tag": "workspace-tools_v0.41.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "7545a88821578ba3f270aa779e6f89d8a2180053",
+            "comment": "Rename `getFileFromVersion` to `getFileFromRef`. Also add `getCatalogVersion` option `allowNotFound`."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 25 Apr 2026 03:32:41 GMT",
+      "version": "0.41.5",
+      "tag": "workspace-tools_v0.41.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "4e3d6c6a252b7d00135e915e7669697a5c2eb4a0",
+            "comment": "Add getFileFromVersion, getCatalogFilePath, and parseCatalogContent utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Apr 2026 03:39:42 GMT",
+      "version": "0.41.3",
+      "tag": "workspace-tools_v0.41.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 06 Apr 2026 21:27:03 GMT",
+      "version": "0.41.2",
+      "tag": "workspace-tools_v0.41.2",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "update eslint config"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Apr 2026 03:54:25 GMT",
+      "version": "0.41.2",
+      "tag": "workspace-tools_v0.41.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Upgrade typescript-eslint to v8 and fix lint issues"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "0.41.1",
+      "tag": "workspace-tools_v0.41.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Publish workspace-tools from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Clarify comments and deprecate findWorkspacePath"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 03 Feb 2026 19:35:32 GMT",
+      "version": "0.41.0",
+      "tag": "workspace-tools_v0.41.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "f43fd10560f449e8995fba169fe5a702ebf6909a",
+            "comment": "Cleanup and docs for graph APIs"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "f43fd10560f449e8995fba169fe5a702ebf6909a",
+            "comment": "BREAKING: Various breaking changes to workspace package utilities. See readme for details."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 22 Jan 2026 02:01:03 GMT",
+      "version": "0.40.4",
+      "tag": "workspace-tools_v0.40.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "416b3532d8aab9f3ee041e57d431bb20187fda0c",
+            "comment": "Deprecate `getWorkspaces` and rename to `getWorkspaceInfos` (same with async version)"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 13 Jan 2026 00:02:46 GMT",
+      "version": "0.40.3",
+      "tag": "workspace-tools_v0.40.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "c8d0877d22ea6ca73663b9fb46d0adb02110645b",
+            "comment": "Clarify \"workspace\" terminology"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 18 Dec 2025 23:51:04 GMT",
+      "version": "0.40.2",
+      "tag": "workspace-tools_v0.40.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "f26160661af50d3519bf1bcbd42da19c21547b39",
+            "comment": "Update handling of \"catalog:\" vs \"catalog:default\" and add catalogsToYaml utility"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Nov 2025 01:51:29 GMT",
+      "version": "0.40.0",
+      "tag": "workspace-tools_v0.40.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "3a255572411b60973cfd6836b3327d90f2213f7d",
+            "comment": "Convert most git helpers to use object param signatures with customizable error handling. (Old signatures are deprecated but still available.)"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "3a255572411b60973cfd6836b3327d90f2213f7d",
+            "comment": "Clarify getChangedPackages behavior"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 14 Nov 2025 22:14:21 GMT",
+      "version": "0.38.6",
+      "tag": "workspace-tools_v0.38.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "a9855dad2d67a2790653d72c49d9419d53c9a59d",
+            "comment": "Rename `readPackageInfo` to `getPackageInfo`"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "a9855dad2d67a2790653d72c49d9419d53c9a59d",
+            "comment": "Error on recursive catalog versions"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 14 Nov 2025 21:48:11 GMT",
+      "version": "0.38.5",
+      "tag": "workspace-tools_v0.38.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "b525ad235d26cd4a48675d544759fc10d9452e43",
+            "comment": "Add missing doc comments"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "b525ad235d26cd4a48675d544759fc10d9452e43",
+            "comment": "Add catalog helpers `getCatalogs` and `getCatalogVersion`"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "b525ad235d26cd4a48675d544759fc10d9452e43",
+            "comment": "Replace confusing `WorkspaceInfo` array type with `WorkspaceInfos` type, and add `WorkspacePackageInfo` type for array entries. Deprecate `getWorkspaceRoot` in favor of `getWorkspaceManagerRoot`. Clarify doc comments regarding \"workspace\" terminology. Introduce `readPackageInfo` helper for reading package.json files."
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "b525ad235d26cd4a48675d544759fc10d9452e43",
+            "comment": "Update tests"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "b525ad235d26cd4a48675d544759fc10d9452e43",
+            "comment": "Use pretty tsc output"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 17 Apr 2025 02:50:51 GMT",
+      "version": "0.38.4",
+      "tag": "workspace-tools_v0.38.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "a8a0d4470f39138d0aea114394fb0b5e2ce5a162",
+            "comment": "Update `git-url-parse` to v16, and modify `getRepositoryName` URL checks. There's a slight chance this could change behavior for less-common URL formats."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "a8a0d4470f39138d0aea114394fb0b5e2ce5a162",
+            "comment": "Update `git()` to always set `shell: false` and validate that the `--upload-pack` option is not provided"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 14 Apr 2025 22:35:08 GMT",
+      "version": "0.38.3",
+      "tag": "workspace-tools_v0.38.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "3ce65136f3ec0f9db7ad2cab87be80327b67b1b8",
+            "comment": "Export getPackageDependencies"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 24 Mar 2025 21:48:16 GMT",
+      "version": "0.38.2",
+      "tag": "workspace-tools_v0.38.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "rsiemens@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "fb38907ad9d71e51346ffa4b5e5b88312251a05a",
+            "comment": "Limit git rev-list to one result"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 13 Nov 2024 08:01:48 GMT",
+      "version": "0.38.1",
+      "tag": "workspace-tools_v0.38.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "b5142309bdebb71b80d6633840580c69126d6e1f",
+            "comment": "processGitOutput should throw when stderr is defined"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 02 Nov 2024 08:01:50 GMT",
+      "version": "0.38.0",
+      "tag": "workspace-tools_v0.38.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "8d904666766d7fa961b61896592cc72c352e907e",
+            "comment": "adding optional dependency filtering"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 19 Oct 2024 08:01:45 GMT",
+      "version": "0.37.0",
+      "tag": "workspace-tools_v0.37.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "6024b0684238faaa0d8566d294050b367d0407c7",
+            "comment": "fixing graph generation to skip non-internal packages based on the protocol"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 11 Dec 2023 23:58:13 GMT",
+      "version": "0.36.4",
+      "tag": "workspace-tools_v0.36.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "stchur@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "d1b46955bb5b8e924d5b0d48c7f453f298a9a388",
+            "comment": "Support case-insensitive package name match"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Oct 2023 22:14:54 GMT",
+      "version": "0.36.3",
+      "tag": "workspace-tools_v0.36.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "d600308ffb4bab213e2d1716fc8253f827023977",
+            "comment": "Update readme"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Oct 2023 06:44:38 GMT",
+      "version": "0.36.2",
+      "tag": "workspace-tools_v0.36.2",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "4a42b4e5a83f4260a10d7c592a2f0bd674874b2d",
+            "comment": "Rename monorepo and scripts package to use `@ws-tools` scope"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "f77ed5b628d2b22faa4eee58cfa374a83fd35109",
+            "comment": "Go back to transpiling to ES2020"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "628a3a440ab5c5221397b1e21d090f7dcb86ef4a",
+            "comment": "Use trimEnd instead of trimRight"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Oct 2023 05:45:05 GMT",
+      "version": "0.36.1",
+      "tag": "workspace-tools_v0.36.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "12315421123165908ef94844b88c08e529850d90",
+            "comment": "Go back to transpiling to ES2021"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Oct 2023 05:00:25 GMT",
+      "version": "0.36.0",
+      "tag": "workspace-tools_v0.36.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "e21de7290a2d75c0056f7b93df9120e6413751eb",
+            "comment": "Update to TypeScript to 5.2 and transpile to ES2022 syntax (Node 16+). Dependencies requiring Node 16 may also be introduced after this point."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Oct 2023 04:16:22 GMT",
+      "version": "0.35.3",
+      "tag": "workspace-tools_v0.35.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "3c2f57e7297c08a98c1cd00d8383aa94591e2496",
+            "comment": "getRecentCommitMessages: filter out empty lines"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 05 Sep 2023 21:12:43 GMT",
+      "version": "0.35.2",
+      "tag": "workspace-tools_v0.35.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "91e3c8711a34c140c78cb13ed4e30a43b8cf8e76",
+            "comment": "searchUp: handle relative cwd"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Sep 2023 08:02:04 GMT",
+      "version": "0.35.1",
+      "tag": "workspace-tools_v0.35.1",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "d72c67ada32cc7580a03ddb6d92aa343c090dfc1",
+            "comment": "Unpin devDependencies"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Sep 2023 01:20:47 GMT",
+      "tag": "workspace-tools_v0.35.1",
+      "version": "0.35.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "dzearing@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "c73150422bbe64332daa3876b06ed81fdd363f36",
+            "comment": "Adding fast-glob to deps list."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 15 Jul 2023 08:02:42 GMT",
+      "tag": "workspace-tools_v0.35.0",
+      "version": "0.35.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "536eacac8831d04f801446280daf347128be37b6",
+            "comment": "adding support for async getWorspaces"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 17 May 2023 01:25:45 GMT",
+      "tag": "workspace-tools_v0.34.6",
+      "version": "0.34.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "9311481fb7acc75402900473a38bd6dcc169014d",
+            "comment": "un-deprecate getTransitive functions"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "a14af9fe6d1081712a1f84483a38185fc7603cc8",
+            "comment": "Sync version after failed publish"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 09 May 2023 21:21:56 GMT",
+      "tag": "workspace-tools_v0.34.2",
+      "version": "0.34.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "6df9a470c872ab5c4390508298ef478f58c2da49",
+            "comment": "Add full spawnSync result to git helper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 04 May 2023 18:32:10 GMT",
+      "tag": "workspace-tools_v0.34.1",
+      "version": "0.34.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "a45f8770929105c50dc1a3ba791a5bd7df51f2f6",
+            "comment": "Add `setCachingEnabled` API so caching can be disabled for tests"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 13 Apr 2023 20:39:59 GMT",
+      "tag": "workspace-tools_v0.34.0",
+      "version": "0.34.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "43b7ce01968702903163327b0cad889a0d3d84d3",
+            "comment": "Fix `getPackageInfos` to only read package.jsons once, and `getAllPackageJsonFiles` (which only returns paths) to not read the files at all. There's also a new API `getWorkspacePackagePaths` which allows consumers to make the same optimization."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 13 Apr 2023 08:01:43 GMT",
+      "tag": "workspace-tools_v0.33.0",
+      "version": "0.33.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "2826670b707d724b5bddbdf67c06e307c87620d5",
+            "comment": "Improve workspace manager utility naming. None of the modified methods/types are exported from the root, but if you were deep importing them, the changes are as follows:\n  - Change `getWorkspaceImplementationAndLockFile` to `getWorkspaceManagerAndRoot`, with return type `WorkspaceManagerAndRoot` (replacing `ImplementationAndLockFile`) to be more relevant for actual usage.\n  - Remove `WorkspaceImplementations` type (use the identical existing type `WorkspaceManager` instead)"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "2826670b707d724b5bddbdf67c06e307c87620d5",
+            "comment": "Rename `_resetCache` to `_resetPackageJsonFilesCache` to reflect what it does"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "bdfbb181a70336b2c53aa443edcf91c4ae858185",
+            "comment": "Add optional verbose logging for getWorkspaces helpers"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "18d27beb3d030f2d482b1cd9bd2031fc9b1149d3",
+            "comment": "Add more doc comments for getWorkspaces and related"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "b697288732789f631f51cbdc85fb48e41b3b0a76",
+            "comment": "Simplify workspace root utilities, and deprecate individual manager `get___WorkspaceRoot` utilities (use `getWorkspaceRoot` instead). This includes moving, deleting, or renaming certain private methods, but has no public-facing changes."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "1dc1125ea5bd87a7496c8b7a1d1d317a5ec74dc1",
+            "comment": "Minor fixes to new async workspace/package methods"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 06 Apr 2023 22:06:24 GMT",
+      "tag": "workspace-tools_v0.32.0",
+      "version": "0.32.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "2ce8ddc9819094b14fd1cadf7a5b92af3f61d626",
+            "comment": "making the dep graph generation to be much faster"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 06 Apr 2023 19:44:34 GMT",
+      "tag": "workspace-tools_v0.31.0",
+      "version": "0.31.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "f8b5b92e46c6026faf01484a137eaa89cc223e5b",
+            "comment": "adding getPackageInfosAsync() to make that faster"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 23 Mar 2023 08:01:50 GMT",
+      "tag": "workspace-tools_v0.30.0",
+      "version": "0.30.0",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "86a77ecd132cc97ac41263b862f9056d317c2816",
+            "comment": "Add API Extractor for better visibility of API changes"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Feb 2023 01:42:19 GMT",
+      "tag": "workspace-tools_v0.30.0",
+      "version": "0.30.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "8f67b8f2138e3ace2412da07071b5ee58c0ea304",
+            "comment": "Adds support for yarn 2+ (berry)"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 24 Nov 2022 08:01:54 GMT",
+      "tag": "workspace-tools_v0.29.1",
+      "version": "0.29.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "15cab8e9dee71659c4dd7c2489769a17792ae06a",
+            "comment": "[fixtures] Update devDependency prettier"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 17 Nov 2022 01:23:58 GMT",
+      "tag": "workspace-tools_v0.29.1",
+      "version": "0.29.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "58266b03847d13aff5678d54a2302042281aedc3",
+            "comment": "getRecentCommitMessages: return empty array if no commits"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 29 Oct 2022 16:33:47 GMT",
+      "tag": "workspace-tools_v0.29.0",
+      "version": "0.29.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "workspace-tools",
+            "commit": "02e5f076fc241c1ea62bde33610fb932e0ff20e4",
+            "comment": "added support for non-workspaces in getPackageInfos"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 20 Sep 2022 18:54:59 GMT",
+      "tag": "workspace-tools_v0.28.1",
+      "version": "0.28.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "b7e08492aaa4241833469d77c2df24ecfa9651a2",
+            "comment": "Add GIT_DEBUG environment variable"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 20 Sep 2022 08:01:43 GMT",
+      "tag": "workspace-tools_v0.28.0",
+      "version": "0.28.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "erenmurat@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "3a21c5ee55d349e17dc1bbd128e638eab6fb1de1",
+            "comment": "Expose createDependencyMap"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 17 Sep 2022 08:01:36 GMT",
+      "tag": "workspace-tools_v0.27.0",
+      "version": "0.27.0",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "d6124fc7350f870e5c44819ba4e038ac089264df",
+            "comment": "Move fixture files"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 23:24:41 GMT",
+      "tag": "workspace-tools_v0.27.0",
+      "version": "0.27.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "5c182740a1fb88630c8df788070bf222dce25764",
+            "comment": "BREAKING CHANGE: `searchUp` now returns the full path to the item, not its parent directory. This only affects consumers that are directly using `searchUp`."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Sep 2022 23:00:36 GMT",
+      "tag": "workspace-tools_v0.26.6",
+      "version": "0.26.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "6580711757c12c6accecb105808d2570418c99ab",
+            "comment": "Replace read-yaml-file with js-yaml"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 15 Sep 2022 23:30:21 GMT",
+      "tag": "workspace-tools_v0.26.5",
+      "version": "0.26.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "2b48bb4ecf12f796804d47b65639795a1ec280c7",
+            "comment": "Update dependency git-url-parse to v13"
+          }
+        ],
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "9faa8f02eaffb072df4100834b0be54dc01e9f91",
+            "comment": "Update jest monorepo to v29"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 15 Sep 2022 08:01:32 GMT",
+      "tag": "workspace-tools_v0.26.4",
+      "version": "0.26.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "848174c2221da9c5b707835bd04e42c70a8a4537",
+            "comment": "Exclude test helpers from published package"
+          }
+        ],
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "40b1a517db95334fc0399c6a19e7672fecbbc653",
+            "comment": "Update devDependency @types/jest to v28.1.8"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "baaf3cadd1c6a4b4800636888e45e75dc403568d",
+            "comment": "Update devDependency @types/node to v14.18.29"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 16 Aug 2022 08:01:18 GMT",
+      "tag": "workspace-tools_v0.26.3",
+      "version": "0.26.3",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "7a3fcf0a603c07969990955adae47c2d78a25258",
+            "comment": "Update devDependency @types/node to v14.18.24"
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "f6db3147dffb607f03bf601bc738f80367ab4e70",
+            "comment": "Update devDependency @types/jest to v28.1.7"
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "3a5e63573913c0d4c8d89c1509e4fd08dc7cb41f",
+            "comment": "Lock file maintenance"
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "00e6b048ef70209ed465c5f69c4836d137a250c7",
+            "comment": "Update devDependency ts-jest to v28.0.8"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 12 Aug 2022 05:32:10 GMT",
+      "tag": "workspace-tools_v0.26.3",
+      "version": "0.26.3",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "addac47344c01ba294f18bee28735c7133a00e82",
+            "comment": "Update devDependency beachball to v2.30.0"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "8fed2362e2531c996d800a8c2aba02ec97508aa2",
+            "comment": "Fix listAllTrackedFiles if there are no tracked files'"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 12 Aug 2022 01:57:26 GMT",
+      "tag": "workspace-tools_v0.26.2",
+      "version": "0.26.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "35fa36c25d7b1b2ef2de4d6318fa69af59b620ce",
+            "comment": "Add cleanup functions for addGitObserver"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 08 Aug 2022 22:44:02 GMT",
+      "tag": "workspace-tools_v0.26.1",
+      "version": "0.26.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "fa0d932a0a0ae63ebf16357b9a5ca42412405e95",
+            "comment": "Add missing type exports"
+          }
+        ],
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "05c206e967548245798da2f8b41ded7415e757e9",
+            "comment": "Update devDependency beachball to v2.26.1"
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "9349737ca68eb1a10bc56c19911a08027fce9f48",
+            "comment": "Update devDependency gh-pages to v4"
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "dbd019cf7c1cafb1b9a503461cc49acce936278f",
+            "comment": "Lock file maintenance"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 04 Aug 2022 21:47:46 GMT",
+      "tag": "workspace-tools_v0.26.0",
+      "version": "0.26.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "e74753a50e613d41f62c1e917ceafc2185791e2a",
+            "comment": "Use ES2019 output (compatible with Node 14)"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "286b02b981a5bc532560ee17433ef0501f9414ea",
+            "comment": "Use Node 14 in repo and types"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "5cba374fac27ef530d5f80530d3b925577f7e193",
+            "comment": "Lock file maintenance"
+          }
+        ],
+        "patch": [
+          {
+            "author": "boabdelm@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "5577a58d537fe41ca2dd8f74ea243da700ca0840",
+            "comment": "Gracefully handle not having a package.json at git root"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 04 Aug 2022 08:01:48 GMT",
+      "tag": "workspace-tools_v0.25.4",
+      "version": "0.25.4",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "32e204ebc47d7e619b6b16e6b34873e6b1c7a96f",
+            "comment": "Pin devDependency @types/micromatch to 4.0.2"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "95ad5f346a1ce0c6e4c1b2d5bb173ceeac136aa2",
+            "comment": "Switch from multimatch to micromatch"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 03 Aug 2022 08:01:34 GMT",
+      "tag": "workspace-tools_v0.25.3",
+      "version": "0.25.3",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "c51bca9b331ae106b22ed260b5c045936dd3b723",
+            "comment": "Update devDependency gh-pages to v4"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "ae076192e9010c32fc90a7cb2a6d1488d382cec6",
+            "comment": "Simplify createPackageGraph and getPackageDependencies"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "f81a7c1f61ec402febbc1cc1927343dadefbcdd5",
+            "comment": "Update find-up to v5"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 02 Aug 2022 23:03:14 GMT",
+      "tag": "workspace-tools_v0.25.2",
+      "version": "0.25.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "476b210fe32e5ebfc5ab6ac0fc3c209e17767f0b",
+            "comment": "Add fs-extra to devDependencies and remove non-dev usage"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 Jul 2022 05:21:19 GMT",
+      "tag": "workspace-tools_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "not available",
+            "comment": "Update devDependency @types/tmp to v0.2.3"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 Jul 2022 05:20:52 GMT",
+      "tag": "workspace-tools_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "b1541150f96f183fdc2ec1c07eba08316494ad38",
+            "comment": "Update devDependency @types/tmp to v0.2.3"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "not available",
+            "comment": "Update jest monorepo to v28"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 Jul 2022 05:20:33 GMT",
+      "tag": "workspace-tools_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "ceb72cdb72daff7d8e303ba61fec567ae880a35e",
+            "comment": "Update jest monorepo to v28"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 Jul 2022 03:54:05 GMT",
+      "tag": "workspace-tools_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "not available",
+            "comment": "Update devDependency @types/yarnpkg__lockfile to v1.1.5"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 Jul 2022 03:53:33 GMT",
+      "tag": "workspace-tools_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "215d005bda9685bfd53131078e13aa00fb27f291",
+            "comment": "Update devDependency @types/yarnpkg__lockfile to v1.1.5"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 Jul 2022 02:20:08 GMT",
+      "tag": "workspace-tools_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "commit": "beb806b17f64ce3d5babf13621e6e3b63bd16f90",
+            "comment": "Update devDependency beachball to v2.26.0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 Jul 2022 02:16:55 GMT",
+      "tag": "workspace-tools_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "comment": "Update devDependency @types/jest to v25.2.3",
+            "commit": "a4ea3510cab1d33efa55e2644cec7e0d543a6ef2"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 Jul 2022 01:37:45 GMT",
+      "tag": "workspace-tools_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "comment": "Update devDependency @types/jju to v1.4.2",
+            "commit": "f5b7af07f4bcbecb5db1d47589ac7e66f4bae21f"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 Jul 2022 01:37:23 GMT",
+      "tag": "workspace-tools_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "none": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "workspace-tools",
+            "comment": "Update devDependency @types/jju to v1.4.2",
+            "commit": "763800ee9cdb0f39e9748e601cd6fdc8997de64b"
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "comment": "Update devDependency @types/git-url-parse to v9.0.1",
+            "commit": "763800ee9cdb0f39e9748e601cd6fdc8997de64b"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 Jul 2022 01:36:52 GMT",
+      "tag": "workspace-tools_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "comment": "Update devDependency @types/git-url-parse to v9.0.1",
+            "commit": "51be1586f27bd2029028e9c2f035d809f3ce07cb"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 Jul 2022 01:31:27 GMT",
+      "tag": "workspace-tools_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "comment": "Pin devDependencies",
+            "commit": "fd4e4d468c26f7ea6003b590cdabf0eac1acec9a"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Jul 2022 21:21:48 GMT",
+      "tag": "workspace-tools_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "dannyfritz@gmail.com",
+            "package": "workspace-tools",
+            "comment": "Use git ls-files for checkUntrackedFiles",
+            "commit": "f19c194e3636c08c2c3367daff9510efc07559da"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Jul 2022 21:11:11 GMT",
+      "tag": "workspace-tools_v0.25.0",
+      "version": "0.25.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "dlannoye@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "BREAKING CHANGE: Improve detection of git root and throw if not found",
+            "commit": "5a18b0d43f1a434b8ee7b03f7b5e273e2aee8330"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Jul 2022 22:31:31 GMT",
+      "tag": "workspace-tools_v0.24.0",
+      "version": "0.24.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "Make getDefaultRemote properly handle more combinations of URL formats, and add more logging to encourage defining the `repository` property in package.json for more accurate detection",
+            "commit": "4bffdc45ceb49ca49f28ebc788e5c2cbe71e3a9f"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 15 Jul 2022 07:09:50 GMT",
+      "tag": "workspace-tools_v0.23.3",
+      "version": "0.23.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "workspace-tools",
+            "comment": "change the api to be restored to have getDependentMap (actually gets  dependencies)",
+            "commit": "4228af963584e87f6ba028f6e66abf7c6ae30700"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 15 Jul 2022 05:05:48 GMT",
+      "tag": "workspace-tools_v0.23.2",
+      "version": "0.23.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "workspace-tools",
+            "comment": "fixing the dependent map results",
+            "commit": "6dff4d2ba6fe88ab0a0f60c7c62410393e4596ee"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 15 Jul 2022 03:59:39 GMT",
+      "tag": "workspace-tools_v0.23.1",
+      "version": "0.23.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "workspace-tools",
+            "comment": "fixing the missing getDependentMap API that lage uses",
+            "commit": "c37668d313891a5a0acd25f81a8b2476437335e1"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 14 Jul 2022 17:22:35 GMT",
+      "tag": "workspace-tools_v0.23.0",
+      "version": "0.23.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "refactoring and cleaning up the createPackageGraph API to make it not repeat edges",
+            "commit": "4cd2ebcdc61bdd3c1bce6d1e09bedd13e739edd5"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 13 Jul 2022 20:42:07 GMT",
+      "tag": "workspace-tools_v0.22.0",
+      "version": "0.22.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "Update git-url-parse (includes [possible breaking changes](https://github.com/IonicaBizau/git-url-parse/releases/tag/12.0.0))",
+            "commit": "beddff28642eecabce2c64fd387bcc922ed7b941"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "Remove unneeded files from published package",
+            "commit": "beddff28642eecabce2c64fd387bcc922ed7b941"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 Jul 2022 14:56:01 GMT",
+      "tag": "workspace-tools_v0.21.0",
+      "version": "0.21.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "ken@gizzar.com",
+            "package": "workspace-tools",
+            "comment": "adds a package graph implementation",
+            "commit": "28ba85b087e3e3bb8715ea637563793fbb97b069"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 23 Jun 2022 20:24:15 GMT",
+      "tag": "workspace-tools_v0.20.0",
+      "version": "0.20.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "BREAKING: Remove getChangePath because it's specific to beachball and should be defined there",
+            "commit": "bbfc44143e2f2bc0ca17bf5c351bab52fe8c9025"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 23 Jun 2022 19:53:03 GMT",
+      "tag": "workspace-tools_v0.19.4",
+      "version": "0.19.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "Add findProjectRoot path helper",
+            "commit": "5ad6577811656ad23cf567f0996cf9b70d8c23a0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 23 Jun 2022 19:10:04 GMT",
+      "tag": "workspace-tools_v0.19.3",
+      "version": "0.19.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "Move typedoc to devDependencies",
+            "commit": "8dbb9af66b8e1564734861d23849957b22dbe870"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 23 Jun 2022 18:52:05 GMT",
+      "tag": "workspace-tools_v0.19.2",
+      "version": "0.19.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "Allow full spawnSync options for git methods",
+            "commit": "cf0a0d77be58988e411d0349c8a009642770696e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 03 Jun 2022 16:57:07 GMT",
+      "tag": "workspace-tools_v0.19.1",
+      "version": "0.19.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "nickykalu@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "properly split git status --short output",
+            "commit": "81c4609bc4eea797637b6e3e977f0cdfd8849d54"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 05 May 2022 19:40:25 GMT",
+      "tag": "workspace-tools_v0.19.0",
+      "version": "0.19.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "adds a new API to allow retrieving a list of packages affected by files and also by git ref range",
+            "commit": "8d3b9dd8a8e1831b56a5f1606491be403debcbed"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Apr 2022 16:49:02 GMT",
+      "tag": "workspace-tools_v0.18.4",
+      "version": "0.18.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "fixes a potential security issue where fetch --upload-pack can allow for command injection",
+            "commit": "9bc7e65ce497f87e1f363fd47b8f802f3d3cd978"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 09 Apr 2022 15:51:14 GMT",
+      "tag": "workspace-tools_v0.18.3",
+      "version": "0.18.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "4123478+tido64@users.noreply.github.com",
+            "package": "workspace-tools",
+            "comment": "Fix Rush not being detected correctly. When Rush is set up to use Yarn or pnpm, the lock file for the latter are found first.",
+            "commit": "b99f6f82a6f22da37b67d74b519a204abd631c87"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 07 Jan 2022 18:15:36 GMT",
+      "tag": "workspace-tools_v0.18.2",
+      "version": "0.18.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "riacarmin@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "Makes the output of parseLockFile for npm v7+ lock file compatible with queryLockFile.",
+            "commit": "caf984c0c569579a316c4cec9808a63a744abb09"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 07 Jan 2022 17:07:22 GMT",
+      "tag": "workspace-tools_v0.18.1",
+      "version": "0.18.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "bump ts to 4.5 and fixed typing issues with caught errors as unknown",
+            "commit": "253384a2c94b5bf41189c6a2b4e5d4478daeaa5e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 07 Jan 2022 00:04:32 GMT",
+      "tag": "workspace-tools_v0.18.0",
+      "version": "0.18.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "kchau@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "speed up workspace-tools - reducing weight and adding caches - lazy load pkg mgr helpers",
+            "commit": "6105a8eb81e4972b9ffbdd18669a137f0f5d9400"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Dec 2021 17:11:12 GMT",
+      "tag": "workspace-tools_v0.17.0",
+      "version": "0.17.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "riacarmin@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "Implements NPM workspaces support to parseLockFile utility.",
+            "commit": "0d9b3bd5c091e238d302f4a6912692e2eda95385"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Oct 2021 20:01:33 GMT",
+      "tag": "workspace-tools_v0.16.2",
+      "version": "0.16.2",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "comment": "Update beachball and add ignorePatterns",
+            "commit": "1aca866df2443581ce221c08b8e783a7054fcd7d"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 03 Jun 2021 20:23:22 GMT",
+      "tag": "workspace-tools_v0.16.2",
+      "version": "0.16.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "get the right default remote branch",
+            "author": "kchau@microsoft.com",
+            "commit": "cb3c26d432f838805190f9afb65181f682c0145a",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 27 May 2021 20:04:05 GMT",
+      "tag": "workspace-tools_v0.16.1",
+      "version": "0.16.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "getting rid of console logs from the library",
+            "author": "kchau@microsoft.com",
+            "commit": "7f47e421c14b9122d19f848f8039ae266c55e692",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 May 2021 21:47:27 GMT",
+      "tag": "workspace-tools_v0.16.0",
+      "version": "0.16.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Fix #24: Add support for different upstream branches",
+            "author": "dannyvv@microsoft.com",
+            "commit": "83546ce7c0ff54f588ad1fca54f2620d8f071708",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 19 May 2021 21:05:10 GMT",
+      "tag": "workspace-tools_v0.15.1",
+      "version": "0.15.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "slimming down pnpm lockfile parsing",
+            "author": "kchau@microsoft.com",
+            "commit": "a768227e27e547a5804435aa2237dfbc8c7453bd",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 23 Apr 2021 23:35:26 GMT",
+      "tag": "workspace-tools_v0.15.0",
+      "version": "0.15.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "fixes the checkchange command; support lerna (previous checkin)",
+            "author": "kchau@microsoft.com",
+            "commit": "695b9dceb4f29d77e02899fe35e2183e47cee46e",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 23 Apr 2021 23:03:54 GMT",
+      "tag": "workspace-tools_v0.14.1",
+      "version": "0.14.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "move lockfile implementations behind a lazy load in lockfile.ts",
+            "author": "kchau@microsoft.com",
+            "commit": "63f590a1227dec6a45a6e8d3624e766ec08c3b89",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 12 Apr 2021 16:25:24 GMT",
+      "tag": "workspace-tools_v0.14.0",
+      "version": "0.14.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "feat: Only include HEAD commits in 'recent commits'",
+            "author": "asgramme@microsoft.com",
+            "commit": "c5061a51ce33dae309cf798ebae7c8174de2f98b",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 12 Apr 2021 05:59:38 GMT",
+      "tag": "workspace-tools_v0.13.0",
+      "version": "0.13.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add support for more commit command options",
+            "author": "nickykalu@microsoft.com",
+            "commit": "14076d5d8c1b181d4c04077971b6ecdf3f76d0ce",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 01 Mar 2021 23:39:49 GMT",
+      "tag": "workspace-tools_v0.12.3",
+      "version": "0.12.3",
+      "comments": {
+        "none": [
+          {
+            "comment": "Ensure tests clean up after themselves",
+            "author": "elcraig@microsoft.com",
+            "commit": "fd40363573c696571936fac222883f1124e1a1f3",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 23 Feb 2021 20:08:54 GMT",
+      "tag": "workspace-tools_v0.12.3",
+      "version": "0.12.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixing up the rush package detection code",
+            "author": "kchau@microsoft.com",
+            "commit": "22df474093036b36f627ef92f8b8c1fcbdabe5ac",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 16 Feb 2021 23:49:29 GMT",
+      "tag": "workspace-tools_v0.12.2",
+      "version": "0.12.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fetchRemote() fix to be more specific if branch is provided",
+            "author": "kchau@microsoft.com",
+            "commit": "e9602d255f8e2e7be33c6801df0fdd48473844e8",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 16 Feb 2021 23:13:38 GMT",
+      "tag": "workspace-tools_v0.12.1",
+      "version": "0.12.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "adding back the maxbuffer options to git - got lost in translation",
+            "author": "kchau@microsoft.com",
+            "commit": "4034a9d17d0bab8e3004254b3d44cece651be5a5",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 16 Feb 2021 22:41:15 GMT",
+      "tag": "workspace-tools_v0.12.0",
+      "version": "0.12.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding missing git functions into workspace-tools from beachball repo",
+            "author": "kchau@microsoft.com",
+            "commit": "d6ebe4def291fdf7abb590a4762c964a3e3033a8",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 27 Jan 2021 20:58:49 GMT",
+      "tag": "workspace-tools_v0.11.0",
+      "version": "0.11.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Adding NPM 7 Workspaces implementation.",
+            "author": "fecamina@microsoft.com",
+            "commit": "e04bbc030ff870b7b22c101f4948ff98c45ccf23",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 Jan 2021 09:28:35 GMT",
+      "tag": "workspace-tools_v0.10.3",
+      "version": "0.10.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: Detect changed package(s) in nested monorepo",
+            "author": "oliver.kuruma@gmail.com",
+            "commit": "34f4c2ab31ffd8af1db1a705a9f446386975e4cb",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 30 Nov 2020 18:53:38 GMT",
+      "tag": "workspace-tools_v0.10.2",
+      "version": "0.10.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Allow a much bigger buffer for getting changed packages",
+            "author": "kchau@microsoft.com",
+            "commit": "809f42d39be01128044de0a369b89d6f6d198a66",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 19 Oct 2020 20:24:42 GMT",
+      "tag": "workspace-tools_v0.10.1",
+      "version": "0.10.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "replaced matcher with multimatch",
+            "author": "kchau@microsoft.com",
+            "commit": "2f58801ea86d0a4d380dcadd90e7c1786fc1fd96",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 12 Oct 2020 16:27:40 GMT",
+      "tag": "workspace-tools_v0.10.0",
+      "version": "0.10.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Introduce getWorkspaceRoot()",
+            "author": "bewegger@microsoft.com",
+            "commit": "7482d0d3e093a002dae7372db6f01ea57289cfc5",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 15 Sep 2020 17:45:13 GMT",
+      "tag": "workspace-tools_v0.9.8",
+      "version": "0.9.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "added repository information in package.json",
+            "author": "david@lannoye.net",
+            "commit": "6a32e39e75c3e12f058c64c03f3d9529138abc77",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 15 Sep 2020 17:40:30 GMT",
+      "tag": "workspace-tools_v0.9.7",
+      "version": "0.9.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "support scoped package matches to match regardless of scopes",
+            "author": "kchau@microsoft.com",
+            "commit": "b0fcfc5eada49af5b6e85fd9cf33c6375181041d",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 10 Sep 2020 23:43:54 GMT",
+      "tag": "workspace-tools_v0.9.6",
+      "version": "0.9.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "no more requires",
+            "author": "kchau@microsoft.com",
+            "commit": "b44eadeecc056d2130c329334166346fbb4d65b7",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 10 Sep 2020 23:36:23 GMT",
+      "tag": "workspace-tools_v0.9.5",
+      "version": "0.9.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "do not do dynamic require",
+            "author": "kchau@microsoft.com",
+            "commit": "402ccffdd11c92b2951f556c79d035102e2ce0b8",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 31 Aug 2020 23:19:25 GMT",
+      "tag": "workspace-tools_v0.9.4",
+      "version": "0.9.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add extended-info to getPackageInfos",
+            "author": "kchau@microsoft.com",
+            "commit": "d91f533deef24147311634eb9e8cb5439eddc696",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 19 Aug 2020 23:27:31 GMT",
+      "tag": "workspace-tools_v0.9.3",
+      "version": "0.9.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixes the case where deps with no dependencies are not added the edges in the subgraph calculation",
+            "author": "kchau@microsoft.com",
+            "commit": "fcb692aefd25bab2f6b9e0cda15566fc8021ef85",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 19 Aug 2020 22:44:02 GMT",
+      "tag": "workspace-tools_v0.9.2",
+      "version": "0.9.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "adding subgraph support get transitive consumer",
+            "author": "kchau@microsoft.com",
+            "commit": "26bafd27fc84b52417de895be88e4a48fdc99bcb",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 09 Aug 2020 03:46:17 GMT",
+      "tag": "workspace-tools_v0.9.1",
+      "version": "0.9.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "handle nested change detection",
+            "author": "kchau@microsoft.com",
+            "commit": "9fc919fca927d9d21f35757f9cdf2b66f9f03637",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 17 Jul 2020 19:16:04 GMT",
+      "tag": "workspace-tools_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add a new env variable to allow one to pick the preferred workspace manager",
+            "author": "kchau@microsoft.com",
+            "commit": "844da12e2501036e36cc5108a340620dabbd3d3a",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 19 Jun 2020 17:53:56 GMT",
+      "tag": "workspace-tools_v0.8.0",
+      "version": "0.8.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding getTransitiveProviders and renamed getTransitiveDependencies to getTransitiveConsumers",
+            "author": "kchau@microsoft.com",
+            "commit": "e2148df920bf05ac84425108e0ea3695b0743c9f",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 26 May 2020 16:55:44 GMT",
+      "tag": "workspace-tools_v0.7.6",
+      "version": "0.7.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixes an issue with globby so that workspaces matches are found correctly",
+            "author": "kchau@microsoft.com",
+            "commit": "a310abc8eaddb42b849d71ff43d6cadc75b5bfd4",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 25 May 2020 18:15:11 GMT",
+      "tag": "workspace-tools_v0.7.5",
+      "version": "0.7.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "speeding up getRushWorkspaces by skipping the slow rush config reader by a simple json reader",
+            "author": "kchau@microsoft.com",
+            "commit": "984ae58a49bb0420310b49a163a82fb137234cd3",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 23 May 2020 22:54:25 GMT",
+      "tag": "workspace-tools_v0.7.4",
+      "version": "0.7.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "adding unstaged changes in the changed packges",
+            "author": "kchau@microsoft.com",
+            "commit": "0ecca6dbd15dfd69e478731af633ab57aa54e186",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 23 May 2020 19:57:45 GMT",
+      "tag": "workspace-tools_v0.7.3",
+      "version": "0.7.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Adding a getChangedPackages() function (#1)",
+            "author": "kchau@microsoft.com",
+            "commit": "4b3514e04d666fdcd2bd9d3fa959232348e4c12e",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 15 May 2020 18:10:15 GMT",
+      "tag": "workspace-tools_v0.4.0",
+      "version": "0.4.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Integrating additional workspace utilities from the backfill package",
+            "author": "kchau@microsoft.com",
+            "commit": "cc636f43a8ae50295a12a5bd6c28a3d66ddcabe9",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 13 May 2020 00:54:54 GMT",
+      "tag": "workspace-tools_v0.3.3",
+      "version": "0.3.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Merge branch 'master' of https://github.com/kenotron/workspace-tools",
+            "author": "kchau@microsoft.com",
+            "commit": "67e06d92a90c207f2ae11527b197753ce57407bd",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 13 May 2020 00:52:56 GMT",
+      "tag": "workspace-tools_v0.3.2",
+      "version": "0.3.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "using matcher instead of multimatch for the scope",
+            "author": "kchau@microsoft.com",
+            "commit": "56082a19222289fecfa804743b7d3cba2783814c",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 12 May 2020 16:43:14 GMT",
+      "tag": "workspace-tools_v0.3.1",
+      "version": "0.3.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "expose depedent map",
+            "author": "kchau@microsoft.com",
+            "commit": "e49bf63aad31a6b1c3e4ce4e08a8f61410c0889d",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 12 May 2020 01:25:52 GMT",
+      "tag": "workspace-tools_v0.3.0",
+      "version": "0.3.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "includes the scoped packages functions",
+            "author": "kchau@microsoft.com",
+            "commit": "24ef3d4f81bd59439390b2e909afbfecc0b285cc",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 12 May 2020 01:00:31 GMT",
+      "tag": "workspace-tools_v0.2.1",
+      "version": "0.2.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix the typing pointer",
+            "author": "kchau@microsoft.com",
+            "commit": "3b71a3622fea0fde8ef3f812648f7bd360e62ad5",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 12 May 2020 00:58:34 GMT",
+      "tag": "workspace-tools_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adds declaration",
+            "author": "kchau@microsoft.com",
+            "commit": "b71765e803b29a8f68a544a31062646aed163890",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 12 May 2020 00:55:50 GMT",
+      "tag": "workspace-tools_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "caching graph",
+            "author": "kchau@microsoft.com",
+            "commit": "5b04b451ccfd7468466e765566910fbd68bcd67d",
+            "package": "workspace-tools"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { describe, expect, it, jest } from "@jest/globals";
 import { Logger } from "@lage-run/logger";
 import type { Target } from "@lage-run/target-graph";
 import path from "path";
@@ -5,33 +6,29 @@ import { RemoteFallbackCacheProvider, type RemoteFallbackCacheProviderOptions } 
 import type { CacheProvider } from "../types/CacheProvider.js";
 
 describe("RemoteFallbackCacheProvider", () => {
-  it("should fetch from local cache first", async () => {
-    const root = "/test";
+  const root = "/test";
 
-    const localCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(true)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
+  function getMockCacheProvider(fetchResult: boolean): CacheProvider {
+    return {
+      fetch: jest.fn(() => Promise.resolve(fetchResult)),
+      put: jest.fn(() => Promise.resolve(undefined)),
+      clear: jest.fn(() => Promise.resolve(undefined)),
+      purge: jest.fn(() => Promise.resolve(undefined)),
     };
+  }
 
-    const remoteCacheProvider: CacheProvider = {
-      fetch: jest.fn(),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
-    };
-
-    const options: RemoteFallbackCacheProviderOptions = {
+  function getRemoteFallbackCacheProvider(
+    params: Pick<RemoteFallbackCacheProviderOptions, "localCacheProvider" | "remoteCacheProvider" | "writeRemoteCache">
+  ): RemoteFallbackCacheProvider {
+    return new RemoteFallbackCacheProvider({
       root,
-      localCacheProvider,
-      remoteCacheProvider,
+      ...params,
       logger: new Logger(),
-    };
+    });
+  }
 
-    const provider = new RemoteFallbackCacheProvider(options);
-
-    const target: Target = {
+  function getTarget(): Target {
+    return {
       id: "a",
       cwd: path.join(root, "packages/a"),
       depSpecs: [],
@@ -40,135 +37,53 @@ describe("RemoteFallbackCacheProvider", () => {
       task: "command",
       label: "a - command",
     };
+  }
 
-    const hash = "some-hash";
+  it("should fetch from local cache first", async () => {
+    const localCacheProvider = getMockCacheProvider(true);
+    const remoteCacheProvider = getMockCacheProvider(false);
+    const provider = getRemoteFallbackCacheProvider({ localCacheProvider, remoteCacheProvider });
 
-    await provider.fetch(hash, target);
+    await provider.fetch("some-hash", getTarget());
 
     expect(localCacheProvider.fetch).toHaveBeenCalled();
     expect(remoteCacheProvider.fetch).not.toHaveBeenCalled();
   });
 
   it("should fetch from remote cache as fallback - validating the fetches", async () => {
-    const root = "/test";
+    const localCacheProvider = getMockCacheProvider(false);
+    const remoteCacheProvider = getMockCacheProvider(true);
+    const provider = getRemoteFallbackCacheProvider({ localCacheProvider, remoteCacheProvider });
 
-    const localCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(false)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
-    };
-
-    const remoteCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(true)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
-    };
-
-    const options: RemoteFallbackCacheProviderOptions = {
-      root,
-      localCacheProvider,
-      remoteCacheProvider,
-      logger: new Logger(),
-    };
-
-    const provider = new RemoteFallbackCacheProvider(options);
-
-    const target: Target = {
-      id: "a",
-      cwd: path.join(root, "packages/a"),
-      depSpecs: [],
-      dependents: [],
-      dependencies: [],
-      task: "command",
-      label: "a - command",
-    };
-
-    const hash = "some-hash";
-
-    await provider.fetch(hash, target);
+    await provider.fetch("some-hash", getTarget());
 
     expect(localCacheProvider.fetch).toHaveBeenCalled();
     expect(remoteCacheProvider.fetch).toHaveBeenCalled();
   });
 
   it("should skip local cache", async () => {
-    const root = "/test";
-
-    const remoteCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(true)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
-    };
-
-    const options: RemoteFallbackCacheProviderOptions = {
+    const remoteCacheProvider = getMockCacheProvider(true);
+    const provider = new RemoteFallbackCacheProvider({
       root,
       localCacheProvider: undefined,
       remoteCacheProvider,
       logger: new Logger(),
-    };
+    });
 
-    const provider = new RemoteFallbackCacheProvider(options);
-
-    const target: Target = {
-      id: "a",
-      cwd: path.join(root, "packages/a"),
-      depSpecs: [],
-      dependents: [],
-      dependencies: [],
-      task: "command",
-      label: "a - command",
-    };
-
-    const hash = "some-hash";
-
-    await provider.fetch(hash, target);
+    await provider.fetch("some-hash", getTarget());
 
     expect(remoteCacheProvider.fetch).toHaveBeenCalled();
   });
 
   it("should fetch from remote cache as fallback - validating the puts", async () => {
-    const root = "/test";
+    const localCacheProvider: CacheProvider = getMockCacheProvider(false);
 
-    const localCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(false)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
-    };
+    const remoteCacheProvider: CacheProvider = getMockCacheProvider(true);
+    remoteCacheProvider.isReadOnly = true;
 
-    const remoteCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(true)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
-      isReadOnly: true,
-    };
+    const provider = getRemoteFallbackCacheProvider({ localCacheProvider, remoteCacheProvider });
 
-    const options: RemoteFallbackCacheProviderOptions = {
-      root,
-      localCacheProvider,
-      remoteCacheProvider,
-      logger: new Logger(),
-    };
-
-    const provider = new RemoteFallbackCacheProvider(options);
-
-    const target: Target = {
-      id: "a",
-      cwd: path.join(root, "packages/a"),
-      depSpecs: [],
-      dependents: [],
-      dependencies: [],
-      task: "command",
-      label: "a - command",
-    };
-
-    const hash = "some-hash";
-
-    await provider.fetch(hash, target);
+    await provider.fetch("some-hash", getTarget());
 
     expect(remoteCacheProvider.fetch).toHaveBeenCalled();
     expect(localCacheProvider.put).toHaveBeenCalled();
@@ -176,46 +91,18 @@ describe("RemoteFallbackCacheProvider", () => {
   });
 
   it("should call the put() method anyway because readonly is enforced inside the underlying cacheProviders", async () => {
-    const root = "/test";
+    const localCacheProvider = getMockCacheProvider(false);
+    localCacheProvider.isReadOnly = true;
 
-    const localCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(false)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
-      isReadOnly: true,
-    };
+    const remoteCacheProvider = getMockCacheProvider(true);
+    remoteCacheProvider.isReadOnly = true;
 
-    const remoteCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(true)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
-      isReadOnly: true,
-    };
+    const provider = getRemoteFallbackCacheProvider({ localCacheProvider, remoteCacheProvider, writeRemoteCache: true });
+    const target = getTarget();
 
-    const options: RemoteFallbackCacheProviderOptions = {
-      root,
-      localCacheProvider,
-      remoteCacheProvider,
-      logger: new Logger(),
-    };
-
-    const provider = new RemoteFallbackCacheProvider(options);
-
-    const target: Target = {
-      id: "a",
-      cwd: path.join(root, "packages/a"),
-      depSpecs: [],
-      dependents: [],
-      dependencies: [],
-      task: "command",
-      label: "a - command",
-    };
-
-    const hash = "some-hash";
-
-    await provider.put(hash, target);
+    await provider.fetch("read-only-provider", target);
+    jest.mocked(localCacheProvider.put).mockClear();
+    await provider.put("read-only-provider", target);
 
     // local fetch is false, do the "put" - but readonly is enforced inside the localCacheProvider
     expect(localCacheProvider.put).toHaveBeenCalled();
@@ -225,48 +112,102 @@ describe("RemoteFallbackCacheProvider", () => {
   });
 
   it("should not put any local cache if the remote fallback has nothing", async () => {
-    const root = "/test";
+    const localCacheProvider = getMockCacheProvider(false);
+    const remoteCacheProvider = getMockCacheProvider(false);
+    const provider = getRemoteFallbackCacheProvider({ localCacheProvider, remoteCacheProvider });
 
-    const localCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(false)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
-    };
-
-    const remoteCacheProvider: CacheProvider = {
-      fetch: jest.fn().mockReturnValue(Promise.resolve(false)),
-      put: jest.fn(),
-      clear: jest.fn(),
-      purge: jest.fn(),
-    };
-
-    const options: RemoteFallbackCacheProviderOptions = {
-      root,
-      localCacheProvider,
-      remoteCacheProvider,
-      logger: new Logger(),
-    };
-
-    const provider = new RemoteFallbackCacheProvider(options);
-
-    const target: Target = {
-      id: "a",
-      cwd: path.join(root, "packages/a"),
-      depSpecs: [],
-      dependents: [],
-      dependencies: [],
-      task: "command",
-      label: "a - command",
-    };
-
-    const hash = "some-hash";
-
-    await provider.fetch(hash, target);
+    await provider.fetch("some-hash", getTarget());
 
     expect(localCacheProvider.fetch).toHaveBeenCalled();
     expect(remoteCacheProvider.fetch).toHaveBeenCalled();
     expect(localCacheProvider.put).not.toHaveBeenCalled();
     expect(remoteCacheProvider.put).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    {
+      name: "should read and write only the local provider when no remote is configured",
+      localEnabled: true,
+      remoteEnabled: false,
+      writeRemoteCache: undefined,
+      skipRemoteCache: false,
+      localWrites: 1,
+      remoteWrites: 0,
+    },
+    {
+      name: "should read from the remote but not write to it by default",
+      localEnabled: true,
+      remoteEnabled: true,
+      writeRemoteCache: undefined,
+      skipRemoteCache: false,
+      localWrites: 1,
+      remoteWrites: 0,
+    },
+    {
+      name: "should not write to the remote when explicitly disabled",
+      localEnabled: true,
+      remoteEnabled: true,
+      writeRemoteCache: false,
+      skipRemoteCache: false,
+      localWrites: 1,
+      remoteWrites: 0,
+    },
+    {
+      name: "should write to both providers when remote writes are enabled",
+      localEnabled: true,
+      remoteEnabled: true,
+      writeRemoteCache: true,
+      skipRemoteCache: false,
+      localWrites: 1,
+      remoteWrites: 1,
+    },
+    {
+      name: "should read and write only the remote provider when local caching is skipped",
+      localEnabled: false,
+      remoteEnabled: true,
+      writeRemoteCache: true,
+      skipRemoteCache: false,
+      localWrites: 0,
+      remoteWrites: 1,
+    },
+    {
+      name: "should not write to either provider when local caching is skipped and remote writes are disabled",
+      localEnabled: false,
+      remoteEnabled: true,
+      writeRemoteCache: false,
+      skipRemoteCache: false,
+      localWrites: 0,
+      remoteWrites: 0,
+    },
+    {
+      name: "should skip remote reads and writes for a target even when remote writes are enabled",
+      localEnabled: true,
+      remoteEnabled: true,
+      writeRemoteCache: true,
+      skipRemoteCache: true,
+      localWrites: 1,
+      remoteWrites: 0,
+    },
+  ])("$name", async ({ name, localEnabled, remoteEnabled, writeRemoteCache, skipRemoteCache, localWrites, remoteWrites }) => {
+    const localCacheProvider = getMockCacheProvider(false);
+    const remoteCacheProvider = getMockCacheProvider(false);
+    const provider = getRemoteFallbackCacheProvider({
+      localCacheProvider: localEnabled ? localCacheProvider : undefined,
+      remoteCacheProvider: remoteEnabled ? remoteCacheProvider : undefined,
+      writeRemoteCache,
+    });
+    const target = { ...getTarget(), skipRemoteCache };
+    const hash = `policy-${name}`;
+
+    expect(await provider.fetch(hash, target)).toBe(false);
+    expect(localCacheProvider.put).not.toHaveBeenCalled();
+    expect(remoteCacheProvider.put).not.toHaveBeenCalled();
+
+    await provider.put(hash, target);
+
+    expect(localCacheProvider.fetch).toHaveBeenCalledTimes(localEnabled ? 1 : 0);
+    expect(remoteCacheProvider.fetch).toHaveBeenCalledTimes(remoteEnabled && !skipRemoteCache ? 1 : 0);
+    expect(localCacheProvider.put).toHaveBeenCalledTimes(localWrites);
+    expect(remoteCacheProvider.put).toHaveBeenCalledTimes(remoteWrites);
   });
 });

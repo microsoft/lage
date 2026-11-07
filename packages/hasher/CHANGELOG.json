@@ -2,6 +2,310 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "1.11.0",
+      "tag": "@lage-run/hasher_v1.11.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "26b070319157bc731aa483bcaa22288d77688d4a",
+            "comment": "Accept optional package metadata in `TargetHasher` to avoid redundant package discovery."
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.15.13",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump backfill-hasher to v6.7.15",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump workspace-tools to v0.42.3",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Aug 2026 09:42:15 GMT",
+      "version": "1.10.13",
+      "tag": "@lage-run/hasher_v1.10.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.15.12",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump backfill-hasher to v6.7.14",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump workspace-tools to v0.42.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "1.10.12",
+      "tag": "@lage-run/hasher_v1.10.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/logger to v1.5.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.15.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump backfill-hasher to v6.7.13",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump workspace-tools to v0.42.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Jul 2026 22:12:55 GMT",
+      "version": "1.10.11",
+      "tag": "@lage-run/hasher_v1.10.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.15.10",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump backfill-hasher to v6.7.12",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump workspace-tools to v0.42.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 20:21:25 GMT",
+      "version": "1.10.10",
+      "tag": "@lage-run/hasher_v1.10.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.15.9",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump backfill-hasher to v6.7.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump workspace-tools to v0.41.10",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "1.10.9",
+      "tag": "@lage-run/hasher_v1.10.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.15.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump backfill-hasher to v6.7.10",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump workspace-tools to v0.41.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 12 Jun 2026 20:31:24 GMT",
+      "version": "1.10.8",
+      "tag": "@lage-run/hasher_v1.10.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.15.7",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump backfill-hasher to v6.7.9",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump workspace-tools to v0.41.8",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "1.10.7",
+      "tag": "@lage-run/hasher_v1.10.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add generics to `TargetHasher` `logger` option (any logger will be accepted)"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Apr 2026 03:39:42 GMT",
+      "version": "1.10.2",
+      "tag": "@lage-run/hasher_v1.10.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Apr 2026 03:54:25 GMT",
+      "version": "1.10.0",
+      "tag": "@lage-run/hasher_v1.10.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Directly use `globby` v11 instead of `@lage-run/globby` (implement caching internally)"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "TargetHasher: remove unnecessary writes to `node_modules/.cache/lage/hashes`"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 28 Mar 2026 00:04:36 GMT",
+      "version": "1.9.6",
+      "tag": "@lage-run/hasher_v1.9.6",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "1.9.6",
+      "tag": "@lage-run/hasher_v1.9.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Use version of workspace-tools published from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update test dev dep names"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Mar 2026 23:52:35 GMT",
       "version": "1.9.5",
       "tag": "@lage-run/hasher_v1.9.5",

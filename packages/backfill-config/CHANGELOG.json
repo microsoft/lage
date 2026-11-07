@@ -2,6 +2,87 @@
   "name": "backfill-config",
   "entries": [
     {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "6.7.5",
+      "tag": "backfill-config_v6.7.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-config",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "beachball",
+            "package": "backfill-config",
+            "comment": "Bump backfill-logger to v5.4.3",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Apr 2026 03:39:42 GMT",
+      "version": "6.7.3",
+      "tag": "backfill-config_v6.7.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-config",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Apr 2026 03:54:25 GMT",
+      "version": "6.7.2",
+      "tag": "backfill-config_v6.7.2",
+      "comments": {
+        "none": [
+          {
+            "author": "email not defined",
+            "package": "backfill-config",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "update lint disables"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 28 Mar 2026 00:04:36 GMT",
+      "version": "6.7.2",
+      "tag": "backfill-config_v6.7.2",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-config",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "6.7.2",
+      "tag": "backfill-config_v6.7.2",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-config",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update test dev dep names"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Mar 2026 23:52:35 GMT",
       "version": "6.7.2",
       "tag": "backfill-config_v6.7.2",

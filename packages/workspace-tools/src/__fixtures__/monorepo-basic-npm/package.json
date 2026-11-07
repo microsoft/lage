@@ -1,0 +1,17 @@
+{
+  "name": "monorepo-basic-npm",
+  "description": "Basic monorepo with npm (workspaces and deps should match other monorepo-basic-*)",
+  "license": "MIT",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^4.0.0"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "individual"
+    ]
+  }
+}

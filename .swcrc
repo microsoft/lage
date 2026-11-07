@@ -10,7 +10,9 @@
   },
   "module": {
     "type": "commonjs",
-    "ignoreDynamic": true
+    "ignoreDynamic": true,
+    // Required to emit CJS output that can be imported by Node from ESM
+    "exportInteropAnnotation": true
   },
   "sourceMaps": true
 }

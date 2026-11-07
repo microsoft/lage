@@ -1,8 +1,81 @@
 # Change Log - @lage-run/runners
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.4.16
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.13
+
+## 1.4.15
+
+Tue, 11 Aug 2026 09:42:15 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.12
+
+## 1.4.14
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump @lage-run/target-graph to v0.15.11
+
+## 1.4.13
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.10
+
+## 1.4.12
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.9
+
+## 1.4.11
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.8
+
+## 1.4.10
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.7
+
+## 1.4.4
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 1.4.1
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Patches
+
+- Address promise lint issues (elcraig@microsoft.com)
 
 ## 1.4.0
 

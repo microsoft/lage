@@ -4,6 +4,9 @@
 .*ignore
 *.proto
 *.cmd
+.gitattributes
+.nvmrc
+.npmrc
 
 # Generated or imported files
 change/*.json
@@ -16,3 +19,8 @@ yarn.lock
 **/.yarn
 # this is a test fixture
 yarn.js
+
+# workspace-tools
+pnpm-lock.*
+package-lock.json
+*.api.md

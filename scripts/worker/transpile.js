@@ -2,14 +2,14 @@
 const fs = require("fs");
 const path = require("path");
 const fsPromises = require("fs/promises");
+const jju = require("jju");
 const swc = require("@swc/core");
-const { findProjectRoot } = require("workspace-tools");
+const { findProjectRoot } = require("workspace-tools-npm");
 
 const root = findProjectRoot(process.cwd());
 
 /**
- * This worker is used for `lage run transpile`, in place of the per-package `transpile` script
- * (except for `@lage-run/globby`, which per lage.config.js uses its custom `transpile` script).
+ * This worker is used for `lage run transpile`, in place of the per-package `transpile` script.
  *
  * Since this worker function has some extra logic to use swc, it's reused by the per-package `transpile` script
  * (`monorepo-scripts transpile` which runs commands/transpile.js) to avoid duplication.
@@ -28,14 +28,16 @@ async function transpile({ target }) {
     return;
   }
 
+  const swcOptions = jju.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8"));
+
   const queue = [srcDir];
 
   while (queue.length > 0) {
     const dir = /** @type {string} */ (queue.shift());
 
-    let entries = await fsPromises.readdir(dir, { withFileTypes: true });
+    const entries = await fsPromises.readdir(dir, { withFileTypes: true });
 
-    for (let entry of entries) {
+    for (const entry of entries) {
       const fullPath = path.join(dir, entry.name);
 
       if (entry.isDirectory() && !entry.name.startsWith("__")) {
@@ -50,7 +52,8 @@ async function transpile({ target }) {
           .replace(".ts", ".js");
         const dest = path.join(target.cwd, targetRelativePath);
         const swcOutput = await swc.transformFile(fullPath, {
-          configFile: path.join(root, ".swcrc"),
+          configFile: false,
+          ...swcOptions,
           sourceFileName: path.relative(path.dirname(dest), fullPath).replace(/\\/g, "/"),
         });
 

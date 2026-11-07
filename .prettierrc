@@ -16,6 +16,12 @@
       "options": {
         "printWidth": 80
       }
+    },
+    {
+      "files": ["packages/workspace-tools/**/*"],
+      "options": {
+        "printWidth": 120
+      }
     }
   ],
   "endOfLine": "lf"

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { prioritize } from "../prioritize.js";
 import { getPackageAndTask } from "../targetId.js";
 import type { Target } from "../types/Target.js";
@@ -29,6 +30,29 @@ function createTarget({
 }
 
 describe("prioritize", () => {
+  it("handles an empty graph", () => {
+    const targets = new Map<string, Target>();
+
+    prioritize(targets);
+
+    expect(targets.size).toBe(0);
+  });
+
+  it.each([false, true])("preserves priorities across shared dependencies and disconnected tasks (reverse insertion: %s)", (reverse) => {
+    const nodes = [
+      createTarget({ packageName: "root", task: "build", dependencies: [], dependents: ["left#build", "right#build"], priority: 1 }),
+      createTarget({ packageName: "left", task: "build", dependencies: ["root#build"], dependents: ["leaf#build"], priority: 2 }),
+      createTarget({ packageName: "right", task: "build", dependencies: ["root#build"], dependents: ["leaf#build"], priority: 4 }),
+      createTarget({ packageName: "leaf", task: "build", dependencies: ["left#build", "right#build"], dependents: [], priority: 7 }),
+      createTarget({ packageName: "isolated", task: "build", dependencies: [], dependents: [], priority: 3 }),
+    ];
+    const targets = new Map((reverse ? [...nodes].reverse() : nodes).map((node) => [node.id, node]));
+
+    prioritize(targets);
+
+    expect(nodes.map((node) => node.priority)).toEqual([12, 9, 11, 7, 3]);
+  });
+
   it("should prioritize targets", () => {
     const targets = new Map<string, Target>();
     // This graph should read that the first task is required to run before the second task in the tuple.

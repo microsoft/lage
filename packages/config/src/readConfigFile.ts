@@ -14,7 +14,7 @@ export async function readConfigFile(cwd: string): Promise<ConfigOptions | undef
   }
 
   // Search for lage.config.js file
-  const configExplorer = await cosmiconfig(ConfigModuleName);
+  const configExplorer = cosmiconfig(ConfigModuleName);
   const results = await configExplorer.search(root ?? cwd);
   return results?.config || undefined;
 }

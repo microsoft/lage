@@ -2,7 +2,9 @@
 
 Documentation is here: https://microsoft.github.io/lage/
 
-# Contributing
+This repo is also home to [`backfill`](./packages/backfill) and [`workspace-tools`](./packages/workspace-tools).
+
+## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us

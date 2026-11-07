@@ -1,8 +1,40 @@
 # Change Log - @lage-run/logger
 
-<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.5.1
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+
+## 1.5.0
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Minor changes
+
+- Change the `Logger` signature to `Logger<TLogStructuredData extends LogStructuredData, TSummary>` and same for `Reporter`, to be strict about data types. Add an additional `otherData` parameter on log methods for arbitrary data. (elcraig@microsoft.com)
+
+## 1.4.1
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 1.4.0
+
+Mon, 06 Apr 2026 21:27:03 GMT
+
+### Minor changes
+
+- Allow reporter cleanup to be async (elcraig@microsoft.com)
 
 ## 1.3.3
 

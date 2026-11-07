@@ -1,8 +1,49 @@
 # Change Log - @lage-run/worker-threads-pool
 
-<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.10.4
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump @lage-run/logger to v1.5.1
+
+## 0.10.3
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Patches
+
+- Add generics to `AggregatedPool` `logger` option (any logger will be accepted) (elcraig@microsoft.com)
+
+## 0.10.2
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 0.10.0
+
+Thu, 02 Apr 2026 03:54:25 GMT
+
+### Minor changes
+
+- Fix `terminate()` to be async and await worker termination (email not defined)
+
+## 0.9.4
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Patches
+
+- Address promise lint issues (elcraig@microsoft.com)
 
 ## 0.9.3
 

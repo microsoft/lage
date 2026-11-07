@@ -1,11 +1,12 @@
+import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 import path from "path";
 import { Monorepo } from "./mock/monorepo.js";
 import { parseNdJson, type ParsedLogEntry } from "./parseNdJson.js";
 import fs from "fs";
 import { killDetachedProcess, killProcessesOnPort } from "./killDetachedProcess.js";
 import type { Target } from "@lage-run/target-graph";
-import type { TargetMessageData } from "@lage-run/reporters";
 import type { LogEntry } from "@lage-run/logger";
+import type { LageServiceStatusData } from "@lage-run/cli/lib/types/LageServiceLogData.js";
 import type execa from "execa";
 
 describe("lageserver", () => {
@@ -19,13 +20,12 @@ describe("lageserver", () => {
    * Run `lage exec --server localhost:<port> <args...>` with the current test's port.
    */
   function execOnServer(...args: string[]) {
-    return repo!.run("lage", ["exec", "--server", `localhost:${port}`, ...args]);
+    return repo!.runLage("lage", ["exec", "--server", `localhost:${port}`, ...args]);
   }
 
   function findServerPid(jsonOutput: ParsedLogEntry[]) {
-    const entry = jsonOutput.find((e) => (e.data as TargetMessageData)?.pid && e.msg === "Server started") as
-      | LogEntry<TargetMessageData>
-      | undefined;
+    const entry = jsonOutput.find((e) => (e.data as LageServiceStatusData)?.pid && e.msg === "Server started") as
+      LogEntry<LageServiceStatusData> | undefined;
     return entry?.data?.pid;
   }
 
@@ -59,7 +59,7 @@ describe("lageserver", () => {
     await repo.init({
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
-    await repo.install();
+    repo.prepare();
 
     serverProcess = repo.runServer(["build"], port);
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -82,7 +82,7 @@ describe("lageserver", () => {
     await repo.init({
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
-    await repo.install();
+    repo.prepare();
 
     const results = await execOnServer("--tasks", "build", "--", "b", "build");
 
@@ -117,7 +117,7 @@ describe("lageserver", () => {
       },
       extraFiles: {},
     });
-    await repo.install();
+    repo.prepare();
 
     const results = await execOnServer("c", "build", "--tasks", "build", "--timeout", "60", "--reporter", "json");
 

@@ -1,7 +1,6 @@
 ---
 sidebar_position: 2
-sidebar_label: Quick Start
-title: Quick Start
+title: Quick start
 ---
 
 ## Automated Installation

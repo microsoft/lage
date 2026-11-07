@@ -1,8 +1,84 @@
 # Change Log - backfill-hasher
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 6.7.15
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Use a Set for external dependency queue membership checks while preserving resolution order. (djmaks@microsoft.com)
+- Bump workspace-tools to v0.42.3
+
+## 6.7.14
+
+Tue, 11 Aug 2026 09:42:15 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.42.2
+
+## 6.7.13
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump backfill-logger to v5.4.3
+- Bump workspace-tools to v0.42.1
+
+## 6.7.12
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.42.0
+
+## 6.7.11
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.41.10
+
+## 6.7.10
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.41.9
+
+## 6.7.9
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.41.8
+
+## 6.7.4
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 6.7.2
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Patches
+
+- Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
+- Address promise lint issues (elcraig@microsoft.com)
 
 ## 6.7.1
 

@@ -36,7 +36,7 @@ export interface Target {
   task: string;
 
   /**
-   * Which runner to use for the target: e.g. `'npmScript'`, `'worker', `'noop'`
+   * Which runner to use for the target: e.g. `'npmScript'`, `'worker'`, `'noop'`
    * @default "npmScript"
    */
   type?: string;
@@ -62,18 +62,31 @@ export interface Target {
   dependents: string[];
 
   /**
-   * Priority of the target. A priority of >0 will always be prioritized over the default targets in queue.
+   * Priority of the target. A priority of \>0 will always be prioritized over the default targets in queue.
    */
   priority?: number;
 
   /**
-   * Inputs for this target. This is used to determine the hash key for caching
+   * Glob patterns for files used to determine the hash key for caching.
+   *
+   * Patterns are relative to the package directory, or to the repository root for a root target.
+   * Prefix a pattern with `^` to apply it relative to each transitive package dependency instead
+   * (for example, `^src/index.ts`). Input patterns cannot traverse to a parent directory.
    */
+  // These are handled by getInputFiles, which also expands sibling-package patterns.
   inputs?: string[];
 
   /**
-   * Outputs of this target. This is used to determine the files to be stored for caching
+   * Glob patterns for files to store in the cache. Patterns are relative to the package directory,
+   * or to the repository root for a root target, and must not traverse to a parent directory.
    */
+  // These are usually handled by CacheStorage, or by getOutputFiles with lage service.
+  // Traversing with .. might currently work in some cases, but it's not consistent and not designed
+  // to be supported: globby@11 accepts ../ and returns paths such as ../sibling/output.js, because
+  // CacheStorage evaluates output patterns from target.cwd without rejecting traversal.
+  // However, LocalCacheStorage preserves the returned ../ while constructing cache paths, potentially
+  // writing outside the hash’s cache directory; such files then will not be restored normally.
+  // Potentially in the future, patterns traversing outside the package should be explicitly rejected.
   outputs?: string[];
 
   /**
@@ -81,6 +94,12 @@ export interface Target {
    * @default true
    */
   cache?: boolean;
+
+  /**
+   * Whether to skip remote cache for this target. Has no effect when `cache` is `false`.
+   * @default false
+   */
+  skipRemoteCache?: boolean;
 
   /**
    * Override the top-level `environmentGlob` config for this target if it needs different patterns.

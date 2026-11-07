@@ -1,0 +1,57 @@
+/**
+ * Config file for API Extractor. https://api-extractor.com
+ *
+ * Detailed explanation of settings and defaults:
+ * https://github.com/microsoft/rushstack/blob/main/apps/api-extractor/src/schemas/api-extractor-template.json
+ */
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+
+  "mainEntryPointFilePath": "<projectFolder>/lib/index.d.ts",
+
+  // List of NPM package names whose exports should be treated as part of this package and
+  // embedded directly in the .d.ts rollup, as if they were local files.
+  "bundledPackages": [],
+
+  // Choose LF or CRLF based on the OS (to match the typical git config)
+  "newlineKind": "lf",
+
+  // Configures how the API report file (*.api.md) will be generated.
+  "apiReport": {
+    "enabled": true,
+    // Include "forgotten exports" in the API report file.
+    // These are symbols which are not directly exported, but are referenced by other exports.
+    "includeForgottenExports": true
+  },
+
+  // Disable the doc model file (*.api.json)
+  "docModel": { "enabled": false },
+
+  // Disable the .d.ts rollup file
+  "dtsRollup": { "enabled": false },
+
+  // Disable the tsdoc-metadata.json file
+  "tsdocMetadata": { "enabled": false },
+
+  // Configures how API Extractor reports error and warning messages produced during analysis.
+  "messages": {
+    "extractorMessageReporting": {
+      "ae-missing-release-tag": {
+        "logLevel": "none"
+      },
+      "ae-unresolved-link": {
+        "logLevel": "none"
+      }
+    },
+    "tsdocMessageReporting": {
+      // don't require a hyphen after parameter names
+      "tsdoc-param-tag-missing-hyphen": {
+        "logLevel": "none"
+      },
+      // @default isn't a built-in tsdoc tag, but is considered valid elsewhere
+      "tsdoc-undefined-tag": {
+        "logLevel": "none"
+      }
+    }
+  }
+}

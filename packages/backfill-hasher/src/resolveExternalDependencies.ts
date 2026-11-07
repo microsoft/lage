@@ -29,7 +29,10 @@ function _filterExternalDependencies(
 export function _addToQueue(
   dependencies: Dependencies | undefined,
   done: Set<DependencySpec>,
-  queue: DependencyQueue
+  queue: DependencyQueue,
+  queued = new Set<DependencySpec>(
+    queue.map(([name, versionRange]) => `${name}@${versionRange}` as const)
+  )
 ): void {
   if (!dependencies) return;
 
@@ -38,8 +41,9 @@ export function _addToQueue(
 
     if (
       !done.has(versionRangeSignature) &&
-      !queue.some(([n, v]) => `${n}@${v}` === versionRangeSignature)
+      !queued.has(versionRangeSignature)
     ) {
+      queued.add(versionRangeSignature);
       queue.push([name, versionRange]);
     }
   }
@@ -63,11 +67,13 @@ export function resolveExternalDependencies(
   const done = new Set<DependencySpec>();
   const doneRange = new Set<DependencySpec>();
   const queue: DependencyQueue = Object.entries(externalDependencies);
+  // Processed requests are in doneRange, so retaining their membership is safe.
+  const queued = new Set<DependencySpec>(
+    queue.map(([name, versionRange]) => `${name}@${versionRange}` as const)
+  );
 
-  while (queue.length > 0) {
-    const next = queue.shift()!;
-
-    const [name, versionRange] = next;
+  for (let head = 0; head < queue.length; head++) {
+    const [name, versionRange] = queue[head];
     doneRange.add(`${name}@${versionRange}`);
 
     const lockFileResult = queryLockFile(name, versionRange, lockInfo);
@@ -75,7 +81,7 @@ export function resolveExternalDependencies(
     if (lockFileResult) {
       const { version, dependencies } = lockFileResult;
 
-      _addToQueue(dependencies, doneRange, queue);
+      _addToQueue(dependencies, doneRange, queue, queued);
       done.add(`${name}@${version}`);
     } else {
       done.add(`${name}@${versionRange}`);

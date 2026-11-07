@@ -8,7 +8,7 @@ interface SimpleTargetWorkerDataOptions {
   runners: TargetRunnerPickerOptions;
 }
 
-async function setup(options: SimpleTargetWorkerDataOptions) {
+function setup(options: SimpleTargetWorkerDataOptions) {
   const { runners } = options;
   const runnerPicker = new TargetRunnerPicker(runners);
 
@@ -18,24 +18,23 @@ async function setup(options: SimpleTargetWorkerDataOptions) {
   };
 }
 
-void (async () => {
-  const { runnerPicker } = await setup(workerData);
-  async function run(data: { target: Target }, abortSignal?: AbortSignal) {
-    let value: unknown = undefined;
-    const runner = await runnerPicker.pick(data.target);
+const { runnerPicker } = setup(workerData);
 
-    value = await runner.run({
-      target: data.target,
-      weight: 0,
-      abortSignal,
-    });
+async function run(data: { target: Target }, abortSignal?: AbortSignal) {
+  let value: unknown = undefined;
+  const runner = await runnerPicker.pick(data.target);
 
-    return {
-      skipped: false,
-      hash: undefined,
-      value,
-    };
-  }
+  value = await runner.run({
+    target: data.target,
+    weight: 0,
+    abortSignal,
+  });
 
-  registerWorker(run);
-})();
+  return {
+    skipped: false,
+    hash: undefined,
+    value,
+  };
+}
+
+registerWorker(run);

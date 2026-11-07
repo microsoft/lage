@@ -1,10 +1,11 @@
-import * as fs from "fs";
-import * as path from "path";
+import { expect } from "@jest/globals";
+import fs from "fs";
+import path from "path";
 import * as execa from "execa";
 import { findGitRoot, getPackageInfo } from "workspace-tools";
 
-import { glob } from "@lage-run/globby";
-import { Monorepo as BaseMonorepo, type MonorepoInitParams as BaseMonorepoInitParams } from "@lage-run/monorepo-fixture";
+import { sync as globSync } from "globby";
+import { Monorepo as BaseMonorepo, type MonorepoInitParams as BaseMonorepoInitParams } from "@lage-run/test-utilities";
 import type { ConfigFileOptions } from "@lage-run/cli";
 
 /** Absolute root path of the lage repo */
@@ -35,7 +36,7 @@ export class Monorepo extends BaseMonorepo {
   }
 
   /**
-   * Init the repo and files. Note you must separately call `install()` before running lage.
+   * Init the repo and files. Call `prepare()` before running lage, or `yarnInstall()` for Yarn-specific e2e tests.
    *
    * The default fixture for the e2e tests includes a bunch of scripts which mostly run
    * `lage <script> --reporter json --log-level silly` so the output can be parsed with `parseNdJson`.
@@ -59,7 +60,7 @@ export class Monorepo extends BaseMonorepo {
           lint: [],
           extra: [],
         },
-        npmClient: "yarn",
+        npmClient: "npm",
       },
       scripts,
       packages = {},
@@ -128,10 +129,45 @@ export class Monorepo extends BaseMonorepo {
   }
 
   /**
-   * Run `yarn install` for the fixture
+   * Run `yarn install` for the fixture. (Assumes `npmClient: 'yarn'` is explicitly set.)
    */
-  public async install(): Promise<void> {
-    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
+  public async yarnInstall(): Promise<void> {
+    await execa.default(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
+  }
+
+  /**
+   * Link fixture packages and the built Lage package without running a package manager.
+   * Assumes `npmClient: 'npm'` is implicitly or explicitly set.
+   */
+  public prepare(): void {
+    this.linkPackages();
+    fs.symlinkSync(lagePackageRoot, path.join(this.nodeModulesPath, "lage"), "junction");
+  }
+
+  /** Run a root Lage script directly. Only unquoted, space-separated arguments are supported. */
+  public runLage(scriptName: string, args: string[] = [], options?: Partial<execa.Options>): execa.ExecaChildProcess<string> {
+    const script = getPackageInfo(this.root)?.scripts?.[scriptName];
+    if (!script) {
+      throw new Error(`Missing root package script "${scriptName}"`);
+    }
+
+    if (/[^\w -]/.test(script)) {
+      throw new Error(
+        `Root package script "${scriptName}" contains unsupported characters; only letters, digits, spaces, "_" and "-" are allowed`
+      );
+    }
+
+    const [command, ...scriptArgs] = script.trim().split(/ +/);
+    if (command !== "lage") {
+      throw new Error(`Root package script "${scriptName}" must be a simple Lage command`);
+    }
+
+    const cliPath = path.join(this.root, "node_modules/lage/dist/lage.js");
+    return execa.default(process.execPath, [cliPath, ...scriptArgs, ...args], {
+      cwd: this.root,
+      ...options,
+      shell: false,
+    });
   }
 
   public runServer(tasks: string[], port: number): execa.ExecaChildProcess<string> {
@@ -142,7 +178,7 @@ export class Monorepo extends BaseMonorepo {
       stdio: "ignore",
     });
 
-    if (cp && !cp.pid) {
+    if (!cp.pid) {
       throw new Error("Failed to start server");
     }
 
@@ -167,7 +203,7 @@ export class Monorepo extends BaseMonorepo {
     const globHasherDepNames = Object.keys(getPackageInfo(globHasherPath)!.optionalDependencies!);
 
     // There should be only this platform's glob-hasher-* implementation installed
-    const globHasherPlatforms = glob(["node_modules/glob-hasher-*/package.json"], { cwd: lageRepoRoot, absolute: true });
+    const globHasherPlatforms = globSync(["node_modules/glob-hasher-*/package.json"], { cwd: lageRepoRoot, absolute: true });
     expect(globHasherPlatforms).toHaveLength(1);
     const globHasherPlatformPath = path.dirname(globHasherPlatforms[0]);
     const globHasherPlatformName = path.basename(globHasherPlatformPath);
@@ -191,7 +227,7 @@ export class Monorepo extends BaseMonorepo {
     if (!Monorepo.yarnBinaryContents) {
       const yarnGlob = ".yarn/releases/yarn-*.cjs";
       /** Path to the lage repo's current saved yarn release */
-      const yarnPath = glob([yarnGlob], { cwd: lageRepoRoot, absolute: true })[0];
+      const yarnPath = globSync([yarnGlob], { cwd: lageRepoRoot, absolute: true })[0];
       if (!yarnPath) {
         throw new Error("Could not find yarn release under " + path.join(lageRepoRoot, yarnGlob));
       }

@@ -1,8 +1,9 @@
+import { beforeAll, beforeEach, describe, expect, it } from "@jest/globals";
 import path from "path";
 import fs from "fs-extra";
 import execa from "execa";
 
-import { setupFixture } from "backfill-utils-test";
+import { setupFixture } from "@lage-run/test-utilities";
 
 import { sideEffectWarningString, noSideEffectString } from "../audit.js";
 import { findPathToBackfill } from "./helper.js";
@@ -16,10 +17,10 @@ describe("Audit", () => {
     pathToBackfill = await findPathToBackfill();
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     backfillOutput = undefined;
 
-    const monorepoPath = await setupFixture("monorepo");
+    const monorepoPath = setupFixture("monorepo");
 
     // Create a .git folder to help `--audit` identify the boundaries of the repo
     fs.mkdirpSync(path.join(monorepoPath, ".git"));
@@ -40,11 +41,7 @@ describe("Audit", () => {
   it("correctly warns about side-effects", async () => {
     backfillOutput = await execa(
       "node",
-      [
-        pathToBackfill,
-        "--audit",
-        "npm run compile --scripts-prepend-node-path && npm run side-effect --scripts-prepend-node-path",
-      ],
+      [pathToBackfill, "--audit", "npm run compile && npm run side-effect"],
       { all: true, cwd: packageAPath }
     );
 

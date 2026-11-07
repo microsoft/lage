@@ -8,7 +8,7 @@ import type { Target } from "./Target.js";
  */
 export interface TargetConfig extends Pick<
   Target,
-  "type" | "inputs" | "outputs" | "priority" | "cache" | "environmentGlob" | "maxWorkers" | "options"
+  "type" | "inputs" | "outputs" | "priority" | "cache" | "skipRemoteCache" | "environmentGlob" | "maxWorkers" | "options"
 > {
   /**
    * The dependencies of the target. Dependencies are target specs in one of these forms:
@@ -48,18 +48,22 @@ export interface TargetConfig extends Pick<
 
   /**
    * Optional config for a "staged" version of this target: with the `--since` flag, this version
-   * of the target will run instead of the original when the number of changed files is below
-   * `stagedTarget.threshold`.
+   * of the target will run instead of the original when the number of changed files is at/below
+   * `stagedTarget.threshold` (provided that git change detection succeeds and no changed files
+   * match `repoWideChanges`).
    *
-   * "Changed files" includes files that are staged, unstaged, untracked, and changed in the
-   * current commit compared to the target branch.
+   * `--scope` and `--to` do not disable this optimization when combined with `--since`.
+   *
+   * "Changed files" includes committed changes since the target branch plus staged, unstaged,
+   * and untracked files.
    */
   stagedTarget?: StagedTargetConfig;
 }
 
 export interface StagedTargetConfig extends Pick<TargetConfig, "type" | "dependsOn" | "priority" | "weight" | "options"> {
   /**
-   * Only use the staged version of the target if the number of changed files is below this threshold.
+   * Only use the staged version of the target if the number of changed files is at or below
+   * this threshold.
    * @default 50
    */
   // The default is defined in WorkspaceTargetGraphBuilder DEFAULT_STAGED_TARGET_THRESHOLD

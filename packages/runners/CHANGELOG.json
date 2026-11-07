@@ -2,6 +2,162 @@
   "name": "@lage-run/runners",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "1.4.16",
+      "tag": "@lage-run/runners_v1.4.16",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.15.13",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Aug 2026 09:42:15 GMT",
+      "version": "1.4.15",
+      "tag": "@lage-run/runners_v1.4.15",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.15.12",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "1.4.14",
+      "tag": "@lage-run/runners_v1.4.14",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.15.11",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Jul 2026 22:12:55 GMT",
+      "version": "1.4.13",
+      "tag": "@lage-run/runners_v1.4.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.15.10",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 20:21:25 GMT",
+      "version": "1.4.12",
+      "tag": "@lage-run/runners_v1.4.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.15.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "1.4.11",
+      "tag": "@lage-run/runners_v1.4.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.15.8",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 12 Jun 2026 20:31:24 GMT",
+      "version": "1.4.10",
+      "tag": "@lage-run/runners_v1.4.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/runners",
+            "comment": "Bump @lage-run/target-graph to v0.15.7",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Apr 2026 03:39:42 GMT",
+      "version": "1.4.4",
+      "tag": "@lage-run/runners_v1.4.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 28 Mar 2026 00:04:36 GMT",
+      "version": "1.4.1",
+      "tag": "@lage-run/runners_v1.4.1",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "1.4.1",
+      "tag": "@lage-run/runners_v1.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/runners",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Mar 2026 23:52:35 GMT",
       "version": "1.4.0",
       "tag": "@lage-run/runners_v1.4.0",

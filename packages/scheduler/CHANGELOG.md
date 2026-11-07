@@ -1,8 +1,164 @@
 # Change Log - @lage-run/scheduler
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.6.16
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.9
+- Bump @lage-run/config to v0.9.18
+- Bump @lage-run/hasher to v1.11.0
+- Bump @lage-run/reporters to v1.9.1
+- Bump @lage-run/runners to v1.4.16
+- Bump @lage-run/target-graph to v0.15.13
+- Bump @lage-run/scheduler-types to v0.4.14
+
+## 1.6.15
+
+Tue, 18 Aug 2026 02:26:59 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.8
+- Bump @lage-run/reporters to v1.9.0
+
+## 1.6.14
+
+Tue, 11 Aug 2026 09:42:15 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.7
+- Bump @lage-run/config to v0.9.17
+- Bump @lage-run/hasher to v1.10.13
+- Bump @lage-run/reporters to v1.8.6
+- Bump @lage-run/runners to v1.4.15
+- Bump @lage-run/target-graph to v0.15.12
+- Bump @lage-run/scheduler-types to v0.4.13
+
+## 1.6.13
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Fix targetWorker import path extension (elcraig@microsoft.com)
+- Bump @lage-run/cache to v1.6.6
+- Bump @lage-run/config to v0.9.16
+- Bump @lage-run/hasher to v1.10.12
+- Bump @lage-run/logger to v1.5.1
+- Bump @lage-run/reporters to v1.8.5
+- Bump @lage-run/runners to v1.4.14
+- Bump @lage-run/target-graph to v0.15.11
+- Bump @lage-run/worker-threads-pool to v0.10.4
+- Bump @lage-run/scheduler-types to v0.4.12
+
+## 1.6.12
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.5
+- Bump @lage-run/config to v0.9.15
+- Bump @lage-run/hasher to v1.10.11
+- Bump @lage-run/reporters to v1.8.4
+- Bump @lage-run/runners to v1.4.13
+- Bump @lage-run/target-graph to v0.15.10
+- Bump @lage-run/scheduler-types to v0.4.11
+
+## 1.6.11
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.4
+- Bump @lage-run/config to v0.9.14
+- Bump @lage-run/hasher to v1.10.10
+- Bump @lage-run/reporters to v1.8.3
+- Bump @lage-run/runners to v1.4.12
+- Bump @lage-run/target-graph to v0.15.9
+- Bump @lage-run/scheduler-types to v0.4.10
+
+## 1.6.10
+
+Thu, 25 Jun 2026 04:59:29 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.3
+- Bump @lage-run/config to v0.9.13
+
+## 1.6.9
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.2
+- Bump @lage-run/config to v0.9.12
+- Bump @lage-run/hasher to v1.10.9
+- Bump @lage-run/reporters to v1.8.2
+- Bump @lage-run/runners to v1.4.11
+- Bump @lage-run/target-graph to v0.15.8
+- Bump @lage-run/scheduler-types to v0.4.9
+
+## 1.6.8
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.1
+- Bump @lage-run/config to v0.9.11
+- Bump @lage-run/hasher to v1.10.8
+- Bump @lage-run/reporters to v1.8.1
+- Bump @lage-run/runners to v1.4.10
+- Bump @lage-run/target-graph to v0.15.7
+- Bump @lage-run/scheduler-types to v0.4.8
+
+## 1.6.7
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Patches
+
+- Update scheduler `logger` option types to use `TargetLogger` and `Logger<never, never>` (any logger). In `SimpleScheduler`, remove some structured data logs that appear to be unused leftovers from a previous ProgressReporter approach. (elcraig@microsoft.com)
+
+## 1.6.2
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 1.6.0
+
+Thu, 02 Apr 2026 03:54:25 GMT
+
+### Minor changes
+
+- Add logMemory option for SimpleScheduler and WrappedTarget (elcraig@microsoft.com)
+
+### Patches
+
+- Remove unused catch bindings (email not defined)
+
+## 1.5.21
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Patches
+
+- Address promise lint issues (elcraig@microsoft.com)
 
 ## 1.5.20
 

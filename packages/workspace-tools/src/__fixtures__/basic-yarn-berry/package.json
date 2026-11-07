@@ -1,0 +1,12 @@
+{
+  "name": "basic-yarn-berry",
+  "license": "MIT",
+  "version": "0.1.0",
+  "dependencies": {
+    "is-number": "^7.0.0"
+  },
+  "engines": {
+    "yarn": ">=2.0.0"
+  },
+  "packageManager": "yarn@4.11.0"
+}

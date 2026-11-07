@@ -1,5 +1,5 @@
 const path = require("path");
-const { getPackageInfo } = require("workspace-tools");
+const { getPackageInfo } = require("workspace-tools-npm");
 const lintWorker = require("../worker/lint");
 
 (async function main() {

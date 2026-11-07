@@ -1,3 +1,4 @@
+import { describe, expect, it, jest } from "@jest/globals";
 import path from "path";
 import { Readable } from "stream";
 import { WorkerPool } from "../WorkerPool.js";

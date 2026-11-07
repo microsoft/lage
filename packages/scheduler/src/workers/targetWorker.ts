@@ -18,7 +18,7 @@ interface TargetWorkerDataOptions {
   cacheOptions?: CacheOptions;
 }
 
-async function setup(options: TargetWorkerDataOptions) {
+function setup(options: TargetWorkerDataOptions) {
   const { runners, root, cacheOptions } = options;
 
   const logger = createLogger();
@@ -29,7 +29,7 @@ async function setup(options: TargetWorkerDataOptions) {
     summarize() {},
   });
 
-  const { cacheProvider } = await createCache({
+  const { cacheProvider } = createCache({
     root,
     logger,
     cacheOptions,
@@ -46,70 +46,68 @@ async function setup(options: TargetWorkerDataOptions) {
   };
 }
 
-void (async () => {
-  const { cacheProvider, runnerPicker, options } = await setup(workerData);
+const { cacheProvider, runnerPicker, options } = setup(workerData);
 
-  let hashPromiseResolve = (_hash: string) => {};
+let hashPromiseResolve = (_hash: string) => {};
 
-  // main thread sends hash to worker because it keeps a global memory cache of the hashes
-  parentPort!.on("message", (data: any) => {
-    if (data.type === "hash") {
-      hashPromiseResolve(data.hash);
-    }
-  });
+// main thread sends hash to worker because it keeps a global memory cache of the hashes
+parentPort!.on("message", (data: any) => {
+  if (data.type === "hash") {
+    hashPromiseResolve(data.hash);
+  }
+});
 
-  async function getCache(target: Target) {
-    const { shouldCache, shouldResetCache } = options;
-    let hash: string | undefined = undefined;
-    let cacheHit = false;
+async function getCache(target: Target) {
+  const { shouldCache, shouldResetCache } = options;
+  let hash: string | undefined = undefined;
+  let cacheHit = false;
 
-    if (!shouldCache || !target.cache || !cacheProvider) {
-      return { hash, cacheHit };
-    }
-
-    // using a special pattern in communicating with the main thread to get the hash for the target
-    hash = await new Promise((resolve) => {
-      hashPromiseResolve = resolve;
-      parentPort!.postMessage({ type: "hash" });
-    });
-
-    if (hash && !shouldResetCache) {
-      cacheHit = await cacheProvider.fetch(hash, target);
-    }
-
+  if (!shouldCache || !target.cache || !cacheProvider) {
     return { hash, cacheHit };
   }
 
-  async function saveCache(target: Target, hash: string | undefined) {
-    if (!hash || !cacheProvider) {
-      return;
-    }
-    await cacheProvider.put(hash, target);
+  // using a special pattern in communicating with the main thread to get the hash for the target
+  hash = await new Promise((resolve) => {
+    hashPromiseResolve = resolve;
+    parentPort!.postMessage({ type: "hash" });
+  });
+
+  if (hash && !shouldResetCache) {
+    cacheHit = await cacheProvider.fetch(hash, target);
   }
 
-  async function run(data: any, abortSignal?: AbortSignal) {
-    const { hash, cacheHit } = await getCache(data.target);
+  return { hash, cacheHit };
+}
 
-    const cacheEnabled = data.target.cache && options.shouldCache && hash;
+async function saveCache(target: Target, hash: string | undefined) {
+  if (!hash || !cacheProvider) {
+    return;
+  }
+  await cacheProvider.put(hash, target);
+}
 
-    let value: unknown = undefined;
-    if (!cacheHit || !cacheEnabled) {
-      const runner = await runnerPicker.pick(data.target);
-      value = await runner.run({
-        ...data,
-        abortSignal,
-      });
+async function run(data: any, abortSignal?: AbortSignal) {
+  const { hash, cacheHit } = await getCache(data.target);
 
-      await saveCache(data.target, hash);
-    }
+  const cacheEnabled = data.target.cache && options.shouldCache && hash;
 
-    return {
-      skipped: cacheHit,
-      id: data.target.id,
-      hash,
-      value,
-    };
+  let value: unknown = undefined;
+  if (!cacheHit || !cacheEnabled) {
+    const runner = await runnerPicker.pick(data.target);
+    value = await runner.run({
+      ...data,
+      abortSignal,
+    });
+
+    await saveCache(data.target, hash);
   }
 
-  registerWorker(run);
-})();
+  return {
+    skipped: cacheHit,
+    id: data.target.id,
+    hash,
+    value,
+  };
+}
+
+registerWorker(run);

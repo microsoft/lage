@@ -4,7 +4,8 @@
 const fs = require("fs");
 const { isBuiltin } = require("module");
 const path = require("path");
-const { getPackageInfo } = require("workspace-tools");
+const { getPackageInfo } = require("workspace-tools-npm");
+// @ts-ignore -- @typescript-eslint/parser v8 uses package.json "exports" which may not resolve under all moduleResolution settings
 const { parse } = require("@typescript-eslint/parser");
 
 /**
@@ -34,6 +35,7 @@ function getDtsBundleConfig(params) {
   const outFile = path.resolve(packageRoot, params.outFile);
 
   // Use "once" because otherwise it will run again after the first run completes
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises -- appears to allow async despite types
   process.once("beforeExit", async (code) => {
     if (!code) {
       console.log("Verifying no unexpected imports in bundled types");
@@ -93,10 +95,10 @@ async function onBeforeExit(params) {
     },
     // typeof import('foo')
     TSImportType(node) {
-      node.parameter.type === "TSLiteralType" &&
-        node.parameter.literal.type === "Literal" &&
-        typeof node.parameter.literal.value === "string" &&
-        imports.push(node.parameter.literal.value);
+      node.argument.type === "TSLiteralType" &&
+        node.argument.literal.type === "Literal" &&
+        typeof node.argument.literal.value === "string" &&
+        imports.push(node.argument.literal.value);
     },
     ExportNamedDeclaration(node) {
       node.source && imports.push(node.source.value);

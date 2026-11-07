@@ -7,14 +7,14 @@ const { existsSync } = require("fs");
 let oldProgram;
 
 /**
- * This worker is used for `lage run types`, in place of the per-package `types` script
- * (except for `@lage-run/globby`, which per lage.config.js uses its custom `types` script).
+ * This worker is used for `lage run types`, in place of the per-package `types` script.
  *
  * Note that if running `types` for an individual package, it will use that package's `types` script instead
  * (typically `yarn run -T tsc`).
  *
  * @type {WorkerRunnerFunction}
  */
+// eslint-disable-next-line @typescript-eslint/require-await -- match type
 async function run(data) {
   const { target, taskArgs } = data;
 
@@ -55,6 +55,12 @@ async function run(data) {
   // This should NOT be modified here! Instead, any options updates should be made to tsconfig.base.json
   // so that they're also reflected if used by the per-package `types` script (`yarn run -T tsc`).
   const compilerOptions = parsedCommandLine.options;
+
+  if (!compilerOptions.noEmit) {
+    // If these are missing, it won't directly be an error, but will cause unexpected output
+    if (!compilerOptions.rootDir) throw new Error('Missing required tsconfig option "rootDir"');
+    if (!compilerOptions.outDir) throw new Error('Missing required tsconfig option "outDir"');
+  }
 
   // Creating compilation host program
   verbose && console.log(`Creating host compiler...`);

@@ -2,6 +2,783 @@
   "name": "@lage-run/cli",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "0.38.0",
+      "tag": "@lage-run/cli_v0.38.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "fa3d0abd108ef9d00643642ca4cf1b89e8f39220",
+            "comment": "Deduplicate git change detection and apply consistent behavior with repoWideChanges"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.6.9",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.9.18",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.11.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.9.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/runners to v1.4.16",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.6.16",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.14",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.15.13",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump workspace-tools to v0.42.3",
+            "commit": "not available"
+          }
+        ],
+        "patch": [
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "26b070319157bc731aa483bcaa22288d77688d4a",
+            "comment": "Reuse loaded package metadata when initializing the hasher in run, watch, and server modes."
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "5b0cb67fbab65de618fe2f6ea3122f43cb3da93a",
+            "comment": "Update dependency shell-quote to v1.12.0 [SECURITY]"
+          },
+          {
+            "author": "nemanjatesic@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "13ab9ff8d9c002b946bbe4067772ef588fbbd3c5",
+            "comment": "Report structured repo-wide change details and full-build decisions, and reuse change detection during target graph creation."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Ensure types in CLI commands match the actual options used, and fix some mismatches with defaulting behavior that resulted from the bad types"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 18 Aug 2026 02:26:59 GMT",
+      "version": "0.37.0",
+      "tag": "@lage-run/cli_v0.37.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8a3a9eb6a5f3227d0525a021b64b671d5e3870ca",
+            "comment": "Revert to using fancier reporter by default when running locally, except in known slow terminals (codespaces, SSH)"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.6.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.9.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.6.15",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Aug 2026 09:42:15 GMT",
+      "version": "0.36.14",
+      "tag": "@lage-run/cli_v0.36.14",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.6.7",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.9.17",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.10.13",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.8.6",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/runners to v1.4.15",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.6.14",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.13",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.15.12",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump workspace-tools to v0.42.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "0.36.13",
+      "tag": "@lage-run/cli_v0.36.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/cli",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependency shell-quote to v1.10.0"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Add command descriptions"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.6.6",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.9.16",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.10.12",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/logger to v1.5.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.8.5",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/rpc to v1.4.7",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/runners to v1.4.14",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.6.13",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.12",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.15.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/worker-threads-pool to v0.10.4",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump workspace-tools to v0.42.1",
+            "commit": "not available"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "delete unused file"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Jul 2026 22:12:55 GMT",
+      "version": "0.36.12",
+      "tag": "@lage-run/cli_v0.36.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.6.5",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.9.15",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.10.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.8.4",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/runners to v1.4.13",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.6.12",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.15.10",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump workspace-tools to v0.42.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 20:21:25 GMT",
+      "version": "0.36.11",
+      "tag": "@lage-run/cli_v0.36.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.6.4",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.9.14",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.10.10",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.8.3",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/runners to v1.4.12",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.6.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.10",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.15.9",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump workspace-tools to v0.41.10",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 04:59:29 GMT",
+      "version": "0.36.10",
+      "tag": "@lage-run/cli_v0.36.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.6.3",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.9.13",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.6.10",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "0.36.9",
+      "tag": "@lage-run/cli_v0.36.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.6.2",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.9.12",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.10.9",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.8.2",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/runners to v1.4.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.6.9",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.9",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.15.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump workspace-tools to v0.41.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 12 Jun 2026 20:31:24 GMT",
+      "version": "0.36.8",
+      "tag": "@lage-run/cli_v0.36.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "ce44a8e432bf8b251bf65265f9dbdf47073e4994",
+            "comment": "Update dependency shell-quote to v1.8.4"
+          },
+          {
+            "author": "lutomanovic@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "ce44a8e432bf8b251bf65265f9dbdf47073e4994",
+            "comment": "Add `affected` options to the `affected` command"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/cache to v1.6.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/config to v0.9.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/hasher to v1.10.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/reporters to v1.8.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/runners to v1.4.10",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler to v1.6.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump @lage-run/target-graph to v0.15.7",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cli",
+            "comment": "Bump workspace-tools to v0.41.8",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "0.36.7",
+      "tag": "@lage-run/cli_v0.36.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Update for new logger and reporters typings"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 10 Apr 2026 04:04:59 GMT",
+      "version": "0.36.3",
+      "tag": "@lage-run/cli_v0.36.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "56f718d23f300624711312c4d2e200afad3696c7",
+            "comment": "Respect `reporter` option from config file"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Apr 2026 03:39:42 GMT",
+      "version": "0.36.2",
+      "tag": "@lage-run/cli_v0.36.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 06 Apr 2026 21:27:03 GMT",
+      "version": "0.36.1",
+      "tag": "@lage-run/cli_v0.36.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Update reporter cleanup"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Use `formatHrtime` helper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Apr 2026 03:54:25 GMT",
+      "version": "0.36.0",
+      "tag": "@lage-run/cli_v0.36.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Directly use `globby` v11 instead of `@lage-run/globby`"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Import formatDuration/hrToSeconds/hrtimeDiff from @lage-run/reporters instead of @lage-run/format-hrtime"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Use cache directory helpers"
+          },
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Remove unused catch bindings"
+          }
+        ],
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Add `--log-memory` option to the `run` command"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 30 Mar 2026 21:21:13 GMT",
+      "version": "0.35.2",
+      "tag": "@lage-run/cli_v0.35.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/cli",
+            "commit": "e38b72e356def2567dba0600f4b634f628523548",
+            "comment": "Reintroduce fix: include dotfiles in cache output glob matching"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 28 Mar 2026 00:04:36 GMT",
+      "version": "0.35.1",
+      "tag": "@lage-run/cli_v0.35.1",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          }
+        ],
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/cli",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Revert glob caching changes due to potential regression"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "0.35.0",
+      "tag": "@lage-run/cli_v0.35.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Use version of workspace-tools published from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update \"master\" references to \"main\""
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cli",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update test dev dep names"
+          }
+        ],
+        "minor": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/cli",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Start caching more subfolders with dots in the name, fixing issues internal repos were having with .vite and the lage cache"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Mar 2026 23:52:35 GMT",
       "version": "0.34.1",
       "tag": "@lage-run/cli_v0.34.1",

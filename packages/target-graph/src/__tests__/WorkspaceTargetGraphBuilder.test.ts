@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import path from "path";
 import type { PackageInfos } from "workspace-tools";
 import { WorkspaceTargetGraphBuilder } from "../WorkspaceTargetGraphBuilder.js";
@@ -60,7 +61,7 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
 
@@ -95,8 +96,8 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("test");
-    await builder.addTargetConfig("lint");
+    builder.addTargetConfig("test");
+    builder.addTargetConfig("lint");
 
     const targetGraph = await builder.build(["test", "lint"]);
 
@@ -124,11 +125,11 @@ describe("workspace target graph builder", () => {
       enablePhantomTargetOptimization: false,
     });
 
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
 
-    await builder.addTargetConfig("a#build", {
+    builder.addTargetConfig("a#build", {
       dependsOn: [],
     });
 
@@ -155,11 +156,11 @@ describe("workspace target graph builder", () => {
       enablePhantomTargetOptimization: false,
     });
 
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
 
-    await builder.addTargetConfig("a#build", {
+    builder.addTargetConfig("a#build", {
       dependsOn: [],
     });
 
@@ -184,11 +185,11 @@ describe("workspace target graph builder", () => {
       enablePhantomTargetOptimization: false,
     });
 
-    await builder.addTargetConfig("bundle", {
+    builder.addTargetConfig("bundle", {
       dependsOn: ["^^transpile"],
     });
 
-    await builder.addTargetConfig("transpile");
+    builder.addTargetConfig("transpile");
 
     const targetGraph = await builder.build(["bundle"], ["a"]);
     expect(getGraphFromTargets(targetGraph)).toEqual([
@@ -199,6 +200,90 @@ describe("workspace target graph builder", () => {
       ["__start", "c#transpile"],
     ]);
   });
+
+  it.each([
+    { depSpec: "^transpile", expected: ["@scope/early", "@scope/late"] },
+    { depSpec: "^^transpile", expected: ["leaf", "@scope/early", "@scope/late"] },
+  ])("preserves target registration order for $depSpec rather than package dependency order", async ({ depSpec, expected }) => {
+    const packageInfos = createPackageInfoWithScripts({
+      consumer: { deps: ["@scope/late", "@scope/early"], scripts: ["bundle"] },
+      "@scope/late": { deps: ["leaf"], scripts: ["transpile"] },
+      "@scope/early": { deps: ["leaf"], scripts: ["transpile"] },
+      leaf: { deps: [], scripts: ["transpile"] },
+      unrelated: { deps: [], scripts: ["transpile"] },
+    });
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos,
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: true,
+    });
+    builder.addTargetConfig("consumer#bundle", { dependsOn: [depSpec, "^missing", "^^missing"] });
+    builder.addTargetConfig("leaf#transpile");
+    builder.addTargetConfig("#transpile");
+    builder.addTargetConfig("@scope/early#transpile");
+    builder.addTargetConfig("unrelated#transpile");
+    builder.addTargetConfig("@scope/late#lint");
+    builder.addTargetConfig("@scope/late#transpile");
+
+    const graph = await builder.build(["bundle"], ["consumer"]);
+
+    expect(graph.targets.get("consumer#bundle")!.dependencies).toEqual(["__start", ...expected.map((name) => `${name}#transpile`)]);
+    expect([...graph.targets.keys()]).toEqual(["__start", "consumer#bundle", ...expected.map((name) => `${name}#transpile`)]);
+  });
+
+  it("preserves interleaved global and package task order without reusing a previous expansion's index", async () => {
+    for (const order of [["@scope/b#transpile", "#transpile", "@scope/a#transpile"], ["@scope/a#transpile", "#transpile"], []]) {
+      const builder = new WorkspaceTargetGraphBuilder({
+        root,
+        packageInfos: createPackageInfo({ "@scope/a": [], "@scope/b": [] }),
+        enableTargetConfigMerging: false,
+        enablePhantomTargetOptimization: false,
+      });
+      builder.addTargetConfig("#bundle", { dependsOn: ["transpile", "missing"] });
+      builder.addTargetConfig("@scope/a#lint");
+      for (const id of order) {
+        builder.addTargetConfig(id);
+      }
+
+      const graph = await builder.build(["bundle"]);
+
+      expect(graph.targets.get("#bundle")!.dependencies).toEqual(["__start", ...order]);
+      expect([...graph.targets.keys()]).toEqual(["__start", "#bundle", ...order]);
+    }
+  });
+
+  it.each([false, true])(
+    "isolates transitive dependencies between graph expansions (phantom optimization: %s)",
+    async (enablePhantomTargetOptimization) => {
+      for (const leafDependencies of [["firstLeaf"], ["secondLeaf"], [], ["firstLeaf", "secondLeaf"]]) {
+        const packageInfos = createPackageInfoWithScripts({
+          consumer: { deps: ["provider"], scripts: ["bundle", "transpile"] },
+          provider: { deps: leafDependencies, scripts: ["transpile"] },
+          firstLeaf: { deps: [], scripts: ["transpile"] },
+          secondLeaf: { deps: [], scripts: ["transpile"] },
+        });
+        const builder = new WorkspaceTargetGraphBuilder({
+          root,
+          packageInfos,
+          enableTargetConfigMerging: false,
+          enablePhantomTargetOptimization,
+        });
+        builder.addTargetConfig("bundle", { dependsOn: ["^^transpile"] });
+        builder.addTargetConfig("transpile");
+
+        const targetGraph = await builder.build(["bundle"], ["consumer"]);
+
+        expect(getGraphFromTargets(targetGraph)).toEqual([
+          ["__start", "consumer#bundle"],
+          ["provider#transpile", "consumer#bundle"],
+          ...leafDependencies.map((leaf) => [`${leaf}#transpile`, "consumer#bundle"]),
+          ["__start", "provider#transpile"],
+          ...leafDependencies.map((leaf) => ["__start", `${leaf}#transpile`]),
+        ]);
+      }
+    }
+  );
 
   it("should generate target graph for a general task on a specific target", async () => {
     const packageInfos = createPackageInfo({
@@ -215,12 +300,12 @@ describe("workspace target graph builder", () => {
       enablePhantomTargetOptimization: false,
     });
 
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["common#copy", "^build"],
     });
 
-    await builder.addTargetConfig("common#copy");
-    await builder.addTargetConfig("common#build");
+    builder.addTargetConfig("common#copy");
+    builder.addTargetConfig("common#build");
 
     const targetGraph = await builder.build(["build"]);
     expect(getGraphFromTargets(targetGraph)).toEqual([
@@ -247,11 +332,11 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build", "#global:task"],
     });
 
-    await builder.addTargetConfig("#global:task", {
+    builder.addTargetConfig("#global:task", {
       dependsOn: [],
     });
 
@@ -279,11 +364,11 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build", "#global:task"],
     });
 
-    await builder.addTargetConfig("#global:task", {
+    builder.addTargetConfig("#global:task", {
       dependsOn: [],
     });
 
@@ -304,11 +389,11 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
 
-    await builder.addTargetConfig("#global:task", {
+    builder.addTargetConfig("#global:task", {
       dependsOn: [],
     });
 
@@ -334,11 +419,11 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("transpile");
-    await builder.addTargetConfig("emitDeclarations", {
+    builder.addTargetConfig("transpile");
+    builder.addTargetConfig("emitDeclarations", {
       dependsOn: ["typecheck"],
     });
-    await builder.addTargetConfig("typecheck", {
+    builder.addTargetConfig("typecheck", {
       dependsOn: ["^^emitDeclarations", "transpile", "^^transpile"],
     });
 
@@ -376,11 +461,11 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: true,
     });
-    await builder.addTargetConfig("transpile");
-    await builder.addTargetConfig("emitDeclarations", {
+    builder.addTargetConfig("transpile");
+    builder.addTargetConfig("emitDeclarations", {
       dependsOn: ["typecheck"],
     });
-    await builder.addTargetConfig("typecheck", {
+    builder.addTargetConfig("typecheck", {
       dependsOn: ["^^emitDeclarations", "transpile", "^^transpile"],
     });
 
@@ -414,7 +499,7 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^build"],
     });
 
@@ -444,10 +529,10 @@ describe("workspace target graph builder", () => {
       enableTargetConfigMerging: false,
       enablePhantomTargetOptimization: false,
     });
-    await builder.addTargetConfig("customTask", {
+    builder.addTargetConfig("customTask", {
       type: "worker",
     });
-    await builder.addTargetConfig("build", {
+    builder.addTargetConfig("build", {
       dependsOn: ["^^customTask"],
     });
 
@@ -460,6 +545,195 @@ describe("workspace target graph builder", () => {
       // because the target has an explicit non-npmScript type ("worker")
       ["dep#customTask", "app#build"],
       ["__start", "dep#customTask"],
+    ]);
+  });
+
+  it("should not include phantom entry targets and their deps when enablePhantomTargetOptimization is true", async () => {
+    // Scenario: an npmScript task (e.g. a specialized e2e test) that only "tool-app" defines,
+    // with a same-package dependency on "bundle". Without the optimization, "big-app#bundle" (an
+    // expensive task) gets pulled into the subgraph because "big-app#test:special" is added as an
+    // entry target even though big-app doesn't have the "test:special" script.
+    const packageInfos = createPackageInfoWithScripts({
+      "big-app": { deps: ["core-lib"], scripts: ["transpile", "bundle"] },
+      "tool-app": { deps: ["core-lib"], scripts: ["transpile", "bundle", "test:special"] },
+      "core-lib": { deps: [], scripts: ["transpile"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos,
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: true,
+    });
+    builder.addTargetConfig("transpile");
+    builder.addTargetConfig("bundle", {
+      dependsOn: ["transpile", "^^transpile"],
+    });
+    builder.addTargetConfig("test:special", {
+      dependsOn: ["bundle"],
+    });
+
+    const targetGraph = await builder.build(["test:special"]);
+    const graph = getGraphFromTargets(targetGraph);
+
+    expect(graph).toEqual([
+      ["__start", "tool-app#test:special"],
+      ["tool-app#bundle", "tool-app#test:special"],
+      ["__start", "tool-app#bundle"],
+      ["tool-app#transpile", "tool-app#bundle"],
+      ["core-lib#transpile", "tool-app#bundle"],
+      ["__start", "tool-app#transpile"],
+      ["__start", "core-lib#transpile"],
+    ]);
+  });
+
+  it("includes phantom entry targets when enablePhantomTargetOptimization is false (default)", async () => {
+    // Same scenario as above, but with the flag off — big-app#test:special and big-app#bundle
+    // should be included in the subgraph (the current default behavior).
+    const packageInfos = createPackageInfoWithScripts({
+      "big-app": { deps: ["core-lib"], scripts: ["transpile", "bundle"] },
+      "tool-app": { deps: ["core-lib"], scripts: ["transpile", "bundle", "test:special"] },
+      "core-lib": { deps: [], scripts: ["transpile"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos,
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: false,
+    });
+    builder.addTargetConfig("transpile");
+    builder.addTargetConfig("bundle", {
+      dependsOn: ["transpile", "^^transpile"],
+    });
+    builder.addTargetConfig("test:special", {
+      dependsOn: ["bundle"],
+    });
+
+    const targetGraph = await builder.build(["test:special"]);
+    const graph = getGraphFromTargets(targetGraph);
+
+    expect(graph).toEqual([
+      ["__start", "big-app#test:special"],
+      ["big-app#bundle", "big-app#test:special"],
+      ["__start", "tool-app#test:special"],
+      ["tool-app#bundle", "tool-app#test:special"],
+      ["__start", "core-lib#test:special"],
+      ["core-lib#bundle", "core-lib#test:special"],
+      ["__start", "big-app#bundle"],
+      ["big-app#transpile", "big-app#bundle"],
+      ["core-lib#transpile", "big-app#bundle"],
+      ["__start", "tool-app#bundle"],
+      ["tool-app#transpile", "tool-app#bundle"],
+      ["core-lib#transpile", "tool-app#bundle"],
+      ["__start", "core-lib#bundle"],
+      ["core-lib#transpile", "core-lib#bundle"],
+      ["__start", "big-app#transpile"],
+      ["__start", "core-lib#transpile"],
+      ["__start", "tool-app#transpile"],
+    ]);
+  });
+
+  it("should not treat worker-typed targets as phantoms even when the package lacks the script", async () => {
+    // Scenario: "app" and "dep" both get a "generate" task configured as type: "worker".
+    // "dep" does NOT have "generate" in its package.json scripts. With the bug, the entry-target
+    // skip would treat dep#generate as a phantom (because the script is missing) and exclude it.
+    // The fix ensures only npmScript-typed targets are considered phantom.
+    const packageInfos = createPackageInfoWithScripts({
+      app: { deps: ["dep"], scripts: ["build", "generate"] },
+      dep: { deps: [], scripts: ["build"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos,
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: true,
+    });
+    builder.addTargetConfig("generate", {
+      type: "worker",
+      dependsOn: ["build"],
+    });
+    builder.addTargetConfig("build");
+
+    const targetGraph = await builder.build(["generate"]);
+    const graph = getGraphFromTargets(targetGraph);
+
+    expect(graph).toEqual([
+      ["__start", "app#generate"],
+      ["app#build", "app#generate"],
+      ["__start", "dep#generate"],
+      ["dep#build", "dep#generate"],
+      ["__start", "app#build"],
+      ["__start", "dep#build"],
+    ]);
+  });
+
+  it("skips worker entry targets when shouldRun resolves to false", async () => {
+    const packageInfos = createPackageInfoWithScripts({
+      "big-app": { deps: ["core-lib"], scripts: ["transpile", "bundle"] },
+      "tool-app": { deps: ["core-lib"], scripts: ["transpile", "bundle", "test:special"] },
+      "core-lib": { deps: [], scripts: ["transpile"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos,
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: true,
+    });
+    builder.addTargetConfig("transpile");
+    builder.addTargetConfig("bundle", {
+      dependsOn: ["transpile", "^^transpile"],
+    });
+    builder.addTargetConfig("test:special", {
+      type: "worker",
+      dependsOn: ["bundle"],
+      shouldRun: async (target) => Promise.resolve(target.packageName === "tool-app"),
+    });
+
+    const targetGraph = await builder.build(["test:special"]);
+    const graph = getGraphFromTargets(targetGraph);
+
+    expect(graph).toEqual([
+      ["__start", "tool-app#test:special"],
+      ["tool-app#bundle", "tool-app#test:special"],
+      ["__start", "tool-app#bundle"],
+      ["tool-app#transpile", "tool-app#bundle"],
+      ["core-lib#transpile", "tool-app#bundle"],
+      ["__start", "tool-app#transpile"],
+      ["__start", "core-lib#transpile"],
+    ]);
+  });
+
+  it("keeps worker entry targets when shouldRun is not set", async () => {
+    const packageInfos = createPackageInfoWithScripts({
+      app: { deps: ["dep"], scripts: ["build", "generate"] },
+      dep: { deps: [], scripts: ["build"] },
+    });
+
+    const builder = new WorkspaceTargetGraphBuilder({
+      root,
+      packageInfos,
+      enableTargetConfigMerging: false,
+      enablePhantomTargetOptimization: true,
+    });
+    builder.addTargetConfig("generate", {
+      type: "worker",
+      dependsOn: ["build"],
+    });
+    builder.addTargetConfig("build");
+
+    const targetGraph = await builder.build(["generate"]);
+    const graph = getGraphFromTargets(targetGraph);
+
+    expect(graph).toEqual([
+      ["__start", "app#generate"],
+      ["app#build", "app#generate"],
+      ["__start", "dep#generate"],
+      ["dep#build", "dep#generate"],
+      ["__start", "app#build"],
+      ["__start", "dep#build"],
     ]);
   });
 });

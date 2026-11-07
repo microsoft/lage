@@ -8,21 +8,29 @@
     "lint": "monorepo-scripts lint",
     "types": "tsc"
   },
-  "dependencies": {
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@microsoft/api-extractor": "7.52.9",
     "@swc/core": "^1.9.1",
     "@swc/jest": "^0.2.39",
-    "@types/eslint": "^8.0.0",
-    "@types/jest": "^30.0.0",
+    "@types/jju": "^1.4.5",
     "@types/node": "^16.18.3",
-    "@typescript-eslint/eslint-plugin": "^5.30.7",
-    "@typescript-eslint/parser": "^5.30.7",
-    "@typescript-eslint/types": "^5.30.7",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@typescript-eslint/types": "^8.0.0",
     "depcheck": "^1.4.7",
-    "eslint": "^8.20.0",
-    "eslint-plugin-file-extension-in-import-ts": "^1.0.1",
+    "eslint": "^9.0.0",
+    "eslint-plugin-file-extension-in-import-ts": "^2.1.1",
+    "globals": "^15.0.0",
     "jest": "^30.0.0",
-    "typescript": "~5.9.3",
-    "workspace-tools": "0.41.0",
+    "jju": "^1.4.0",
+    "typescript": "~6.0.0",
+    "typescript-eslint": "^8.0.0",
+    "workspace-tools-npm": "npm:workspace-tools@latest",
     "zimmerframe": "^1.1.4"
+  },
+  "rationale": {
+    "devDependencies": {
+      "workspace-tools-npm": "This must point to a different workspace-tools version to avoid circular deps"
+    }
   }
 }

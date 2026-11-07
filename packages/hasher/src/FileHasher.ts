@@ -23,6 +23,7 @@ export class FileHasher {
 
   constructor(private options: FileHashStoreOptions) {
     const { root } = options;
+    // Duplicates getCacheDirectoryRoot() to avoid a dependency on the cache package
     const cacheDirectory = path.join(root, "node_modules", ".cache", "lage");
     this.#manifestFile = path.join(cacheDirectory, "file_hashes.manifest");
   }

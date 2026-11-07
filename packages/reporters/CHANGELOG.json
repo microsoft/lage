@@ -2,6 +2,308 @@
   "name": "@lage-run/reporters",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "1.9.1",
+      "tag": "@lage-run/reporters_v1.9.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/reporters",
+            "commit": "41f78cc25b255e6871602456c4091e785b3320e6",
+            "comment": "Update dependency @ms-cloudpack/task-reporter to v0.21.7"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.14",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.15.13",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 18 Aug 2026 02:26:59 GMT",
+      "version": "1.9.0",
+      "tag": "@lage-run/reporters_v1.9.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "8a3a9eb6a5f3227d0525a021b64b671d5e3870ca",
+            "comment": "Remove unused `ChromeTraceEventsReporter` `concurrency` option that was not used"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Aug 2026 09:42:15 GMT",
+      "version": "1.8.6",
+      "tag": "@lage-run/reporters_v1.8.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.13",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.15.12",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "1.8.5",
+      "tag": "@lage-run/reporters_v1.8.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/reporters",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependency @ms-cloudpack/task-reporter to v0.21.6"
+          },
+          {
+            "author": "renovate@whitesourcesoftware.com",
+            "package": "@lage-run/reporters",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependency @ms-cloudpack/task-reporter to v0.21.5"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/logger to v1.5.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.12",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.15.11",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Jul 2026 22:12:55 GMT",
+      "version": "1.8.4",
+      "tag": "@lage-run/reporters_v1.8.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.15.10",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 20:21:25 GMT",
+      "version": "1.8.3",
+      "tag": "@lage-run/reporters_v1.8.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.10",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.15.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "1.8.2",
+      "tag": "@lage-run/reporters_v1.8.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.9",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.15.8",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 12 Jun 2026 20:31:24 GMT",
+      "version": "1.8.1",
+      "tag": "@lage-run/reporters_v1.8.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/scheduler-types to v0.4.8",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/reporters",
+            "comment": "Bump @lage-run/target-graph to v0.15.7",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "1.8.0",
+      "tag": "@lage-run/reporters_v1.8.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Add `TargetReporter` and `TargetLogger` helper types, and make all reporters implement that. Update the reporters' method signatures and internal validation to be strict about data types. Add `TargetData` type rolling up all observed target-related logs, and remove `TargetMessageData` type which was never actually used."
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Reporters should delete log entries from memory when no longer needed"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Apr 2026 03:39:42 GMT",
+      "version": "1.7.1",
+      "tag": "@lage-run/reporters_v1.7.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 06 Apr 2026 21:27:03 GMT",
+      "version": "1.7.0",
+      "tag": "@lage-run/reporters_v1.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Add testing options for BasicReporter and ProgressReporter. Fix ProgressReporter aborted tasks counts and add cleanup."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Update `@ms-cloudpack/task-reporter`, which should significantly improve `ProgressReporter` performance. Add `formatHrtime` helper and reduce formatting repetition across reporters."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Apr 2026 03:54:25 GMT",
+      "version": "1.6.0",
+      "tag": "@lage-run/reporters_v1.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/reporters",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Merge @lage-run/format-hrtime into @lage-run/reporters; re-export formatDuration, hrToSeconds, hrtimeDiff"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Add logMemory option to certain reporters"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 28 Mar 2026 00:04:36 GMT",
+      "version": "1.5.1",
+      "tag": "@lage-run/reporters_v1.5.1",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "1.5.1",
+      "tag": "@lage-run/reporters_v1.5.1",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/reporters",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update test dev dep names"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Mar 2026 23:52:35 GMT",
       "version": "1.5.0",
       "tag": "@lage-run/reporters_v1.5.0",

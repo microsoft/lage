@@ -1,8 +1,131 @@
 # Change Log - @lage-run/cache
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.6.9
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Bump @lage-run/config to v0.9.18
+- Bump @lage-run/reporters to v1.9.1
+- Bump @lage-run/target-graph to v0.15.13
+
+## 1.6.8
+
+Tue, 18 Aug 2026 02:26:59 GMT
+
+### Patches
+
+- Bump @lage-run/reporters to v1.9.0
+
+## 1.6.7
+
+Tue, 11 Aug 2026 09:42:15 GMT
+
+### Patches
+
+- Bump @lage-run/config to v0.9.17
+- Bump @lage-run/reporters to v1.8.6
+- Bump @lage-run/target-graph to v0.15.12
+
+## 1.6.6
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump @lage-run/config to v0.9.16
+- Bump @lage-run/reporters to v1.8.5
+- Bump @lage-run/target-graph to v0.15.11
+- Bump backfill-cache to v5.12.6
+- Bump backfill-config to v6.7.5
+- Bump backfill-logger to v5.4.3
+- Bump @lage-run/logger to v1.5.1
+
+## 1.6.5
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Patches
+
+- Bump @lage-run/config to v0.9.15
+- Bump @lage-run/reporters to v1.8.4
+- Bump @lage-run/target-graph to v0.15.10
+
+## 1.6.4
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- Bump @lage-run/config to v0.9.14
+- Bump @lage-run/reporters to v1.8.3
+- Bump @lage-run/target-graph to v0.15.9
+
+## 1.6.3
+
+Thu, 25 Jun 2026 04:59:29 GMT
+
+### Patches
+
+- Bump @lage-run/config to v0.9.13
+
+## 1.6.2
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Bump @lage-run/config to v0.9.12
+- Bump @lage-run/reporters to v1.8.2
+- Bump @lage-run/target-graph to v0.15.8
+
+## 1.6.1
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump @lage-run/config to v0.9.11
+- Bump @lage-run/reporters to v1.8.1
+- Bump @lage-run/target-graph to v0.15.7
+
+## 1.6.0
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Minor changes
+
+- Update cache provider `logger` option to use `TargetLogger` (elcraig@microsoft.com)
+
+## 1.5.1
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 1.5.0
+
+Mon, 06 Apr 2026 21:27:03 GMT
+
+### Minor changes
+
+- Add target property for controlling whether remote cache should be used for that target or not. (lutomanovic@microsoft.com)
+
+## 1.4.12
+
+Thu, 02 Apr 2026 03:54:25 GMT
+
+### Patches
+
+- Use cache directory helpers (elcraig@microsoft.com)
 
 ## 1.4.8
 

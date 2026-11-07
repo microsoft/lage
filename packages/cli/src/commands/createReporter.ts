@@ -1,27 +1,22 @@
 import { LogLevel } from "@lage-run/logger";
 import {
-  JsonReporter,
   AdoReporter,
+  BasicReporter,
+  ChromeTraceEventsReporter,
   GithubActionsReporter,
+  JsonReporter,
   LogReporter,
   ProgressReporter,
-  BasicReporter,
   VerboseFileLogReporter,
-  ChromeTraceEventsReporter,
+  type TargetReporter,
 } from "@lage-run/reporters";
-import type { BuiltInReporterName, ReporterInitOptions } from "../types/ReporterInitOptions.js";
-import type { Reporter } from "@lage-run/logger";
-import { findPackageRoot } from "workspace-tools";
 import fs from "fs";
+import isInteractive from "is-interactive";
 import path from "path";
 import { pathToFileURL } from "url";
-import isInteractive from "is-interactive";
-
-export interface CustomReportersOptions {
-  customReporters: Record<string, string> | undefined;
-  /** Monorepo root for resolving custom reporters*/
-  root: string;
-}
+import { findPackageRoot } from "workspace-tools";
+import type { BuiltInReporterName, ReporterName } from "../types/ReporterNames.js";
+import type { ReporterInitOptions } from "./initializeReporters.js";
 
 type MockImportReporter = (params: { reporterName: string; resolvedPath: string }) => unknown;
 
@@ -36,19 +31,29 @@ export function setMockImportReporter(mock: MockImportReporter | undefined): voi
   mockImportReporter = mock;
 }
 
+export function getLogLevel(options: Pick<ReporterInitOptions, "logLevel" | "verbose">): LogLevel {
+  return options.verbose ? LogLevel.verbose : LogLevel[options.logLevel || "info"];
+}
+
 /**
  * Create a reporter of the given type.
  *
  * NOTE: This is covered by tests in `initializeReporter.test.ts`, `customReporter.test.ts`, and
  * E2E `customReporter.test.ts`.
+ *
+ * @param customReporterPath For a custom reporter, this is its absolute path (not verified to exist yet)
  */
 export async function createReporter(
-  reporter: string,
-  options: ReporterInitOptions,
-  customReportersOptions: CustomReportersOptions | undefined
-): Promise<Reporter> {
-  const { verbose, grouped, logLevel: logLevelName, concurrency, profile, progress, logFile, indented } = options;
-  const logLevel = LogLevel[logLevelName];
+  reporter: ReporterName,
+  options: ReporterInitOptions & Required<Pick<ReporterInitOptions, "concurrency">>,
+  customReporterPath?: string
+): Promise<TargetReporter> {
+  const { grouped, concurrency, profile, progress, logFile, indented, logMemory } = options;
+  const logLevel = getLogLevel(options);
+
+  if (customReporterPath) {
+    return loadCustomReporterModule(reporter, options, customReporterPath);
+  }
 
   const lageRoot = findPackageRoot(__filename)!;
   const packageJson = JSON.parse(fs.readFileSync(path.join(lageRoot, "package.json"), "utf-8"));
@@ -57,65 +62,63 @@ export async function createReporter(
   switch (reporter as BuiltInReporterName) {
     case "profile":
       return new ChromeTraceEventsReporter({
-        concurrency,
         outputFile: typeof profile === "string" ? profile : undefined,
       });
     case "json":
-      return new JsonReporter({ logLevel, indented: indented ?? false });
+      return new JsonReporter({ logLevel, indented: indented ?? false, logMemory });
     case "azureDevops":
     case "adoLog":
-      return new AdoReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+      return new AdoReporter({ grouped, logLevel, logMemory });
 
     case "githubActions":
     case "gha":
-      return new GithubActionsReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+      return new GithubActionsReporter({ grouped, logLevel, logMemory });
 
     case "npmLog":
     case "old":
-      return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+      return new LogReporter({ grouped, logLevel, logMemory });
+
+    case "basic":
+      return new BasicReporter({ concurrency, version, logMemory });
 
     case "fancy":
-      return new ProgressReporter({ concurrency, version });
+      return new ProgressReporter({ concurrency, version, logMemory });
 
     case "verboseFileLog":
     case "vfl":
-      return new VerboseFileLogReporter(logFile);
-  }
-
-  // Check if it's a custom reporter defined in config
-  if (customReportersOptions?.customReporters?.[reporter]) {
-    return loadCustomReporterModule(reporter, options, customReportersOptions);
+      return new VerboseFileLogReporter({ logFile, logMemory });
   }
 
   // Default reporter behavior - auto-detect CI environments
   if (process.env.GITHUB_ACTIONS) {
-    return new GithubActionsReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel });
+    return new GithubActionsReporter({ grouped: true, logLevel, logMemory });
   }
-
   if (process.env.TF_BUILD) {
-    return new AdoReporter({ grouped: true, logLevel: verbose ? LogLevel.verbose : logLevel });
+    return new AdoReporter({ grouped: true, logLevel, logMemory });
   }
 
-  if (progress && isInteractive() && !(logLevel >= LogLevel.verbose || verbose || grouped)) {
-    return new BasicReporter({ concurrency, version });
+  // --progress defaults to true in local runs but is overridden by --grouped or --verbose
+  if (progress && isInteractive() && !grouped && logLevel < LogLevel.verbose) {
+    // For known slow terminals, use the fastest BasicReporter.
+    // Otherwise use ProgressReporter which is more informative (and reasonably fast after fixes).
+    return process.env.CODESPACES || process.env.SSH_CONNECTION || process.env.SSH_CLIENT
+      ? new BasicReporter({ concurrency, version, logMemory })
+      : new ProgressReporter({ concurrency, version, logMemory });
   }
 
-  return new LogReporter({ grouped, logLevel: verbose ? LogLevel.verbose : logLevel });
+  return new LogReporter({ grouped, logLevel, logMemory });
 }
 
 async function loadCustomReporterModule(
-  reporter: string,
+  reporter: ReporterName,
   options: ReporterInitOptions,
-  customReportersOptions: Required<CustomReportersOptions>
-): Promise<Reporter> {
-  const { customReporters, root } = customReportersOptions;
-  const resolvedPath = path.resolve(root, customReporters![reporter]);
-
+  resolvedPath: string
+): Promise<TargetReporter> {
   if (!fs.existsSync(resolvedPath)) {
     throw new Error(`Custom reporter "${reporter}" file "${resolvedPath}" does not exist`);
   }
 
-  let reporterInstance: Reporter | undefined;
+  let reporterInstance: TargetReporter | undefined;
   try {
     // Use dynamic import to load the custom reporter module
     // This works with both ESM (.mjs, .js with type: module) and CommonJS (.cjs, .js) files

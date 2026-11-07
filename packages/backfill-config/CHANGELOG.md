@@ -1,8 +1,25 @@
 # Change Log - backfill-config
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 6.7.5
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump backfill-logger to v5.4.3
+
+## 6.7.3
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
 
 ## 6.7.2
 

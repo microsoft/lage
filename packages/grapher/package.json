@@ -1,0 +1,30 @@
+{
+  "name": "@lage-run/grapher",
+  "version": "0.2.33",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/lage",
+    "directory": "packages/grapher"
+  },
+  "bin": "./bin/grapher.js",
+  "exports": null,
+  "files": [
+    "lib/!(__*)",
+    "lib/!(__*)/**/*"
+  ],
+  "scripts": {
+    "build": "yarn types && yarn transpile",
+    "transpile": "monorepo-scripts transpile",
+    "types": "yarn run -T tsc",
+    "test": "yarn run -T jest",
+    "lint": "monorepo-scripts lint"
+  },
+  "dependencies": {
+    "commander": "9.5.0",
+    "workspace-tools": "workspace:^"
+  },
+  "devDependencies": {
+    "@lage-run/monorepo-scripts": "workspace:^"
+  }
+}

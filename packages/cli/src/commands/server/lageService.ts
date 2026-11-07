@@ -1,21 +1,22 @@
-import { type ConfigOptions, getConfig, getConcurrency, getMaxWorkersPerTask } from "@lage-run/config";
-import type { Logger } from "@lage-run/logger";
-import { ConnectError, Code, type ILageService } from "@lage-run/rpc";
-import { getStartTargetId, getTargetId, type TargetGraph } from "@lage-run/target-graph";
-import { type DependencyMap, getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
-import { createTargetGraph } from "../run/createTargetGraph.js";
-import { type Readable } from "stream";
-import { type Pool, AggregatedPool } from "@lage-run/worker-threads-pool";
+import { type ConfigOptions, getConcurrency, getConfig, getMaxWorkersPerTask } from "@lage-run/config";
 import { getInputFiles, type PackageTree, TargetHasher } from "@lage-run/hasher";
-import { getOutputFiles } from "./getOutputFiles.js";
-import { MemoryStream } from "./MemoryStream.js";
-import { getBuiltInRunners } from "../../getBuiltInRunners.js";
-import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
+import { formatHrtime, hrtimeDiff, type TargetLogger } from "@lage-run/reporters";
+import { Code, ConnectError, type ILageService, type LageServiceRunTargetResult } from "@lage-run/rpc";
 import type { TargetRun } from "@lage-run/scheduler-types";
-import { formatDuration, hrToSeconds, hrtimeDiff } from "@lage-run/format-hrtime";
-import path from "path";
+import { getStartTargetId, getTargetId, type TargetGraph } from "@lage-run/target-graph";
+import { AggregatedPool, type Pool } from "@lage-run/worker-threads-pool";
 import fs from "fs";
+import path from "path";
+import type { Readable } from "stream";
+import { type DependencyMap, getPackageInfos, getWorkspaceManagerRoot } from "workspace-tools";
+import { getBuiltInRunners } from "../../getBuiltInRunners.js";
+import type { LageServiceLogData } from "../../types/LageServiceLogData.js";
+import { createTargetGraph } from "../run/createTargetGraph.js";
+import { filterPipelineDefinitions } from "../run/filterPipelineDefinitions.js";
 import { getGlobalInputHashFilePath, getHashFilePath } from "../targetHashFilePath.js";
+import { getOutputFiles } from "./getOutputFiles.js";
+import type { ServerCommandOptions } from "./index.js";
+import { MemoryStream } from "./MemoryStream.js";
 
 interface LageServiceContext {
   config: ConfigOptions;
@@ -28,26 +29,33 @@ interface LageServiceContext {
 }
 
 let initializedPromise: Promise<LageServiceContext> | undefined;
+
 interface ServiceControls {
   abortController: AbortController;
   countdownToShutdown: () => void;
   clearCountdown: () => void;
 }
-interface InitializeOptions {
+
+interface InitializeOptions extends Pick<ServerCommandOptions, "nodeArg" | "concurrency">, Required<Pick<ServerCommandOptions, "tasks">> {
   cwd: string;
-  logger: Logger;
+  logger: TargetLogger;
   serverControls: ServiceControls;
-  concurrency?: number;
-  nodeArg?: string;
   taskArgs: string[];
-  tasks: string[];
 }
 
 function formatBytes(bytes: number) {
   return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
 }
 
-async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, taskArgs, concurrency, tasks }: InitializeOptions) {
+async function createInitializedPromise({
+  cwd,
+  logger,
+  serverControls,
+  nodeArg,
+  taskArgs,
+  concurrency,
+  tasks,
+}: InitializeOptions): Promise<LageServiceContext> {
   if (initializedPromise) {
     return initializedPromise;
   }
@@ -58,31 +66,18 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
 
   logger.info(`Initializing with ${maxWorkers} workers, tasks: ${tasks.join(", ")}`);
 
-  const { pipeline } = config;
-
   const packageInfos = getPackageInfos(root);
 
   logger.info("Initializing target graph");
-  const targetGraph = await createTargetGraph({
-    logger,
-    root,
-    dependencies: false,
-    dependents: false,
-    ignore: [],
-    pipeline,
-    repoWideChanges: config.repoWideChanges,
-    scope: undefined,
-    since: undefined,
-    outputs: config.cacheOptions.outputGlob,
-    tasks,
-    packageInfos,
-    priorities: config.priorities,
-    enableTargetConfigMerging: config.enableTargetConfigMerging,
-    enablePhantomTargetOptimization: config.enablePhantomTargetOptimization,
-  });
+
+  // Omit git changes: the service reuses this graph without a per-request change snapshot.
+  // It executes individual package/task requests, not their dependencies, so staged target
+  // optimization could leave requested targets as no-ops.
+  const targetGraph = await createTargetGraph({ root, packages: Object.keys(packageInfos), config, tasks, packageInfos });
 
   const targetHasher = new TargetHasher({
     root,
+    packageInfos,
     environmentGlob: config.cacheOptions?.environmentGlob ?? [],
     logger,
     cacheKey: config.cacheOptions?.cacheKey,
@@ -140,9 +135,6 @@ async function createInitializedPromise({ cwd, logger, serverControls, nodeArg, 
 
 /**
  * Initializes the lageService: the extra "initializePromise" ensures only one initialization is done at a time across threads
- * @param cwd
- * @param logger
- * @returns
  */
 async function initialize(options: InitializeOptions): Promise<LageServiceContext> {
   initializedPromise = createInitializedPromise(options);
@@ -152,19 +144,14 @@ async function initialize(options: InitializeOptions): Promise<LageServiceContex
 interface CreateLageServiceOptions {
   cwd: string;
   serverControls: ServiceControls;
-  logger: Logger;
+  logger: TargetLogger;
   concurrency?: number;
   tasks: string[];
 }
 
-export async function createLageService({
-  cwd,
-  serverControls,
-  logger,
-  concurrency,
-  tasks,
-}: CreateLageServiceOptions): Promise<ILageService> {
+export function createLageService({ cwd, serverControls, logger, concurrency, tasks }: CreateLageServiceOptions): ILageService {
   return {
+    // eslint-disable-next-line @typescript-eslint/require-await
     async ping() {
       return { pong: true };
     },
@@ -224,19 +211,6 @@ export async function createLageService({
         threadId: 0,
       };
 
-      let results: {
-        packageName?: string;
-        task: string;
-        cwd: string;
-        exitCode: number;
-        inputs: string[];
-        outputs: string[];
-        stdout: string;
-        stderr: string;
-        id: string;
-        globalInputHashFile: string;
-      };
-
       const inputs = getInputFiles(target, dependencyMap, packageTree);
 
       for (const dep of target.dependencies) {
@@ -258,11 +232,13 @@ export async function createLageService({
         }
 
         fs.writeFileSync(targetHashFullPath, await targetHasher.hash(target));
-      } catch (e) {
+      } catch {
         throw new ConnectError(`Error writing target hash file: ${targetHashFullPath}`, Code.Internal);
       }
 
       const targetGlobalInputHashRelativePath = getGlobalInputHashFilePath(target);
+      let execErrorText: string | undefined;
+      let hasError = false;
 
       try {
         await pool.exec(
@@ -295,68 +271,42 @@ export async function createLageService({
             targetRun.status = "success";
             targetRun.duration = hrtimeDiff(targetRun.startTime, process.hrtime());
 
-            logger.info(
-              `[${worker.threadId}] ${request.packageName}#${request.task} end: ${formatDuration(hrToSeconds(targetRun.duration))}`
-            );
+            logger.info(`[${worker.threadId}] ${request.packageName}#${request.task} end: ${formatHrtime(targetRun.duration)}`);
             pipedStdout.unpipe(writableStdout);
             pipedStderr.unpipe(writableStderr);
           }
         );
-
-        const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
-        const targetHashFileRelativePath = path.relative(root, targetHashFullPath).replace(/\\/g, "/");
-        outputs.push(targetHashFileRelativePath);
-
-        results = {
-          packageName: request.packageName,
-          task: request.task,
-          cwd: target.cwd,
-          exitCode: 0,
-          inputs,
-          outputs,
-          stdout: writableStdout.toString(),
-          stderr: writableStderr.toString(),
-          id,
-          globalInputHashFile: targetGlobalInputHashRelativePath,
-        };
       } catch (e) {
-        const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
-        const targetHashFileRelativePath = path.relative(root, targetHashFullPath).replace(/\\/g, "/");
-        outputs.push(targetHashFileRelativePath);
-
+        execErrorText = e instanceof Error ? e.toString() : "";
+        hasError = true;
         targetRun.status = "failed";
         targetRun.duration = hrtimeDiff(targetRun.startTime, process.hrtime());
-
-        results = {
-          packageName: request.packageName,
-          task: request.task,
-          cwd: target.cwd,
-          exitCode: 1,
-          inputs,
-          outputs,
-          stdout: "",
-          stderr: e instanceof Error ? e.toString() : "",
-          id,
-          globalInputHashFile: targetGlobalInputHashRelativePath,
-        };
       }
 
+      const outputs = getOutputFiles(root, target, config.cacheOptions?.outputGlob, packageTree);
+      const targetHashFileRelativePath = path.relative(root, targetHashFullPath).replace(/\\/g, "/");
+      outputs.push(targetHashFileRelativePath);
+
+      const partialResults: Omit<LageServiceRunTargetResult, "stdout" | "stderr"> = {
+        packageName: request.packageName,
+        task: request.task,
+        cwd: target.cwd,
+        exitCode: hasError ? 1 : 0,
+        inputs,
+        outputs,
+        id,
+        globalInputHashFile: targetGlobalInputHashRelativePath,
+      };
+      const results: LageServiceRunTargetResult = {
+        ...partialResults,
+        stdout: hasError ? "" : writableStdout.toString(),
+        stderr: hasError ? execErrorText : writableStderr.toString(),
+      };
+
       logger.info(
-        `${request.packageName}#${request.task} results: \n${JSON.stringify(
-          {
-            packageName: results.packageName,
-            task: results.task,
-            cwd: results.cwd,
-            exitCode: results.exitCode,
-            inputs: results.inputs,
-            outputs: results.outputs,
-            id: results.id,
-            globalInputHashFile: targetGlobalInputHashRelativePath,
-          },
-          null,
-          2
-        )}\n------`,
-        results
+        `${request.packageName}#${request.task} results: \n${JSON.stringify(partialResults, null, 2)}\n------`,
+        undefined,
+        results satisfies LageServiceLogData
       );
 
       return results;

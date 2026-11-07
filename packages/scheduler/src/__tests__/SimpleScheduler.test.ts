@@ -1,10 +1,9 @@
+import { describe, expect, it } from "@jest/globals";
 import { TargetHasher } from "@lage-run/hasher";
 import { Logger } from "@lage-run/logger";
 import { NoOpRunner } from "@lage-run/runners";
 import { getStartTargetId, type Target, type TargetGraph } from "@lage-run/target-graph";
-import fs from "fs";
-import os from "os";
-import path from "path";
+import { createTempDir } from "@lage-run/test-utilities";
 import { SimpleScheduler } from "../SimpleScheduler.js";
 import { FailOnPackageRunner } from "./fixtures/FailOnPackageRunner.js";
 import { InProcPool, SingleSchedulePool } from "./fixtures/pools.js";
@@ -65,7 +64,7 @@ function dropTiming(obj: any) {
 
 describe("SimpleScheduler", () => {
   it("should run all targets, if no target dependencies exists in the target graph", async () => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "no-target-deps"));
+    const root = createTempDir({ prefix: "no-target-deps-" });
     const logger = new Logger();
 
     const runner = new NoOpRunner();
@@ -115,7 +114,7 @@ describe("SimpleScheduler", () => {
   });
 
   it("should abort early throwing an error, if one target fails without continue on error", async () => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "early-throw"));
+    const root = createTempDir({ prefix: "early-throw-" });
     const logger = new Logger();
 
     const runner = new FailOnPackageRunner("d");
@@ -161,7 +160,7 @@ describe("SimpleScheduler", () => {
   });
 
   it("should either be success or failed, if one target fails with continue on error", async () => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "continue-on-error"));
+    const root = createTempDir({ prefix: "continue-on-error-" });
     const logger = new Logger();
 
     const runner = new FailOnPackageRunner("d");
@@ -208,7 +207,7 @@ describe("SimpleScheduler", () => {
   });
 
   it("should return expected summary, aborted case", async () => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "abort"));
+    const root = createTempDir({ prefix: "abort-" });
     const logger = new Logger();
 
     const runner = new FailOnPackageRunner("d");

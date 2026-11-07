@@ -1,10 +1,8 @@
 ---
-title: Migration Guide
+title: Migration guide
 ---
 
 import { Badge } from "@site/src/components/Badge";
-
-# Migration Guide
 
 ## v1.x -> v2.1
 
@@ -12,14 +10,14 @@ import { Badge } from "@site/src/components/Badge";
 
 Lage has many changes from 1.x to 2.x. This migration guide will go over major changes and breaking changes since 1.x.
 
-### New Features
+### New features
 
 - Revamped Website! You're reading it now!
 - New non-`npmlog`-based default logger
 - The reporter `adoLog` has been renamed to `azureDevops` (old name is still useable, just deprecating in the next major version!)
 - `WorkerRunner` to help make tools like lint or TypeScript run super fast by reusing context (e.g. ESLint instance, TypeScript program) in a dedicated worker. This must be configured per tool; see examples for [TypeScript](./make-ts-fast.mdx), [ESLint](./make-lint-fast.mdx), and [Jest](./make-jest-fast.mdx).
 
-### Breaking Changes
+### Breaking changes
 
 - `lage` requires **Node 16** ~~or using the `--experimental-abortcontroller` flag in Node 14~~ (the intent was to continue Node 14 support, but this accidentally drifted over time due to Yarn 4 not enforcing that dependencies match the repo's `package.json` `engines`).
   - As of writing, the practical minimum Node version is 18. This is most likely to be an issue if you're caching to Azure blob storage.

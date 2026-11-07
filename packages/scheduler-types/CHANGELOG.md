@@ -1,8 +1,81 @@
 # Change Log - @lage-run/scheduler-types
 
-<!-- This log was last generated on Tue, 10 Feb 2026 22:12:02 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.4.14
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.13
+
+## 0.4.13
+
+Tue, 11 Aug 2026 09:42:15 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.12
+
+## 0.4.12
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump @lage-run/target-graph to v0.15.11
+
+## 0.4.11
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.10
+
+## 0.4.10
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.9
+
+## 0.4.9
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.8
+
+## 0.4.8
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.7
+
+## 0.4.2
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 0.4.0
+
+Thu, 02 Apr 2026 03:54:25 GMT
+
+### Minor changes
+
+- Update cleanup() return type to allow Promise\<void> (email not defined)
 
 ## 0.3.29
 

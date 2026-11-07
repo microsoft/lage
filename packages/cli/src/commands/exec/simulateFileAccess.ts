@@ -1,8 +1,8 @@
-import type { Logger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
 import path from "path";
 import fs from "fs";
 
-export async function simulateFileAccess(logger: Logger, root: string, inputs: string[], outputs: string[]): Promise<void> {
+export function simulateFileAccess(logger: TargetLogger, root: string, inputs: string[], outputs: string[]): void {
   logger.silly("Now probing and touching inputs and outputs");
 
   // Helper to get all directory parts up to root
@@ -34,7 +34,7 @@ export async function simulateFileAccess(logger: Logger, root: string, inputs: s
       } else {
         inputDirectories.add(input);
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
 
@@ -46,7 +46,7 @@ export async function simulateFileAccess(logger: Logger, root: string, inputs: s
     try {
       // Simulate enumerating a directory
       fs.readdirSync(path.join(root, directory));
-    } catch (e) {
+    } catch {
       // ignore
     }
   }
@@ -60,7 +60,7 @@ export async function simulateFileAccess(logger: Logger, root: string, inputs: s
 
     try {
       fs.utimesSync(path.join(root, output), time, time);
-    } catch (e) {
+    } catch {
       // ignore
     }
   }
@@ -68,7 +68,7 @@ export async function simulateFileAccess(logger: Logger, root: string, inputs: s
   for (const directory of outputDirectories) {
     try {
       fs.utimesSync(path.join(root, directory), time, time);
-    } catch (e) {
+    } catch {
       // ignore
     }
   }

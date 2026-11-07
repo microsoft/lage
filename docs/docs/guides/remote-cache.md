@@ -10,6 +10,11 @@ The theory is that when the CI job runs, it'll produce a "last known good" cache
 
 `lage` has a "fallback cache" mechanism. `lage` will look for cache in layers: first on disk, then on remote server. `lage` will fill the local cache with the remote one if there is a remote cache hit. Next, `lage` will save the locally built cache into the remote cache if the environment variable `LAGE_WRITE_REMOTE_CACHE` is set _and_ if the cache is not configured to use a local provider.
 
+:::warning Uploading the cache to a remote is _not_ the default!
+
+Without the `LAGE_WRITE_REMOTE_CACHE` environment variable, `lage` no longer uploads build caches to the remote server.
+:::
+
 ## Setting up remote cache - Azure Blob Storage
 
 Azure Blob Storage cache is available as a plugin: `@lage-run/azure-blob-cache-storage`. This plugin must be installed separately.
@@ -102,7 +107,7 @@ Create a secret named "BACKFILL_CACHE_PROVIDER_OPTIONS":
 {"connectionString":"the **read-write** connection string","container":"CONTAINER NAME"}
 ```
 
-`process.env.BACKFILL_CACHE_PROVIDER_OPTIONS`is evaluated via backfill (see [`getEnvConfig()`](https://github.com/microsoft/lage/blob/master/packages/backfill-config/src/envConfig.ts#L82) in `backfill-config`).
+`process.env.BACKFILL_CACHE_PROVIDER_OPTIONS`is evaluated via backfill (see [`getEnvConfig()`](https://github.com/microsoft/lage/blob/main/packages/backfill-config/src/envConfig.ts#L82) in `backfill-config`).
 
 For the Azure Blob cache provider with a non-sas/key-based `connectionString` (storage account endpoint) requiring [Azure Identity](https://learn.microsoft.com/en-us/javascript/api/overview/azure/identity-readme) authentication, you can pass a `credentialName` option in the plugin config or via the `AZURE_IDENTITY_CREDENTIAL_NAME` environment variable. (Do not use `BACKFILL_CACHE_PROVIDER_OPTIONS` in this case.) Supported options are:
 
@@ -114,16 +119,31 @@ For the Azure Blob cache provider with a non-sas/key-based `connectionString` (s
 
 Note that all are part of the [DefaultAzureCredential](https://learn.microsoft.com/en-us/azure/developer/javascript/sdk/authentication/credential-chains#use-defaultazurecredential-for-flexibility) credential chain, but `DefaultAzureCredential` itself is not used.
 
-:::note
-
-### Uploading cache to a remote is _not_ the default
-
-Without the `LAGE_WRITE_REMOTE_CACHE` environment variable, `lage` no longer uploads build caches to the remote server.
-
-### Accessing environment variables
-
-Lage picks up your `.env` file contents using [`dotenv`](https://www.npmjs.com/package/dotenv) utility under the hood (see [`backfill-utils-dotenv` implementation](https://github.com/microsoft/lage/blob/master/packages/backfill-utils-dotenv/README.md)).
+## Accessing environment variables
 
 Need to access environment variables from the `.env` file in your application? You would need to setup a mechanism to inject them. Try using utilities like `dotenv` (for Node.js) or [`env-cmd`](https://www.npmjs.com/package/env-cmd) (for executing commands).
 
-:::
+## Disabling remote cache for specific targets
+
+You can disable remote cache for individual targets by setting `skipRemoteCache: true` in the pipeline configuration. This is useful when:
+
+- The package output is large and storing it in remote cache is costly.
+- It is faster to rebuild the package locally than to download it from the remote cache.
+
+```js
+/** @type {import("lage").ConfigFileOptions} */
+const config = {
+  pipeline: {
+    build: {
+      dependsOn: ["^build"]
+    },
+    // Keep local cache but skip remote cache for this specific package
+    "my-package#build": {
+      dependsOn: ["^build"],
+      cache: true,
+      skipRemoteCache: true
+    }
+  }
+};
+module.exports = config;
+```

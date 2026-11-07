@@ -1,8 +1,11 @@
 import { Command } from "commander";
 import { action } from "./action.js";
 import { addOptions } from "../addOptions.js";
+import type { FilterCliOptions, LoggerCliOptions, PoolCliOptions, RunCliOptions, RunnerCliOptions } from "../options.js";
 
-const command: Command = new Command("run");
+export type RunCommandOptions = FilterCliOptions & LoggerCliOptions & PoolCliOptions & RunnerCliOptions & RunCliOptions;
+
+const command: Command = new Command("run").description("Run commands in a target graph");
 
 addOptions("filter", command);
 addOptions("logger", command);
@@ -12,6 +15,7 @@ addOptions("run", command);
 
 command
   .action(action)
+  // extras are passed to the tasks
   .allowUnknownOption(true)
   .addHelpCommand("[run] command1 [command2...commandN] [options]", "run commands")
   .addHelpText(
@@ -42,7 +46,7 @@ Scoped to "package-a" and "package-b" only:
 
 Scoped to packages that have changed in the current branch against a target merge branch:
 
-    $ lage build test lint --since origin/master
+    $ lage build test lint --since origin/main
 
 ### Providing node.js arguments for each command
 
@@ -76,7 +80,7 @@ Or combine multiple reporters (e.g. Azure DepOps with VerboseFileLog)
 
 Ignoring files when calculating the scope with --since in addition to files specified in lage.config:
 
-    $ lage build test lint --since origin/master --ignore "package.json" "yarn.lock" "**/.azure-pipelines/**"
+    $ lage build test lint --since origin/main --ignore "package.json" "yarn.lock" "**/.azure-pipelines/**"
 
 `
   );

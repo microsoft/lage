@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/reporters",
-  "version": "1.5.0",
+  "version": "1.9.1",
   "description": "Log reporters for Lage",
   "repository": {
     "type": "git",
@@ -11,6 +11,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "api": "monorepo-scripts api",
     "build": "yarn types && yarn transpile",
     "transpile": "monorepo-scripts transpile",
     "types": "yarn run -T tsc",
@@ -18,18 +19,16 @@
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {
-    "@lage-run/format-hrtime": "workspace:^",
     "@lage-run/logger": "workspace:^",
     "@lage-run/scheduler-types": "workspace:^",
     "@lage-run/target-graph": "workspace:^",
-    "@ms-cloudpack/task-reporter": "0.19.0",
+    "@ms-cloudpack/task-reporter": "0.21.7",
     "ansi-regex": "5.0.1",
-    "chalk": "4.1.2",
-    "gradient-string": "2.0.2"
+    "chalk": "4.1.2"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
-    "memory-streams": "^0.1.3"
+    "@lage-run/test-utilities": "workspace:^"
   },
   "files": [
     "lib/!(__*)",

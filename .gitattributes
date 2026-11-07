@@ -5,3 +5,4 @@
 *.jpeg binary
 *.ttf binary
 *.webm binary
+*.json  linguist-language=JSON-with-Comments

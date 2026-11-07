@@ -1,5 +1,5 @@
 ---
-title: Make ESLint Fast
+title: Make ESLint fast
 tags:
   - version 2
 ---
@@ -16,11 +16,9 @@ To combat this, a typical task runner spawns a new ESLint process **per package*
 
 How can we have the cake and eat it too? Easy! Use dedicated workers!
 
-## Worker Runner
+## Worker runner
 
 `lage` solves this with dedicated workers. The idea is simple: if all of the packages in your monorepo use the same ESLint configuration, then you can save the bootstrap time by creating a _pool_ of ESLint instances (say, one per CPU core minus one). And have `lage` feed it files to lint per package. `lage` scheduler feeds these to the worker if work is _needed_. Caching, scoping, and pipeline all continue to work the same way!
-
-## Let's see some code!
 
 First, let's change our `lint` task configuration in the pipeline to a `"worker"` type:
 

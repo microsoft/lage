@@ -1,16 +1,10 @@
+import { getConfig } from "@lage-run/config";
 import createLogger from "@lage-run/logger";
 import { getPackageInfosAsync, getWorkspaceManagerRoot, type PackageInfos } from "workspace-tools";
-import { getConfig } from "@lage-run/config";
 import { getFilteredPackages } from "../../filter/getFilteredPackages.js";
-import type { FilterOptions } from "../../types/FilterOptions.js";
+import type { AffectedCommandOptions } from "./index.js";
 
-interface AffectedOptions extends FilterOptions {
-  outputFormat?: "json" | "graph" | "default";
-}
-
-export async function affectedAction(options: AffectedOptions): Promise<void> {
-  const { dependencies, dependents, since, scope, ignore, outputFormat } = options;
-
+export async function affectedAction(options: AffectedCommandOptions): Promise<void> {
   const cwd = process.cwd();
   const config = await getConfig(cwd);
   const logger = createLogger();
@@ -18,20 +12,10 @@ export async function affectedAction(options: AffectedOptions): Promise<void> {
   const root = getWorkspaceManagerRoot(cwd)!;
   const packageInfos = await getPackageInfosAsync(root);
 
-  const packages = getFilteredPackages({
-    root,
-    logger,
-    packageInfos,
-    includeDependencies: dependencies,
-    includeDependents: dependents,
-    since,
-    scope,
-    repoWideChanges: config.repoWideChanges,
-    sinceIgnoreGlobs: ignore,
-  });
+  const packages = getFilteredPackages({ root, logger, packageInfos, options, config });
 
   let output = "";
-  switch (outputFormat) {
+  switch (options.outputFormat) {
     case "graph":
       output = renderGraph({ packages, packageInfos });
       break;

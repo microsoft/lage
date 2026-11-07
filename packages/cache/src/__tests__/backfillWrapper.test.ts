@@ -1,8 +1,20 @@
+import { afterAll, beforeEach, describe, expect, it } from "@jest/globals";
 import type { CustomCacheStorageConfig } from "backfill-config";
 import path from "path";
-import { createBackfillLogger, createBackfillCacheConfig } from "../backfillWrapper.js";
+import { createBackfillCacheConfig, createBackfillLogger } from "../backfillWrapper.js";
 
 describe("backfill-config", () => {
+  const originalEnv = process.env;
+
+  beforeEach(() => {
+    // Note: jest-setup.js clears all BACKFILL_ vars that might have come from CI
+    process.env = { ...originalEnv };
+  });
+
+  afterAll(() => {
+    process.env = originalEnv;
+  });
+
   it("should read values from environment variables", () => {
     process.env.BACKFILL_CACHE_PROVIDER = "azure-blob";
     process.env.BACKFILL_CACHE_PROVIDER_OPTIONS = JSON.stringify({ connectionString: "somestring", container: "somecontainer" });
@@ -11,7 +23,6 @@ describe("backfill-config", () => {
     const fixture = path.join(__dirname, "fixtures/backfill-config");
     const config = createBackfillCacheConfig(fixture, {}, dummyLogger);
 
-    // azure-blob env var is now mapped to the custom plugin config
     expect(config.cacheStorageConfig.provider).toBe("custom");
 
     const cacheStorageConfig = config.cacheStorageConfig as CustomCacheStorageConfig;
@@ -19,9 +30,6 @@ describe("backfill-config", () => {
     const cacheOptions = cacheStorageConfig.options as { connectionString: string; container: string };
     expect(cacheOptions.connectionString).toBe("somestring");
     expect(cacheOptions.container).toBe("somecontainer");
-
-    delete process.env.BACKFILL_CACHE_PROVIDER;
-    delete process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
   });
 
   it("should let environment variables override values given in config parameter", () => {
@@ -40,10 +48,6 @@ describe("backfill-config", () => {
       dummyLogger
     );
 
-    // azure-blob env var is now mapped to the custom plugin config
     expect(config.cacheStorageConfig.provider).toBe("custom");
-
-    delete process.env.BACKFILL_CACHE_PROVIDER;
-    delete process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
   });
 });

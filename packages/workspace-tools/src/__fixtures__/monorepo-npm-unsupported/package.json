@@ -1,0 +1,14 @@
+{
+  "name": "monorepo-npm-unsupported",
+  "license": "MIT",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "engines": {
+    "npm": "6.x"
+  }
+}

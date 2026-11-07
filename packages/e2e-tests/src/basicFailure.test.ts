@@ -1,3 +1,4 @@
+import { afterEach, describe, expect, it } from "@jest/globals";
 import type execa from "execa";
 import { Monorepo } from "./mock/monorepo.js";
 import { getStatusEntriesData, parseNdJson } from "./parseNdJson.js";
@@ -19,12 +20,12 @@ describe("basic failure case where a dependent target has failed", () => {
         c: {},
       },
     });
-    await repo.install();
+    repo.prepare();
 
     let results: execa.ExecaError<string> | undefined;
 
     try {
-      await repo.run("test");
+      await repo.runLage("test");
     } catch (e) {
       results = e as execa.ExecaError<string>;
       expect(results.exitCode).not.toBe(0);
@@ -53,12 +54,12 @@ describe("basic failure case where a dependent target has failed", () => {
         c: {},
       },
     });
-    await repo.install();
+    repo.prepare();
 
     let results: execa.ExecaError<string> | undefined;
 
     try {
-      await repo.run("test", ["--continue"]);
+      await repo.runLage("test", ["--continue"]);
       expect(true).toBe(false); // should not get here
     } catch (e) {
       results = e as execa.ExecaError<string>;

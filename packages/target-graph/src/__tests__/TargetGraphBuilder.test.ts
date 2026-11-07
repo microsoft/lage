@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { TargetGraphBuilder } from "../TargetGraphBuilder.js";
 import type { Target } from "../types/Target.js";
 
@@ -177,6 +178,65 @@ describe("Target Graph Builder", () => {
         },
       ]
     `);
+  });
+
+  it("preserves shared dependencies, entry order and priorities without modifying the source graph", () => {
+    const builder = new TargetGraphBuilder();
+    for (const [name, priority] of [
+      ["a", 5],
+      ["b", 2],
+      ["c", 3],
+      ["d", 7],
+      ["outside", 1],
+    ] as const) {
+      builder.addTarget(createTarget(name, "build", priority));
+    }
+    builder.addDependency("b#build", "a#build");
+    builder.addDependency("c#build", "a#build");
+    builder.addDependency("d#build", "b#build");
+    builder.addDependency("d#build", "c#build");
+    const originalTargets = [...builder.targets.values()].map((target) => ({
+      ...target,
+      dependencies: [...target.dependencies],
+      dependents: [...target.dependents],
+    }));
+
+    const graph = builder.subgraph(["a#build", "c#build", "a#build", "missing#build"]);
+
+    expect(simplify(graph.targets)).toEqual([
+      { id: "__start", dependencies: [], dependents: ["a#build", "c#build", "b#build", "d#build"], priority: 15 },
+      { id: "a#build", dependencies: ["__start", "b#build", "c#build"], dependents: [], priority: 5 },
+      { id: "c#build", dependencies: ["__start", "d#build"], dependents: ["a#build"], priority: 8 },
+      { id: "b#build", dependencies: ["__start", "d#build"], dependents: ["a#build"], priority: 7 },
+      { id: "d#build", dependencies: ["__start"], dependents: ["c#build", "b#build"], priority: 15 },
+    ]);
+    expect([...builder.targets.values()]).toEqual(originalTargets);
+    expect(simplify(builder.subgraph(["a#build", "c#build"]).targets)).toEqual(simplify(graph.targets));
+  });
+
+  it.each([{ entries: [] }, { entries: ["missing#build"] }])("returns only the start target for $entries", ({ entries }) => {
+    const builder = new TargetGraphBuilder();
+    builder.addTarget(createTarget("outside", "build", 1));
+
+    expect(simplify(builder.subgraph(entries).targets)).toEqual([{ id: "__start", dependencies: [], dependents: [], priority: 0 }]);
+  });
+
+  it("still reports cycles reachable from duplicate entries", () => {
+    const builder = new TargetGraphBuilder();
+    builder.addTarget(createTarget("a", "build", 1));
+    builder.addTarget(createTarget("b", "build", 1));
+    builder.addDependency("a#build", "b#build");
+    builder.addDependency("b#build", "a#build");
+
+    expect(() => builder.subgraph(["a#build", "a#build"])).toThrow("Cycles detected in the target graph:");
+  });
+
+  it("still reports a missing dependency target", () => {
+    const builder = new TargetGraphBuilder();
+    builder.addTarget(createTarget("a", "build", 1));
+    builder.addDependency("missing#build", "a#build");
+
+    expect(() => builder.subgraph(["a#build"])).toThrow("Subgraph builder failed - target not found: missing#build");
   });
 });
 

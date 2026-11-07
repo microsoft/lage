@@ -1,3 +1,4 @@
+import { describe, expect, test } from "@jest/globals";
 import path from "path";
 import fs from "fs";
 import os from "os";
@@ -12,7 +13,7 @@ describe("getCacheStorageProvider", () => {
         provider: "local-skip",
       },
       "test",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd"
     );
     const p2 = getCacheStorageProvider(
@@ -20,7 +21,7 @@ describe("getCacheStorageProvider", () => {
         provider: "local",
       },
       "test",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd"
     );
     const p3 = getCacheStorageProvider(
@@ -28,7 +29,7 @@ describe("getCacheStorageProvider", () => {
         provider: "local-skip",
       },
       "test",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd2"
     );
     const p4 = getCacheStorageProvider(
@@ -36,7 +37,7 @@ describe("getCacheStorageProvider", () => {
         provider: "local-skip",
       },
       "test",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd"
     );
     const p5 = getCacheStorageProvider(
@@ -44,7 +45,7 @@ describe("getCacheStorageProvider", () => {
         provider: "local-skip",
       },
       "test2",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd"
     );
 
@@ -59,7 +60,7 @@ describe("getCacheStorageProvider", () => {
         provider: "local",
       },
       "test",
-      makeLogger("silly"),
+      makeLogger("mute"),
       "cwd"
     );
 
@@ -75,7 +76,7 @@ describe("getCacheStorageProvider", () => {
           options: {},
         },
         "test",
-        makeLogger("silly"),
+        makeLogger("mute"),
         "cwd"
       )
     ).toThrow(
@@ -100,7 +101,7 @@ describe("getCacheStorageProvider", () => {
           options: {},
         },
         "test",
-        makeLogger("silly"),
+        makeLogger("mute"),
         "cwd"
       );
 

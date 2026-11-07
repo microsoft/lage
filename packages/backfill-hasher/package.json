@@ -1,6 +1,6 @@
 {
   "name": "backfill-hasher",
-  "version": "6.7.1",
+  "version": "6.7.15",
   "description": "Backfill Hasher",
   "license": "MIT",
   "author": "Benjamin Weggersen <bewegger@microsoft.com>",
@@ -11,6 +11,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "api": "monorepo-scripts api",
     "build": "yarn types && yarn transpile",
     "transpile": "monorepo-scripts transpile",
     "types": "yarn run -T tsc",
@@ -19,11 +20,11 @@
   },
   "dependencies": {
     "backfill-logger": "workspace:^",
-    "workspace-tools": "0.41.0"
+    "workspace-tools": "workspace:^"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
-    "backfill-utils-test": "workspace:^"
+    "@lage-run/test-utilities": "workspace:^"
   },
   "engines": {
     "node": ">=14"

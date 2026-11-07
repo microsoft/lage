@@ -5,7 +5,9 @@
     "noEmit": true,
     "paths": {
       // Required for resolution of @lage-run/target-graph by references in types.ts if not built yet
-      "@lage-run/target-graph": ["../packages/target-graph/src/index.ts"]
+      "@lage-run/target-graph": ["../packages/target-graph/src/index.ts"],
+      // And to fix its workspace-tools references...
+      "workspace-tools": ["../packages/workspace-tools/src/index.ts"]
     }
   },
   // include all files in the scripts directory

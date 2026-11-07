@@ -12,4 +12,4 @@ export type {
   WorkerTargetOptions,
 } from "@lage-run/runners";
 export type { Priority, Target, TargetConfig } from "@lage-run/target-graph";
-export type { ReporterInitOptions } from "./types/ReporterInitOptions.js";
+export type { ReporterInitOptions } from "./commands/initializeReporters.js";

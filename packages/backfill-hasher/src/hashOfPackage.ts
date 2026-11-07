@@ -34,11 +34,11 @@ export function generateHashOfInternalPackages(
 
 const memoization: { [key: string]: PackageHashInfo } = {};
 
-export async function getPackageHash(
+export function getPackageHash(
   packageRoot: string,
   repoInfo: RepoInfo,
   logger: Logger
-): Promise<PackageHashInfo> {
+): PackageHashInfo {
   const { packageInfos, parsedLock } = repoInfo;
 
   const memoizationKey = path.resolve(packageRoot);
@@ -47,7 +47,7 @@ export async function getPackageHash(
     return memoization[memoizationKey];
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { name, dependencies, devDependencies } = require(
     path.join(packageRoot, "package.json")
   );
@@ -72,7 +72,7 @@ export async function getPackageHash(
     ...externalDependencies,
   ];
 
-  const filesHash = await generateHashOfFiles(packageRoot, repoInfo);
+  const filesHash = generateHashOfFiles(packageRoot, repoInfo);
   const dependenciesHash = hashStrings(resolvedDependencies);
 
   logger.silly(name);

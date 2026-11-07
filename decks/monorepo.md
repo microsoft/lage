@@ -301,9 +301,9 @@ remote: GitHub found 6 vulnerabilities on microsoft/beachball's default branch (
 remote:      https://github.com/microsoft/beachball/network/alerts
 remote:
 To https://github.com/microsoft/beachball
-   72fce75..f9fa782  HEAD -> master
+   72fce75..f9fa782  HEAD -> main
  * [new tag]         beachball_v1.36.0 -> beachball_v1.36.0
-updating local tracking ref 'refs/remotes/origin/master'
+updating local tracking ref 'refs/remotes/origin/main'
 ```
 
 ---

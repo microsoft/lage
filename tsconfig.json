@@ -1,0 +1,7 @@
+// This tsconfig is used ONLY for eslint in the editor
+{
+  "extends": "./scripts/config/tsconfig.base.json",
+  // scripts is omitted since it has its own eslint config
+  "include": ["packages/*/src"],
+  "exclude": ["**/node_modules"]
+}

@@ -2,6 +2,81 @@
   "name": "@lage-run/logger",
   "entries": [
     {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "1.5.1",
+      "tag": "@lage-run/logger_v1.5.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "1.5.0",
+      "tag": "@lage-run/logger_v1.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Change the `Logger` signature to `Logger<TLogStructuredData extends LogStructuredData, TSummary>` and same for `Reporter`, to be strict about data types. Add an additional `otherData` parameter on log methods for arbitrary data."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Apr 2026 03:39:42 GMT",
+      "version": "1.4.1",
+      "tag": "@lage-run/logger_v1.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 06 Apr 2026 21:27:03 GMT",
+      "version": "1.4.0",
+      "tag": "@lage-run/logger_v1.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Allow reporter cleanup to be async"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 28 Mar 2026 00:04:36 GMT",
+      "version": "1.3.3",
+      "tag": "@lage-run/logger_v1.3.3",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/logger",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 10 Feb 2026 22:12:02 GMT",
       "version": "1.3.3",
       "tag": "@lage-run/logger_v1.3.3",

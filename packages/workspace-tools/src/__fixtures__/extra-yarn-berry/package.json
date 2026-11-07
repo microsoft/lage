@@ -1,0 +1,21 @@
+{
+  "name": "extra-yarn-berry",
+  "description": "fixture with more dependencies, derived from microsoft/lage v1",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@microsoft/task-scheduler": "^2.7.1",
+    "execa": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/execa": "^2.0.0",
+    "@types/node": "^14.0.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.0.0"
+  },
+  "engines": {
+    "yarn": ">=2.0.0"
+  },
+  "packageManager": "yarn@4.11.0"
+}

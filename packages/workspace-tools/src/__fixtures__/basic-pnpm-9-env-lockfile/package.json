@@ -1,0 +1,19 @@
+{
+  "name": "basic-pnpm-9-env-lockfile",
+  "packageManager": "pnpm@12.0.0-beta.1",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "description": "same as basic-pnpm-9, but with a 2-document 'env lockfile' pnpm-lock.yaml (configDependencies/packageManagerDependencies in a separate leading YAML document); see https://github.com/pnpm/pnpm/pull/10964",
+  "devDependencies": {
+    "@changesets/cli": "^2.14.1",
+    "@testing-library/react": "16.0.1",
+    "is-odd": "3.0.1",
+    "is-positive": "github:kevva/is-positive#97edff6f525f192a3f83cea1944765f769ae2678",
+    "prettier": "2.8.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "typescript": "^4.2.3",
+    "chokidar": "3.6.0"
+  }
+}

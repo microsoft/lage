@@ -129,7 +129,7 @@ The general guidance is to get rid of these specific package-task to package-tas
 
 Optionally, you can use an object for advanced pipeline task target configuration, such as priority, weight, inputs and outputs for caching, worker count limits, custom conditions, and custom worker configuration.
 
-See the [`TargetConfig` source](https://github.com/microsoft/lage/blob/master/packages/target-graph/src/types/TargetConfig.ts) for full details. There are also some examples in [lage's own config](https://github.com/microsoft/lage/blob/master/lage.config.js).
+See the [`TargetConfig` source](https://github.com/microsoft/lage/blob/main/packages/target-graph/src/types/TargetConfig.ts) for full details. There are also some examples in [lage's own config](https://github.com/microsoft/lage/blob/main/lage.config.js).
 
 ```js
 /** @type {import("lage").ConfigFileOptions} */
@@ -147,6 +147,10 @@ const config = {
 };
 module.exports = config;
 ```
+
+`inputs` and `outputs` are glob patterns relative to each target's package directory. For a root target, they are relative to the repository root. Patterns must not traverse to a parent directory.
+
+Prefix an input pattern with `^` to apply it relative to every transitive package dependency instead of the target package. The prefix can be used with a glob or a specific file path, such as `^src/**` or `^src/index.ts`.
 
 ## Advanced task types
 
@@ -206,4 +210,4 @@ module.exports = config;
 
 ### Worker tasks
 
-There are also some examples in the [cookbook section](../cookbook/make-jest-fast) and [lage's own config](https://github.com/microsoft/lage/blob/master/lage.config.js).
+There are also some examples in the [cookbook section](../cookbook/make-jest-fast) and [lage's own config](https://github.com/microsoft/lage/blob/main/lage.config.js).

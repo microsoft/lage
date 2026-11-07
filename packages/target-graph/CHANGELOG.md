@@ -1,8 +1,110 @@
 # Change Log - @lage-run/target-graph
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.15.13
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Improve performance of target priority calculation for large target graphs (djmaks@microsoft.com)
+- Avoid queue shifting and duplicate enqueues when building subgraphs while preserving graph order and priorities. (djmaks@microsoft.com)
+- Prevent stale transitive dependencies when building multiple target graphs in the same process. (djmaks@microsoft.com)
+- Improve performance of dependency expansion when building large target graphs (djmaks@microsoft.com)
+- Bump workspace-tools to v0.42.3
+
+## 0.15.12
+
+Tue, 11 Aug 2026 09:42:15 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.42.2
+
+## 0.15.11
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump workspace-tools to v0.42.1
+
+## 0.15.10
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.42.0
+
+## 0.15.9
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.41.10
+
+## 0.15.8
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.41.9
+
+## 0.15.7
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump workspace-tools to v0.41.8
+
+## 0.15.3
+
+Thu, 16 Apr 2026 01:52:11 GMT
+
+### Patches
+
+- Add another test case and fix for the enablePhantomTargetOptimization feature (1581488+christiango@users.noreply.github.com)
+
+## 0.15.1
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 0.15.0
+
+Mon, 06 Apr 2026 21:27:03 GMT
+
+### Minor changes
+
+- Add target property for controlling whether remote cache should be used for that target or not. (lutomanovic@microsoft.com)
+
+## 0.14.2
+
+Thu, 02 Apr 2026 03:54:25 GMT
+
+### Patches
+
+- Upgrade typescript-eslint to v8 and fix lint issues (email not defined)
+
+## 0.14.1
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Patches
+
+- Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
+- Address promise lint issues (elcraig@microsoft.com)
 
 ## 0.14.0
 

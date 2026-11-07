@@ -1,8 +1,66 @@
 # Change Log - backfill-cache
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 5.12.6
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Update dependency tar-fs to v2.1.5 (email not defined)
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump backfill-config to v6.7.5
+- Bump backfill-logger to v5.4.3
+
+## 5.12.4
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 5.12.3
+
+Thu, 02 Apr 2026 03:54:25 GMT
+
+### Patches
+
+- Directly use `globby` v11 instead of `@lage-run/globby` (elcraig@microsoft.com)
+- LocalCacheStorage: remove incorrect check for file changes between source and dest while fetching from cache (removes superfluous stat calls) (elcraig@microsoft.com)
+- Remove unused catch binding (email not defined)
+
+## 5.12.2
+
+Mon, 30 Mar 2026 21:21:13 GMT
+
+### Patches
+
+- Fix bug introduced where globby results were being cached (1581488+christiango@users.noreply.github.com)
+- Reintroduce fix: include dotfiles in cache output glob matching (1581488+christiango@users.noreply.github.com)
+
+## 5.12.1
+
+Sat, 28 Mar 2026 00:04:36 GMT
+
+### Patches
+
+- Revert glob caching changes due to potential regression (email not defined)
+
+## 5.12.0
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Minor changes
+
+- Start caching more subfolders with dots in the name, fixing issues internal repos were having with .vite and the lage cache (1581488+christiango@users.noreply.github.com)
+
+### Patches
+
+- Address promise lint issues (elcraig@microsoft.com)
 
 ## 5.11.4
 

@@ -1,32 +1,25 @@
-import type { Logger } from "@lage-run/logger";
+import { getCacheDirectoryRoot } from "@lage-run/cache";
+import type { TargetLogger } from "@lage-run/reporters";
+import execa from "execa";
 import fs from "fs";
 import path from "path";
 import lockfile from "proper-lockfile";
-import execa from "execa";
 import { getBinScripts } from "../getBinPaths.js";
+import type { LageServiceLogData } from "../types/LageServiceLogData.js";
+import type { ExecCommandOptions } from "./exec/index.js";
 
-export interface LaunchServerInBackgroundOptions {
-  logger: Logger;
+export interface LaunchServerInBackgroundOptions
+  extends Required<Pick<ExecCommandOptions, "tasks">>, Pick<ExecCommandOptions, "nodeArg" | "timeout"> {
+  logger: TargetLogger;
   root: string;
   host: string;
   port: number;
-  tasks: string[];
-  timeout: number;
   args: string[];
-  nodeArg?: string;
 }
 
-export async function launchServerInBackground({
-  logger,
-  root,
-  host,
-  port,
-  tasks,
-  timeout,
-  args,
-  nodeArg,
-}: LaunchServerInBackgroundOptions): Promise<void> {
-  const lockfilePath = path.join(root, `node_modules/.cache/lage/.lage-server-${host}-${port}.pid`);
+export async function launchServerInBackground(params: LaunchServerInBackgroundOptions): Promise<void> {
+  const { logger, root, host, port, tasks, timeout, args, nodeArg } = params;
+  const lockfilePath = path.join(getCacheDirectoryRoot(root), `.lage-server-${host}-${port}.pid`);
 
   logger.info(`Starting server on http://${host}:${port}`);
   logger.info(`acquiring lock: ${lockfilePath}`);
@@ -45,10 +38,10 @@ export async function launchServerInBackground({
   });
 
   const pid = parseInt(fs.readFileSync(lockfilePath, "utf-8"));
-  const isServerRunning = pid && isAlive(pid);
-  logger.info("Checking if server is already running", { pid, isServerRunning });
+  const isServerRunning = !!pid && isAlive(pid);
+  logger.info("Checking if server is already running", undefined, { pid, isServerRunning } satisfies LageServiceLogData);
   if (pid && isServerRunning) {
-    logger.info("Server already running", { pid });
+    logger.info("Server already running", undefined, { pid } satisfies LageServiceLogData);
   } else {
     const binScripts = getBinScripts();
 
@@ -73,12 +66,12 @@ export async function launchServerInBackground({
       maxBuffer: 1024 * 1024 * 100,
     });
 
-    if (child && child.pid) {
+    if (child.pid) {
       fs.writeFileSync(lockfilePath, child.pid.toString());
     }
 
     child.unref();
-    logger.info("Server started", { pid: child.pid });
+    logger.info("Server started", undefined, { pid: child.pid } satisfies LageServiceLogData);
   }
 
   await releaseLock();

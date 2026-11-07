@@ -1,11 +1,14 @@
 import type { LogLevel } from "./LogLevel.js";
 import type { LogStructuredData } from "./LogStructuredData.js";
 
-export interface LogEntry<TLogStructuredData extends LogStructuredData = LogStructuredData> {
+export interface LogEntry<TLogStructuredData extends LogStructuredData> {
   /** a timestamp of when the log event occurred */
   timestamp: number;
 
-  /** the loglevel, it will be recorded as a number */
+  /**
+   * Log level (recorded as a number). A higher number means a more verbose log,
+   * so an entry is shown if the reporter's log level is \>= the entry's level.
+   */
   level: LogLevel;
 
   /** a message that goes along with this event */

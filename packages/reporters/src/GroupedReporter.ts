@@ -1,12 +1,14 @@
-import { formatDuration, hrToSeconds } from "@lage-run/format-hrtime";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
-import { LogLevel, type LogStructuredData } from "@lage-run/logger";
+import { formatHrtime } from "./formatDuration.js";
+import { isTargetLogEntry, isTargetStatusData } from "./isTargetLogEntry.js";
+import { LogLevel } from "@lage-run/logger";
 import chalk from "chalk";
-import type { Reporter, LogEntry } from "@lage-run/logger";
-import type { SchedulerRunSummary, TargetRun, TargetStatus } from "@lage-run/scheduler-types";
-import type { TargetLogData, TargetStatusData } from "./types/TargetLogData.js";
+import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler-types";
 import type { Writable } from "stream";
 import { slowestTargetRuns } from "./slowestTargetRuns.js";
+import { formatMemoryUsage } from "./formatHelpers.js";
+import { statusColorFn } from "./LogReporter.js";
+import type { MaybeTargetLogEntry, TargetLogEntry, TargetReporter } from "./types/TargetReporter.js";
+import { isNonFailureCompletionStatus } from "./isCompletionStatus.js";
 
 export const colors = {
   [LogLevel.info]: chalk.white,
@@ -21,7 +23,7 @@ export const colors = {
   warn: chalk.yellow,
 };
 
-export const logLevelLabel = {
+const logLevelLabel = {
   [LogLevel.info]: "INFO",
   [LogLevel.warn]: "WARN",
   [LogLevel.error]: "ERR!",
@@ -29,128 +31,143 @@ export const logLevelLabel = {
   [LogLevel.verbose]: "VERB",
 };
 
-export function getTaskLogPrefix(pkg: string, task: string): string {
+function getTaskLogPrefix(pkg: string, task: string): string {
   return `${colors.pkg(pkg)} ${colors.task(task)}`;
 }
 
-function normalize(prefixOrMessage: string, message?: string) {
-  if (typeof message === "string") {
-    return { prefix: prefixOrMessage, message };
-  }
-  return { prefix: "", message: prefixOrMessage };
-}
-
-export function format(level: LogLevel, prefix: string, message: string): string {
+function format(level: LogLevel, prefix: string, message: string): string {
   return `${logLevelLabel[level]}: ${prefix} ${message}\n`;
 }
 
-export abstract class GroupedReporter implements Reporter {
-  protected logStream: Writable;
-  protected logEntries = new Map<string, LogEntry[]>();
-  private readonly groupedEntries: Map<string, LogEntry<LogStructuredData>[]> = new Map<string, LogEntry[]>();
+export interface GroupedReporterOptions {
+  /** Only report logs with this level or numerically lower/logically higher (default info) */
+  logLevel?: LogLevel;
 
-  constructor(
-    protected options: {
-      logLevel?: LogLevel;
-      grouped?: boolean;
-      /** stream for testing */
-      logStream?: Writable;
-    }
-  ) {
-    options.logLevel = options.logLevel || LogLevel.info;
+  /** Whether to group log entries by target */
+  grouped?: boolean;
+
+  /** Whether to capture and report main process memory usage on target completion */
+  logMemory?: boolean;
+
+  /** stream for testing (defaults to stdout) */
+  logStream?: Writable;
+}
+
+/**
+ * Abstract reporter which optionally groups log entries by target.
+ * If grouping is enabled, it only flushes a target's log entries when it completes.
+ */
+export abstract class GroupedReporter implements TargetReporter {
+  protected logStream: Writable;
+  /** Mapping from targetId log entries (the logs will be cleared for non-failed completed targets) */
+  protected logEntries = new Map<string, TargetLogEntry[]>();
+
+  constructor(protected options: GroupedReporterOptions) {
+    options.logLevel ??= LogLevel.info;
     this.logStream = options.logStream || process.stdout;
   }
 
-  public log(entry: LogEntry<any>): boolean | void {
-    if (entry.data && entry.data.target && entry.data.target.hidden) {
+  public log(entry: MaybeTargetLogEntry): void {
+    if (isTargetLogEntry(entry)) {
+      if (entry.data.target.hidden) return;
+    } else {
+      // log generic entries (not related to target)
+      if (this.shouldLog(entry) && entry.msg.trim()) {
+        this.logStream.write(format(entry.level, "", entry.msg));
+      }
       return;
     }
 
-    if (entry.data && entry.data.target) {
-      if (!this.logEntries.has(entry.data.target.id)) {
-        this.logEntries.set(entry.data.target.id, []);
-      }
+    // save the logs for errors (regardless of level)
+    const targetId = entry.data.target.id;
+    if (!this.logEntries.has(targetId)) {
+      this.logEntries.set(targetId, []);
+    }
+    this.logEntries.get(targetId)!.push(entry);
 
-      this.logEntries.get(entry.data.target.id)!.push(entry);
+    if (this.shouldLog(entry)) {
+      if (this.options.grouped) {
+        this.logTargetEntryByGroup(entry);
+      } else {
+        this.logEntry(entry);
+      }
     }
 
-    if (this.options.logLevel! >= entry.level) {
-      if (this.options.grouped && entry.data?.target) {
-        return this.logTargetEntryByGroup(entry);
-      }
-
-      return this.logTargetEntry(entry);
+    // If it's a status message for non-failure completion, delete the target's entries to free memory
+    if (isTargetStatusData(entry.data) && isNonFailureCompletionStatus(entry.data.status)) {
+      this.logEntries.delete(targetId);
     }
   }
 
-  protected logTargetEntry(entry: LogEntry<TargetLogData>): boolean | void {
+  /**
+   * Whether the entry should be logged based solely on its level compared to the reporter's `logLevel`
+   * (does not consider `entry.target.hidden` or message presence)
+   */
+  protected shouldLog(entry: MaybeTargetLogEntry): boolean {
+    return this.options.logLevel! >= entry.level;
+  }
+
+  /** Print the entry for a target */
+  protected logEntry(entry: TargetLogEntry): boolean | void {
     const colorFn = colors[entry.level];
-    const data = entry.data!;
 
-    if (isTargetStatusLogEntry(data)) {
-      const { target, hash, duration } = data;
-      const { packageName, task } = target;
+    const data = entry.data;
+    const { target } = data;
+    const { packageName, task } = target;
+    const prefix = this.options.grouped ? "" : getTaskLogPrefix(packageName ?? "<root>", task);
 
-      const normalizedArgs = this.options.grouped
-        ? normalize(entry.msg)
-        : normalize(getTaskLogPrefix(packageName ?? "<root>", task), entry.msg);
+    if (!isTargetStatusData(data)) {
+      return this.logStream.write(format(entry.level, prefix, colorFn("|  " + entry.msg)));
+    }
 
-      const pkgTask = this.options.grouped ? `${chalk.magenta(packageName)} ${chalk.cyan(task)}` : "";
+    const { hash, duration, memoryUsage, status } = data;
+    const mem = formatMemoryUsage(memoryUsage, this.options.logMemory);
 
-      switch (data.status) {
-        case "running":
-          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.ok("➔")} start ${pkgTask}`)));
+    const pkgTask = this.options.grouped ? `${chalk.magenta(packageName)} ${chalk.cyan(task)}` : "";
 
-        case "success":
-          return this.logStream.write(
-            format(
-              entry.level,
-              normalizedArgs.prefix,
-              colorFn(`${colors.ok("✓")} done ${pkgTask} - ${formatDuration(hrToSeconds(duration!))}`)
-            )
-          );
+    switch (status) {
+      case "running":
+        return this.logStream.write(format(entry.level, prefix, colorFn(`${colors.ok("➔")} start ${pkgTask}`)));
 
-        case "failed":
-          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.error("✖")} fail ${pkgTask}`)));
+      case "success":
+        return this.logStream.write(
+          format(entry.level, prefix, colorFn(`${colors.ok("✓")} done ${pkgTask} - ${formatHrtime(duration!)}${mem}`))
+        );
 
-        case "skipped":
-          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.ok("»")} skip ${pkgTask} - ${hash!}`)));
+      case "failed":
+        return this.logStream.write(format(entry.level, prefix, colorFn(`${colors.error("✖")} fail ${pkgTask}${mem}`)));
 
-        case "aborted":
-          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.warn("-")} aborted ${pkgTask}`)));
+      case "skipped":
+        return this.logStream.write(format(entry.level, prefix, colorFn(`${colors.ok("»")} skip ${pkgTask} - ${hash!}${mem}`)));
 
-        case "queued":
-          return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn(`${colors.warn("…")} queued ${pkgTask}`)));
-      }
-    } else if (entry?.data?.target) {
-      const { target } = data;
-      const { packageName, task } = target;
-      const normalizedArgs = this.options.grouped
-        ? normalize(entry.msg)
-        : normalize(getTaskLogPrefix(packageName ?? "<root>", task), entry.msg);
-      return this.logStream.write(format(entry.level, normalizedArgs.prefix, colorFn("|  " + normalizedArgs.message)));
-    } else if (entry?.msg.trim() !== "") {
-      return this.logStream.write(format(entry.level, "", entry.msg));
+      case "aborted":
+        return this.logStream.write(format(entry.level, prefix, colorFn(`${colors.warn("-")} aborted ${pkgTask}`)));
+
+      case "queued":
+        return this.logStream.write(format(entry.level, prefix, colorFn(`${colors.warn("…")} queued ${pkgTask}`)));
+
+      case "pending":
+        return;
+
+      default:
+        throw new Error(`Internal error: unhandled target status "${status}"`);
     }
   }
 
-  private logTargetEntryByGroup(entry: LogEntry<TargetLogData>) {
-    const data = entry.data!;
+  private logTargetEntryByGroup(entry: TargetLogEntry) {
+    const data = entry.data;
 
     const target = data.target;
     const { id } = target;
 
-    this.groupedEntries.set(id, this.groupedEntries.get(id) || []);
-    this.groupedEntries.get(id)?.push(entry);
-
-    if (isTargetStatusLogEntry(data)) {
+    if (isTargetStatusData(data)) {
       if (data.status === "success" || data.status === "failed" || data.status === "skipped" || data.status === "aborted") {
         const { status, duration } = data;
         this.logStream.write(this.formatGroupStart(data.target.packageName ?? "<root>", data.target.task, status, duration));
 
-        const entries = this.groupedEntries.get(id)! as LogEntry<TargetStatusData>[];
+        const entries = this.logEntries.get(id)!;
         for (const targetEntry of entries) {
-          this.logTargetEntry(targetEntry);
+          this.logEntry(targetEntry);
         }
 
         this.logStream.write(this.formatGroupEnd());
@@ -159,18 +176,8 @@ export abstract class GroupedReporter implements Reporter {
   }
 
   public summarize(schedulerRunSummary: SchedulerRunSummary): void {
-    const { targetRuns, targetRunByStatus, duration } = schedulerRunSummary;
+    const { targetRuns, targetRunByStatus } = schedulerRunSummary;
     const { failed, aborted, skipped, success, pending } = targetRunByStatus;
-
-    const statusColorFn: { [status in TargetStatus]: chalk.Chalk } = {
-      success: chalk.greenBright,
-      failed: chalk.redBright,
-      skipped: chalk.gray,
-      running: chalk.yellow,
-      pending: chalk.gray,
-      aborted: chalk.red,
-      queued: chalk.magenta,
-    };
 
     this.writeSummaryHeader();
 
@@ -178,16 +185,15 @@ export abstract class GroupedReporter implements Reporter {
       const slowestTargets = slowestTargetRuns([...targetRuns.values()]);
 
       for (const wrappedTarget of slowestTargets) {
-        const colorFn = statusColorFn[wrappedTarget.status];
-        const target = wrappedTarget.target;
+        const { target, status, duration } = wrappedTarget;
+
+        const colorFn = statusColorFn[status] ?? chalk.white;
 
         this.logStream.write(
           format(
             LogLevel.info,
             getTaskLogPrefix(target.packageName || "[GLOBAL]", target.task),
-            colorFn(
-              `${wrappedTarget.status}${wrappedTarget.duration ? `, took ${formatDuration(hrToSeconds(wrappedTarget.duration))}` : ""}`
-            )
+            colorFn(`${status}${duration ? `, took ${formatHrtime(duration)}` : ""}`)
           )
         );
       }
@@ -201,11 +207,12 @@ export abstract class GroupedReporter implements Reporter {
 
     this.writeSummaryFooter();
 
-    if (failed && failed.length > 0) {
+    if (failed.length > 0) {
       this.writeFailures(failed, targetRuns);
     }
 
-    this.logStream.write(format(LogLevel.info, "", `Took a total of ${formatDuration(hrToSeconds(duration))} to complete`));
+    const formattedDuration = formatHrtime(schedulerRunSummary.duration);
+    this.logStream.write(format(LogLevel.info, "", `Took a total of ${formattedDuration} to complete`));
   }
 
   /** Returns the opening line for a grouped target log block, including trailing newline. */

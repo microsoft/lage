@@ -1,39 +1,36 @@
-import createLogger, { type Logger } from "@lage-run/logger";
-import type { ReporterInitOptions } from "../../types/ReporterInitOptions.js";
-import { initializeReporters } from "../initializeReporters.js";
-import { createLageService } from "./lageService.js";
-import { createServer } from "@lage-run/rpc";
-import { parseServerOption } from "../parseServerOption.js";
+import { getCacheDirectoryRoot } from "@lage-run/cache";
 import { getConfig } from "@lage-run/config";
+import { createLogger } from "@lage-run/logger";
+import type { TargetLogger } from "@lage-run/reporters";
+import { createServer, type LageServer } from "@lage-run/rpc";
+import path from "path";
 import { getWorkspaceManagerRoot } from "workspace-tools";
+import { initializeReporters } from "../initializeReporters.js";
+import { parseServerOption } from "../parseServerOption.js";
+import type { ServerCommandOptions } from "./index.js";
+import { createLageService } from "./lageService.js";
 
-interface WorkerOptions extends ReporterInitOptions {
-  nodeArg?: string[];
-  server?: string;
-  timeout?: number;
-  shutdown: boolean;
-  tasks: string[];
-}
-
-export async function serverAction(options: WorkerOptions): Promise<void> {
+export async function serverAction(options: ServerCommandOptions): Promise<void> {
   const { server = "localhost:5332", timeout = 1, tasks } = options;
+
+  if (!tasks?.length) {
+    throw new Error("No tasks specified, this is required for when running in server mode");
+  }
 
   const { host, port } = parseServerOption(server);
   const cwd = process.cwd();
   const root = getWorkspaceManagerRoot(cwd) ?? cwd;
   const config = await getConfig(cwd);
 
-  const logger = createLogger();
-  options.logLevel = options.logLevel ?? "info";
-  options.logFile = options.logFile ?? "node_modules/.cache/lage/server.log";
-  options.reporter = options.reporter ?? "verboseFileLog";
-  await initializeReporters(logger, options, { customReporters: config.reporters, root });
+  const logger: TargetLogger = createLogger();
+  options.logFile ??= path.join(getCacheDirectoryRoot(root), "server.log");
+  await initializeReporters({ logger, options, config, root, defaultReporter: "verboseFileLog" });
 
   logger.info(`Starting server on http://${host}:${port}`);
 
   const abortController = new AbortController();
 
-  const lageService = await createLageService({
+  const lageService = createLageService({
     cwd,
     serverControls: {
       abortController,
@@ -51,13 +48,13 @@ export async function serverAction(options: WorkerOptions): Promise<void> {
 }
 
 let timeoutHandle: NodeJS.Timeout | undefined;
-function resetTimer(logger: Logger, timeout: number, abortController: AbortController, server: any) {
+function resetTimer(logger: TargetLogger, timeout: number, abortController: AbortController, server: LageServer) {
   clearTimer();
 
   timeoutHandle = globalThis.setTimeout(() => {
     logger.info(`Server timed out after ${timeout} seconds`);
     abortController.abort();
-    server.close();
+    void server.close();
   }, timeout * 1000);
 }
 

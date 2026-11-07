@@ -5,6 +5,22 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug current open test",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/scripts/debugTests.js",
+      "cwd": "${fileDirname}",
+      "args": ["${fileBasename}"],
+      "env": {
+        // read by jest config
+        "VS_CODE_DEBUG": "1"
+      },
+      "sourceMaps": true,
+      "outputCapture": "std",
+      // "runtimeVersion": "20",
+      "console": "integratedTerminal"
+    },
+    {
       "name": "Attach",
       "port": 9229,
       "request": "attach",
@@ -25,22 +41,6 @@
       "cwd": "${workspaceRoot}"
     },
     {
-      "name": "Debug current open test",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceRoot}/scripts/debugTests.js",
-      "cwd": "${fileDirname}",
-      "args": ["${fileBasename}"],
-      "env": {
-        // read by jest config
-        "VS_CODE_DEBUG": "1"
-      },
-      "sourceMaps": true,
-      "outputCapture": "std",
-      // "runtimeVersion": "20",
-      "console": "integratedTerminal"
-    },
-    {
       "name": "Debug dts-bundle-generator (lage)",
       "request": "launch",
       "type": "node",
@@ -50,6 +50,19 @@
       "console": "integratedTerminal",
       "outputCapture": "std",
       "sourceMaps": true
+    },
+    {
+      // If there's an issue with running a beachball command, it's very likely due to using the
+      // local version of workspace-tools if it has breaking changes...
+      "type": "node",
+      "request": "launch",
+      "name": "Debug beachball",
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}",
+      "runtimeArgs": ["run-script", "checkchange"],
+      "sourceMaps": true,
+      "outputCapture": "std",
+      "console": "integratedTerminal"
     }
   ]
 }

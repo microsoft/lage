@@ -4,13 +4,13 @@ import { endMarker, startMarker } from "./stdioStreamMarkers.js";
 import type { MessagePort } from "worker_threads";
 
 export function registerWorker(fn: (data: any, abortSignal?: AbortSignal) => Promise<any> | any): void {
-  parentPort?.on("message", async (message) => {
+  parentPort?.on("message", (message) => {
     let abortController: AbortController | undefined;
 
     switch (message.type) {
       case "start":
         abortController = new AbortController();
-        return message.task && (await start(message.id, message.task, abortController.signal));
+        return message.task && void start(message.id, message.task, abortController.signal);
 
       case "abort":
         return abortController?.abort();

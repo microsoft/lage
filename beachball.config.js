@@ -5,13 +5,16 @@ const fs = require("fs");
 const config = {
   access: "public",
   groupChanges: true,
+  branch: "main",
+  commit: false,
   changelog: {
     groups: [
       {
         // roll up all changes to the lage changelog (packages still have individual changelogs too)
         mainPackageName: "lage",
         include: ["packages/*"],
-        exclude: ["!packages/backfill", "!packages/backfill-*"],
+        // these are not dependencies of lage
+        exclude: ["!packages/backfill", "!packages/cache-github-actions", "!packages/grapher"],
         changelogPath: "packages/lage",
       },
       {
@@ -37,6 +40,6 @@ const config = {
       fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + "\n");
     },
   },
-  ignorePatterns: [".*ignore", "jest.config.js", "**/__*/**/*"],
+  ignorePatterns: [".*ignore", "eslint.config.js", "jest.config.js", "**/__*/**/*"],
 };
 module.exports = config;

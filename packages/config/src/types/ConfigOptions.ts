@@ -45,7 +45,15 @@ export interface ConfigOptions {
   /** Which files to ignore when calculating scopes with `--since` */
   ignore: string[];
 
-  /** Disable the `--since` flag when any of these files changed */
+  /**
+   * Ignore the `--since` flag when any files matching these repo-relative globs change
+   * (including committed and uncommitted changes). Defaults to lage configs and lock files.
+   *
+   * This is ignored for package selection if `--scope` or `--to` is provided.
+   *
+   * This does NOT invalidate cached results. Shared inputs should also be listed in
+   * `cacheOptions.environmentGlob` if changes should also invalidate caches.
+   */
   repoWideChanges: string[];
 
   /** Which NPM Client to use when running npm lifecycle scripts */
@@ -92,6 +100,14 @@ export interface ConfigOptions {
    * This prevents unwanted cross-package dependency chains when phantom targets are later removed.
    */
   enablePhantomTargetOptimization: boolean;
+
+  /**
+   * Built-in or custom reporter name(s) to use. This is **overridden** by the `--reporter` flag,
+   * but **overrides** `--verbose`, `--grouped`, and other context-based defaults (such as CI env detection).
+   *
+   * See https://microsoft.github.io/lage/docs/reference/cli#reporter for the list of built-in reporters.
+   */
+  reporter?: string | string[];
 
   /**
    * Custom reporters that can be referenced by name in the --reporter CLI flag.

@@ -1,10 +1,13 @@
-import { formatDuration, hrToSeconds } from "@lage-run/format-hrtime";
+import { formatHrtime } from "./formatDuration.js";
 import type { TargetRun } from "@lage-run/scheduler-types";
 import { GroupedReporter } from "./GroupedReporter.js";
 
+/**
+ * Reporter that formats logs for GitHub Actions, optionally with grouping.
+ */
 export class GithubActionsReporter extends GroupedReporter {
   protected formatGroupStart(packageName: string, task: string, status: string, duration?: [number, number]): string {
-    return `::group::${packageName} ${task} ${status}${duration ? `, took ${formatDuration(hrToSeconds(duration))}` : ""}\n`;
+    return `::group::${packageName} ${task} ${status}${duration ? `, took ${formatHrtime(duration)}` : ""}\n`;
   }
 
   protected formatGroupEnd(): string {

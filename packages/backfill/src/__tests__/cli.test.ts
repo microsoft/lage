@@ -1,7 +1,8 @@
+import { describe, expect, it } from "@jest/globals";
 import path from "path";
 import fs from "fs-extra";
 
-import { setupFixture } from "backfill-utils-test";
+import { setupFixture } from "@lage-run/test-utilities";
 import { makeLogger } from "backfill-logger";
 
 import { createBuildCommand } from "../commandRunner.js";
@@ -56,7 +57,7 @@ describe("createBuildCommand", () => {
 
     try {
       await buildCommand;
-    } catch (e) {
+    } catch {
       /* comment to prevent eslint from complaining */
     }
 
@@ -65,7 +66,7 @@ describe("createBuildCommand", () => {
   });
 
   it("clears the output folder", async () => {
-    const fixtureLocation = await setupFixture("pre-built");
+    const fixtureLocation = setupFixture("pre-built");
     const buildCommand = createBuildCommand(
       ["echo foo"],
       true,
@@ -73,11 +74,11 @@ describe("createBuildCommand", () => {
       muteLogger
     );
 
-    const index_js_ExistsBeforeBuild = await fs.pathExists(
+    const index_js_ExistsBeforeBuild = fs.existsSync(
       path.join(fixtureLocation, "lib", "index.js")
     );
     await buildCommand();
-    const index_js_ExistsAfterBuild = await fs.pathExists(
+    const index_js_ExistsAfterBuild = fs.existsSync(
       path.join(fixtureLocation, "lib", "index.js")
     );
 

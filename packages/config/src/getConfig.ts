@@ -32,6 +32,7 @@ export async function getConfig(cwd: string): Promise<ConfigOptions> {
     allowNoTargetRuns: config?.allowNoTargetRuns ?? false,
     enableTargetConfigMerging: config?.enableTargetConfigMerging ?? false,
     enablePhantomTargetOptimization: config?.enablePhantomTargetOptimization ?? false,
+    reporter: config?.reporter,
     reporters: config?.reporters ?? {},
   };
 }

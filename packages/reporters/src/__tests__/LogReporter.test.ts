@@ -1,59 +1,48 @@
+import { describe, expect, it } from "@jest/globals";
 import { LogLevel } from "@lage-run/logger";
-import type { TargetRun } from "@lage-run/scheduler-types";
-import streams from "memory-streams";
-import { LogReporter } from "../LogReporter.js";
-import type { TargetLogData, TargetMessageData, TargetStatusData } from "../types/TargetLogData.js";
-import { writerToString } from "./writerToString.js";
-
-function createTarget(packageName: string, task: string) {
-  return {
-    id: `${packageName}#${task}`,
-    cwd: `/repo/root/packages/${packageName}`,
-    dependencies: [],
-    dependents: [],
-    depSpecs: [],
-    packageName,
-    task,
-    label: `${packageName} - ${task}`,
-  };
-}
+import type { TargetStatus } from "@lage-run/scheduler-types";
+import { LogReporter, statusColorFn } from "../LogReporter.js";
+import type { TargetLogData, TargetStatusData } from "../types/TargetLogData.js";
+import { createTarget, createSummary } from "./helpers.js";
+import { MemoryStream } from "./MemoryStream.js";
 
 describe("LogReporter", () => {
   it("records a target status entry", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
+    const target = createTarget("a", "task");
+    const allStatuses = Object.keys(statusColorFn) as TargetStatus[];
 
-    reporter.log({
-      data: {
-        target: createTarget("a", "task"),
-        status: "running",
-        duration: [0, 0],
-        startTime: [0, 0],
-      } as TargetStatusData,
-      level: LogLevel.verbose,
-      msg: "test message",
-      timestamp: 0,
-    });
+    for (const status of allStatuses) {
+      reporter.log({
+        data: { target, status, duration: [10, 0], hash: "abc123" } satisfies TargetStatusData,
+        level: LogLevel.verbose,
+        msg: "test message",
+        timestamp: 0,
+      });
+    }
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
-      "a task ➔ start
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
+      "a task ✓ done - 10.00s
+      a task ✖ fail
+      a task » skip - abc123
+      a task ➔ start
+      a task - aborted
+      a task … queued
       "
     `);
   });
 
   it("records a target message entry", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
     reporter.log({
-      data: {
-        target: createTarget("a", "task"),
-        pid: 1,
-      } as TargetMessageData,
+      data: { target: createTarget("a", "task") },
       level: LogLevel.verbose,
       msg: "test message",
       timestamp: 0,
@@ -61,14 +50,14 @@ describe("LogReporter", () => {
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "a task :  test message
       "
     `);
   });
 
   it("groups messages together", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new LogReporter({ grouped: true, logLevel: LogLevel.verbose, logStream: writer });
 
@@ -80,29 +69,24 @@ describe("LogReporter", () => {
       [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
       [{ target: aTestTarget, status: "running", duration: [0, 0] }],
       [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
+      [{ target: aBuildTarget }, "test message for a#build"],
+      [{ target: aTestTarget }, "test message for a#test"],
+      [{ target: aBuildTarget }, "test message for a#build again"],
+      [{ target: bBuildTarget }, "test message for b#build"],
+      [{ target: aTestTarget }, "test message for a#test again"],
+      [{ target: bBuildTarget }, "test message for b#build again"],
       [{ target: aTestTarget, status: "success", duration: [10, 0] }],
       [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
       [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
     ];
 
-    for (const log of logs) {
-      reporter.log({
-        data: log[0],
-        level: LogLevel.verbose,
-        msg: log[1] ?? "empty message",
-        timestamp: 0,
-      });
+    for (const [data, message] of logs) {
+      reporter.log({ data, level: LogLevel.verbose, msg: message ?? "empty message", timestamp: 0 });
     }
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "a test ➔ start
       a test :  test message for a#test
       a test :  test message for a#test again
@@ -123,7 +107,7 @@ describe("LogReporter", () => {
   });
 
   it("interweave messages when ungrouped", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.verbose, logStream: writer });
 
@@ -135,29 +119,24 @@ describe("LogReporter", () => {
       [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
       [{ target: aTestTarget, status: "running", duration: [0, 0] }],
       [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
+      [{ target: aBuildTarget }, "test message for a#build"],
+      [{ target: aTestTarget }, "test message for a#test"],
+      [{ target: aBuildTarget }, "test message for a#build again"],
+      [{ target: bBuildTarget }, "test message for b#build"],
+      [{ target: aTestTarget }, "test message for a#test again"],
+      [{ target: bBuildTarget }, "test message for b#build again"],
       [{ target: aTestTarget, status: "success", duration: [10, 0] }],
       [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
       [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
     ];
 
-    for (const log of logs) {
-      reporter.log({
-        data: log[0],
-        level: LogLevel.verbose,
-        msg: log[1] ?? "empty message",
-        timestamp: 0,
-      });
+    for (const [data, message] of logs) {
+      reporter.log({ data, level: LogLevel.verbose, msg: message ?? "empty message", timestamp: 0 });
     }
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "a build ➔ start
       a test ➔ start
       b build ➔ start
@@ -175,53 +154,56 @@ describe("LogReporter", () => {
   });
 
   it("can filter out verbose messages", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new LogReporter({ grouped: false, logLevel: LogLevel.info, logStream: writer });
 
-    const aBuildTarget = createTarget("a", "build");
-    const aTestTarget = createTarget("a", "test");
-    const bBuildTarget = createTarget("b", "build");
+    const target = createTarget("a", "build");
 
     const logs: [TargetLogData, string?][] = [
-      [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
-      [{ target: aTestTarget, status: "running", duration: [0, 0] }],
-      [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
-      [{ target: aTestTarget, status: "success", duration: [10, 0] }],
-      [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
-      [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
+      [{ target, status: "running", duration: [0, 0] }],
+      [{ target }, "test message for a#build"],
+      [{ target, status: "failed", duration: [60, 0] }],
     ];
 
-    for (const log of logs) {
+    for (const [data, message] of logs) {
       reporter.log({
-        data: log[0],
-        level: "status" in log[0] ? LogLevel.info : LogLevel.verbose,
-        msg: log[1] ?? "empty message",
+        data,
+        level: "status" in data ? LogLevel.info : LogLevel.verbose,
+        msg: message ?? "empty message",
         timestamp: 0,
       });
     }
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "a build ➔ start
-      a test ➔ start
-      b build ➔ start
-      a test ✓ done - 10.00s
-      b build ✓ done - 30.00s
       a build ✖ fail
       "
     `);
   });
 
+  it("displays summary when no targets were run", () => {
+    const writer = new MemoryStream();
+
+    const reporter = new LogReporter({ grouped: true, logLevel: LogLevel.verbose, logStream: writer });
+
+    const summary = createSummary({});
+    reporter.summarize(summary);
+
+    writer.end();
+
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
+      "Nothing has been run.
+      ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+      Took a total of 1m 40.00s to complete. All targets skipped!
+      "
+    `);
+  });
+
   it("can display a summary of a failure", () => {
-    const writer = new streams.WritableStream();
+    const writer = new MemoryStream();
 
     const reporter = new LogReporter({ grouped: true, logLevel: LogLevel.info, logStream: writer });
 
@@ -233,69 +215,35 @@ describe("LogReporter", () => {
       [{ target: aBuildTarget, status: "running", duration: [0, 0] }],
       [{ target: aTestTarget, status: "running", duration: [0, 0] }],
       [{ target: bBuildTarget, status: "running", duration: [0, 0] }],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test"],
-      [{ target: aBuildTarget, pid: 1 }, "test message for a#build again, but look there is an error!"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build"],
-      [{ target: aTestTarget, pid: 1 }, "test message for a#test again"],
-      [{ target: bBuildTarget, pid: 1 }, "test message for b#build again"],
+      [{ target: aBuildTarget }, "test message for a#build"],
+      [{ target: aTestTarget }, "test message for a#test"],
+      [{ target: aBuildTarget }, "test message for a#build again, but look there is an error!"],
+      [{ target: bBuildTarget }, "test message for b#build"],
+      [{ target: aTestTarget }, "test message for a#test again"],
+      [{ target: bBuildTarget }, "test message for b#build again"],
       [{ target: aTestTarget, status: "success", duration: [10, 0] }],
       [{ target: bBuildTarget, status: "success", duration: [30, 0] }],
       [{ target: aBuildTarget, status: "failed", duration: [60, 0] }],
     ];
 
-    for (const log of logs) {
+    for (const [data, message] of logs) {
       reporter.log({
-        data: log[0],
-        level: "status" in log[0] ? LogLevel.info : LogLevel.verbose,
-        msg: log[1] ?? "",
+        data,
+        level: "status" in data ? LogLevel.info : LogLevel.verbose,
+        msg: message ?? "",
         timestamp: 0,
       });
     }
 
-    reporter.summarize({
-      duration: [100, 0],
-      startTime: [0, 0],
-      results: "failed",
-      targetRunByStatus: {
-        success: [aTestTarget.id, bBuildTarget.id],
-        failed: [aBuildTarget.id],
-        pending: [],
-        running: [],
-        aborted: [],
-        skipped: [],
-        queued: [],
-      },
-      targetRuns: new Map([
-        [
-          aBuildTarget.id,
-          {
-            target: { hidden: false, packageName: "a", task: "build" },
-            status: "failed",
-          } as TargetRun,
-        ],
-        [
-          aTestTarget.id,
-          {
-            target: { hidden: false, packageName: "a", task: "test" },
-            status: "success",
-          } as TargetRun,
-        ],
-        [
-          bBuildTarget.id,
-          {
-            target: { hidden: false, packageName: "b", task: "build" },
-            status: "success",
-          } as TargetRun,
-        ],
-      ]),
-      maxWorkerMemoryUsage: 0,
-      workerRestarts: 0,
+    const summary = createSummary({
+      failed: [aBuildTarget],
+      success: [aTestTarget, bBuildTarget],
     });
+    reporter.summarize(summary);
 
     writer.end();
 
-    expect(writerToString(writer)).toMatchInlineSnapshot(`
+    expect(writer.getOutput()).toMatchInlineSnapshot(`
       "a test ➔ start
       a test :  test message for a#test
       a test :  test message for a#test again
@@ -314,9 +262,9 @@ describe("LogReporter", () => {
 
       Summary
       ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-      a build failed
-      a test success
-      b build success
+      a build failed, took 60.00s, queued for 3.00s
+      a test success, took 60.00s, queued for 3.00s
+      b build success, took 60.00s, queued for 3.00s
       success: 2, skipped: 0, pending: 0, aborted: 0, failed: 1
       worker restarts: 0, max worker memory usage: 0.00 MB
       ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈

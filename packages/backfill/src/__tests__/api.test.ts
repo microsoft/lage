@@ -1,11 +1,18 @@
+import { describe, expect, it, jest } from "@jest/globals";
 import path from "path";
 import fs from "fs";
 import os from "os";
-import { createDefaultConfig } from "backfill-config";
-import { setupFixture } from "backfill-utils-test";
+import { createRequire } from "module";
+import {
+  createDefaultConfig,
+  type CustomCacheStoragePlugin,
+  type ICacheStorage,
+} from "backfill-config";
+import { setupFixture } from "@lage-run/test-utilities";
 import { fetch, put, makeLogger } from "../api.js";
+import { Stream } from "stream";
 
-function createMockPlugin(provider: { fetch: jest.Mock; put: jest.Mock }) {
+function createMockPlugin(provider: ICacheStorage) {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "backfill-test-"));
   const pluginPath = path.join(tmpDir, "mock-plugin.js");
   // Write a plugin module that returns the provider
@@ -14,21 +21,23 @@ function createMockPlugin(provider: { fetch: jest.Mock; put: jest.Mock }) {
     `module.exports = { default: { name: "mock", getProvider: () => ({}) } };`
   );
   // Override the getProvider at runtime by requiring and patching
-  // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-  const mod = require(pluginPath);
+  const mod: { default: CustomCacheStoragePlugin } =
+    createRequire(__filename)(pluginPath);
   mod.default.getProvider = () => provider;
   return { pluginPath, tmpDir };
 }
 
 describe("api", () => {
-  it("fetch works with custom plugin providers", async () => {
-    const packageRoot = await setupFixture("basic");
+  const mockStream = new Stream.PassThrough();
 
-    const logger = makeLogger("silly", process.stdout, process.stderr);
+  it("fetch works with custom plugin providers", async () => {
+    const packageRoot = setupFixture("basic");
+
+    const logger = makeLogger("silly", mockStream, mockStream);
     const config = createDefaultConfig(packageRoot);
     const provider = {
-      fetch: jest.fn().mockResolvedValue(true),
-      put: jest.fn().mockResolvedValue(true),
+      fetch: jest.fn(() => Promise.resolve(true)),
+      put: jest.fn(() => Promise.resolve()),
     };
 
     const { pluginPath, tmpDir } = createMockPlugin(provider);
@@ -54,13 +63,13 @@ describe("api", () => {
   });
 
   it("put works with custom plugin providers", async () => {
-    const packageRoot = await setupFixture("basic");
+    const packageRoot = setupFixture("basic");
 
-    const logger = makeLogger("silly", process.stdout, process.stderr);
+    const logger = makeLogger("silly", mockStream, mockStream);
     const config = createDefaultConfig(packageRoot);
     const provider = {
-      fetch: jest.fn().mockResolvedValue(true),
-      put: jest.fn().mockResolvedValue(true),
+      fetch: jest.fn(() => Promise.resolve(true)),
+      put: jest.fn(() => Promise.resolve()),
     };
 
     const { pluginPath, tmpDir } = createMockPlugin(provider);

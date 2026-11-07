@@ -1,9 +1,9 @@
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
-import type { Reporter } from "@lage-run/logger";
 import type { SchedulerRunSummary, TargetRun } from "@lage-run/scheduler-types";
 import type { Writable } from "stream";
+import type { TargetReporter } from "./types/TargetReporter.js";
 
 interface TraceEventsObject {
   traceEvents: CompleteEvent[];
@@ -23,7 +23,6 @@ interface CompleteEvent {
 
 export interface ChromeTraceEventsReporterOptions {
   outputFile?: string;
-  concurrency: number;
   categorize?: (targetRun?: TargetRun) => string;
 }
 
@@ -38,7 +37,10 @@ function getTimeBasedFilename(prefix: string) {
   return `${prefix ? prefix + "-" : ""}${datetimeNormalized}.json`;
 }
 
-export class ChromeTraceEventsReporter implements Reporter {
+/**
+ * Reporter that generates a Chrome dev tools profile file.
+ */
+export class ChromeTraceEventsReporter implements TargetReporter {
   private consoleLogStream: Writable;
 
   private events: TraceEventsObject = {
@@ -74,7 +76,7 @@ export class ChromeTraceEventsReporter implements Reporter {
         continue;
       }
 
-      const event = {
+      const event: CompleteEvent = {
         name: targetRun.target.id,
         cat: `${targetRun.status}#${targetRun.target.task}`,
         ph: "X",
@@ -82,7 +84,7 @@ export class ChromeTraceEventsReporter implements Reporter {
         dur: hrTimeToMicroseconds(targetRun.duration ?? [0, 1000]), // in microseconds
         pid: 1,
         tid: targetRun.threadId,
-      } as CompleteEvent;
+      };
 
       if (categorize) {
         event.cat += `,${categorize(targetRun)}`;
@@ -91,9 +93,8 @@ export class ChromeTraceEventsReporter implements Reporter {
       this.events.traceEvents.push(event);
     }
 
-    if (!fs.existsSync(path.dirname(this.outputFile))) {
-      fs.mkdirSync(path.dirname(this.outputFile), { recursive: true });
-    }
+    // make the directory if it doesn't exist (no-op if exists)
+    fs.mkdirSync(path.dirname(this.outputFile), { recursive: true });
 
     fs.writeFileSync(this.outputFile, JSON.stringify(this.events, null, 2));
 

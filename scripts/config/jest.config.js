@@ -1,10 +1,11 @@
-const { findProjectRoot, getPackageInfos } = require("workspace-tools");
+const { findProjectRoot, getPackageInfos } = require("workspace-tools-npm");
 const fs = require("fs");
+const jju = require("jju");
 const path = require("path");
 
 const root = findProjectRoot(process.cwd());
 const swcOptions = {
-  ...JSON.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8")),
+  ...jju.parse(fs.readFileSync(path.join(root, ".swcrc"), "utf8")),
   // inline sourcemaps are required when debugging in vs code
   // (this env var is set in launch.json)
   ...(process.env.VS_CODE_DEBUG && { sourceMaps: "inline" }),
@@ -13,10 +14,6 @@ const packages = getPackageInfos(root);
 
 const moduleNameMapper = /** @type {Record<string, string>} */ ({});
 for (const { packageJsonPath, name } of Object.values(packages)) {
-  if (name === "@lage-run/globby") {
-    continue;
-  }
-
   const packagePath = path.dirname(packageJsonPath);
   moduleNameMapper[`^${name}/(.*)$`] = `${packagePath}/src/$1`;
 
@@ -32,6 +29,7 @@ moduleNameMapper["^(\\.{1,2}/.*)\\.js$"] = "$1";
 /** @type {import("jest").Config} */
 const config = {
   clearMocks: true,
+  injectGlobals: false,
   passWithNoTests: true,
   extensionsToTreatAsEsm: [".ts"],
   testMatch: ["**/?(*.)+(spec|test).ts?(x)"],
@@ -43,7 +41,7 @@ const config = {
   watchPathIgnorePatterns: ["/node_modules/"],
   moduleNameMapper,
   testTimeout: process.platform === "win32" ? 15000 : 8000,
-  setupFilesAfterEnv: [path.join(__dirname, "jest-setup-after-env.js")],
+  setupFiles: [path.join(__dirname, "jest-setup.js")],
   // Don't set maxWorkers based on LAGE_PACKAGE_NAME because that's handled by workers/jest.js
   // ...(process.env.LAGE_PACKAGE_NAME && { maxWorkers: 1 }),
 };

@@ -1,6 +1,6 @@
 {
   "name": "backfill-config",
-  "version": "6.7.2",
+  "version": "6.7.5",
   "description": "Backfill Config",
   "license": "MIT",
   "author": "Benjamin Weggersen <bewegger@microsoft.com>",
@@ -11,6 +11,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "api": "monorepo-scripts api",
     "build": "yarn types && yarn transpile",
     "transpile": "monorepo-scripts transpile",
     "types": "yarn run -T tsc",
@@ -24,7 +25,7 @@
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
-    "backfill-utils-test": "workspace:^"
+    "@lage-run/test-utilities": "workspace:^"
   },
   "engines": {
     "node": ">=14"

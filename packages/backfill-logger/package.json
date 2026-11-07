@@ -1,6 +1,6 @@
 {
   "name": "backfill-logger",
-  "version": "5.4.1",
+  "version": "5.4.3",
   "description": "Handle backfill output",
   "license": "MIT",
   "author": "Vincent Bailly <vibailly@microsoft.com>",
@@ -11,7 +11,10 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc --pretty",
+    "api": "monorepo-scripts api",
+    "build": "yarn types && yarn transpile",
+    "transpile": "monorepo-scripts transpile",
+    "types": "yarn run -T tsc",
     "lint": "monorepo-scripts lint"
   },
   "dependencies": {

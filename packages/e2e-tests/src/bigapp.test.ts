@@ -1,3 +1,4 @@
+import { afterEach, describe, expect, it } from "@jest/globals";
 import { Monorepo } from "./mock/monorepo.js";
 import { getTargetId } from "@lage-run/target-graph";
 import { getStatusIndices, parseNdJson } from "./parseNdJson.js";
@@ -26,9 +27,9 @@ describe("bigapp test", () => {
       },
     });
 
-    await repo.install();
+    repo.prepare();
 
-    const results = await repo.run("test");
+    const results = await repo.runLage("test");
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const indices = getStatusIndices({
       entries: jsonOutput,

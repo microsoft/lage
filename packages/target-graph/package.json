@@ -1,6 +1,6 @@
 {
   "name": "@lage-run/target-graph",
-  "version": "0.14.0",
+  "version": "0.15.13",
   "description": "Target for Lage",
   "repository": {
     "type": "git",
@@ -11,6 +11,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "api": "monorepo-scripts api",
     "build": "yarn types && yarn transpile",
     "transpile": "monorepo-scripts transpile",
     "types": "yarn run -T tsc",
@@ -20,7 +21,7 @@
   "dependencies": {
     "mergician": "2.0.2",
     "p-limit": "3.1.0",
-    "workspace-tools": "0.41.0"
+    "workspace-tools": "workspace:^"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",

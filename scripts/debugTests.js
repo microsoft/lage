@@ -1,6 +1,6 @@
 const { run: runJest } = require("jest");
 const path = require("path");
-const { findPackageRoot } = require("workspace-tools");
+const { findPackageRoot } = require("workspace-tools-npm");
 
 const args = process.argv.slice(2);
 

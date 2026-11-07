@@ -1,8 +1,118 @@
 # Change Log - @lage-run/hasher
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.11.0
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Minor changes
+
+- Accept optional package metadata in `TargetHasher` to avoid redundant package discovery. (djmaks@microsoft.com)
+- Bump @lage-run/target-graph to v0.15.13
+- Bump backfill-hasher to v6.7.15
+- Bump workspace-tools to v0.42.3
+
+## 1.10.13
+
+Tue, 11 Aug 2026 09:42:15 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.12
+- Bump backfill-hasher to v6.7.14
+- Bump workspace-tools to v0.42.2
+
+## 1.10.12
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump @lage-run/logger to v1.5.1
+- Bump @lage-run/target-graph to v0.15.11
+- Bump backfill-hasher to v6.7.13
+- Bump workspace-tools to v0.42.1
+
+## 1.10.11
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.10
+- Bump backfill-hasher to v6.7.12
+- Bump workspace-tools to v0.42.0
+
+## 1.10.10
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.9
+- Bump backfill-hasher to v6.7.11
+- Bump workspace-tools to v0.41.10
+
+## 1.10.9
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.8
+- Bump backfill-hasher to v6.7.10
+- Bump workspace-tools to v0.41.9
+
+## 1.10.8
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump @lage-run/target-graph to v0.15.7
+- Bump backfill-hasher to v6.7.9
+- Bump workspace-tools to v0.41.8
+
+## 1.10.7
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Patches
+
+- Add generics to `TargetHasher` `logger` option (any logger will be accepted) (elcraig@microsoft.com)
+
+## 1.10.2
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 1.10.0
+
+Thu, 02 Apr 2026 03:54:25 GMT
+
+### Minor changes
+
+- TargetHasher: remove unnecessary writes to `node_modules/.cache/lage/hashes` (elcraig@microsoft.com)
+
+### Patches
+
+- Directly use `globby` v11 instead of `@lage-run/globby` (implement caching internally) (elcraig@microsoft.com)
+
+## 1.9.6
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Patches
+
+- Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
+- Address promise lint issues (elcraig@microsoft.com)
 
 ## 1.9.5
 

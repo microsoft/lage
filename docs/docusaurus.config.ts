@@ -16,7 +16,6 @@ const config: Config = {
   url: process.env.DEPLOY_URL || "https://microsoft.github.io",
   baseUrl: "/lage/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "throw",
   // no longer exists
   // favicon: "/img/lage-logo.svg",
   organizationName: "microsoft",
@@ -24,6 +23,9 @@ const config: Config = {
 
   markdown: {
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: "throw",
+    },
   },
 
   themes: ["@docusaurus/theme-mermaid"],
@@ -33,7 +35,7 @@ const config: Config = {
       "classic",
       {
         docs: {
-          editUrl: "https://github.com/microsoft/lage/edit/master/docs",
+          editUrl: "https://github.com/microsoft/lage/edit/main/docs",
         },
         theme: {
           customCss: [require.resolve("./src/css/custom.css")],
@@ -43,6 +45,15 @@ const config: Config = {
   ],
 
   themeConfig: {
+    mermaid: {
+      options: {
+        gantt: {
+          fontSize: 16,
+          sectionFontSize: 16,
+          useWidth: 900,
+        },
+      },
+    },
     navbar: {
       logo: {
         alt: "Lage Logo",
@@ -53,7 +64,19 @@ const config: Config = {
           type: "doc",
           docId: "introduction",
           position: "left",
-          label: "Guide",
+          label: "Introduction",
+        },
+        {
+          type: "doc",
+          docId: "reference/cli",
+          position: "left",
+          label: "CLI",
+        },
+        {
+          type: "doc",
+          docId: "reference/config",
+          position: "left",
+          label: "Configuration",
         },
         {
           href: "https://github.com/microsoft/lage",

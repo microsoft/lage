@@ -7,13 +7,39 @@ lib
 *.pdf
 coverage
 .idea/
-**/.docusaurus/
+.cache-loader/
+.docusaurus/
+/docs/build
 profile*.json
-.yarn/*
-!.yarn/patches/
-!.yarn/plugins/
-!.yarn/releases/
 temp
 *.tgz
 .claude/settings.local.json
 *.tsbuildinfo
+*.tmp.*
+.env.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+!/packages/*/__fixtures__/**/node_modules/
+!/packages/*/__fixtures__/**/.cache/
+!/packages/*/__fixtures__/**/lib/
+
+# only check in certain files under root .yarn
+/.yarn/*
+!/.yarn/patches/
+!/.yarn/plugins/
+!/.yarn/releases/
+/benchmark/.yarn/
+/docs/.yarn/
+
+# ignored to prevent false positive security alerts on nested deps that are rarely/never installed
+benchmark/yarn.lock
+
+# workspace-tools
+.rush/
+**/common/scripts/
+/packages/workspace-tools/src/__fixtures__/*/node_modules/
+/packages/workspace-tools/src/__fixtures__/**/.yarn/
+!/packages/workspace-tools/src/__fixtures__/**/package-lock.json
+install-state.gz

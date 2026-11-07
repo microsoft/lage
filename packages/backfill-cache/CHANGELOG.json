@@ -2,6 +2,156 @@
   "name": "backfill-cache",
   "entries": [
     {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "5.12.6",
+      "tag": "backfill-cache_v5.12.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "backfill-cache",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Update dependency tar-fs to v2.1.5"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-cache",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "beachball",
+            "package": "backfill-cache",
+            "comment": "Bump backfill-config to v6.7.5",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "backfill-cache",
+            "comment": "Bump backfill-logger to v5.4.3",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Apr 2026 03:39:42 GMT",
+      "version": "5.12.4",
+      "tag": "backfill-cache_v5.12.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-cache",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Apr 2026 03:54:25 GMT",
+      "version": "5.12.3",
+      "tag": "backfill-cache_v5.12.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-cache",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Directly use `globby` v11 instead of `@lage-run/globby`"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-cache",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "LocalCacheStorage: remove incorrect check for file changes between source and dest while fetching from cache (removes superfluous stat calls)"
+          },
+          {
+            "author": "email not defined",
+            "package": "backfill-cache",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Remove unused catch binding"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 30 Mar 2026 21:21:13 GMT",
+      "version": "5.12.2",
+      "tag": "backfill-cache_v5.12.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "backfill-cache",
+            "commit": "e38b72e356def2567dba0600f4b634f628523548",
+            "comment": "Fix bug introduced where globby results were being cached"
+          },
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "backfill-cache",
+            "commit": "e38b72e356def2567dba0600f4b634f628523548",
+            "comment": "Reintroduce fix: include dotfiles in cache output glob matching"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 28 Mar 2026 00:04:36 GMT",
+      "version": "5.12.1",
+      "tag": "backfill-cache_v5.12.1",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-cache",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          }
+        ],
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "backfill-cache",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Revert glob caching changes due to potential regression"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "5.12.0",
+      "tag": "backfill-cache_v5.12.0",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-cache",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update test dev dep names"
+          }
+        ],
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "backfill-cache",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          }
+        ],
+        "minor": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "backfill-cache",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Start caching more subfolders with dots in the name, fixing issues internal repos were having with .vite and the lage cache"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Mar 2026 23:52:35 GMT",
       "version": "5.11.4",
       "tag": "backfill-cache_v5.11.4",

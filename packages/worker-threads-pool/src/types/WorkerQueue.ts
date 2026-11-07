@@ -18,7 +18,7 @@ export interface IWorker extends EventEmitter {
   stderr: Readable;
   resourceLimits?: ResourceLimits;
   threadId: number;
-  terminate(): void;
+  terminate(): Promise<void>;
   restart(): void;
   weight: number;
   status: "free" | "busy";

@@ -1,3 +1,4 @@
+import { afterEach, describe, expect, it } from "@jest/globals";
 import fs from "fs";
 import path from "path";
 
@@ -25,10 +26,10 @@ describe("Cache clear", () => {
         b: { scripts: { build: "echo b:build" } },
       },
     });
-    await repo.install();
+    repo.prepare();
 
     // Run build so we get a cache folder
-    await repo.run("build");
+    await repo.runLage("build");
 
     const cacheFolder = path.join(repo.root, defaultCacheLocation);
 
@@ -39,7 +40,7 @@ describe("Cache clear", () => {
     expect(fs.readdirSync(cacheFolder)).toHaveLength(2);
 
     // Clear the cache
-    await repo.run("clear");
+    await repo.runLage("clear");
 
     // Cache folders should be empty
     expect(fs.readdirSync(cacheFolder)).toHaveLength(0);

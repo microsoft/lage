@@ -1,8 +1,114 @@
 # Change Log - @lage-run/config
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.9.18
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.4.16
+- Bump @lage-run/target-graph to v0.15.13
+- Bump workspace-tools to v0.42.3
+
+## 0.9.17
+
+Tue, 11 Aug 2026 09:42:15 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.4.15
+- Bump @lage-run/target-graph to v0.15.12
+- Bump workspace-tools to v0.42.2
+
+## 0.9.16
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Bump @lage-run/logger to v1.5.1
+- Bump @lage-run/runners to v1.4.14
+- Bump @lage-run/target-graph to v0.15.11
+- Bump backfill-config to v6.7.5
+- Bump workspace-tools to v0.42.1
+
+## 0.9.15
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.4.13
+- Bump @lage-run/target-graph to v0.15.10
+- Bump workspace-tools to v0.42.0
+
+## 0.9.14
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.4.12
+- Bump @lage-run/target-graph to v0.15.9
+- Bump workspace-tools to v0.41.10
+
+## 0.9.13
+
+Thu, 25 Jun 2026 04:59:29 GMT
+
+### Patches
+
+- Update dependency cosmiconfig to v9.0.2 (renovate@whitesourcesoftware.com)
+
+## 0.9.12
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.4.11
+- Bump @lage-run/target-graph to v0.15.8
+- Bump workspace-tools to v0.41.9
+
+## 0.9.11
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Bump @lage-run/runners to v1.4.10
+- Bump @lage-run/target-graph to v0.15.7
+- Bump workspace-tools to v0.41.8
+
+## 0.9.6
+
+Fri, 10 Apr 2026 04:04:59 GMT
+
+### Patches
+
+- Add `reporter` option to config file (elcraig@microsoft.com)
+
+## 0.9.5
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 0.9.2
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Patches
+
+- Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
+- Address promise lint issues (elcraig@microsoft.com)
 
 ## 0.9.1
 

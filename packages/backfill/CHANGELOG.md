@@ -1,8 +1,124 @@
 # Change Log - backfill
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 6.4.21
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- `backfill-hasher`
+  - Use a Set for external dependency queue membership checks while preserving resolution order. (djmaks@microsoft.com)
+
+## 6.4.19
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- `backfill`
+  - Update dotenv to v17 (elcraig@microsoft.com)
+  - Transpile with typescript 6 (elcraig@microsoft.com)
+- `backfill-cache`
+  - Update dependency tar-fs to v2.1.5 (email not defined)
+  - Transpile with typescript 6 (elcraig@microsoft.com)
+- `backfill-config`
+  - Transpile with typescript 6 (elcraig@microsoft.com)
+- `backfill-hasher`
+  - Transpile with typescript 6 (elcraig@microsoft.com)
+- `backfill-logger`
+  - Transpile with typescript 6 (elcraig@microsoft.com)
+
+## 6.4.16
+
+Thu, 25 Jun 2026 04:59:29 GMT
+
+### Patches
+
+- `backfill`
+  - Update yargs packages to v16.2.2 (email not defined)
+
+## 6.4.10
+
+Fri, 10 Apr 2026 04:04:59 GMT
+
+### Patches
+
+- `backfill`
+  - Merge backfill-utils-dotenv into backfill (elcraig@microsoft.com)
+
+## 6.4.9
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- `backfill`
+  - Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+- `backfill-cache`
+  - Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+- `backfill-config`
+  - Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+- `backfill-hasher`
+  - Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+- `backfill-logger`
+  - Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+- `backfill-utils-dotenv`
+  - Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 6.4.8
+
+Thu, 02 Apr 2026 03:54:25 GMT
+
+### Patches
+
+- `backfill-cache`
+  - Directly use `globby` v11 instead of `@lage-run/globby` (elcraig@microsoft.com)
+  - LocalCacheStorage: remove incorrect check for file changes between source and dest while fetching from cache (removes superfluous stat calls) (elcraig@microsoft.com)
+  - Remove unused catch binding (email not defined)
+- `backfill`
+  - Directly use `globby` v11 instead of `@lage-run/globby` (elcraig@microsoft.com)
+
+## 6.4.7
+
+Mon, 30 Mar 2026 21:21:13 GMT
+
+### Patches
+
+- `backfill-cache`
+  - Fix bug introduced where globby results were being cached (1581488+christiango@users.noreply.github.com)
+  - Reintroduce fix: include dotfiles in cache output glob matching (1581488+christiango@users.noreply.github.com)
+- `backfill`
+  - Use uncached globby for clearing output files (1581488+christiango@users.noreply.github.com)
+
+## 6.4.6
+
+Sat, 28 Mar 2026 00:04:36 GMT
+
+### Patches
+
+- `backfill-cache`
+  - Revert glob caching changes due to potential regression (email not defined)
+
+## 6.4.5
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Minor changes
+
+- `backfill-cache`
+  - Start caching more subfolders with dots in the name, fixing issues internal repos were having with .vite and the lage cache (1581488+christiango@users.noreply.github.com)
+
+### Patches
+
+- `backfill-hasher`
+  - Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
+  - Address promise lint issues (elcraig@microsoft.com)
+- `backfill-cache`
+  - Address promise lint issues (elcraig@microsoft.com)
 
 ## 6.4.4
 

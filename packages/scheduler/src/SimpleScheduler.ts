@@ -15,7 +15,7 @@ import type { WorkerResult } from "./WrappedTarget.js";
 import { WrappedTarget } from "./WrappedTarget.js";
 
 export interface SimpleSchedulerOptions {
-  logger: Logger;
+  logger: Logger<never, never>;
   concurrency: number;
   continueOnError: boolean;
   shouldCache: boolean;
@@ -31,6 +31,7 @@ export interface SimpleSchedulerOptions {
   pool?: Pool; // for testing
   workerIdleMemoryLimit: number; // in bytes
   hasher: TargetHasher;
+  logMemory?: boolean;
   onMessage?: (message: any, postMessage: MessagePort["postMessage"]) => void;
 }
 
@@ -62,7 +63,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
         maxWorkersByGroup: options.maxWorkersPerTask,
         groupBy: ({ target }) => target.task,
         maxWorkers: options.concurrency,
-        script: require.resolve("./workers/targetWorker"),
+        script: require.resolve("./workers/targetWorker.js"),
         workerOptions: {
           stdout: true,
           stderr: true,
@@ -88,12 +89,6 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     const startTime: [number, number] = process.hrtime();
 
     const { continueOnError, logger, shouldCache } = this.options;
-
-    logger.verbose("", {
-      schedulerRun: {
-        startTime,
-      },
-    });
 
     const { pool, abortController } = this;
 
@@ -125,6 +120,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
           abortController,
           pool,
           hasher: this.options.hasher,
+          logMemory: this.options.logMemory,
           onMessage: this.options.onMessage,
         });
       }
@@ -158,7 +154,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
 
     const poolStats = pool.stats();
 
-    await this.options.hasher.cleanup();
+    this.options.hasher.cleanup();
 
     return {
       targetRunByStatus,
@@ -252,24 +248,6 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
     await Promise.all(promises);
   }
 
-  private logProgress(): void {
-    const targetRunByStatus = categorizeTargetRuns(this.targetRuns.values());
-    const total = [...this.targetRuns.values()].filter((t) => !t.target.hidden).length;
-
-    this.options.logger.verbose("", {
-      poolStats: this.pool.stats(),
-      progress: {
-        waiting: targetRunByStatus.pending.length + targetRunByStatus.queued.length,
-        completed:
-          targetRunByStatus.aborted.length +
-          targetRunByStatus.failed.length +
-          targetRunByStatus.skipped.length +
-          targetRunByStatus.success.length,
-        total,
-      },
-    });
-  }
-
   async #generateTargetRunPromise(target: WrappedTarget) {
     let runError: unknown | undefined;
 
@@ -285,7 +263,7 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
           try {
             const runner = await this.runnerPicker.pick(target.target);
             shouldRun = await runner.shouldRun(target.target);
-          } catch (e) {
+          } catch {
             // pass - default to run anyway
           }
 
@@ -308,8 +286,6 @@ export class SimpleScheduler implements TargetScheduler<WorkerResult> {
         }
       }
     }
-
-    this.logProgress();
 
     // finally do another round of scheduling to run next round of targets
     await this.scheduleReadyTargets();

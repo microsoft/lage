@@ -1,46 +1,54 @@
-import { formatDuration, hrToSeconds } from "@lage-run/format-hrtime";
-import { isTargetStatusLogEntry } from "./isTargetStatusLogEntry.js";
+import { formatHrtime } from "./formatDuration.js";
+import { isTargetLogEntry, isTargetStatusData } from "./isTargetLogEntry.js";
 import { LogLevel } from "@lage-run/logger";
-import ansiRegex from "ansi-regex";
-import type { Reporter, LogEntry } from "@lage-run/logger";
-import type { TargetLogData } from "./types/TargetLogData.js";
 import { Writable } from "stream";
 import fs from "fs";
 import path from "path";
-import type { TargetStatus } from "@lage-run/scheduler-types";
+import { formatMemoryUsage, stripAnsi } from "./formatHelpers.js";
+import type { TargetLogEntry, MaybeTargetLogEntry, TargetReporter } from "./types/TargetReporter.js";
 
-const stripAnsiRegex = ansiRegex();
-
-function stripAnsi(message: string) {
-  return message.replace(stripAnsiRegex, "");
+interface VerboseFileLogReporterOptions {
+  /** Log file path from CLI args */
+  logFile?: string;
+  /** Whether to capture and report main process memory usage on target completion */
+  logMemory?: boolean;
+  /** Stream for testing (used instead of `logFile`) */
+  fileStream?: Writable;
 }
 
-export class VerboseFileLogReporter implements Reporter {
+/**
+ * Writes log entries to a file. It includes all log entries except "silly" level.
+ */
+export class VerboseFileLogReporter implements TargetReporter {
   private fileStream: Writable;
+  private logMemory: boolean;
 
-  /**
-   * @param logFile Log file path from CLI args
-   * @param fileStream Stream for testing
-   */
-  constructor(logFile?: string, fileStream?: Writable) {
-    // if logFile is falsy (not specified on cli args), this.fileStream just become a "nowhere" stream and this reporter effectively does nothing
+  constructor(options: VerboseFileLogReporterOptions);
+  /** @deprecated use object params version */
+  constructor(logFile?: string, fileStream?: Writable, logMemory?: boolean);
+  constructor(fileOrOptions?: string | VerboseFileLogReporterOptions, _fileStream?: Writable, _logMemory?: boolean) {
+    const options: VerboseFileLogReporterOptions =
+      typeof fileOrOptions === "string" ? { logFile: fileOrOptions, logMemory: _logMemory, fileStream: _fileStream } : fileOrOptions || {};
+    const { logFile } = options;
+
+    this.logMemory = options.logMemory ?? false;
     if (logFile) {
-      const logFileDir = path.dirname(path.resolve(logFile));
-      if (!fs.existsSync(logFileDir)) {
-        fs.mkdirSync(logFileDir, { recursive: true });
-      }
+      // make the parent directory if it doesn't exist
+      fs.mkdirSync(path.dirname(path.resolve(logFile)), { recursive: true });
     }
 
-    this.fileStream = fileStream ?? (logFile ? fs.createWriteStream(logFile) : new Writable({ write() {} }));
+    // if logFile is falsy (not specified on cli args), this.fileStream just become a "nowhere" stream and this reporter effectively does nothing
+    this.fileStream = options.fileStream ?? (logFile ? fs.createWriteStream(logFile) : new Writable({ write() {} }));
   }
 
   public cleanup(): void {
     this.fileStream.end();
   }
 
-  public log(entry: LogEntry<any>): void {
+  public log(entry: MaybeTargetLogEntry): void {
+    const isTargetLog = isTargetLogEntry(entry);
     // if "hidden", do not even attempt to record or report the entry
-    if (entry?.data?.target?.hidden) {
+    if (isTargetLog && entry.data.target.hidden) {
       return;
     }
 
@@ -50,7 +58,7 @@ export class VerboseFileLogReporter implements Reporter {
     }
 
     // log normal target entries
-    if (entry.data && entry.data.target) {
+    if (isTargetLog) {
       return this.logTargetEntry(entry);
     }
 
@@ -60,7 +68,7 @@ export class VerboseFileLogReporter implements Reporter {
     }
   }
 
-  private printEntry(entry: LogEntry<any>, message: string) {
+  private printEntry(entry: TargetLogEntry, message: string) {
     let packageAndTask = "";
 
     if (entry?.data?.target) {
@@ -73,7 +81,7 @@ export class VerboseFileLogReporter implements Reporter {
     this.print(`${this.getEntryTargetId(entry)} ${packageAndTask} ${message}`.trim());
   }
 
-  private getEntryTargetId(entry: LogEntry<any>) {
+  private getEntryTargetId(entry: TargetLogEntry) {
     if (entry.data?.target?.id) {
       return `[:${entry.data.target.id}:]`;
     }
@@ -85,26 +93,41 @@ export class VerboseFileLogReporter implements Reporter {
     this.fileStream.write(message + "\n");
   }
 
-  private logTargetEntry(entry: LogEntry<TargetLogData>) {
+  private logTargetEntry(entry: TargetLogEntry) {
     const data = entry.data!;
 
-    if (isTargetStatusLogEntry(data)) {
-      const { hash, duration, status } = data;
-      const statusMessages: Record<TargetStatus, string> = {
-        running: "➔ start",
-        success: `✓ done - ${duration && formatDuration(hrToSeconds(duration))}`,
-        failed: "✖ fail",
-        skipped: `» skip - ${hash}`,
-        aborted: "- aborted",
-        queued: "… queued",
-        pending: "… pending",
-      };
+    if (isTargetStatusData(data)) {
+      const { hash, duration, status, memoryUsage } = data;
+      const mem = formatMemoryUsage(memoryUsage, this.logMemory);
 
-      return this.printEntry(entry, statusMessages[status]);
-    } else {
-      const defaultMessage = `: ${stripAnsi(entry.msg)}`;
-      return this.printEntry(entry, defaultMessage);
+      switch (status) {
+        case "running":
+          return this.printEntry(entry, `➔ start`);
+
+        case "success":
+          return this.printEntry(entry, `✓ done - ${formatHrtime(duration!)}${mem}`);
+
+        case "failed":
+          return this.printEntry(entry, `✖ fail${mem}`);
+
+        case "skipped":
+          return this.printEntry(entry, `» skip - ${hash}${mem}`);
+
+        case "aborted":
+          return this.printEntry(entry, `- aborted`);
+
+        case "queued":
+          return this.printEntry(entry, `… queued`);
+
+        case "pending":
+          return this.printEntry(entry, `… pending`);
+
+        default:
+          throw new Error(`Internal error: unhandled target status "${status}"`);
+      }
     }
+
+    return this.printEntry(entry, `: ${stripAnsi(entry.msg)}`);
   }
 
   public summarize(): void {

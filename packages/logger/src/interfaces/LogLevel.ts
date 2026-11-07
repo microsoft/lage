@@ -1,3 +1,7 @@
+/**
+ * Valid log levels.
+ * A higher number means a more verbose log level.
+ */
 export const LogLevel = {
   error: 10,
   warn: 20,

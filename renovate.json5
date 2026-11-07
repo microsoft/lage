@@ -1,20 +1,24 @@
+// Available options:
+// https://docs.renovatebot.com/configuration-options/
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>microsoft/m365-renovate-config",
-    "github>microsoft/m365-renovate-config:beachball",
-    "github>microsoft/m365-renovate-config:disableEsmVersions",
-    "github>microsoft/m365-renovate-config:groupMore",
-    "github>microsoft/m365-renovate-config:keepFresh",
-    "github>microsoft/m365-renovate-config:restrictNode(16)"
+    "github>microsoft/beachball//renovate/presets/beachball",
+    "github>microsoft/beachball//renovate/presets/disableEsmVersions",
+    "github>microsoft/beachball//renovate/presets/groupMore",
+    "github>microsoft/beachball//renovate/presets/keepFresh",
+    "github>microsoft/beachball//renovate/presets/restrictNode(16)",
+    "github>microsoft/beachball//renovate/presets/scheduleNoisy"
   ],
   "labels": ["renovate"],
   "prHourlyLimit": 5,
   "semanticCommits": "disabled",
+  "reviewers": ["ecraig12345"],
   "ignorePaths": [
     "**/node_modules/**",
     // incorrect manager is being used for fixtures, and most of them don't have real deps anyway
-    "**/__fixtures__/**"
+    "**/__fixtures__/**",
+    "benchmark"
   ],
   "packageRules": [
     {
@@ -33,12 +37,6 @@
       "matchPackageNames": ["@bufbuild/*"]
     },
     {
-      // Automatically pick up backfill and workspace-tools updates
-      "matchPackageNames": ["backfill", "workspace-tools", "backfill-*"],
-      "matchUpdateTypes": ["major", "minor", "patch", "bump"],
-      "dependencyDashboardApproval": false
-    },
-    {
       // There's a dev dep "lage-npm": "npm:lage@<..." intended to pull in a slightly older
       // pre-built lage version for repo build orchestration (since local lage isn't built yet).
       // Disable updating this with Renovate because it will choose a range that includes the
@@ -47,9 +45,21 @@
       "enabled": false
     },
     {
-      // Disable due to Node version compatibility
-      "matchPackageNames": ["@azure/*", "node-gyp"],
+      "matchPackageNames": [
+        // Disable due to Node version compatibility
+        "@azure/*",
+        "node-gyp",
+        "@microsoft/api-extractor",
+        // These are pinned in docs/package.json (see rationale there)
+        "@algolia/autocomplete-js",
+        "webpack"
+      ],
       "enabled": false
+    },
+    {
+      "groupName": "workspace-tools resolutions",
+      "matchPackageNames": ["/.*workspace-tools$/"],
+      "dependencyDashboardApproval": false
     }
   ]
 }

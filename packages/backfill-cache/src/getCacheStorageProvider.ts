@@ -20,6 +20,11 @@ export function isCustomPluginProvider(
 
 const memo = new Map<string, ICacheStorage>();
 
+/**
+ * Get the cache storage provider with the given options.
+ * @param cacheStorageConfig Cache storage config (usually from backfill/lage config file + env)
+ * @param internalCacheFolder Relative path to the cache folder, such as `node_modules/.cache/backfill`
+ */
 export function getCacheStorageProvider(
   cacheStorageConfig: CacheStorageConfig,
   internalCacheFolder: string,
@@ -48,8 +53,7 @@ export function getCacheStorageProvider(
         resolvedPlugin = cwdRequire.resolve(pluginName);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-      const pluginModule = require(resolvedPlugin);
+      const pluginModule = createRequire(__filename)(resolvedPlugin);
       const plugin: CustomCacheStoragePlugin =
         pluginModule.default || pluginModule;
       cacheStorage = plugin.getProvider(

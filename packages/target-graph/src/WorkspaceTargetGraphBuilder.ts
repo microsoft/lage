@@ -82,7 +82,7 @@ export class WorkspaceTargetGraphBuilder {
   /**
    * Generates new `Target`, indexed by the id based on a new target configuration.
    */
-  public async addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]): Promise<void> {
+  public addTargetConfig(id: string, config: TargetConfig = {}, changedFiles?: string[]): void {
     // Generates a target definition from the target config
     if (id.startsWith("//") || id.startsWith("#")) {
       const targetConfig = this.determineFinalTargetConfig(id, config);
@@ -113,7 +113,7 @@ export class WorkspaceTargetGraphBuilder {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   private deepCloneTargetConfig: Function = mergician({
     appendArrays: true,
     onCircular: () => {
@@ -225,7 +225,31 @@ export class WorkspaceTargetGraphBuilder {
 
     for (const task of tasks) {
       for (const packageName of scope) {
-        subGraphEntries.push(getTargetId(packageName, task));
+        const targetId = getTargetId(packageName, task);
+
+        if (this.options.enablePhantomTargetOptimization) {
+          const target = this.graphBuilder.targets.get(targetId);
+          if (target) {
+            // Skip phantom npmScript targets: the package doesn't have this script
+            if (target.type === builtInTargetTypes.npmScript) {
+              const pkg = this.options.packageInfos[packageName];
+              if (!pkg?.scripts?.[task]) {
+                continue;
+              }
+            } else {
+              // For non-npmScript targets (e.g. worker), skip if shouldRun resolves to false
+              const config = this.targetConfigMap.get(targetId);
+              if (config && typeof config.shouldRun === "function") {
+                const result = await config.shouldRun(target);
+                if (!result) {
+                  continue;
+                }
+              }
+            }
+          }
+        }
+
+        subGraphEntries.push(targetId);
       }
 
       if (this.hasRootTarget) {

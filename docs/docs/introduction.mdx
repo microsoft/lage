@@ -40,6 +40,8 @@ import Mermaid from "@theme/Mermaid";
 <Mermaid
   value={`
 graph TD
+  accTitle: Example package dependency graph
+  accDescr: FooApp1 and FooApp2 depend on FooCore, and BarPage depends on BarCore. FooCore and BarCore both depend on BuildTool.
   FooCore --> BuildTool
   BarCore --> BuildTool
   FooApp1 --> FooCore
@@ -55,8 +57,10 @@ First, let's take a look at the typical workspace runners. `Lerna` (before), `pn
 <Mermaid
   value={`gantt
   title Level 1: Typical Lerna or Workspace Runners
+  accTitle: Level 1 sequential workspace runner schedule
+  accDescr: Prepare, build, and test run as separate phases across all six packages. The phases take 30, 50, and 25 seconds respectively, for a total of 105 seconds.
   dateFormat  s
-  axisFormat  %S
+  axisFormat  %-M:%S
   section Total
     prepare: active, total_prepare, 0, 30s
     build : active, total_build, after total_prepare, 50s
@@ -95,8 +99,10 @@ One of the first ways to speeding up build jobs is to use "scoping." Usually a c
 <Mermaid
   value={`gantt
   title Level 2: Scoping
+  accTitle: Level 2 schedule with package scoping
+  accDescr: FooCore, FooApp1, and FooApp2 are skipped because the change affects BarCore and BarPage. BuildTool, BarCore, and BarPage still run in sequential prepare, build, and test phases, reducing the total from 105 to 91 seconds.
   dateFormat  s
-  axisFormat  %S
+  axisFormat  %-M:%S
   section Total
     Level 1: 0, 105s
     prepare: active, total_prepare, 0, 30s
@@ -130,8 +136,10 @@ To further improve build times, we can take advantage of build caches. If we had
 <Mermaid
   value={`gantt
   title Level 3: Caching
+  accTitle: Level 3 schedule with scoping and caching
+  accDescr: FooCore, FooApp1, and FooApp2 remain skipped, while cached BarCore build and test tasks each take 2 seconds. BuildTool and BarPage still run their tasks, reducing the total from 91 to 79 seconds.
   dateFormat  s
-  axisFormat  %S
+  axisFormat  %-M:%S
   section Total
     Level 1: 0, 105s
     Level 2: 0, 91s
@@ -166,8 +174,10 @@ Finally, the last thing we can to speed things up is to break down the wall betw
 <Mermaid
   value={`gantt
   title Level 4: Pipelining
+  accTitle: Level 4 schedule with scoping, caching, and pipelining
+  accDescr: Prepare, build, and test tasks can begin as soon as their dependencies finish instead of waiting for each repository-wide phase. Combined with scoping and cached BarCore tasks, pipelining reduces the total from 79 to 67 seconds.
   dateFormat  s
-  axisFormat  %S
+  axisFormat  %-M:%S
   section Total
     Level 1: 0, 105s
     Level 2: 0, 91s

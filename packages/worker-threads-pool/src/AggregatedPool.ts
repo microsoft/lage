@@ -13,7 +13,8 @@ interface AggregatedPoolOptions {
   maxWorkers: number;
   script: string;
   workerOptions?: WorkerOptions;
-  logger: Logger;
+  // "never" means no structured data arguments are used
+  logger: Logger<never, never>;
   workerIdleMemoryLimit?: number; // in bytes
 }
 
@@ -112,7 +113,7 @@ export class AggregatedPool extends EventEmitter implements Pool {
   }
 
   public async close(): Promise<unknown> {
-    const promises = [...this.groupedPools.values(), this.defaultPool].map((pool) => pool?.close());
-    return Promise.all(promises);
+    const pools = [...this.groupedPools.values(), this.defaultPool].filter(Boolean);
+    return Promise.all(pools.map((pool) => pool!.close()));
   }
 }

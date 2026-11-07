@@ -8,7 +8,7 @@ export type HashGlobs = string[];
 export type Config = {
   /**
    * Cache storage provider name and potentially configuration.
-   * @default { provider: "local" }
+   * Defaults to `{ provider: "local" }`.
    */
   cacheStorageConfig: CacheStorageConfig;
 

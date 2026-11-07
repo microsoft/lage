@@ -1,3 +1,4 @@
+import { afterEach, describe, expect, it } from "@jest/globals";
 import type { InfoResult } from "@lage-run/cli/lib/internal.js";
 import { Monorepo } from "./mock/monorepo.js";
 import { parseNdJson } from "./parseNdJson.js";
@@ -17,9 +18,9 @@ describe("info command", () => {
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
 
-    await repo.install();
+    repo.prepare();
 
-    const results = await repo.run("writeInfo", ["test"]);
+    const results = await repo.runLage("writeInfo", ["test"]);
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
 
     expect(jsonOutput).toMatchSnapshot();
@@ -32,9 +33,9 @@ describe("info command", () => {
       packages: { a: { internalDeps: ["b"] }, b: {} },
     });
 
-    await repo.install();
+    repo.prepare();
 
-    const results = await repo.run("writeInfo", ["test", "--to", "b"]);
+    const results = await repo.runLage("writeInfo", ["test", "--to", "b"]);
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     expect(jsonOutput).toMatchSnapshot();
   });
@@ -49,9 +50,9 @@ describe("info command", () => {
         c: { scripts: { build: "echo 'building c'" } },
       },
     });
-    await repo.install();
+    repo.prepare();
 
-    const results = await repo.run("writeInfo", ["build", "prepare"]);
+    const results = await repo.runLage("writeInfo", ["build", "prepare"]);
 
     const infoJsonOutput = parseNdJson(results.stdout, results.stderr)[0];
     const { packageTasks } = infoJsonOutput.data as InfoResult;
@@ -79,9 +80,9 @@ describe("info command", () => {
         d: { scripts: { nobuild: "echo 'no build'" } },
       },
     });
-    await repo.install();
+    repo.prepare();
 
-    const results = await repo.run("writeInfo", ["build"]);
+    const results = await repo.runLage("writeInfo", ["build"]);
 
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const { packageTasks } = jsonOutput[0].data as InfoResult;
@@ -105,10 +106,10 @@ describe("info command", () => {
         d: { scripts: { nobuild: "echo 'no build'" } },
       },
     });
-    await repo.install();
+    repo.prepare();
 
     const backCompatEnvVars = { DOMINO: "1" };
-    const results = await repo.run("writeInfo", ["build"], false, { env: backCompatEnvVars });
+    const results = await repo.runLage("writeInfo", ["build"], { env: backCompatEnvVars });
 
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const { packageTasks } = jsonOutput[0].data as InfoResult;
@@ -146,9 +147,9 @@ describe("info command", () => {
         b: {},
       },
     });
-    await repo.install();
+    repo.prepare();
 
-    const results = await repo.run("writeInfo", ["test", "build"]);
+    const results = await repo.runLage("writeInfo", ["test", "build"]);
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     expect(jsonOutput).toMatchSnapshot();
   });
@@ -178,9 +179,9 @@ describe("info command", () => {
         b: {},
       },
     });
-    await repo.install();
+    repo.prepare();
 
-    const results = await repo.run("writeInfo", ["test", "build"]);
+    const results = await repo.runLage("writeInfo", ["test", "build"]);
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     expect(jsonOutput).toMatchSnapshot();
   });

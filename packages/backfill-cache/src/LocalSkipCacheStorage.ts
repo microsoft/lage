@@ -6,9 +6,13 @@ import type { Logger } from "backfill-logger";
 import { CacheStorage } from "./CacheStorage.js";
 
 /**
- * A CacheStorage that essentially just lets fetch return nothing locally, skipping cache, but verifies whether the hash is still correct based on the hasher algorithm
+ * A CacheStorage that essentially just lets fetch return nothing locally, skipping cache,
+ * but verifies whether the hash is still correct based on the hasher algorithm.
  */
 export class LocalSkipCacheStorage extends CacheStorage {
+  /**
+   * @param internalCacheFolder Relative path to the cache folder, such as `node_modules/.cache/backfill`
+   */
   constructor(
     private internalCacheFolder: string,
     logger: Logger,
@@ -26,7 +30,7 @@ export class LocalSkipCacheStorage extends CacheStorage {
     const localCacheFolder = this.getLocalCacheFolder("skip-cache");
     const hashFile = path.join(localCacheFolder, "hash");
 
-    if (!fs.pathExistsSync(localCacheFolder) || !fs.existsSync(hashFile)) {
+    if (!fs.existsSync(localCacheFolder) || !fs.existsSync(hashFile)) {
       return false;
     }
 

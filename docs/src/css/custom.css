@@ -9,6 +9,22 @@ pre.prism-code code {
   font-size: var(--ifm-code-font-size);
 }
 
+.docusaurus-mermaid-container svg[aria-roledescription="gantt"] .grid text {
+  font-size: 16px !important;
+}
+
+.buildxl-sequence .docusaurus-mermaid-container {
+  overflow-x: auto;
+}
+
+.buildxl-sequence--frontend {
+  --diagram-full-width: 1000px;
+}
+
+.buildxl-sequence--server-worker {
+  --diagram-full-width: 1500px;
+}
+
 /* top navbar */
 .navbar {
   background-color: var(--navbar-background);

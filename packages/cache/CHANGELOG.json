@@ -2,6 +2,353 @@
   "name": "@lage-run/cache",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "1.6.9",
+      "tag": "@lage-run/cache_v1.6.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/config to v0.9.18",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/reporters to v1.9.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.15.13",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 18 Aug 2026 02:26:59 GMT",
+      "version": "1.6.8",
+      "tag": "@lage-run/cache_v1.6.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/reporters to v1.9.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Aug 2026 09:42:15 GMT",
+      "version": "1.6.7",
+      "tag": "@lage-run/cache_v1.6.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/config to v0.9.17",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/reporters to v1.8.6",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.15.12",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "1.6.6",
+      "tag": "@lage-run/cache_v1.6.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/config to v0.9.16",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/reporters to v1.8.5",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.15.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump backfill-cache to v5.12.6",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump backfill-config to v6.7.5",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump backfill-logger to v5.4.3",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/logger to v1.5.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Jul 2026 22:12:55 GMT",
+      "version": "1.6.5",
+      "tag": "@lage-run/cache_v1.6.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/config to v0.9.15",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/reporters to v1.8.4",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.15.10",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 20:21:25 GMT",
+      "version": "1.6.4",
+      "tag": "@lage-run/cache_v1.6.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/config to v0.9.14",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/reporters to v1.8.3",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.15.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 04:59:29 GMT",
+      "version": "1.6.3",
+      "tag": "@lage-run/cache_v1.6.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/config to v0.9.13",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "1.6.2",
+      "tag": "@lage-run/cache_v1.6.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/config to v0.9.12",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/reporters to v1.8.2",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.15.8",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 12 Jun 2026 20:31:24 GMT",
+      "version": "1.6.1",
+      "tag": "@lage-run/cache_v1.6.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/config to v0.9.11",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/reporters to v1.8.1",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/cache",
+            "comment": "Bump @lage-run/target-graph to v0.15.7",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 01 May 2026 08:38:43 GMT",
+      "version": "1.6.0",
+      "tag": "@lage-run/cache_v1.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "1a884447c7647fe116e105b220a516016268ee77",
+            "comment": "Update cache provider `logger` option to use `TargetLogger`"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Apr 2026 03:39:42 GMT",
+      "version": "1.5.1",
+      "tag": "@lage-run/cache_v1.5.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 06 Apr 2026 21:27:03 GMT",
+      "version": "1.5.0",
+      "tag": "@lage-run/cache_v1.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "lutomanovic@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Add target property for controlling whether remote cache should be used for that target or not."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Apr 2026 03:54:25 GMT",
+      "version": "1.4.12",
+      "tag": "@lage-run/cache_v1.4.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Use cache directory helpers"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "update dev deps"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 28 Mar 2026 00:04:36 GMT",
+      "version": "1.4.10",
+      "tag": "@lage-run/cache_v1.4.10",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "1.4.9",
+      "tag": "@lage-run/cache_v1.4.9",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/cache",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Update test dev dep names"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Mar 2026 23:52:35 GMT",
       "version": "1.4.8",
       "tag": "@lage-run/cache_v1.4.8",

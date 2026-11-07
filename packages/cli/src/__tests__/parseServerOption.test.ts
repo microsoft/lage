@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { parseServerOption } from "../commands/parseServerOption.js";
 
 describe("parseServerOption", () => {

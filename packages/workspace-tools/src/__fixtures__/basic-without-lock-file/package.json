@@ -1,0 +1,8 @@
+{
+  "name": "basic-without-lock-file",
+  "license": "MIT",
+  "version": "0.1.0",
+  "dependencies": {
+    "is-number": "*"
+  }
+}

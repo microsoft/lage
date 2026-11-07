@@ -1,11 +1,19 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.preferences.preferTypeOnlyAutoImports": true,
-  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "editor.trimAutoWhitespace": true,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "files.trimTrailingWhitespace": true,
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.preferences.preferTypeOnlyAutoImports": true,
+  "js/ts.preferences.importModuleSpecifierEnding": "js",
   "files.associations": {
-    "*.json5": "jsonc"
+    // VS Code doesn't have json5 support, so handle .json5 files as jsonc.
+    // Note that Prettier must also be configured to format *.json5 as jsonc
+    // (since json5 allows things like unquoted keys that jsonc doesn't).
+    "*.json5": "jsonc",
+    "api-extractor*.json": "jsonc"
   },
   "search.exclude": {
     "**/lib": true,

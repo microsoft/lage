@@ -1,5 +1,5 @@
 // @ts-check
-/** @import { ConfigOptions, CacheOptions, NpmScriptTargetOptions, TargetConfig, WorkerTargetOptions } from 'lage' */
+/** @import { ConfigOptions, CacheOptions, TargetConfig, WorkerTargetOptions } from 'lage' */
 const os = require("os");
 const path = require("path");
 const fastGlob = require("fast-glob");
@@ -22,8 +22,10 @@ const baseTestTarget = {
  */
 const config = {
   pipeline: {
-    "lage#bundle": ["^^transpile", "types"],
-    // Note that transpile/types are overridden later for the @lage-run/globby package
+    "lage#bundle": {
+      dependsOn: ["^^transpile", "types"],
+      outputs: ["dist/**/*"],
+    },
     types: {
       type: "worker",
       options: /** @satisfies {WorkerTargetOptions} */ ({
@@ -52,20 +54,14 @@ const config = {
       type: "noop",
       dependsOn: ["transpile", "types"],
     },
-    "@lage-run/globby#types": {
-      type: "npmScript",
-    },
-    "@lage-run/globby#transpile": {
-      type: "npmScript",
-    },
-    "@lage-run/globby#isolatedTypes": {
-      type: "npmScript",
-      options: /** @satisfies {NpmScriptTargetOptions} */ ({
-        script: "types",
-      }),
+    api: {
+      dependsOn: ["types"],
+      outputs: ["etc/*.api.md", "temp/*.api.md"],
     },
     lint: {
       type: "worker",
+      // currently, lint depends on types due to typed linting and not using a tsconfig which includes all packages
+      dependsOn: ["types"],
       options: /** @satisfies {WorkerTargetOptions} */ ({
         worker: path.join(__dirname, "scripts/worker/lint.js"),
       }),
@@ -79,8 +75,10 @@ const config = {
     "@lage-run/e2e-tests#test": {
       ...baseTestTarget,
       dependsOn: ["^^transpile", "lage#bundle"],
-      // This runs last, so give it all available resources
-      weight: os.availableParallelism(),
+      // weight is used in scripts/worker/jest.js to determine max jest workers.
+      // Make this task run last and give it all available resources.
+      // But on CI, allow only one worker since this runs lage which internally creates workers.
+      weight: process.env.CI ? 1 : os.availableParallelism(),
       priority: -9999,
     },
   },
@@ -94,6 +92,7 @@ const config = {
       "!**/node_modules/**/*",
       "!**/__fixtures__/**",
       ".github/workflows/*",
+      ".swcrc",
       "beachball.config.js",
       "lage.config.js",
       "/package.json",
@@ -101,8 +100,8 @@ const config = {
       "yarn.lock",
       "*.yml",
     ],
-    // Subset of files in package directories that will be saved into the cache.
-    outputGlob: ["lib/**/*", "dist/**/*", ".docusaurus/**/*", "build/**/*"],
+    // The only targets with output files explicitly declare them as `outputs` above
+    outputGlob: [],
   },
 };
 

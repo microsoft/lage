@@ -2,6 +2,251 @@
   "name": "@lage-run/target-graph",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "0.15.13",
+      "tag": "@lage-run/target-graph_v0.15.13",
+      "comments": {
+        "patch": [
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "2946c284e9bd101553246d8cc3d9b4a4a00edbbc",
+            "comment": "Improve performance of target priority calculation for large target graphs"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "39d417a25d629ab4c7fa7d203061bdbdf11fbe0e",
+            "comment": "Avoid queue shifting and duplicate enqueues when building subgraphs while preserving graph order and priorities."
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "3f38ac46f389c76a6c5fababe2e1d62e26eb28fb",
+            "comment": "Prevent stale transitive dependencies when building multiple target graphs in the same process."
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "cf1552163285990ee76930138393bc42e0004b8c",
+            "comment": "Improve performance of dependency expansion when building large target graphs"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/target-graph",
+            "comment": "Bump workspace-tools to v0.42.3",
+            "commit": "not available"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Update docs"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "e735f8e557c6ae7c45c970e0ab3256038fcf7069",
+            "comment": "Clarify docs about target inputs and outputs"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Aug 2026 09:42:15 GMT",
+      "version": "0.15.12",
+      "tag": "@lage-run/target-graph_v0.15.12",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/target-graph",
+            "comment": "Bump workspace-tools to v0.42.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 07 Aug 2026 09:19:09 GMT",
+      "version": "0.15.11",
+      "tag": "@lage-run/target-graph_v0.15.11",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "8efd824cc491a36cfde4a407238094c81730ea68",
+            "comment": "Transpile with typescript 6"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/target-graph",
+            "comment": "Bump workspace-tools to v0.42.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Jul 2026 22:12:55 GMT",
+      "version": "0.15.10",
+      "tag": "@lage-run/target-graph_v0.15.10",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/target-graph",
+            "comment": "Bump workspace-tools to v0.42.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 20:21:25 GMT",
+      "version": "0.15.9",
+      "tag": "@lage-run/target-graph_v0.15.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/target-graph",
+            "comment": "Bump workspace-tools to v0.41.10",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 25 Jun 2026 02:50:11 GMT",
+      "version": "0.15.8",
+      "tag": "@lage-run/target-graph_v0.15.8",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/target-graph",
+            "comment": "Bump workspace-tools to v0.41.9",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 12 Jun 2026 20:31:24 GMT",
+      "version": "0.15.7",
+      "tag": "@lage-run/target-graph_v0.15.7",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@lage-run/target-graph",
+            "comment": "Bump workspace-tools to v0.41.8",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 16 Apr 2026 01:52:11 GMT",
+      "version": "0.15.3",
+      "tag": "@lage-run/target-graph_v0.15.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "1581488+christiango@users.noreply.github.com",
+            "package": "@lage-run/target-graph",
+            "commit": "31ad3cc44d94dd14f0f2dbf48955c0b355052ed7",
+            "comment": "Add another test case and fix for the enablePhantomTargetOptimization feature"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Apr 2026 03:39:42 GMT",
+      "version": "0.15.1",
+      "tag": "@lage-run/target-graph_v0.15.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "3e9927ed09b426cd53f4918ef9d9b291ea2d686f",
+            "comment": "Fix output to be importable from ESM in Node"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 06 Apr 2026 21:27:03 GMT",
+      "version": "0.15.0",
+      "tag": "@lage-run/target-graph_v0.15.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "lutomanovic@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "8088908867c957c2f392936eed36a5eb2dde0c26",
+            "comment": "Add target property for controlling whether remote cache should be used for that target or not."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Apr 2026 03:54:25 GMT",
+      "version": "0.14.2",
+      "tag": "@lage-run/target-graph_v0.14.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@lage-run/target-graph",
+            "commit": "8bdb4b56c0d0a73f73d52e8570796c4ccfe9527a",
+            "comment": "Upgrade typescript-eslint to v8 and fix lint issues"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 28 Mar 2026 00:04:36 GMT",
+      "version": "0.14.1",
+      "tag": "@lage-run/target-graph_v0.14.1",
+      "comments": {
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "c5abfc0962c78cf82e524e845efbf474c282efe8",
+            "comment": "Add API Extractor"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Mar 2026 19:53:28 GMT",
+      "version": "0.14.1",
+      "tag": "@lage-run/target-graph_v0.14.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Use version of workspace-tools published from lage repo"
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "@lage-run/target-graph",
+            "commit": "4718b38c68da6a6bf38d93ec7b56c4bffef4c15d",
+            "comment": "Address promise lint issues"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Mar 2026 23:52:35 GMT",
       "version": "0.14.0",
       "tag": "@lage-run/target-graph_v0.14.0",

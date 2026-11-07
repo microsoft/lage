@@ -5,5 +5,5 @@ export interface TargetScheduler<TTargetRunResult> {
   abort(): void;
   run(root: string, targetGraph: TargetGraph, shouldRerun: boolean): Promise<SchedulerRunSummary<TTargetRunResult>>;
   onTargetChange?(targetId: string): void;
-  cleanup(): void;
+  cleanup(): void | Promise<void>;
 }

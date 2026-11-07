@@ -1,8 +1,11 @@
 import { Command } from "commander";
 import { serverAction } from "./action.js";
 import { addOptions } from "../addOptions.js";
+import type { LoggerCliOptions, PoolCliOptions, RunnerCliOptions, ServerCliOptions } from "../options.js";
 
-const command: Command = new Command("server");
+export type ServerCommandOptions = ServerCliOptions & PoolCliOptions & RunnerCliOptions & LoggerCliOptions;
+
+const command: Command = new Command("server").description("Start a server for remote task execution");
 
 command.action(serverAction);
 addOptions("server", command);

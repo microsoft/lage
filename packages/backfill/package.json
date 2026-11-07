@@ -1,6 +1,6 @@
 {
   "name": "backfill",
-  "version": "6.4.4",
+  "version": "6.4.21",
   "description": "Backfill CLI",
   "license": "MIT",
   "author": "Benjamin Weggersen <bewegger@microsoft.com>",
@@ -12,6 +12,7 @@
   "types": "lib/index.d.ts",
   "bin": "./bin/backfill.js",
   "scripts": {
+    "api": "monorepo-scripts api",
     "build": "yarn types && yarn transpile",
     "transpile": "monorepo-scripts transpile",
     "types": "yarn run -T tsc",
@@ -19,24 +20,24 @@
     "test": "yarn run -T jest"
   },
   "dependencies": {
-    "@lage-run/globby": "workspace:^",
     "anymatch": "3.1.3",
     "backfill-cache": "workspace:^",
     "backfill-config": "workspace:^",
     "backfill-hasher": "workspace:^",
     "backfill-logger": "workspace:^",
-    "backfill-utils-dotenv": "workspace:^",
     "chokidar": "3.6.0",
+    "dotenv": "17.4.2",
     "execa": "5.1.1",
     "find-up": "5.0.0",
     "fs-extra": "8.1.0",
-    "yargs": "16.2.0"
+    "globby": "11.1.0",
+    "yargs": "16.2.2"
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
+    "@lage-run/test-utilities": "workspace:^",
     "@types/fs-extra": "^8.0.0",
-    "@types/yargs": "^15.0.15",
-    "backfill-utils-test": "workspace:^"
+    "@types/yargs": "^15.0.15"
   },
   "engines": {
     "node": ">=14"

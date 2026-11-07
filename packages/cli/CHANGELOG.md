@@ -1,8 +1,235 @@
 # Change Log - @lage-run/cli
 
-<!-- This log was last generated on Thu, 19 Mar 2026 23:52:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.38.0
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Minor changes
+
+- Deduplicate git change detection and apply consistent behavior with repoWideChanges (elcraig@microsoft.com)
+- Bump @lage-run/cache to v1.6.9
+- Bump @lage-run/config to v0.9.18
+- Bump @lage-run/hasher to v1.11.0
+- Bump @lage-run/reporters to v1.9.1
+- Bump @lage-run/runners to v1.4.16
+- Bump @lage-run/scheduler to v1.6.16
+- Bump @lage-run/scheduler-types to v0.4.14
+- Bump @lage-run/target-graph to v0.15.13
+- Bump workspace-tools to v0.42.3
+
+### Patches
+
+- Reuse loaded package metadata when initializing the hasher in run, watch, and server modes. (djmaks@microsoft.com)
+- Update dependency shell-quote to v1.12.0 [SECURITY]
+- Report structured repo-wide change details and full-build decisions, and reuse change detection during target graph creation. (nemanjatesic@microsoft.com)
+- Ensure types in CLI commands match the actual options used, and fix some mismatches with defaulting behavior that resulted from the bad types (elcraig@microsoft.com)
+
+## 0.37.0
+
+Tue, 18 Aug 2026 02:26:59 GMT
+
+### Minor changes
+
+- Revert to using fancier reporter by default when running locally, except in known slow terminals (codespaces, SSH) (elcraig@microsoft.com)
+- Bump @lage-run/cache to v1.6.8
+- Bump @lage-run/reporters to v1.9.0
+- Bump @lage-run/scheduler to v1.6.15
+
+## 0.36.14
+
+Tue, 11 Aug 2026 09:42:15 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.7
+- Bump @lage-run/config to v0.9.17
+- Bump @lage-run/hasher to v1.10.13
+- Bump @lage-run/reporters to v1.8.6
+- Bump @lage-run/runners to v1.4.15
+- Bump @lage-run/scheduler to v1.6.14
+- Bump @lage-run/scheduler-types to v0.4.13
+- Bump @lage-run/target-graph to v0.15.12
+- Bump workspace-tools to v0.42.2
+
+## 0.36.13
+
+Fri, 07 Aug 2026 09:19:09 GMT
+
+### Patches
+
+- Update dependency shell-quote to v1.10.0 (renovate@whitesourcesoftware.com)
+- Transpile with typescript 6 (elcraig@microsoft.com)
+- Add command descriptions (elcraig@microsoft.com)
+- Bump @lage-run/cache to v1.6.6
+- Bump @lage-run/config to v0.9.16
+- Bump @lage-run/hasher to v1.10.12
+- Bump @lage-run/logger to v1.5.1
+- Bump @lage-run/reporters to v1.8.5
+- Bump @lage-run/rpc to v1.4.7
+- Bump @lage-run/runners to v1.4.14
+- Bump @lage-run/scheduler to v1.6.13
+- Bump @lage-run/scheduler-types to v0.4.12
+- Bump @lage-run/target-graph to v0.15.11
+- Bump @lage-run/worker-threads-pool to v0.10.4
+- Bump workspace-tools to v0.42.1
+
+## 0.36.12
+
+Thu, 09 Jul 2026 22:12:55 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.5
+- Bump @lage-run/config to v0.9.15
+- Bump @lage-run/hasher to v1.10.11
+- Bump @lage-run/reporters to v1.8.4
+- Bump @lage-run/runners to v1.4.13
+- Bump @lage-run/scheduler to v1.6.12
+- Bump @lage-run/scheduler-types to v0.4.11
+- Bump @lage-run/target-graph to v0.15.10
+- Bump workspace-tools to v0.42.0
+
+## 0.36.11
+
+Thu, 25 Jun 2026 20:21:25 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.4
+- Bump @lage-run/config to v0.9.14
+- Bump @lage-run/hasher to v1.10.10
+- Bump @lage-run/reporters to v1.8.3
+- Bump @lage-run/runners to v1.4.12
+- Bump @lage-run/scheduler to v1.6.11
+- Bump @lage-run/scheduler-types to v0.4.10
+- Bump @lage-run/target-graph to v0.15.9
+- Bump workspace-tools to v0.41.10
+
+## 0.36.10
+
+Thu, 25 Jun 2026 04:59:29 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.3
+- Bump @lage-run/config to v0.9.13
+- Bump @lage-run/scheduler to v1.6.10
+
+## 0.36.9
+
+Thu, 25 Jun 2026 02:50:11 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.2
+- Bump @lage-run/config to v0.9.12
+- Bump @lage-run/hasher to v1.10.9
+- Bump @lage-run/reporters to v1.8.2
+- Bump @lage-run/runners to v1.4.11
+- Bump @lage-run/scheduler to v1.6.9
+- Bump @lage-run/scheduler-types to v0.4.9
+- Bump @lage-run/target-graph to v0.15.8
+- Bump workspace-tools to v0.41.9
+
+## 0.36.8
+
+Fri, 12 Jun 2026 20:31:24 GMT
+
+### Patches
+
+- Update dependency shell-quote to v1.8.4 (email not defined)
+- Add `affected` options to the `affected` command (lutomanovic@microsoft.com)
+- Bump @lage-run/cache to v1.6.1
+- Bump @lage-run/config to v0.9.11
+- Bump @lage-run/hasher to v1.10.8
+- Bump @lage-run/reporters to v1.8.1
+- Bump @lage-run/runners to v1.4.10
+- Bump @lage-run/scheduler to v1.6.8
+- Bump @lage-run/scheduler-types to v0.4.8
+- Bump @lage-run/target-graph to v0.15.7
+- Bump workspace-tools to v0.41.8
+
+## 0.36.7
+
+Fri, 01 May 2026 08:38:43 GMT
+
+### Patches
+
+- Update for new logger and reporters typings (elcraig@microsoft.com)
+
+## 0.36.3
+
+Fri, 10 Apr 2026 04:04:59 GMT
+
+### Patches
+
+- Respect `reporter` option from config file (elcraig@microsoft.com)
+
+## 0.36.2
+
+Wed, 08 Apr 2026 03:39:42 GMT
+
+### Patches
+
+- Fix output to be importable from ESM in Node (elcraig@microsoft.com)
+
+## 0.36.1
+
+Mon, 06 Apr 2026 21:27:03 GMT
+
+### Patches
+
+- Update reporter cleanup (elcraig@microsoft.com)
+- Use `formatHrtime` helper (elcraig@microsoft.com)
+
+## 0.36.0
+
+Thu, 02 Apr 2026 03:54:25 GMT
+
+### Minor changes
+
+- Add `--log-memory` option to the `run` command (elcraig@microsoft.com)
+
+### Patches
+
+- Directly use `globby` v11 instead of `@lage-run/globby` (elcraig@microsoft.com)
+- Import formatDuration/hrToSeconds/hrtimeDiff from @lage-run/reporters instead of @lage-run/format-hrtime (email not defined)
+- Use cache directory helpers (elcraig@microsoft.com)
+- Remove unused catch bindings (email not defined)
+
+## 0.35.2
+
+Mon, 30 Mar 2026 21:21:13 GMT
+
+### Patches
+
+- Reintroduce fix: include dotfiles in cache output glob matching (1581488+christiango@users.noreply.github.com)
+
+## 0.35.1
+
+Sat, 28 Mar 2026 00:04:36 GMT
+
+### Patches
+
+- Revert glob caching changes due to potential regression (email not defined)
+
+## 0.35.0
+
+Thu, 26 Mar 2026 19:53:28 GMT
+
+### Minor changes
+
+- Start caching more subfolders with dots in the name, fixing issues internal repos were having with .vite and the lage cache (1581488+christiango@users.noreply.github.com)
+
+### Patches
+
+- Use version of workspace-tools published from lage repo (elcraig@microsoft.com)
+- Address promise lint issues (elcraig@microsoft.com)
+- Update "master" references to "main" (elcraig@microsoft.com)
 
 ## 0.34.1
 

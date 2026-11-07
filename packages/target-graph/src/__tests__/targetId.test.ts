@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { getPackageAndTask, getTargetId } from "../targetId.js";
 
 describe("getTargetId", () => {

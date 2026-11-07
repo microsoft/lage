@@ -1,5 +1,5 @@
 ---
-title: Command Line Options
+title: Command line options
 ---
 
 `lage` is meant to be run as a CLI. After installing `lage` inside the repository or globally, you can run the npm scripts from your repository like this:
@@ -10,11 +10,11 @@ lage [options] <command>
 
 ---
 
-## Run Command
+## `run` command
 
 Runs a set of commands in a target graph. The targets are defined by packages and their scripts as defined the package.json files.
 
-Usage: `lage [run] <command1> [command2...commandN] [options]  run commands`
+Usage: `lage [run] <command1> [command2...commandN] [options]`
 
 ### Options
 
@@ -64,69 +64,101 @@ These can optionally be set with environment variables `LAGE_RUN_*` (e.g. `LAGE_
 
 #### Basic case, running "build", "test", and "lint" against all packages
 
-    lage build test lint
+```
+lage build test lint
+```
 
 #### Concurrency
 
-    lage build test lint --concurrency=4
+```
+lage build test lint --concurrency=4
+```
 
 #### Filtering by certain packages
 
 Scoped to "package-a" and "package-b" and their dependencies and dependents:
 
-    lage build test lint --scope package-a package-b
+```
+lage build test lint --scope package-a package-b
+```
 
 Scoped to "package-a" and "package-b" only:
 
-    lage build test lint --scope package-a package-b --no-deps
+```
+lage build test lint --scope package-a package-b --no-deps
+```
 
 Scoped to packages that have changed in the current branch against a target merge branch:
 
-    lage build test lint --since origin/master
+```
+lage build test lint --since origin/main
+```
 
 #### Providing node.js arguments for each command
 
-    lage build test lint --nodearg=--max_old_space_size=1234 --nodearg=--heap-prof
+```
+lage build test lint --nodearg=--max_old_space_size=1234 --nodearg=--heap-prof
+```
 
 #### Continue running even after encountering an error for one of the targets
 
-    lage build test lint --continue
+```
+lage build test lint --continue
+```
+
+#### Disabling cache
+
+`lage` by default will skip tasks that it has already done recently. As long as the source file and the command called to `lage` has not changed, those packages will be skipped. Sometimes, this incremental behavior is not desired. You can override the caching behavior by using the `no-cache` argument:
+
+```
+lage build --no-cache
+```
 
 #### Controlling logged outputs
 
 Show verbose output for each target:
 
-    lage build test lint --verbose
+```
+lage build test lint --verbose
+```
 
 Show only errors for each target:
 
-    lage build test lint --log-level=error
+```
+lage build test lint --log-level=error
+```
 
 Show logs as grouped by each target:
 
-    lage build test lint --grouped --verbose
+```
+lage build test lint --grouped --verbose
+```
 
 Choosing a different reporter while logging (e.g. nice outputs for Azure DevOps):
 
-    lage build test lint --reporter=azureDevops
+```
+lage build test lint --reporter=azureDevops
+```
 
 Or combine multiple reporters (e.g. Azure DepOps with VerboseFileLog)
 
-    lage build test lint --reporter azureDevops --reporter vfl --log-file /my/verbose/log.file
+```
+lage build test lint --reporter azureDevops --reporter vfl --log-file /my/verbose/log.file
+```
 
 Ignoring files when calculating the scope with --since in addition to files specified in lage.config:
 
-    lage build test lint --since origin/master --ignore "package.json" "yarn.lock" "**/.azure-pipelines/**"
+```
+lage build test lint --since origin/main --ignore "package.json" "yarn.lock" "**/.azure-pipelines/**"
+```
 
 ---
 
-## Cache Command
+## `cache` command
 
-`lage` by default will skip tasks that it has already done recently. As long as the source file and the command called to `lage` has not changed, those packages will be skipped. Sometimes, this incremental behavior is not desired. You can override the caching behavior by using the `no-cache` argument.
+Manage the lage cache.
 
-```
-lage build --no-cache
-```
+Usage: `lage cache [options]`
 
 ### Options
 
@@ -210,10 +242,12 @@ Available reporters:
 <!-- prettier-ignore -->
 | Name | Internal class | Description |
 | ---- | ----- | ----------- |
-| `default`/not specified | `BasicReporter` or `LogReporter` | Usually if running in an interactive terminal, shows progress but not the names of currently running targets (unless progress is disabled or verbose or grouped are enabled). Otherwise, uses `npmLog`. |
-| `fancy` | `ProgressReporter` | Shows progress including the names of currently running targets, but is slower. This was the default in v2 prior to 2.14.16. |
+| `default`/not specified | `ProgressReporter`, `BasicReporter` or `LogReporter` | If running in an interactive terminal without `--grouped` or `--verbose`, uses `basic` in known slow terminals (Codespaces, SSH) and `fancy` otherwise. Otherwise, uses `npmLog`. |
+| `fancy` | `ProgressReporter` | Shows progress including the names of currently running targets, but is slower. This was the default in v2 prior to 2.14.16, and is the default in 2.17.0+ unless running in known slow terminals. |
+| `basic` | `BasicReporter` | Shows progress without the names of running targets. This was the default from 2.14.16 to 2.16.1, and is still the default if running in known slow terminals. |
 | `npmLog` (`old`) | `LogReporter` | This is the reporter from lage v1. It logs tasks without progress info. |
-| `azureDevops` (`adoLog`) | `AdoReporter` | Logs tasks  |
+| `azureDevops` (`adoLog`) | `AdoReporter` | Logs tasks with ADO-specific formatting prefixes |
+| `githubActions` (`gha`) | `GithubActionsReporter` | Logs tasks with GitHub Actions formatting prefixes |
 | `json` | `JsonReporter` | Write logs to the console in JSON format |
 | `verboseFileLog` (`vfl`) | `VerboseFileLogReporter` | Writes to a file specified with `--log-file` |
 | `profile` | `ChromeTraceEventsReporter` | Writes a Chrome dev tools profile file. Typically enabled with `--profile` (use `--profile=filename` to customize the name). |
