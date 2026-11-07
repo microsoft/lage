@@ -31,6 +31,9 @@
     "@connectrpc/protoc-gen-connect-es": "1.7.0",
     "@lage-run/monorepo-scripts": "workspace:^"
   },
+  "engines": {
+    "node": ">=24.22.1"
+  },
   "files": [
     "lib/!(__*)",
     "lib/!(__*)/**"
