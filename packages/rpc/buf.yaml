@@ -3,7 +3,13 @@ modules:
   - path: proto
 lint:
   use:
-    - DEFAULT
+    - STANDARD
+  # Preserve the existing proto path and field names.
+  ignore_only:
+    PACKAGE_DIRECTORY_MATCH:
+      - proto/lage/v1/lage.proto
+    FIELD_LOWER_SNAKE_CASE:
+      - proto/lage/v1/lage.proto
 breaking:
   use:
     - FILE

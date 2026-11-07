@@ -6,7 +6,7 @@
 
 import type { CacheOptions } from '@lage-run/cache';
 import type { Logger } from '@lage-run/logger';
-import type { MessagePort } from 'worker_threads';
+import type { MessagePort as MessagePort_2 } from 'worker_threads';
 import type { Pool } from '@lage-run/worker-threads-pool';
 import type { SchedulerRunSummary } from '@lage-run/scheduler-types';
 import { Target } from '@lage-run/target-graph';
@@ -52,7 +52,7 @@ interface SimpleSchedulerOptions {
     // (undocumented)
     maxWorkersPerTask: Map<string, number>;
     // (undocumented)
-    onMessage?: (message: any, postMessage: MessagePort["postMessage"]) => void;
+    onMessage?: (message: any, postMessage: MessagePort_2["postMessage"]) => void;
     // (undocumented)
     pool?: Pool;
     // (undocumented)
@@ -138,7 +138,7 @@ interface WrappedTargetOptions {
     // (undocumented)
     logMemory?: boolean;
     // (undocumented)
-    onMessage?: (message: any, postMessage: MessagePort["postMessage"]) => void;
+    onMessage?: (message: any, postMessage: MessagePort_2["postMessage"]) => void;
     // (undocumented)
     pool: Pool;
     // (undocumented)

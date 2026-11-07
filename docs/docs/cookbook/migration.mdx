@@ -15,6 +15,10 @@ import { Badge } from "@site/src/components/Badge";
   `workspace-tools` packages also require **Node 24.22.1 or later**. Packages
   previously at version 1.x or higher receive a major version bump; 0.x packages
   receive a minor version bump.
+- For consumers of `@lage-run/rpc`, the RPC stack now uses Fastify 5, Connect 2,
+  and Protobuf-ES 2. `createClient` no longer accepts `httpVersion`; its gRPC
+  transport always uses HTTP/2. Service implementations use the new Protobuf
+  message types rather than message classes.
 
 ## v1.x -> v2.1
 

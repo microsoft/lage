@@ -287,7 +287,7 @@ export function createLageService({ cwd, serverControls, logger, concurrency, ta
       const targetHashFileRelativePath = path.relative(root, targetHashFullPath).replace(/\\/g, "/");
       outputs.push(targetHashFileRelativePath);
 
-      const partialResults: Omit<LageServiceRunTargetResult, "stdout" | "stderr"> = {
+      const partialResults = {
         packageName: request.packageName,
         task: request.task,
         cwd: target.cwd,
@@ -296,7 +296,7 @@ export function createLageService({ cwd, serverControls, logger, concurrency, ta
         outputs,
         id,
         globalInputHashFile: targetGlobalInputHashRelativePath,
-      };
+      } satisfies Omit<LageServiceRunTargetResult, "stdout" | "stderr">;
       const results: LageServiceRunTargetResult = {
         ...partialResults,
         stdout: hasError ? "" : writableStdout.toString(),
