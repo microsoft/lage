@@ -30,7 +30,7 @@ export function createCache(options: CreateCacheOptions): {
             logger,
             root,
             cacheOptions: {
-              outputGlob: cacheOptions?.outputGlob,
+              ...(cacheOptions?.outputGlob !== undefined && { outputGlob: cacheOptions.outputGlob }),
               ...(cacheOptions?.internalCacheFolder && { internalCacheFolder: cacheOptions.internalCacheFolder }),
               ...(cacheOptions?.incrementalCaching && { incrementalCaching: cacheOptions.incrementalCaching }),
             },

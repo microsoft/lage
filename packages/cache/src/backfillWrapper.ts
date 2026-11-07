@@ -34,9 +34,10 @@ export function createBackfillCacheConfig(
   backfillLogger: BackfillLogger
 ): Config {
   const envConfig = getEnvConfig(backfillLogger);
+  const filteredCacheOptions = cacheOptions ? Object.fromEntries(Object.entries(cacheOptions).filter(([, v]) => v !== undefined)) : {};
   const mergedConfig = {
     ...createDefaultConfig(cwd),
-    ...cacheOptions,
+    ...filteredCacheOptions,
     ...envConfig,
   } as Config;
 
