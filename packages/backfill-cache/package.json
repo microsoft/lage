@@ -19,7 +19,7 @@
     "test": "yarn run -T jest"
   },
   "dependencies": {
-    "@azure/storage-blob": "12.27.0",
+    "@azure/storage-blob": "12.31.0",
     "backfill-config": "workspace:^",
     "backfill-logger": "workspace:^",
     "execa": "5.1.1",

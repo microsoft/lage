@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/cache",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Upgrade Azure Identity and authentication dependencies to remove vulnerable uuid dependencies.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/cache-github-actions",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "Upgrade to the ESM Actions cache v6 client, removing vulnerable Undici, busboy, and uuid dependencies. Restore and save now honor ACTIONS_CACHE_MODE.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "backfill-cache",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Upgrade Azure Blob Storage dependencies for Node.js 24 and share the supported SDK with the Actions cache client.",
+      "email": "email not defined"
+    }
+  ]
+}
