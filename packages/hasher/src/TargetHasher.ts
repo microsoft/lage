@@ -59,8 +59,8 @@ export class TargetHasher {
   private globalInputsHash: Record<string, string> | undefined;
   private lockInfo: ParsedLock | undefined;
   private targetHashes: Record<string, string> = {};
-  // Package metadata and the parsed lockfile are fixed for this hasher's lifetime.
-  private resolvedDependencies = new Map<string, readonly string[]>();
+  /** Package metadata and the parsed lockfile are fixed for this hasher's lifetime. */
+  private resolvedDependenciesCache = new Map<string, readonly string[]>();
 
   public dependencyMap: DependencyMap = {
     dependencies: new Map(),
@@ -182,7 +182,7 @@ export class TargetHasher {
   }
 
   private getResolvedDependencies(packageName: string): readonly string[] {
-    const cached = this.resolvedDependencies.get(packageName);
+    const cached = this.resolvedDependenciesCache.get(packageName);
     if (cached !== undefined) {
       return cached;
     }
@@ -195,7 +195,7 @@ export class TargetHasher {
     const internalDeps = Object.keys(allDependencies).filter((dep) => this.packageInfos[dep]);
     const externalDeps = resolveExternalDependencies(allDependencies, this.packageInfos, this.lockInfo!);
     const resolvedDependencies = [...internalDeps, ...externalDeps].sort();
-    this.resolvedDependencies.set(packageName, resolvedDependencies);
+    this.resolvedDependenciesCache.set(packageName, resolvedDependencies);
 
     return resolvedDependencies;
   }

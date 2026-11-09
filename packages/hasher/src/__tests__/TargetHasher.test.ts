@@ -97,6 +97,38 @@ describe("TargetHasher", () => {
     ]);
   });
 
+  it("preserves the cache key for internal and transitive external dependencies", async () => {
+    const monorepo = await setupFixture();
+    monorepo.writeFiles({
+      "packages/package-a/package.json": {
+        name: "package-a",
+        version: "0.1.0",
+        dependencies: { "package-b": "*", foo: "^1.0.0" },
+        devDependencies: { baz: "^3.0.0" },
+      },
+      "yarn.lock": `# yarn lockfile v1
+
+foo@^1.0.0:
+  version "1.2.3"
+  dependencies:
+    bar "^2.0.0"
+
+bar@^2.0.0:
+  version "2.3.4"
+
+baz@^3.0.0:
+  version "3.4.5"
+`,
+    });
+    const target = { ...createTarget(monorepo.root, "package-a", "build"), inputs: [] };
+    const hasher = new TargetHasher({ root: monorepo.root, environmentGlob: [] });
+    // SHA-1 of "bar@2.3.4baz@3.4.5foo@1.2.3package-a#build|undefinedpackage-b", with no file or environment inputs.
+    const expectedHash = "aa175eeced64a21f40e6875e17b6ee9a5a365a64";
+
+    expect(await getHash(hasher, target)).toBe(expectedHash);
+    expect(await hasher.hash(target)).toBe(expectedHash);
+  });
+
   it.each(["lockfile", "manifest"])(
     "does not reuse resolved dependencies between repositories with different %s contents",
     async (change) => {
