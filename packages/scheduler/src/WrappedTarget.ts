@@ -225,7 +225,9 @@ export class WrappedTarget implements TargetRun<WorkerResult> {
                 worker.postMessage({ type: "hash", hash });
               })
               .catch((e) => {
-                logger.warn(`Failed to hash target ${target.id}: ${e instanceof Error ? e.message : String(e)}`);
+                const error = e instanceof Error ? e.message : String(e);
+                logger.warn(`Failed to hash target ${target.id}: ${error}`);
+                worker.postMessage({ type: "hash-error", error });
               });
           } else if (this.options.onMessage) {
             this.options.onMessage(data, postMessage);
