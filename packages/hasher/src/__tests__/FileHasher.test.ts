@@ -185,4 +185,47 @@ describe("FileHasher", () => {
 
     expect(() => hasher.hash([file])).toThrow("Failed to hash files");
   });
+
+  it.each(["per-file", "batch", "throw"])("invalidates normalized keys after an absolute-path %s failure", (failure) => {
+    const file = "nested/input.txt";
+    const filePath = path.join(root, file);
+    const originalTime = new Date("2020-01-01T00:00:00Z");
+    fs.mkdirSync(path.dirname(filePath));
+    fs.writeFileSync(filePath, "first");
+    fs.utimesSync(filePath, originalTime, originalTime);
+    const hasher = new FileHasher({ root });
+    expect(hasher.hash([file])).toEqual({ [file]: gitHash("first") });
+
+    fs.writeFileSync(filePath, "other");
+    const changedTime = new Date("2020-01-02T00:00:00Z");
+    fs.utimesSync(filePath, changedTime, changedTime);
+    if (failure === "throw") {
+      jest.mocked(hash).mockImplementationOnce(() => {
+        throw new Error("Native hashing failed");
+      });
+    } else {
+      // Fail before processing the second native result, whose key is root-relative.
+      jest.mocked(hash).mockReturnValueOnce(failure === "batch" ? null : { "failed.txt": null, [file]: gitHash("other") });
+    }
+    expect(() => hasher.hash([path.join(root, "failed.txt"), filePath])).toThrow();
+
+    fs.utimesSync(filePath, originalTime, originalTime);
+    expect(hasher.hash([file])).toEqual({ [file]: gitHash("other") });
+  });
+
+  it.each(["directory", "directory link"])("ignores a %s input without ignoring regular files", (kind) => {
+    const directory = path.join(root, "directory");
+    fs.mkdirSync(directory);
+    fs.writeFileSync(path.join(directory, "child.txt"), "not an input");
+    let input = "directory";
+    if (kind === "directory link") {
+      input = "link";
+      fs.symlinkSync(directory, path.join(root, input), process.platform === "win32" ? "junction" : "dir");
+    }
+    fs.writeFileSync(path.join(root, "input.txt"), "content");
+    const hasher = new FileHasher({ root });
+
+    expect(hasher.hash([input, "input.txt"])).toEqual({ "input.txt": gitHash("content") });
+    expect(hasher.hash([input])).toEqual({});
+  });
 });

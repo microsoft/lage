@@ -119,27 +119,44 @@ export class FileHasher {
       return hashes;
     }
 
-    const updatedHashes = fastHash(updatedFiles, { cwd: this.options.root, concurrency: 4 });
-    if (!updatedHashes) {
-      throw new Error("Failed to hash files");
-    }
-
-    for (const [file, hash] of Object.entries(updatedHashes)) {
-      if (hash == null) {
-        // Evict the native result's normalized key; input paths may use a different form.
-        delete this.#store[file];
-        throw new Error(`Failed to hash file "${file}"`);
+    let updatedHashes: ReturnType<typeof fastHash> = null;
+    try {
+      updatedHashes = fastHash(updatedFiles, { cwd: this.options.root, concurrency: 4 });
+      if (!updatedHashes) {
+        throw new Error("Failed to hash files");
       }
 
-      const stat = stats[file];
-      if (stat) {
-        // Keep pre-hash metadata so edits during hashing invalidate the next lookup.
-        this.#store[file] = { mtime: stat.mtime, size: stat.size, hash };
+      for (const [file, hash] of Object.entries(updatedHashes)) {
+        if (hash == null) {
+          delete this.#store[file];
+          // Native hashing returns null for directories, including submodules and directory symlinks.
+          if (fs.statSync(path.resolve(this.options.root, file), { throwIfNoEntry: false })?.isDirectory()) {
+            continue;
+          }
+          throw new Error(`Failed to hash file "${file}"`);
+        }
+
+        const stat = stats[file];
+        if (stat) {
+          // Keep pre-hash metadata so edits during hashing invalidate the next lookup.
+          this.#store[file] = { mtime: stat.mtime, size: stat.size, hash };
+        } else {
+          // Without pre-hash metadata, return the hash but do not cache it for reuse.
+          delete this.#store[file];
+        }
+        hashes[file] = hash;
+      }
+    } catch (error) {
+      if (updatedHashes) {
+        // Clear all normalized result keys before aborting the batch.
+        for (const updatedFile of Object.keys(updatedHashes)) {
+          delete this.#store[updatedFile];
+        }
       } else {
-        // Without pre-hash metadata, return the hash but do not cache it for reuse.
-        delete this.#store[file];
+        // Without native result keys, conservatively invalidate the entire store.
+        this.#store = {};
       }
-      hashes[file] = hash;
+      throw error;
     }
 
     return hashes;
