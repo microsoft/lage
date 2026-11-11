@@ -1,8 +1,17 @@
 # Change Log - backfill
 
-<!-- This log was last generated on Fri, 07 Aug 2026 09:19:09 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 6.4.21
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- `backfill-hasher`
+  - Use a Set for external dependency queue membership checks while preserving resolution order. (djmaks@microsoft.com)
 
 ## 6.4.19
 

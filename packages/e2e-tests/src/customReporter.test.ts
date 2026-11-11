@@ -44,7 +44,7 @@ describe("custom reporters", () => {
           build: ["^build"],
           test: ["build"],
         },
-        npmClient: "yarn",
+        npmClient: "npm",
         reporters: params.reporters,
         ...(params.reporter && { reporter: params.reporter }),
       },
@@ -82,9 +82,9 @@ describe("custom reporters", () => {
       },
     });
 
-    repo.install();
+    repo.prepare();
 
-    const results = await repo.run("build", ["--reporter", "customTest", "--reporter", "cjs"]);
+    const results = await repo.runLage("build", ["--reporter", "customTest", "--reporter", "cjs"]);
     const output = results.stdout + "\n" + results.stderr;
 
     // Check that custom reporters were used
@@ -112,10 +112,10 @@ describe("custom reporters", () => {
       },
     });
 
-    repo.install();
+    repo.prepare();
 
     // Use a default reporter here too
-    const results = await repo.run("build", [
+    const results = await repo.runLage("build", [
       "--reporter",
       "NamedReporter",
       "--reporter",
@@ -152,10 +152,10 @@ describe("custom reporters", () => {
       },
     });
 
-    repo.install();
+    repo.prepare();
 
     // Should throw an error when trying to use a reporter that exports a string
-    await expect(repo!.run("build", ["--reporter", "bad"])).rejects.toThrow(/does not export a valid reporter class or instance/);
+    await expect(repo!.runLage("build", ["--reporter", "bad"])).rejects.toThrow(/does not export a valid reporter class or instance/);
   });
 
   it("should work with custom reporter that exports an object instance (and sends all logs)", async () => {
@@ -193,10 +193,10 @@ export default objectReporter;
       },
     });
 
-    repo.install();
+    repo.prepare();
 
     // reporter was specified in the config file
-    const results = await repo.run("build");
+    const results = await repo.runLage("build");
     const output = results.stdout + "\n" + results.stderr;
 
     expect(output).toContain('"trackingReporter":true');

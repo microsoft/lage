@@ -27,9 +27,9 @@ describe("bigapp test", () => {
       },
     });
 
-    repo.install();
+    repo.prepare();
 
-    const results = await repo.run("test");
+    const results = await repo.runLage("test");
     const jsonOutput = parseNdJson(results.stdout, results.stderr);
     const indices = getStatusIndices({
       entries: jsonOutput,

@@ -2,6 +2,47 @@
   "name": "workspace-tools",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "0.42.3",
+      "tag": "workspace-tools_v0.42.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "fa3d0abd108ef9d00643642ca4cf1b89e8f39220",
+            "comment": "Add option to pass pre-calculated `packageInfos` to `getPackagesByFiles`"
+          },
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "26b070319157bc731aa483bcaa22288d77688d4a",
+            "comment": "Avoid redundant existence checks when reading package metadata successfully."
+          },
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "fa3d0abd108ef9d00643642ca4cf1b89e8f39220",
+            "comment": "Add getWorkingTreeChanges helper"
+          },
+          {
+            "author": "email not defined",
+            "package": "workspace-tools",
+            "commit": "a9cd1a2c6e2852ac1f35ac5828ac54ac70321116",
+            "comment": "Update dependency js-yaml to v4.3.2 [SECURITY]"
+          }
+        ],
+        "none": [
+          {
+            "author": "elcraig@microsoft.com",
+            "package": "workspace-tools",
+            "commit": "d99fe03a505e109a2ef723963ddad93132ea2702",
+            "comment": "Update docs"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 11 Aug 2026 09:42:15 GMT",
       "version": "0.42.2",
       "tag": "workspace-tools_v0.42.2",

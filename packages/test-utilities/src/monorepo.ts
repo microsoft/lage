@@ -82,7 +82,7 @@ export class Monorepo {
   /**
    * Simulates a "yarn" call by linking internal packages and generates a yarn.lock file
    */
-  private linkPackages(): void {
+  protected linkPackages(): void {
     const packagesPath = path.join(this.root, "packages");
     const pkgs = fs.readdirSync(packagesPath);
 

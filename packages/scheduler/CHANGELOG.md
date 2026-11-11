@@ -1,8 +1,22 @@
 # Change Log - @lage-run/scheduler
 
-<!-- This log was last generated on Tue, 18 Aug 2026 02:26:59 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.6.16
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Bump @lage-run/cache to v1.6.9
+- Bump @lage-run/config to v0.9.18
+- Bump @lage-run/hasher to v1.11.0
+- Bump @lage-run/reporters to v1.9.1
+- Bump @lage-run/runners to v1.4.16
+- Bump @lage-run/target-graph to v0.15.13
+- Bump @lage-run/scheduler-types to v0.4.14
 
 ## 1.6.15
 

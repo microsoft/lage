@@ -67,15 +67,13 @@ export function resolveExternalDependencies(
   const done = new Set<DependencySpec>();
   const doneRange = new Set<DependencySpec>();
   const queue: DependencyQueue = Object.entries(externalDependencies);
-  // Dequeued requests are in doneRange, so retaining their membership is safe.
+  // Processed requests are in doneRange, so retaining their membership is safe.
   const queued = new Set<DependencySpec>(
     queue.map(([name, versionRange]) => `${name}@${versionRange}` as const)
   );
 
-  while (queue.length > 0) {
-    const next = queue.shift()!;
-
-    const [name, versionRange] = next;
+  for (let head = 0; head < queue.length; head++) {
+    const [name, versionRange] = queue[head];
     doneRange.add(`${name}@${versionRange}`);
 
     const lockFileResult = queryLockFile(name, versionRange, lockInfo);

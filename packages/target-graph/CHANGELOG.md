@@ -1,8 +1,20 @@
 # Change Log - @lage-run/target-graph
 
-<!-- This log was last generated on Tue, 11 Aug 2026 09:42:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 06 Nov 2026 19:13:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.15.13
+
+Fri, 06 Nov 2026 19:13:27 GMT
+
+### Patches
+
+- Improve performance of target priority calculation for large target graphs (djmaks@microsoft.com)
+- Avoid queue shifting and duplicate enqueues when building subgraphs while preserving graph order and priorities. (djmaks@microsoft.com)
+- Prevent stale transitive dependencies when building multiple target graphs in the same process. (djmaks@microsoft.com)
+- Improve performance of dependency expansion when building large target graphs (djmaks@microsoft.com)
+- Bump workspace-tools to v0.42.3
 
 ## 0.15.12
 

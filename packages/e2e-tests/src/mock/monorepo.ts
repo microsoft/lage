@@ -36,7 +36,7 @@ export class Monorepo extends BaseMonorepo {
   }
 
   /**
-   * Init the repo and files. Note you must separately call `install()` before running lage.
+   * Init the repo and files. Call `prepare()` before running lage, or `yarnInstall()` for Yarn-specific e2e tests.
    *
    * The default fixture for the e2e tests includes a bunch of scripts which mostly run
    * `lage <script> --reporter json --log-level silly` so the output can be parsed with `parseNdJson`.
@@ -60,7 +60,7 @@ export class Monorepo extends BaseMonorepo {
           lint: [],
           extra: [],
         },
-        npmClient: "yarn",
+        npmClient: "npm",
       },
       scripts,
       packages = {},
@@ -129,10 +129,45 @@ export class Monorepo extends BaseMonorepo {
   }
 
   /**
-   * Run `yarn install` for the fixture
+   * Run `yarn install` for the fixture. (Assumes `npmClient: 'yarn'` is explicitly set.)
    */
-  public install(): void {
-    execa.sync(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
+  public async yarnInstall(): Promise<void> {
+    await execa.default(`"${process.execPath}"`, [`"${this.yarnPath}"`, "install", "--no-immutable"], { cwd: this.root, shell: true });
+  }
+
+  /**
+   * Link fixture packages and the built Lage package without running a package manager.
+   * Assumes `npmClient: 'npm'` is implicitly or explicitly set.
+   */
+  public prepare(): void {
+    this.linkPackages();
+    fs.symlinkSync(lagePackageRoot, path.join(this.nodeModulesPath, "lage"), "junction");
+  }
+
+  /** Run a root Lage script directly. Only unquoted, space-separated arguments are supported. */
+  public runLage(scriptName: string, args: string[] = [], options?: Partial<execa.Options>): execa.ExecaChildProcess<string> {
+    const script = getPackageInfo(this.root)?.scripts?.[scriptName];
+    if (!script) {
+      throw new Error(`Missing root package script "${scriptName}"`);
+    }
+
+    if (/[^\w -]/.test(script)) {
+      throw new Error(
+        `Root package script "${scriptName}" contains unsupported characters; only letters, digits, spaces, "_" and "-" are allowed`
+      );
+    }
+
+    const [command, ...scriptArgs] = script.trim().split(/ +/);
+    if (command !== "lage") {
+      throw new Error(`Root package script "${scriptName}" must be a simple Lage command`);
+    }
+
+    const cliPath = path.join(this.root, "node_modules/lage/dist/lage.js");
+    return execa.default(process.execPath, [cliPath, ...scriptArgs, ...args], {
+      cwd: this.root,
+      ...options,
+      shell: false,
+    });
   }
 
   public runServer(tasks: string[], port: number): execa.ExecaChildProcess<string> {

@@ -2,6 +2,39 @@
   "name": "@lage-run/hasher",
   "entries": [
     {
+      "date": "Fri, 06 Nov 2026 19:13:27 GMT",
+      "version": "1.11.0",
+      "tag": "@lage-run/hasher_v1.11.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "djmaks@microsoft.com",
+            "package": "@lage-run/hasher",
+            "commit": "26b070319157bc731aa483bcaa22288d77688d4a",
+            "comment": "Accept optional package metadata in `TargetHasher` to avoid redundant package discovery."
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump @lage-run/target-graph to v0.15.13",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump backfill-hasher to v6.7.15",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@lage-run/hasher",
+            "comment": "Bump workspace-tools to v0.42.3",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 11 Aug 2026 09:42:15 GMT",
       "version": "1.10.13",
       "tag": "@lage-run/hasher_v1.10.13",
