@@ -37,7 +37,7 @@ export type CacheStorageConfig = {
     provider: "local";
 } | {
     provider: "local-skip";
-} | NpmCacheStorageConfig | AzureBlobCacheStorageConfig | CustomStorageConfig;
+} | NpmCacheStorageConfig | CustomCacheStorageConfig;
 
 // @public (undocumented)
 export type Config = {
@@ -67,11 +67,20 @@ export function createConfig(logger: Logger, fromPath: string): Config;
 // @public
 export function createDefaultConfig(fromPath: string): Config;
 
-// @public (undocumented)
-export type CustomStorageConfig = {
-    provider: (logger: Logger, cwd: string) => ICacheStorage;
-    name?: string;
+// @public
+export type CustomCacheStorageConfig<TOptions = unknown> = {
+    provider: "custom";
+    plugin: string;
+    options: TOptions;
 };
+
+// @public
+export interface CustomCacheStoragePlugin<TOptions = unknown> {
+    // (undocumented)
+    getProvider: (logger: Logger, cwd: string, options: TOptions) => ICacheStorage;
+    // (undocumented)
+    name: string;
+}
 
 // @public (undocumented)
 export function getAzureBlobConfigFromSerializedOptions(options: string): AzureBlobCacheStorageConfig;

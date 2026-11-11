@@ -3,11 +3,14 @@ import createLogger from "@lage-run/logger";
 import { Monorepo, removeTempDirAsync } from "@lage-run/test-utilities";
 import type { Target } from "@lage-run/target-graph";
 import path from "path";
+import { createRequire } from "module";
 import fs from "fs-extra";
 import { PassThrough } from "stream";
 import { buffer } from "stream/consumers";
 import { makeAzureStorageClientMocks } from "@lage-run/test-utilities";
 import { BackfillCacheProvider, type BackfillCacheProviderOptions } from "../providers/BackfillCacheProvider.js";
+
+const plugin = createRequire(__filename).resolve("@lage-run/azure-blob-cache-storage");
 
 describe("BackfillCacheProvider with Azure Blob storage", () => {
   let monorepo: Monorepo | undefined;
@@ -48,7 +51,8 @@ describe("BackfillCacheProvider with Azure Blob storage", () => {
       cacheOptions: {
         outputGlob: ["lib/**"],
         cacheStorageConfig: {
-          provider: "azure-blob",
+          provider: "custom",
+          plugin,
           options: { containerClient: mockContainerClient },
         },
       },
@@ -101,7 +105,7 @@ describe("BackfillCacheProvider with Azure Blob storage", () => {
       logger,
       root: monorepo.root,
       cacheOptions: {
-        cacheStorageConfig: { provider: "azure-blob", options: { containerClient: mockContainerClient } },
+        cacheStorageConfig: { provider: "custom", plugin, options: { containerClient: mockContainerClient } },
       },
     };
 
@@ -125,7 +129,7 @@ describe("BackfillCacheProvider with Azure Blob storage", () => {
       logger,
       root: monorepo.root,
       cacheOptions: {
-        cacheStorageConfig: { provider: "azure-blob", options: { containerClient: mockContainerClient } },
+        cacheStorageConfig: { provider: "custom", plugin, options: { containerClient: mockContainerClient } },
       },
     };
 
@@ -151,7 +155,8 @@ describe("BackfillCacheProvider with Azure Blob storage", () => {
       root: monorepo.root,
       cacheOptions: {
         cacheStorageConfig: {
-          provider: "azure-blob",
+          provider: "custom",
+          plugin,
           options: { containerClient: mockContainerClient, maxSize: 1000 },
         },
       },
@@ -180,7 +185,7 @@ describe("BackfillCacheProvider with Azure Blob storage", () => {
       logger,
       root: monorepo.root,
       cacheOptions: {
-        cacheStorageConfig: { provider: "azure-blob", options: { containerClient: mockContainerClient } },
+        cacheStorageConfig: { provider: "custom", plugin, options: { containerClient: mockContainerClient } },
       },
     };
 

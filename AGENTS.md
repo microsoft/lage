@@ -71,6 +71,8 @@ Git calls are expensive in large monorepos. Collect changes once per command and
 - Prettier: 140 char width, double quotes, 2-space indent, LF line endings
 - Pre-commit hook runs prettier via lint-staged
 
+Also run `yarn format` to correct any formatting issues.
+
 ## Architecture
 
 ### Key packages

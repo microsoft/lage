@@ -41,6 +41,5 @@ const config = {
     },
   },
   ignorePatterns: [".*ignore", "eslint.config.js", "jest.config.js", "**/__*/**/*"],
-  disallowedChangeTypes: ["major"],
 };
 module.exports = config;

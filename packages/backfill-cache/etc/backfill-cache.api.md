@@ -5,7 +5,7 @@
 ```ts
 
 import type { CacheStorageConfig } from 'backfill-config';
-import type { CustomStorageConfig } from 'backfill-config';
+import type { CustomCacheStorageConfig } from 'backfill-config';
 import type { ICacheStorage } from 'backfill-config';
 import type { Logger } from 'backfill-logger';
 
@@ -32,7 +32,7 @@ export function getCacheStorageProvider(cacheStorageConfig: CacheStorageConfig, 
 export { ICacheStorage }
 
 // @public (undocumented)
-export function isCustomProvider(config: CacheStorageConfig): config is CustomStorageConfig;
+export function isCustomPluginProvider(config: CacheStorageConfig): config is CustomCacheStorageConfig;
 
 // (No @packageDocumentation comment for this package)
 

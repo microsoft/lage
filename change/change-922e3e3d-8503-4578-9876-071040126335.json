@@ -1,0 +1,53 @@
+{
+  "changes": [
+    {
+      "type": "minor",
+      "comment": "New plugin package for Azure Blob Storage cache",
+      "packageName": "@lage-run/azure-blob-cache-storage",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "major",
+      "comment": "Move Azure Blob cache to plugin; remove built-in azure-blob provider",
+      "packageName": "backfill-cache",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "major",
+      "comment": "Remove AzureBlobCacheStorageConfig and CustomStorageConfig from CacheStorageConfig union; add CustomCacheStoragePlugin and CustomCacheStorageConfig types",
+      "packageName": "backfill-config",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "minor",
+      "comment": "Support custom plugin providers via isCustomPluginProvider",
+      "packageName": "backfill",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "major",
+      "comment": "Remove Azure credential handling; credentials are now managed by the @lage-run/azure-blob-cache-storage plugin",
+      "packageName": "@lage-run/cache",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "major",
+      "comment": "Remove AzureCredentialName export and Azure-specific type augmentation from CacheOptions",
+      "packageName": "@lage-run/config",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    },
+    {
+      "type": "major",
+      "comment": "Migrate from CustomStorageConfig to CustomCacheStoragePlugin pattern",
+      "packageName": "@lage-run/cache-github-actions",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
