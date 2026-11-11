@@ -27,6 +27,9 @@
     "@lage-run/monorepo-scripts": "workspace:^",
     "jest-diff": "^30.0.0"
   },
+  "engines": {
+    "node": ">=24.22.1"
+  },
   "files": [
     "lib/!(__*)",
     "lib/!(__*)/**"
