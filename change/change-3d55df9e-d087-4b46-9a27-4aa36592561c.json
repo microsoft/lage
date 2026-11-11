@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/hasher",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Avoid redundant file hashing and stat work, invalidate stale entries, and report native hashing failures explicitly.",
+      "email": "djmaks@microsoft.com"
+    }
+  ]
+}

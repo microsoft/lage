@@ -1,11 +1,12 @@
-import { beforeEach, describe, expect, it } from "@jest/globals";
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { TargetHasher } from "@lage-run/hasher";
 import { Logger } from "@lage-run/logger";
 import type { TargetRunner } from "@lage-run/runners";
 import type { Target } from "@lage-run/target-graph";
-import type { Pool } from "@lage-run/worker-threads-pool";
+import { type Pool, WorkerPool } from "@lage-run/worker-threads-pool";
+import { writeFileSync } from "fs";
 import path from "path";
-import { createTempDir } from "@lage-run/test-utilities";
+import { createTempDir, removeTempDir } from "@lage-run/test-utilities";
 import { WrappedTarget } from "../WrappedTarget.js";
 
 function createTarget(packageName: string): Target {
@@ -250,5 +251,69 @@ describe("WrappedTarget", () => {
     await wrappedTarget.run();
 
     expect(wrappedTarget.status).toBe("skipped");
+  });
+
+  it.each([
+    { reason: new Error("Failed to hash files"), continueOnError: false },
+    { reason: 'Failed to hash file "input.txt"', continueOnError: true },
+  ])("settles worker hash failures with continueOnError=$continueOnError", async ({ reason, continueOnError }) => {
+    writeFileSync(path.join(root, "package.json"), JSON.stringify({ name: "a" }));
+    const logger = new Logger();
+    const abortController = new AbortController();
+    const hasher = new TargetHasher({ root, environmentGlob: [] });
+    const hash = jest.spyOn(hasher, "hash").mockRejectedValueOnce(reason);
+    const pool = new WorkerPool({
+      maxWorkers: 1,
+      script: path.resolve(__dirname, "../../lib/workers/targetWorker.js"),
+      workerOptions: {
+        workerData: {
+          root,
+          shouldCache: true,
+          shouldResetCache: false,
+          skipLocalCache: false,
+          taskArgs: [],
+          runners: {
+            noop: { script: path.resolve(__dirname, "../../../runners/lib/NoOpRunner.js"), options: {} },
+          },
+        },
+      },
+    });
+    const wrappedTarget = new WrappedTarget({
+      abortController,
+      continueOnError,
+      logger,
+      root,
+      shouldCache: true,
+      target: { ...createTarget("a"), cwd: root, cache: true, type: "noop", outputs: [] },
+      pool,
+      hasher,
+    });
+    let timeout: NodeJS.Timeout | undefined;
+    const timedOut = new Promise<never>((_resolve, reject) => {
+      timeout = setTimeout(() => reject(new Error("Timed out waiting for the worker hash request to settle")), 5000);
+    });
+
+    try {
+      const message = reason instanceof Error ? reason.message : reason;
+      await expect(Promise.race([wrappedTarget.run(), timedOut])).rejects.toThrow(message);
+      expect(wrappedTarget.status).toBe("failed");
+      expect(abortController.signal.aborted).toBe(!continueOnError);
+
+      if (continueOnError) {
+        const threadId = wrappedTarget.threadId;
+        const nextHash = "a".repeat(40);
+        hash.mockResolvedValueOnce(nextHash);
+        wrappedTarget.reset();
+
+        await expect(Promise.race([wrappedTarget.run(), timedOut])).resolves.toMatchObject({ skipped: false, hash: nextHash });
+        expect(wrappedTarget.status).toBe("success");
+        expect(wrappedTarget.threadId).toBe(threadId);
+      }
+    } finally {
+      clearTimeout(timeout);
+      await pool.close();
+      hash.mockRestore();
+      removeTempDir(root);
+    }
   });
 });

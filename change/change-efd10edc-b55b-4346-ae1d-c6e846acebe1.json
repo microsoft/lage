@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/scheduler",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Fail targets instead of hanging when cache hashing fails.",
+      "email": "djmaks@microsoft.com"
+    }
+  ]
+}
