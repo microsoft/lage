@@ -97,4 +97,44 @@ describe("BackfillCacheProvider", () => {
 
     expect(contents[outputFilePath]).toBe("output");
   });
+
+  it("should respect default outputGlob when outputGlob is not provided in cacheOptions", async () => {
+    const logger = createLogger();
+    monorepo = new Monorepo("default-output-glob");
+
+    await monorepo.init({ packages: { a: {} } });
+
+    const options: BackfillCacheProviderOptions = {
+      logger,
+      root: monorepo.root,
+      cacheOptions: {},
+    };
+
+    const provider = new BackfillCacheProvider(options);
+
+    const target: Target = {
+      id: "a",
+      cwd: path.join(monorepo.root, "packages/a"),
+      depSpecs: [],
+      dependents: [],
+      dependencies: [],
+      task: "command",
+      label: "a - command",
+    };
+
+    const hash = "default-hash";
+
+    monorepo.writeFiles({
+      "packages/a/lib/output.txt": "default output",
+      "packages/a/other.txt": "not cached",
+    });
+
+    await provider.put(hash, target);
+
+    const cacheDir = getCacheDirectory(monorepo.root, hash);
+    const cachedLibFile = path.join(cacheDir, hash, "lib/output.txt");
+    const contents = monorepo.readFiles([cachedLibFile]);
+
+    expect(contents[cachedLibFile]).toBe("default output");
+  });
 });
