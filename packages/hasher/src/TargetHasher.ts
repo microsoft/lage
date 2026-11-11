@@ -59,6 +59,8 @@ export class TargetHasher {
   private globalInputsHash: Record<string, string> | undefined;
   private lockInfo: ParsedLock | undefined;
   private targetHashes: Record<string, string> = {};
+  /** Package metadata and the parsed lockfile are fixed for this hasher's lifetime. */
+  private resolvedDependenciesCache = new Map<string, readonly string[]>();
 
   public dependencyMap: DependencyMap = {
     dependencies: new Map(),
@@ -148,18 +150,7 @@ export class TargetHasher {
 
     // 1. add hash of target's inputs
     // 2. add hash of target packages' internal and external deps
-    const { dependencies, devDependencies } = this.packageInfos[target.packageName!];
-
-    const parsedLock = this.lockInfo!;
-
-    const allDependencies: Record<string, string> = {
-      ...dependencies,
-      ...devDependencies,
-    };
-
-    const internalDeps = Object.keys(allDependencies).filter((dep) => this.packageInfos[dep]);
-    const externalDeps = resolveExternalDependencies(allDependencies, this.packageInfos, parsedLock);
-    const resolvedDependencies = [...internalDeps, ...externalDeps].sort();
+    const resolvedDependencies = this.getResolvedDependencies(target.packageName!);
 
     const files = getInputFiles(target, this.dependencyMap, this.packageTree!);
     const fileHashes = this.fileHasher.hash(files) ?? {}; // this list is sorted by file name
@@ -188,6 +179,25 @@ export class TargetHasher {
     this.targetHashes[target.id] = hashString;
 
     return hashString;
+  }
+
+  private getResolvedDependencies(packageName: string): readonly string[] {
+    const cached = this.resolvedDependenciesCache.get(packageName);
+    if (cached !== undefined) {
+      return cached;
+    }
+
+    const { dependencies, devDependencies } = this.packageInfos[packageName];
+    const allDependencies: Record<string, string> = {
+      ...dependencies,
+      ...devDependencies,
+    };
+    const internalDeps = Object.keys(allDependencies).filter((dep) => this.packageInfos[dep]);
+    const externalDeps = resolveExternalDependencies(allDependencies, this.packageInfos, this.lockInfo!);
+    const resolvedDependencies = [...internalDeps, ...externalDeps].sort();
+    this.resolvedDependenciesCache.set(packageName, resolvedDependencies);
+
+    return resolvedDependencies;
   }
 
   private async getEnvironmentGlobHashes(root: string, target: Target): Promise<Record<string, string>> {

@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/hasher",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Reuse resolved package dependencies across targets within each hasher instance.",
+      "email": "djmaks@microsoft.com"
+    }
+  ]
+}

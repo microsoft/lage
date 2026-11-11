@@ -1,18 +1,29 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import { Monorepo } from "@lage-run/test-utilities";
 import type { Target } from "@lage-run/target-graph";
+import type * as BackfillHasher from "backfill-hasher";
 import fs from "fs";
 import fsPromises from "fs/promises";
 import path from "path";
 import { getPackageInfo, getPackageInfosAsync } from "workspace-tools";
-import { TargetHasher } from "../TargetHasher.js";
+import type * as TargetHasherModule from "../TargetHasher.js";
 
 const fixturesPath = path.resolve(__dirname, "../__fixtures__");
+
+jest.mock("backfill-hasher", () => {
+  const actual = jest.requireActual<typeof BackfillHasher>("backfill-hasher");
+  return { ...actual, resolveExternalDependencies: jest.fn(actual.resolveExternalDependencies) };
+});
+
+// Load after registering the mock: SWC does not hoist imported jest.mock calls.
+const { resolveExternalDependencies } = jest.requireMock<typeof BackfillHasher>("backfill-hasher");
+const { TargetHasher } = jest.requireActual<typeof TargetHasherModule>("../TargetHasher.js");
 
 describe("TargetHasher", () => {
   let monorepos: Monorepo[] = [];
 
   afterEach(async () => {
+    jest.clearAllMocks();
     jest.restoreAllMocks();
     for (const monorepo of monorepos) {
       await monorepo.cleanup();
@@ -28,7 +39,7 @@ describe("TargetHasher", () => {
     return monorepo;
   }
 
-  async function getHash(hasher: TargetHasher, target: Target) {
+  async function getHash(hasher: TargetHasherModule.TargetHasher, target: Target) {
     await hasher.initialize();
     const hash = await hasher.hash(target);
     hasher.cleanup();
@@ -48,6 +59,138 @@ describe("TargetHasher", () => {
       task,
     };
   }
+
+  it("resolves dependencies once per package without changing task hashes", async () => {
+    const monorepo = await setupFixture();
+    monorepo.writeFiles({
+      "packages/package-a/package.json": {
+        name: "package-a",
+        version: "0.1.0",
+        dependencies: { "package-b": "*", foo: "1.0.0" },
+        devDependencies: { bar: "^2.0.0" },
+      },
+    });
+    const targets = [
+      createTarget(monorepo.root, "package-a", "build"),
+      { ...createTarget(monorepo.root, "package-a", "test"), inputs: ["src/**"] },
+      createTarget(monorepo.root, "package-b", "build"),
+      createTarget(monorepo.root, "package-b", "test"),
+    ];
+    const coldHashes: string[] = [];
+    for (const target of targets) {
+      const coldHasher = new TargetHasher({ root: monorepo.root, environmentGlob: [] });
+      coldHashes.push(await getHash(coldHasher, target));
+    }
+
+    jest.mocked(resolveExternalDependencies).mockClear();
+    const hasher = new TargetHasher({ root: monorepo.root, environmentGlob: [] });
+    await hasher.initialize();
+    const hashes = await Promise.all(targets.map((target) => hasher.hash(target)));
+
+    expect(hashes).toEqual(coldHashes);
+    expect(hashes[0]).not.toEqual(hashes[1]);
+    expect(await hasher.hash(targets[0])).toEqual(hashes[0]);
+    expect(resolveExternalDependencies).toHaveBeenCalledTimes(2);
+    expect(jest.mocked(resolveExternalDependencies).mock.calls.map(([dependencies]) => dependencies)).toEqual([
+      { "package-b": "*", foo: "1.0.0", bar: "^2.0.0" },
+      {},
+    ]);
+  });
+
+  it("preserves the cache key for internal and transitive external dependencies", async () => {
+    const monorepo = await setupFixture();
+    monorepo.writeFiles({
+      "packages/package-a/package.json": {
+        name: "package-a",
+        version: "0.1.0",
+        dependencies: { "package-b": "*", foo: "^1.0.0" },
+        devDependencies: { baz: "^3.0.0" },
+      },
+      "yarn.lock": `# yarn lockfile v1
+
+foo@^1.0.0:
+  version "1.2.3"
+  dependencies:
+    bar "^2.0.0"
+
+bar@^2.0.0:
+  version "2.3.4"
+
+baz@^3.0.0:
+  version "3.4.5"
+`,
+    });
+    const target = { ...createTarget(monorepo.root, "package-a", "build"), inputs: [] };
+    const hasher = new TargetHasher({ root: monorepo.root, environmentGlob: [] });
+    // SHA-1 of "bar@2.3.4baz@3.4.5foo@1.2.3package-a#build|undefinedpackage-b", with no file or environment inputs.
+    const expectedHash = "aa175eeced64a21f40e6875e17b6ee9a5a365a64";
+
+    expect(await getHash(hasher, target)).toBe(expectedHash);
+    expect(await hasher.hash(target)).toBe(expectedHash);
+  });
+
+  it.each(["lockfile", "manifest"])(
+    "does not reuse resolved dependencies between repositories with different %s contents",
+    async (change) => {
+      const monorepo = await setupFixture();
+      const packageInfo = { name: "package-a", version: "0.1.0", dependencies: { foo: "1.0.0" } };
+      monorepo.writeFiles({ "packages/package-a/package.json": packageInfo });
+      // Exclude files so only the resolved dependency list can change the hash.
+      const target = { ...createTarget(monorepo.root, "package-a", "build"), inputs: [] };
+      const hasher = new TargetHasher({ root: monorepo.root, environmentGlob: [] });
+      const originalHash = await getHash(hasher, target);
+
+      const nextMonorepo = await setupFixture();
+      nextMonorepo.writeFiles({ "packages/package-a/package.json": packageInfo });
+      nextMonorepo.writeFiles(
+        change === "lockfile"
+          ? { "yarn.lock": '# yarn lockfile v1\n\nfoo@1.0.0:\n  version "2.0.0"\n' }
+          : { "packages/package-a/package.json": { ...packageInfo, dependencies: { foo: "2.0.0" } } }
+      );
+      const nextHasher = new TargetHasher({ root: nextMonorepo.root, environmentGlob: [] });
+      const nextTarget = { ...createTarget(nextMonorepo.root, "package-a", "build"), inputs: [] };
+      const nextHash = await getHash(nextHasher, nextTarget);
+
+      expect(nextHash).not.toEqual(originalHash);
+      expect(await hasher.hash(target)).toEqual(originalHash);
+      expect(resolveExternalDependencies).toHaveBeenCalledTimes(2);
+    }
+  );
+
+  it("reuses package dependencies without caching prerequisite task hashes", async () => {
+    const monorepo = await setupFixture("monorepo-with-deps");
+    const hasher = new TargetHasher({ root: monorepo.root, environmentGlob: [] });
+    const dependency = createTarget(monorepo.root, "package-b", "build");
+    const target = {
+      ...createTarget(monorepo.root, "package-a", "build"),
+      inputs: [],
+      dependencies: [dependency.id],
+    };
+    await hasher.initialize();
+    await hasher.hash(dependency);
+    const originalHash = await hasher.hash(target);
+
+    await hasher.hash({ ...dependency, inputs: [] });
+    const nextHash = await hasher.hash(target);
+
+    expect(nextHash).not.toEqual(originalHash);
+    expect(resolveExternalDependencies).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not resolve package dependencies for cached root targets", async () => {
+    const monorepo = await setupFixture();
+    const hasher = new TargetHasher({ root: monorepo.root, environmentGlob: [] });
+    const target = {
+      ...createTarget(monorepo.root, "root", "build"),
+      cwd: monorepo.root,
+      cache: true,
+      inputs: ["package.json"],
+    };
+    const originalHash = await getHash(hasher, target);
+
+    expect(await hasher.hash(target)).toEqual(originalHash);
+    expect(resolveExternalDependencies).not.toHaveBeenCalled();
+  });
 
   it("reuses supplied package metadata without rediscovery and preserves hashes", async () => {
     const monorepo = await setupFixture("monorepo-with-deps");
