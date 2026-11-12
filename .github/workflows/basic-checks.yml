@@ -26,6 +26,8 @@ jobs:
         with:
           node-version-file: .nvmrc
 
+      - run: npm i -g yarn
+
       - run: yarn --immutable
 
       - name: Code Format Check

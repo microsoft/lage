@@ -23,6 +23,8 @@ jobs:
         with:
           node-version-file: docs/.nvmrc
 
+      - run: npm i -g yarn
+
       - run: yarn --immutable
         working-directory: docs
 

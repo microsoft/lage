@@ -43,6 +43,7 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: 22.x
+      - run: npm i -g yarn
       - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
         with:
           toolchain: 1.97.0
@@ -59,10 +60,10 @@ jobs:
             ~/.cargo/git
             packages/glob-hasher/target
           key: native-${{ matrix.target }}-rust-1.97.0-zig-0.13.0-${{ hashFiles('packages/glob-hasher/Cargo.lock') }}
-      - run: node .yarn/releases/yarn-4.18.1.cjs install --immutable
+      - run: yarn install --immutable
       - name: Build native binding
         run: >-
-          node .yarn/releases/yarn-4.18.1.cjs workspace glob-hasher build
+          yarn workspace glob-hasher build
           --target ${{ matrix.target }}
           ${{ runner.os == 'Linux' && '--zig --zig-abi-suffix 2.17' || '' }}
       - name: Check Linux ABI baseline
@@ -73,11 +74,11 @@ jobs:
           test "$(printf '%s\n' GLIBC_2.17 "$maximum" | sort -V | tail -1)" = GLIBC_2.17
       - name: Check native formatting and lint
         if: matrix.target == 'x86_64-unknown-linux-gnu'
-        run: node .yarn/releases/yarn-4.18.1.cjs workspace glob-hasher lint
+        run: yarn workspace glob-hasher lint
       - name: Test native API and declarations
         run: |
-          node .yarn/releases/yarn-4.18.1.cjs workspace glob-hasher types
-          node .yarn/releases/yarn-4.18.1.cjs workspace glob-hasher test --runInBand
+          yarn workspace glob-hasher types
+          yarn workspace glob-hasher test --runInBand
           git diff --exit-code -- packages/glob-hasher/index.js packages/glob-hasher/index.d.ts
       - name: Test offline installation without Rust or install scripts
         run: |
@@ -107,6 +108,8 @@ jobs:
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: ${{ matrix.node }}
+
+      - run: npm i -g yarn
 
       - run: yarn --immutable
 
