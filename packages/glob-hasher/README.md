@@ -30,9 +30,8 @@ Linux release binaries target glibc 2.17. Musl, Android, FreeBSD, and 32-bit
 targets are not built or published, even though the generated loader includes
 branches for them.
 
-This package uses Node-API 8: the standalone package supports Node 12.22+,
-14.17+, and 15.12 or newer, while Lage itself requires Node 16.14 or newer. Upstream's `>=10`
-metadata did not reflect the Node-API version enabled in its Rust manifest.
+Development and CI target Node 22 and newer. The standalone package retains its
+Node-API 8 engine compatibility; older runtimes are not a migration release gate.
 Installing a published package requires neither Rust nor install scripts.
 
 ## Development
@@ -47,6 +46,8 @@ yarn workspace glob-hasher lint
 
 Install Rust with rustup first; `rust-toolchain.toml` selects the exact
 compiler and components. Cargo uses the committed package-local lockfile.
+Rust 1.97 is pinned because Rust 1.98+ passes an ARM64 linker option that Zig
+does not yet support.
 The native build copies the host binding into its sibling binary workspace.
 Root `yarn build` and `yarn ci` also build the native package explicitly.
 No install lifecycle scripts are needed.

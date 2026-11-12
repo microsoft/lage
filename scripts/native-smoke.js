@@ -1,4 +1,4 @@
-// This also runs on the minimum supported Node versions, without development dependencies.
+// Runs against packed packages without development dependencies.
 const assert = require("assert").strict;
 const { createHash } = require("crypto");
 const fs = require("fs");

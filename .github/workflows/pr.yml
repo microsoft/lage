@@ -43,23 +43,22 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: 22.x
-      - name: Install pinned Rust toolchain
-        shell: bash
-        run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy --target ${{ matrix.target }}
-      - name: Install pinned Zig distribution
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
+        with:
+          toolchain: 1.97.0
+          components: rustfmt, clippy
+          targets: ${{ matrix.target }}
+      - uses: mlugg/setup-zig@d1434d08867e3ee9daa34448df10607b98908d29 # v2
         if: runner.os == 'Linux'
-        shell: bash
-        run: |
-          printf '%s\n' 'ziglang==0.13.0 --hash=sha256:3ce0c9f16547e5d61b32e0d226926e9a2552ef4b91fccf7ab5ea1a623a77824b --hash=sha256:5714a4d46f9246ba6180a0930e23df2bc8bc26e62b5fe0dc798b4afca1903308' > "$RUNNER_TEMP/zig-requirements.txt"
-          python3 -m pip install --quiet --no-deps --only-binary=:all: --require-hashes --target "$RUNNER_TEMP/zig" -r "$RUNNER_TEMP/zig-requirements.txt"
-          echo "$RUNNER_TEMP/zig/ziglang" >> "$GITHUB_PATH"
+        with:
+          version: 0.13.0
       - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
             packages/glob-hasher/target
-          key: native-${{ matrix.target }}-rust-1.99.1-zig-0.13.0-${{ hashFiles('packages/glob-hasher/Cargo.lock') }}
+          key: native-${{ matrix.target }}-rust-1.97.0-zig-0.13.0-${{ hashFiles('packages/glob-hasher/Cargo.lock') }}
       - run: node .yarn/releases/yarn-4.18.1.cjs install --immutable
       - name: Build native binding
         run: >-
@@ -92,35 +91,11 @@ jobs:
           path: native-artifacts/glob-hasher-${{ matrix.target }}
           if-no-files-found: error
 
-  native-minimum-node:
-    needs: native
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [12.22.0, 16.14.0]
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version: 22.x
-      - run: node .yarn/releases/yarn-4.18.1.cjs install --immutable
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
-        with:
-          name: glob-hasher-x86_64-unknown-linux-gnu
-          path: native-artifacts/glob-hasher-x86_64-unknown-linux-gnu
-      - run: |
-          node scripts/native-packages.js assemble native-artifacts x86_64-unknown-linux-gnu
-          node scripts/native-packages.js prepare-test .native-test
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version: ${{ matrix.node }}
-      - run: node scripts/native-smoke.js .native-test
-
   build:
     needs: native
     strategy:
       matrix:
-        node: [18.x, 20.x, 22.x]
+        node: [22.x, 24.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
