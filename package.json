@@ -9,6 +9,7 @@
   "workspaces": {
     "packages": [
       "packages/*",
+      "packages/glob-hasher-native/*",
       "scripts"
     ]
   },
@@ -19,7 +20,8 @@
     "change": "beachball change",
     "checkchange": "beachball check",
     "ci": "lage transpile types build test lint bundle api",
-    "release": "beachball publish -y --tag latest",
+    "release": "node scripts/native-packages.js release",
+    "release:pack": "node scripts/native-packages.js release --pack-to-path packed-packages --no-push",
     "test": "lage test",
     "lage-local": "node packages/lage/dist/lage.js",
     "lint": "lage lint",

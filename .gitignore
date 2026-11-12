@@ -13,6 +13,15 @@ coverage
 profile*.json
 temp
 *.tgz
+*.node
+/packages/glob-hasher/target/
+/native-artifacts/
+/packed-packages/
+/.native-test/
+/packages/glob-hasher/.native-artifact.json
+/packages/glob-hasher/LICENSE
+/packages/glob-hasher-native/*/LICENSE
+/packages/glob-hasher-native/*/artifact.json
 .claude/settings.local.json
 *.tsbuildinfo
 *.tmp.*

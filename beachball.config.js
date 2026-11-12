@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { validateReleaseBindings } = require("./scripts/native-packages.js");
 
 // @ts-check
 /** @type {import('beachball').BeachballConfig}*/
@@ -7,12 +8,19 @@ const config = {
   groupChanges: true,
   branch: "main",
   commit: false,
+  groups: [
+    {
+      name: "glob-hasher",
+      include: ["packages/glob-hasher", "packages/glob-hasher-native/*"],
+      disallowedChangeTypes: ["major"],
+    },
+  ],
   changelog: {
     groups: [
       {
         // roll up all changes to the lage changelog (packages still have individual changelogs too)
         mainPackageName: "lage",
-        include: ["packages/*"],
+        include: ["packages/*", "packages/glob-hasher-native/*"],
         // these are not dependencies of lage
         exclude: ["!packages/backfill", "!packages/cache-github-actions", "!packages/grapher"],
         changelogPath: "packages/lage",
@@ -26,6 +34,9 @@ const config = {
   },
   hooks: {
     prepublish: (packagePath, name, version, packageInfos) => {
+      if (name === "glob-hasher" || name.startsWith("glob-hasher-")) {
+        validateReleaseBindings(__dirname);
+      }
       const { packageJsonPath } = packageInfos[name];
       const packageJson = require(packageJsonPath);
       if (!packageJson.dependencies) return;

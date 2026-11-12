@@ -1,0 +1,27 @@
+{
+  "name": "glob-hasher-linux-x64-gnu",
+  "version": "1.4.3",
+  "description": "Linux x64 glibc native binding for glob-hasher",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/lage",
+    "directory": "packages/glob-hasher-native/glob-hasher-linux-x64-gnu"
+  },
+  "license": "MIT",
+  "main": "glob-hasher.linux-x64-gnu.node",
+  "files": [
+    "*.node"
+  ],
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "libc": [
+    "glibc"
+  ],
+  "engines": {
+    "node": ">=16.14.0"
+  }
+}

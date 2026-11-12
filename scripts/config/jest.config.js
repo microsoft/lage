@@ -15,11 +15,11 @@ const packages = getPackageInfos(root);
 const moduleNameMapper = /** @type {Record<string, string>} */ ({});
 for (const { packageJsonPath, name } of Object.values(packages)) {
   const packagePath = path.dirname(packageJsonPath);
-  moduleNameMapper[`^${name}/(.*)$`] = `${packagePath}/src/$1`;
-
   if (fs.existsSync(path.join(packagePath, "src/index.ts"))) {
+    moduleNameMapper[`^${name}/(.*)$`] = `${packagePath}/src/$1`;
     moduleNameMapper[`^${name}$`] = `${packagePath}/src/index.ts`;
   } else if (fs.existsSync(path.join(packagePath, "src/index.mts"))) {
+    moduleNameMapper[`^${name}/(.*)$`] = `${packagePath}/src/$1`;
     moduleNameMapper[`^${name}$`] = `${packagePath}/src/index.mts`;
   }
 }

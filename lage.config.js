@@ -13,7 +13,7 @@ const baseTestTarget = {
   options: /** @satisfies {WorkerTargetOptions} */ ({
     worker: path.join(__dirname, "scripts/worker/jest.js"),
   }),
-  dependsOn: ["build"],
+  dependsOn: ["build", "glob-hasher#build"],
 };
 
 /**
@@ -23,7 +23,7 @@ const baseTestTarget = {
 const config = {
   pipeline: {
     "lage#bundle": {
-      dependsOn: ["^^transpile", "types"],
+      dependsOn: ["^^transpile", "types", "glob-hasher#build"],
       outputs: ["dist/**/*"],
     },
     types: {
@@ -72,9 +72,20 @@ const config = {
         worker: path.join(__dirname, "scripts/worker/depcheck.js"),
       }),
     },
+    "glob-hasher#build": {
+      type: "npmScript",
+      dependsOn: [],
+      outputs: ["glob-hasher.*.node", "index.d.ts"],
+      cache: false,
+    },
+    "glob-hasher#lint": {
+      type: "npmScript",
+      dependsOn: ["glob-hasher#build"],
+      cache: false,
+    },
     "@lage-run/e2e-tests#test": {
       ...baseTestTarget,
-      dependsOn: ["^^transpile", "lage#bundle"],
+      dependsOn: ["^^transpile", "lage#bundle", "glob-hasher#build"],
       // weight is used in scripts/worker/jest.js to determine max jest workers.
       // Make this task run last and give it all available resources.
       // But on CI, allow only one worker since this runs lage which internally creates workers.

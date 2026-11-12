@@ -1,6 +1,7 @@
 import { expect } from "@jest/globals";
 import fs from "fs";
 import path from "path";
+import { createRequire } from "module";
 import * as execa from "execa";
 import { findGitRoot, getPackageInfo } from "workspace-tools";
 
@@ -196,28 +197,22 @@ export class Monorepo extends BaseMonorepo {
     expect(lagePackage.dependencies).toEqual({ "glob-hasher": expect.any(String) });
     expect(lagePackage.optionalDependencies).toEqual({ fsevents: expect.any(String) });
 
-    // Find glob-hasher's optional platform deps and figure out which is installed.
-    // ASSUMPTION: This only works with hoisted node_modules. If we use a different linker in the future,
-    // it will need to be updated to use proper resolution (createRequire from relevant package).
-    const globHasherPath = path.join(lageRepoRoot, "node_modules/glob-hasher");
+    const requireFromLage = createRequire(path.join(lagePackageRoot, "package.json"));
+    const globHasherPath = path.dirname(requireFromLage.resolve("glob-hasher/package.json"));
     const globHasherDepNames = Object.keys(getPackageInfo(globHasherPath)!.optionalDependencies!);
-
-    // There should be only this platform's glob-hasher-* implementation installed
-    const globHasherPlatforms = globSync(["node_modules/glob-hasher-*/package.json"], { cwd: lageRepoRoot, absolute: true });
-    expect(globHasherPlatforms).toHaveLength(1);
-    const globHasherPlatformPath = path.dirname(globHasherPlatforms[0]);
-    const globHasherPlatformName = path.basename(globHasherPlatformPath);
+    const requireFromGlobHasher = createRequire(path.join(globHasherPath, "package.json"));
+    const globHasherPlatforms = Object.fromEntries(
+      globHasherDepNames.map((name) => [name, `portal:${path.dirname(requireFromGlobHasher.resolve(`${name}/package.json`))}`])
+    );
 
     // Link unwanted packages to the empty placeholder package
     const emptyPath = path.join(__dirname, "empty");
 
     Monorepo.lageResolutions = {
       fsevents: emptyPath,
-      "glob-hasher": globHasherPath,
-      // Use empty deps for the other glob-hasher platforms
-      ...Object.fromEntries(globHasherDepNames.map((depName) => [depName, emptyPath])),
-      // and override the current one with the real implementation
-      [globHasherPlatformName]: globHasherPlatformPath,
+      // Link instead of copying the workspace's potentially large Cargo build directory.
+      "glob-hasher": `portal:${globHasherPath}`,
+      ...globHasherPlatforms,
     };
 
     return Monorepo.lageResolutions;

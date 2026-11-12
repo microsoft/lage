@@ -1,0 +1,29 @@
+[package]
+edition = "2021"
+name = "glob-hasher"
+version = "0.0.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# Default enable napi4 feature, see https://nodejs.org/api/n-api.html#node-api-version-matrix
+napi = { version = "2.10.16", default-features = false, features = ["napi8"] }
+
+napi-derive = "2.10.1"
+ignore = "0.4.20"
+dashmap = { version = "5.4.0", features = ["rayon"] }
+anyhow = "1.0.51"
+rayon = "1.6.1"
+gix = { version = "0.66", features = ["fast-sha1"] }
+hex = "0.4.3"
+
+[build-dependencies]
+napi-build = "2.0.1"
+
+[profile.release]
+lto = true
+
+[dependencies.xxhash-rust]
+version = "0.8.5"
+features = ["xxh3", "const_xxh3"]

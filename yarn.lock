@@ -1626,7 +1626,7 @@ __metadata:
     backfill-config: "workspace:^"
     backfill-logger: "workspace:^"
     fs-extra: "npm:8.1.0"
-    glob-hasher: "npm:^1.4.2"
+    glob-hasher: "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -1692,7 +1692,7 @@ __metadata:
     "@lage-run/test-utilities": "workspace:^"
     execa: "npm:5.1.1"
     find-process: "npm:2.1.1"
-    glob-hasher: "npm:^1.4.2"
+    glob-hasher: "workspace:^"
     globby: "npm:11.1.0"
     workspace-tools: "workspace:^"
   languageName: unknown
@@ -1722,7 +1722,7 @@ __metadata:
     "@types/micromatch": "npm:^4.0.0"
     backfill-hasher: "workspace:^"
     execa: "npm:5.1.1"
-    glob-hasher: "npm:^1.4.2"
+    glob-hasher: "workspace:^"
     globby: "npm:11.1.0"
     graceful-fs: "npm:4.2.11"
     micromatch: "npm:4.0.8"
@@ -1946,6 +1946,15 @@ __metadata:
   dependencies:
     picocolors: "npm:^1.1.1"
   checksum: 10c0/41a327dfb7670c3e29062bd083122fb11d3a12e85ec11de6d7980d203f23e1beea4d38aff58a520ba5000628437d93567fcbafa0c151029d19ee7bff65d29202
+  languageName: node
+  linkType: hard
+
+"@napi-rs/cli@npm:2.18.4":
+  version: 2.18.4
+  resolution: "@napi-rs/cli@npm:2.18.4"
+  bin:
+    napi: scripts/index.js
+  checksum: 10c0/cb80bc86687ba01077a0faa8d38198bc632b7caacf3a42ec42c3ec04700084ca26be9eec13bf7ac7da90e6afb46c65a39de8a86825a53b74dec2f2f459c0a7ea
   languageName: node
   linkType: hard
 
@@ -5142,12 +5151,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"glob-hasher-darwin-arm64@workspace:*, glob-hasher-darwin-arm64@workspace:packages/glob-hasher-native/glob-hasher-darwin-arm64":
+  version: 0.0.0-use.local
+  resolution: "glob-hasher-darwin-arm64@workspace:packages/glob-hasher-native/glob-hasher-darwin-arm64"
+  languageName: unknown
+  linkType: soft
+
 "glob-hasher-darwin-x64@npm:1.4.2":
   version: 1.4.2
   resolution: "glob-hasher-darwin-x64@npm:1.4.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
+
+"glob-hasher-darwin-x64@workspace:*, glob-hasher-darwin-x64@workspace:packages/glob-hasher-native/glob-hasher-darwin-x64":
+  version: 0.0.0-use.local
+  resolution: "glob-hasher-darwin-x64@workspace:packages/glob-hasher-native/glob-hasher-darwin-x64"
+  languageName: unknown
+  linkType: soft
+
+"glob-hasher-linux-arm64-gnu@workspace:*, glob-hasher-linux-arm64-gnu@workspace:packages/glob-hasher-native/glob-hasher-linux-arm64-gnu":
+  version: 0.0.0-use.local
+  resolution: "glob-hasher-linux-arm64-gnu@workspace:packages/glob-hasher-native/glob-hasher-linux-arm64-gnu"
+  languageName: unknown
+  linkType: soft
 
 "glob-hasher-linux-x64-gnu@npm:1.4.2":
   version: 1.4.2
@@ -5156,6 +5183,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"glob-hasher-linux-x64-gnu@workspace:*, glob-hasher-linux-x64-gnu@workspace:packages/glob-hasher-native/glob-hasher-linux-x64-gnu":
+  version: 0.0.0-use.local
+  resolution: "glob-hasher-linux-x64-gnu@workspace:packages/glob-hasher-native/glob-hasher-linux-x64-gnu"
+  languageName: unknown
+  linkType: soft
+
 "glob-hasher-win32-arm64-msvc@npm:1.4.2":
   version: 1.4.2
   resolution: "glob-hasher-win32-arm64-msvc@npm:1.4.2"
@@ -5163,12 +5196,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"glob-hasher-win32-arm64-msvc@workspace:*, glob-hasher-win32-arm64-msvc@workspace:packages/glob-hasher-native/glob-hasher-win32-arm64-msvc":
+  version: 0.0.0-use.local
+  resolution: "glob-hasher-win32-arm64-msvc@workspace:packages/glob-hasher-native/glob-hasher-win32-arm64-msvc"
+  languageName: unknown
+  linkType: soft
+
 "glob-hasher-win32-x64-msvc@npm:1.4.2":
   version: 1.4.2
   resolution: "glob-hasher-win32-x64-msvc@npm:1.4.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
+
+"glob-hasher-win32-x64-msvc@workspace:*, glob-hasher-win32-x64-msvc@workspace:packages/glob-hasher-native/glob-hasher-win32-x64-msvc":
+  version: 0.0.0-use.local
+  resolution: "glob-hasher-win32-x64-msvc@workspace:packages/glob-hasher-native/glob-hasher-win32-x64-msvc"
+  languageName: unknown
+  linkType: soft
 
 "glob-hasher@npm:^1.4.2":
   version: 1.4.2
@@ -5193,6 +5238,34 @@ __metadata:
   checksum: 10c0/a600dad933a163484cec5e9743831a2523911076a6b15ebdd6e9dd66a7b2c38388998ca844aa0d886627ed1c436014ab10344bf22f40e2d8b95f15b91065422d
   languageName: node
   linkType: hard
+
+"glob-hasher@workspace:^, glob-hasher@workspace:packages/glob-hasher":
+  version: 0.0.0-use.local
+  resolution: "glob-hasher@workspace:packages/glob-hasher"
+  dependencies:
+    "@lage-run/monorepo-scripts": "workspace:^"
+    "@napi-rs/cli": "npm:2.18.4"
+    glob-hasher-darwin-arm64: "workspace:*"
+    glob-hasher-darwin-x64: "workspace:*"
+    glob-hasher-linux-arm64-gnu: "workspace:*"
+    glob-hasher-linux-x64-gnu: "workspace:*"
+    glob-hasher-win32-arm64-msvc: "workspace:*"
+    glob-hasher-win32-x64-msvc: "workspace:*"
+  dependenciesMeta:
+    glob-hasher-darwin-arm64:
+      optional: true
+    glob-hasher-darwin-x64:
+      optional: true
+    glob-hasher-linux-arm64-gnu:
+      optional: true
+    glob-hasher-linux-x64-gnu:
+      optional: true
+    glob-hasher-win32-arm64-msvc:
+      optional: true
+    glob-hasher-win32-x64-msvc:
+      optional: true
+  languageName: unknown
+  linkType: soft
 
 "glob-parent@npm:^5.1.2, glob-parent@npm:~5.1.2":
   version: 5.1.2
@@ -6363,7 +6436,7 @@ __metadata:
     "@lage-run/runners": "workspace:^"
     esbuild: "npm:^0.28.1"
     fsevents: "npm:~2.3.2"
-    glob-hasher: "npm:^1.4.2"
+    glob-hasher: "workspace:^"
     workspace-tools-npm: "npm:workspace-tools@latest"
   dependenciesMeta:
     fsevents:
