@@ -19,7 +19,104 @@ concurrency:
 permissions: {}
 
 jobs:
+  native:
+    name: Native ${{ matrix.target }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15-intel
+            target: x86_64-apple-darwin
+          - os: macos-latest
+            target: aarch64-apple-darwin
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+          - os: windows-11-arm
+            target: aarch64-pc-windows-msvc
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 22.x
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
+        with:
+          toolchain: 1.99.1
+          components: rustfmt, clippy
+          targets: ${{ matrix.target }}
+      - uses: mlugg/setup-zig@d1434d08867e3ee9daa34448df10607b98908d29 # v2
+        if: runner.os == 'Linux'
+        with:
+          version: 0.13.0
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            packages/glob-hasher/target
+          key: native-${{ matrix.target }}-rust-1.99.1-zig-0.13.0-${{ hashFiles('packages/glob-hasher/Cargo.lock') }}
+      - run: node .yarn/releases/yarn-4.18.1.cjs install --immutable
+      - name: Build native binding
+        run: >-
+          node .yarn/releases/yarn-4.18.1.cjs workspace glob-hasher build
+          --target ${{ matrix.target }}
+          ${{ runner.os == 'Linux' && '--zig --zig-abi-suffix 2.17' || '' }}
+      - name: Check Linux ABI baseline
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          maximum=$(strings packages/glob-hasher/*.node | grep -o 'GLIBC_[0-9.]*' | sort -Vu | tail -1)
+          test "$(printf '%s\n' GLIBC_2.17 "$maximum" | sort -V | tail -1)" = GLIBC_2.17
+      - name: Check native formatting and lint
+        if: matrix.target == 'x86_64-unknown-linux-gnu'
+        run: node .yarn/releases/yarn-4.18.1.cjs workspace glob-hasher lint
+      - name: Test native API and declarations
+        run: |
+          node .yarn/releases/yarn-4.18.1.cjs workspace glob-hasher types
+          node .yarn/releases/yarn-4.18.1.cjs workspace glob-hasher test --runInBand
+          git diff --exit-code -- packages/glob-hasher/index.js packages/glob-hasher/index.d.ts
+      - name: Test offline installation without Rust or install scripts
+        run: |
+          node scripts/native-packages.js prepare-test .native-test
+          node scripts/native-smoke.js .native-test
+      - name: Record artifact provenance
+        run: node scripts/native-packages.js artifact ${{ matrix.target }} native-artifacts
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: glob-hasher-${{ matrix.target }}
+          path: native-artifacts/glob-hasher-${{ matrix.target }}
+          if-no-files-found: error
+
+  native-minimum-node:
+    needs: native
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [12.22.0, 16.14.0]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 22.x
+      - run: node .yarn/releases/yarn-4.18.1.cjs install --immutable
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: glob-hasher-x86_64-unknown-linux-gnu
+          path: native-artifacts/glob-hasher-x86_64-unknown-linux-gnu
+      - run: |
+          node scripts/native-packages.js assemble native-artifacts x86_64-unknown-linux-gnu
+          node scripts/native-packages.js prepare-test .native-test
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node scripts/native-smoke.js .native-test
+
   build:
+    needs: native
     strategy:
       matrix:
         node: [18.x, 20.x, 22.x]
@@ -37,8 +134,16 @@ jobs:
 
       - run: yarn --immutable
 
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: glob-hasher-*
+          path: native-artifacts
+
+      - run: node scripts/native-packages.js assemble native-artifacts
+
       - name: Build, Test, Lint
-        run: yarn ci --concurrency 2 --verbose
+        run: yarn ci --scope "!glob-hasher" --concurrency 2 --verbose
         env:
+          GLOB_HASHER_USE_PREBUILT: "1"
           BACKFILL_CACHE_PROVIDER: ${{ secrets.backfill_cache_provider }}
           BACKFILL_CACHE_PROVIDER_OPTIONS: ${{ secrets.backfill_cache_provider_options }}

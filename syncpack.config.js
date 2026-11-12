@@ -7,20 +7,12 @@ const config = {
   versionGroups: [
     {
       label: "internal deps use workspace protocol",
-      dependencies: ["@lage-run/**", "backfill", "backfill-*"],
+      dependencies: ["@lage-run/**", "backfill", "backfill-*", "glob-hasher", "glob-hasher-*"],
       packages: ["**"],
       specifierTypes: ["workspace-protocol"],
     },
   ],
   semverGroups: [
-    {
-      // See below for explanation (this must come first in order)
-      label: "non-pinned dependencies",
-      range: "^",
-      dependencyTypes: ["prod"],
-      // glob-hasher is a runtime dependency of lage since it publishes binaries.
-      dependencies: ["glob-hasher"],
-    },
     {
       // lage bundles its dependencies, so any updates should to dependencies should be explicit
       // so that they trigger a new lage version (with proper documentation of included updates).

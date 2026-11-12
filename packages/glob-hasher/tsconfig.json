@@ -1,0 +1,8 @@
+{
+  "extends": "@lage-run/monorepo-scripts/config/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*.ts"]
+}

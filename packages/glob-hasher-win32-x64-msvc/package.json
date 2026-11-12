@@ -1,0 +1,24 @@
+{
+  "name": "glob-hasher-win32-x64-msvc",
+  "version": "1.4.3",
+  "description": "Windows x64 native binding for glob-hasher",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/lage",
+    "directory": "packages/glob-hasher-win32-x64-msvc"
+  },
+  "license": "MIT",
+  "main": "glob-hasher.win32-x64-msvc.node",
+  "files": [
+    "*.node"
+  ],
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "engines": {
+    "node": "^12.22.0 || ^14.17.0 || >=15.12.0"
+  }
+}

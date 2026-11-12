@@ -11,6 +11,11 @@ name: lage-release-$(Date:yyyy-MM-dd).$(Rev:rr)
 pr: none
 trigger: none
 
+parameters:
+  - name: nativeBuildRunId
+    displayName: Successful main-branch GitHub PR workflow run for this revision
+    type: string
+
 resources:
   repositories:
     - repository: OfficePipelineTemplates
@@ -55,15 +60,11 @@ extends:
             workspace:
               clean: all
 
-            # templateContext:
-            #   outputParentDirectory: $(Build.StagingDirectory)/out
-            #   outputs:
-            #     - output: pipelineArtifact
-            #       artifactName: packed-packages
-            #       path: $(Build.StagingDirectory)/out/packed-packages
-            #     - output: pipelineArtifact
-            #       artifactName: release-api-tool
-            #       path: $(Build.StagingDirectory)/out/release-api-tool
+            templateContext:
+              outputs:
+                - output: pipelineArtifact
+                  artifactName: packed-packages
+                  path: $(Build.SourcesDirectory)/packed-packages
 
             steps:
               - checkout: self
@@ -91,4 +92,21 @@ extends:
                   printenv | sort
                 displayName: Show environment
 
-              # TODO: fill rest of pipeline
+              - script: node .yarn/releases/yarn-4.18.1.cjs install --immutable
+                displayName: Install dependencies
+
+              - script: node scripts/native-packages.js download "${{ parameters.nativeBuildRunId }}" native-artifacts
+                displayName: Download verified native build artifacts
+                env:
+                  GH_TOKEN: $(githubReadToken)
+
+              - script: node scripts/native-packages.js assemble native-artifacts
+                displayName: Validate and stage all six native bindings
+
+              - script: node .yarn/releases/yarn-4.18.1.cjs ci --scope "!glob-hasher" --concurrency 2
+                displayName: Build and test release packages
+                env:
+                  GLOB_HASHER_USE_PREBUILT: "1"
+
+              - script: node .yarn/releases/yarn-4.18.1.cjs release:pack
+                displayName: Version and pack packages with Beachball (no publishing)

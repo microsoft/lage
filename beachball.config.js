@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { validateReleaseBindings } = require("./scripts/native-packages.js");
 
 // @ts-check
 /** @type {import('beachball').BeachballConfig}*/
@@ -7,6 +8,13 @@ const config = {
   groupChanges: true,
   branch: "main",
   commit: false,
+  groups: [
+    {
+      name: "glob-hasher",
+      include: ["packages/glob-hasher", "packages/glob-hasher-*"],
+      disallowedChangeTypes: ["major"],
+    },
+  ],
   changelog: {
     groups: [
       {
@@ -26,6 +34,9 @@ const config = {
   },
   hooks: {
     prepublish: (packagePath, name, version, packageInfos) => {
+      if (name === "glob-hasher" || name.startsWith("glob-hasher-")) {
+        validateReleaseBindings(__dirname);
+      }
       const { packageJsonPath } = packageInfos[name];
       const packageJson = require(packageJsonPath);
       if (!packageJson.dependencies) return;

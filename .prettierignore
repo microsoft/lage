@@ -24,3 +24,9 @@ yarn.js
 pnpm-lock.*
 package-lock.json
 *.api.md
+
+# NAPI-RS generated bindings
+packages/glob-hasher/index.js
+packages/glob-hasher/index.d.ts
+packages/glob-hasher/Cargo.lock
+packages/glob-hasher/__tests__/fixtures
