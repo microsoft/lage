@@ -69,20 +69,18 @@ The wrapper and all six binary packages form one Beachball version group.
 The wrapper's `workspace:*` optional dependencies become exact versions when
 packed or published. Native packages carry the repository's MIT license.
 
-The manual `.ado/release.yml` pipeline takes `nativeBuildRunId` and requires
-a secret `githubReadToken` with Actions read access. It only accepts a successful
-`push` run of this repository's PR workflow on `main`, at the exact release
-commit. It downloads and checks every artifact, builds the JS packages, then
-uses `yarn release:pack` to version and pack them without publishing or pushing.
-
-For the existing direct publishing process, first download and assemble the
-same complete artifact set:
+Before publishing, download and assemble the complete artifact set. The download
+command requires a successful `push` run of this repository's PR workflow on
+`main`, at the exact checked-out revision:
 
 ```sh
 node scripts/native-packages.js download RUN_ID native-artifacts
 node scripts/native-packages.js assemble native-artifacts
 yarn release
 ```
+
+Use `yarn release:pack` instead of `yarn release` to version and pack packages
+without publishing or pushing.
 
 `yarn release` records the source revision before Beachball's version commit.
 The prepublish hook rejects missing, modified, mismatched, or incomplete native
