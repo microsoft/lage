@@ -15,7 +15,7 @@
     "/index.d.ts"
   ],
   "engines": {
-    "node": "^12.22.0 || ^14.17.0 || >=15.12.0"
+    "node": ">=16.14.0"
   },
   "napi": {
     "name": "glob-hasher",

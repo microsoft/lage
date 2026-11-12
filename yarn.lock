@@ -5151,9 +5151,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-hasher-darwin-arm64@workspace:*, glob-hasher-darwin-arm64@workspace:packages/glob-hasher-darwin-arm64":
+"glob-hasher-darwin-arm64@workspace:*, glob-hasher-darwin-arm64@workspace:packages/glob-hasher-native/glob-hasher-darwin-arm64":
   version: 0.0.0-use.local
-  resolution: "glob-hasher-darwin-arm64@workspace:packages/glob-hasher-darwin-arm64"
+  resolution: "glob-hasher-darwin-arm64@workspace:packages/glob-hasher-native/glob-hasher-darwin-arm64"
   languageName: unknown
   linkType: soft
 
@@ -5164,15 +5164,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-hasher-darwin-x64@workspace:*, glob-hasher-darwin-x64@workspace:packages/glob-hasher-darwin-x64":
+"glob-hasher-darwin-x64@workspace:*, glob-hasher-darwin-x64@workspace:packages/glob-hasher-native/glob-hasher-darwin-x64":
   version: 0.0.0-use.local
-  resolution: "glob-hasher-darwin-x64@workspace:packages/glob-hasher-darwin-x64"
+  resolution: "glob-hasher-darwin-x64@workspace:packages/glob-hasher-native/glob-hasher-darwin-x64"
   languageName: unknown
   linkType: soft
 
-"glob-hasher-linux-arm64-gnu@workspace:*, glob-hasher-linux-arm64-gnu@workspace:packages/glob-hasher-linux-arm64-gnu":
+"glob-hasher-linux-arm64-gnu@workspace:*, glob-hasher-linux-arm64-gnu@workspace:packages/glob-hasher-native/glob-hasher-linux-arm64-gnu":
   version: 0.0.0-use.local
-  resolution: "glob-hasher-linux-arm64-gnu@workspace:packages/glob-hasher-linux-arm64-gnu"
+  resolution: "glob-hasher-linux-arm64-gnu@workspace:packages/glob-hasher-native/glob-hasher-linux-arm64-gnu"
   languageName: unknown
   linkType: soft
 
@@ -5183,9 +5183,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-hasher-linux-x64-gnu@workspace:*, glob-hasher-linux-x64-gnu@workspace:packages/glob-hasher-linux-x64-gnu":
+"glob-hasher-linux-x64-gnu@workspace:*, glob-hasher-linux-x64-gnu@workspace:packages/glob-hasher-native/glob-hasher-linux-x64-gnu":
   version: 0.0.0-use.local
-  resolution: "glob-hasher-linux-x64-gnu@workspace:packages/glob-hasher-linux-x64-gnu"
+  resolution: "glob-hasher-linux-x64-gnu@workspace:packages/glob-hasher-native/glob-hasher-linux-x64-gnu"
   languageName: unknown
   linkType: soft
 
@@ -5196,9 +5196,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-hasher-win32-arm64-msvc@workspace:*, glob-hasher-win32-arm64-msvc@workspace:packages/glob-hasher-win32-arm64-msvc":
+"glob-hasher-win32-arm64-msvc@workspace:*, glob-hasher-win32-arm64-msvc@workspace:packages/glob-hasher-native/glob-hasher-win32-arm64-msvc":
   version: 0.0.0-use.local
-  resolution: "glob-hasher-win32-arm64-msvc@workspace:packages/glob-hasher-win32-arm64-msvc"
+  resolution: "glob-hasher-win32-arm64-msvc@workspace:packages/glob-hasher-native/glob-hasher-win32-arm64-msvc"
   languageName: unknown
   linkType: soft
 
@@ -5209,9 +5209,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-hasher-win32-x64-msvc@workspace:*, glob-hasher-win32-x64-msvc@workspace:packages/glob-hasher-win32-x64-msvc":
+"glob-hasher-win32-x64-msvc@workspace:*, glob-hasher-win32-x64-msvc@workspace:packages/glob-hasher-native/glob-hasher-win32-x64-msvc":
   version: 0.0.0-use.local
-  resolution: "glob-hasher-win32-x64-msvc@workspace:packages/glob-hasher-win32-x64-msvc"
+  resolution: "glob-hasher-win32-x64-msvc@workspace:packages/glob-hasher-native/glob-hasher-win32-x64-msvc"
   languageName: unknown
   linkType: soft
 

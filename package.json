@@ -9,6 +9,7 @@
   "workspaces": {
     "packages": [
       "packages/*",
+      "packages/glob-hasher-native/*",
       "scripts"
     ]
   },

@@ -15,6 +15,12 @@ const nativeTargets = [
   { triple: "aarch64-pc-windows-msvc", suffix: "win32-arm64-msvc" },
 ];
 
+/** @param {string} root @param {string} name */
+function packageDirectory(root, name) {
+  const packages = name === "glob-hasher" ? "packages" : "packages/glob-hasher-native";
+  return path.join(root, packages, name);
+}
+
 /** @param {string} triple */
 function getTarget(triple) {
   const target = nativeTargets.find((entry) => entry.triple === triple);
@@ -49,7 +55,7 @@ function validateVersions(root) {
   const wrapper = JSON.parse(fs.readFileSync(path.join(root, "packages/glob-hasher/package.json"), "utf8"));
   for (const { suffix } of nativeTargets) {
     const name = `glob-hasher-${suffix}`;
-    const manifest = JSON.parse(fs.readFileSync(path.join(root, "packages", name, "package.json"), "utf8"));
+    const manifest = JSON.parse(fs.readFileSync(path.join(packageDirectory(root, name), "package.json"), "utf8"));
     assert.equal(manifest.version, wrapper.version, `${name} must match glob-hasher's version`);
     assert(
       ["workspace:*", wrapper.version].includes(wrapper.optionalDependencies[name]),
@@ -65,7 +71,7 @@ function stageBindings(root) {
     const filename = `glob-hasher.${suffix}.node`;
     const source = path.join(root, "packages/glob-hasher", filename);
     if (fs.existsSync(source)) {
-      fs.copyFileSync(source, path.join(root, "packages", `glob-hasher-${suffix}`, filename));
+      fs.copyFileSync(source, path.join(packageDirectory(root, `glob-hasher-${suffix}`), filename));
       count++;
     }
   }
@@ -75,7 +81,7 @@ function stageBindings(root) {
 /** @param {string} root */
 function stageLicenses(root) {
   for (const name of ["glob-hasher", ...nativeTargets.map(({ suffix }) => `glob-hasher-${suffix}`)]) {
-    fs.copyFileSync(path.join(root, "LICENSE"), path.join(root, "packages", name, "LICENSE"));
+    fs.copyFileSync(path.join(root, "LICENSE"), path.join(packageDirectory(root, name), "LICENSE"));
   }
 }
 
@@ -120,7 +126,7 @@ function assembleArtifacts(root, source, triples = nativeTargets.map(({ triple }
   const host = hostTarget();
   for (const { bytes, metadata, suffix } of artifacts) {
     const filename = `glob-hasher.${suffix}.node`;
-    const directory = path.join(root, "packages", `glob-hasher-${suffix}`);
+    const directory = packageDirectory(root, `glob-hasher-${suffix}`);
     fs.writeFileSync(path.join(directory, filename), bytes);
     fs.writeFileSync(path.join(directory, "artifact.json"), JSON.stringify(metadata) + "\n");
     if (suffix === host.suffix) {
@@ -137,7 +143,7 @@ function validateReleaseBindings(root) {
   validateVersions(root);
   const expectedRevision = process.env.GLOB_HASHER_SOURCE_REVISION || revision(root);
   for (const { triple, suffix } of nativeTargets) {
-    readArtifact(root, triple, path.join(root, "packages", `glob-hasher-${suffix}`), expectedRevision);
+    readArtifact(root, triple, packageDirectory(root, `glob-hasher-${suffix}`), expectedRevision);
   }
   stageLicenses(root);
 }
@@ -184,7 +190,7 @@ function buildNative(args) {
  */
 function packPackage(name, destination) {
   fs.mkdirSync(destination, { recursive: true });
-  const cwd = path.join(repoRoot, "packages", name);
+  const cwd = packageDirectory(repoRoot, name);
   const manifest = JSON.parse(fs.readFileSync(path.join(cwd, "package.json"), "utf8"));
   const filename = path.resolve(destination, `${name}-${manifest.version}.tgz`);
   execFileSync(process.execPath, [path.join(repoRoot, ".yarn/releases/yarn-4.18.1.cjs"), "pack", "--out", filename], {

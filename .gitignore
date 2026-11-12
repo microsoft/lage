@@ -19,8 +19,9 @@ temp
 /packed-packages/
 /.native-test/
 /packages/glob-hasher/.native-artifact.json
-/packages/glob-hasher*/LICENSE
-/packages/glob-hasher*/artifact.json
+/packages/glob-hasher/LICENSE
+/packages/glob-hasher-native/*/LICENSE
+/packages/glob-hasher-native/*/artifact.json
 .claude/settings.local.json
 *.tsbuildinfo
 *.tmp.*

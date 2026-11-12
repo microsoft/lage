@@ -18,7 +18,7 @@
       "packageName": "glob-hasher",
       "type": "patch",
       "dependentChangeType": "patch",
-      "comment": "Move the upstream 1.4.3 native implementation into Lage with coordinated cross-platform builds and releases.",
+      "comment": "Move the upstream 1.4.3 native implementation into Lage with coordinated builds/releases and a Node 16.14 minimum matching Lage.",
       "email": "email not defined"
     },
     {

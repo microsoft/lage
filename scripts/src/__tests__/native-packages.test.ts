@@ -29,8 +29,8 @@ function fixture(): string {
     })
   );
   for (const { suffix } of nativeTargets) {
-    const directory = path.join(root, "packages", `glob-hasher-${suffix}`);
-    fs.mkdirSync(directory);
+    const directory = path.join(root, "packages/glob-hasher-native", `glob-hasher-${suffix}`);
+    fs.mkdirSync(directory, { recursive: true });
     fs.writeFileSync(path.join(directory, "package.json"), JSON.stringify({ version: "1.4.3" }));
     fs.writeFileSync(path.join(wrapper, `glob-hasher.${suffix}.node`), `binding for ${suffix}`);
   }
@@ -44,7 +44,7 @@ afterEach(() => {
 });
 
 describe("native release artifacts", () => {
-  it("assembles all six targets and includes licenses", () => {
+  it("assembles all six targets into nested platform packages and includes licenses", () => {
     const root = fixture();
     const artifacts = path.join(root, "artifacts");
     for (const { triple } of nativeTargets) {
@@ -52,7 +52,7 @@ describe("native release artifacts", () => {
     }
     assembleArtifacts(root, artifacts);
     for (const { suffix } of nativeTargets) {
-      const directory = path.join(root, "packages", `glob-hasher-${suffix}`);
+      const directory = path.join(root, "packages/glob-hasher-native", `glob-hasher-${suffix}`);
       expect(fs.readFileSync(path.join(directory, `glob-hasher.${suffix}.node`), "utf8")).toBe(`binding for ${suffix}`);
       expect(fs.readFileSync(path.join(directory, "LICENSE"), "utf8")).toBe("MIT fixture");
     }
@@ -63,7 +63,7 @@ describe("native release artifacts", () => {
     const artifacts = path.join(root, "artifacts");
     writeArtifact(root, nativeTargets[0].triple, artifacts);
     expect(() => assembleArtifacts(root, artifacts)).toThrow(/ENOENT/);
-    expect(fs.existsSync(path.join(root, "packages/glob-hasher-darwin-x64/glob-hasher.darwin-x64.node"))).toBe(false);
+    expect(fs.existsSync(path.join(root, "packages/glob-hasher-native/glob-hasher-darwin-x64/glob-hasher.darwin-x64.node"))).toBe(false);
   });
 
   it.each(["revision", "sha256", "triple"])("rejects mismatched artifact %s", (key) => {
@@ -80,7 +80,10 @@ describe("native release artifacts", () => {
 
   it("rejects version skew between the wrapper and a binary package", () => {
     const root = fixture();
-    fs.writeFileSync(path.join(root, "packages/glob-hasher-linux-arm64-gnu/package.json"), JSON.stringify({ version: "1.4.2" }));
+    fs.writeFileSync(
+      path.join(root, "packages/glob-hasher-native/glob-hasher-linux-arm64-gnu/package.json"),
+      JSON.stringify({ version: "1.4.2" })
+    );
     expect(() => validateVersions(root)).toThrow(/must match glob-hasher's version/);
   });
 });

@@ -26,12 +26,14 @@ signatures and nullable results.
 ## Supported platforms
 
 Prebuilt packages support macOS, Windows, and Linux glibc on x64 and ARM64.
+Their manifests live under `packages/glob-hasher-native/`; npm package names
+are unchanged.
 Linux release binaries target glibc 2.17. Musl, Android, FreeBSD, and 32-bit
 targets are not built or published, even though the generated loader includes
 branches for them.
 
-Development and CI target Node 22 and newer. The standalone package retains its
-Node-API 8 engine compatibility; older runtimes are not a migration release gate.
+All seven packages require Node 16.14.0 or newer, matching Lage, and use Node-API 8.
+Development and CI target Node 22 and newer.
 Installing a published package requires neither Rust nor install scripts.
 
 ## Development
@@ -48,7 +50,8 @@ Install Rust with rustup first; `rust-toolchain.toml` selects the exact
 compiler and components. Cargo uses the committed package-local lockfile.
 Rust 1.97 is pinned because Rust 1.98+ passes an ARM64 linker option that Zig
 does not yet support.
-The native build copies the host binding into its sibling binary workspace.
+The native build copies the host binding into its platform workspace under
+`packages/glob-hasher-native/`.
 Root `yarn build` and `yarn ci` also build the native package explicitly.
 No install lifecycle scripts are needed.
 

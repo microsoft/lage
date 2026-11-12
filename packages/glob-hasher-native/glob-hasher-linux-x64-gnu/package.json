@@ -5,7 +5,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/microsoft/lage",
-    "directory": "packages/glob-hasher-linux-x64-gnu"
+    "directory": "packages/glob-hasher-native/glob-hasher-linux-x64-gnu"
   },
   "license": "MIT",
   "main": "glob-hasher.linux-x64-gnu.node",
@@ -22,6 +22,6 @@
     "glibc"
   ],
   "engines": {
-    "node": "^12.22.0 || ^14.17.0 || >=15.12.0"
+    "node": ">=16.14.0"
   }
 }

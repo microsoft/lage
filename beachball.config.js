@@ -11,7 +11,7 @@ const config = {
   groups: [
     {
       name: "glob-hasher",
-      include: ["packages/glob-hasher", "packages/glob-hasher-*"],
+      include: ["packages/glob-hasher", "packages/glob-hasher-native/*"],
       disallowedChangeTypes: ["major"],
     },
   ],
@@ -20,7 +20,7 @@ const config = {
       {
         // roll up all changes to the lage changelog (packages still have individual changelogs too)
         mainPackageName: "lage",
-        include: ["packages/*"],
+        include: ["packages/*", "packages/glob-hasher-native/*"],
         // these are not dependencies of lage
         exclude: ["!packages/backfill", "!packages/cache-github-actions", "!packages/grapher"],
         changelogPath: "packages/lage",
