@@ -28,4 +28,4 @@ package-lock.json
 # NAPI-RS generated bindings
 packages/glob-hasher/index.js
 packages/glob-hasher/index.d.ts
-packages/glob-hasher/__tests__/fixtures
+packages/glob-hasher/src/__tests__/fixtures

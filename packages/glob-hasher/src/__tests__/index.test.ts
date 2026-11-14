@@ -21,7 +21,7 @@ describe("hash glob xxhash", () => {
     });
 
     expect(sortObject(map)).toEqual({
-      "a.json": 11810798349410098695n,
+      "a.json": 11481793852229981627n,
       "a.png": 4573747350076585403n,
       "a.txt": 13554666155361377856n,
     });
@@ -35,7 +35,7 @@ describe("hash glob xxhash", () => {
 
     expect(sortObject(map)).toEqual({
       ".hiddenfile": 9323281055126355666n,
-      "a.json": 11810798349410098695n,
+      "a.json": 11481793852229981627n,
       "a.png": 4573747350076585403n,
       "a.txt": 13554666155361377856n,
     });
@@ -49,7 +49,7 @@ describe("hash glob xxhash", () => {
 
     expect(sortObject(map)).toEqual({
       ".hiddenfile": 9323281055126355666n,
-      "a.json": 11810798349410098695n,
+      "a.json": 11481793852229981627n,
       "a.png": 4573747350076585403n,
       "a.txt": 13554666155361377856n,
       "b.txt": 11083092647103983954n,
@@ -77,7 +77,7 @@ describe("hash glob git hash", () => {
     });
 
     expect(sortObject(map)).toEqual({
-      "a.json": "3beeaadf5184e547dcb1ea3dfff12a833374a5ee",
+      "a.json": "d0ae716dbe4c32b2cd01ff3fced7c9c6c6961ca3",
       "a.png": "8706631f7a41695ed2160ad081a6c45ac0f080ba",
       "a.txt": "12563d0af099d19e60f89bc6ff327d01b3bf2926",
     });
@@ -91,7 +91,7 @@ describe("hash glob git hash", () => {
 
     expect(sortObject(map)).toEqual({
       ".hiddenfile": "45a6961f4815da29087b3b68d97400a4376d80d6",
-      "a.json": "3beeaadf5184e547dcb1ea3dfff12a833374a5ee",
+      "a.json": "d0ae716dbe4c32b2cd01ff3fced7c9c6c6961ca3",
       "a.png": "8706631f7a41695ed2160ad081a6c45ac0f080ba",
       "a.txt": "12563d0af099d19e60f89bc6ff327d01b3bf2926",
     });
@@ -105,7 +105,7 @@ describe("hash glob git hash", () => {
 
     expect(sortObject(map)).toEqual({
       ".hiddenfile": "45a6961f4815da29087b3b68d97400a4376d80d6",
-      "a.json": "3beeaadf5184e547dcb1ea3dfff12a833374a5ee",
+      "a.json": "d0ae716dbe4c32b2cd01ff3fced7c9c6c6961ca3",
       "a.png": "8706631f7a41695ed2160ad081a6c45ac0f080ba",
       "a.txt": "12563d0af099d19e60f89bc6ff327d01b3bf2926",
       "b.txt": "8c39f112eff4bde989c74b6381ec75dffaa55c2a",
