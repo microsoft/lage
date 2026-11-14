@@ -6329,6 +6329,7 @@ __metadata:
   dependencies:
     "@lage-run/monorepo-scripts": "workspace:^"
     "@napi-rs/cli": "npm:3.10.12"
+    fast-glob: "npm:3.3.3"
     glob-hasher-darwin-arm64: "workspace:*"
     glob-hasher-darwin-x64: "workspace:*"
     glob-hasher-linux-arm64-gnu: "workspace:*"

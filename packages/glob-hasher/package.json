@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^",
-    "@napi-rs/cli": "3.10.12"
+    "@napi-rs/cli": "3.10.12",
+    "fast-glob": "3.3.3"
   }
 }
