@@ -11,7 +11,9 @@ const repoRoot = path.resolve(packageRoot, "../..");
 const runnerDir = path.resolve(packageRoot, "../runners/src");
 const outdir = "dist";
 
-const internalPackages = Object.values(getPackageInfos(repoRoot)).filter((info) => !info.private);
+const internalPackages = Object.values(getPackageInfos(repoRoot)).filter(
+  (info) => !info.private && fs.existsSync(path.join(path.dirname(info.packageJsonPath), "src/index.ts"))
+);
 
 fs.rmSync(path.join(packageRoot, outdir), { recursive: true, force: true });
 

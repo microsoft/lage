@@ -1,4 +1,4 @@
 {
   // See https://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
-  "recommendations": ["esbenp.prettier-vscode"]
+  "recommendations": ["esbenp.prettier-vscode", "rust-lang.rust-analyzer", "tamasfe.even-better-toml"]
 }

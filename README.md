@@ -2,9 +2,11 @@
 
 Documentation is here: https://microsoft.github.io/lage/
 
-This repo is also home to [`backfill`](./packages/backfill) and [`workspace-tools`](./packages/workspace-tools).
+This repo is also home to [`backfill`](./packages/backfill), [`workspace-tools`](./packages/workspace-tools), and [`glob-hasher`](./packages/glob-hasher), the Rust/NAPI-RS native globbing and hashing addon.
 
 ## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution instructions.
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us

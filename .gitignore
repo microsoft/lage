@@ -13,6 +13,8 @@ coverage
 profile*.json
 temp
 *.tgz
+*.node
+/packages/glob-hasher/target/
 .claude/settings.local.json
 *.tsbuildinfo
 *.tmp.*

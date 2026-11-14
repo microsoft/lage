@@ -1,0 +1,81 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/cache",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Use the repository-maintained `glob-hasher` native package.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/hasher",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Use the repository-maintained `glob-hasher` native package, including Linux ARM64 support.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "glob-hasher",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Release from the Lage repository and update the minimum Node version.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "glob-hasher-darwin-arm64",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Build and release the macOS ARM64 binding from the Lage repository.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "glob-hasher-darwin-x64",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Build and release the macOS x64 binding from the Lage repository.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "glob-hasher-linux-arm64-gnu",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Build and release the Linux ARM64 glibc binding from the Lage repository.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "glob-hasher-linux-x64-gnu",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Build and release the Linux x64 glibc binding from the Lage repository.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "glob-hasher-linux-x64-musl",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Build and release the Linux x64 musl binding from the Lage repository.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "glob-hasher-win32-arm64-msvc",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Build and release the Windows ARM64 binding from the Lage repository.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "glob-hasher-win32-x64-msvc",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Build and release the Windows x64 binding from the Lage repository.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "lage",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Use the repository-maintained native hasher with Linux ARM64 support.",
+      "email": "email not defined"
+    }
+  ]
+}

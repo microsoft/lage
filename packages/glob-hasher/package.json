@@ -1,0 +1,52 @@
+{
+  "name": "glob-hasher",
+  "version": "1.4.3",
+  "description": "Native globbing and hashing for Node.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/lage",
+    "directory": "packages/glob-hasher"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "napi": {
+    "binaryName": "glob-hasher",
+    "targets": [
+      "x86_64-apple-darwin",
+      "aarch64-apple-darwin",
+      "x86_64-unknown-linux-gnu",
+      "aarch64-unknown-linux-gnu",
+      "x86_64-unknown-linux-musl",
+      "x86_64-pc-windows-msvc",
+      "aarch64-pc-windows-msvc"
+    ]
+  },
+  "scripts": {
+    "build": "monorepo-scripts rust build",
+    "test": "yarn run -T jest --runInBand",
+    "lint": "cargo fmt --check && cargo clippy --locked --all-targets -- -D warnings",
+    "types": "yarn run -T tsc"
+  },
+  "optionalDependencies": {
+    "glob-hasher-darwin-arm64": "workspace:*",
+    "glob-hasher-darwin-x64": "workspace:*",
+    "glob-hasher-linux-arm64-gnu": "workspace:*",
+    "glob-hasher-linux-x64-gnu": "workspace:*",
+    "glob-hasher-linux-x64-musl": "workspace:*",
+    "glob-hasher-win32-arm64-msvc": "workspace:*",
+    "glob-hasher-win32-x64-msvc": "workspace:*"
+  },
+  "devDependencies": {
+    "@lage-run/monorepo-scripts": "workspace:^",
+    "@napi-rs/cli": "3.10.12",
+    "fast-glob": "3.3.3"
+  }
+}

@@ -1,0 +1,32 @@
+[package]
+edition = "2021"
+name = "glob-hasher"
+version = "0.0.0"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# Node-API 10 is supported by Node 22.18+; see https://nodejs.org/api/n-api.html#node-api-version-matrix.
+napi = { version = "3.0.0", default-features = false, features = ["napi10"] }
+
+napi-derive = "3.0.0"
+ignore = "0.4.20"
+dashmap = { version = "5.4.0", features = ["rayon"] }
+anyhow = "1.0.51"
+rayon = "1.6.1"
+gix-features = { version = "0.38.2", features = ["fast-sha1"] }
+gix-hash = "0.14.2"
+gix-object = "0.44.0"
+hex = "0.4.3"
+
+[build-dependencies]
+napi-build = "2.0.1"
+
+[profile.release]
+lto = true
+
+[dependencies.xxhash-rust]
+version = "0.8.5"
+features = ["xxh3", "const_xxh3"]
