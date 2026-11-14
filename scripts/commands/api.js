@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const extractor = require("@microsoft/api-extractor");
+const { isCI } = require("../isCI.js");
 
 const cwd = process.cwd();
 const configPaths = [path.join(cwd, "api-extractor.json"), path.resolve(__dirname, "../config/api-extractor.base.json")];
@@ -28,7 +29,7 @@ const result = extractor.Extractor.invoke(config);
 
 if (!result.apiReportChanged) {
   console.log(`API report is up to date.`);
-} else if (process.env.CI) {
+} else if (isCI()) {
   console.error('API report is out of date. Please run "yarn api" locally and commit the results.');
   process.exit(1);
 } else {

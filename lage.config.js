@@ -3,6 +3,7 @@
 const os = require("os");
 const path = require("path");
 const fastGlob = require("fast-glob");
+const { isCI } = require("./scripts/isCI.js");
 
 /** @type {TargetConfig} */
 const baseTestTarget = {
@@ -78,7 +79,7 @@ const config = {
       // weight is used in scripts/worker/jest.js to determine max jest workers.
       // Make this task run last and give it all available resources.
       // But on CI, allow only one worker since this runs lage which internally creates workers.
-      weight: process.env.CI ? 1 : os.availableParallelism(),
+      weight: isCI() ? 1 : os.availableParallelism(),
       priority: -9999,
     },
   },

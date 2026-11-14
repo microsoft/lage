@@ -1741,7 +1741,7 @@ __metadata:
     fast-glob: "npm:3.3.3"
     husky: "npm:^9.1.5"
     jest: "npm:^30.0.0"
-    lage-npm: "npm:lage@2.15.16"
+    lage-npm: "npm:lage@2.17.0"
     lint-staged: "npm:^16.0.0"
     prettier: "npm:^3.0.0"
     syncpack: "npm:^13.0.0"
@@ -6338,9 +6338,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lage-npm@npm:lage@2.15.16":
-  version: 2.15.16
-  resolution: "lage@npm:2.15.16"
+"lage-npm@npm:lage@2.17.0":
+  version: 2.17.0
+  resolution: "lage@npm:2.17.0"
   dependencies:
     fsevents: "npm:~2.3.2"
     glob-hasher: "npm:^1.4.2"
@@ -6350,7 +6350,7 @@ __metadata:
   bin:
     lage: dist/lage.js
     lage-server: dist/lage-server.js
-  checksum: 10c0/6ca8a090e18885a045a6a2b66ffe88ce124c4b412e19a106f3c1dcea898b33fd614338f7873ea0e712be25b9cf3256e6745f9a17a6489b8b3409d1d5aad55074
+  checksum: 10c0/c43a20a61c62f72ff76db3513189692da6053f2b3f4fdd3a233338a00c613ef89376acd4753908564625223f38c31b9ea6522b4099f968dfbed672fa74e8f319
   languageName: node
   linkType: hard
 

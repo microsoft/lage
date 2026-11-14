@@ -43,7 +43,7 @@
     "fast-glob": "3.3.3",
     "husky": "^9.1.5",
     "jest": "^30.0.0",
-    "lage-npm": "npm:lage@2.15.16",
+    "lage-npm": "npm:lage@2.17.0",
     "lint-staged": "^16.0.0",
     "prettier": "^3.0.0",
     "syncpack": "^13.0.0",
@@ -93,7 +93,7 @@
     }
   },
   "lint-staged": {
-    "*": "prettier --write"
+    "*": "prettier --write --ignore-unknown"
   },
   "engines": {
     "node": ">=16.14.0"
