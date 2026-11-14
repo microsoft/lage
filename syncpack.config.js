@@ -3,24 +3,36 @@
 // https://jamiemason.github.io/syncpack/
 /** @type {import('syncpack').RcFile} */
 const config = {
-  dependencyTypes: ["dev", "prod"],
+  customTypes: {
+    optional: { path: "optionalDependencies", strategy: "versionsByName" },
+  },
+  dependencyTypes: ["dev", "prod", "optional", "local"],
   versionGroups: [
     {
+      label: "native optional deps use workspace protocol",
+      dependencies: ["glob-hasher-*"],
+      dependencyTypes: ["optional"],
+      pinVersion: "workspace:*",
+    },
+    {
+      label: "native package versions match glob-hasher",
+      dependencies: ["glob-hasher-*"],
+      dependencyTypes: ["local"],
+      pinVersion: require("./packages/glob-hasher/package.json").version,
+    },
+    {
       label: "internal deps use workspace protocol",
-      dependencies: ["@lage-run/**", "backfill", "backfill-*"],
+      dependencies: ["@lage-run/**", "backfill", "backfill-*", "glob-hasher", "glob-hasher-*"],
       packages: ["**"],
       specifierTypes: ["workspace-protocol"],
     },
+    {
+      label: "ignore other package versions",
+      dependencyTypes: ["local"],
+      isIgnored: true,
+    },
   ],
   semverGroups: [
-    {
-      // See below for explanation (this must come first in order)
-      label: "non-pinned dependencies",
-      range: "^",
-      dependencyTypes: ["prod"],
-      // glob-hasher is a runtime dependency of lage since it publishes binaries.
-      dependencies: ["glob-hasher"],
-    },
     {
       // lage bundles its dependencies, so any updates should to dependencies should be explicit
       // so that they trigger a new lage version (with proper documentation of included updates).

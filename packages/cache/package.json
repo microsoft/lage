@@ -27,7 +27,7 @@
     "backfill-cache": "workspace:^",
     "backfill-config": "workspace:^",
     "backfill-logger": "workspace:^",
-    "glob-hasher": "^1.4.2"
+    "glob-hasher": "workspace:^"
   },
   "devDependencies": {
     "@lage-run/logger": "workspace:^",

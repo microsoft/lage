@@ -1,0 +1,5 @@
+[toolchain]
+# Rust 1.97 is pinned because Rust 1.98+ passes an ARM64 linker option that Zig does not yet support.
+channel = "1.97.0"
+profile = "minimal"
+components = ["rustfmt", "clippy"]

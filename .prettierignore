@@ -15,7 +15,7 @@ CHANGELOG.*
 LICENSE
 SECURITY.md
 *.snap
-yarn.lock
+*.lock
 **/.yarn
 # this is a test fixture
 yarn.js
@@ -24,3 +24,8 @@ yarn.js
 pnpm-lock.*
 package-lock.json
 *.api.md
+
+# NAPI-RS generated bindings
+packages/glob-hasher/index.js
+packages/glob-hasher/index.d.ts
+packages/glob-hasher/__tests__/fixtures

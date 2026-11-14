@@ -10,7 +10,9 @@ const root = findProjectRoot(process.cwd());
  * @type {Record<string, string[]>}
  */
 const extraIgnoreMatches = {
-  "@lage-run/monorepo-scripts": ["@typescript-eslint/*", "eslint-plugin-file-extension-in-import-ts", "@types/*"],
+  "@lage-run/monorepo-scripts": ["@typescript-eslint/*", "eslint-plugin-file-extension-in-import-ts", "@types/*", "@napi-rs/cli"],
+  // Generated loader includes unbuilt platforms as well as the six published targets.
+  "glob-hasher": ["@napi-rs/cli", "glob-hasher-*"],
   "@lage-run/rpc": ["@bufbuild/protoc-gen-es", "@connectrpc/protoc-gen-connect-es"],
   "@lage-run/e2e-tests": ["@lage-run/cli"],
   lage: ["@lage-run/cli", "@lage-run/runners"],
@@ -24,7 +26,7 @@ async function depcheckWorker({ target }) {
 
   const results = await depcheck(target.cwd, {
     ignoreBinPackage: false,
-    ignorePatterns: ["node_modules", "dist", "lib", "build"],
+    ignorePatterns: ["node_modules", "dist", "lib", "build", "target"],
     ignoreMatches: ["glob-hasher", "@jest/globals", ...(extraIgnoreMatches[target.packageName] || [])],
   });
 

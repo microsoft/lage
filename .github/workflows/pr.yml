@@ -18,8 +18,119 @@ concurrency:
 
 permissions: {}
 
+env:
+  RUST_VERSION: "1.97.0"
+  ZIG_VERSION: "0.13.0"
+  # Minimum glibc version for GNU Linux bindings, selected through cargo-zigbuild's target suffix.
+  GLIBC_VERSION: "2.17"
+
 jobs:
+  # Build every supported target once; the workspace matrix below reuses the uploaded bindings.
+  native:
+    name: Native ${{ matrix.target }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15-intel
+            target: x86_64-apple-darwin
+            package: glob-hasher-darwin-x64
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            package: glob-hasher-darwin-arm64
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            package: glob-hasher-linux-x64-gnu
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            package: glob-hasher-linux-arm64-gnu
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            package: glob-hasher-linux-x64-musl
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            package: glob-hasher-win32-x64-msvc
+          - os: windows-11-arm
+            target: aarch64-pc-windows-msvc
+            package: glob-hasher-win32-arm64-msvc
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 22.x
+
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          components: rustfmt, clippy
+          targets: ${{ matrix.target }}
+
+      - uses: mlugg/setup-zig@d1434d08867e3ee9daa34448df10607b98908d29 # v2
+        if: runner.os == 'Linux'
+        with:
+          version: ${{ env.ZIG_VERSION }}
+
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            packages/glob-hasher/target
+          key: native-${{ matrix.target }}-rust-${{ env.RUST_VERSION }}-zig-${{ env.ZIG_VERSION }}-glibc-${{ env.GLIBC_VERSION }}-${{ hashFiles('packages/glob-hasher/Cargo.lock') }}
+
+      - run: yarn install --immutable
+
+      - name: Build native binding
+        # CI compares generated bindings without updating them. Run directly so a Lage cache hit cannot skip that check.
+        # On Linux, --cross-compile uses cargo-zigbuild with the pinned Zig tooling.
+        # Musl targets have no glibc requirement and must not receive the suffix.
+        run: >-
+          yarn workspace glob-hasher build
+          --target ${{ matrix.target }}${{ endsWith(matrix.target, '-gnu') && format('.{0}', env.GLIBC_VERSION) || '' }}
+          ${{ runner.os == 'Linux' && '--cross-compile' || '' }}
+
+      - name: Check Linux ABI baseline
+        if: endsWith(matrix.target, '-gnu')
+        shell: bash
+        run: |
+          maximum=$(strings packages/glob-hasher/*.node | grep -o 'GLIBC_[0-9.]*' | sort -Vu | tail -1)
+          test "$(printf '%s\n' "GLIBC_${GLIBC_VERSION}" "$maximum" | sort -V | tail -1)" = "GLIBC_${GLIBC_VERSION}"
+
+      # Only lint on one platform
+      - name: Check native formatting and lint
+        if: matrix.target == 'x86_64-unknown-linux-gnu'
+        run: yarn workspace glob-hasher lint
+
+      - name: Copy native package
+        run: yarn workspace ${{ matrix.package }} build
+
+      - name: Test native API and declarations
+        # Run API tests on macOS, Windows, and GNU Linux; only this matrix target's package files are available.
+        if: ${{ !endsWith(matrix.target, '-musl') }}
+        env:
+          GLOB_HASHER_TEST_TARGET: ${{ matrix.target }}
+        run: |
+          yarn workspace glob-hasher types
+          yarn workspace glob-hasher test --runInBand
+          git diff --exit-code -- packages/glob-hasher/index.js packages/glob-hasher/index.d.ts
+
+      - name: Check musl package files
+        # Musl support is best effort: validate the cross-built files without loading the binding on this glibc host.
+        if: endsWith(matrix.target, '-musl')
+        env:
+          GLOB_HASHER_TEST_TARGET: ${{ matrix.target }}
+        run: yarn workspace glob-hasher test --runTestsByPath src/__tests__/native-packages.test.ts
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: glob-hasher-${{ matrix.target }}
+          path: packages/glob-hasher/*.node
+          if-no-files-found: error
+
   build:
+    needs: native
     strategy:
       matrix:
         node: [22.x, 24.x]
@@ -37,8 +148,19 @@ jobs:
 
       - run: yarn --immutable
 
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: glob-hasher-*
+          path: ${{ runner.temp }}/native-artifacts
+
+      # Stage every downloaded binding in its platform package and restore the host binding beside the wrapper's loader.
+      - run: yarn monorepo-scripts rust assemble "${{ runner.temp }}/native-artifacts"
+
       - name: Build, Test, Lint
+        # Reuse the native artifacts instead of recompiling Rust or repeating Rust lint.
+        # Jest still validates every platform's package files and exercises the host binding.
         run: yarn ci --concurrency 2 --verbose
         env:
+          SKIP_RUST: "1"
           BACKFILL_CACHE_PROVIDER: ${{ secrets.backfill_cache_provider }}
           BACKFILL_CACHE_PROVIDER_OPTIONS: ${{ secrets.backfill_cache_provider_options }}

@@ -1,0 +1,33 @@
+{
+  "name": "glob-hasher-linux-arm64-gnu",
+  "version": "1.4.3",
+  "description": "Linux ARM64 glibc native binding for glob-hasher",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/lage",
+    "directory": "packages/glob-hasher-native/glob-hasher-linux-arm64-gnu"
+  },
+  "license": "MIT",
+  "main": "glob-hasher.linux-arm64-gnu.node",
+  "files": [
+    "*.node"
+  ],
+  "scripts": {
+    "build": "monorepo-scripts rust copy"
+  },
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "libc": [
+    "glibc"
+  ],
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "devDependencies": {
+    "@lage-run/monorepo-scripts": "workspace:^"
+  }
+}

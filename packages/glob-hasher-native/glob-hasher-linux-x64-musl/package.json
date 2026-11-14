@@ -1,0 +1,33 @@
+{
+  "name": "glob-hasher-linux-x64-musl",
+  "version": "1.4.3",
+  "description": "Linux x64 musl native binding for glob-hasher",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/lage",
+    "directory": "packages/glob-hasher-native/glob-hasher-linux-x64-musl"
+  },
+  "license": "MIT",
+  "main": "glob-hasher.linux-x64-musl.node",
+  "files": [
+    "*.node"
+  ],
+  "scripts": {
+    "build": "monorepo-scripts rust copy"
+  },
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "libc": [
+    "musl"
+  ],
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "devDependencies": {
+    "@lage-run/monorepo-scripts": "workspace:^"
+  }
+}

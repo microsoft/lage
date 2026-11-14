@@ -7,12 +7,22 @@ const config = {
   groupChanges: true,
   branch: "main",
   commit: false,
+  groups: [
+    {
+      // These are meant to use lockstep versioning.
+      // Beachball doesn't fully support that, so it's enforced by the syncpack config too.
+      name: "glob-hasher",
+      include: ["packages/glob-hasher", "packages/glob-hasher-native/*"],
+      // TODO: change to "major" after the major release
+      disallowedChangeTypes: [],
+    },
+  ],
   changelog: {
     groups: [
       {
         // roll up all changes to the lage changelog (packages still have individual changelogs too)
         mainPackageName: "lage",
-        include: ["packages/*"],
+        include: ["packages/*", "packages/glob-hasher-native/*"],
         // these are not dependencies of lage
         exclude: ["!packages/backfill", "!packages/cache-github-actions", "!packages/grapher"],
         changelogPath: "packages/lage",

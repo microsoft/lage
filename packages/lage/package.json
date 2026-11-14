@@ -20,7 +20,7 @@
     "bundle:dts": "yarn run -T dts-bundle-generator --config ./dts-bundle.config.js"
   },
   "dependencies": {
-    "glob-hasher": "^1.4.2"
+    "glob-hasher": "workspace:^"
   },
   "optionalDependencies": {
     "fsevents": "~2.3.2"

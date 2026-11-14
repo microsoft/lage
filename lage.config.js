@@ -3,7 +3,10 @@
 const os = require("os");
 const path = require("path");
 const fastGlob = require("fast-glob");
+const { hostTarget, nativeTargets } = require("./scripts/rust/constants.js");
 const { isCI } = require("./scripts/isCI.js");
+
+const rustTargetType = process.env.SKIP_RUST ? "noop" : "npmScript";
 
 /** @type {TargetConfig} */
 const baseTestTarget = {
@@ -14,7 +17,7 @@ const baseTestTarget = {
   options: /** @satisfies {WorkerTargetOptions} */ ({
     worker: path.join(__dirname, "scripts/worker/jest.js"),
   }),
-  dependsOn: ["build"],
+  dependsOn: ["build", "glob-hasher#build"],
 };
 
 /**
@@ -24,7 +27,7 @@ const baseTestTarget = {
 const config = {
   pipeline: {
     "lage#bundle": {
-      dependsOn: ["^^transpile", "types"],
+      dependsOn: ["^^transpile", "types", "glob-hasher#build"],
       outputs: ["dist/**/*"],
     },
     types: {
@@ -73,9 +76,30 @@ const config = {
         worker: path.join(__dirname, "scripts/worker/depcheck.js"),
       }),
     },
+    "glob-hasher#build": {
+      type: rustTargetType,
+      dependsOn: [],
+      inputs: ["src/**/*", "Cargo.lock", "*.toml", "*.rs", "package.json"],
+      outputs: ["glob-hasher.*.node", "index.js", "index.d.ts", "temp/**/*"],
+    },
+    "glob-hasher#test": {
+      type: "npmScript",
+      dependsOn: ["build", ...nativeTargets.map(({ suffix }) => `glob-hasher-${suffix}#build`)],
+    },
+    "glob-hasher#lint": {
+      type: rustTargetType,
+      dependsOn: ["glob-hasher#build"],
+    },
+    ...Object.fromEntries(
+      nativeTargets.map(({ suffix }) => [
+        `glob-hasher-${suffix}#build`,
+        // This is not a cycle since glob-hasher#build has dependsOn: []
+        { type: "npmScript", dependsOn: ["glob-hasher#build"], outputs: ["*.node"] },
+      ])
+    ),
     "@lage-run/e2e-tests#test": {
       ...baseTestTarget,
-      dependsOn: ["^^transpile", "lage#bundle"],
+      dependsOn: ["^^transpile", "lage#bundle", "glob-hasher#build"],
       // weight is used in scripts/worker/jest.js to determine max jest workers.
       // Make this task run last and give it all available resources.
       // But on CI, allow only one worker since this runs lage which internally creates workers.
@@ -85,6 +109,7 @@ const config = {
   },
   npmClient: "yarn",
   cacheOptions: {
+    cacheKey: JSON.stringify({ target: hostTarget().triple, ci: isCI(), skipRust: !!process.env.SKIP_RUST }),
     // These are relative to the git root, and affect the hash of the cache.
     // Changes to any of these files will invalidate the cache.
     environmentGlob: [

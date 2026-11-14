@@ -6,7 +6,7 @@ This repo is public on GitHub. Do not use MCPs for Azure DevOps (unless the requ
 
 ## What is Lage?
 
-Lage ("make" in Norwegian) is a task runner for JavaScript/TypeScript monorepos. It pipelines npm scripts across packages so that, for example, `test` can start as soon as its own package's `build` finishes rather than waiting for all builds. This is a Yarn Berry (v4) workspace monorepo with ~28 packages under `packages/`.
+Lage ("make" in Norwegian) is a task runner for JavaScript/TypeScript monorepos. It pipelines npm scripts across packages so that, for example, `test` can start as soon as its own package's `build` finishes rather than waiting for all builds. This is a Yarn Berry (v4) workspace monorepo with TypeScript packages and the Rust/NAPI-RS `glob-hasher` native addon under `packages/`.
 
 ## Common commands
 
@@ -15,7 +15,7 @@ Lage ("make" in Norwegian) is a task runner for JavaScript/TypeScript monorepos.
 These commands work from the repo root.
 
 ```bash
-yarn build              # transpile + types + bundle (via lage)
+yarn build              # transpile + types + native build + bundle + api (via lage)
 yarn test               # run all packages' tests (via lage; does NOT accept jest options)
 yarn lint               # lint all packages (via lage)
 yarn api                # update API report files (via lage)
@@ -27,7 +27,7 @@ yarn deps:check         # dependency audit (depcheck)
 yarn lage-local         # run the locally-built lage CLI (node packages/lage/dist/lage.js)
 ```
 
-When completing more complex production-code changes, run `yarn ci` from the root for complete build/test/lint verification. For test-only changes, run focused tests in the affected package instead of full CI. For comment-only changes, format the touched files without running CI. Honor explicit requests not to run tests, CI, or typechecking, and report which checks were skipped.
+When completing more complex production-code changes, run `yarn ci` from the root for complete build/test/lint verification. For test-only changes, run focused tests in the affected package instead of full CI. For documentation-only or comment-only changes, format the touched files without running CI. Honor explicit requests not to run tests, CI, or typechecking, and report which checks were skipped.
 
 ### Single-package commands
 
@@ -44,6 +44,22 @@ yarn api    # single-package update API report files
 ```
 
 If changes span multiple packages, you should `yarn build` from the root instead of one package. This is the best way to ensure all dependencies build in proper order.
+
+### Native package commands
+
+Run these commands from the repository root:
+
+```bash
+yarn lage build --to 'glob-hasher*' # build and copy available native bindings
+yarn lage test --to glob-hasher    # build, copy bindings, and run tests
+yarn workspace glob-hasher lint   # only glob-hasher itself has lint
+```
+
+Native builds do not cross-compile missing platforms. For declaration checks, use `yarn lage types --to glob-hasher`; Lage handles prerequisite tasks.
+
+- `index.js` and `index.d.ts` in `packages/glob-hasher/` are generated. Change Rust sources, rebuild, and include generated diffs rather than editing them manually.
+- Run direct Cargo commands from `packages/glob-hasher/`; its `rust-toolchain.toml` selects the compiler and components.
+- Use `SKIP_RUST=1` only when native binaries are already available. It skips Rust builds and lint; Jest tests still run.
 
 ## Coding patterns
 
@@ -73,6 +89,15 @@ Git calls are expensive in large monorepos. Collect changes once per command and
 
 ## Architecture
 
+### Repository layout
+
+- `packages/` contains the publishable libraries and CLI. `packages/glob-hasher-native/*` contains nested binary workspaces.
+- `packages/e2e-tests/` contains end-to-end CLI tests.
+- `docs/` is the Docusaurus website, managed as a separate Yarn project. See [docs/README.md](docs/README.md) for documentation setup and [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+- `scripts/` contains shared development tooling.
+- `benchmark/` contains performance benchmarks.
+- `lage.config.js` defines the task pipeline; `beachball.config.js` defines versioning and publishing rules.
+
 ### Key packages
 
 - **`lage`** — CLI entry point, esbuild-bundled into `dist/lage.js`
@@ -82,6 +107,8 @@ Git calls are expensive in large monorepos. Collect changes once per command and
 - **`runners`** — Task runner implementations (npm script, worker)
 - **`cache`** — Caching layer (wrapping `backfill-cache`)
 - **`hasher`** — Content hashing for cache invalidation
+- **`glob-hasher`** — Rust native globbing and hashing with a generated NAPI-RS loader and declarations
+- **`glob-hasher-native/*`** — Platform-specific binary workspaces selected by the wrapper's optional dependencies
 - **`config`** — Configuration loading via cosmiconfig
 - **`worker-threads-pool`** — Worker thread management
 - **`reporters`** — Output formatting
@@ -102,8 +129,10 @@ The **`workspace-tools`** helper library is also hosted in this repo.
 
 ### Output convention
 
-- `lib/` — transpiled JS + type declarations (all packages except `lage`)
+- `lib/` — transpiled JS + type declarations (TypeScript library packages)
 - `dist/` — esbuild bundle (`lage` package only)
+- `packages/glob-hasher/target/` — Cargo build output
+- `glob-hasher.<platform>.node` — compiled in `packages/glob-hasher/`; each platform package's `build` script runs `monorepo-scripts rust copy` to copy its binding, if present, into the matching workspace under `packages/glob-hasher-native/`, where Lage caches that package's output
 
 ## Versioning & release
 
