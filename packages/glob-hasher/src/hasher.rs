@@ -1,6 +1,6 @@
 use dashmap::{DashMap, DashSet};
-use gix::features::hash::hasher;
-use gix::objs::encode::loose_header;
+use gix_features::hash::hasher;
+use gix_object::encode::loose_header;
 use rayon::prelude::*;
 
 use std::fs;
@@ -45,8 +45,8 @@ pub fn git_hash(file_set: DashSet<PathBuf>, cwd: &str) -> Option<HashMap<String,
     let key = normalize_path(&base_cwd, file_path);
 
     if let Ok(bytes) = bytes_results {
-      let mut hasher = hasher(gix::hash::Kind::Sha1);
-      hasher.update(&loose_header(gix::objs::Kind::Blob, bytes.len() as u64));
+      let mut hasher = hasher(gix_hash::Kind::Sha1);
+      hasher.update(&loose_header(gix_object::Kind::Blob, bytes.len() as u64));
       hasher.update(&bytes);
 
       map.insert(key, Some(hex::encode(hasher.digest())));
@@ -74,8 +74,8 @@ pub fn git_hash_vec(files: Vec<PathBuf>, cwd: &str) -> Option<HashMap<String, Op
     let key = normalize_path(&base_cwd, file_path);
 
     if let Ok(bytes) = bytes_results {
-      let mut hasher = hasher(gix::hash::Kind::Sha1);
-      hasher.update(&loose_header(gix::objs::Kind::Blob, bytes.len() as u64));
+      let mut hasher = hasher(gix_hash::Kind::Sha1);
+      hasher.update(&loose_header(gix_object::Kind::Blob, bytes.len() as u64));
       hasher.update(&bytes);
 
       map.insert(key, Some(hex::encode(hasher.digest())));
