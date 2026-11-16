@@ -266,6 +266,8 @@ describe("WrappedTarget", () => {
       maxWorkers: 1,
       script: path.resolve(__dirname, "../../lib/workers/targetWorker.js"),
       workerOptions: {
+        // Use Jest's scrubbed environment instead of the host's cache settings.
+        env: process.env,
         workerData: {
           root,
           shouldCache: true,

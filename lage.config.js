@@ -72,6 +72,11 @@ const config = {
         worker: path.join(__dirname, "scripts/worker/depcheck.js"),
       }),
     },
+    "@lage-run/scheduler#test": {
+      ...baseTestTarget,
+      // Real workers load compiled dependencies outside Jest's source mappings.
+      dependsOn: ["build", "^^transpile"],
+    },
     "@lage-run/e2e-tests#test": {
       ...baseTestTarget,
       dependsOn: ["^^transpile", "lage#bundle"],
