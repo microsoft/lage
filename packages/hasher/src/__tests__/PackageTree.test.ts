@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, jest, test } from "@jest/globals";
 import { Monorepo } from "@lage-run/test-utilities";
+import childProcess from "child_process";
 import execa from "execa";
 import fs from "fs";
 import path from "path";
@@ -102,6 +103,11 @@ describe("PackageTree", () => {
     const root = monorepo.root;
     const git = (args: string[]) => execa("git", args, { cwd: root });
     const renamed = "packages/package-a/renamed \u8774\u8776 file.txt";
+    const untracked = [
+      "packages/package-a/untracked space.txt",
+      "packages/package-a/untracked \u8774\u8776.txt",
+      ...(process.platform === "win32" ? [] : ["packages/package-a/untracked\ttab.txt"]),
+    ];
     await git(["rm", "--", "packages/package-a/staged-removed.txt"]);
     await git(["mv", "--", "packages/package-a/renamed.txt", renamed]);
     await git(["update-index", "--skip-worktree", "--", "packages/package-a/skipped.txt", "packages/package-a/skipped-present.txt"]);
@@ -112,7 +118,7 @@ describe("PackageTree", () => {
     monorepo.writeFiles({
       "packages/package-a/working.txt": "after\r\n",
       "packages/package-a/staged.txt": "staged",
-      "packages/package-a/untracked space.txt": "untracked",
+      ...Object.fromEntries(untracked.map((file) => [file, "untracked"])),
       "packages/package-a/.gitignore": "ignored.txt",
       "packages/package-a/ignored.txt": "ignored",
     });
@@ -120,15 +126,17 @@ describe("PackageTree", () => {
 
     const packageTree = new PackageTree({ includeUntracked, root, packageInfos: getPackageInfos(root) });
     const exists = jest.spyOn(fs, "existsSync");
+    const spawn = jest.spyOn(childProcess, "spawn");
     await packageTree.initialize();
 
+    expect(spawn.mock.calls.filter(([command]) => command === "git")).toHaveLength(1);
     expect(packageTree.getPackageFiles("package-a", ["**/*.txt"]).sort()).toEqual(
       [
         renamed,
         "packages/package-a/skipped-present.txt",
         "packages/package-a/staged.txt",
         "packages/package-a/working.txt",
-        ...(includeUntracked ? ["packages/package-a/untracked space.txt"] : []),
+        ...(includeUntracked ? untracked : []),
       ].sort()
     );
     expect(exists.mock.calls.map(([file]) => path.relative(root, String(file)).replace(/\\/g, "/")).sort()).toEqual([
@@ -137,6 +145,7 @@ describe("PackageTree", () => {
     ]);
 
     exists.mockRestore();
+    spawn.mockRestore();
     fs.unlinkSync(path.join(root, "packages/package-a/staged.txt"));
     await packageTree.initialize();
     expect(packageTree.getPackageFiles("package-a", ["**/*.txt"])).not.toContain("packages/package-a/staged.txt");

@@ -59,15 +59,21 @@ export class PackageTree {
       currentNode.isPackage = true;
     }
 
-    const [lsFilesResults, lsOtherResults] = await Promise.all([
-      execa("git", ["ls-files", "--cached", "--deleted", "--stage", "-t", "-z"], { cwd: root }),
-      includeUntracked ? execa("git", ["ls-files", "-o", "-z", "--exclude-standard"], { cwd: root }) : undefined,
-    ]);
+    const lsFilesResults = await execa(
+      "git",
+      ["ls-files", "--cached", "--deleted", "--stage", "-t", "-z", ...(includeUntracked ? ["--others", "--exclude-standard"] : [])],
+      { cwd: root }
+    );
 
     const files: string[] = [];
     const deletedFiles = new Set<string>();
     for (const entry of lsFilesResults.stdout.split("\0")) {
       if (!entry) {
+        continue;
+      }
+
+      if (entry.startsWith("? ")) {
+        files.push(entry.slice(2));
         continue;
       }
 
@@ -86,10 +92,6 @@ export class PackageTree {
       }
     }
     this.addToPackageTree(files.filter((file) => !deletedFiles.has(file)));
-
-    if (lsOtherResults) {
-      this.addToPackageTree(lsOtherResults.stdout.split("\0").filter(Boolean));
-    }
   }
 
   private addToPackageTree(filePaths: string[]): void {
