@@ -49,11 +49,14 @@ function setup(options: TargetWorkerDataOptions) {
 const { cacheProvider, runnerPicker, options } = setup(workerData);
 
 let hashPromiseResolve = (_hash: string) => {};
+let hashPromiseReject = (_error: Error) => {};
 
 // main thread sends hash to worker because it keeps a global memory cache of the hashes
 parentPort!.on("message", (data: any) => {
   if (data.type === "hash") {
     hashPromiseResolve(data.hash);
+  } else if (data.type === "hash-error") {
+    hashPromiseReject(new Error(data.error));
   }
 });
 
@@ -67,8 +70,9 @@ async function getCache(target: Target) {
   }
 
   // using a special pattern in communicating with the main thread to get the hash for the target
-  hash = await new Promise((resolve) => {
+  hash = await new Promise((resolve, reject) => {
     hashPromiseResolve = resolve;
+    hashPromiseReject = reject;
     parentPort!.postMessage({ type: "hash" });
   });
 
