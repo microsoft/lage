@@ -27,7 +27,7 @@
     "@types/fs-extra": "^8.0.0"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=24.22.1"
   },
   "files": [
     "lib/!(__*)",

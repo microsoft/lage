@@ -1,0 +1,158 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/cache",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/cache-github-actions",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/cli",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/config",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/grapher",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/hasher",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/logger",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/reporters",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/rpc",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/runners",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/scheduler",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/scheduler-types",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/target-graph",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "@lage-run/worker-threads-pool",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "backfill",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "backfill-cache",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "backfill-config",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "backfill-hasher",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "backfill-logger",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "lage",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "normalized-tmpdir",
+      "type": "major",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    },
+    {
+      "packageName": "workspace-tools",
+      "type": "minor",
+      "dependentChangeType": "patch",
+      "comment": "Require Node.js 24.22.1 or later.",
+      "email": "email not defined"
+    }
+  ]
+}

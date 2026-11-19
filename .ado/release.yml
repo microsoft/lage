@@ -20,7 +20,7 @@ resources:
 
 variables:
   - name: nodeVersion
-    value: 24
+    value: 24.22.1
   - name: npmVersion
     value: 11
   - name: registryUrl
@@ -72,7 +72,7 @@ extends:
                 displayName: Install Node.js ${{ variables.nodeVersion }}
                 retryCountOnTaskFailure: 1
                 inputs:
-                  version: ${{ variables.nodeVersion }}.x
+                  version: ${{ variables.nodeVersion }}
                   checkLatest: false
 
               # For multiline scripts, we want the whole task to fail if any line of the script fails.

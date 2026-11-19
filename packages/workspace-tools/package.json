@@ -9,6 +9,9 @@
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "engines": {
+    "node": ">=24.22.1"
+  },
   "files": [
     "lib/!(__*)",
     "lib/!(__*)/**/*"
