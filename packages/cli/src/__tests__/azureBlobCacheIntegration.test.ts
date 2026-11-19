@@ -11,8 +11,11 @@ import createLogger from "@lage-run/logger";
 import type { Target } from "@lage-run/target-graph";
 import { makeAzureStorageClientMocks, Monorepo, removeTempDirAsync } from "@lage-run/test-utilities";
 import path from "path";
+import { createRequire } from "module";
 import { PassThrough } from "stream";
 import { buffer } from "stream/consumers";
+
+const plugin = createRequire(__filename).resolve("@lage-run/azure-blob-cache-storage");
 
 // This is best to test in the CLI package since it needs mocks of the azure client
 describe("Azure Blob cache integration via RemoteFallbackCacheProvider", () => {
@@ -51,7 +54,7 @@ describe("Azure Blob cache integration via RemoteFallbackCacheProvider", () => {
       root: monorepo.root,
       cacheOptions: {
         outputGlob: ["lib/**"],
-        cacheStorageConfig: { provider: "azure-blob", options: { containerClient: mockContainerClient } },
+        cacheStorageConfig: { provider: "custom", plugin, options: { containerClient: mockContainerClient } },
       },
     });
 
@@ -90,7 +93,7 @@ describe("Azure Blob cache integration via RemoteFallbackCacheProvider", () => {
       root: monorepo.root,
       cacheOptions: {
         outputGlob: ["lib/**"],
-        cacheStorageConfig: { provider: "azure-blob", options: { containerClient: mockContainerClient } },
+        cacheStorageConfig: { provider: "custom", plugin, options: { containerClient: mockContainerClient } },
       },
     });
 
@@ -128,7 +131,7 @@ describe("Azure Blob cache integration via RemoteFallbackCacheProvider", () => {
       root: monorepo.root,
       cacheOptions: {
         outputGlob: ["lib/**"],
-        cacheStorageConfig: { provider: "azure-blob", options: { containerClient: mockContainerClient } },
+        cacheStorageConfig: { provider: "custom", plugin, options: { containerClient: mockContainerClient } },
       },
     });
 
@@ -182,7 +185,7 @@ describe("Azure Blob cache integration via RemoteFallbackCacheProvider", () => {
       root: monorepo.root,
       cacheOptions: {
         outputGlob: ["lib/**"],
-        cacheStorageConfig: { provider: "azure-blob", options: { containerClient: mockContainerClient } },
+        cacheStorageConfig: { provider: "custom", plugin, options: { containerClient: mockContainerClient } },
       },
     });
 
@@ -220,7 +223,7 @@ describe("Azure Blob cache integration via RemoteFallbackCacheProvider", () => {
       root: monorepo.root,
       cacheOptions: {
         outputGlob: ["lib/**"],
-        cacheStorageConfig: { provider: "azure-blob", options: { containerClient: mockContainerClient } },
+        cacheStorageConfig: { provider: "custom", plugin, options: { containerClient: mockContainerClient } },
       },
     });
 
