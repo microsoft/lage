@@ -29,9 +29,13 @@ export class BackfillCacheProvider implements CacheProvider {
    */
   private backfillLogger: BackfillLogger;
 
-  private getTargetCacheStorageProvider(cwd: string, hash: string) {
+  private getTargetCacheConfig(cwd: string) {
     const { cacheOptions } = this.options;
-    const { cacheStorageConfig, incrementalCaching } = createBackfillCacheConfig(cwd, cacheOptions, this.backfillLogger);
+    return createBackfillCacheConfig(cwd, cacheOptions, this.backfillLogger);
+  }
+
+  private getTargetCacheStorageProvider(cwd: string, hash: string) {
+    const { cacheStorageConfig, incrementalCaching } = this.getTargetCacheConfig(cwd);
 
     const cachePath = this.getCachePath(cwd, hash);
 
@@ -75,9 +79,10 @@ export class BackfillCacheProvider implements CacheProvider {
     }
 
     const cacheStorage = this.getTargetCacheStorageProvider(target.cwd, hash);
+    const { outputGlob } = this.getTargetCacheConfig(target.cwd);
 
     try {
-      await cacheStorage.put(hash, target.outputs ?? this.options.cacheOptions.outputGlob ?? ["**/*"]);
+      await cacheStorage.put(hash, target.outputs ?? outputGlob ?? ["**/*"]);
     } catch (error) {
       let message;
 
