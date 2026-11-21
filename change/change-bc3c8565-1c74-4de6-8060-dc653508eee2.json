@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "type": "patch",
+      "comment": "Update dependency graceful-fs to v4.2.12",
+      "packageName": "@lage-run/hasher",
+      "email": "email not defined",
+      "dependentChangeType": "patch"
+    }
+  ]
+}
