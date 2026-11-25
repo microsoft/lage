@@ -8,7 +8,10 @@ import type { Config } from "./Config.js";
 import { getAzureBlobConfigFromSerializedOptions } from "./azureBlobCacheConfig.js";
 import { getNpmConfigFromSerializedOptions } from "./npmCacheConfig.js";
 import { isCorrectMode, modesObject, type BackfillModes } from "./modes.js";
-import type { CacheStorageConfig } from "./cacheConfig.js";
+import type {
+  CacheStorageConfig,
+  CustomCacheStorageConfig,
+} from "./cacheConfig.js";
 
 class BackfillConfigError extends Error {
   constructor(value: string, envName: string, expected: string) {
@@ -84,14 +87,22 @@ export function getEnvConfig(logger: Logger): Partial<Config> {
 
   const cacheProvider = process.env.BACKFILL_CACHE_PROVIDER as
     | Exclude<CacheStorageConfig["provider"], Function> // eslint-disable-line
+    | "azure-blob" // legacy value, mapped to custom plugin
     | undefined;
   const serializedCacheProviderOptions =
     process.env.BACKFILL_CACHE_PROVIDER_OPTIONS;
 
   if (cacheProvider === "azure-blob") {
-    config.cacheStorageConfig = getAzureBlobConfigFromSerializedOptions(
+    const azureBlobConfig = getAzureBlobConfigFromSerializedOptions(
       serializedCacheProviderOptions || "{}"
     );
+    // Map the legacy "azure-blob" provider to the new custom plugin config
+    const customConfig: CustomCacheStorageConfig = {
+      provider: "custom",
+      plugin: "@lage-run/azure-blob-cache-storage",
+      options: azureBlobConfig.options,
+    };
+    config.cacheStorageConfig = customConfig;
   } else if (cacheProvider === "npm") {
     config.cacheStorageConfig = getNpmConfigFromSerializedOptions(
       serializedCacheProviderOptions || "{}"

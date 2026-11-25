@@ -5,39 +5,13 @@
 ```ts
 
 import type { Config } from 'backfill-config';
-import type { CustomStorageConfig } from 'backfill-config';
 import type { LogLevel } from '@lage-run/logger';
 import type { Priority } from '@lage-run/target-graph';
 import type { TargetConfig } from '@lage-run/target-graph';
 import type { TargetRunnerPickerOptions } from '@lage-run/runners';
 
-// Warning: (ae-forgotten-export) The symbol "AzureBlobFromBackfill" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-type AugmentedAzureBlobConfig = AzureBlobFromBackfill extends {
-    provider: "azure-blob";
-    options: infer O;
-} ? {
-    provider: "azure-blob";
-    options: O extends any ? O extends {
-        connectionString: string;
-    } ? // Assumption: make `credentialName` optional to preserve backward compatibility
-    O & {
-        credentialName?: AzureCredentialName;
-    } : O : never;
-} : never;
-
-// @public
-type AzureBlobFromBackfill = Extract<Config["cacheStorageConfig"], {
-    provider: "azure-blob";
-}>;
-
-// @public
-export type AzureCredentialName = "environment" | "workload-identity" | "managed-identity" | "visual-studio-code" | "azure-cli";
-
-// @public (undocumented)
-export type CacheOptions = Omit<Config, "cacheStorageConfig"> & {
-    cacheStorageConfig?: ExtendedCacheStorageConfig;
+export type CacheOptions = Config & {
     writeRemoteCache?: boolean;
     skipLocalCache?: boolean;
     environmentGlob?: string[];
@@ -68,13 +42,6 @@ export interface ConfigOptions {
     runners: TargetRunnerPickerOptions;
     workerIdleMemoryLimit: number;
 }
-
-// Warning: (ae-forgotten-export) The symbol "AugmentedAzureBlobConfig" needs to be exported by the entry point index.d.ts
-//
-// @public
-type ExtendedCacheStorageConfig = Exclude<Config["cacheStorageConfig"], {
-    provider: "azure-blob";
-} | CustomStorageConfig> | AugmentedAzureBlobConfig;
 
 // @public (undocumented)
 export function getConcurrency(optionsConcurrency: number | undefined, configConcurrency: number | undefined): number;
@@ -121,10 +88,6 @@ export interface PipelineDefinition {
 
 // @public
 export function readConfigFile(cwd: string): Promise<ConfigOptions | undefined>;
-
-// Warnings were encountered during analysis:
-//
-// lib/types/CacheOptions.d.ts:36:5 - (ae-forgotten-export) The symbol "ExtendedCacheStorageConfig" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

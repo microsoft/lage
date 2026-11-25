@@ -103,7 +103,7 @@ describe("backfill", () => {
     ).toBe(outputContent);
   });
 
-  it("should set the proper custom cache provider name", async () => {
+  it("should set the custom cache plugin path as the provider name", async () => {
     //  Set up
     const fixtureLocation = setupFixture("custom-cache-provider");
 
@@ -122,7 +122,6 @@ describe("backfill", () => {
 
     // Assert
 
-    // See `packages/test-utilities/__fixtures__/custom-cache-provider/backfill.config.js`'s provider.name
-    expect(spyLogger).toHaveBeenCalledWith("custom-provider");
+    expect(spyLogger).toHaveBeenCalledWith("./custom-provider.js");
   });
 });

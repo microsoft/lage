@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/cli",
+      "type": "none",
+      "dependentChangeType": "none",
+      "comment": "Update Azure cache integration tests to use the standalone plugin.",
+      "email": "email not defined"
+    }
+  ]
+}

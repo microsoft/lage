@@ -4,11 +4,11 @@
 
 ```ts
 
-import type { CustomStorageConfig } from 'backfill-config';
+import type { CustomCacheStoragePlugin } from 'backfill-config';
 
 // @public (undocumented)
-const cacheProvider: CustomStorageConfig;
-export default cacheProvider;
+const plugin: CustomCacheStoragePlugin;
+export default plugin;
 
 // (No @packageDocumentation comment for this package)
 
