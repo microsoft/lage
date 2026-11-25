@@ -21,6 +21,9 @@
   "devDependencies": {
     "@lage-run/monorepo-scripts": "workspace:^"
   },
+  "engines": {
+    "node": ">=24.22.1"
+  },
   "files": [
     "lib/!(__*)",
     "lib/!(__*)/**"
