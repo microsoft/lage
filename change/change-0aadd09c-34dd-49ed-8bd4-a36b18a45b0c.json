@@ -1,0 +1,18 @@
+{
+  "changes": [
+    {
+      "packageName": "@lage-run/cache",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Respect default outputGlob when outputGlob is not specified in cacheOptions.",
+      "email": "owner@wegenz.in"
+    },
+    {
+      "packageName": "@lage-run/scheduler",
+      "type": "patch",
+      "dependentChangeType": "patch",
+      "comment": "Avoid passing undefined outputGlob to BackfillCacheProvider.",
+      "email": "owner@wegenz.in"
+    }
+  ]
+}

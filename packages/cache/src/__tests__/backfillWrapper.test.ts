@@ -50,6 +50,20 @@ describe("backfill-config", () => {
 
     expect(config.cacheStorageConfig.provider).toBe("azure-blob");
   });
+
+  it("should respect default outputGlob when cacheOptions is empty or outputGlob is undefined", () => {
+    const dummyLogger = createBackfillLogger();
+    const fixture = path.join(__dirname, "fixtures/backfill-config");
+
+    const configWithEmptyOptions = createBackfillCacheConfig(fixture, {}, dummyLogger);
+    expect(configWithEmptyOptions.outputGlob).toEqual(["lib/**"]);
+
+    const configWithUndefinedOutputGlob = createBackfillCacheConfig(fixture, { outputGlob: undefined }, dummyLogger);
+    expect(configWithUndefinedOutputGlob.outputGlob).toEqual(["lib/**"]);
+
+    const configWithCustomOutputGlob = createBackfillCacheConfig(fixture, { outputGlob: ["dist/**/*"] }, dummyLogger);
+    expect(configWithCustomOutputGlob.outputGlob).toEqual(["dist/**/*"]);
+  });
 });
 
 describe("createBackfillCacheConfig credential handling", () => {
