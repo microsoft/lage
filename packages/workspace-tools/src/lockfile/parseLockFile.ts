@@ -12,7 +12,23 @@ const memoization: { [path: string]: ParsedLock } = {};
 
 // eslint-disable-next-line @typescript-eslint/require-await -- was async due to async imports, and will be again in future
 export async function parseLockFile(packageRoot: string): Promise<ParsedLock> {
-  const yarnLockPath = searchUp(["yarn.lock", "common/config/rush/yarn.lock"], packageRoot);
+  // Search for all supported lock files at once so the one closest to `packageRoot` wins. (If each
+  // package manager were searched separately, a yarn.lock in a parent directory would shadow a
+  // pnpm or npm lock file next to the package.) If there are multiple in the same directory, the
+  // order here gives priority to yarn, then pnpm, then npm.
+  const lockFilePath = searchUp(
+    [
+      "yarn.lock",
+      "common/config/rush/yarn.lock",
+      "pnpm-lock.yaml",
+      "common/config/rush/pnpm-lock.yaml",
+      "package-lock.json",
+    ],
+    packageRoot
+  );
+  const lockFileName = lockFilePath && path.basename(lockFilePath);
+
+  const yarnLockPath = lockFileName === "yarn.lock" ? lockFilePath : undefined;
 
   // First, test out whether this works for yarn
   if (yarnLockPath) {
@@ -49,7 +65,7 @@ export async function parseLockFile(packageRoot: string): Promise<ParsedLock> {
   }
 
   // Second, test out whether this works for pnpm
-  const pnpmLockPath = searchUp(["pnpm-lock.yaml", "common/config/rush/pnpm-lock.yaml"], packageRoot);
+  const pnpmLockPath = lockFileName === "pnpm-lock.yaml" ? lockFilePath : undefined;
 
   if (pnpmLockPath) {
     if (memoization[pnpmLockPath]) {
@@ -73,7 +89,7 @@ export async function parseLockFile(packageRoot: string): Promise<ParsedLock> {
   }
 
   // Third, try for npm workspaces
-  const npmLockPath = searchUp("package-lock.json", packageRoot);
+  const npmLockPath = lockFileName === "package-lock.json" ? lockFilePath : undefined;
 
   if (npmLockPath) {
     if (memoization[npmLockPath]) {
